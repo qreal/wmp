@@ -1,0 +1,763 @@
+{
+
+    "elements": {
+        
+         "ControlFlow": {
+            "name": "Линия соединения",
+            "properties": [
+                {
+                    "key": "Guard",
+                    "name": "Условие",
+                    "type": "combobox",
+                    "value": "",
+                    "variants": [
+                        {
+                            "key": "false",
+                            "value": "ложь"
+                        },
+                        {
+                            "key": "iteration",
+                            "value": "тело цикла"
+                        },
+                        {
+                            "key": "true",
+                            "value": "истина"
+                        }
+                    ]
+                }
+            ]
+        }
+        
+    },
+
+    "categoriesNames": {
+        "Algorithms": "Алгоритмы",
+        "Actions": "Действия",
+        "Wait": "Ожидание",
+        "Drawing": "Рисование"
+    },
+
+    "blocks": {
+
+        "InitialNode": {
+            "name": "Начало",
+            "image": {
+                "src": "images/initialBlock.svg"
+            }
+        },
+
+        "FinalNode": {
+            "name": "Конец",
+            "image": {
+                "src": "images/finalBlock.svg"
+            }
+        },
+
+        "Function": {
+            "name": "Функция",
+            "image": {
+                "src": "images/functionBlock.svg"
+            },
+            "properties": [
+                
+                {
+                    "key": "Body",
+                    "name": "Тело функции",
+                    "type": "string",
+                    "value": ""
+                }
+
+            ]
+        },
+
+        "IfBlock": {
+            "name": "Условие",
+            "image": {
+                "src": "images/ifBlock.svg"
+            },
+            "properties": [
+                
+                {
+                    "key": "Condition",
+                    "name": "Условие",
+                    "type": "string",
+                    "value": "x > 0"
+                }
+
+            ]
+        },
+
+        "FiBlock": {
+            "name": "Конец условия",
+            "image": {
+                "src": "images/endIfBlock.svg"
+            }
+        },
+
+        "Loop": {
+            "name": "Цикл",
+            "image": {
+                "src": "images/loopBlock.svg"
+            },
+            "properties": [
+
+                {
+                    "key": "Iterations",
+                    "name": "Итераций",
+                    "type": "string",
+                    "value": "10"
+                }
+
+            ]
+        },
+
+        "Subprogram": {
+            "name": "Подпрограмма",
+            "image": {
+                "src": "images/subprogramRobotsBlock.svg"
+            }
+        },     
+
+        "Fork": {
+            "name": "Параллельные задачи",
+            "image": {
+                "src": "images/forkBlock.svg"
+            }
+        }, 
+
+        "TrikV6EnginesForward": {
+            "name": "Моторы вперёд",
+            "image": {
+                "src": "images/enginesForwardBlock.svg"
+            },
+            "properties": [
+                
+                {
+                    "key": "Ports",
+                    "name": "Порты",
+                    "type": "string",
+                    "value": "M3, M4"
+                },
+
+                {
+                    "key": "Power",
+                    "name": "Мощность (%)",
+                    "type": "string",
+                    "value": "100"
+                }
+
+            ]
+        },
+
+        "TrikV6EnginesBackward": {
+            "name": "Моторы назад",
+            "image": {
+                "src": "images/enginesBackwardBlock.svg"
+            },
+            "properties": [
+                
+                {
+                    "key": "Ports",
+                    "name": "Порты",
+                    "type": "string",
+                    "value": "M3, M4"
+                },
+
+                {
+                    "key": "Power",
+                    "name": "Мощность (%)",
+                    "type": "string",
+                    "value": "100"
+                }
+
+            ]
+        },
+
+        "TrikV6EnginesStop": {
+            "name": "Моторы стоп",
+            "image": {
+                "src": "images/enginesStopBlock.svg"
+            },
+    
+            "properties": [
+                
+                {
+                    "key": "Ports",
+                    "name": "Порты",
+                    "type": "string",
+                    "value": "M1, M2, M3, M4"
+                }
+
+            ]
+        },
+        
+        "TrikV6ClearEncoder": {
+            "name": "Сбросить показания энкодера",
+            "image": {
+                "src": "images/nullificationEncoderBlock.svg"
+            },
+    
+            "properties": [
+                
+                {
+                    "key": "Ports",
+                    "name": "Порты",
+                    "type": "string",
+                    "value": "B1, B2, B3, B4"
+                }
+
+            ]
+        },
+
+        "TrikSay": {
+            "name": "Сказать",
+            "image": {
+                "src": "images/sayBlock.svg"
+            },
+            "properties": [
+                
+                {
+                    "key": "Evaluate",
+                    "name": "Вычислять",
+                    "type": "checkbox",
+                    "selected": {
+                        "key": "false",
+                        "value": "ложь"
+                    },
+                    "variants": [
+                        {
+                            "key": "false",
+                            "value": "ложь"
+                        },
+                        {
+                            "key": "true",
+                            "value": "истина"
+                        }
+                    ]
+                },
+
+                {
+                    "key": "Text",
+                    "name": "Текст",
+                    "type": "string",
+                    "value": "Привет!"
+                }
+
+            ]
+        },
+
+        "TrikLed": {
+            "name": "Светодиод",
+            "image": {
+                "src": "images/ledBlock.svg"
+            },
+            "properties": [
+                
+                {
+                    "key": "Color",
+                    "name": "Цвет",
+                    "type": "dropdown",
+                    "selected": {
+                        "key": "red",
+                        "value": "красный"
+                    },
+                    "variants": [
+
+                        {
+                            "key": "green",
+                            "value": "зелёный"
+                        },
+
+                        {
+                            "key": "off",
+                            "value": "выключен"
+                        },
+
+                        {
+                            "key": "orange",
+                            "value": "оранжевый"
+                        },
+
+                        {
+                            "key": "red",
+                            "value": "красный"
+                        }
+                    
+                    ]
+                }
+                
+            ]
+        },
+
+        "Timer": {
+            "name": "Таймер",
+            "image": {
+                "src": "images/timerBlock.svg"
+            },
+    
+            "properties": [
+                
+                {
+                    "key": "Delay",
+                    "name": "Задержка (мс)",
+                    "type": "string",
+                    "value": "1000"
+                }
+
+            ]
+        },
+
+        "TrikWaitForEncoder": {
+            "name": "Ждать энкодер",
+            "image": {
+                "src": "images/waitForEncoderBlock.svg"
+            },
+    
+            "properties": [
+                
+                {
+                    "key": "Port",
+                    "name": "Порт",
+                    "type": "string",
+                    "value": "B3"
+                },
+
+                {
+                    "key": "Sign",
+                    "name": "Считанное значение",
+                    "type": "dropdown",
+                    "selected": {
+                        "key": "greater",
+                        "value": "больше"
+                    },
+                    "variants": [
+                        
+                        {
+                            "key": "greater",
+                            "value": "больше"
+                        },
+
+                        {
+                            "key": "less",
+                            "value": "меньше"
+                        },
+
+                        {
+                            "key": "not greater",
+                            "value": "не больше"
+                        },
+
+                        {
+                            "key": "not less",
+                            "value": "не меньше"
+                        }
+
+                    ]
+                },
+
+                {
+                    "key": "TachoLimit",
+                    "name": "Предел оборотов",
+                    "type": "string",
+                    "value": ""
+                }
+            ]
+        },
+
+        "TrikSetPainterColor": {
+            "name": "Цвет кисти",
+            "image": {
+                "src": "images/brushColorBlock.svg"
+            },
+            "properties": [
+
+                {
+                    "key": "Color",
+                    "name": "Цвет",
+                    "type": "dropdown",
+                    "selected": {
+                        "key": "black",
+                        "value": "черный"
+                    },
+                    "variants": [
+                        
+                        {
+                            "key": "black",
+                            "value": "черный"
+                        },
+
+                        {
+                            "key": "blue",
+                            "value": "синий"
+                        },
+
+                        {
+                            "key": "cyan",
+                            "value": "сине-зелёный"
+                        },
+
+                        {
+                            "key": "darkBlue",
+                            "value": "тёмно-синий"
+                        },
+
+                        {
+                            "key": "darkCyan",
+                            "value": "тёмно-сине-зелёный"
+                        },
+
+                        {
+                            "key": "darkGray",
+                            "value": "тёмно-серый"
+                        },
+
+                        {
+                            "key": "darkGreen",
+                            "value": "тёмно-зелёный"
+                        },
+
+                        {
+                            "key": "darkMagenta",
+                            "value": "тёмно-пурпурный"
+                        },
+
+                        {
+                            "key": "darkRed",
+                            "value": "тёмно-красный"
+                        },
+
+                        {
+                            "key": "darkYellow",
+                            "value": "тёмно-жёлтый"
+                        },
+
+                        {
+                            "key": "gray",
+                            "value": "серый"
+                        },
+                        
+                        {
+                            "key": "green",
+                            "value": "зелёный"
+                        },
+
+                        {
+                            "key": "lightGray",
+                            "value": "светло-серый"
+                        },
+
+                        {
+                            "key": "magenta",
+                            "value": "пурпурный"
+                        },
+
+                        {
+                            "key": "red",
+                            "value": "красный"
+                        },
+                        
+                        {
+                            "key": "white",
+                            "value": "белый"
+                        },
+
+                        {
+                            "key": "yellow",
+                            "value": "жёлтый"
+                        }
+
+                    ]
+                }
+
+            ]
+
+        },
+
+        "TrikSetPainterWidth": {
+            "name": "Толщина кисти",
+            "image": {
+                "src": "images/brushWidthBlock.svg"
+            },
+            "properties": [
+
+                {
+                    "key": "Width",
+                    "name": "Ширина",
+                    "type": "string",
+                    "value": "1"
+                }
+
+            ]
+        },
+
+        "TrikDrawEllipse": {
+            "name": "Нарисовать эллипс",
+            "image": {
+                "src": "images/drawCircleBlock.svg"
+            },
+            "properties": [
+        
+                {
+                    "key": "HeightEllipse",
+                    "name": "Высота",
+                    "type": "string",
+                    "value": "5"
+                },
+
+                {
+                    "key": "Redraw",
+                    "name": "Обновить картинку",
+                    "type": "checkbox",
+                    "selected": {
+                        "key": "true",
+                        "value": "истина"
+                    },
+                    "variants": [
+                        {
+                            "key": "false",
+                            "value": "ложь"
+                        },
+                        {
+                            "key": "true",
+                            "value": "истина"
+                        }
+                    ]
+                },
+
+                {
+                    "key": "WidthEllipse",
+                    "name": "Ширина",
+                    "type": "string",
+                    "value": "5"
+                },
+
+                {
+                    "key": "XCoordinateEllipse",
+                    "name": "X",
+                    "type": "string",
+                    "value": "0"
+                },
+
+                {
+                    "key": "YCoordinateEllipse",
+                    "name": "Y",
+                    "type": "string",
+                    "value": "0"
+                }
+
+            ]
+        },
+
+        "TrikDrawArc": {
+            "name": "Нарисовать дугу",
+            "image": {
+                "src": "images/drawArcBlock.svg"
+            },
+            "properties": [
+        
+                {
+                    "key": "HeightArc",
+                    "name": "Высота",
+                    "type": "string",
+                    "value": "5"
+                },
+
+                {
+                    "key": "Redraw",
+                    "name": "Обновить картинку",
+                    "type": "checkbox",
+                    "selected": {
+                        "key": "true",
+                        "value": "истина"
+                    },
+                    "variants": [
+                        {
+                            "key": "false",
+                            "value": "ложь"
+                        },
+                        {
+                            "key": "true",
+                            "value": "истина"
+                        }
+                    ]
+                },
+
+                {
+                    "key": "SpanAngle",
+                    "name": "Размах",
+                    "type": "string",
+                    "value": "20"
+                },
+
+                {
+                    "key": "StartAngle",
+                    "name": "Начальный угол",
+                    "type": "string",
+                    "value": "20"
+                },
+
+                {
+                    "key": "WidthArc",
+                    "name": "Ширина",
+                    "type": "string",
+                    "value": "5"
+                },
+
+                {
+                    "key": "XCoordinateArc",
+                    "name": "X",
+                    "type": "string",
+                    "value": "0"
+                },
+
+                {
+                    "key": "YCoordinateArc",
+                    "name": "Y",
+                    "type": "string",
+                    "value": "0"
+                }
+
+            ]
+        },
+
+        "TrikSmile": {
+            "name": "Смайлик",
+            "image": {
+                "src": "images/smileBlock.svg"
+            }
+        },
+
+        "TrikSadSmile": {
+            "name": "Грустный смайлик",
+            "image": {
+                "src": "images/sadSmileBlock.svg"
+            }
+        },
+
+        "ClearScreen": {
+            "name": "Очистить экран",
+            "image": {
+                "src": "images/clearScreenBlock.svg"
+            }
+        },
+
+        "MarkerDown": {
+            "name": "Опустить маркер",
+            "image": {
+                "src": "images/markerDownBlock.svg"
+            },
+            "properties": [
+
+                {
+                    "key": "Color",
+                    "name": "Цвет",
+                    "type": "dropdown",
+                    "selected": {
+                        "key": "blue",
+                        "value": "синий"
+                    },
+                    "variants": [
+                        
+                        {
+                            "key": "black",
+                            "value": "черный"
+                        },
+
+                        {
+                            "key": "blue",
+                            "value": "синий"
+                        },
+
+                        {
+                            "key": "cyan",
+                            "value": "сине-зелёный"
+                        },
+
+                        {
+                            "key": "darkBlue",
+                            "value": "тёмно-синий"
+                        },
+
+                        {
+                            "key": "darkCyan",
+                            "value": "тёмно-сине-зелёный"
+                        },
+
+                        {
+                            "key": "darkGray",
+                            "value": "тёмно-серый"
+                        },
+
+                        {
+                            "key": "darkGreen",
+                            "value": "тёмно-зелёный"
+                        },
+
+                        {
+                            "key": "darkMagenta",
+                            "value": "тёмно-пурпурный"
+                        },
+
+                        {
+                            "key": "darkRed",
+                            "value": "тёмно-красный"
+                        },
+
+                        {
+                            "key": "darkYellow",
+                            "value": "тёмно-жёлтый"
+                        },
+
+                        {
+                            "key": "gray",
+                            "value": "серый"
+                        },
+                        
+                        {
+                            "key": "green",
+                            "value": "зелёный"
+                        },
+
+                        {
+                            "key": "lightGray",
+                            "value": "светло-серый"
+                        },
+
+                        {
+                            "key": "magenta",
+                            "value": "пурпурный"
+                        },
+
+                        {
+                            "key": "red",
+                            "value": "красный"
+                        },
+                        
+                        {
+                            "key": "white",
+                            "value": "белый"
+                        },
+
+                        {
+                            "key": "yellow",
+                            "value": "жёлтый"
+                        }
+
+                    ]
+                }
+
+            ]
+
+        },
+
+        "MarkerUp": {
+            "name": "Поднять маркер",
+            "image": {
+                "src": "images/markerUpBlock.svg"
+            }
+        }
+   
+    }
+        
+}
+

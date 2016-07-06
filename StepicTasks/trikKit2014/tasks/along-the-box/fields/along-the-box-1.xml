@@ -1,0 +1,160 @@
+<?xml version='1.0' encoding='utf-8'?>
+<root>
+    <world>
+        <walls>
+            <wall id="" begin="200:350" end="200:100"/>
+            <wall id="" begin="200:100" end="450:100"/>
+            <wall id="" begin="450:100" end="450:350"/>
+            <wall id="" begin="450:350" end="200:350"/>
+        </walls>
+        <colorFields/>
+        <regions>
+            <region visible="false" x="83" color="#0000ff" filled="true" y="200" width="25" type="rectangle" height="25" id="start_zone"/>
+            <region visible="false" x="0" color="#ff0000" filled="true" y="188" width="207" type="rectangle" height="50" id="finish_line"/>
+            <region visible="false" x="50" color="#ffff00" filled="true" y="-50" width="550" type="rectangle" height="550" id="warzone"/>
+            <region visible="false" x="50" color="#00ff00" filled="true" y="-50" width="150" type="rectangle" height="150" id="checkpoint0"/>
+            <region visible="false" x="450" color="#00ff00" filled="true" y="-50" width="150" type="rectangle" height="150" id="checkpoint1"/>
+            <region visible="false" x="450" color="#00ff00" filled="true" y="350" width="150" type="rectangle" height="150" id="checkpoint2"/>
+            <region visible="false" x="50" color="#00ff00" filled="true" y="350" width="150" type="rectangle" height="150" id="checkpoint3"/>
+        </regions>
+    </world>
+    <robots>
+        <robot direction="-90" id="trikKitRobot" position="71:188">
+            <sensors>
+                <sensor direction="90" port="A1###input######sensorA1" position="75:25" type="trik::robotModel::parts::TrikInfraredSensor"/>
+                <sensor direction="0" port="M4###output######" position="75:25" type="kitBase::robotModel::robotParts::Motor"/>
+                <sensor direction="0" port="M3###output######" position="75:25" type="kitBase::robotModel::robotParts::Motor"/>
+            </sensors>
+            <startPosition direction="-90" x="96" y="213"/>
+            <wheels left="M3###output######" right="M4###output######"/>
+        </robot>
+    </robots>
+    <constraints>
+        
+        <timelimit value="70000"/>
+        
+        <constraint failMessage="Робот должен находиться в зоне старта перед запуском!" checkOnce="true">
+            <inside objectId="robot1" regionId="start_zone"/>
+        </constraint>
+
+        <constraint failMessage="Робот выехал за пределы допустимой зоны">
+            <inside objectId="robot1" regionId="warzone"/>
+        </constraint>
+
+        <constraint failMessage="У робота должен быть только инфракрасный датчик на порте A1" checkOnce="true">
+            <conditions glue="and">
+                <equals>
+                    <typeOf objectId="robot1.A1"/>
+                    <string value="trik::robotModel::twoD::parts::TwoDInfraredSensor"/>
+                </equals>
+                <equals>
+                    <typeOf objectId="robot1.A2"/>
+                    <string value="undefined"/>
+                </equals>
+                <equals>
+                    <typeOf objectId="robot1.A3"/>
+                    <string value="undefined"/>
+                </equals>
+                <equals>
+                    <typeOf objectId="robot1.A4"/>
+                    <string value="undefined"/>
+                </equals>
+                <equals>
+                    <typeOf objectId="robot1.A5"/>
+                    <string value="undefined"/>
+                </equals>
+                <equals>
+                    <typeOf objectId="robot1.A6"/>
+                    <string value="undefined"/>
+                </equals>
+                <equals>
+                    <typeOf objectId="robot1.D1"/>
+                    <string value="undefined"/>
+                </equals>
+                <equals>
+                    <typeOf objectId="robot1.D2"/>
+                    <string value="undefined"/>
+                </equals>
+                <equals>
+                    <typeOf objectId="robot1.F1"/>
+                    <string value="undefined"/>
+                </equals>
+            </conditions>
+        </constraint>
+        
+        <!-- Событие, которое говорит о том, что робот вообще поехал и стартует цепочку проверки -->
+        <event id="We are alive, first move" settedUpInitially="true">
+            <condition>
+                <greater>
+                    <objectState object="robot1.M3.power"/>
+                    <int value="0"/>
+                </greater>
+            </condition>
+            <triggers>
+                <setUp id="Checkpoint0 check"/>
+            </triggers>
+        </event>
+        
+        <!-- Событие, которое выдает ошибку, если робот не тронулся с места в первую секунду -->
+        <event id="Waiting for going forward too long" settedUpInitially="true">
+            <conditions glue="and">
+                <timer forceDropOnTimeout="true" timeout="1000"/>
+                <settedUp id="We are alive, first move"/>
+            </conditions>
+            <trigger>
+                <fail message="Робот так и не поехал в первую секунду"/>
+            </trigger>
+        </event>
+        
+        <!-- Событие, которое указывает, что первый чекпоинт пройден и возводит событие для второго чекпоинта -->
+        <event id="Checkpoint0 check">
+            <condition>
+                <inside objectId="robot1" regionId="checkpoint0"/>
+            </condition>
+            <trigger>
+                <setUp id="Checkpoint1 check"/>
+            </trigger>
+        </event>
+        
+        <!-- Событие, которое указывает, что второй чекпоинт пройден и возводит событие для третьего чекпоинта -->
+        <event id="Checkpoint1 check">
+            <condition>
+                <inside objectId="robot1" regionId="checkpoint1"/>
+            </condition>
+            <trigger>
+                <setUp id="Checkpoint2 check"/>
+            </trigger>
+        </event>
+        
+        <!-- Событие, которое указывает, что третий чекпоинт пройден и возводит событие для четвертого чекпоинта -->
+        <event id="Checkpoint2 check">
+            <condition>
+                <inside objectId="robot1" regionId="checkpoint2"/>
+            </condition>
+            <trigger>
+                <setUp id="Checkpoint3 check"/>
+            </trigger>
+        </event>
+        
+        <!-- Событие, которое указывает, что четвертый чекпоинт пройден и возводит событие для линии финиша -->
+        <event id="Checkpoint3 check">
+            <condition>
+                <inside objectId="robot1" regionId="checkpoint3"/>
+            </condition>
+            <trigger>
+                <setUp id="Finish line"/>
+            </trigger>
+        </event>
+        
+        <!-- Событие, которое говорит, что задание выполнено, когда робот приезжает на линию финиша-->
+        <event id="Finish line">
+            <conditions glue="and">
+                <timer forceDropOnTimeout="false" timeout="50"/>
+                <inside objectId="robot1" regionId="finish_line"/>
+            </conditions>
+            <trigger>
+                <success/>
+            </trigger>
+        </event>
+    </constraints>
+</root>

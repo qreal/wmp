@@ -1,0 +1,36 @@
+{
+    "elements": [
+        "ControlFlow"
+    ],
+
+    "blocks": {
+
+        "general": [
+            "Subprogram"
+        ],
+        
+        "palette": {
+            
+            "Algorithms": [
+                "InitialNode",
+                "FinalNode",
+                "IfBlock",
+                "FiBlock"
+            ],
+
+            "Actions": [
+                "TrikV6EnginesForward",
+                "TrikV6EnginesBackward",
+                "TrikV6EnginesStop",
+                "TrikV6ClearEncoder"
+            ],
+
+            "Wait": [
+                "TrikWaitForEncoder"
+            ]
+
+        }
+        
+    }
+
+}

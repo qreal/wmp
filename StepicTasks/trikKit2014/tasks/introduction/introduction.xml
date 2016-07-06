@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='utf-8'?>
+<root>
+    <world>
+        <walls/>
+        <colorFields/>
+        <regions/>
+    </world>
+    <robots>
+        <robot position="0:0" id="trikV62KitRobot" direction="0">
+            <sensors>
+                <sensor position="75:25" port="M4###output######" direction="0" type="kitBase::robotModel::robotParts::Motor"/>
+                <sensor position="75:25" port="M3###output######" direction="0" type="kitBase::robotModel::robotParts::Motor"/>
+                <sensor position="75:25" port="E3###input###M3###encoder3" direction="0" type="kitBase::robotModel::robotParts::EncoderSensor"/>
+                <sensor position="0:0" port="E4###input###M4###encoder4" direction="0" type=""/>
+            </sensors>
+            <startPosition y="25" x="25" direction="0"/>
+            <wheels right="M4###output######" left="M3###output######"/>
+        </robot>
+    </robots>
+    <constraints>
+    
+    <timelimit value="100000"/>
+
+    <event settedUpInitially="true">
+        <condition>
+            <timer timeout="10"/>
+        </condition>
+        <trigger>
+            <success deferred="true"/>
+        </trigger>
+    </event>
+
+    </constraints>
+</root>

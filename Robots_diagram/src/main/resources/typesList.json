@@ -1,0 +1,55 @@
+{
+    "elements": [
+        "ControlFlow"
+    ],
+
+    "blocks": {
+
+        "general": [
+            "Subprogram"
+        ],
+        
+        "palette": {
+            
+            "Algorithms": [
+                "InitialNode",
+                "FinalNode",
+                "Function",
+                "IfBlock",
+                "FiBlock",
+                "SwitchBlock",
+                "VariableInit",
+                "Randomizer"
+            ],
+
+            "Actions": [
+                "TrikV6EnginesForward",
+                "TrikV6EnginesBackward",
+                "TrikV6EnginesStop"
+            ],
+
+            "Wait": [
+                "Timer"
+            ],
+
+            "Drawing": [
+                "TrikSetPainterColor",
+                "TrikSetPainterWidth",
+                "TrikDrawPixel",
+                "TrikDrawLine",
+                "TrikDrawRect",
+                "TrikDrawEllipse",
+                "TrikSmile",
+                "TrikSadSmile",
+                "TrikSetBackground",
+                "PrintText",
+                "ClearScreen",
+                "MarkerDown",
+                "MarkerUp"
+            ]
+
+        }
+        
+    }
+
+}

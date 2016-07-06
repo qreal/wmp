@@ -1,0 +1,140 @@
+<?xml version='1.0' encoding='utf-8'?>
+<root>
+    <world>
+        <walls/>
+        <colorFields/>
+        <regions/>
+    </world>
+    <robots>
+        <robot direction="0" position="-206:26" id="trikKitRobot">
+            <sensors/>
+            <startPosition y="51" x="-181" direction="0"/>
+            <wheels left="M3###output######" right="M4###output######"/>
+        </robot>
+    </robots>
+    <constraints>
+        <timelimit value="100000"/>
+
+        <!-- событие, которое проверяет, что нарисован только один эллипс, инициализирует переменные начальными значениями, начинает проверку на движение -->
+        <event settedUpInitially="true" id="Single_ellipse">
+            <conditions glue="and">
+                <equals>
+                    <objectState object="robot1.display.ellipses.size"/>
+                    <int value="1"/>
+                </equals>
+                <equals>
+                    <objectState object="robot1.display.objects.size"/>
+                    <int value="1"/>
+                </equals>
+            </conditions>
+            <triggers>
+                <setter name="counter">
+                    <int value="0"/>
+                </setter>
+                <setUp id="Up"/>
+                <setUp id="Up_cycle"/>
+                <setUp id="Check_position"/>
+            </triggers>
+        </event>
+
+        <!-- Событие, которое выдает ошибку, если эллипс не нарисован или нарисованы другие объекты -->
+        <event settedUpInitially="true">
+            <conditions glue="and">
+                <timer forceDropOnTimeout="true" timeout="100"/>
+                <settedUp id="Single_ellipse"/>
+            </conditions>
+            <trigger>
+                <fail message="На экране должен быть один эллипс"/>
+            </trigger>
+        </event>
+
+        <!-- Событие, которое выводит ошибку, если эллипс вышел за пределы экрана -->
+        <event id="Check_position">
+            <conditions glue="and">
+                <equals>
+                    <objectState object="robot1.display.ellipses.size"/>
+                    <int value="1"/>
+                </equals>
+                <conditions glue="or">
+                    <less>
+                        <difference>
+                            <objectState object="robot1.display.ellipses.last.center.x"/>
+                            <objectState object="robot1.display.ellipses.last.w"/>
+                        </difference>
+                        <int value="0"/>
+                    </less>
+                    <less>
+                        <difference>
+                            <objectState object="robot1.display.ellipses.last.center.y"/>
+                            <objectState object="robot1.display.ellipses.last.h"/>
+                        </difference>
+                        <int value="0"/>
+                    </less>
+                    <greater>
+                        <sum>
+                            <objectState object="robot1.display.ellipses.last.center.x"/>
+                            <objectState object="robot1.display.ellipses.last.w"/>
+                        </sum>
+                        <int value="218"/>
+                    </greater>
+                    <greater>
+                        <sum>
+                            <objectState object="robot1.display.ellipses.last.center.y"/>
+                            <objectState object="robot1.display.ellipses.last.h"/>
+                        </sum>
+                        <int value="274"/>
+                    </greater>
+                </conditions>
+            </conditions>
+            <trigger>
+                <fail message="Эллипс вышел за пределы экрана"/>
+            </trigger>
+        </event>
+
+        <!-- событие, которое эмулирует нажатие на кнопку "вверх" -->
+        <event id="Up">
+            <condition>
+                <equals>
+                    <int value="1"/>
+                    <int value="1"/>
+                </equals>
+            </condition>
+            <triggers>
+                <setState property="value" object="robot1.Up">
+                    <int value="1"/>
+                </setState>
+                <setter name="counter">
+                    <sum>
+                        <variableValue name="counter"/>
+                        <int value="1"/>
+                    </sum>
+                </setter>
+                <setUp id="Delay_up"/>
+            </triggers>
+        </event>
+
+        <!-- событие для задержки между нажатиями кнопки вверх -->
+        <event id="Delay_up">
+            <condition>
+                <timer timeout="500"/>
+            </condition>
+            <triggers>
+                <setUp id="Up"/>
+            </triggers>
+        </event>
+
+        <!-- событие для цикла нажатий кнопки вверх -->
+        <event id="Up_cycle">
+            <condition>
+                <notLess>
+                    <variableValue name="counter"/>
+                    <int value="50"/>
+                </notLess>
+            </condition>
+            <triggers>
+                <success/>
+            </triggers>
+        </event>
+
+    </constraints>
+</root>

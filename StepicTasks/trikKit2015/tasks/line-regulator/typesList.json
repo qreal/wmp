@@ -1,0 +1,34 @@
+{
+    "elements": [
+        "ControlFlow"
+    ],
+
+    "blocks": {
+
+        "general": [
+            "Function"
+        ],
+        
+        "palette": {
+            
+            "Algorithms": [
+                "InitialNode",
+                "FinalNode",
+                "IfBlock"
+            ],
+
+            "Actions": [
+                "TrikV6EnginesForward",
+                "TrikV6EnginesBackward",
+                "TrikV6EnginesStop"
+            ],
+
+            "Wait": [
+                "Timer"
+            ]
+
+        }
+        
+    }
+
+}

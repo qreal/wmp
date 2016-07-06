@@ -1,0 +1,247 @@
+<?xml version='1.0' encoding='utf-8'?>
+<root>
+    <world>
+        <walls/>
+        <colorFields/>
+        <regions/>
+    </world>
+    <robots>
+        <robot direction="0" position="-206:26" id="trikV62KitRobot">
+            <sensors>
+                <sensor direction="0" port="E3###input###M3###encoder3" position="0:0" type=""/>
+                <sensor direction="0" port="M4###output######" position="0:0" type=""/>
+                <sensor direction="0" port="E2###input###M2###encoder2" position="0:0" type=""/>
+                <sensor direction="0" port="E4###input###M4###encoder4" position="0:0" type=""/>
+                <sensor direction="0" port="E1###input###M1###encoder1" position="0:0" type=""/>
+                <sensor direction="0" port="M3###output######" position="0:0" type=""/>
+                <sensor direction="0" port="A1###input######sensorA1" position="0:0" type=""/>
+            </sensors>
+            <startPosition y="51" direction="0" x="-181"/>
+            <wheels left="M3###output######" right="M4###output######"/>
+        </robot>
+    </robots>
+    <constraints>
+
+        <timelimit value="5000"/>
+
+        <!-- событие, которое проверяет, что нарисован только один эллипс, инициализирует переменные начальными значениями и начинает цепочку проверок -->
+        <event id="Single_ellipse" settedUpInitially="true">
+            <conditions glue="and">
+                <equals>
+                    <objectState object="robot1.display.ellipses.size"/>
+                    <int value="1"/>
+                </equals>
+                <equals>
+                    <objectState object="robot1.display.objects.size"/>
+                    <int value="1"/>
+                </equals>
+            </conditions>
+            <triggers>
+                <setter name="x">
+                    <objectState object="robot1.display.ellipses.last.center.x"/>
+                </setter>
+                <setter name="y">
+                    <objectState object="robot1.display.ellipses.last.center.y"/>
+                </setter>
+                <setUp id="Left"/>
+            </triggers>
+        </event>
+
+        <!-- Событие, которое выдает ошибку, если эллипс не нарисован или нарисованы другие объекты -->
+        <event settedUpInitially="true">
+            <conditions glue="and">
+                <timer forceDropOnTimeout="true" timeout="100"/>
+                <settedUp id="Single_ellipse"/>
+            </conditions>
+            <trigger>
+                <fail message="На экране должен быть один эллипс"/>
+            </trigger>
+        </event>
+
+        <!-- событие, которое эмулирует нажатие на кнопку "влево" и возводит событие, которое проверяет результат -->
+        <event id="Left">
+            <condition>
+                <timer timeout="500"/>
+            </condition>
+            <triggers>
+                <setState property="value" object="robot1.Left">
+                    <int value="1"/>
+                </setState>
+                <setUp id="Left_checking"/>
+                <setUp id="Left_fails"/>
+            </triggers>
+        </event>
+
+        <!-- событие, которое проверяет, что эллипс сдвинулся влево, возводит следующее событие для проверки -->
+        <event id="Left_checking">
+            <condition>
+                <less>
+                    <objectState object="robot1.display.ellipses.last.center.x"/>
+                    <variableValue name="x"/>
+                </less>
+            </condition>
+            <triggers>
+                <setter name="x">
+                    <objectState object="robot1.display.ellipses.last.center.x"/>
+                </setter>
+                <setUp id="Right"/>
+            </triggers>
+        </event>
+
+        <!-- Событие, которое сообщает об ошибке, если эллипс сдвинулся не туда или вообще не сдвинулся -->
+        <event id="Left_fails">
+            <conditions glue="and">
+                <timer forceDropOnTimeout="true" timeout="500"/>
+                <settedUp id="Left_checking"/>
+            </conditions>
+            <triggers>
+                <fail message="При нажатии на кнопку влево эллипс либо не сдвинулся влево, либо вообще не сдвинулся"/>
+            </triggers>
+        </event>
+
+        <!-- событие, которое эмулирует нажатие на кнопку "вправо" и возводит событие, которое проверяет результат -->
+        <event id="Right">
+            <condition>
+                <timer timeout="500"/>
+            </condition>
+            <triggers>
+                <setState property="value" object="robot1.Right">
+                    <int value="1"/>
+                </setState>
+                <setUp id="Right_checking"/>
+                <setUp id="Right_fails"/>
+            </triggers>
+        </event>
+
+        <!-- событие, которое проверяет, что эллипс сдвинулся вправо, возводит следующее событие для проверки -->
+        <event id="Right_checking">
+            <condition>
+                <greater>
+                    <objectState object="robot1.display.ellipses.last.center.x"/>
+                    <variableValue name="x"/>
+                </greater>
+            </condition>
+            <triggers>
+                <setter name="x">
+                    <objectState object="robot1.display.ellipses.last.center.x"/>
+                </setter>
+                <setUp id="Up"/>
+            </triggers>
+        </event>
+
+        <!-- Событие, которое сообщает об ошибке, если эллипс сдвинулся не туда или вообще не сдвинулся -->
+        <event id="Right_fails">
+            <conditions glue="and">
+                <timer forceDropOnTimeout="true" timeout="500"/>
+                <settedUp id="Right_checking"/>
+            </conditions>
+            <triggers>
+                <fail message="При нажатии на кнопку вправо эллипс либо не сдвинулся вправо, либо вообще не сдвинулся"/>
+            </triggers>
+        </event>
+
+        <!-- событие, которое эмулирует нажатие на кнопку "вверх" и возводит событие, которое проверяет результат -->
+        <event id="Up">
+            <condition>
+                <timer timeout="500"/>
+            </condition>
+            <triggers>
+                <setState property="value" object="robot1.Up">
+                    <int value="1"/>
+                </setState>
+                <setUp id="Up_checking"/>
+                <setUp id="Up_fails"/>
+            </triggers>
+        </event>
+
+        <!-- событие, которое проверяет, что эллипс сдвинулся вверх, возводит следующее событие для проверки -->
+        <event id="Up_checking">
+            <condition>
+                <less>
+                    <objectState object="robot1.display.ellipses.last.center.y"/>
+                    <variableValue name="y"/>
+                </less>
+            </condition>
+            <triggers>
+                <setter name="y">
+                    <objectState object="robot1.display.ellipses.last.center.y"/>
+                </setter>
+                <setUp id="Down"/>
+            </triggers>
+        </event>
+
+        <!-- Событие, которое сообщает об ошибке, если эллипс сдвинулся не туда или вообще не сдвинулся -->
+        <event id="Up_fails">
+            <conditions glue="and">
+                <timer forceDropOnTimeout="true" timeout="500"/>
+                <settedUp id="Up_checking"/>
+            </conditions>
+            <triggers>
+                <fail message="При нажатии на кнопку вверх эллипс либо не сдвинулся вверх, либо вообще не сдвинулся"/>
+            </triggers>
+        </event>
+
+        <!-- событие, которое эмулирует нажатие на кнопку "вниз" и возводит событие, которое проверяет результат -->
+        <event id="Down">
+            <condition>
+                <timer timeout="500"/>
+            </condition>
+            <triggers>
+                <setState property="value" object="robot1.Down">
+                    <int value="1"/>
+                </setState>
+                <setUp id="Down_checking"/>
+                <setUp id="Down_fails"/>
+            </triggers>
+        </event>
+
+        <!-- событие, которое проверяет, что эллипс сдвинулся вниз, в случае успеха заканчивает проверку -->
+        <event id="Down_checking">
+            <condition>
+                <greater>
+                    <objectState object="robot1.display.ellipses.last.center.y"/>
+                    <variableValue name="y"/>
+                </greater>
+            </condition>
+            <triggers>
+                <setUp id="Esc"/>
+            </triggers>
+        </event>
+
+        <!-- Событие, которое сообщает об ошибке, если эллипс сдвинулся не туда или вообще не сдвинулся -->
+        <event id="Down_fails">
+            <conditions glue="and">
+                <timer forceDropOnTimeout="true" timeout="500"/>
+                <settedUp id="Down_checking"/>
+            </conditions>
+            <triggers>
+                <fail message="При нажатии на кнопку вниз эллипс либо не сдвинулся вниз, либо вообще не сдвинулся"/>
+            </triggers>
+        </event>
+
+        <!-- событие, которое эмулирует нажаите на кнопку "отмена" и возводит событие, которое проверяет результат -->
+        <event id="Esc">
+            <condition>
+                <timer timeout="500"/>
+            </condition>
+            <triggers>
+                <setState property="value" object="robot1.Esc">
+                    <int value="1"/>
+                </setState>
+                <success deferred="true"/>
+                <setUp id="Wait for exit"/>
+            </triggers>
+        </event>
+
+        <!-- событие, сообщающее об ошибке, если программа не завершилась через 100 мс -->
+        <event id="Wait for exit">
+            <condition>
+                <timer timeout="100"/>
+            </condition>
+            <trigger>
+                <fail message="При нажатии на кнопку отмена программа не завершает работу"/>
+            </trigger>
+        </event>
+
+    </constraints>
+</root>

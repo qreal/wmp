@@ -1,0 +1,759 @@
+{
+
+    "elements": {
+        
+         "ControlFlow": {
+            "name": "Link",
+            "properties": [
+                {
+                    "key": "Guard",
+                    "name": "Guard",
+                    "type": "combobox",
+                    "value": "",
+                    "variants": [
+                        {
+                            "key": "false",
+                            "value": "false"
+                        },
+                        {
+                            "key": "iteration",
+                            "value": "iteration"
+                        },
+                        {
+                            "key": "true",
+                            "value": "true"
+                        }
+                    ]
+                }
+            ]
+        }
+        
+    },
+
+    "categoriesNames": {
+        "Algorithms": "Algorithms",
+        "Actions": "Actions",
+        "Wait": "Wait",
+        "Drawing": "Drawing"
+    },
+
+    "blocks": {
+
+        "InitialNode": {
+            "name": "Initial Node",
+            "image": {
+                "src": "images/initialBlock.svg"
+            }
+        },
+
+        "FinalNode": {
+            "name": "Final Node",
+            "image": {
+                "src": "images/finalBlock.svg"
+            }
+        },
+
+        "Function": {
+            "name": "Function",
+            "image": {
+                "src": "images/functionBlock.svg"
+            },
+            "properties": [
+                
+                {
+                    "key": "Body",
+                    "name": "Body",
+                    "type": "string",
+                    "value": ""
+                }
+
+            ]
+        },
+
+        "IfBlock": {
+            "name": "Condition",
+            "image": {
+                "src": "images/ifBlock.svg"
+            },
+            "properties": [
+                
+                {
+                    "key": "Condition",
+                    "name": "Condition",
+                    "type": "string",
+                    "value": "x > 0"
+                }
+
+            ]
+        },
+
+        "FiBlock": {
+            "name": "End If",
+            "image": {
+                "src": "images/endIfBlock.svg"
+            }
+        },
+
+        "Loop": {
+            "name": "Loop",
+            "image": {
+                "src": "images/loopBlock.svg"
+            },
+            "properties": [
+
+                {
+                    "key": "Iterations",
+                    "name": "Iterations",
+                    "type": "string",
+                    "value": "10"
+                }
+
+            ]
+        },
+
+        "Subprogram": {
+            "name": "Subprogram",
+            "image": {
+                "src": "images/subprogramRobotsBlock.svg"
+            }
+        },
+
+        "Fork": {
+            "name": "Fork",
+            "image": {
+                "src": "images/forkBlock.svg"
+            }
+        },
+            
+        "TrikV6EnginesForward": {
+            "name": "Motors Forward",
+            "image": {
+                "src": "images/enginesForwardBlock.svg"
+            },
+            "properties": [
+                
+                {
+                    "key": "Ports",
+                    "name": "Ports",
+                    "type": "string",
+                    "value": "M3, M4"
+                },
+
+                {
+                    "key": "Power",
+                    "name": "Power (%)",
+                    "type": "string",
+                    "value": "100"
+                }
+
+            ]
+        },
+
+        "TrikV6EnginesBackward": {
+            "name": "Motors Backward",
+            "image": {
+                "src": "images/enginesBackwardBlock.svg"
+            },
+            "properties": [
+                
+                {
+                    "key": "Ports",
+                    "name": "Ports",
+                    "type": "string",
+                    "value": "M3, M4"
+                },
+
+                {
+                    "key": "Power",
+                    "name": "Power (%)",
+                    "type": "string",
+                    "value": "100"
+                }
+
+            ]
+        },
+
+        "TrikV6EnginesStop": {
+            "name": "Stop Motors",
+            "image": {
+                "src": "images/enginesStopBlock.svg"
+            },
+            "properties": [
+                
+                {
+                    "key": "Ports",
+                    "name": "Ports",
+                    "type": "string",
+                    "value": "M1, M2, M3, M4"
+                }
+
+            ]
+        },
+        
+        "TrikV6ClearEncoder": {
+            "name": "Clear Encoder",
+            "image": {
+                "src": "images/nullificationEncoderBlock.svg"
+            },
+            "properties": [
+                
+                {
+                    "key": "Ports",
+                    "name": "Ports",
+                    "type": "string",
+                    "value": "B1, B2, B3, B4"
+                }
+
+            ]
+        },
+
+        "TrikSay": {
+            "name": "Say",
+            "image": {
+                "src": "images/sayBlock.svg"
+            },
+            "properties": [
+                
+                {
+                    "key": "Evaluate",
+                    "name": "Evaluate",
+                    "type": "checkbox",
+                    "selected": {
+                        "key": "false",
+                        "value": "false"
+                    },
+                    "variants": [
+                        {
+                            "key": "false",
+                            "value": "false"
+                        },
+                        {
+                            "key": "true",
+                            "value": "true"
+                        }
+                    ]
+                },
+
+                {
+                    "key": "Text",
+                    "name": "Text",
+                    "type": "string",
+                    "value": "Hi!"
+                }
+
+            ]
+        },
+
+        "TrikLed": {
+            "name": "Led",
+            "image": {
+                "src": "images/ledBlock.svg"
+            },
+            "properties": [
+                
+                {
+                    "key": "Color",
+                    "name": "Color",
+                    "type": "dropdown",
+                    "selected": {
+                        "key": "red",
+                        "value": "red"
+                    },
+                    "variants": [
+
+                        {
+                            "key": "green",
+                            "value": "green"
+                        },
+
+                        {
+                            "key": "off",
+                            "value": "off"
+                        },
+
+                        {
+                            "key": "orange",
+                            "value": "orange"
+                        },
+
+                        {
+                            "key": "red",
+                            "value": "red"
+                        }
+                    
+                    ]
+                }
+                
+            ]
+        },
+
+        "Timer": {
+            "name": "Timer",
+            "image": {
+                "src": "images/timerBlock.svg"
+            },
+            "properties": [
+                
+                {
+                    "key": "Delay",
+                    "name": "Delay (ms)",
+                    "type": "string",
+                    "value": "1000"
+                }
+
+            ]
+        },
+
+        "TrikWaitForEncoder": {
+            "name": "Wait for Encoder",
+            "image": {
+                "src": "images/waitForEncoderBlock.svg"
+            },
+    
+            "properties": [
+                
+                {
+                    "key": "Port",
+                    "name": "Port",
+                    "type": "string",
+                    "value": "B3"
+                },
+
+                {
+                    "key": "Sign",
+                    "name": "Sign",
+                    "type": "dropdown",
+                    "selected": {
+                        "key": "greater",
+                        "value": "greater"
+                    },
+                    "variants": [
+                        
+                        {
+                            "key": "greater",
+                            "value": "greater"
+                        },
+
+                        {
+                            "key": "less",
+                            "value": "less"
+                        },
+
+                        {
+                            "key": "not greater",
+                            "value": "not greater"
+                        },
+
+                        {
+                            "key": "not less",
+                            "value": "not less"
+                        }
+
+                    ]
+                },
+
+                {
+                    "key": "TachoLimit",
+                    "name": "Tacho Limit",
+                    "type": "string",
+                    "value": ""
+                }
+            ]
+        },
+
+        "TrikSetPainterColor": {
+            "name": "Painter Color",
+            "image": {
+                "src": "images/brushColorBlock.svg"
+            },
+            "properties": [
+
+                {
+                    "key": "Color",
+                    "name": "Color",
+                    "type": "dropdown",
+                    "selected": {
+                        "key": "black",
+                        "value": "black"
+                    },
+                    "variants": [
+                        
+                        {
+                            "key": "black",
+                            "value": "black"
+                        },
+
+                        {
+                            "key": "blue",
+                            "value": "blue"
+                        },
+
+                        {
+                            "key": "cyan",
+                            "value": "cyan"
+                        },
+
+                        {
+                            "key": "darkBlue",
+                            "value": "dark blue"
+                        },
+
+                        {
+                            "key": "darkCyan",
+                            "value": "dark cyan"
+                        },
+
+                        {
+                            "key": "darkGray",
+                            "value": "dark gray"
+                        },
+
+                        {
+                            "key": "darkGreen",
+                            "value": "dark green"
+                        },
+
+                        {
+                            "key": "darkMagenta",
+                            "value": "dark magenta"
+                        },
+
+                        {
+                            "key": "darkRed",
+                            "value": "dark red"
+                        },
+
+                        {
+                            "key": "darkYellow",
+                            "value": "dark yellow"
+                        },
+
+                        {
+                            "key": "gray",
+                            "value": "gray"
+                        },
+                        
+                        {
+                            "key": "green",
+                            "value": "green"
+                        },
+
+                        {
+                            "key": "lightGray",
+                            "value": "light gray"
+                        },
+
+                        {
+                            "key": "magenta",
+                            "value": "magenta"
+                        },
+
+                        {
+                            "key": "red",
+                            "value": "red"
+                        },
+                        
+                        {
+                            "key": "white",
+                            "value": "white"
+                        },
+
+                        {
+                            "key": "yellow",
+                            "value": "yellow"
+                        }
+
+                    ]
+                }
+
+            ]
+
+        },
+
+        "TrikSetPainterWidth": {
+            "name": "Painter Width",
+            "image": {
+                "src": "images/brushWidthBlock.svg"
+            },
+            "properties": [
+
+                {
+                    "key": "Width",
+                    "name": "Width",
+                    "type": "string",
+                    "value": "1"
+                }
+
+            ]
+        },
+
+        "TrikDrawEllipse": {
+            "name": "Draw Ellipse",
+            "image": {
+                "src": "images/drawCircleBlock.svg"
+            },
+            "properties": [
+        
+                {
+                    "key": "HeightEllipse",
+                    "name": "Height",
+                    "type": "string",
+                    "value": "5"
+                },
+
+                {
+                    "key": "Redraw",
+                    "name": "Redraw",
+                    "type": "checkbox",
+                    "selected": {
+                        "key": "true",
+                        "value": "true"
+                    },
+                    "variants": [
+                        {
+                            "key": "false",
+                            "value": "false"
+                        },
+                        {
+                            "key": "true",
+                            "value": "true"
+                        }
+                    ]
+                },
+
+                {
+                    "key": "WidthEllipse",
+                    "name": "Width",
+                    "type": "string",
+                    "value": "5"
+                },
+
+                {
+                    "key": "XCoordinateEllipse",
+                    "name": "X",
+                    "type": "string",
+                    "value": "0"
+                },
+
+                {
+                    "key": "YCoordinateEllipse",
+                    "name": "Y",
+                    "type": "string",
+                    "value": "0"
+                }
+
+            ]
+        },
+
+        "TrikDrawArc": {
+            "name": "Draw Arc",
+            "image": {
+                "src": "images/drawArcBlock.svg"
+            },
+            "properties": [
+        
+                {
+                    "key": "HeightArc",
+                    "name": "Height",
+                    "type": "string",
+                    "value": "5"
+                },
+
+                {
+                    "key": "Redraw",
+                    "name": "Redraw",
+                    "type": "checkbox",
+                    "selected": {
+                        "key": "true",
+                        "value": "true"
+                    },
+                    "variants": [
+                        {
+                            "key": "false",
+                            "value": "false"
+                        },
+                        {
+                            "key": "true",
+                            "value": "true"
+                        }
+                    ]
+                },
+
+                {
+                    "key": "SpanAngle",
+                    "name": "SpanAngle",
+                    "type": "string",
+                    "value": "20"
+                },
+
+                {
+                    "key": "StartAngle",
+                    "name": "StartAngle",
+                    "type": "string",
+                    "value": "20"
+                },
+
+                {
+                    "key": "WidthArc",
+                    "name": "Width",
+                    "type": "string",
+                    "value": "5"
+                },
+
+                {
+                    "key": "XCoordinateArc",
+                    "name": "X",
+                    "type": "string",
+                    "value": "0"
+                },
+
+                {
+                    "key": "YCoordinateArc",
+                    "name": "Y",
+                    "type": "string",
+                    "value": "0"
+                }
+
+            ]
+        },
+
+        "TrikSmile": {
+            "name": "Smile",
+            "image": {
+                "src": "images/smileBlock.svg"
+            }
+        },
+
+        "TrikSadSmile": {
+            "name": "Sad Smile",
+            "image": {
+                "src": "images/sadSmileBlock.svg"
+            }
+        },
+
+        "ClearScreen": {
+            "name": "Clear Screen",
+            "image": {
+                "src": "images/clearScreenBlock.svg"
+            }
+        },
+
+        "MarkerDown": {
+            "name": "Marker Down",
+            "image": {
+                "src": "images/markerDownBlock.svg"
+            },
+            "properties": [
+
+                {
+                    "key": "Color",
+                    "name": "Color",
+                    "type": "dropdown",
+                    "selected": {
+                        "key": "blue",
+                        "value": "blue"
+                    },
+                    "variants": [
+                        
+                        {
+                            "key": "black",
+                            "value": "black"
+                        },
+
+                        {
+                            "key": "blue",
+                            "value": "blue"
+                        },
+
+                        {
+                            "key": "cyan",
+                            "value": "cyan"
+                        },
+
+                        {
+                            "key": "darkBlue",
+                            "value": "dark blue"
+                        },
+
+                        {
+                            "key": "darkCyan",
+                            "value": "dark cyan"
+                        },
+
+                        {
+                            "key": "darkGray",
+                            "value": "dark gray"
+                        },
+
+                        {
+                            "key": "darkGreen",
+                            "value": "darkgreen"
+                        },
+
+                        {
+                            "key": "darkMagenta",
+                            "value": "dark magenta"
+                        },
+
+                        {
+                            "key": "darkRed",
+                            "value": "dark red"
+                        },
+
+                        {
+                            "key": "darkYellow",
+                            "value": "dark yellow"
+                        },
+
+                        {
+                            "key": "gray",
+                            "value": "gray"
+                        },
+                        
+                        {
+                            "key": "green",
+                            "value": "green"
+                        },
+
+                        {
+                            "key": "lightGray",
+                            "value": "light gray"
+                        },
+
+                        {
+                            "key": "magenta",
+                            "value": "magenta"
+                        },
+
+                        {
+                            "key": "red",
+                            "value": "red"
+                        },
+                        
+                        {
+                            "key": "white",
+                            "value": "white"
+                        },
+
+                        {
+                            "key": "yellow",
+                            "value": "yellow"
+                        }
+
+                    ]
+                }
+
+            ]
+
+        },
+
+        "MarkerUp": {
+            "name": "Marker Up",
+            "image": {
+                "src": "images/markerUpBlock.svg"
+            }
+        }
+    
+    }
+
+}

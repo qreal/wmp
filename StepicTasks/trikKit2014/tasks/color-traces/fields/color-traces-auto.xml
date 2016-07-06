@@ -1,0 +1,185 @@
+<?xml version='1.0' encoding='utf-8'?>
+<root>
+    <world>
+        <walls/>
+        <colorFields>
+            <cubicBezier cp1="601:-46" stroke-width="25" fill="#ff000000" stroke="#ffff0000" fill-style="none" cp2="601:275" id="" stroke-style="solid" end="55:275" begin="55:-46"/>
+            <cubicBezier cp1="634:-71" stroke-width="25" fill="#ff008000" stroke="#ff008000" fill-style="none" cp2="634:300" id="" stroke-style="solid" end="55:300" begin="55:-71"/>
+            <cubicBezier cp1="616:-59" stroke-width="0" fill="#00000000" stroke="#00000000" fill-style="none" cp2="616:287" id="bound" stroke-style="solid" end="55:287" begin="55:-59"/>
+        </colorFields>
+        <regions>
+            <region textX="0" color="#87cefa" text="Старт" x="48" y="-84" height="51" visible="true" textY="0" id="start_zone" type="rectangle" width="50" filled="true"/>
+            <region textX="0" color="#ff0000" text="Финиш" x="48" y="262" height="50" visible="false" textY="0" id="finish_zone" type="rectangle" width="50" filled="true"/>
+            <region boundItem="bound" stroke="15" width="1" type="bound" height="1" x="0" visible="false" color="#87cefa" filled="true" y="0" id="bound_region"/>
+        </regions>
+    </world>
+    <robots>
+        <robot id="trikKitRobot" position="49:-83" direction="0">
+            <sensors>
+                <sensor type="kitBase::robotModel::robotParts::Motor" position="75:25" direction="0" port="M4###output######"/>
+                <sensor position="48:26" port="A1###input######sensorA1" direction="0" type="kitBase::robotModel::robotParts::LightSensor"/>
+                <sensor type="kitBase::robotModel::robotParts::Motor" position="75:25" direction="0" port="M3###output######"/>
+            </sensors>
+            <startPosition y="-58" direction="0" x="74"/>
+            <wheels left="M3###output######" right="M4###output######"/>
+        </robot>
+    </robots>>
+    <constraints>
+
+        <timelimit value="30000"/>
+
+        <!-- событие, которое инициализирует сенсор значением красного цвета и эмулирует нажатие кнопки "вверх" для калибровки -->
+        <event id="Calibrate red" settedUpInitially="true">
+            <condition>
+                <timer timeout="100"/>
+            </condition>
+            <triggers>
+                <setState property="locked" object="robot1.A1">
+                    <bool value="true"/>
+                </setState>
+                <setState property="locked" object="robot1.Up">
+                    <bool value="true"/>
+                </setState>
+                <setState property="value" object="robot1.A1">
+                    <int value="21"/>
+                </setState>
+                <setState property="value" object="robot1.Up">
+                    <int value="1"/>
+                </setState>
+            </triggers>
+        </event>
+
+        <!-- событие, которое проверяет нажатие на кнопку "вверх" и возводит событие, ожидающее кнопку "вниз" -->
+        <event settedUpInitially="true">
+            <condition>
+                <equals>
+                    <objectState object="robot1.Up.value"/>
+                    <int value="1"/>
+                </equals>
+            </condition>
+            <triggers>
+                <setState property="locked" object="robot1.Up">
+                    <bool value="false"/>
+                </setState>
+                <setUp id="Calibrate green"/>
+                <setUp id="Wait for down button"/>
+            </triggers>
+        </event>
+
+        <!-- событие, которое инициализирует сенсор значением зеленого цвета и эмулирует нажатие кнопки "вниз" для калибровки -->
+        <event id="Calibrate green">
+            <condition>
+                <timer timeout="100"/>
+            </condition>
+            <triggers>
+                <setState property="locked" object="robot1.Down">
+                    <bool value="true"/>
+                </setState>
+                <setState property="value" object="robot1.A1">
+                    <int value="35"/>
+                </setState>
+                <setState property="value" object="robot1.Down">
+                    <int value="1"/>
+                </setState>
+            </triggers>
+        </event>
+
+        <!-- событие, которое проверяет нажатие на кнопку "вниз", эмулирет нажатие кнопки вверх и возводит событие, ожидающее кнопку "ввод" -->
+        <event id="Wait for down button">
+            <condition>
+                <equals>
+                    <objectState object="robot1.Down.value"/>
+                    <int value="1"/>
+                </equals>
+            </condition>
+            <triggers>
+                <setState property="locked" object="robot1.Down">
+                    <bool value="false"/>
+                </setState>
+                <setUp id="Wait for enter button"/>
+                <setUp id="Click enter"/>
+            </triggers>
+        </event>
+
+        <!-- событие, которое эмулирует нажатие кнопки "ввод" через 100 мс -->
+        <event id="Click enter">
+            <condition>
+                <timer timeout="100"/>
+            </condition>
+            <triggers>
+                <setState property="locked" object="robot1.Enter">
+                    <bool value="true"/>
+                </setState>
+                <setState property="value" object="robot1.Enter">
+                    <int value="1"/>
+                </setState>
+            </triggers>
+        </event>
+
+        <!-- событие, которое проверяет нажатие на кнопку "ввод" и возводит событие, проверяющее начальную позицию робота -->
+        <event id="Wait for enter button">
+            <condition>
+                <equals>
+                    <objectState object="robot1.Enter.value"/>
+                    <int value="1"/>
+                </equals>
+            </condition>
+            <triggers>
+                <setState property="locked" object="robot1.Enter">
+                    <bool value="false"/>
+                </setState>
+                <setState property="locked" object="robot1.A1">
+                    <bool value="false"/>
+                </setState>
+                <setUp id="Check start position"/>
+                <setUp id="Check start position failed"/>
+            </triggers>
+        </event>
+
+        <!-- событие, котрое проверяет начальную позицию робота, в случае успеха возводится событие, проверяющее, что робот едет по трассе -->
+        <event id="Check start position">
+            <condition>
+                <inside objectId="robot1" regionId="start_zone"/>
+            </condition>
+            <triggers>
+                <setUp id="Check trace"/>
+                <setUp id="Finish"/>
+            </triggers>
+        </event>
+
+        <!-- событие, сообщающее об ошибке, если после нажатия на кнопку робот находится не в стартовой позиции -->
+        <event id="Check start position failed">
+            <conditions glue="and">
+                <timer timeout="100"/>
+                <settedUp id="Check start position"/>
+            </conditions>
+            <trigger>
+                <fail message="Робот должен находиться в стартовой позиции после калибровки"/>
+            </trigger>
+        </event>
+
+        <!-- Событие, которое проверяет, что робот едет по трассе-->
+        <event id="Check trace">
+            <condition>
+                <not>
+                    <inside objectId="robot1.A1" regionId="bound_region"/>
+                </not>
+            </condition>
+            <trigger>
+                <fail message="Робот выехал с границы красного и зеленого"/>
+            </trigger>
+        </event>
+
+        <!-- Событие, которое говорит, что задание выполнено, когда робот приезжает на линию финиша-->
+        <event id="Finish">
+            <conditions glue="and">
+                <timer forceDropOnTimeout="false" timeout="50"/>
+                <inside objectId="robot1" regionId="finish_zone"/>
+            </conditions>
+            <trigger>
+                <success/>
+            </trigger>
+        </event>
+
+    </constraints>
+</root>

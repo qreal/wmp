@@ -1,0 +1,33 @@
+{
+    "elements": [
+        "ControlFlow"
+    ],
+
+    "blocks": {
+
+        "general": [
+            "Subprogram"
+        ],
+        
+        "palette": {
+            
+            "Algorithms": [
+                "InitialNode",
+                "FinalNode",
+                "IfBlock",
+                "Fork"
+            ],
+
+            "Actions": [
+                "TrikLed"
+            ],
+
+            "Wait": [
+                "Timer"
+            ]
+
+        }
+        
+    }
+
+}

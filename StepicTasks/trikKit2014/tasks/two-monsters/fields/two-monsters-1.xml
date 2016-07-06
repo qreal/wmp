@@ -1,0 +1,362 @@
+<?xml version='1.0' encoding='utf-8'?>
+<root>
+    <world>
+        <walls>
+            <wall begin="-250:100" id="" end="0:100"/>
+            <wall begin="0:100" id="" end="0:350"/>
+            <wall begin="0:350" id="" end="200:350"/>
+            <wall begin="200:100" id="" end="200:350"/>
+            <wall begin="200:100" id="" end="300:100"/>
+            <wall begin="300:100" id="" end="300:350"/>
+            <wall begin="300:350" id="" end="500:350"/>
+            <wall begin="500:350" id="" end="500:100"/>
+            <wall begin="500:100" id="" end="600:100"/>
+            <wall begin="600:350" id="" end="600:100"/>
+            <wall begin="600:350" id="" end="800:350"/>
+            <wall begin="800:350" id="" end="800:100"/>
+            <wall begin="800:100" id="" end="1000:100"/>
+            <wall begin="350:150" id="" end="350:250"/>
+            <wall begin="350:250" id="" end="450:250"/>
+            <wall begin="450:250" id="" end="450:150"/>
+            <wall begin="450:150" id="" end="350:150"/>
+            <wall begin="50:150" id="" end="50:250"/>
+            <wall begin="50:250" id="" end="150:250"/>
+            <wall begin="150:250" id="" end="150:150"/>
+            <wall begin="150:150" id="" end="50:150"/>
+        </walls>
+        <colorFields/>
+        <regions>
+            <region color="#0000ff" height="25" visible="false" type="rectangle" width="25" id="start_zone" filled="true" x="-238" y="12"/>
+            <region text="Финиш" textX="0" textY="0" color="#ff0000" height="150" visible="true" type="rectangle" width="150" id="finish" filled="true" x="850" y="-50"/>
+            <region color="#00ff00" height="400" visible="false" type="rectangle" width="1250" id="warzone" filled="true" x="-250" y="-50"/>
+            <region color="#ffff00" height="150" visible="false" type="rectangle" width="200" id="checkpoint0" filled="true" x="0" y="-50"/>
+            <region color="#ffff00" height="150" visible="false" type="rectangle" width="200" id="checkpoint1" filled="true" x="300" y="-50"/>
+            <region color="#ffff00" height="150" visible="false" type="rectangle" width="200" id="checkpoint2" filled="true" x="600" y="-50"/>
+        </regions>
+    </world>
+    <robots>
+        <robot direction="0" id="trikKitRobot" position="-250:0">
+            <sensors>
+                <sensor direction="90" type="trik::robotModel::parts::TrikInfraredSensor" port="A1###input######sensorA1" position="75:25"/>
+                <sensor direction="0" type="" port="B1###input###M1###encoder1" position="0:0"/>
+                <sensor direction="0" type="kitBase::robotModel::robotParts::Motor" port="M4###output######" position="75:25"/>
+                <sensor direction="0" type="kitBase::robotModel::robotParts::Motor" port="M3###output######" position="75:25"/>
+                <sensor direction="0" type="kitBase::robotModel::robotParts::EncoderSensor" port="B3###input###M3###encoder3" position="75:25"/>
+                <sensor direction="0" type="" port="B2###input###M2###encoder2" position="0:0"/>
+                <sensor direction="0" type="kitBase::robotModel::robotParts::EncoderSensor" port="B4###input###M4###encoder4" position="75:25"/>
+            </sensors>
+            <startPosition direction="0" x="-225" y="25"/>
+            <wheels left="M3###output######" right="M4###output######"/>
+        </robot>
+    </robots>
+    <constraints>
+
+        <timelimit value="30000"/>
+        
+        <constraint checkOnce="true" failMessage="Робот должен находиться в начальной точке перед запуском программы!">
+            <inside regionId="start_zone" objectId="robot1"/>
+        </constraint>
+        
+        <constraint failMessage="Робот выехал за пределы допустимой зоны">
+            <inside regionId="warzone" objectId="robot1"/>
+        </constraint>
+        
+        <constraint checkOnce="true" failMessage="У робота должен быть только инфракрасный датчик на порте A1">
+            <conditions glue="and">
+                <equals>
+                    <typeOf objectId="robot1.A1"/>
+                    <string value="trik::robotModel::twoD::parts::TwoDInfraredSensor"/>
+                </equals>
+                <equals>
+                    <typeOf objectId="robot1.A2"/>
+                    <string value="undefined"/>
+                </equals>
+                <equals>
+                    <typeOf objectId="robot1.A3"/>
+                    <string value="undefined"/>
+                </equals>
+                <equals>
+                    <typeOf objectId="robot1.A4"/>
+                    <string value="undefined"/>
+                </equals>
+                <equals>
+                    <typeOf objectId="robot1.A5"/>
+                    <string value="undefined"/>
+                </equals>
+                <equals>
+                    <typeOf objectId="robot1.A6"/>
+                    <string value="undefined"/>
+                </equals>
+                <equals>
+                    <typeOf objectId="robot1.D1"/>
+                    <string value="undefined"/>
+                </equals>
+                <equals>
+                    <typeOf objectId="robot1.D2"/>
+                    <string value="undefined"/>
+                </equals>
+                <equals>
+                    <typeOf objectId="robot1.F1"/>
+                    <string value="undefined"/>
+                </equals>
+            </conditions>
+        </constraint>
+
+        <!-- Событие, которое говорит о том, что робот вообще поехал и стартует цепочку проверки -->
+        <event settedUpInitially="true" id="We are alive, first move">
+            <condition>
+                <greater>
+                    <objectState object="robot1.M3.power"/>
+                    <int value="0"/>
+                </greater>
+            </condition>
+            <triggers>
+                <setUp id="Checkpoint0"/>
+            </triggers>
+        </event>
+        
+        <!-- Событие, которое выдает ошибку, если робот не тронулся с места в первую секунду -->
+        <event settedUpInitially="true" id="Waiting for going forward too long">
+            <conditions glue="and">
+                <timer timeout="1000" forceDropOnTimeout="true"/>
+                <settedUp id="We are alive, first move"/>
+            </conditions>
+            <trigger>
+                <fail message="Робот так и не поехал в первую секунду"/>
+            </trigger>
+        </event>
+        
+
+        <!-- Событие, которое возникает, когда робот приехал на нулевой чекпоинт -->
+        <event id="Checkpoint0">
+            <condition>
+                <inside regionId="checkpoint0" objectId="robot1"/>
+            </condition>
+            <triggers>
+                <setUp id="Checkpoint0 actions"/>
+                <setUp id="Checkpoint0 No sad smile or no stop"/>
+            </triggers>
+        </event>
+
+        <!-- Событие, возникающее, когда робот остановился и показал грустный смайл -->
+        <event id="Checkpoint0 actions">
+            <conditions glue="and">
+                <equals>
+                    <objectState object="robot1.display.sadSmiles"/>
+                    <bool value="true"/>
+                </equals>
+                <equals>
+                    <objectState object="robot1.M3.power"/>
+                    <int value="0"/>
+                </equals>
+                <equals>
+                    <objectState object="robot1.M4.power"/>
+                    <int value="0"/>
+                </equals>
+            </conditions>
+            <triggers>
+                <setUp id="Checkpoint0 Wait 2 seconds"/>
+                <setUp id="Fail if no sad smile"/>
+                <setUp id="Fail if move"/>
+            </triggers>
+        </event>
+
+        <!-- Событие для ожидания 1900 мс на нулевом чекпоинте -->
+        <event id="Checkpoint0 Wait 2 seconds">
+            <condition>
+                <timer timeout="1900"/>
+            </condition>
+            <triggers>
+                <drop id="Fail if no sad smile"/>
+                <drop id="Fail if move"/>
+                <drop id="Checkpoint0 No sad smile or no stop"/>
+                <setUp id="Checkpoint1"/>
+            </triggers>
+        </event>
+
+        <!-- Событие, сообщающее об ошибке, если робот не выполнил указанные дейтсвия в чекпоинте 0 -->
+        <event id="Checkpoint0 No sad smile or no stop">
+            <condition>
+                <not>
+                    <inside regionId="checkpoint0" objectId="robot1"/>
+                </not>
+            </condition>
+            <trigger>
+                <fail message="Робот увидел монстра и проехал дальше, но не выполнил указанные в задании действия"/>
+            </trigger>
+        </event>
+
+        <!-- Событие, которое возникает, когда робот приехал на первый  чекпоинт -->
+        <event id="Checkpoint1">
+            <condition>
+                <inside regionId="checkpoint1" objectId="robot1"/>
+            </condition>
+            <triggers>
+                <setUp id="Checkpoint1 actions"/>
+                <setUp id="Checkpoint1 No sad smile or no stop"/>
+            </triggers>
+        </event>
+
+        <!-- Событие, возникающее, когда робот остановился и показал грустный смайл -->
+        <event id="Checkpoint1 actions">
+            <conditions glue="and">
+                <equals>
+                    <objectState object="robot1.display.sadSmiles"/>
+                    <bool value="true"/>
+                </equals>
+                <equals>
+                    <objectState object="robot1.M3.power"/>
+                    <int value="0"/>
+                </equals>
+                <equals>
+                    <objectState object="robot1.M4.power"/>
+                    <int value="0"/>
+                </equals>
+            </conditions>
+            <triggers>
+                <setUp id="Checkpoint1 Wait 2 seconds"/>
+                <setUp id="Fail if no sad smile"/>
+                <setUp id="Fail if move"/>
+            </triggers>
+        </event>
+
+        <!-- Событие для ожидания 1900 мс на первом чекпоинте -->
+        <event id="Checkpoint1 Wait 2 seconds">
+            <condition>
+                <timer timeout="1900"/>
+            </condition>
+            <triggers>
+                <drop id="Fail if no sad smile"/>
+                <drop id="Fail if move"/>
+                <drop id="Checkpoint1 No sad smile or no stop"/>
+                <setUp id="Checkpoint2"/>
+            </triggers>
+        </event>
+
+        <!-- Событие, сообщающее об ошибке, если робот не выполнил указанные дейтсвия в чекпоинте 1 -->
+        <event id="Checkpoint1 No sad smile or no stop">
+            <condition>
+                <not>
+                    <inside regionId="checkpoint1" objectId="robot1"/>
+                </not>
+            </condition>
+            <trigger>
+                <fail message="Робот увидел монстра и проехал дальше, но не выполнил указанные в задании действия"/>
+            </trigger>
+        </event>
+
+        <!-- Событие, которое возникает, когда робот приехал на второй чекпоинт -->
+        <event id="Checkpoint2">
+            <condition>
+                <inside regionId="checkpoint2" objectId="robot1"/>
+            </condition>
+            <triggers>
+                <setUp id="Checkpoint2 actions"/>
+                <setUp id="Checkpoint2 No sad smile or no stop"/>
+            </triggers>
+        </event>
+
+        <!-- Событие, возникающее, когда робот остановился и показал веселый смайл -->
+        <event id="Checkpoint2 actions">
+            <conditions glue="and">
+                <equals>
+                    <objectState object="robot1.display.smiles"/>
+                    <bool value="true"/>
+                </equals>
+                <equals>
+                    <objectState object="robot1.M3.power"/>
+                    <int value="0"/>
+                </equals>
+                <equals>
+                    <objectState object="robot1.M4.power"/>
+                    <int value="0"/>
+                </equals>
+            </conditions>
+            <triggers>
+                <setUp id="Checkpoint2 Wait 2 seconds"/>
+                <setUp id="Fail if no smile"/>
+                <setUp id="Fail if move"/>
+            </triggers>
+        </event>
+
+        <!-- Событие для ожидания 1900 мс на втором чекпоинте -->
+        <event id="Checkpoint2 Wait 2 seconds">
+            <condition>
+                <timer timeout="1900"/>
+            </condition>
+            <triggers>
+                <drop id="Fail if no smile"/>
+                <drop id="Fail if move"/>
+                <drop id="Checkpoint2 No sad smile or no stop"/>
+                <setUp id="Finish"/>
+            </triggers>
+        </event>
+
+        <!-- Событие, сообщающее об ошибке, если робот не выполнил указанные дейтсвия в чекпоинте 2 -->
+        <event id="Checkpoint2 No sad smile or no stop">
+            <condition>
+                <not>
+                    <inside regionId="checkpoint2" objectId="robot1"/>
+                </not>
+            </condition>
+            <trigger>
+                <fail message="Робот увидел монстра и проехал дальше, но не выполнил указанные в задании действия"/>
+            </trigger>
+        </event>
+
+        <!-- Событие, которое говорит, что задание выполнено, когда робот приезжает на финиш -->
+        <event id="Finish">
+            <conditions glue="and">
+                <timer timeout="50" forceDropOnTimeout="false"/>
+                <inside regionId="finish" objectId="robot1"/>
+            </conditions>
+            <trigger>
+                <success/>
+            </trigger>
+        </event>
+
+        <!-- Событие, сообщающее об ошибке, если робот не показывает веселый смайлик -->
+        <event id="Fail if no smile">
+            <condition>
+                <equals>
+                    <objectState object="robot1.display.smiles"/>
+                    <bool value="false"/>
+                </equals>
+            </condition>
+            <trigger>
+                <fail message="Робот показывал веселый смайлик меньше 2 секунд"/>
+            </trigger>
+        </event>
+
+        <!-- Событие, сообщающее об ошибке, если робот не показывает грустный смайлик -->
+        <event id="Fail if no sad smile">
+            <condition>
+                <equals>
+                    <objectState object="robot1.display.sadSmiles"/>
+                    <bool value="false"/>
+                </equals>
+            </condition>
+            <trigger>
+                <fail message="Робот показывал грустный смайлик меньше 2 секунд"/>
+            </trigger>
+        </event>
+
+        <!-- Событие, сообщающее об ошибке, если робот движется -->
+        <event id="Fail if move">
+            <conditions glue="or">
+                <greater>
+                    <objectState object="robot1.M3.power"/>
+                    <int value="0"/>
+                </greater>
+                <greater>
+                    <objectState object="robot1.M4.power"/>
+                    <int value="0"/>
+                </greater>
+            </conditions>
+            <trigger>
+                <fail message="Робот не двигался меньше 2 секунд"/>
+            </trigger>
+        </event>
+
+    </constraints>
+</root>

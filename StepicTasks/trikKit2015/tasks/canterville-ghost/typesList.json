@@ -1,0 +1,36 @@
+{
+    "elements": [
+        "ControlFlow"
+    ],
+
+    "blocks": {
+
+        "general": [
+            "Subprogram"
+        ],
+        
+        "palette": {
+            
+            "Algorithms": [
+                "InitialNode",
+                "FinalNode",
+                "IfBlock",
+                "FiBlock",
+                "Loop"
+            ],
+
+            "Wait": [
+                "Timer"
+            ],
+
+            "Drawing": [
+                "TrikSmile",
+                "TrikSadSmile",
+                "ClearScreen"
+            ]
+
+        }
+        
+    }
+
+}

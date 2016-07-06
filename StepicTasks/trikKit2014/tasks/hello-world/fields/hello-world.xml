@@ -1,0 +1,90 @@
+<?xml version='1.0' encoding='utf-8'?>
+<root>
+    <world>
+        <walls/>
+        <colorFields/>
+        <regions/>
+    </world>
+    <robots>
+        <robot direction="0" position="-206:26" id="trikKitRobot">
+            <sensors>
+                <sensor direction="0" port="B3###input###M3###encoder3" position="0:0" type=""/>
+                <sensor direction="0" port="M4###output######" position="0:0" type=""/>
+                <sensor direction="0" port="B2###input###M2###encoder2" position="0:0" type=""/>
+                <sensor direction="0" port="B4###input###M4###encoder4" position="0:0" type=""/>
+                <sensor direction="0" port="B1###input###M1###encoder1" position="0:0" type=""/>
+                <sensor direction="0" port="M3###output######" position="0:0" type=""/>
+                <sensor direction="0" port="A1###input######sensorA1" position="0:0" type=""/>
+            </sensors>
+            <startPosition y="51" direction="0" x="-181"/>
+            <wheels left="M3###output######" right="M4###output######"/>
+        </robot>
+    </robots>
+    <constraints>
+
+        <timelimit value="5000"/>
+
+		<!-- событие, которое проверяет, что все условия выполнены, и выводит сообщение об успехе -->
+		<event id="Check_conditions" settedUpInitially="true">
+            <conditions glue="and">
+                <equals>
+                    <objectState object="robot1.display.smiles"/>
+                    <bool value="true"/>
+                </equals>
+				<conditions glue="or">
+                    <equals>
+                        <objectState object="robot1.shell.lastPhrase"/>
+                        <string value="Привет, мир!"/>
+                    </equals>
+                    <equals>
+                        <objectState object="robot1.shell.lastPhrase"/>
+                        <string value="Привет, мир"/>
+                    </equals>
+                </conditions>
+            </conditions>
+            <triggers>
+				<setUp id="Smile 3 seconds"/>
+				<setUp id="Wait for end"/>
+            </triggers>
+        </event>
+
+		<!-- событие, которое выводит ошибку, если робот не показывает смайлик через три секунды после начала -->
+		<event id="No smile" settedUpInitially="true">
+			<conditions glue="and">
+				<timer timeout="3000"/>
+				<equals>
+                    <objectState object="robot1.display.smiles"/>
+                    <bool value="false"/>
+                </equals>
+			</conditions>
+			<trigger>
+				<fail message="Робот не показал смайлик через три секунды после начала программы"/>
+			</trigger>
+		</event>
+
+		<!-- событие, которое сообщает об успехе, если прошло 3 секунды (+-100 мс) с того момента, как робот улыбнулся и сказал привет мир -->
+		<event id="Smile 3 seconds">
+			<conditions glue="and">
+				<timer timeout="2900"/>
+				<equals>
+                    <objectState object="robot1.display.smiles"/>
+                    <bool value="true"/>
+                </equals>
+			</conditions>
+			<trigger>
+				<success deferred="true"/>
+			</trigger>
+		</event>
+
+        <!-- событие, которое ожидает, что программа окончится через 3 секунды -->
+        <event id="Wait for end">
+            <condition>
+                <timer forceDropOnTimeout="true" timeout="3100"/>
+            </condition>
+            <trigger>
+                <fail message="Робот показывал смайлик больше трех секунд"/>
+            </trigger>
+        </event>
+
+    </constraints>
+</root>

@@ -1,0 +1,104 @@
+<?xml version='1.0' encoding='utf-8'?>
+<root>
+    <world>
+        <walls>
+            <wall begin="-50:100" id="" end="250:100"/>
+            <wall begin="-50:-50" id="" end="100:-50"/>
+            <wall begin="100:-50" id="" end="100:-200"/>
+            <wall begin="100:-200" id="" end="250:-200"/>
+            <wall begin="250:-200" id="" end="250:-50"/>
+            <wall begin="250:-50" id="" end="400:-50"/>
+            <wall begin="250:100" id="" end="250:250"/>
+            <wall begin="250:250" id="" end="400:250"/>
+            <wall begin="400:250" id="" end="400:-50"/>
+            <wall begin="-50:-50" id="" end="-50:100"/>
+        </walls>
+        <colorFields/>
+        <regions>
+            <region filled="true" visible="true" height="80" width="80" y="-20" color="#0000ff" textX="0" textY="0" id="start-zone" x="-15" type="rectangle" text="Старт"/>
+            <region filled="true" visible="true" height="100" width="100" y="-175" color="#ff0000" textX="0" textY="0" id="finish-1" x="125" type="rectangle" text="Финиш 1"/>
+            <region filled="true" visible="true" height="100" width="100" y="125" color="#ff0000" textX="0" textY="0" id="finish-2" x="275" type="rectangle" text="Финиш 2"/>
+        </regions>
+    </world>
+    <robots>
+        <robot direction="0" position="0:0" id="trikKitRobot">
+            <sensors>
+                <sensor direction="0" port="B3###input###M3###encoder3" position="75:25" type="kitBase::robotModel::robotParts::EncoderSensor"/>
+                <sensor direction="0" port="M4###output######" position="75:25" type="kitBase::robotModel::robotParts::Motor"/>
+                <sensor direction="0" port="B2###input###M2###encoder2" position="75:25" type="kitBase::robotModel::robotParts::EncoderSensor"/>
+                <sensor direction="0" port="B4###input###M4###encoder4" position="75:25" type="kitBase::robotModel::robotParts::EncoderSensor"/>
+                <sensor direction="0" port="B1###input###M1###encoder1" position="75:25" type="kitBase::robotModel::robotParts::EncoderSensor"/>
+                <sensor direction="0" port="M3###output######" position="75:25" type="kitBase::robotModel::robotParts::Motor"/>
+            </sensors>
+            <startPosition y="25" direction="0" x="25"/>
+            <wheels left="M3###output######" right="M4###output######"/>
+        </robot>
+    </robots>
+    <constraints>
+        <!-- Лимит времени -->
+        <timelimit value="7000"/>
+        <!-- Инициализируем датчик случайных чисел фиксированным значением -->
+        <init>
+            <setState property="fixedValue" object="robot1.random">
+                <int value="1"/>
+            </setState>
+        </init>
+        <!-- Событие, которое говорит о том, что робот вообще поехал и стартует цепочку проверки -->
+        <event id="We are alive, first move" settedUpInitially="true">
+            <condition>
+                <greater>
+                    <objectState object="robot1.M3.power"/>
+                    <int value="0"/>
+                </greater>
+            </condition>
+            <triggers>
+                <setUp id="Robot is in Finish1 zone"/>
+                <setUp id="Robot is in wrong zone Finish2"/>
+                <setUp id="Check RNG use"/>
+            </triggers>
+        </event>
+        <!-- Событие, которое выдает ошибку, если робот не тронулся с места в первую секунду -->
+        <event id="Waiting for going forward too long" settedUpInitially="true">
+            <conditions glue="and">
+                <timer forceDropOnTimeout="true" timeout="1000"/>
+                <settedUp id="We are alive, first move"/>
+            </conditions>
+            <trigger>
+                <fail message="Робот так и не поехал в первую секунду"/>
+            </trigger>
+        </event>
+        <!-- Событие, которое сообщает об успехе, если робот в зоне Финиш-1 -->
+        <event id="Robot is in Finish1 zone">
+            <conditions glue="and">
+                <inside regionId="finish-1" objectId="robot1"/>
+            </conditions>
+            <trigger>
+                <success/>
+            </trigger>
+        </event>
+        <!-- Задача не зачтена, если робот приехал в зону Финиш-2, хотя должен быть в зоне Финиш-1 -->
+        <event id="Robot is in wrong zone Finish2">
+            <conditions glue="and">
+                <inside regionId="finish-2" objectId="robot1"/>
+            </conditions>
+            <trigger>
+                <fail message="При случайном значении 1 робот должен оказаться в зоне Финиш-1, а не Финиш-2"/>
+            </trigger>
+        </event>
+        <!-- Задача не зачтена, если генератор случайных чисел не использовался, а робот поехал -->
+        <event id="Check RNG use">
+            <conditions glue="and">
+                <not>
+                    <settedUp id="We are alive, first move"/>
+                </not>
+                <equals>
+                    <objectState object="robot1.random.callsCount"/>
+                    <int value="0"/>
+                </equals>
+            </conditions>
+            <trigger>
+                <fail message="Надо использовать генератор случайных чисел"/>
+            </trigger>
+        </event>
+    </constraints>
+</root>

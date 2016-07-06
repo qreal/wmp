@@ -1,0 +1,73 @@
+<?xml version='1.0' encoding='utf-8'?>
+<root>
+    <world>
+        <walls>
+            <wall end="300:100" id="" begin="-50:100"/>
+            <wall end="300:350" id="" begin="300:100"/>
+            <wall end="450:-50" id="" begin="-50:-50"/>
+            <wall end="450:350" id="" begin="450:-50"/>
+        </walls>
+        <colorFields/>
+        <regions>
+            <region x="18" visible="false" filled="true" height="25" type="rectangle" color="#0000ff" width="25" id="start_zone" y="7"/>
+            <region x="300" visible="true" filled="true" text="Финиш" height="100" textY="0" type="rectangle" color="#ff0000" width="150" id="finish_zone" textX="0" y="200"/>
+            <region x="-50" visible="false" filled="true" height="400" type="rectangle" color="#00ff00" width="500" id="warzone" y="-50"/>
+        </regions>
+    </world>
+    <robots>
+        <robot position="0:0" direction="0" id="trikKitRobot">
+            <sensors>
+                <sensor position="75:25" port="M4###output######" type="kitBase::robotModel::robotParts::Motor" direction="0"/>
+                <sensor position="0:0" port="B4###input###M4###encoder4" type="" direction="0"/>
+                <sensor position="75:25" port="B3###input###M3###encoder3" type="kitBase::robotModel::robotParts::EncoderSensor" direction="0"/>
+                <sensor position="0:0" port="A1###input######sensorA1" type="" direction="0"/>
+                <sensor position="75:25" port="M3###output######" type="kitBase::robotModel::robotParts::Motor" direction="0"/>
+                <sensor position="0:0" port="B2###input###M2###encoder2" type="" direction="0"/>
+                <sensor position="0:0" port="B1###input###M1###encoder1" type="" direction="0"/>
+            </sensors>
+            <startPosition x="25" direction="0" y="25"/>
+            <wheels right="M4###output######" left="M3###output######"/>
+        </robot>
+    </robots>
+    <constraints>
+        <timelimit value="20000"/>
+        <constraint checkOnce="true" failMessage="Робот должен находиться в начальной точке перед запуском программы!">
+            <inside regionId="start_zone" objectId="robot1"/>
+        </constraint>
+        <constraint failMessage="Робот уехал не туда">
+            <inside regionId="warzone" objectId="robot1"/>
+        </constraint>
+        <!-- Событие, которое говорит о том, что робот вообще поехал и стартует цепочку проверки -->
+        <event settedUpInitially="true" id="We are alive, first move">
+            <condition>
+                <greater>
+                    <objectState object="robot1.M3.power"/>
+                    <int value="0"/>
+                </greater>
+            </condition>
+            <triggers>
+                <setUp id="Finish"/>
+            </triggers>
+        </event>
+        <!-- Событие, которое выдает ошибку, если робот не тронулся с места в первую секунду -->
+        <event settedUpInitially="true" id="Waiting for going forward too long">
+            <conditions glue="and">
+                <timer timeout="1000" forceDropOnTimeout="true"/>
+                <settedUp id="We are alive, first move"/>
+            </conditions>
+            <trigger>
+                <fail message="Робот так и не поехал в первую секунду"/>
+            </trigger>
+        </event>
+        <!-- Событие, которое говорит, что задание выполнено, когда робот приезжает на финиш-->
+        <event id="Finish">
+            <conditions glue="and">
+                <timer timeout="50" forceDropOnTimeout="false"/>
+                <inside regionId="finish_zone" objectId="robot1"/>
+            </conditions>
+            <trigger>
+                <success/>
+            </trigger>
+        </event>
+    </constraints>
+</root>

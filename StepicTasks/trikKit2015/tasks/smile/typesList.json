@@ -1,0 +1,30 @@
+{
+    "elements": [
+        "ControlFlow"
+    ],
+
+    "blocks": {
+        
+        "palette": {
+            
+            "Algorithms": [
+                "InitialNode",
+                "FinalNode"
+            ],
+
+            "Wait": [
+                "Timer"
+            ],
+
+            "Drawing": [
+                "TrikSetPainterColor",
+                "TrikSetPainterWidth",
+                "TrikDrawEllipse",
+                "TrikDrawArc"
+            ]
+
+        }
+        
+    }
+
+}

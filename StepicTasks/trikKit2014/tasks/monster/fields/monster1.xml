@@ -1,0 +1,120 @@
+<?xml version='1.0' encoding='utf-8'?>
+<root>
+    <world>
+        <walls>
+            <wall begin="-250:100" end="-50:100" id=""/>
+            <wall begin="-50:100" end="-50:350" id=""/>
+            <wall begin="-50:350" end="150:350" id=""/>
+            <wall begin="150:100" end="150:350" id=""/>
+            <wall begin="150:100" end="350:100" id=""/>
+            <wall begin="0:150" end="0:250" id=""/>
+            <wall begin="0:250" end="100:250" id=""/>
+            <wall begin="100:250" end="100:150" id=""/>
+            <wall begin="100:150" end="0:150" id=""/>
+        </walls>
+        <colorFields/>
+        <regions>
+            <region y="12" type="rectangle" height="25" width="25" x="-188" color="#0000ff" filled="true" id="start_zone" visible="false"/>
+            <region y="0" type="rectangle" height="100" width="150" x="200" color="#ff0000" filled="true" id="finish1" visible="false"/>
+            <region y="100" type="rectangle" height="200" width="200" x="-50" color="#ff0000" filled="true" id="finish2" visible="false"/>
+            <region y="-50" type="rectangle" height="400" width="600" x="-250" color="#00ff00" filled="true" id="warzone" visible="false"/>
+        </regions>
+    </world>
+    <robots>
+        <robot position="-200:0" direction="0" id="trikKitRobot">
+            <sensors>
+                <sensor position="75:25" direction="0" type="kitBase::robotModel::robotParts::Motor" port="M4###output######"/>
+                <sensor position="75:25" direction="0" type="kitBase::robotModel::robotParts::Motor" port="M3###output######"/>
+                <sensor position="75:25" direction="90" type="trik::robotModel::parts::TrikInfraredSensor" port="A1###input######sensorA1"/>
+            </sensors>
+            <startPosition y="25" direction="0" x="-175"/>
+            <wheels left="M3###output######" right="M4###output######"/>
+        </robot>
+    </robots>
+    <constraints>
+        <timelimit value="10000"/>
+        <constraint failMessage="Робот должен находиться в начальной точке перед запуском программы!" checkOnce="true">
+            <inside objectId="robot1" regionId="start_zone"/>
+        </constraint>
+        <constraint failMessage="Робот уехал за пределы допустимой зоны">
+            <inside objectId="robot1" regionId="warzone"/>
+        </constraint>
+        <constraint failMessage="Робот попытался заехать в тупик, когда там находится монстр">
+            <not>
+                <inside objectId="robot1" regionId="finish2"/>
+            </not>
+        </constraint>
+        <constraint failMessage="У робота должен быть только инфракрасный датчик на порте A1" checkOnce="true">
+            <conditions glue="and">
+                <equals>
+                    <typeOf objectId="robot1.A1"/>
+                    <string value="trik::robotModel::twoD::parts::TwoDInfraredSensor"/>
+                </equals>
+                <equals>
+                    <typeOf objectId="robot1.A2"/>
+                    <string value="undefined"/>
+                </equals>
+                <equals>
+                    <typeOf objectId="robot1.A3"/>
+                    <string value="undefined"/>
+                </equals>
+                <equals>
+                    <typeOf objectId="robot1.A4"/>
+                    <string value="undefined"/>
+                </equals>
+                <equals>
+                    <typeOf objectId="robot1.A5"/>
+                    <string value="undefined"/>
+                </equals>
+                <equals>
+                    <typeOf objectId="robot1.A6"/>
+                    <string value="undefined"/>
+                </equals>
+                <equals>
+                    <typeOf objectId="robot1.D1"/>
+                    <string value="undefined"/>
+                </equals>
+                <equals>
+                    <typeOf objectId="robot1.D2"/>
+                    <string value="undefined"/>
+                </equals>
+                <equals>
+                    <typeOf objectId="robot1.F1"/>
+                    <string value="undefined"/>
+                </equals>
+            </conditions>
+        </constraint>
+        <!-- Событие, которое говорит о том, что робот вообще поехал и стартует цепочку проверки -->
+        <event settedUpInitially="true" id="We are alive, first move">
+            <condition>
+                <greater>
+                    <objectState object="robot1.M3.power"/>
+                    <int value="0"/>
+                </greater>
+            </condition>
+            <triggers>
+                <setUp id="Finish"/>
+            </triggers>
+        </event>
+        <!-- Событие, которое выдает ошибку, если робот не тронулся с места в первую секунду -->
+        <event settedUpInitially="true" id="Waiting for going forward too long">
+            <conditions glue="and">
+                <timer forceDropOnTimeout="true" timeout="1000"/>
+                <settedUp id="We are alive, first move"/>
+            </conditions>
+            <trigger>
+                <fail message="Робот так и не поехал в первую секунду"/>
+            </trigger>
+        </event>
+        <!-- Событие, которое говорит, что задание выполнено, когда робот приезжает на финиш-->
+        <event id="Finish">
+            <conditions glue="and">
+                <timer forceDropOnTimeout="false" timeout="50"/>
+                <inside objectId="robot1" regionId="finish1"/>
+            </conditions>
+            <trigger>
+                <success/>
+            </trigger>
+        </event>
+    </constraints>
+</root>
