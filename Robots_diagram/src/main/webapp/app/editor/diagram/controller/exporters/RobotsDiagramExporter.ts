@@ -16,8 +16,8 @@
  * limitations under the License.
  */
 
-/// <reference path="../../../diagramCore.d.ts" />
-/// <reference path="../../../vendor.d.ts" />
+/// <reference path="../../../interfaces/diagramCore.d.ts" />
+/// <reference path="../../../interfaces/vendor.d.ts" />
 
 class RobotsDiagramExporter extends  DiagramExporter {
 

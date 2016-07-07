@@ -30,7 +30,7 @@
 <script src="<c:url value='/resources/js/compiled/root.js' />"></script>
 <script src="<c:url value='/resources/js/compiled/diagram-core.js' />"></script>
 <script src="<c:url value='/resources/js/compiled/two-d-model-core.js' />"></script>
-<script src="<c:url value='/resources/js/compiled/diagram-robots.js' />"></script>
+<script src="<c:url value='/resources/js/compiled/editor.js' />"></script>
 <script src="<c:url value='/resources/js/compiled/interpreter.js' />"></script>
 <script src="<c:url value='/resources/js/compiled/two-d-model-robots.js' />"></script>
 

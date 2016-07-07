@@ -15,9 +15,9 @@
  */
 
 /// <reference path="BlockFactory.ts" />
-/// <reference path="../diagramCore.d.ts" />
-/// <reference path="../two-d-model-core.d.ts" />
-/// <reference path="../vendor.d.ts" />
+/// <reference path="../interfaces/diagramCore.d.ts" />
+/// <reference path="../interfaces/two-d-model-core.d.ts" />
+/// <reference path="../interfaces/vendor.d.ts" />
 
 class Interpreter {
 

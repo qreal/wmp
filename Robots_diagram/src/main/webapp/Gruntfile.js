@@ -2,21 +2,21 @@ module.exports = function (grunt) {
 
     grunt.initConfig({
         ts: {
-            diagramRobots: {
-                src: ["app/diagram/**/*.ts", "app/constants/*.ts"],
-                out: "resources/js/compiled/diagram-robots.js"
+            editor: {
+                src: ["app/editor/diagram/**/*.ts", "app/editor/*.ts"],
+                out: "resources/js/compiled/editor.js"
             },
             interpreter: {
-                src: ["app/interpreter/**/*.ts"],
+                src: ["app/editor/interpreter/**/*.ts"],
                 out: "resources/js/compiled/interpreter.js"
             },
             twoDModelRobots: {
-                src: ["app/twoDModel/**/*.ts"],
+                src: ["app/twoDModel/implementations/**/*.ts"],
                 out: "resources/js/compiled/two-d-model-robots.js"
             }
         }
     });
 
     grunt.loadNpmTasks("grunt-ts");
-    grunt.registerTask("default", ["ts:diagramRobots", "ts:interpreter", "ts:twoDModelRobots"]);
+    grunt.registerTask("default", ["ts:editor", "ts:interpreter", "ts:twoDModelRobots"]);
 }

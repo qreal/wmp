@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-/// <reference path="../../../two-d-model-core.d.ts" />
-/// <reference path="../../../vendor.d.ts" />
+/// <reference path="../../interfaces/two-d-model-core.d.ts" />
+/// <reference path="../../interfaces/vendor.d.ts" />
 
 class RobotsTwoDModelEngineFacade extends TwoDModelEngineFacadeImpl {
 

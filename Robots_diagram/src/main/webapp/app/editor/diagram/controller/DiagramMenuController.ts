@@ -19,8 +19,8 @@
 /// <reference path="../model/Diagram.ts" />
 /// <reference path="../model/Folder.ts" />
 /// <reference path="../model/DiagramMenuElement.ts" />
-/// <reference path="../../diagramCore.d.ts" />
-/// <reference path="../../vendor.d.ts" />
+/// <reference path="../../interfaces/diagramCore.d.ts" />
+/// <reference path="../../interfaces/vendor.d.ts" />
 
 class DiagramMenuController {
 
