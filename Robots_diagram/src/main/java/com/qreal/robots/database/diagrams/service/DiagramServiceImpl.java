@@ -16,9 +16,9 @@
  * limitations under the License.
  */
 
-package com.qreal.robots.service;
+package com.qreal.robots.database.diagrams.service;
 
-import com.qreal.robots.dao.DiagramDAO;
+import com.qreal.robots.database.diagrams.DAO.DiagramDAO;
 import com.qreal.robots.model.diagram.Diagram;
 import com.qreal.robots.model.diagram.DiagramRequest;
 import com.qreal.robots.model.diagram.Folder;

@@ -1,8 +1,6 @@
 /*
  * Copyright Vladimir Zakharov
  * Copyright Denis Ageev
- * Copyright Anastasia Kornilova
- * Copyright Lidiya Chernigovskaya
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,28 +15,20 @@
  * limitations under the License.
  */
 
-package com.qreal.robots.dao;
+package com.qreal.robots.database.robots.DAO;
 
-import com.qreal.robots.model.diagram.Diagram;
-import com.qreal.robots.model.diagram.DiagramRequest;
-import com.qreal.robots.model.diagram.Folder;
+import com.qreal.robots.model.robot.Robot;
 
 /**
  * Created by vladzx on 22.06.15.
  */
-public interface DiagramDAO {
+public interface RobotDAO {
 
-    public Long saveDiagram(DiagramRequest diagramRequest);
+    public void save(Robot robot);
 
-    public Diagram openDiagram(Long diagramId);
+    public void delete(Robot robot);
 
-    public void rewriteDiagram(Diagram diagram);
+    public Robot findByName(String robotName);
 
-    public void deleteDiagram(Long diagramId);
-
-    public Long createFolder(Folder folder);
-
-    public void deleteFolder(Long folderId);
-
-    public Folder getFolderTree(String userName);
+    public boolean isRobotExists(String robotName);
 }

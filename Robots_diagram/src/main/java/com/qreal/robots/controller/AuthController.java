@@ -18,10 +18,9 @@
 
 package com.qreal.robots.controller;
 
-import com.qreal.robots.dao.UserDAO;
 import com.qreal.robots.model.auth.User;
-import com.qreal.robots.service.DiagramService;
-import com.qreal.robots.service.UserService;
+import com.qreal.robots.database.diagrams.service.DiagramService;
+import com.qreal.robots.database.users.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
