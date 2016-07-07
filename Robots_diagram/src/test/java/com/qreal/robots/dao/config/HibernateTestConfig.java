@@ -16,7 +16,7 @@
 
 package com.qreal.robots.dao.config;
 
-import com.qreal.robots.dao.*;
+import com.qreal.robots.common.dao.*;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

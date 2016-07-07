@@ -1,4 +1,5 @@
 /*
+ * Copyright Vladimir Zakharov
  * Copyright Denis Ageev
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,27 +15,18 @@
  * limitations under the License.
  */
 
-package com.qreal.robots.dao;
+package com.qreal.robots.common.dao;
 
-import com.qreal.robots.common.dao.UserDAO;
 import com.qreal.robots.components.authorization.model.auth.User;
 
 /**
- * Created by dageev on 14.03.15.
+ * Created by vladzx on 22.06.15.
  */
-public class BaseDAOTest {
+public interface UserDAO {
 
-    public static final String USER_NAME = "user";
-    public static final String USER_NAME2 = "user2";
-    public static final String USER_NAME3 = "user3";
-    public static final String ROBOT_NAME = "robot";
-    public static final String ROBOT_NAME2 = "robot2";
-    public static final String PASSWORD = "password";
+    public void save(User user);
 
-    protected User getAndSaveUser(String username, UserDAO userDAO) {
-        User user = new User(username, PASSWORD, true);
-        userDAO.save(user);
-        return user;
-    }
+    public User findByUserName(String username);
 
+    public boolean isUserExist(String username);
 }
