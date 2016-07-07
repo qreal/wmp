@@ -308,12 +308,12 @@
                                         </div>
                                         <div class="modal-body">
 
-                                            <h4>Select diagram</h4>
-                                            <select class="form-control">
-                                                <c:forEach var="diagram" items="${user.diagrams}">
-                                                    <option>${diagram.name}</option>
-                                                </c:forEach>
-                                            </select>
+                                            <%--<h4>Select diagram</h4>--%>
+                                            <%--<select class="form-control">--%>
+                                                <%--<c:forEach var="diagram" items="${user.diagrams}">--%>
+                                                    <%--<option>${diagram.name}</option>--%>
+                                                <%--</c:forEach>--%>
+                                            <%--</select>--%>
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" name="sendDiagram"

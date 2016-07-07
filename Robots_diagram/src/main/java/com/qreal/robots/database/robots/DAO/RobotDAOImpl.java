@@ -1,6 +1,5 @@
 /*
  * Copyright Vladimir Zakharov
- * Copyright Denis Ageev
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,57 +14,59 @@
  * limitations under the License.
  */
 
-package com.qreal.robots.dao;
+package com.qreal.robots.database.robots.DAO;
 
 import com.qreal.robots.model.auth.User;
-import com.qreal.robots.model.auth.UserRole;
+import com.qreal.robots.model.robot.Robot;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 /**
- * Created by dageev on 04.03.15.
+ * Created by dageev on 07.03.15.
  */
-@Repository
-public class UserDAOImpl implements UserDAO {
 
-    public static final String ROLE_USER = "ROLE_USER";
+@Transactional
+@Repository
+public class RobotDAOImpl implements RobotDAO {
 
     @Autowired
     private SessionFactory sessionFactory;
 
-    public UserDAOImpl() {
+    public RobotDAOImpl() {
+
     }
 
-    public UserDAOImpl(SessionFactory sessionFactory) {
+    public RobotDAOImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
 
-    public void save(User user) {
+    public void save(Robot robot) {
         Session session = sessionFactory.getCurrentSession();
-        session.save(user);
-        UserRole userRole = new UserRole(user, ROLE_USER);
-        session.save(userRole);
+        session.save(robot);
     }
 
-    public User findByUserName(String username) {
+    public void delete(Robot robot) {
         Session session = sessionFactory.getCurrentSession();
-
-        List<User> users = session.createQuery("from User where username=:username").
-                setParameter("username", username).list();
-        return (users.size() > 0) ? users.get(0) : null;
+        session.delete(robot);
     }
 
-    public boolean isUserExist(String username) {
+    public Robot findByName(String robotName) {
         Session session = sessionFactory.getCurrentSession();
 
-        List<User> users = session.createQuery("from User where username=:username")
-                .setParameter("username", username).list();
-        return users.size() > 0;
+        List<Robot> robots = session.createQuery("from Robot where name=?").setParameter(0, robotName).list();
+        return (robots.size() > 0) ? robots.get(0) : null;
+    }
 
+    public boolean isRobotExists(String robotName) {
+        Session session = sessionFactory.getCurrentSession();
+
+        List<User> robots = session.createQuery("from Robot where name=?").setParameter(0, robotName).list();
+        return robots.size() > 0;
     }
 
 }

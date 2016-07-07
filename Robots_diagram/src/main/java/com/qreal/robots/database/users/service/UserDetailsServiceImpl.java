@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.qreal.robots.service;
+package com.qreal.robots.database.users.service;
 
 import com.qreal.robots.model.auth.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +31,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+//It is needed for Spring Security
 
 @Service("userDetailsService")
 public class UserDetailsServiceImpl implements UserDetailsService {

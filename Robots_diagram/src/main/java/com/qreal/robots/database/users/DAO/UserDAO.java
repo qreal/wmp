@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.qreal.robots.dao;
+package com.qreal.robots.database.users.DAO;
 
 import com.qreal.robots.model.auth.User;
 
