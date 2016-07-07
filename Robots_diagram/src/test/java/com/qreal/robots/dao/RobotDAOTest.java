@@ -16,9 +16,12 @@
 
 package com.qreal.robots.dao;
 
+import com.qreal.robots.common.dao.RobotDAO;
+import com.qreal.robots.common.dao.UserDAO;
+import com.qreal.robots.components.authorization.model.auth.User;
+import com.qreal.robots.components.dashboard.model.robot.Robot;
 import com.qreal.robots.dao.config.HibernateTestConfig;
-import com.qreal.robots.model.auth.User;
-import com.qreal.robots.model.robot.Robot;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

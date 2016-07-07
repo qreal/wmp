@@ -1,5 +1,5 @@
 /*
- * Copyright Denis Ageev
+ * Copyright Vladimir Zakharov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,27 +14,37 @@
  * limitations under the License.
  */
 
-package com.qreal.robots.dao;
+package com.qreal.robots.common.service;
 
 import com.qreal.robots.common.dao.UserDAO;
 import com.qreal.robots.components.authorization.model.auth.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
 
 /**
- * Created by dageev on 14.03.15.
+ * Created by vladzx on 22.06.15.
  */
-public class BaseDAOTest {
+@Service
+public class UserServiceImpl implements UserService {
 
-    public static final String USER_NAME = "user";
-    public static final String USER_NAME2 = "user2";
-    public static final String USER_NAME3 = "user3";
-    public static final String ROBOT_NAME = "robot";
-    public static final String ROBOT_NAME2 = "robot2";
-    public static final String PASSWORD = "password";
+    @Autowired
+    UserDAO userDAO;
 
-    protected User getAndSaveUser(String username, UserDAO userDAO) {
-        User user = new User(username, PASSWORD, true);
+    @Transactional
+    public void save(User user) {
         userDAO.save(user);
-        return user;
+    }
+
+    @Transactional
+    public User findByUserName(String username) {
+        return userDAO.findByUserName(username);
+    }
+
+    @Transactional
+    public boolean isUserExist(String username) {
+        return userDAO.isUserExist(username);
     }
 
 }
