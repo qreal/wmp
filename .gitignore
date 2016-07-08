@@ -10,3 +10,5 @@
 **/js/compiled/
 tscommand*
 overlays
+*.vux
+*~*
