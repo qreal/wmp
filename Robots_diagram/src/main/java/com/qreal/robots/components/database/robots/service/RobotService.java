@@ -2,10 +2,6 @@ package com.qreal.robots.components.database.robots.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
-/**
- * Created by tanvd on 07.07.16.
- */
-
 //SaveModelConfig was temporary deleted. You can find it in old repository.
 
 public interface RobotService {

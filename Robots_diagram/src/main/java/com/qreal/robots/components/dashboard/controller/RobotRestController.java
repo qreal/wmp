@@ -2,15 +2,9 @@ package com.qreal.robots.components.dashboard.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.qreal.robots.components.database.robots.service.RobotService;
-import com.qreal.robots.components.authorization.model.auth.User;
-import com.qreal.robots.components.dashboard.model.robot.Robot;
-import com.qreal.robots.common.socket.SocketClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-/**
- * Created by tanvd on 07.07.16.
- */
 @RestController
 public class RobotRestController {
 
