@@ -17,10 +17,9 @@
  */
 
 package com.qreal.robots.components.authorization.controller;
-
 import com.qreal.robots.components.authorization.model.auth.User;
-import com.qreal.robots.common.service.DiagramService;
-import com.qreal.robots.common.service.UserService;
+import com.qreal.robots.components.database.diagrams.service.DiagramService;
+import com.qreal.robots.components.database.users.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;

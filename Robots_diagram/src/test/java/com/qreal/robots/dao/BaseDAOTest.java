@@ -16,8 +16,9 @@
 
 package com.qreal.robots.dao;
 
-import com.qreal.robots.common.dao.UserDAO;
+import com.qreal.robots.components.database.users.DAO.UserDAO;
 import com.qreal.robots.components.authorization.model.auth.User;
+
 
 /**
  * Created by dageev on 14.03.15.

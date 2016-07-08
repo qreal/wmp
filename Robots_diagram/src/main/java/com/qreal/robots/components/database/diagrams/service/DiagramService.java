@@ -1,6 +1,5 @@
 /*
  * Copyright Vladimir Zakharov
- * Copyright Denis Ageev
  * Copyright Anastasia Kornilova
  * Copyright Lidiya Chernigovskaya
  *
@@ -17,7 +16,7 @@
  * limitations under the License.
  */
 
-package com.qreal.robots.common.dao;
+package com.qreal.robots.components.database.diagrams.service;
 
 import com.qreal.robots.components.editor.model.diagram.Diagram;
 import com.qreal.robots.components.editor.model.diagram.DiagramRequest;
@@ -26,7 +25,10 @@ import com.qreal.robots.components.editor.model.diagram.Folder;
 /**
  * Created by vladzx on 22.06.15.
  */
-public interface DiagramDAO {
+
+//In service transactions are added to DAO. DAO only DB functions implements.
+
+public interface DiagramService {
 
     public Long saveDiagram(DiagramRequest diagramRequest);
 
@@ -36,9 +38,12 @@ public interface DiagramDAO {
 
     public void deleteDiagram(Long diagramId);
 
+    public void createRootFolder(String userName);
+
     public Long createFolder(Folder folder);
 
     public void deleteFolder(Long folderId);
 
-    public Folder getFolderTree(String userName);
+    public Folder getFolderTree();
+
 }

@@ -22,7 +22,7 @@ import com.qreal.robots.components.editor.model.diagram.Diagram;
 import com.qreal.robots.components.editor.model.diagram.DiagramRequest;
 import com.qreal.robots.components.editor.model.diagram.Folder;
 import com.qreal.robots.components.editor.model.diagram.OpenRequest;
-import com.qreal.robots.common.service.DiagramService;
+import com.qreal.robots.components.database.diagrams.service.DiagramService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;

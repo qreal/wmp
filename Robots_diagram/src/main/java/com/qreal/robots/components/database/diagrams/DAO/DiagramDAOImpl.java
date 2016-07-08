@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package com.qreal.robots.common.dao;
+package com.qreal.robots.components.database.diagrams.DAO;
 
 import com.qreal.robots.components.editor.model.diagram.Diagram;
 import com.qreal.robots.components.editor.model.diagram.DiagramRequest;

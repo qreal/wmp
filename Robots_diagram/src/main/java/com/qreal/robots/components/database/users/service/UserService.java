@@ -1,6 +1,5 @@
 /*
  * Copyright Vladimir Zakharov
- * Copyright Denis Ageev
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,18 +14,19 @@
  * limitations under the License.
  */
 
-package com.qreal.robots.common.dao;
+package com.qreal.robots.components.database.users.service;
 
 import com.qreal.robots.components.authorization.model.auth.User;
 
 /**
  * Created by vladzx on 22.06.15.
  */
-public interface UserDAO {
+public interface UserService {
 
     public void save(User user);
 
     public User findByUserName(String username);
 
     public boolean isUserExist(String username);
+
 }

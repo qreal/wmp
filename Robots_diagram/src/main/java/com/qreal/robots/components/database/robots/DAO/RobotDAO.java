@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.qreal.robots.common.dao;
+package com.qreal.robots.components.database.robots.DAO;
 
 import com.qreal.robots.components.dashboard.model.robot.Robot;
 

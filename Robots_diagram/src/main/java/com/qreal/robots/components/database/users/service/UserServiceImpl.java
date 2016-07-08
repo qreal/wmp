@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.qreal.robots.common.service;
+package com.qreal.robots.components.database.users.service;
 
-import com.qreal.robots.common.dao.UserDAO;
+import com.qreal.robots.components.database.users.DAO.UserDAO;
 import com.qreal.robots.components.authorization.model.auth.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,6 +26,9 @@ import javax.transaction.Transactional;
 /**
  * Created by vladzx on 22.06.15.
  */
+
+//In service transactions are added to DAO. DAO only DB functions implements.
+
 @Service
 public class UserServiceImpl implements UserService {
 
