@@ -3,12 +3,9 @@ package com.qreal.robots.components.dashboard.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.qreal.robots.components.dashboard.thrift.gen.RobotServiceThrift;
 import com.qreal.robots.components.database.robots.service.RobotService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.AbstractApplicationContext;
-import org.springframework.stereotype.Component;
-import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 
-class RobotRestServletHandler implements RobotServiceThrift.Iface {
+public class RobotRestServletHandler implements RobotServiceThrift.Iface {
 
     private AbstractApplicationContext context;
 

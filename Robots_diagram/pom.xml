@@ -10,7 +10,6 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <groupId>qreal-web</groupId>
     <artifactId>robots-diagram</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
@@ -188,6 +187,7 @@
             <artifactId>h2</artifactId>
             <version>1.4.187</version>
         </dependency>
+
 
     </dependencies>
 </project>

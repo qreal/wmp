@@ -1,4 +1,4 @@
-
+mvn clean install
 cd SharedResources/src/main/webapp
 sudo npm install
 grunt
@@ -7,5 +7,5 @@ mvn clean install
 cd ../Robots_diagram/src/main/webapp
 sudo npm install
 grunt
-cd ../../..
+cd ../../../..
 echo "Now use IntelliJ to start project"

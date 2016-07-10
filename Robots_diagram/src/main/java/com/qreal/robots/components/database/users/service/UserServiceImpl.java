@@ -10,7 +10,7 @@ import javax.transaction.Transactional;
 
 //In service transactions are added to DAO. DAO only DB functions implements.
 
-@Service
+@Service("UserService")
 public class UserServiceImpl implements UserService {
 
     @Autowired
