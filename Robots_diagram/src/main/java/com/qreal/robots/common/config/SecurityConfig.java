@@ -33,6 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity httpSecurity) throws Exception {
 
         httpSecurity.authorizeRequests()
+                .antMatchers("/RobotRest/**").permitAll()
                 .antMatchers("/resources/**").permitAll()
                 .antMatchers("/register").permitAll()
                 .antMatchers("/**").authenticated()

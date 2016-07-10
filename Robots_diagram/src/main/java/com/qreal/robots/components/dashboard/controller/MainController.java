@@ -47,7 +47,7 @@ public class MainController {
         ModelAndView model = new ModelAndView();
         model.addObject("user", user);
         model.addObject("robotsWrapper", fullRobotInfo);
-        model.setViewName("dashboard/index");
+        model.setViewName("dashboard/JSP/index");
         return model;
     }
 

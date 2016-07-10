@@ -1,13 +1,15 @@
-<%@ include file="../include/include.jsp" %>
+<%@ include file="../../include/include.jsp" %>
 
 <html lang="en">
 <head>
     <title>Robots Diagram</title>
 
-    <jsp:include page="../include/scripts.jsp"/>
+    <jsp:include page="../../include/scripts.jsp"/>
     <link rel="stylesheet" href="<c:url value='/resources/css/error.css'/>"/>
     <script src="<c:url value='/resources/js/map.js' />"></script>
     <script src="<c:url value='/resources/js/robot.js' />"></script>
+    <script src="<c:url value='/resources/thrift/dashboard/robotService_types.js'/> "></script>
+    <script src="<c:url value='/resources/thrift/dashboard/RobotServiceThrift.js'/> "></script>
     <script type="text/javascript">
         $(document).ready(function () {
             $("#target").click(function () {
@@ -18,115 +20,106 @@
             });
 
             $("#registerRobot").click(function () {
+
                 var name = $('#robotName').val();
                 var code = $('#ssid').val();
-                var data = "robotName=" + name + "&ssid=" + code;
-                $.ajax({
-                    type: 'POST',
-                    url: 'registerRobot',
-                    data: data,
-                    success: function (response) {
-                        var result = JSON.parse(response);
-                        if (result.status == "OK") {
-                            location.reload();
-                        } else {
-                            $('#registerError').text(result.message);
-                            $('#registerError').show();
-                        }
-                    },
-                    error: function (response, status, error) {
-                        console.log("error");
-                    }
-                });
+
+                var transport = new Thrift.TXHRTransport("http://localhost:8080/Robots_diagram/RobotRest");
+                var protocol  = new Thrift.TJSONProtocol(transport);
+                var client    = new RobotServiceThriftClient(protocol);
+                try {
+                    var result = client.registerRobot(name, code);
+                    location.reload();
+                }
+                catch (ouch) {
+                }
             });
 
             $('[name="deleteRobot"]').click(function (event) {
                 var robotName = event.target.id.substring(7);
-                var data = "robotName=" + robotName;
-                $.ajax({
-                    type: 'POST',
-                    url: 'deleteRobot',
-                    data: data,
-                    success: function (data) {
-                        location.reload();
-                    },
-                    error: function (response, status, error) {
-                        console.log("error");
-                    }
-                });
+
+                var transport = new Thrift.TXHRTransport("http://localhost:8080/Robots_diagram/RobotRest");
+                var protocol  = new Thrift.TJSONProtocol(transport);
+                var client = new RobotServiceThriftClient(protocol);
+                try {
+                    var result = client.deleteRobot(robotName);
+                    location.reload();
+                }
+                catch (ouch) {
+                }
             });
 
-            $('[name="sendDiagram"]').click(function (event) {
-                var robotName = event.target.id.substring(13);
-                var data = "robotName=" + robotName + "&program=" + "MUR MUR MUR";
-                $.ajax({
-                    type: 'POST',
-                    url: 'sendDiagram',
-                    data: data,
-                    success: function (data) {
-                        $('#sendDiagramModal-' + robotName).modal('hide');
-                        alert("Successfully sent ");
-                    },
-                    error: function (response, status, error) {
-                        console.log("error");
-                    }
-                });
-            });
+//            $('[name="sendDiagram"]').click(function (event) {
+//                var robotName = event.target.id.substring(13);
+//                var data = "robotName=" + robotName + "&program=" + "MUR MUR MUR";
+//                $.ajax({
+//                    type: 'POST',
+//                    url: 'sendDiagram',
+//                    data: data,
+//                    success: function (data) {
+//                        $('#sendDiagramModal-' + robotName).modal('hide');
+//                        alert("Successfully sent ");
+//                    },
+//                    error: function (response, status, error) {
+//                        console.log("error");
+//                    }
+//                });
+//            });
 
 
-            $('[name="saveModelConfig"]').click(function (event) {
-                var robotName = event.target.id.substring(18);
-                var name = robotName + "-port";
-                var o = [];
-                $('[name="' + name + '"]').each(function (index, value) {
-                    var obj = {};
-                    var key = $(value).text();
-                    var valueElementName = '[name="' + robotName + '-' + key + '"]';
-                    var attr = $(valueElementName).attr("data-content");
-
-                    if (typeof attr !== typeof undefined && attr !== false) {
-                        obj[key] = $(valueElementName).attr("data-content");
-                    } else {
-                        obj[key] = $(valueElementName).text();
-                    }
-                    o.push(obj); // push in the "o" object created
-                });
-
-                var typeProperties = [];
-                $('[name="propertyForm-' + robotName + '"]').each(function (index, value) {
-                    var obj = {};
-                    obj["type"] = $(value).attr("id").substring(5);
-                    $(value).find(':input').each(function (index2, value2) {
-                        obj[$(value2).attr("name")] = $(value2).val();
-                    });
-                    typeProperties.push(obj);
-                });
-
-                var data = "robotName=" + robotName + "&modelConfigJson=" + JSON.stringify(o) +
-                        "&typeProperties=" + JSON.stringify(typeProperties);
-
-
-                $.ajax({
-                    type: 'POST',
-                    url: 'saveModelConfig',
-                    data: data,
-                    success: function (response) {
-                        var result = JSON.parse(response);
-                        if (result.status == "OK") {
-                            $('#configureRobotModal-' + robotName).modal('hide');
-                            $('#validationError-' + robotName).hide();
-                            alert("Successfully saved ");
-                        } else {
-                            $('#validationError-' + robotName).show();
-                            $('#validationError-' + robotName).text(result.errors);
-                        }
-                    },
-                    error: function (response, status, error) {
-                        alert(JSON.parse(response).message);
-
-                    }
-                });
-            });
+//            $('[name="saveModelConfig"]').click(function (event) {
+//                var robotName = event.target.id.substring(18);
+//                var name = robotName + "-port";
+//                var o = [];
+//                $('[name="' + name + '"]').each(function (index, value) {
+//                    var obj = {};
+//                    var key = $(value).text();
+//                    var valueElementName = '[name="' + robotName + '-' + key + '"]';
+//                    var attr = $(valueElementName).attr("data-content");
+//
+//                    if (typeof attr !== typeof undefined && attr !== false) {
+//                        obj[key] = $(valueElementName).attr("data-content");
+//                    } else {
+//                        obj[key] = $(valueElementName).text();
+//                    }
+//                    o.push(obj); // push in the "o" object created
+//                });
+//
+//                var typeProperties = [];
+//                $('[name="propertyForm-' + robotName + '"]').each(function (index, value) {
+//                    var obj = {};
+//                    obj["type"] = $(value).attr("id").substring(5);
+//                    $(value).find(':input').each(function (index2, value2) {
+//                        obj[$(value2).attr("name")] = $(value2).val();
+//                    });
+//                    typeProperties.push(obj);
+//                });
+//
+//                var data = "robotName=" + robotName + "&modelConfigJson=" + JSON.stringify(o) +
+//                        "&typeProperties=" + JSON.stringify(typeProperties);
+//
+//
+//                $.ajax({
+//                    type: 'POST',
+//                    url: 'saveModelConfig',
+//                    data: data,
+//                    success: function (response) {
+//                        var result = JSON.parse(response);
+//                        if (result.status == "OK") {
+//                            $('#configureRobotModal-' + robotName).modal('hide');
+//                            $('#validationError-' + robotName).hide();
+//                            alert("Successfully saved ");
+//                        } else {
+//                            $('#validationError-' + robotName).show();
+//                            $('#validationError-' + robotName).text(result.errors);
+//                        }
+//                    },
+//                    error: function (response, status, error) {
+//                        alert(JSON.parse(response).message);
+//
+//                    }
+//                });
+//            });
 
 
             $("#configureMenu a").click(function (event) {
@@ -231,7 +224,7 @@
 
 <body>
 
-<%@ include file="../include/navbar.jsp" %>
+<%@ include file="../../include/navbar.jsp" %>
 
 
 <!-- Main -->
