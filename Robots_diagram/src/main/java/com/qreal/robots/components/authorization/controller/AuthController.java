@@ -3,6 +3,14 @@ package com.qreal.robots.components.authorization.controller;
 import com.qreal.robots.components.authorization.model.auth.User;
 import com.qreal.robots.components.database.diagrams.service.DiagramService;
 import com.qreal.robots.components.database.users.service.UserService;
+import com.qreal.robots.components.database.users.service.a.UserDbServiceHandler;
+import com.qreal.robots.components.database.users.thrift.gen.UserDbService;
+import org.apache.thrift.TException;
+import org.apache.thrift.protocol.TBinaryProtocol;
+import org.apache.thrift.protocol.TProtocol;
+import org.apache.thrift.transport.TSocket;
+import org.apache.thrift.transport.TTransport;
+import org.apache.thrift.transport.TTransportException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -59,7 +67,26 @@ public class AuthController {
         }
 
         User user = new User(username, passwordEncoder.encode(password), true);
-        userService.save(user);
+
+        TTransport transport;
+        try {
+            transport = new TSocket("localhost", 9090);
+
+            TProtocol protocol = new TBinaryProtocol(transport);
+
+            UserDbService.Client client = new UserDbService.Client(protocol);
+            transport.open();
+
+            client.save(UserDbServiceHandler.convertFromUser(user));
+
+            transport.close();
+        } catch (TTransportException e) {
+            e.printStackTrace();
+        } catch (TException e) {
+            e.printStackTrace();
+        }
+
+        //userService.save(user);
         diagramService.createRootFolder(username);
         redirectAttributes.addFlashAttribute("msg", "Registered successfully. Log in to continue working");
         model.setViewName("redirect:/login");

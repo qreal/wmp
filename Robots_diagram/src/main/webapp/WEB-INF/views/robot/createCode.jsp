@@ -7,8 +7,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link rel="stylesheet" href="<c:url value='/resources/bootstrap/css/bootstrap.min.css' />"/>
     <link rel="stylesheet" href="<c:url value='/resources/css/base.css' />"/>
-
-    <script src="<c:url value='/resources/js/jquery-1.11.0.min.js' />"></script>
+    <jsp:include page="../include/scripts.jsp"/>
     <script src="<c:url value='/resources/bootstrap/js/bootstrap.min.js' />"></script>
     <script src="<c:url value='/resources/js/jquery-ui.min.js' />"></script>
 

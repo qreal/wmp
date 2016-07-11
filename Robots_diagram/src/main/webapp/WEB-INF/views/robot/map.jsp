@@ -5,7 +5,6 @@
 <head>
     <title>Robots online</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <script src="<c:url value='/resources/js/jquery-1.11.0.min.js' />"></script>
     <jsp:include page="../include/scripts.jsp"/>
     <script src="http://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
     <script src="<c:url value='/resources/js/map.js' />"></script>

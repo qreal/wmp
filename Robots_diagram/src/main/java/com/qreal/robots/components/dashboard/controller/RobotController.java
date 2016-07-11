@@ -20,10 +20,9 @@ public class RobotController {
     @RequestMapping(value = "/robot", method = RequestMethod.GET)
     public ModelAndView viewRobot() {
         ModelAndView model = new ModelAndView();
-        model.setViewName("robot/robot");
+        model.setViewName("robot/createCode");
         return model;
     }
-
 
 
     @RequestMapping(value = "/map", method = RequestMethod.GET)

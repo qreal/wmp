@@ -9,4 +9,5 @@ public interface UserDAO {
     public User findByUserName(String username);
 
     public boolean isUserExist(String username);
+
 }
