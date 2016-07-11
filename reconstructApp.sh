@@ -1,3 +1,6 @@
+cd Robots_diagram
+sh thriftGen.sh
+cd ..
 mvn clean install
 cd SharedResources/src/main/webapp
 sudo npm install
