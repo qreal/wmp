@@ -15,7 +15,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 
-@Service
+@Service("RobotService")
 public class RobotServiceImpl implements RobotService {
 
     private static final ObjectMapper mapper = new ObjectMapper();

@@ -11,4 +11,6 @@
 tscommand*
 overlays
 *.vux
+**/gen
+**/webapp/resources/thrift/
 *~*

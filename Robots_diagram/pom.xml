@@ -10,7 +10,6 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <groupId>qreal-web</groupId>
     <artifactId>robots-diagram</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
@@ -66,6 +65,21 @@
                             <goal>compile</goal>
                             <goal>generateTestStubs</goal>
                             <goal>testCompile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.thrift.tools</groupId>
+                <artifactId>maven-thrift-plugin</artifactId>
+                <version>0.1.11</version>
+                <executions>
+                    <execution>
+                        <id>thrift-sources</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>compile</goal>
                         </goals>
                     </execution>
                 </executions>
@@ -146,6 +160,21 @@
             <version>3.0.5</version>
         </dependency>
 
+        <!--Thrift-->
+        <dependency>
+            <groupId>org.apache.thrift</groupId>
+            <artifactId>libthrift</artifactId>
+            <version>0.9.3</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.thrift</groupId>
+            <artifactId>libthrift</artifactId>
+            <version>0.8.0</version>
+            <type>pom</type>
+        </dependency>
+
+
         <!-- Utilities -->
         <dependency>
             <groupId>org.codehaus.groovy</groupId>
@@ -158,6 +187,7 @@
             <artifactId>h2</artifactId>
             <version>1.4.187</version>
         </dependency>
+
 
     </dependencies>
 </project>
