@@ -7,9 +7,11 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Component("UserDAO")
 @Repository
 public class UserDAOImpl implements UserDAO {
 
@@ -25,6 +27,7 @@ public class UserDAOImpl implements UserDAO {
         this.sessionFactory = sessionFactory;
     }
 
+    @Transactional
     public void save(User user) {
         Session session = sessionFactory.getCurrentSession();
         session.save(user);
@@ -32,6 +35,7 @@ public class UserDAOImpl implements UserDAO {
         session.save(userRole);
     }
 
+    @Transactional
     public User findByUserName(String username) {
         Session session = sessionFactory.getCurrentSession();
 
@@ -40,6 +44,7 @@ public class UserDAOImpl implements UserDAO {
         return (users.size() > 0) ? users.get(0) : null;
     }
 
+    @Transactional
     public boolean isUserExist(String username) {
         Session session = sessionFactory.getCurrentSession();
 

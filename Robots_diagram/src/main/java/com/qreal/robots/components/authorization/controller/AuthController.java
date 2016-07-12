@@ -3,7 +3,7 @@ package com.qreal.robots.components.authorization.controller;
 import com.qreal.robots.components.authorization.model.auth.User;
 import com.qreal.robots.components.database.diagrams.service.DiagramService;
 import com.qreal.robots.components.database.users.service.UserService;
-import com.qreal.robots.components.database.users.service.a.UserDbServiceHandler;
+import com.qreal.robots.components.database.users.service.UserDbServiceHandler;
 import com.qreal.robots.components.database.users.thrift.gen.UserDbService;
 import org.apache.thrift.TException;
 import org.apache.thrift.protocol.TBinaryProtocol;

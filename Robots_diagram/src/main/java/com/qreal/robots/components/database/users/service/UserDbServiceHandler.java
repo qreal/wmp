@@ -1,6 +1,7 @@
 package com.qreal.robots.components.database.users.service;
 
 import com.qreal.robots.components.authorization.model.auth.User;
+import com.qreal.robots.components.database.users.DAO.UserDAO;
 import com.qreal.robots.components.database.users.thrift.gen.TUser;
 import com.qreal.robots.components.database.users.thrift.gen.UserDbService;
 import org.apache.thrift.TException;
@@ -9,6 +10,7 @@ import org.springframework.context.support.AbstractApplicationContext;
 /**
  * Created by artemiibezguzikov on 11.07.16.
  */
+
 public class UserDbServiceHandler implements UserDbService.Iface {
 
     private AbstractApplicationContext context;
@@ -19,8 +21,8 @@ public class UserDbServiceHandler implements UserDbService.Iface {
 
     @Override
     public void save(TUser user) throws TException {
-        UserService userService = (UserService) context.getBean("UserService");
-        userService.save(convertFromTUser(user));
+        UserDAO userDAO = (UserDAO) context.getBean("UserDAO");
+        userDAO.save(convertFromTUser(user));
     }
 
     @Override

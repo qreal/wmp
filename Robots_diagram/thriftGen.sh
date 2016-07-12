@@ -12,8 +12,9 @@ mkdir "$dashThriftDir/gen"
 thrift -gen java -out "$PWD/src/main/java" "$dashThriftDir/service/robotService.thrift"
 
 #client side
-dashClientDir="src/main/webapp/resources/thrift/dashboard"
-thrift -gen js -out "$dashClientDir" "$dashThriftDir/service/robotService.thrift"
+dashClientDir="src/main/webapp/resources/thrift"
+mkdir "$dashClientDir/dashboard"
+thrift -gen js -out "$dashClientDir/dashboard" "$dashThriftDir/service/robotService.thrift"
 
 #DBAuthorization service
 dbAuthThriftDir="src/main/java/com/qreal/robots/components/database/users/thrift"

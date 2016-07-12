@@ -4,12 +4,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
+import com.qreal.robots.common.socket.SocketClient;
 import com.qreal.robots.components.authorization.model.auth.User;
 import com.qreal.robots.components.dashboard.model.robot.Message;
 import com.qreal.robots.components.dashboard.model.robot.Robot;
 import com.qreal.robots.components.dashboard.model.robot.RobotInfo;
 import com.qreal.robots.components.dashboard.model.robot.RobotWrapper;
-import com.qreal.robots.common.socket.SocketClient;
 import com.qreal.robots.components.database.users.service.UserService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +48,7 @@ public class MainController {
         model.addObject("user", user);
         model.addObject("robotsWrapper", fullRobotInfo);
         model.setViewName("dashboard/JSP/index");
+
         return model;
     }
 

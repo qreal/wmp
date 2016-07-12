@@ -10,6 +10,7 @@ import org.springframework.context.support.AbstractApplicationContext;
 /**
  * Created by artemiibezguzikov on 11.07.16.
  */
+
 public class UserDbServer {
 
     public static UserDbServiceHandler handler;
@@ -20,10 +21,8 @@ public class UserDbServer {
             handler = new UserDbServiceHandler(context);
             processor = new UserDbService.Processor(handler);
 
-            Runnable simple = new Runnable() {
-                public void run() {
-                    simple(processor);
-                }
+            Runnable simple = () -> {
+                simple(processor);
             };
 
             new Thread(simple).start();
