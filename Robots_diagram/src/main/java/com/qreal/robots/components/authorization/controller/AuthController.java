@@ -2,7 +2,6 @@ package com.qreal.robots.components.authorization.controller;
 
 import com.qreal.robots.components.authorization.model.auth.User;
 import com.qreal.robots.components.database.diagrams.service.DiagramService;
-import com.qreal.robots.components.database.users.service.UserService;
 import com.qreal.robots.components.database.users.service.UserDbServiceHandler;
 import com.qreal.robots.components.database.users.thrift.gen.UserDbService;
 import org.apache.thrift.TException;
@@ -25,9 +24,6 @@ public class AuthController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
-
-    @Autowired
-    private UserService userService;
 
     @Autowired
     private DiagramService diagramService;
@@ -58,15 +54,6 @@ public class AuthController {
                                  @RequestParam(value = "password2") String password2,
                                  RedirectAttributes redirectAttributes) {
         ModelAndView model = new ModelAndView();
-        if (userService.isUserExist(username)) {
-            return registerError(model, String.format("User with %s name is already exist", username));
-        }
-
-        if (!password.equals(password2)) {
-            return registerError(model, String.format("Passwords are not equals"));
-        }
-
-        User user = new User(username, passwordEncoder.encode(password), true);
 
         TTransport transport;
         try {
@@ -77,6 +64,15 @@ public class AuthController {
             UserDbService.Client client = new UserDbService.Client(protocol);
             transport.open();
 
+            if (client.isUserExist(username)) {
+                return registerError(model, String.format("User with %s name is already exist", username));
+            }
+
+            if (!password.equals(password2)) {
+                return registerError(model, String.format("Passwords are not equals"));
+            }
+            User user = new User(username, passwordEncoder.encode(password), true);
+
             client.save(UserDbServiceHandler.convertFromUser(user));
 
             transport.close();
@@ -86,7 +82,6 @@ public class AuthController {
             e.printStackTrace();
         }
 
-        //userService.save(user);
         diagramService.createRootFolder(username);
         redirectAttributes.addFlashAttribute("msg", "Registered successfully. Log in to continue working");
         model.setViewName("redirect:/login");

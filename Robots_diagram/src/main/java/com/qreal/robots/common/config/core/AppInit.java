@@ -48,12 +48,9 @@ public class AppInit implements WebApplicationInitializer {
         // Registration UserDbService
         UserDbServer userDbServer = new UserDbServer(dispatcherContext);
 
-
         DelegatingFilterProxy filter = new DelegatingFilterProxy("springSecurityFilterChain");
         filter.setContextAttribute("org.springframework.web.servlet.FrameworkServlet.CONTEXT.dispatcher");
 
         servletContext.addFilter("springSecurityFilterChain", filter).addMappingForUrlPatterns(null, false, "/*");
     }
-
-
 }

@@ -27,14 +27,14 @@ public class UserDbServiceHandler implements UserDbService.Iface {
 
     @Override
     public TUser findByUserName(String username) throws TException {
-        UserService userService = (UserService) context.getBean("UserService");
-        return convertFromUser(userService.findByUserName(username));
+        UserDAO userDAO = (UserDAO) context.getBean("UserDAO");
+        return convertFromUser(userDAO.findByUserName(username));
     }
 
     @Override
     public boolean isUserExist(String username) throws TException {
-        UserService userService = (UserService) context.getBean("UserService");
-        return userService.isUserExist(username);
+        UserDAO userDAO = (UserDAO) context.getBean("UserDAO");
+        return userDAO.isUserExist(username);
     }
 
     public static User convertFromTUser(TUser tUser) {

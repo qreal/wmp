@@ -2,14 +2,21 @@ package com.qreal.robots.components.database.robots.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.qreal.robots.components.dashboard.controller.MainController;
-import com.qreal.robots.components.database.robots.DAO.RobotDAO;
-import com.qreal.robots.components.database.users.service.UserService;
+import com.qreal.robots.common.socket.SocketClient;
 import com.qreal.robots.components.authorization.model.auth.User;
+import com.qreal.robots.components.dashboard.controller.MainController;
 import com.qreal.robots.components.dashboard.model.robot.Message;
 import com.qreal.robots.components.dashboard.model.robot.Robot;
 import com.qreal.robots.components.dashboard.model.robot.RobotInfo;
-import com.qreal.robots.common.socket.SocketClient;
+import com.qreal.robots.components.database.robots.DAO.RobotDAO;
+import com.qreal.robots.components.database.users.service.UserDbServiceHandler;
+import com.qreal.robots.components.database.users.thrift.gen.UserDbService;
+import org.apache.thrift.TException;
+import org.apache.thrift.protocol.TBinaryProtocol;
+import org.apache.thrift.protocol.TProtocol;
+import org.apache.thrift.transport.TSocket;
+import org.apache.thrift.transport.TTransport;
+import org.apache.thrift.transport.TTransportException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -19,9 +26,6 @@ import org.springframework.stereotype.Service;
 public class RobotServiceImpl implements RobotService {
 
     private static final ObjectMapper mapper = new ObjectMapper();
-
-    @Autowired
-    private UserService userService;
 
     @Autowired
     private RobotDAO robotDAO;
@@ -35,7 +39,22 @@ public class RobotServiceImpl implements RobotService {
 
     @Override
     public String register(String name, String ssid) {
-        User user = userService.findByUserName(getUserName());
+        User user = new User();
+
+        TTransport transport;
+        try {
+            transport = new TSocket("localhost", 9090);
+            TProtocol protocol = new TBinaryProtocol(transport);
+            UserDbService.Client client = new UserDbService.Client(protocol);
+            transport.open();
+            user = UserDbServiceHandler.convertFromTUser(client.findByUserName(getUserName()));
+            transport.close();
+        } catch (TTransportException e) {
+            e.printStackTrace();
+        } catch (TException e) {
+            e.printStackTrace();
+        }
+
         if (!userRobotExists(user, name)) {
             robotDAO.save(new Robot(name, ssid, user));
             return "{\"status\":\"OK\"}";
