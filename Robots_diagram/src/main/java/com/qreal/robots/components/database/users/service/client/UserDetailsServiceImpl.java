@@ -1,6 +1,7 @@
-package com.qreal.robots.components.database.users.service;
+package com.qreal.robots.components.database.users.service.client;
 
 import com.qreal.robots.components.authorization.model.auth.UserRole;
+import com.qreal.robots.components.database.users.service.server.UserDbServiceHandler;
 import com.qreal.robots.components.database.users.thrift.gen.UserDbService;
 import org.apache.thrift.TException;
 import org.apache.thrift.protocol.TBinaryProtocol;
@@ -8,6 +9,7 @@ import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.transport.TSocket;
 import org.apache.thrift.transport.TTransport;
 import org.apache.thrift.transport.TTransportException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -27,6 +29,9 @@ import java.util.Set;
 @Service("userDetailsService")
 public class UserDetailsServiceImpl implements UserDetailsService {
 
+    @Autowired
+    UserService userService;
+
     @Transactional(readOnly = true)
     @Override
     public UserDetails loadUserByUsername(final String username)
@@ -35,19 +40,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         com.qreal.robots.components.authorization.model.auth.User user
                 = new com.qreal.robots.components.authorization.model.auth.User();
 
-        TTransport transport;
         try {
-            transport = new TSocket("localhost", 9090);
-
-            TProtocol protocol = new TBinaryProtocol(transport);
-
-            UserDbService.Client client = new UserDbService.Client(protocol);
-            transport.open();
-
-            user = UserDbServiceHandler.convertFromTUser(client.findByUserName(username));
-            transport.close();
-        } catch (TTransportException e) {
-            e.printStackTrace();
+            user =  userService.findByUserName(username);
         } catch (TException e) {
             e.printStackTrace();
         }

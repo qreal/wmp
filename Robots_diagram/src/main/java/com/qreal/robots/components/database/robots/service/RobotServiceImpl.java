@@ -9,7 +9,8 @@ import com.qreal.robots.components.dashboard.model.robot.Message;
 import com.qreal.robots.components.dashboard.model.robot.Robot;
 import com.qreal.robots.components.dashboard.model.robot.RobotInfo;
 import com.qreal.robots.components.database.robots.DAO.RobotDAO;
-import com.qreal.robots.components.database.users.service.UserDbServiceHandler;
+import com.qreal.robots.components.database.users.service.client.UserService;
+import com.qreal.robots.components.database.users.service.server.UserDbServiceHandler;
 import com.qreal.robots.components.database.users.thrift.gen.UserDbService;
 import org.apache.thrift.TException;
 import org.apache.thrift.protocol.TBinaryProtocol;
@@ -30,6 +31,9 @@ public class RobotServiceImpl implements RobotService {
     @Autowired
     private RobotDAO robotDAO;
 
+    @Autowired
+    UserService userService;
+
     @Override
     public String sendProgram(String robotName, String program) throws JsonProcessingException {
         Robot robot = robotDAO.findByName(robotName);
@@ -39,18 +43,10 @@ public class RobotServiceImpl implements RobotService {
 
     @Override
     public String register(String name, String ssid) {
-        User user = new User();
 
-        TTransport transport;
+        User user = null;
         try {
-            transport = new TSocket("localhost", 9090);
-            TProtocol protocol = new TBinaryProtocol(transport);
-            UserDbService.Client client = new UserDbService.Client(protocol);
-            transport.open();
-            user = UserDbServiceHandler.convertFromTUser(client.findByUserName(getUserName()));
-            transport.close();
-        } catch (TTransportException e) {
-            e.printStackTrace();
+            user = userService.findByUserName(name);
         } catch (TException e) {
             e.printStackTrace();
         }

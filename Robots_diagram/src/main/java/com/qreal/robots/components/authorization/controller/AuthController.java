@@ -2,7 +2,8 @@ package com.qreal.robots.components.authorization.controller;
 
 import com.qreal.robots.components.authorization.model.auth.User;
 import com.qreal.robots.components.database.diagrams.service.DiagramService;
-import com.qreal.robots.components.database.users.service.UserDbServiceHandler;
+import com.qreal.robots.components.database.users.service.client.UserService;
+import com.qreal.robots.components.database.users.service.server.UserDbServiceHandler;
 import com.qreal.robots.components.database.users.thrift.gen.UserDbService;
 import org.apache.thrift.TException;
 import org.apache.thrift.protocol.TBinaryProtocol;
@@ -27,6 +28,9 @@ public class AuthController {
 
     @Autowired
     private DiagramService diagramService;
+
+    @Autowired
+    private UserService userService;
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public ModelAndView login(@RequestParam(value = "error", required = false) String error) {
@@ -54,17 +58,9 @@ public class AuthController {
                                  @RequestParam(value = "password2") String password2,
                                  RedirectAttributes redirectAttributes) {
         ModelAndView model = new ModelAndView();
-
-        TTransport transport;
         try {
-            transport = new TSocket("localhost", 9090);
 
-            TProtocol protocol = new TBinaryProtocol(transport);
-
-            UserDbService.Client client = new UserDbService.Client(protocol);
-            transport.open();
-
-            if (client.isUserExist(username)) {
+            if (userService.isUserExist(username)) {
                 return registerError(model, String.format("User with %s name is already exist", username));
             }
 
@@ -73,12 +69,9 @@ public class AuthController {
             }
             User user = new User(username, passwordEncoder.encode(password), true);
 
-            client.save(UserDbServiceHandler.convertFromUser(user));
-
-            transport.close();
-        } catch (TTransportException e) {
-            e.printStackTrace();
-        } catch (TException e) {
+            userService.save(user);
+        }
+            catch (TException e) {
             e.printStackTrace();
         }
 

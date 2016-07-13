@@ -1,4 +1,4 @@
-package com.qreal.robots.components.database.users.service;
+package com.qreal.robots.components.database.users.service.server;
 
 import com.qreal.robots.components.database.users.thrift.gen.UserDbService;
 import org.apache.thrift.server.TServer;

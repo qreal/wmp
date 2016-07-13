@@ -1,4 +1,4 @@
-package com.qreal.robots.components.database.users.service;
+package com.qreal.robots.components.database.users.service.server;
 
 import com.qreal.robots.components.authorization.model.auth.User;
 import com.qreal.robots.components.database.users.DAO.UserDAO;
@@ -6,10 +6,6 @@ import com.qreal.robots.components.database.users.thrift.gen.TUser;
 import com.qreal.robots.components.database.users.thrift.gen.UserDbService;
 import org.apache.thrift.TException;
 import org.springframework.context.support.AbstractApplicationContext;
-
-/**
- * Created by artemiibezguzikov on 11.07.16.
- */
 
 public class UserDbServiceHandler implements UserDbService.Iface {
 

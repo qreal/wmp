@@ -1,7 +1,7 @@
 package com.qreal.robots.common.config.core;
 
 import com.qreal.robots.components.dashboard.controller.RobotRestServlet;
-import com.qreal.robots.components.database.users.service.UserDbServer;
+import com.qreal.robots.components.database.users.service.server.UserDbServer;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;

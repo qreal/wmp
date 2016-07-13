@@ -10,7 +10,8 @@ import com.qreal.robots.components.dashboard.model.robot.Message;
 import com.qreal.robots.components.dashboard.model.robot.Robot;
 import com.qreal.robots.components.dashboard.model.robot.RobotInfo;
 import com.qreal.robots.components.dashboard.model.robot.RobotWrapper;
-import com.qreal.robots.components.database.users.service.UserDbServiceHandler;
+import com.qreal.robots.components.database.users.service.client.UserService;
+import com.qreal.robots.components.database.users.service.server.UserDbServiceHandler;
 import com.qreal.robots.components.database.users.thrift.gen.UserDbService;
 import org.apache.log4j.Logger;
 import org.apache.thrift.TException;
@@ -19,6 +20,7 @@ import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.transport.TSocket;
 import org.apache.thrift.transport.TTransport;
 import org.apache.thrift.transport.TTransportException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,6 +35,9 @@ import java.util.Set;
 @Controller
 public class MainController {
 
+    @Autowired
+    private UserService userService;
+
     public static final String HOST_NAME = "127.0.0.1";
     public static final int PORT = 9002;
 
@@ -43,20 +48,9 @@ public class MainController {
     @RequestMapping("/")
     public ModelAndView home(HttpSession session) {
 
-        User user = new User();
-        TTransport transport;
+        User user = null;
         try {
-            transport = new TSocket("localhost", 9090);
-
-            TProtocol protocol = new TBinaryProtocol(transport);
-
-            UserDbService.Client client = new UserDbService.Client(protocol);
-            transport.open();
-
-            user = UserDbServiceHandler.convertFromTUser(client.findByUserName(getUserName()));
-            transport.close();
-        } catch (TTransportException e) {
-            e.printStackTrace();
+            user = userService.findByUserName(getUserName());
         } catch (TException e) {
             e.printStackTrace();
         }

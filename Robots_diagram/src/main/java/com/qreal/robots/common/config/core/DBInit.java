@@ -1,6 +1,8 @@
 package com.qreal.robots.common.config.core;
 
+import com.qreal.robots.components.authorization.model.auth.User;
 import com.qreal.robots.components.database.diagrams.service.DiagramService;
+import com.qreal.robots.components.database.users.service.client.UserService;
 import com.qreal.robots.components.database.users.thrift.gen.TUser;
 import com.qreal.robots.components.database.users.thrift.gen.UserDbService;
 import org.apache.thrift.TException;
@@ -9,6 +11,7 @@ import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.transport.TSocket;
 import org.apache.thrift.transport.TTransport;
 import org.apache.thrift.transport.TTransportException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
@@ -31,32 +34,23 @@ public class DBInit implements ApplicationListener {
 
             DiagramService diagramService = (DiagramService) applicationContext.getBean("DiagramService");
             PasswordEncoder encoder = (PasswordEncoder) applicationContext.getBean("PasswordEncoder");
+            UserService userService = (UserService) applicationContext.getBean("UserService");
 
             diagramService.createRootFolder("123");
 
-            TTransport transport;
             try {
-                transport = new TSocket("localhost", 9090);
-
-                TProtocol protocol = new TBinaryProtocol(transport);
-
-                UserDbService.Client client = new UserDbService.Client(protocol);
-                transport.open();
-
-                if (client.isUserExist("123")) {
+                if (userService.isUserExist("123")) {
                     return;
                 }
-
-                TUser user = new TUser("123", encoder.encode("123"), true);
-                client.save(user);
-                transport.close();
-
-            } catch (TTransportException e) {
-                e.printStackTrace();
             } catch (TException e) {
                 e.printStackTrace();
             }
 
+            try {
+                userService.save(new User("123", encoder.encode("123"), true));
+            } catch (TException e) {
+                e.printStackTrace();
+            }
 
         }
     }
