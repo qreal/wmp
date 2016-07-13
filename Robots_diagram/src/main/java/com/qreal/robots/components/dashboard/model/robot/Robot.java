@@ -22,6 +22,15 @@ public class Robot {
         this.owner = owner;
         this.name = name;
         this.ssid = ssid;
+        owner.getRobots().add(this);
+    }
+
+    public Robot(int id, String name, String ssid, User owner) {
+        this.id = id;
+        this.owner = owner;
+        this.name = name;
+        this.ssid = ssid;
+        owner.getRobots().add(this);
     }
 
     @Id

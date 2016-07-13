@@ -1,25 +1,14 @@
 package com.qreal.robots.components.dashboard.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
-import com.qreal.robots.common.socket.SocketClient;
 import com.qreal.robots.components.authorization.model.auth.User;
-import com.qreal.robots.components.dashboard.model.robot.Message;
 import com.qreal.robots.components.dashboard.model.robot.Robot;
 import com.qreal.robots.components.dashboard.model.robot.RobotInfo;
 import com.qreal.robots.components.dashboard.model.robot.RobotWrapper;
 import com.qreal.robots.components.database.users.service.client.UserService;
-import com.qreal.robots.components.database.users.service.server.UserDbServiceHandler;
-import com.qreal.robots.components.database.users.thrift.gen.UserDbService;
 import org.apache.log4j.Logger;
 import org.apache.thrift.TException;
-import org.apache.thrift.protocol.TBinaryProtocol;
-import org.apache.thrift.protocol.TProtocol;
-import org.apache.thrift.transport.TSocket;
-import org.apache.thrift.transport.TTransport;
-import org.apache.thrift.transport.TTransportException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -27,8 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -56,7 +44,8 @@ public class MainController {
         }
 
 
-        List<RobotWrapper> fullRobotInfo = getFullRobotInfo(user.getRobots(), getOnlineRobots(user));
+        Set<Robot> mRobots = user.getRobots();
+        List<RobotWrapper> fullRobotInfo = getFullRobotInfo(mRobots, new ArrayList<RobotInfo>());
         session.setAttribute("fullRobotInfo", fullRobotInfo);
 
         ModelAndView model = new ModelAndView();
@@ -84,34 +73,6 @@ public class MainController {
         return robotsWrapper;
     }
 
-    private List<RobotInfo> getOnlineRobots(User user) {
-        SocketClient socketClient = new SocketClient(HOST_NAME, PORT);
-
-        if (socketClient.hostAvailable()) {
-            try {
-                String response = socketClient.sendMessage(getUserOnlineRobots(user));
-                return mapper.readValue(response,
-                        new TypeReference<List<RobotInfo>>() {
-                        });
-            } catch (IOException e) {
-                LOG.error("Error getting online robots", e);
-            }
-        } else {
-            LOG.warn("Robot routing server is offline. Robot data is unavailable ");
-        }
-        return Collections.emptyList();
-
-    }
-
-    private String getUserOnlineRobots(User user) throws JsonProcessingException {
-        List<RobotInfo> robots = Lists.newArrayList();
-        for (Robot robot : user.getRobots()) {
-            robots.add(new RobotInfo(user.getUsername(), robot.getName(), robot.getSsid()));
-        }
-
-        Message message = new Message("WebApp", "getOnlineRobots", robots);
-        return mapper.writeValueAsString(message);
-    }
 
     private String getUserName() {
         return SecurityContextHolder.getContext().getAuthentication().getName();

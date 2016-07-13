@@ -37,6 +37,14 @@ public class User {
         this.userRole = userRole;
     }
 
+    public User(String username, String password, boolean enabled, Set<UserRole> userRole, Set<Robot> robots) {
+        this.username = username;
+        this.password = password;
+        this.enabled = enabled;
+        this.userRole = userRole;
+        this.robots = robots;
+    }
+
     @Id
     @Column(name = "username", unique = true,
             nullable = false, length = 45)

@@ -46,7 +46,7 @@ public class RobotServiceImpl implements RobotService {
 
         User user = null;
         try {
-            user = userService.findByUserName(name);
+            user = userService.findByUserName(getUserName());
         } catch (TException e) {
             e.printStackTrace();
         }

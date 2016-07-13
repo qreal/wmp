@@ -22,6 +22,12 @@ public class UserRole {
         this.role = role;
     }
 
+    public UserRole(int id, User user, String role) {
+        this.userRoleId = id;
+        this.user = user;
+        this.role = role;
+    }
+
     @Id
     @GeneratedValue(strategy = IDENTITY)
     @Column(name = "user_role_id",
