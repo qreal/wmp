@@ -39,6 +39,6 @@ struct DiagramDAO {
 service EditorServiceThrift {
     i64 saveDiagram(1: DiagramDAO diagram);
    /* DiagramDAO openDiagram(1: i64 diagramID);
-    void deleteDiagram(1: i64 diagramID);
-    void rewriteDiagram(1: DiagramDAO diagram);*/
+    void deleteDiagram(1: i64 diagramID);*/
+    void rewriteDiagram(1: DiagramDAO diagram);
 }

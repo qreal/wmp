@@ -175,7 +175,7 @@ class DiagramMenuController {
         this.currentDiagramName = diagramName;
         this.currentDiagramFolder = this.currentFolder;
 
-        var transport = new Thrift.TXHRTransport("http://localhost:8080/Robots_diagram/Editor");
+        var transport = new Thrift.TXHRTransport("http://localhost:8080/Robots_diagram/editorService");
         var protocol  = new Thrift.TJSONProtocol(transport);
         var client    = new EditorServiceThriftClient(protocol);
         try {
@@ -201,23 +201,20 @@ class DiagramMenuController {
             $('#diagrams').modal('show');
             this.saveDiagramAs();
         } else {
-            $.ajax({
-                type: 'POST',
-                url: 'updateDiagram',
-                dataType: 'text',
-                contentType: 'application/json',
-                data: JSON.stringify(
-                    menuManager.diagramExporter.exportUpdatingDiagramStateToJSON(this.diagramEditorController.getGraph(),
-                    this.diagramEditorController.getDiagramParts(), this.currentDiagramName, this.currentDiagramFolder)),
-                success: function (response, status, jqXHR): any {
-                    if (menuManager.canBeDeleted) {
-                        menuManager.diagramEditorController.clearAll();
-                    }
-                },
-                error: function (response, status, error): any {
-                    console.log("error: " + status + " " + error);
+            var transport = new Thrift.TXHRTransport("http://localhost:8080/Robots_diagram/editorService");
+            var protocol  = new Thrift.TJSONProtocol(transport);
+            var client    = new EditorServiceThriftClient(protocol);
+            try {
+                var diagram = this.diagramThriftExporter.exportUpdatingDiagramState(this.diagramEditorController.getGraph(),
+                    this.diagramEditorController.getDiagramParts(), this.currentDiagramName, this.currentDiagramFolder);
+                client.rewriteDiagram(diagram);
+                if (menuManager.canBeDeleted) {
+                    menuManager.diagramEditorController.clearAll();
                 }
-            });
+            }
+            catch (ouch) {
+                console.log("Error: can't update diagram");
+            }
         }
     }
 

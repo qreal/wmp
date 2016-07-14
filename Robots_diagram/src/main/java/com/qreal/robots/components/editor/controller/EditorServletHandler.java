@@ -26,4 +26,11 @@ class EditorServletHandler implements EditorServiceThrift.Iface {
         request.setFolderId(diagram.getFolderId());
         return diagramService.saveDiagram(request);
     }
+
+    @Override
+    public void rewriteDiagram(DiagramDAO diagram) {
+        DiagramService diagramService = (DiagramService) context.getBean("DiagramService");
+        Diagram newDiagram = converter.convertDiagram(diagram);
+        diagramService.rewriteDiagram(newDiagram);
+    }
 }
