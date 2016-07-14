@@ -2,7 +2,7 @@ package com.qreal.robots.components.dashboard.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.qreal.robots.common.socket.SocketClient;
+import com.qreal.robots.components.dashboard.socket.SocketClient;
 import com.qreal.robots.components.dashboard.model.robot.Message;
 import com.qreal.robots.components.dashboard.model.robot.Robot;
 import com.qreal.robots.components.dashboard.model.robot.RobotInfo;

@@ -1,10 +1,10 @@
-<%@ include file="../../include/include.jsp" %>
+<%@ include file="../include/include.jsp" %>
 
 <html lang="en">
 <head>
     <title>Robots Diagram</title>
 
-    <jsp:include page="../../include/scripts.jsp"/>
+    <jsp:include page="../include/scripts.jsp"/>
     <link rel="stylesheet" href="<c:url value='/resources/css/error.css'/>"/>
     <script src="<c:url value='/resources/js/map.js' />"></script>
     <script src="<c:url value='/resources/js/robot.js' />"></script>
@@ -224,7 +224,7 @@
 
 <body>
 
-<%@ include file="../../include/navbar.jsp" %>
+<%@ include file="../include/navbar.jsp" %>
 
 
 <!-- Main -->

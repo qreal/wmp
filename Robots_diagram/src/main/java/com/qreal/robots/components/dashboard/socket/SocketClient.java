@@ -1,4 +1,4 @@
-package com.qreal.robots.common.socket;
+package com.qreal.robots.components.dashboard.socket;
 
 import org.apache.log4j.Logger;
 

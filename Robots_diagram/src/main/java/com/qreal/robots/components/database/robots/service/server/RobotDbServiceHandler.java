@@ -18,7 +18,7 @@ public class RobotDbServiceHandler implements RobotDbService.Iface{
     }
 
     @Override
-    public String registerRobot(TRobot tRobot) throws TException {
+    public void registerRobot(TRobot tRobot) throws TException {
         UserService userService = (UserService) context.getBean("UserService");
         RobotDAO robotDAO = (RobotDAO) context.getBean("RobotDAO");
         User user = null;
@@ -30,9 +30,6 @@ public class RobotDbServiceHandler implements RobotDbService.Iface{
 
         if (!userRobotExists(user, tRobot.getName())) {
             robotDAO.save(convertToRobot(tRobot, user));
-            return "{\"status\":\"OK\"}";
-        } else {
-            return String.format("{\"status\":\"ERROR\", \"message\":\"Robot with name %s is already exists\"}", tRobot.getName());
         }
     }
 
@@ -43,11 +40,10 @@ public class RobotDbServiceHandler implements RobotDbService.Iface{
     }
 
     @Override
-    public String deleteRobot(String name) throws TException {
+    public void deleteRobot(String name) throws TException {
         RobotDAO robotDAO = (RobotDAO) context.getBean("RobotDAO");
         Robot robot = robotDAO.findByName(name);
         robotDAO.delete(robot);
-        return "{\"message\":\"OK\"}";
     }
 
     private boolean userRobotExists(User user, String name) {

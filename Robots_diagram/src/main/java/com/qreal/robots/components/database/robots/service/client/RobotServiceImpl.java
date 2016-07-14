@@ -31,17 +31,15 @@ public class RobotServiceImpl implements RobotService {
     }
 
     @Override
-    public String register(Robot robot) throws TException {
+    public void register(Robot robot) throws TException {
         transport.open();
-        String result = client.registerRobot(RobotDbServiceHandler.convertFromRobot(robot));
+        client.registerRobot(RobotDbServiceHandler.convertFromRobot(robot));
         transport.close();
-        return result;
     }
 
     @Override
-    public String registerByUsername(Robot robot, String username) throws TException {
+    public void registerByUsername(Robot robot, String username) throws TException {
         robot.setOwner(userService.findByUserName(username));
-        return register(robot);
     }
 
     @Override
@@ -53,11 +51,9 @@ public class RobotServiceImpl implements RobotService {
     }
 
     @Override
-    public String delete(String name) throws TException {
+    public void delete(String name) throws TException {
         transport.open();
-        String result = client.deleteRobot(name);
         transport.close();
-        return result;
     }
 
 }
