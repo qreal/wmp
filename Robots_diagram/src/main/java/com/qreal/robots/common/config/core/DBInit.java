@@ -2,13 +2,11 @@ package com.qreal.robots.common.config.core;
 
 import com.qreal.robots.components.authorization.model.auth.User;
 import com.qreal.robots.components.database.diagrams.service.DiagramService;
-import com.qreal.robots.components.database.users.DAO.UserDAO;
 import com.qreal.robots.components.database.users.service.UserService;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.context.event.EventListener;

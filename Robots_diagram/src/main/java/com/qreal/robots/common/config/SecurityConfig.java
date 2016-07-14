@@ -34,6 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         httpSecurity.authorizeRequests()
                 .antMatchers("/RobotRest/**").permitAll()
+                .antMatchers("/editorService/**").permitAll()
                 .antMatchers("/resources/**").permitAll()
                 .antMatchers("/register").permitAll()
                 .antMatchers("/**").authenticated()

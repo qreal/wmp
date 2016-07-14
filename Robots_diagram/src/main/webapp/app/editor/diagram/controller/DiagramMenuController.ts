@@ -1,15 +1,19 @@
-
 /// <reference path="exporters/RobotsDiagramExporter.ts" />
+/// <reference path="exporters/DiagramThriftExporter.ts" />
 /// <reference path="../model/Diagram.ts" />
 /// <reference path="../model/Folder.ts" />
 /// <reference path="../model/DiagramMenuElement.ts" />
 /// <reference path="../../interfaces/diagramCore.d.ts" />
 /// <reference path="../../interfaces/vendor.d.ts" />
+/// <reference path="../../../../resources/thrift/editor/editorService_types.d.ts" />
+/// <reference path="../../../../resources/thrift/editor/EditorServiceThrift.d.ts" />
+/// <reference path="../../../../resources/types/thrift/Thrift.d.ts" />
 
 class DiagramMenuController {
 
     private diagramEditorController: RobotsDiagramEditorController;
     private diagramExporter: RobotsDiagramExporter;
+    private diagramThriftExporter: DiagramThriftExporter;
     private currentDiagramName: string;
     private currentDiagramFolder: Folder;
     private canBeDeleted: boolean;
@@ -21,6 +25,7 @@ class DiagramMenuController {
     constructor(diagramEditorController: RobotsDiagramEditorController) {
         this.diagramEditorController = diagramEditorController;
         this.diagramExporter = new RobotsDiagramExporter();
+        this.diagramThriftExporter = new DiagramThriftExporter();
         this.currentDiagramName = "";
         this.currentDiagramFolder = null;
         this.canBeDeleted = false;
@@ -169,27 +174,25 @@ class DiagramMenuController {
         var menuManager = this;
         this.currentDiagramName = diagramName;
         this.currentDiagramFolder = this.currentFolder;
-        $.ajax({
-            type: 'POST',
-            url: 'saveDiagram',
-            dataType: 'text',
-            contentType: 'application/json',
-            data: JSON.stringify(
-                menuManager.diagramExporter.exportSavingDiagramStateToJSON(this.diagramEditorController.getGraph(),
-                this.diagramEditorController.getDiagramParts(), diagramName, this.currentFolder.getId())),
-            success: function (diagramId, status, jqXHR): any {
-                menuManager.currentFolder.addDiagram(new Diagram(diagramId, diagramName));
-                menuManager.currentFolder = menuManager.folderTree;
-                $('#diagrams').modal('hide');
 
-                if (menuManager.canBeDeleted) {
-                    menuManager.diagramEditorController.clearAll();
-                }
-            },
-            error: function (response, status, error): any {
-                console.log("error: " + status + " " + error);
+        var transport = new Thrift.TXHRTransport("http://localhost:8080/Robots_diagram/Editor");
+        var protocol  = new Thrift.TJSONProtocol(transport);
+        var client    = new EditorServiceThriftClient(protocol);
+        try {
+            var diagram = this.diagramThriftExporter.exportSavingDiagramState(this.diagramEditorController.getGraph(),
+                this.diagramEditorController.getDiagramParts(), diagramName, this.currentFolder.getId());
+            var diagramId = client.saveDiagram(diagram);
+            menuManager.currentFolder.addDiagram(new Diagram(diagramId, diagramName));
+            menuManager.currentFolder = menuManager.folderTree;
+            $('#diagrams').modal('hide');
+
+            if (menuManager.canBeDeleted) {
+                menuManager.diagramEditorController.clearAll();
             }
-        });
+        }
+        catch (ouch) {
+            console.log("Error: can't save diagram");
+        }
     }
 
     private updateCurrentDiagramInDatabase(): void {

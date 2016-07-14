@@ -1,15 +1,12 @@
 package com.qreal.robots.common.config.core;
 
-import com.qreal.robots.common.config.WebConfig;
 import com.qreal.robots.components.dashboard.controller.RobotRestServlet;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.test.context.ActiveProfiles;
+import com.qreal.robots.components.editor.controller.EditorServlet;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.servlet.DispatcherServlet;
-import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -47,7 +44,9 @@ public class AppInit implements WebApplicationInitializer {
         robotService.setLoadOnStartup(1);
         robotService.addMapping("/RobotRest");
 
-
+        ServletRegistration.Dynamic diagramService = servletContext.addServlet("DiagramService", new EditorServlet(dispatcherContext));
+        diagramService.setLoadOnStartup(1);
+        diagramService.addMapping("/editorService");
 
         DelegatingFilterProxy filter = new DelegatingFilterProxy("springSecurityFilterChain");
         filter.setContextAttribute("org.springframework.web.servlet.FrameworkServlet.CONTEXT.dispatcher");
