@@ -18,6 +18,11 @@ public class Robot {
     public Robot() {
     }
 
+    public Robot(String name, String ssid) {
+        this.name = name;
+        this.ssid = ssid;
+    }
+
     public Robot(String name, String ssid, User owner) {
         this.owner = owner;
         this.name = name;

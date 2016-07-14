@@ -1,6 +1,7 @@
 package com.qreal.robots.common.config.core;
 
 import com.qreal.robots.components.dashboard.controller.RobotRestServlet;
+import com.qreal.robots.components.database.robots.service.server.RobotDbServer;
 import com.qreal.robots.components.database.users.service.server.UserDbServer;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
@@ -41,12 +42,15 @@ public class AppInit implements WebApplicationInitializer {
         dispatcher.addMapping("/");
 
         // Registration RestService
-        ServletRegistration.Dynamic robotService = servletContext.addServlet("RobotRestServlet", new RobotRestServlet(dispatcherContext));
-        robotService.setLoadOnStartup(1);
-        robotService.addMapping("/RobotRest");
+        ServletRegistration.Dynamic robotRestService = servletContext.addServlet("RobotRestServlet", new RobotRestServlet(dispatcherContext));
+        robotRestService.setLoadOnStartup(1);
+        robotRestService.addMapping("/RobotRest");
 
         // Registration UserDbService
         UserDbServer userDbServer = new UserDbServer(dispatcherContext);
+
+        // Registration RobotDbService
+        RobotDbServer robotDbServer = new RobotDbServer(dispatcherContext);
 
         DelegatingFilterProxy filter = new DelegatingFilterProxy("springSecurityFilterChain");
         filter.setContextAttribute("org.springframework.web.servlet.FrameworkServlet.CONTEXT.dispatcher");

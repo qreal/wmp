@@ -21,3 +21,9 @@ dbAuthThriftDir="src/main/java/com/qreal/robots/components/database/users/thrift
 mkdir -p "$dbAuthThriftDir/gen"
 thrift -gen java:beans -out "$PWD/src/main/java" "$dbAuthThriftDir/service/User.thrift"
 thrift -gen java -out "$PWD/src/main/java" "$dbAuthThriftDir/service/UserDbService.thrift"
+
+#DBRobots service
+dbRobotThriftDir="src/main/java/com/qreal/robots/components/database/robots/thrift"
+mkdir -p "$dbRobotThriftDir/gen"
+thrift -gen java -out "$PWD/src/main/java" "$dbRobotThriftDir/RobotDbService.thrift"
+thrift -gen java -out "$PWD/src/main/java" "$dbRobotThriftDir/Robot.thrift"

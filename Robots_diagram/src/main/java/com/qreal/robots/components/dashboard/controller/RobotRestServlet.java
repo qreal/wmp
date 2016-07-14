@@ -8,7 +8,7 @@ import org.springframework.context.support.AbstractApplicationContext;
 //Rest Controller with Thrift
 public class RobotRestServlet extends TServlet {
 
-    //Thrift part of application is not a part of Spring context. But it needs DB services which atre maintained by Spring.
+    //Thrift part of application is not a part of Spring context. But it needs DB services which are maintained by Spring.
     // So we pass context to Thrift part and it can get DB services from spring part.
 
     public RobotRestServlet(AbstractApplicationContext context) {
