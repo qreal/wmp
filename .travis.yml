@@ -4,8 +4,7 @@ jdk:
 
 os:
   - linux
-dist:
-  trusty
+dist: trusty
 
 before_install:
   - sudo apt-get update -y
@@ -13,14 +12,15 @@ before_install:
   - sudo apt-get install libboost-all-dev libevent-dev g++ bison libssl-dev -y
   - sudo apt-get install nodejs npm -y
   - sudo apt-get install thrift-compiler -y #install version 0.9.0.3
+  - sudo apt-get install curl -y
 
 install:
-
   - ./buildApp.sh
 
 script:
   - cd Robots_diagram
-  - mvn clean tomcat7:run-war
+  - mvn clean tomcat7:run-war &
+  - ../Travis/callTomcat.sh
 
 notifications:
   slack: qreal-web:sT5qgA4qZZ9eyLI0yy2Mp81E

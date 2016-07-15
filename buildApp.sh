@@ -1,14 +1,16 @@
 cd Robots_diagram
 sh thriftGen.sh
 cd ..
-mvn clean install
+sudo mvn clean
+mvn install
 cd SharedResources/src/main/webapp
 sudo npm install
 grunt
 cd ../../..
-mvn clean install
+sudo mvn clean
+mvn install
 cd ../Robots_diagram/src/main/webapp
 sudo npm install
 grunt
 cd ../../../..
-echo "Now use IntelliJ to start project"
+echo "Now use tomcat7 to start project"
