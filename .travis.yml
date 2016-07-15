@@ -7,7 +7,7 @@ os:
 
 install:
   - sudo apt-get update -y
-  - sudo apt-get upgrade -y
+  # - sudo apt-get upgrade -y
   - sudo apt-get install libboost-all-dev libevent-dev g++ bison libssl-dev -y
   - sudo apt-get install nodejs npm -y
   - sudo apt-get install thrift-compiler -y
