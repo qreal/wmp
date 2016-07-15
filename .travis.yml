@@ -1,0 +1,16 @@
+language: java
+jdk:
+  - oraclejdk8
+
+os:
+  - linux
+
+install:
+  - ./reconstructApp.sh
+
+script:
+  - cd Robots_diagram
+  - mvn clean tomcat7:run-war
+
+notifications:
+  slack: qreal-web:sT5qgA4qZZ9eyLI0yy2Mp81E
