@@ -5,7 +5,7 @@ jdk:
 os:
   - linux
 dist:
-  -trusty
+  trusty
 
 before_install:
   - sudo apt-get update -y
