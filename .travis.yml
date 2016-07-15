@@ -6,11 +6,11 @@ os:
   - linux
 
 install:
-  - sudo apt-get update
-  - sudo apt-get upgrade
-  - sudo apt-get install libboost-all-dev libevent-dev g++ bison libssl-dev
-  - sudo apt-get install nodejs npm
-  - sudo apt-get install thrift-compiler
+  - sudo apt-get update -y
+  - sudo apt-get upgrade -y
+  - sudo apt-get install libboost-all-dev libevent-dev g++ bison libssl-dev -y
+  - sudo apt-get install nodejs npm -y
+  - sudo apt-get install thrift-compiler -y
   - ./buildApp.sh
 
 script:
