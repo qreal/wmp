@@ -1,15 +1,17 @@
 #!/bin/bash
-
-until [ "`curl --silent --show-error --connect-timeout 1 -I http://localhost:8080/Robots_diagram | grep 'Coyote'`" != "" ];
+iter=1
+all=20
+until [ "`curl --silent --show-error --connect-timeout 1 -I http://localhost:8080/Robots_diagram | grep '302 Found'`" != "" ];
 do
-  echo --- sleeping for 10 seconds
-  sleep 10
+  if [ "$iter" -lt "$all" ]
+  then
+    echo "--- sleeping for 10 seconds"
+    sleep 10
+    let iter=$iter+1
+  else
+    echo "Server didn't return 302 found for long time"
+    exit 1
+  fi
 done
-if ["`curl --silent --show-error --connect-timeout 1 -I http://localhost:8080/Robots_diagram | grep '200'`" != ""]
-then
-  echo "0"
-  exit 0
-else
-  echo "1"
-  exit 1
-fi
+echo "Server returned 302 found"
+exit 0
