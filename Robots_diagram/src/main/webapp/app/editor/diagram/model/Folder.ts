@@ -6,7 +6,7 @@ class Folder {
     private childrenFolders: Folder[];
     private diagrams: Diagram[];
 
-    public static createFromDAO(folder: FolderDAO, parent: Folder): Folder {
+    public static createFromDAO(folder: TFolder, parent: Folder): Folder {
         var diagrams: Diagram[] = [];
         for (var i = 0; i < folder.diagrams.length; i++) {
             diagrams.push(Diagram.createFromDAO(folder.diagrams[i]));

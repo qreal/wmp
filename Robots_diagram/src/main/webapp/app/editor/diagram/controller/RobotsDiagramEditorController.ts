@@ -54,7 +54,7 @@ class RobotsDiagramEditorController extends DiagramEditorController {
         this.paletteController.initDraggable();
     }
 
-    public handleLoadedDiagramJson(diagram: DiagramDAO): void {
+    public handleLoadedDiagramJson(diagram: TDiagram): void {
         var diagramParts: DiagramParts = this.diagramParser.parse(diagram, this.nodeTypesMap);
         var paper = this.diagramEditor.getPaper();
         paper.addNodesFromMap(diagramParts.nodesMap);

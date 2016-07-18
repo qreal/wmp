@@ -3,13 +3,13 @@
 
 class DiagramThriftParser extends DiagramJsonParser {
 
-    public parse(diagram: DiagramDAO, nodeTypesMap: Map<NodeType>): DiagramParts {
+    public parse(diagram: TDiagram, nodeTypesMap: Map<NodeType>): DiagramParts {
         var diagramParts: DiagramParts = this.parseNodes(diagram, nodeTypesMap, 0, 0);
         diagramParts.linksMap = this.parseLinks(diagram, 0, 0);
         return diagramParts;
     }
 
-    protected parseDiagramNodeObject(nodeObject: DefaultDiagramNodeDAO, nodeTypesMap: Map<NodeType>,
+    protected parseDiagramNodeObject(nodeObject: TDefaultDiagramNode, nodeTypesMap: Map<NodeType>,
                                      offsetX: number, offsetY: number): DiagramNode {
         var changeableLogicalProperties: Map<Property> = {};
         var name = "";
@@ -54,7 +54,7 @@ class DiagramThriftParser extends DiagramJsonParser {
     }
 
 
-    protected parseLinkObject(linkObject: LinkDAO, offsetX: number, offsetY: number): Link {
+    protected parseLinkObject(linkObject: TLink, offsetX: number, offsetY: number): Link {
         var sourceId: string = "";
         var targetId: string = "";
 

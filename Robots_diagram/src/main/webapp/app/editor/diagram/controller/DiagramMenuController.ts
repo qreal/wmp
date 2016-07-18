@@ -4,7 +4,7 @@
 /// <reference path="../model/DiagramMenuElement.ts" />
 /// <reference path="../../interfaces/diagramCore.d.ts" />
 /// <reference path="../../interfaces/vendor.d.ts" />
-/// <reference path="../../../../resources/thrift/editor/editorService_types.d.ts" />
+/// <reference path="../../../../resources/thrift/editor/EditorService_types.d.ts" />
 /// <reference path="../../../../resources/thrift/editor/EditorServiceThrift.d.ts" />
 /// <reference path="../../../../resources/types/thrift/Thrift.d.ts" />
 
@@ -142,7 +142,7 @@ class DiagramMenuController {
     private createFolderInDatabase(folderName: string): void {
         var menuManager = this;
         try {
-            var folder = new FolderDAO();
+            var folder = new TFolder();
             folder.folderName = folderName;
             folder.folderParentId = menuManager.currentFolder.getId();
             var folderId = menuManager.getClient().createFolder(folder);

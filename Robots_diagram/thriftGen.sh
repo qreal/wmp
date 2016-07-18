@@ -40,9 +40,9 @@ thrift -gen java -out "$PWD/src/main/java" "$dbDiagramThriftDir/DiagramDbService
 #service side
 editorThriftDir="src/main/java/com/qreal/robots/components/editor/thrift"
 mkdir -p "$editorThriftDir/gen"
-thrift -gen java -out "$PWD/src/main/java" "$editorThriftDir/service/editorService.thrift"
+thrift -gen java -out "$PWD/src/main/java" "$editorThriftDir/service/EditorService.thrift"
 
 #client side
 editorClientDir="src/main/webapp/resources/thrift/editor"
 mkdir -p "$editorClientDir"
-thrift -gen js:ts -out "$editorClientDir" "$editorThriftDir/service/editorService.thrift"
+thrift -gen js:ts -out "$editorClientDir" "$editorThriftDir/service/EditorService.thrift"

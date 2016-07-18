@@ -3,7 +3,7 @@ class Diagram {
     private id: number;
     private name: string;
 
-    public static createFromDAO(diagram: DiagramDAO) {
+    public static createFromDAO(diagram: TDiagram) {
         return new Diagram(diagram.diagramId, diagram.name)
     }
 

@@ -1,12 +1,12 @@
 /// <reference path="../../../interfaces/diagramCore.d.ts" />
 /// <reference path="../../model/Diagram.ts" />
-/// <reference path="../../../../../resources/thrift/editor/editorService_types.d.ts" />
+/// <reference path="../../../../../resources/thrift/editor/EditorService_types.d.ts" />
 /// <reference path="../../../../../resources/thrift/editor/EditorServiceThrift.d.ts" />
 
 class DiagramThriftExporter extends DiagramExporter {
     public exportSavingDiagramState(graph: joint.dia.Graph, diagramParts: DiagramParts,
                                           name: string, folderId: number) {
-        var newDiagram = new DiagramDAO();
+        var newDiagram = new TDiagram();
         newDiagram.name = name;
         newDiagram.folderId = folderId;
         newDiagram.diagramId = -1;
@@ -19,7 +19,7 @@ class DiagramThriftExporter extends DiagramExporter {
 
     public exportUpdatingDiagramState(graph: joint.dia.Graph, diagramParts: DiagramParts,
                                             name: string, parentFolder: Folder) {
-        var newDiagram = new DiagramDAO();
+        var newDiagram = new TDiagram();
         newDiagram.name = name;
         newDiagram.folderId = parentFolder.getId();
         newDiagram.diagramId = parentFolder.getDiagramIdByName(name);
@@ -35,19 +35,19 @@ class DiagramThriftExporter extends DiagramExporter {
 
         for (var id in diagramParts.nodesMap) {
             var node: DiagramNode = diagramParts.nodesMap[id];
-            var newNode = new DefaultDiagramNodeDAO();
+            var newNode = new TDefaultDiagramNode();
             newNode.logicalId = node.getLogicalId();
             newNode.graphicalId = node.getJointObject().id;
             newNode.type = node.getType();
             newNode.properties = this.exportProperties(node.getChangeableProperties());
 
-            var nameProperty = new PropertyDAO();
+            var nameProperty = new TProperty();
             nameProperty.name = "name";
             nameProperty.value = node.getName();
             nameProperty.type = "string";
             newNode.properties.push(nameProperty);
 
-            var positionProperty = new PropertyDAO();
+            var positionProperty = new TProperty();
             positionProperty.name = "position";
             positionProperty.value = "" + node.getX() + ", " + node.getY();
             positionProperty.type = "QPointF";
@@ -65,13 +65,13 @@ class DiagramThriftExporter extends DiagramExporter {
         for (var id in diagramParts.linksMap) {
             var link: Link = diagramParts.linksMap[id];
             var jointObject = link.getJointObject();
-            var newLink = new LinkDAO();
+            var newLink = new TLink();
             newLink.logicalId = link.getLogicalId();
             newLink.graphicalId = jointObject.id;
             newLink.type = link.getType();
             newLink.properties = this.exportProperties(link.getChangeableProperties());
 
-            var nameProperty = new PropertyDAO();
+            var nameProperty = new TProperty();
             nameProperty.name = "name";
             nameProperty.value = link.getName();
             nameProperty.type = "string";
@@ -84,7 +84,7 @@ class DiagramThriftExporter extends DiagramExporter {
             "/{" + jointObject.get('source').id + "}" :
                 "qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID";
 
-            var sourceProperty = new PropertyDAO();
+            var sourceProperty = new TProperty();
             sourceProperty.name = "from";
             sourceProperty.value = "qrm:/RobotsMetamodel/RobotsDiagram/" + graphicalSourceValue;
             sourceProperty.type = "qReal::Id";
@@ -93,7 +93,7 @@ class DiagramThriftExporter extends DiagramExporter {
             "/{" + jointObject.get('target').id + "}" :
                 "qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID";
 
-            var targetProperty = new PropertyDAO();
+            var targetProperty = new TProperty();
             targetProperty.name = "to";
             targetProperty.value = "qrm:/RobotsMetamodel/RobotsDiagram/" + graphicalTargetValue;
             targetProperty.type = "qReal::Id";
@@ -101,7 +101,7 @@ class DiagramThriftExporter extends DiagramExporter {
             newLink.properties.push(sourceProperty);
             newLink.properties.push(targetProperty);
 
-            var configProperty = new PropertyDAO();
+            var configProperty = new TProperty();
             configProperty.name = "configuration";
             configProperty.value = this.exportVertices(jointObject);
             configProperty.type = "QPolygon";
@@ -117,7 +117,7 @@ class DiagramThriftExporter extends DiagramExporter {
         var newProperties = [];
         for (var propertyName in properties) {
             var type: string = properties[propertyName].type;
-            var newProperty = new PropertyDAO();
+            var newProperty = new TProperty();
             type = (type === "string" || type === "combobox" || type == "checkbox" || type == "dropdown") ?
                 "QString" : type;
             newProperty.name = propertyName;

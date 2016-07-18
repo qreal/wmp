@@ -4,9 +4,9 @@ import com.qreal.robots.components.database.diagrams.service.client.DiagramServi
 import com.qreal.robots.components.editor.model.diagram.Diagram;
 import com.qreal.robots.components.editor.model.diagram.DiagramRequest;
 import com.qreal.robots.components.editor.model.diagram.Folder;
-import com.qreal.robots.components.editor.thrift.gen.DiagramDAO;
 import com.qreal.robots.components.editor.thrift.gen.EditorServiceThrift;
-import com.qreal.robots.components.editor.thrift.gen.FolderDAO;
+import com.qreal.robots.components.editor.thrift.gen.TDiagram;
+import com.qreal.robots.components.editor.thrift.gen.TFolder;
 import org.springframework.context.support.AbstractApplicationContext;
 
 import java.util.ArrayList;
@@ -23,9 +23,9 @@ class EditorServletHandler implements EditorServiceThrift.Iface {
     }
 
     @Override
-    public long saveDiagram(DiagramDAO diagram) throws org.apache.thrift.TException {
+    public long saveDiagram(TDiagram diagram) throws org.apache.thrift.TException {
         DiagramService diagramService = (DiagramService) context.getBean("DiagramService");
-        Diagram newDiagram = converter.convertDiagramFromDAO(diagram);
+        Diagram newDiagram = converter.convertFromTDiagram(diagram);
         DiagramRequest request = new DiagramRequest();
         request.setDiagram(newDiagram);
         request.setFolderId(diagram.getFolderId());
@@ -33,9 +33,9 @@ class EditorServletHandler implements EditorServiceThrift.Iface {
     }
 
     @Override
-    public void rewriteDiagram(DiagramDAO diagram) {
+    public void rewriteDiagram(TDiagram diagram) {
         DiagramService diagramService = (DiagramService) context.getBean("DiagramService");
-        Diagram newDiagram = converter.convertDiagramFromDAO(diagram);
+        Diagram newDiagram = converter.convertFromTDiagram(diagram);
         diagramService.rewriteDiagram(newDiagram);
     }
 
@@ -46,13 +46,13 @@ class EditorServletHandler implements EditorServiceThrift.Iface {
     }
 
     @Override
-    public DiagramDAO openDiagram(long diagramId) {
+    public TDiagram openDiagram(long diagramId) {
         DiagramService diagramService = (DiagramService) context.getBean("DiagramService");
-        return converter.convertDiagramToDAO(diagramService.openDiagram(diagramId));
+        return converter.convertToTDiagram(diagramService.openDiagram(diagramId));
     }
 
     @Override
-    public long createFolder(FolderDAO folder) {
+    public long createFolder(TFolder folder) {
         DiagramService diagramService = (DiagramService) context.getBean("DiagramService");
         Folder newFolder = new Folder();
         newFolder.setFolderName(folder.getFolderName());
@@ -72,7 +72,7 @@ class EditorServletHandler implements EditorServiceThrift.Iface {
     }
 
     @Override
-    public FolderDAO getFolderTree() {
+    public TFolder getFolderTree() {
         DiagramService diagramService = (DiagramService) context.getBean("DiagramService");
         return converter.convertFolderTree(diagramService.getFolderTree());
     }

@@ -8,7 +8,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 public class EditorInterfaceConverter {
-    public Diagram convertDiagramFromDAO(DiagramDAO diagram) {
+    public Diagram convertFromTDiagram(TDiagram diagram) {
         if (diagram == null)
             return null;
 
@@ -19,20 +19,20 @@ public class EditorInterfaceConverter {
         else
             newDiagram.setDiagramId(diagram.getDiagramId());
 
-        Iterator<DefaultDiagramNodeDAO> itr = diagram.getNodes().iterator();
+        Iterator<TDefaultDiagramNode> itr = diagram.getNodes().iterator();
         Set<DefaultDiagramNode> nodes = new HashSet<DefaultDiagramNode>();
         while(itr.hasNext()) {
-            DefaultDiagramNodeDAO node = itr.next();
+            TDefaultDiagramNode node = itr.next();
             DefaultDiagramNode newNode = new DefaultDiagramNode();
 
             newNode.setLogicalId(node.getLogicalId());
             newNode.setGraphicalId(node.getGraphicalId());
             newNode.setType(node.getType());
 
-            Iterator<PropertyDAO> pItr = node.getProperties().iterator();
+            Iterator<TProperty> pItr = node.getProperties().iterator();
             Set<NodeProperty> properties = new HashSet<NodeProperty>();
             while(pItr.hasNext()) {
-                PropertyDAO property = pItr.next();
+                TProperty property = pItr.next();
                 NodeProperty newProperty = new NodeProperty();
                 newProperty.setName(property.getName());
                 newProperty.setPropertyId(property.getPropertyId());
@@ -45,19 +45,19 @@ public class EditorInterfaceConverter {
         }
         newDiagram.setNodes(nodes);
 
-        Iterator<LinkDAO> itrL = diagram.getLinks().iterator();
+        Iterator<TLink> itrL = diagram.getLinks().iterator();
         Set<Link> links = new HashSet<Link>();
         while (itrL.hasNext()) {
-            LinkDAO link = itrL.next();
+            TLink link = itrL.next();
             Link newLink = new Link();
 
             newLink.setLogicalId(link.getLogicalId());
             newLink.setGraphicalId(link.getGraphicalId());
 
-            Iterator<PropertyDAO> pItr = link.getProperties().iterator();
+            Iterator<TProperty> pItr = link.getProperties().iterator();
             Set<LinkProperty> properties = new HashSet<LinkProperty>();
             while(pItr.hasNext()) {
-                PropertyDAO property = pItr.next();
+                TProperty property = pItr.next();
                 LinkProperty newProperty = new LinkProperty();
                 newProperty.setName(property.getName());
                 newProperty.setPropertyId(property.getPropertyId());
@@ -72,29 +72,29 @@ public class EditorInterfaceConverter {
         return newDiagram;
     }
 
-    public DiagramDAO convertDiagramToDAO(Diagram diagram) {
+    public TDiagram convertToTDiagram(Diagram diagram) {
         if (diagram == null)
             return null;
 
-        DiagramDAO newDiagram = new DiagramDAO();
+        TDiagram newDiagram = new TDiagram();
         newDiagram.setDiagramId(diagram.getDiagramId());
         newDiagram.setName(diagram.getName());
 
         Iterator<DefaultDiagramNode> itr = diagram.getNodes().iterator();
-        Set<DefaultDiagramNodeDAO> nodes = new HashSet<DefaultDiagramNodeDAO>();
+        Set<TDefaultDiagramNode> nodes = new HashSet<TDefaultDiagramNode>();
         while(itr.hasNext()) {
             DefaultDiagramNode node = itr.next();
-            DefaultDiagramNodeDAO newNode = new DefaultDiagramNodeDAO();
+            TDefaultDiagramNode newNode = new TDefaultDiagramNode();
 
             newNode.setLogicalId(node.getLogicalId());
             newNode.setGraphicalId(node.getGraphicalId());
             newNode.setType(node.getType());
 
             Iterator<NodeProperty> pItr = node.getProperties().iterator();
-            Set<PropertyDAO> properties = new HashSet<PropertyDAO>();
+            Set<TProperty> properties = new HashSet<TProperty>();
             while(pItr.hasNext()) {
                 NodeProperty property = pItr.next();
-                PropertyDAO newProperty = new PropertyDAO();
+                TProperty newProperty = new TProperty();
                 newProperty.setName(property.getName());
                 newProperty.setPropertyId(property.getPropertyId());
                 newProperty.setType(property.getType());
@@ -107,19 +107,19 @@ public class EditorInterfaceConverter {
         newDiagram.setNodes(nodes);
 
         Iterator<Link> itrL = diagram.getLinks().iterator();
-        Set<LinkDAO> links = new HashSet<LinkDAO>();
+        Set<TLink> links = new HashSet<TLink>();
         while (itrL.hasNext()) {
             Link link = itrL.next();
-            LinkDAO newLink = new LinkDAO();
+            TLink newLink = new TLink();
 
             newLink.setLogicalId(link.getLogicalId());
             newLink.setGraphicalId(link.getGraphicalId());
 
             Iterator<LinkProperty> pItr = link.getProperties().iterator();
-            Set<PropertyDAO> properties = new HashSet<PropertyDAO>();
+            Set<TProperty> properties = new HashSet<TProperty>();
             while(pItr.hasNext()) {
                 LinkProperty property = pItr.next();
-                PropertyDAO newProperty = new PropertyDAO();
+                TProperty newProperty = new TProperty();
                 newProperty.setName(property.getName());
                 newProperty.setPropertyId(property.getPropertyId());
                 newProperty.setType(property.getType());
@@ -134,21 +134,21 @@ public class EditorInterfaceConverter {
         return newDiagram;
     }
 
-    public FolderDAO convertFolderTree(Folder node) {
-        FolderDAO folder = new FolderDAO();
+    public TFolder convertFolderTree(Folder node) {
+        TFolder folder = new TFolder();
         folder.setFolderName(node.getFolderName());
         folder.setFolderId(node.getFolderId());
         if (node.getFolderParentId() != null)
             folder.setFolderParentId(node.getFolderParentId());
 
-        Set<DiagramDAO> diagrams = new HashSet<DiagramDAO>();
+        Set<TDiagram> diagrams = new HashSet<TDiagram>();
         Iterator<Diagram> itrD = node.getDiagrams().iterator();
         while (itrD.hasNext()) {
             Diagram diagram = itrD.next();
-            diagrams.add(convertDiagramToDAO(diagram));
+            diagrams.add(convertToTDiagram(diagram));
         }
 
-        Set<FolderDAO> children = new HashSet<FolderDAO>();
+        Set<TFolder> children = new HashSet<TFolder>();
         Iterator<Folder> itrF = node.getChildrenFolders().iterator();
         while (itrF.hasNext()) {
             Folder child = itrF.next();
