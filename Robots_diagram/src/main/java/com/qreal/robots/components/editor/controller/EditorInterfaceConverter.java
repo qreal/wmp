@@ -138,7 +138,8 @@ public class EditorInterfaceConverter {
         FolderDAO folder = new FolderDAO();
         folder.setFolderName(node.getFolderName());
         folder.setFolderId(node.getFolderId());
-        folder.setFolderParentId(node.getFolderParentId());
+        if (node.getFolderParentId() != null)
+            folder.setFolderParentId(node.getFolderParentId());
 
         Set<DiagramDAO> diagrams = new HashSet<DiagramDAO>();
         Iterator<Diagram> itrD = node.getDiagrams().iterator();

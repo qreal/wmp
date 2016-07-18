@@ -3,8 +3,8 @@ class Diagram {
     private id: number;
     private name: string;
 
-    public static createFromJson(diagramJson: any) {
-        return new Diagram(diagramJson.diagramId, diagramJson.name)
+    public static createFromDAO(diagram: DiagramDAO) {
+        return new Diagram(diagram.diagramId, diagram.name)
     }
 
     constructor(id: number, name: string) {

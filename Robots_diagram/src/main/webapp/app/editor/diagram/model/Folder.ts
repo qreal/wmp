@@ -6,18 +6,18 @@ class Folder {
     private childrenFolders: Folder[];
     private diagrams: Diagram[];
 
-    public static createFromJson(folderJson: any, parent: Folder): Folder {
+    public static createFromDAO(folder: FolderDAO, parent: Folder): Folder {
         var diagrams: Diagram[] = [];
-        for (var i = 0; i < folderJson.diagrams.length; i++) {
-            diagrams.push(Diagram.createFromJson(folderJson.diagrams[i]));
+        for (var i = 0; i < folder.diagrams.length; i++) {
+            diagrams.push(Diagram.createFromDAO(folder.diagrams[i]));
         }
-        var resutlFolder: Folder = new Folder(folderJson.folderId, folderJson.folderName, parent, diagrams);
+        var resultFolder: Folder = new Folder(folder.folderId, folder.folderName, parent, diagrams);
 
-        for (var i = 0; i < folderJson.childrenFolders.length; i++) {
-            resutlFolder.addChild(Folder.createFromJson(folderJson.childrenFolders[i], resutlFolder));
+        for (var i = 0; i < folder.childrenFolders.length; i++) {
+            resultFolder.addChild(Folder.createFromDAO(folder.childrenFolders[i], resultFolder));
         }
 
-        return resutlFolder;
+        return resultFolder;
     }
 
     constructor(id: number, name: string, parent: Folder, diagrams: Diagram[]= [], childrenFolders: Folder[] = []) {
