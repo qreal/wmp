@@ -11,6 +11,8 @@ dashThriftDir="src/main/java/com/qreal/robots/components/dashboard/thrift"
 mkdir -p "$dashThriftDir/gen"
 thrift -gen java -out "$PWD/src/main/java" "$dashThriftDir/service/robotService.thrift"
 
+mkdir "src/main/webapp/resources/thrift/"
+
 #client side
 dashClientDir="src/main/webapp/resources/thrift"
 mkdir -p "$dashClientDir/dashboard"
@@ -27,3 +29,14 @@ dbRobotThriftDir="src/main/java/com/qreal/robots/components/database/robots/thri
 mkdir -p "$dbRobotThriftDir/gen"
 thrift -gen java -out "$PWD/src/main/java" "$dbRobotThriftDir/RobotDbService.thrift"
 thrift -gen java -out "$PWD/src/main/java" "$dbRobotThriftDir/Robot.thrift"
+
+#Editor service
+#service side
+editorThriftDir="src/main/java/com/qreal/robots/components/editor/thrift"
+mkdir -p "$editorThriftDir/gen"
+thrift -gen java -out "$PWD/src/main/java" "$editorThriftDir/service/editorService.thrift"
+
+#client side
+editorClientDir="src/main/webapp/resources/thrift/editor"
+mkdir -p "$editorClientDir"
+thrift -gen js:ts -out "$editorClientDir" "$editorThriftDir/service/editorService.thrift"

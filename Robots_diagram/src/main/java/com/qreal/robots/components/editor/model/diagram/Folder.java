@@ -54,6 +54,8 @@ public class Folder implements Serializable {
         return this.folderName;
     }
 
+    public void setFolderParentId(Long folderParentId) { this.folderParentId = folderParentId; }
+
     public Long getFolderParentId() {
         return this.folderParentId;
     }

@@ -3,6 +3,7 @@ package com.qreal.robots.common.config.core;
 import com.qreal.robots.components.dashboard.controller.RobotRestServlet;
 import com.qreal.robots.components.database.robots.service.server.RobotDbServer;
 import com.qreal.robots.components.database.users.service.server.UserDbServer;
+import com.qreal.robots.components.editor.controller.EditorServlet;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
@@ -45,6 +46,10 @@ public class AppInit implements WebApplicationInitializer {
         ServletRegistration.Dynamic robotRestService = servletContext.addServlet("RobotRestServlet", new RobotRestServlet(dispatcherContext));
         robotRestService.setLoadOnStartup(1);
         robotRestService.addMapping("/RobotRest");
+
+        ServletRegistration.Dynamic diagramService = servletContext.addServlet("DiagramService", new EditorServlet(dispatcherContext));
+        diagramService.setLoadOnStartup(1);
+        diagramService.addMapping("/editorService");
 
         // Registration UserDbService
         UserDbServer userDbServer = new UserDbServer(dispatcherContext);
