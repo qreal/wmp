@@ -28,19 +28,14 @@ class DiagramMenuController {
         this.canBeDeleted = false;
 
         var menuManager = this;
-
-        $.ajax({
-            type: 'GET',
-            url: 'getFolderTree',
-            dataType: 'json',
-            success: function (response, status, jqXHR) {
-                menuManager.folderTree = Folder.createFromJson(response, null);
-                menuManager.currentFolder = menuManager.folderTree;
-            },
-            error: function (response, status, error) {
-                console.log("error: " + status + " " + error);
-            }
-        });
+        try {
+            var folderTree = menuManager.getClient().getFolderTree();
+            menuManager.folderTree = Folder.createFromDAO(folderTree, null);
+            menuManager.currentFolder = menuManager.folderTree;
+        }
+        catch (ouch) {
+            console.log("Error: can't get folder tree");
+        }
 
         $(document).ready(function() {
             $('.modal-footer button').click(function() {
@@ -146,14 +141,11 @@ class DiagramMenuController {
 
     private createFolderInDatabase(folderName: string): void {
         var menuManager = this;
-        var transport = new Thrift.TXHRTransport("http://localhost:8080/Robots_diagram/editorService");
-        var protocol  = new Thrift.TJSONProtocol(transport);
-        var client    = new EditorServiceThriftClient(protocol);
         try {
             var folder = new FolderDAO();
             folder.folderName = folderName;
             folder.folderParentId = menuManager.currentFolder.getId();
-            var folderId = client.createFolder(folder);
+            var folderId = menuManager.getClient().createFolder(folder);
             menuManager.currentFolder.addChild(
                 new Folder(folderId, folderName, menuManager.currentFolder));
             menuManager.showFolderMenu();
@@ -168,18 +160,13 @@ class DiagramMenuController {
         var menuManager = this;
         this.currentDiagramName = diagramName;
         this.currentDiagramFolder = this.currentFolder;
-
-        var transport = new Thrift.TXHRTransport("http://localhost:8080/Robots_diagram/editorService");
-        var protocol  = new Thrift.TJSONProtocol(transport);
-        var client    = new EditorServiceThriftClient(protocol);
         try {
             var diagram = this.diagramThriftExporter.exportSavingDiagramState(this.diagramEditorController.getGraph(),
                 this.diagramEditorController.getDiagramParts(), diagramName, this.currentFolder.getId());
-            var diagramId = client.saveDiagram(diagram);
+            var diagramId = menuManager.getClient().saveDiagram(diagram);
             menuManager.currentFolder.addDiagram(new Diagram(diagramId, diagramName));
             menuManager.currentFolder = menuManager.folderTree;
             $('#diagrams').modal('hide');
-
             if (menuManager.canBeDeleted) {
                 menuManager.diagramEditorController.clearAll();
             }
@@ -195,13 +182,10 @@ class DiagramMenuController {
             $('#diagrams').modal('show');
             this.saveDiagramAs();
         } else {
-            var transport = new Thrift.TXHRTransport("http://localhost:8080/Robots_diagram/editorService");
-            var protocol  = new Thrift.TJSONProtocol(transport);
-            var client    = new EditorServiceThriftClient(protocol);
             try {
                 var diagram = this.diagramThriftExporter.exportUpdatingDiagramState(this.diagramEditorController.getGraph(),
                     this.diagramEditorController.getDiagramParts(), this.currentDiagramName, this.currentDiagramFolder);
-                client.rewriteDiagram(diagram);
+                menuManager.getClient().rewriteDiagram(diagram);
                 if (menuManager.canBeDeleted) {
                     menuManager.diagramEditorController.clearAll();
                 }
@@ -217,12 +201,8 @@ class DiagramMenuController {
         this.currentDiagramName = diagramName;
         this.currentDiagramFolder = this.currentFolder;
         this.currentFolder = this.folderTree;
-
-        var transport = new Thrift.TXHRTransport("http://localhost:8080/Robots_diagram/editorService");
-        var protocol  = new Thrift.TJSONProtocol(transport);
-        var client    = new EditorServiceThriftClient(protocol);
         try {
-            var diagram = client.openDiagram(menuManager.currentDiagramFolder.getDiagramIdByName(diagramName));
+            var diagram = menuManager.getClient().openDiagram(menuManager.currentDiagramFolder.getDiagramIdByName(diagramName));
             menuManager.diagramEditorController.clearState();
             menuManager.diagramEditorController.handleLoadedDiagramJson(diagram);
         }
@@ -253,24 +233,8 @@ class DiagramMenuController {
 
     private deleteFolderFromDatabase(folderName: string) {
         var menuManager = this;
-        /*$.ajax({
-            type: 'POST',
-            url: 'deleteFolder',
-            contentType: 'application/json',
-            data: (JSON.stringify({id: menuManager.currentFolder.findChildByName(folderName).getId()})),
-            success: function () {
-                menuManager.currentFolder.deleteChildByName(folderName);
-                menuManager.showFolderTable(menuManager.currentFolder);
-            },
-            error: function (response, status, error) {
-                console.log("error: " + status + " " + error);
-            }
-        });*/
-        var transport = new Thrift.TXHRTransport("http://localhost:8080/Robots_diagram/editorService");
-        var protocol  = new Thrift.TJSONProtocol(transport);
-        var client    = new EditorServiceThriftClient(protocol);
         try {
-            client.deleteFolder(menuManager.currentFolder.findChildByName(folderName).getId());
+            menuManager.getClient().deleteFolder(menuManager.currentFolder.findChildByName(folderName).getId());
             menuManager.currentFolder.deleteChildByName(folderName);
             menuManager.showFolderTable(menuManager.currentFolder);
         }
@@ -316,7 +280,6 @@ class DiagramMenuController {
 
     private showFolderTable(openingFolder): void {
         var menuManager = this;
-
         this.clearFolderTable();
         this.currentFolder = openingFolder;
         var folderNames: string[] = this.currentFolder.getChildrenNames();
@@ -378,5 +341,10 @@ class DiagramMenuController {
             $("#" + controller.contextMenuId).hide(100);
         });
     }
-    
+
+    private getClient(): EditorServiceThriftClient {
+        var transport = new Thrift.TXHRTransport("http://localhost:8080/Robots_diagram/editorService");
+        var protocol = new Thrift.TJSONProtocol(transport);
+        return new EditorServiceThriftClient(protocol);
+    }
 }
