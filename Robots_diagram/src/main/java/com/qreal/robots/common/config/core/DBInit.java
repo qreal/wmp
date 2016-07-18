@@ -1,7 +1,7 @@
 package com.qreal.robots.common.config.core;
 
 import com.qreal.robots.components.authorization.model.auth.User;
-import com.qreal.robots.components.database.diagrams.service.DiagramService;
+import com.qreal.robots.components.database.diagrams.service.client.DiagramService;
 import com.qreal.robots.components.database.users.service.client.UserService;
 import org.apache.thrift.TException;
 import org.springframework.context.ApplicationContext;

@@ -1,6 +1,7 @@
 package com.qreal.robots.common.config.core;
 
 import com.qreal.robots.components.dashboard.controller.RobotRestServlet;
+import com.qreal.robots.components.database.diagrams.service.server.DiagramDbServer;
 import com.qreal.robots.components.database.robots.service.server.RobotDbServer;
 import com.qreal.robots.components.database.users.service.server.UserDbServer;
 import com.qreal.robots.components.editor.controller.EditorServlet;
@@ -56,6 +57,9 @@ public class AppInit implements WebApplicationInitializer {
 
         // Registration RobotDbService
         RobotDbServer robotDbServer = new RobotDbServer(dispatcherContext);
+
+        // Registration DiagramDbService
+        DiagramDbServer diagramDbServer = new DiagramDbServer(dispatcherContext);
 
         DelegatingFilterProxy filter = new DelegatingFilterProxy("springSecurityFilterChain");
         filter.setContextAttribute("org.springframework.web.servlet.FrameworkServlet.CONTEXT.dispatcher");

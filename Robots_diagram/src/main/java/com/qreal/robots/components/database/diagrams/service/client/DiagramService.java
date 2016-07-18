@@ -1,4 +1,4 @@
-package com.qreal.robots.components.database.diagrams.service;
+package com.qreal.robots.components.database.diagrams.service.client;
 
 import com.qreal.robots.components.editor.model.diagram.Diagram;
 import com.qreal.robots.components.editor.model.diagram.DiagramRequest;

@@ -1,6 +1,6 @@
 package com.qreal.robots.components.editor.controller;
 
-import com.qreal.robots.components.database.diagrams.service.DiagramService;
+import com.qreal.robots.components.database.diagrams.service.client.DiagramService;
 import com.qreal.robots.components.editor.model.diagram.Diagram;
 import com.qreal.robots.components.editor.model.diagram.DiagramRequest;
 import com.qreal.robots.components.editor.model.diagram.Folder;

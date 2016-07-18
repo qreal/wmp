@@ -27,8 +27,14 @@ thrift -gen java -out "$PWD/src/main/java" "$dbAuthThriftDir/service/UserDbServi
 #DBRobots service
 dbRobotThriftDir="src/main/java/com/qreal/robots/components/database/robots/thrift"
 mkdir -p "$dbRobotThriftDir/gen"
+thrift -gen java:beans -out "$PWD/src/main/java" "$dbRobotThriftDir/Robot.thrift"
 thrift -gen java -out "$PWD/src/main/java" "$dbRobotThriftDir/RobotDbService.thrift"
-thrift -gen java -out "$PWD/src/main/java" "$dbRobotThriftDir/Robot.thrift"
+
+#DBDiagrams service
+dbDiagramThriftDir="src/main/java/com/qreal/robots/components/database/diagrams/thrift"
+mkdir -p "$dbDiagramThriftDir/gen"
+thrift -gen java:beans -out "$PWD/src/main/java" "$dbDiagramThriftDir/Diagram.thrift"
+thrift -gen java -out "$PWD/src/main/java" "$dbDiagramThriftDir/DiagramDbService.thrift"
 
 #Editor service
 #service side
