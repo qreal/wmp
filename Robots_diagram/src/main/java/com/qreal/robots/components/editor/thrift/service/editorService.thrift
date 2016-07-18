@@ -36,9 +36,20 @@ struct DiagramDAO {
     6 : i64 folderId
 }
 
+struct FolderDAO {
+    1 : i64 folderId,
+    2 : string folderName,
+    3 : i64 folderParentId,
+    4 : set<FolderDAO> childrenFolders,
+    5 : set<DiagramDAO> diagrams
+}
+
 service EditorServiceThrift {
     i64 saveDiagram(1: DiagramDAO diagram);
-   /* DiagramDAO openDiagram(1: i64 diagramID);
-    void deleteDiagram(1: i64 diagramID);*/
+    DiagramDAO openDiagram(1: i64 diagramID);
+    void deleteDiagram(1: i64 diagramId);
     void rewriteDiagram(1: DiagramDAO diagram);
+    i64 createFolder(1: FolderDAO folder);
+    void deleteFolder(1: i64 folderId);
+    FolderDAO getFolderTree();
 }

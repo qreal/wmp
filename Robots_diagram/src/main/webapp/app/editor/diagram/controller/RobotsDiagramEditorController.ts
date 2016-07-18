@@ -1,17 +1,18 @@
 /// <reference path="DiagramMenuController.ts" />
+/// <reference path="parsers/DiagramThriftParser.ts" />
 /// <reference path="../../interfaces/interpreter.d.ts" />
 /// <reference path="../../interfaces/diagramCore.d.ts" />
 /// <reference path="../../interfaces/vendor.d.ts" />
 
 class RobotsDiagramEditorController extends DiagramEditorController {
 
-    private diagramJsonParser: DiagramJsonParser;
+    private diagramParser: DiagramThriftParser;
     private menuController: DiagramMenuController;
     private diagramInterpreter: Interpreter;
 
     constructor($scope, $attrs) {
         super($scope, $attrs);
-        this.diagramJsonParser = new RobotsDiagramJsonParser();
+        this.diagramParser = new DiagramThriftParser();
         this.menuController = new DiagramMenuController(this);
         this.diagramInterpreter = new Interpreter();
 
@@ -53,8 +54,8 @@ class RobotsDiagramEditorController extends DiagramEditorController {
         this.paletteController.initDraggable();
     }
 
-    public handleLoadedDiagramJson(diagramJson: any): void {
-        var diagramParts: DiagramParts = this.diagramJsonParser.parse(diagramJson, this.nodeTypesMap);
+    public handleLoadedDiagramJson(diagram: DiagramDAO): void {
+        var diagramParts: DiagramParts = this.diagramParser.parse(diagram, this.nodeTypesMap);
         var paper = this.diagramEditor.getPaper();
         paper.addNodesFromMap(diagramParts.nodesMap);
         paper.addLinksFromMap(diagramParts.linksMap);
