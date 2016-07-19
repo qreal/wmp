@@ -40,6 +40,7 @@ public class RobotServiceImpl implements RobotService {
     @Override
     public void registerByUsername(Robot robot, String username) throws TException {
         robot.setOwner(userService.findByUserName(username));
+        register(robot);
     }
 
     @Override
@@ -53,6 +54,7 @@ public class RobotServiceImpl implements RobotService {
     @Override
     public void delete(String name) throws TException {
         transport.open();
+        client.deleteRobot(name);
         transport.close();
     }
 
