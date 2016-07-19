@@ -1,14 +1,13 @@
 package com.qreal.robots.components.database.diagrams.service.client;
 
 import com.qreal.robots.components.editor.model.diagram.Diagram;
-import com.qreal.robots.components.editor.model.diagram.DiagramRequest;
 import com.qreal.robots.components.editor.model.diagram.Folder;
 
 //In service transactions are added to DAO. DAO only DB functions implements.
 
 public interface DiagramService {
 
-    public Long saveDiagram(DiagramRequest diagramRequest);
+    public Long saveDiagram(Diagram diagram, Long folderId);
 
     public Diagram openDiagram(Long diagramId);
 

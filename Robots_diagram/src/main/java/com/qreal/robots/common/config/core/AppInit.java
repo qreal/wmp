@@ -29,7 +29,8 @@ public class AppInit implements WebApplicationInitializer {
         dispatcherContext.scan("com.qreal.robots.components.dashboard");
         dispatcherContext.scan("com.qreal.robots.components.editor");
         dispatcherContext.scan("com.qreal.robots.components.database.diagrams.DAO");
-        dispatcherContext.scan("com.qreal.robots.components.database.diagrams.service");
+        dispatcherContext.scan("com.qreal.robots.components.database.diagrams.service.server");
+        dispatcherContext.scan("com.qreal.robots.components.database.diagrams.service.client");
         dispatcherContext.scan("com.qreal.robots.components.database.robots.DAO");
         dispatcherContext.scan("com.qreal.robots.components.database.robots.service");
         dispatcherContext.scan("com.qreal.robots.components.database.users.DAO");

@@ -7,11 +7,16 @@ import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Repository
+@Component("DiagramDAO")
+@Transactional
 public class DiagramDAOImpl implements DiagramDAO {
     private static final Logger LOG = Logger.getLogger(DiagramDAOImpl.class);
 
@@ -25,15 +30,19 @@ public class DiagramDAOImpl implements DiagramDAO {
         this.sessionFactory = sessionFactory;
     }
 
-    public Long saveDiagram(DiagramRequest diagramRequest) {
-        LOG.debug("saving diagram");
+    public Folder getFolder(Long folderId) {
         Session session = sessionFactory.getCurrentSession();
-        Folder folder = (Folder) session.get(Folder.class, diagramRequest.getFolderId());
+        return (Folder) session.get(Folder.class, folderId);
+    }
 
-        folder.getDiagrams().add(diagramRequest.getDiagram());
+    public Long saveDiagram(Diagram diagram, Long folderId) {
+        Session session = sessionFactory.getCurrentSession();
+        Folder folder = getFolder(folderId);
+
+        folder.getDiagrams().add(diagram);
         session.update(folder);
         session.flush();
-        return diagramRequest.getDiagram().getDiagramId();
+        return diagram.getDiagramId();
     }
 
     public Diagram openDiagram(Long diagramId) {
@@ -76,7 +85,7 @@ public class DiagramDAOImpl implements DiagramDAO {
                 .setParameter("folderName", "root")
                 .setParameter("userName", userName)
                 .list();
-
         return rootFolders.get(0);
     }
+
 }

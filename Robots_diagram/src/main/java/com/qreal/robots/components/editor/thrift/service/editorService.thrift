@@ -28,7 +28,7 @@ struct TLink {
 }
 
 struct TDiagram {
-    1 : i64 diagramId,
+    1 : optional i64 diagramId,
     2 : string name,
     3 : string user,
     4 : set<TDefaultDiagramNode> nodes,
@@ -37,9 +37,9 @@ struct TDiagram {
 }
 
 struct TFolder {
-    1 : i64 folderId,
+    1 : optional i64 folderId
     2 : string folderName,
-    3 : i64 folderParentId,
+    3 : optional i64 folderParentId,
     4 : set<TFolder> childrenFolders,
     5 : set<TDiagram> diagrams
 }

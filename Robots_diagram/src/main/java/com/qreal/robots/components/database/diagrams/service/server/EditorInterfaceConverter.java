@@ -1,7 +1,7 @@
-package com.qreal.robots.components.editor.controller;
+package com.qreal.robots.components.database.diagrams.service.server;
 
+import com.qreal.robots.components.database.diagrams.thrift.gen.*;
 import com.qreal.robots.components.editor.model.diagram.*;
-import com.qreal.robots.components.editor.thrift.gen.*;
 
 import java.util.*;
 
@@ -100,7 +100,7 @@ public class EditorInterfaceConverter {
                     Iterator<NodeProperty> pItr = node.getProperties().iterator();
                     while (pItr.hasNext()) {
                         NodeProperty property = pItr.next();
-                       TProperty newProperty = new TProperty();
+                        TProperty newProperty = new TProperty();
                         newProperty.setName(property.getName());
                         newProperty.setPropertyId(property.getPropertyId());
                         newProperty.setType(property.getType());
@@ -143,6 +143,8 @@ public class EditorInterfaceConverter {
     }
 
     public TFolder convertToTFolder(Folder node) {
+
+
         TFolder folder = new TFolder();
         if (node.getFolderId() != null) {
             folder.setFolderId(node.getFolderId());
@@ -150,6 +152,9 @@ public class EditorInterfaceConverter {
         folder.setFolderName(node.getFolderName());
         if (node.getFolderParentId() != null) {
             folder.setFolderParentId(node.getFolderParentId());
+        }
+        if (node.getUserName() != null) {
+            folder.setUserName(node.getUserName());
         }
 
         Set<TDiagram> diagrams = new HashSet<TDiagram>();
@@ -185,6 +190,9 @@ public class EditorInterfaceConverter {
         }
         if (node.isSetFolderParentId()) {
             folder.setFolderParentId(node.getFolderParentId());
+        }
+        if (node.isSetUserName()) {
+            folder.setUserName(node.getUserName());
         }
         List<Diagram> diagrams = new ArrayList<>();
         if (node.getDiagrams() != null) {

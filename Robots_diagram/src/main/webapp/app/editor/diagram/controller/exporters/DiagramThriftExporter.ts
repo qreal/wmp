@@ -9,7 +9,6 @@ class DiagramThriftExporter extends DiagramExporter {
         var newDiagram = new TDiagram();
         newDiagram.name = name;
         newDiagram.folderId = folderId;
-        newDiagram.diagramId = -1;
 
         newDiagram.nodes = this.exportNodes(graph, diagramParts);
         newDiagram.links = this.exportLinks(diagramParts);
