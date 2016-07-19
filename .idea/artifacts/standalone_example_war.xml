@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="standalone-example:war">
+    <output-path>$PROJECT_DIR$/examples/StandaloneExample/target</output-path>
+    <root id="archive" name="StandaloneExample.war">
+      <element id="artifact" artifact-name="standalone-example:war exploded" />
+    </root>
+  </artifact>
+</component>

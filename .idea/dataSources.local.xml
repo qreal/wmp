@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="dataSourceStorageLocal">
+    <data-source name="MySQL - diagram@localhost" uuid="25be8962-6ccc-4cf6-a178-2953b59a1a62">
+      <secret-storage>master_key</secret-storage>
+      <user-name>user</user-name>
+      <schema-pattern>diagram.*</schema-pattern>
+      <default-schemas>diagram.*</default-schemas>
+    </data-source>
+  </component>
+</project>
