@@ -6,7 +6,6 @@
 **/node_modules
 **/target/
 *.map
-*.iml
 **/.tscache
 .baseDir.ts
 **/js/compiled/
