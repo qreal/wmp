@@ -9,9 +9,20 @@ dist: trusty
 before_install:
   - sudo apt-get update -y
   # - sudo apt-get upgrade -y
+  #install 0.9.3 thrift version
+  - mkdir ThriftInstall
+  - cd ThriftInstall
+  - wget http://apache-mirror.rbc.ru/pub/apache/thrift/0.9.3/thrift-0.9.3.tar.gz
+  - tar -xf thrift-0.9.3.tar.gz 
+  - cd thrift-0.9.3
+  - ./configure
+  - make
+  - sudo make install
+  - sudo ln -s /usr/local/bin/thrift /usr/bin/thriftD
+  - cd ../..
+  #!install 0.9.3 thrift version
   - sudo apt-get install libboost-all-dev libevent-dev g++ bison libssl-dev -y
   - sudo apt-get install nodejs npm -y
-  - sudo apt-get install thrift-compiler -y #install version 0.9.0.3
   - sudo apt-get install curl -y
 
 install:
