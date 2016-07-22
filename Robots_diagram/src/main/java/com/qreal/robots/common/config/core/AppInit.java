@@ -1,5 +1,6 @@
 package com.qreal.robots.common.config.core;
 
+import com.qreal.robots.common.config.SecurityConfig;
 import com.qreal.robots.components.dashboard.controller.RobotRestServlet;
 import com.qreal.robots.components.database.diagrams.service.server.DiagramDbServer;
 import com.qreal.robots.components.database.robots.service.server.RobotDbServer;
@@ -29,14 +30,11 @@ public class AppInit implements WebApplicationInitializer {
         dispatcherContext.scan("com.qreal.robots.components.dashboard");
         dispatcherContext.scan("com.qreal.robots.components.editor");
         dispatcherContext.scan("com.qreal.robots.components.database.diagrams.DAO");
-        dispatcherContext.scan("com.qreal.robots.components.database.diagrams.service.server");
-        dispatcherContext.scan("com.qreal.robots.components.database.diagrams.service.client");
+        dispatcherContext.scan("com.qreal.robots.components.database.diagrams.service");
         dispatcherContext.scan("com.qreal.robots.components.database.robots.DAO");
-        dispatcherContext.scan("com.qreal.robots.components.database.robots.service.client");
-        dispatcherContext.scan("com.qreal.robots.components.database.robots.service.server");
+        dispatcherContext.scan("com.qreal.robots.components.database.robots.service");
         dispatcherContext.scan("com.qreal.robots.components.database.users.DAO");
-        dispatcherContext.scan("com.qreal.robots.components.database.users.service.client");
-        dispatcherContext.scan("com.qreal.robots.components.database.users.service.server");
+        dispatcherContext.scan("com.qreal.robots.components.database.users.service");
 
         dispatcherContext.register(AppInit.class);
 

@@ -1,9 +1,12 @@
 package com.qreal.robots.components.authorization.controller;
 
+import com.qreal.robots.common.exception_controller.ExceptionHandlerController;
 import com.qreal.robots.components.authorization.model.auth.User;
 import com.qreal.robots.components.database.diagrams.service.client.DiagramService;
 import com.qreal.robots.components.database.users.service.client.UserService;
 import org.apache.thrift.TException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -15,6 +18,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class AuthController {
+
+    private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -51,30 +56,28 @@ public class AuthController {
                                  @RequestParam(value = "password2") String password2,
                                  RedirectAttributes redirectAttributes) {
         ModelAndView model = new ModelAndView();
-        try {
 
-            if (userService.isUserExist(username)) {
-                return registerError(model, String.format("User with %s name is already exist", username));
-            }
-
-            if (!password.equals(password2)) {
-                return registerError(model, String.format("Passwords are not equals"));
-            }
-            User user = new User(username, passwordEncoder.encode(password), true);
-
-            userService.save(user);
-        }
-            catch (TException e) {
-            e.printStackTrace();
+        if (userService.isUserExist(username)) {
+            return registerError(model, String.format("User with %s name is already exist", username));
         }
 
+        if (!password.equals(password2)) {
+            return registerError(model, String.format("Passwords are not equals"));
+        }
+        User user = new User(username, passwordEncoder.encode(password), true);
+
+        logger.info("New user with name {} now will be registered.", username);
+        userService.save(user);
         diagramService.createRootFolder(username);
+        logger.info("New user with name {} was registered.", username);
+
         redirectAttributes.addFlashAttribute("msg", "Registered successfully. Log in to continue working");
         model.setViewName("redirect:/login");
         return model;
     }
 
     private ModelAndView registerError(ModelAndView modelAndView, String message) {
+        logger.info("Someone met problem on registration: " + message);
         modelAndView.addObject("error", message);
         modelAndView.setViewName("auth/register");
         return modelAndView;

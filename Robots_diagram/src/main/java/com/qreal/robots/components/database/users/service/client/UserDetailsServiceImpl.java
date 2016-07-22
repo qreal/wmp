@@ -40,11 +40,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         com.qreal.robots.components.authorization.model.auth.User user
                 = new com.qreal.robots.components.authorization.model.auth.User();
 
-        try {
-            user =  userService.findByUserName(username);
-        } catch (TException e) {
-            e.printStackTrace();
-        }
+        user = userService.findByUserName(username);
 
         List<GrantedAuthority> authorities =
                 buildUserAuthority(user.getUserRole());

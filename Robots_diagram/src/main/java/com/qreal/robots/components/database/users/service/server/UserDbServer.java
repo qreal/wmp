@@ -1,44 +1,48 @@
 package com.qreal.robots.components.database.users.service.server;
 
+import com.qreal.robots.components.database.robots.service.server.RobotDbServer;
 import com.qreal.robots.components.database.users.thrift.gen.UserDbService;
 import org.apache.thrift.server.TServer;
 import org.apache.thrift.server.TSimpleServer;
 import org.apache.thrift.transport.TServerSocket;
 import org.apache.thrift.transport.TServerTransport;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.support.AbstractApplicationContext;
-
-/**
- * Created by artemiibezguzikov on 11.07.16.
- */
 
 public class UserDbServer {
 
-    public static UserDbServiceHandler handler;
+    private static final Logger logger = LoggerFactory.getLogger(UserDbServer.class);
 
-    public static UserDbService.Processor processor;
 
-    public static void simple(UserDbService.Processor processor) {
+    public static void runTServer(UserDbService.Processor processor) {
+        int port = 9090;
+        logger.info("Starting User DB TServer on localhost on port {}", port);
         try {
-            TServerTransport serverTransport = new TServerSocket(9090);
+            TServerTransport serverTransport = new TServerSocket(port);
             TServer server = new TSimpleServer(new TSimpleServer.Args(serverTransport).processor(processor));
             server.serve();
+            logger.info("User DB TServer started successfully");
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("UserDbServer encountered problem while starting TServer. TServer cannot be started.", e);
         }
     }
 
     public UserDbServer(AbstractApplicationContext context) {
         try {
-            handler = new UserDbServiceHandler(context);
-            processor = new UserDbService.Processor(handler);
+            UserDbServiceHandler handler = new UserDbServiceHandler(context);
+            UserDbService.Processor processor = new UserDbService.Processor(handler);
 
-            Runnable simple = () -> {
-                simple(processor);
+            Runnable runServer = () -> {
+                runTServer(processor);
             };
+            logger.trace("Creating new thread for User DB TServer");
 
-            new Thread(simple).start();
+            new Thread(runServer).start();
+            logger.trace("Thread created. Server started.");
+
         } catch (Exception x) {
-            x.printStackTrace();
+            logger.error("UserDbServer encountered problem while creating TServer.", x);
         }
     }
 }

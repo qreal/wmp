@@ -11,7 +11,7 @@ dashThriftDir="src/main/java/com/qreal/robots/components/dashboard/thrift"
 mkdir -p "$dashThriftDir/gen"
 thrift -gen java -out "$PWD/src/main/java" "$dashThriftDir/service/robotService.thrift"
 
-mkdir "src/main/webapp/resources/thrift/"
+mkdir -p "src/main/webapp/resources/thrift/"
 
 #client side
 dashClientDir="src/main/webapp/resources/thrift"

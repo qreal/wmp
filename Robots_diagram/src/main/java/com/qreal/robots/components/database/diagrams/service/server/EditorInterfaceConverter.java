@@ -5,10 +5,10 @@ import com.qreal.robots.components.editor.model.diagram.*;
 
 import java.util.*;
 
-//TODO Reimplement as static class and move to own package
+//TODO move to Diagram when it is possible
 
 public class EditorInterfaceConverter {
-    public Diagram convertFromTDiagram(TDiagram diagram) {
+    public static Diagram convertFromTDiagram(TDiagram diagram) {
 
         Diagram newDiagram = new Diagram();
         newDiagram.setName(diagram.getName());
@@ -78,7 +78,7 @@ public class EditorInterfaceConverter {
         return newDiagram;
     }
 
-    public TDiagram convertToTDiagram(Diagram diagram) {
+    public static TDiagram convertToTDiagram(Diagram diagram) {
 
         TDiagram newDiagram = new TDiagram();
         if (diagram.getDiagramId() != null) {
@@ -144,7 +144,7 @@ public class EditorInterfaceConverter {
         return newDiagram;
     }
 
-    public TFolder convertToTFolder(Folder node) {
+    public static TFolder convertToTFolder(Folder node) {
 
 
         TFolder folder = new TFolder();
@@ -182,7 +182,7 @@ public class EditorInterfaceConverter {
     }
 
 
-    public Folder convertFromTFolder(TFolder node) {
+    public static Folder convertFromTFolder(TFolder node) {
         Folder folder = new Folder();
         if (node.isSetFolderId()) {
             folder.setFolderId(node.getFolderId());

@@ -1,40 +1,45 @@
 package com.qreal.robots.components.database.robots.service.server;
 
+import com.qreal.robots.components.database.diagrams.service.client.DiagramServiceImpl;
 import com.qreal.robots.components.database.robots.thrift.gen.RobotDbService;
 import org.apache.thrift.server.TServer;
 import org.apache.thrift.server.TSimpleServer;
 import org.apache.thrift.transport.TServerSocket;
 import org.apache.thrift.transport.TServerTransport;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.support.AbstractApplicationContext;
 
 public class RobotDbServer {
 
-    public static RobotDbServiceHandler handler;
+    private static final Logger logger = LoggerFactory.getLogger(RobotDbServer.class);
 
-    public static RobotDbService.Processor processor;
-
-    public static void simple(RobotDbService.Processor processor) {
+    public static void runTServer(RobotDbService.Processor processor) {
+        int port = 9091;
+        logger.info("Starting Robot DB TServer on localhost on port {}", port);
         try {
-            TServerTransport serverTransport = new TServerSocket(9091);
+            TServerTransport serverTransport = new TServerSocket(port);
             TServer server = new TSimpleServer(new TSimpleServer.Args(serverTransport).processor(processor));
             server.serve();
+            logger.info("Robot DB TServer started successfully");
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("RobotDBServer encountered problem while starting TServer. TServer cannot be started.", e);
         }
     }
 
     public RobotDbServer(AbstractApplicationContext context) {
         try {
-            handler = new RobotDbServiceHandler(context);
-            processor = new RobotDbService.Processor(handler);
+            RobotDbServiceHandler handler = new RobotDbServiceHandler(context);
+            RobotDbService.Processor processor = new RobotDbService.Processor(handler);
 
-            Runnable simple = () -> {
-                simple(processor);
+            Runnable runServer = () -> {
+                runTServer(processor);
             };
-
-            new Thread(simple).start();
+            logger.trace("Creating new thread for Robot DB TServer");
+            new Thread(runServer).start();
+            logger.trace("Thread created. Server started.");
         } catch (Exception x) {
-            x.printStackTrace();
+            logger.error("RobotDBServer encountered problem while creating TServer.", x);
         }
     }
 }

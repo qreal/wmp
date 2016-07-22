@@ -7,9 +7,9 @@ public interface DiagramDAO {
 
     Folder getFolder(Long diagramId);
 
-     Long saveDiagram(Diagram diagram, Long folderId);
+    Long saveDiagram(Diagram diagram, Long folderId);
 
-     Diagram openDiagram(Long diagramId);
+    Diagram openDiagram(Long diagramId);
 
     void rewriteDiagram(Diagram diagram);
 

@@ -7,11 +7,11 @@ import org.apache.thrift.TException;
 
 public interface RobotService {
 
-    void register(Robot robot) throws TException;
+    void register(Robot robot);
 
-    void registerByUsername(Robot robot, String username) throws TException;
+    void registerByUsername(Robot robot, String username);
 
-    Robot findByName(String name) throws TException;
+    Robot findByName(String name);
 
-    void delete(String name) throws TException;
+    void delete(String name);
 }

@@ -1,6 +1,8 @@
 package com.qreal.robots.components.dashboard.socket;
 
-import org.apache.log4j.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.net.Socket;
@@ -9,7 +11,7 @@ public class SocketClient {
 
     public static final String ERROR_MESSAGE = "ERROR";
 
-    private static final Logger LOG = Logger.getLogger(SocketClient.class);
+    private static final Logger logger = LoggerFactory.getLogger(SocketClient.class);
 
     private final String hostName;
 
@@ -23,13 +25,14 @@ public class SocketClient {
     public boolean hostAvailable() {
         try (Socket s = new Socket(hostName, port)) {
             return true;
-        } catch (IOException ex) {
-        /* ignore */
+        } catch (IOException e) {
+            logger.error("SocketClient has an IO exception.", e);
         }
         return false;
     }
 
     public String sendMessage(String message) {
+        logger.trace("sendMessage method was called with parameters: message = {}", message);
         Socket socket = null;
         DataOutputStream outToServer = null;
         BufferedReader inFromServer = null;
@@ -44,15 +47,16 @@ public class SocketClient {
                 outToServer.writeBytes(message + "\n");
                 result = getResultMessage(inFromServer);
             } catch (IOException e) {
-                LOG.error("Failed to send message", e);
+                logger.error("SocketClient failed to send message", e);
             } finally {
                 close(inFromServer);
                 close(outToServer);
                 close(socket);
             }
         } else {
-            LOG.warn("Robot routing server is offline. Robot data is unavailable ");
+            logger.warn("SocketClient found that robot routing server is offline.");
         }
+        logger.trace("SocketClient sent message {}", message);
         return result;
     }
 
@@ -65,7 +69,7 @@ public class SocketClient {
             try {
                 closeable.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                logger.error("SocketClient has an IO exception.", e);
             }
         }
     }

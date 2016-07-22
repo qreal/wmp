@@ -184,7 +184,7 @@
             <artifactId>jstl</artifactId>
             <version>1.2</version>
         </dependency>
-        
+
         <!-- Log -->
         <dependency>
             <groupId>log4j</groupId>
@@ -222,5 +222,3 @@
     </dependencies>
 
 </project>
-
-

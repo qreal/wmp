@@ -47,7 +47,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     @Bean
     public SessionFactory sessionFactory() {
         LocalSessionFactoryBuilder sessionBuilder = new LocalSessionFactoryBuilder(dataSource);
-        sessionBuilder.scanPackages("com.qreal.robots.components.authorization.model", "com.qreal.robots.components.dashboard.model.robot"
+        sessionBuilder.scanPackages("com.qreal.robots.components.authorization.model", "com.qreal.robots.components.dashboard.model"
                 ,"com.qreal.robots.components.editor.model");
         sessionBuilder.addProperties(hibernateProperties);
         return sessionBuilder.buildSessionFactory();

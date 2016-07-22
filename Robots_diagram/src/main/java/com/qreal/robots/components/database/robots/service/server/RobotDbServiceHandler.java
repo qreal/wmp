@@ -9,7 +9,7 @@ import com.qreal.robots.components.database.users.service.client.UserService;
 import org.apache.thrift.TException;
 import org.springframework.context.support.AbstractApplicationContext;
 
-public class RobotDbServiceHandler implements RobotDbService.Iface{
+public class RobotDbServiceHandler implements RobotDbService.Iface {
 
     private AbstractApplicationContext context;
 
@@ -30,11 +30,7 @@ public class RobotDbServiceHandler implements RobotDbService.Iface{
         UserService userService = (UserService) context.getBean("UserService");
         RobotDAO robotDAO = (RobotDAO) context.getBean("RobotDAO");
         User user = null;
-        try {
-            user = userService.findByUserName(tRobot.getUsername());
-        } catch (TException e) {
-            e.printStackTrace();
-        }
+        user = userService.findByUserName(tRobot.getUsername());
 
         if (!userRobotExists(user, tRobot.getName())) {
             robotDAO.save(convertToRobot(tRobot, user));

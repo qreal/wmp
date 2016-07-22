@@ -14,55 +14,53 @@ public class DiagramDbServiceHandler implements DiagramDbService.Iface {
 
     private AbstractApplicationContext context;
 
-    private EditorInterfaceConverter converter;
 
     public DiagramDbServiceHandler(AbstractApplicationContext context) {
         this.context = context;
-        converter = new EditorInterfaceConverter();
     }
 
     @Override
-    public long saveDiagram(TDiagram diagram) throws TException {
+    public long saveDiagram(TDiagram diagram) {
         DiagramDAO diagramDAO = (DiagramDAO) context.getBean("DiagramDAO");
-        return diagramDAO.saveDiagram(converter.convertFromTDiagram(diagram), diagram.getFolderId());
+        return diagramDAO.saveDiagram(EditorInterfaceConverter.convertFromTDiagram(diagram), diagram.getFolderId());
     }
 
     @Override
-    public TDiagram openDiagram(long diagramID) throws TException {
+    public TDiagram openDiagram(long diagramID){
         DiagramDAO diagramDAO = (DiagramDAO) context.getBean("DiagramDAO");
-        return converter.convertToTDiagram(diagramDAO.openDiagram(diagramID));
+        return EditorInterfaceConverter.convertToTDiagram(diagramDAO.openDiagram(diagramID));
     }
 
     @Override
-    public void deleteDiagram(long diagramId) throws TException {
+    public void deleteDiagram(long diagramId){
         DiagramDAO diagramDAO = (DiagramDAO) context.getBean("DiagramDAO");
         diagramDAO.deleteDiagram(diagramId);
     }
 
     @Override
-    public void rewriteDiagram(TDiagram diagram) throws TException {
+    public void rewriteDiagram(TDiagram diagram){
         DiagramDAO diagramDAO = (DiagramDAO) context.getBean("DiagramDAO");
-        diagramDAO.rewriteDiagram(converter.convertFromTDiagram(diagram));
+        diagramDAO.rewriteDiagram(EditorInterfaceConverter.convertFromTDiagram(diagram));
     }
 
     @Override
-    public long createFolder(TFolder folder) throws TException {
+    public long createFolder(TFolder folder){
         DiagramDAO diagramDAO = (DiagramDAO) context.getBean("DiagramDAO");
-        Folder newFolder = converter.convertFromTFolder(folder);
+        Folder newFolder = EditorInterfaceConverter.convertFromTFolder(folder);
         return diagramDAO.createFolder(newFolder);
     }
 
     @Override
-    public void deleteFolder(long folderId) throws TException {
+    public void deleteFolder(long folderId){
         DiagramDAO diagramDAO = (DiagramDAO) context.getBean("DiagramDAO");
         diagramDAO.deleteFolder(folderId);
     }
 
     @Override
-    public TFolder getFolderTree(String username) throws TException {
+    public TFolder getFolderTree(String username){
         DiagramDAO diagramDAO = (DiagramDAO) context.getBean("DiagramDAO");
         Folder folder = diagramDAO.getFolderTree(username);
-        TFolder tFolder = converter.convertToTFolder(folder);
+        TFolder tFolder = EditorInterfaceConverter.convertToTFolder(folder);
         return tFolder;
     }
 }

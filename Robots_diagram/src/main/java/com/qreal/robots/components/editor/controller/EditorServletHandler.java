@@ -12,23 +12,21 @@ class EditorServletHandler implements EditorServiceThrift.Iface {
 
     private AbstractApplicationContext context;
 
-    private EditorInterfaceConverter converter;
 
     public EditorServletHandler(AbstractApplicationContext context) {
-        this.converter = new EditorInterfaceConverter();
         this.context = context;
     }
 
     @Override
     public long saveDiagram(TDiagram diagram) throws org.apache.thrift.TException {
         DiagramService diagramService = (DiagramService) context.getBean("DiagramService");
-        return diagramService.saveDiagram(converter.convertFromTDiagram(diagram), diagram.getFolderId());
+        return diagramService.saveDiagram(new Diagram(diagram), diagram.getFolderId());
     }
 
     @Override
     public void rewriteDiagram(TDiagram diagram) {
         DiagramService diagramService = (DiagramService) context.getBean("DiagramService");
-        Diagram newDiagram = converter.convertFromTDiagram(diagram);
+        Diagram newDiagram = new Diagram(diagram);
         diagramService.rewriteDiagram(newDiagram);
     }
 
@@ -41,13 +39,13 @@ class EditorServletHandler implements EditorServiceThrift.Iface {
     @Override
     public TDiagram openDiagram(long diagramId) {
         DiagramService diagramService = (DiagramService) context.getBean("DiagramService");
-        return converter.convertToTDiagram(diagramService.openDiagram(diagramId));
+        return diagramService.openDiagram(diagramId).toTDiagram();
     }
 
     @Override
     public long createFolder(TFolder folder) {
         DiagramService diagramService = (DiagramService) context.getBean("DiagramService");
-        Folder newFolder = converter.convertFromTFolder(folder);
+        Folder newFolder = new Folder(folder);
         return diagramService.createFolder(newFolder);
     }
 
@@ -60,7 +58,7 @@ class EditorServletHandler implements EditorServiceThrift.Iface {
     @Override
     public TFolder getFolderTree() {
         DiagramService diagramService = (DiagramService) context.getBean("DiagramService");
-        return converter.convertToTFolder(diagramService.getFolderTree());
+        return diagramService.getFolderTree().toTFolder();
     }
 
 }
