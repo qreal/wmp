@@ -55,5 +55,4 @@ public class NodeProperty implements Serializable {
     public void setType(String type) {
         this.type = type;
     }
-
 }

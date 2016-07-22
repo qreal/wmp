@@ -13,8 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class DiagramDbServiceHandler implements DiagramDbService.Iface {
 
     private AbstractApplicationContext context;
-    private EditorInterfaceConverter converter;
 
+    private EditorInterfaceConverter converter;
 
     public DiagramDbServiceHandler(AbstractApplicationContext context) {
         this.context = context;

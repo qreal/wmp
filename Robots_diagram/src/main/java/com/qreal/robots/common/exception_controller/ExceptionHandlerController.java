@@ -19,5 +19,4 @@ public class ExceptionHandlerController {
         modelAndView.addObject("message", e.getMessage());
         return modelAndView;
     }
-
 }

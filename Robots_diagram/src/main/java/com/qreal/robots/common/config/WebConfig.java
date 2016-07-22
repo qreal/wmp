@@ -35,16 +35,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     @Autowired
     private Properties hibernateProperties;
 
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/WEB-INF/pages/**").addResourceLocations("/pages/");
-        registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
-        registry.addResourceHandler("/app/**").addResourceLocations("/app/");
-        registry.addResourceHandler("/configs/**").addResourceLocations("/configs/");
-        registry.addResourceHandler("/images/**").addResourceLocations("/images/").setCachePeriod(BROWSER_CACHE_CONTROL);
-
-    }
-
     @Bean
     public InternalResourceViewResolver setupViewResolver() {
         InternalResourceViewResolver resolver = new InternalResourceViewResolver();
@@ -68,4 +58,13 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         return new HibernateTransactionManager(sessionFactory());
     }
 
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/WEB-INF/pages/**").addResourceLocations("/pages/");
+        registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
+        registry.addResourceHandler("/app/**").addResourceLocations("/app/");
+        registry.addResourceHandler("/configs/**").addResourceLocations("/configs/");
+        registry.addResourceHandler("/images/**").addResourceLocations("/images/").setCachePeriod(BROWSER_CACHE_CONTROL);
+
+    }
 }

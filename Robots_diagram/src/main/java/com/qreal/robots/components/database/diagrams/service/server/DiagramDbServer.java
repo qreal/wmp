@@ -8,8 +8,20 @@ import org.apache.thrift.transport.TServerTransport;
 import org.springframework.context.support.AbstractApplicationContext;
 
 public class DiagramDbServer {
+
     public static DiagramDbServiceHandler handler;
+
     public static DiagramDbService.Processor processor;
+
+    public static void simple(DiagramDbService.Processor processor) {
+        try {
+            TServerTransport serverTransport = new TServerSocket(9093);
+            TServer server = new TSimpleServer(new TSimpleServer.Args(serverTransport).processor(processor));
+            server.serve();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     public DiagramDbServer(AbstractApplicationContext context) {
         try {
@@ -23,16 +35,6 @@ public class DiagramDbServer {
             new Thread(simple).start();
         } catch (Exception x) {
             x.printStackTrace();
-        }
-    }
-
-    public static void simple(DiagramDbService.Processor processor) {
-        try {
-            TServerTransport serverTransport = new TServerSocket(9093);
-            TServer server = new TSimpleServer(new TSimpleServer.Args(serverTransport).processor(processor));
-            server.serve();
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 }

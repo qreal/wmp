@@ -13,5 +13,4 @@ public class OpenRequest implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
-
 }

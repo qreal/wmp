@@ -21,11 +21,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     @Qualifier("userDetailsService")
-    UserDetailsService userDetailsService;
+    private UserDetailsService userDetailsService;
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+    }
+
+    @Bean(name = "PasswordEncoder")
+    public PasswordEncoder passwordEncoder() {
+        PasswordEncoder encoder = new BCryptPasswordEncoder();
+        return encoder;
     }
 
     //.csrf() is optional, enabled by default, if using WebSecurityConfigurerAdapter constructor
@@ -48,11 +54,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable().httpBasic()
                 .and().exceptionHandling().accessDeniedPage("/login");
     }
-
-    @Bean(name = "PasswordEncoder")
-    public PasswordEncoder passwordEncoder() {
-        PasswordEncoder encoder = new BCryptPasswordEncoder();
-        return encoder;
-    }
-
 }

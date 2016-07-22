@@ -5,9 +5,13 @@ import java.util.List;
 public class Message {
 
     private String from;
+
     private String type;
+
     private RobotInfo robot;
+
     private String user;
+
     private List<RobotInfo> robots;
 
     public Message() {
@@ -69,5 +73,4 @@ public class Message {
     public void setRobots(List<RobotInfo> robots) {
         this.robots = robots;
     }
-
 }

@@ -20,23 +20,25 @@ public class RobotDAOImpl implements RobotDAO {
     private SessionFactory sessionFactory;
 
     public RobotDAOImpl() {
-
     }
 
     public RobotDAOImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
 
+    @Override
     public void save(Robot robot) {
         Session session = sessionFactory.getCurrentSession();
         session.save(robot);
     }
 
+    @Override
     public void delete(Robot robot) {
         Session session = sessionFactory.getCurrentSession();
         session.delete(robot);
     }
 
+    @Override
     public Robot findByName(String robotName) {
         Session session = sessionFactory.getCurrentSession();
 
@@ -44,11 +46,11 @@ public class RobotDAOImpl implements RobotDAO {
         return (robots.size() > 0) ? robots.get(0) : null;
     }
 
+    @Override
     public boolean isRobotExists(String robotName) {
         Session session = sessionFactory.getCurrentSession();
 
         List<User> robots = session.createQuery("from Robot where name=?").setParameter(0, robotName).list();
         return robots.size() > 0;
     }
-
 }

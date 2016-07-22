@@ -24,13 +24,13 @@ import java.util.Set;
 @Service("UserService")
 public class UserServiceImpl implements UserService {
 
-    TTransport transport;
-    TProtocol protocol;
-    UserDbService.Client client;
+    private TTransport transport;
+
+    private UserDbService.Client client;
 
     public UserServiceImpl() {
         transport = new TSocket("localhost", 9090);
-        protocol = new TBinaryProtocol(transport);
+        TProtocol protocol = new TBinaryProtocol(transport);
         client = new UserDbService.Client(protocol);
     }
 
@@ -58,7 +58,6 @@ public class UserServiceImpl implements UserService {
         transport.close();
         return  isUserExist;
     }
-
 }
 
 class ConverterFromT {

@@ -11,7 +11,9 @@ import static javax.persistence.GenerationType.IDENTITY;
 public class UserRole {
 
     private Integer userRoleId;
+
     private User user;
+
     private String role;
 
     public UserRole() {
@@ -58,5 +60,4 @@ public class UserRole {
     public void setRole(String role) {
         this.role = role;
     }
-
 }

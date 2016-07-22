@@ -8,8 +8,11 @@ import java.net.Socket;
 public class SocketClient {
 
     public static final String ERROR_MESSAGE = "ERROR";
+
     private static final Logger LOG = Logger.getLogger(SocketClient.class);
+
     private final String hostName;
+
     private final int port;
 
     public SocketClient(String hostName, int port) {

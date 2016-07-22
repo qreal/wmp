@@ -15,8 +15,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 public class RobotRestServletHandler implements RobotServiceThrift.Iface {
 
-    private AbstractApplicationContext context;
     private static final ObjectMapper mapper = new ObjectMapper();
+
+    private AbstractApplicationContext context;
 
     public RobotRestServletHandler(AbstractApplicationContext context) {
         this.context = context;
@@ -61,5 +62,4 @@ public class RobotRestServletHandler implements RobotServiceThrift.Iface {
     private String getUserName() {
         return SecurityContextHolder.getContext().getAuthentication().getName();
     }
-
 }

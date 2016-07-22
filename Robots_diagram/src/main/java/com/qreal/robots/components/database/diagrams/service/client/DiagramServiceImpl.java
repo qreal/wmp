@@ -19,17 +19,16 @@ import org.springframework.stereotype.Service;
 @Service("DiagramService")
 public class DiagramServiceImpl implements DiagramService {
 
-    @Autowired
-    private DiagramDAO diagramDAO;
     private EditorInterfaceConverter converter;
 
-    TTransport transport;
-    TProtocol protocol;
-    DiagramDbService.Client client;
+    private TTransport transport;
+
+
+    private DiagramDbService.Client client;
 
     public DiagramServiceImpl() {
         transport = new TSocket("localhost", 9093);
-        protocol = new TBinaryProtocol(transport);
+        TProtocol protocol = new TBinaryProtocol(transport);
         client = new DiagramDbService.Client(protocol);
         converter = new EditorInterfaceConverter();
     }
@@ -138,5 +137,4 @@ public class DiagramServiceImpl implements DiagramService {
         Folder newFolder = converter.convertFromTFolder(folder);
         return newFolder;
     }
-
 }

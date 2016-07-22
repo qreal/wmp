@@ -13,8 +13,6 @@ before_install:
   - sudo apt-get install automake bison flex g++ git libboost-all-dev libevent-dev libssl-dev libtool make pkg-config -y
   #install nodejs
   - sudo apt-get install nodejs npm -y
-  #install ruby... i guess...
-  -
   #install curl for tomcat tests
   - sudo apt-get install curl -y
   # - sudo apt-get upgrade -y

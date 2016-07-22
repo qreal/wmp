@@ -69,5 +69,4 @@ public class DefaultDiagramNode implements Serializable {
     public void setProperties(Set<NodeProperty> properties) {
         this.properties = properties;
     }
-
 }

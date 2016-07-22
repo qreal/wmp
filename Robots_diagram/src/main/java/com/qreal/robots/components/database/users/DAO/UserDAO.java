@@ -4,10 +4,9 @@ import com.qreal.robots.components.authorization.model.auth.User;
 
 public interface UserDAO {
 
-    public void save(User user);
+    void save(User user);
 
-    public User findByUserName(String username);
+    User findByUserName(String username);
 
-    public boolean isUserExist(String username);
-
+    boolean isUserExist(String username);
 }

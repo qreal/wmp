@@ -83,5 +83,4 @@ public class Folder implements Serializable {
     public String getUserName() {
         return this.userName;
     }
-
 }

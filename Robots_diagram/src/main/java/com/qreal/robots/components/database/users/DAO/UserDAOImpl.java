@@ -13,6 +13,7 @@ import java.util.List;
 
 @Component("UserDAO")
 @Repository
+@Transactional
 public class UserDAOImpl implements UserDAO {
 
     public static final String ROLE_USER = "ROLE_USER";
@@ -27,7 +28,7 @@ public class UserDAOImpl implements UserDAO {
         this.sessionFactory = sessionFactory;
     }
 
-    @Transactional
+    @Override
     public void save(User user) {
         Session session = sessionFactory.getCurrentSession();
         session.save(user);
@@ -35,7 +36,7 @@ public class UserDAOImpl implements UserDAO {
         session.save(userRole);
     }
 
-    @Transactional
+    @Override
     public User findByUserName(String username) {
         Session session = sessionFactory.getCurrentSession();
 
@@ -44,7 +45,7 @@ public class UserDAOImpl implements UserDAO {
         return (users.size() > 0) ? users.get(0) : null;
     }
 
-    @Transactional
+    @Override
     public boolean isUserExist(String username) {
         Session session = sessionFactory.getCurrentSession();
 

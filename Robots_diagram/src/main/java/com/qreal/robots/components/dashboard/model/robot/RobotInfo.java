@@ -9,10 +9,15 @@ import com.qreal.robots.parser.SystemConfigParser;
 public class RobotInfo {
 
     private String owner;
+
     private String name;
+
     private String ssid;
+
     private String modelConfig;
+
     private String systemConfig;
+
     private String program;
 
     public RobotInfo() {
@@ -82,5 +87,4 @@ public class RobotInfo {
     public void setName(String name) {
         this.name = name;
     }
-
 }

@@ -6,10 +6,9 @@ import org.apache.thrift.transport.TTransportException;
 
 public interface UserService {
 
-    public void save(User user) throws TException;
+    void save(User user) throws TException;
 
-    public User findByUserName(String username) throws TException;
+    User findByUserName(String username) throws TException;
 
-    public boolean isUserExist(String username) throws TException;
-
+    boolean isUserExist(String username) throws TException;
 }

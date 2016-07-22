@@ -17,6 +17,14 @@ public class RobotDbServiceHandler implements RobotDbService.Iface{
         this.context = context;
     }
 
+    public static Robot convertToRobot(TRobot tRobot, User user) {
+        return new Robot(tRobot.getName(), tRobot.getSsid(), user);
+    }
+
+    public static TRobot convertFromRobot(Robot robot) {
+        return new TRobot(robot.getName(), robot.getSsid(), robot.getOwner().getUsername());
+    }
+
     @Override
     public void registerRobot(TRobot tRobot) throws TException {
         UserService userService = (UserService) context.getBean("UserService");
@@ -55,15 +63,5 @@ public class RobotDbServiceHandler implements RobotDbService.Iface{
         return false;
     }
 
-    public static Robot convertToRobot(TRobot tRobot, User user) {
 
-        return new Robot(tRobot.getName(), tRobot.getSsid(), user);
-    }
-
-    public static TRobot convertFromRobot(Robot robot) {
-        String username = robot.getOwner().getUsername();
-        TRobot tRobot = new TRobot(robot.getName(), robot.getSsid(), username);
-        int a = 0;
-        return tRobot;
-    }
 }

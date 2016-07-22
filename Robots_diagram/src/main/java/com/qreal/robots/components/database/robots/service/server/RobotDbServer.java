@@ -10,7 +10,18 @@ import org.springframework.context.support.AbstractApplicationContext;
 public class RobotDbServer {
 
     public static RobotDbServiceHandler handler;
+
     public static RobotDbService.Processor processor;
+
+    public static void simple(RobotDbService.Processor processor) {
+        try {
+            TServerTransport serverTransport = new TServerSocket(9091);
+            TServer server = new TSimpleServer(new TSimpleServer.Args(serverTransport).processor(processor));
+            server.serve();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     public RobotDbServer(AbstractApplicationContext context) {
         try {
@@ -24,16 +35,6 @@ public class RobotDbServer {
             new Thread(simple).start();
         } catch (Exception x) {
             x.printStackTrace();
-        }
-    }
-
-    public static void simple(RobotDbService.Processor processor) {
-        try {
-            TServerTransport serverTransport = new TServerSocket(9091);
-            TServer server = new TSimpleServer(new TSimpleServer.Args(serverTransport).processor(processor));
-            server.serve();
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 }

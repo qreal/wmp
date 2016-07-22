@@ -3,7 +3,9 @@ package com.qreal.robots.components.dashboard.model.robot;
 public class RobotWrapper {
 
     private final Robot robot;
+
     private final RobotInfo robotInfo;
+
     private final String status;
 
     public RobotWrapper(Robot robot, RobotInfo robotInfo, String status) {
@@ -30,5 +32,4 @@ public class RobotWrapper {
     public String getStatus() {
         return this.status;
     }
-
 }

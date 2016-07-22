@@ -57,5 +57,4 @@ public class Link implements Serializable {
     public void setProperties(Set<LinkProperty> properties) {
         this.properties = properties;
     }
-
 }

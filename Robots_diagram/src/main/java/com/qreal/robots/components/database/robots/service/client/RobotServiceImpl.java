@@ -20,13 +20,13 @@ public class RobotServiceImpl implements RobotService {
     @Autowired
     private UserService userService;
 
-    TTransport transport;
-    TProtocol protocol;
-    RobotDbService.Client client;
+    private TTransport transport;
+
+    private RobotDbService.Client client;
 
     public RobotServiceImpl() {
         transport = new TSocket("localhost", 9091);
-        protocol = new TBinaryProtocol(transport);
+        TProtocol protocol = new TBinaryProtocol(transport);
         client = new RobotDbService.Client(protocol);
     }
 
@@ -57,5 +57,4 @@ public class RobotServiceImpl implements RobotService {
         client.deleteRobot(name);
         transport.close();
     }
-
 }

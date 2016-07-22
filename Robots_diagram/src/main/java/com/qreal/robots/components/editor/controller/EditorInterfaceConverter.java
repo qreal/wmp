@@ -5,6 +5,8 @@ import com.qreal.robots.components.editor.thrift.gen.*;
 
 import java.util.*;
 
+//TODO See last todo message
+
 public class EditorInterfaceConverter {
     public Diagram convertFromTDiagram(TDiagram diagram) {
 

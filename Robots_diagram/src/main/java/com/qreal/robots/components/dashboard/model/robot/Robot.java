@@ -11,8 +11,11 @@ import static javax.persistence.GenerationType.IDENTITY;
 public class Robot {
 
     private Integer id;
+
     private String name;
+
     private String ssid;
+
     private User owner;
 
     public Robot() {

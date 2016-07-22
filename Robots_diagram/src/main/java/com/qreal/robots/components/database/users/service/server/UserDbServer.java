@@ -14,7 +14,18 @@ import org.springframework.context.support.AbstractApplicationContext;
 public class UserDbServer {
 
     public static UserDbServiceHandler handler;
+
     public static UserDbService.Processor processor;
+
+    public static void simple(UserDbService.Processor processor) {
+        try {
+            TServerTransport serverTransport = new TServerSocket(9090);
+            TServer server = new TSimpleServer(new TSimpleServer.Args(serverTransport).processor(processor));
+            server.serve();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     public UserDbServer(AbstractApplicationContext context) {
         try {
@@ -28,16 +39,6 @@ public class UserDbServer {
             new Thread(simple).start();
         } catch (Exception x) {
             x.printStackTrace();
-        }
-    }
-
-    public static void simple(UserDbService.Processor processor) {
-        try {
-            TServerTransport serverTransport = new TServerSocket(9090);
-            TServer server = new TSimpleServer(new TSimpleServer.Args(serverTransport).processor(processor));
-            server.serve();
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 }

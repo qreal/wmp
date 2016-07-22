@@ -11,6 +11,7 @@ import org.springframework.context.support.AbstractApplicationContext;
 class EditorServletHandler implements EditorServiceThrift.Iface {
 
     private AbstractApplicationContext context;
+
     private EditorInterfaceConverter converter;
 
     public EditorServletHandler(AbstractApplicationContext context) {
@@ -61,4 +62,5 @@ class EditorServletHandler implements EditorServiceThrift.Iface {
         DiagramService diagramService = (DiagramService) context.getBean("DiagramService");
         return converter.convertToTFolder(diagramService.getFolderTree());
     }
+
 }

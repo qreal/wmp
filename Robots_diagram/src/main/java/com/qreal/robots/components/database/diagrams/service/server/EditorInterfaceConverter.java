@@ -5,6 +5,8 @@ import com.qreal.robots.components.editor.model.diagram.*;
 
 import java.util.*;
 
+//TODO Reimplement as static class and move to own package
+
 public class EditorInterfaceConverter {
     public Diagram convertFromTDiagram(TDiagram diagram) {
 

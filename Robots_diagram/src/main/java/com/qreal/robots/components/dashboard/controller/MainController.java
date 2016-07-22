@@ -23,15 +23,16 @@ import java.util.Set;
 @Controller
 public class MainController {
 
-    @Autowired
-    private UserService userService;
-
     public static final String HOST_NAME = "127.0.0.1";
+
     public static final int PORT = 9002;
 
     private static final Logger LOG = Logger.getLogger(MainController.class);
 
     private static final ObjectMapper mapper = new ObjectMapper();
+
+    @Autowired
+    private UserService userService;
 
     @RequestMapping("/")
     public ModelAndView home(HttpSession session) {
@@ -73,9 +74,7 @@ public class MainController {
         return robotsWrapper;
     }
 
-
     private String getUserName() {
         return SecurityContextHolder.getContext().getAuthentication().getName();
     }
-
 }

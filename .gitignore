@@ -15,4 +15,5 @@ overlays
 **/gen
 **/webapp/resources/thrift/*
 *~*
-*.idea
+**/.idea/artifacts/**
+**/.idea/libraries/**
