@@ -1,14 +1,6 @@
 package com.qreal.robots.components.database.users.service.client;
 
 import com.qreal.robots.components.authorization.model.auth.UserRole;
-import com.qreal.robots.components.database.users.service.server.UserDbServiceHandler;
-import com.qreal.robots.components.database.users.thrift.gen.UserDbService;
-import org.apache.thrift.TException;
-import org.apache.thrift.protocol.TBinaryProtocol;
-import org.apache.thrift.protocol.TProtocol;
-import org.apache.thrift.transport.TSocket;
-import org.apache.thrift.transport.TTransport;
-import org.apache.thrift.transport.TTransportException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -20,9 +12,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 //It is needed for Spring Security
 
@@ -37,13 +29,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(final String username)
             throws UsernameNotFoundException {
 
-        com.qreal.robots.components.authorization.model.auth.User user
-                = new com.qreal.robots.components.authorization.model.auth.User();
-
-        user = userService.findByUserName(username);
+        com.qreal.robots.components.authorization.model.auth.User user =
+                userService.findByUserName(username);
 
         List<GrantedAuthority> authorities =
-                buildUserAuthority(user.getUserRole());
+                buildUserAuthority(user.getRoles());
 
         return buildUserForAuthentication(user, authorities);
 
@@ -57,14 +47,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     private List<GrantedAuthority> buildUserAuthority(Set<UserRole> userRoles) {
 
-        Set<GrantedAuthority> setAuths = new HashSet<GrantedAuthority>();
-
-        for (UserRole userRole : userRoles) {
-            setAuths.add(new SimpleGrantedAuthority(userRole.getRole()));
-        }
-
+        Set<GrantedAuthority> setAuths = userRoles.stream().map(userRole -> new SimpleGrantedAuthority(userRole.getRole())).collect(Collectors.toSet());
         List<GrantedAuthority> Result = new ArrayList<GrantedAuthority>(setAuths);
-
         return Result;
     }
 

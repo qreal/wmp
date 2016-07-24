@@ -34,7 +34,7 @@ public class UserDAOTest extends BaseDAOTest {
         assertEquals(user.getUsername(), savedUser.getUsername());
 
 
-        Set<UserRole> roles = savedUser.getUserRole();
+        Set<UserRole> roles = savedUser.getRoles();
         assertEquals(1, roles.size());
         assertEquals(UserDAOImpl.ROLE_USER, roles.iterator().next().getRole());
     }
@@ -44,7 +44,7 @@ public class UserDAOTest extends BaseDAOTest {
         getAndSaveUser(USER_NAME2, userDao);
         User savedUser = userDao.findByUserName(USER_NAME2);
 
-        Set<UserRole> roles = savedUser.getUserRole();
+        Set<UserRole> roles = savedUser.getRoles();
         assertEquals(1, roles.size());
         assertEquals(UserDAOImpl.ROLE_USER, roles.iterator().next().getRole());
     }

@@ -1,10 +1,19 @@
 package com.qreal.robots.components.dashboard.model.robot;
 
 import com.qreal.robots.components.authorization.model.auth.User;
+import com.qreal.robots.thrift.gen.TRobot;
 
 import javax.persistence.*;
 
 import static javax.persistence.GenerationType.IDENTITY;
+
+/**
+ * Struct represents TRIK robot.
+ * field name -- name of robot, not unique
+ * field ssid -- ssid of robot's wifi, not unique
+ * field owner -- owner of robot
+ * field id -- surrogate key
+ */
 
 @Entity
 @Table(name = "robots")
@@ -41,6 +50,24 @@ public class Robot {
         owner.getRobots().add(this);
     }
 
+    public Robot(TRobot tRobot, User owner) {
+        if (tRobot.isSetId()) {
+            this.id = tRobot.getId();
+        }
+
+        if (tRobot.isSetName()) {
+            this.name = tRobot.getName();
+        }
+
+        if (tRobot.isSetSsid()) {
+            this.ssid = tRobot.getSsid();
+        }
+
+        this.owner = owner;
+
+        owner.getRobots().add(this);
+    }
+
     @Id
     @GeneratedValue(strategy = IDENTITY)
     @Column(name = "id",
@@ -72,7 +99,8 @@ public class Robot {
         this.name = name;
     }
 
-    @Column(name = "ssid", nullable = false, length = 45)
+    @Column(name = "ssid",
+            nullable = false, length = 45)
     public String getSsid() {
         return ssid;
     }
@@ -93,6 +121,28 @@ public class Robot {
     @Override
     public int hashCode() {
         return name.hashCode();
+    }
+
+    public TRobot toTRobot() {
+        TRobot tRobot = new TRobot();
+
+        if (this.id != null) {
+            tRobot.setId(id);
+        }
+
+        if (this.name != null) {
+            tRobot.setName(this.name);
+        }
+
+        if (this.ssid != null) {
+            tRobot.setSsid(this.ssid);
+        }
+
+        if (this.owner != null) {
+            tRobot.setUsername(owner.getUsername());
+        }
+
+        return  tRobot;
     }
 
 }

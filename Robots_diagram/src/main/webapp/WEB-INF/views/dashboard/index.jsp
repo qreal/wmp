@@ -269,8 +269,7 @@
                     <div class="row">
                         <!-- center left-->
 
-                        <c:forEach var="robotWrapper" items="${robotsWrapper}">
-                            <c:set var="robot" value="${robotWrapper.robot}"/>
+                        <c:forEach var="robot" items="${robots}">
 
                             <div class="modal fade" id="sendDiagramModal-${robot.name}" tabindex="-1" role="dialog"
                                  aria-labelledby="myModalLabel" aria-hidden="true">
@@ -327,142 +326,143 @@
                                                 <li><a href="#devicesConfig-${robot.name}" data-toggle="tab">Devices</a>
                                                 </li>
                                             </ul>
-                                            <div id="myTabContent33" class="tab-content">
-                                                <c:set var="systemConfig"
-                                                       value="${robotWrapper.robotInfo.systemConfigObject}"/>
-                                                <div class="tab-pane active in" id="portsConfig-${robot.name}">
-                                                    <div class="row">
-                                                        <c:set var="modelConfig"
-                                                               value="${robotWrapper.robotInfo.modelConfigObject}"/>
-                                                        <c:forEach var="port" items="${systemConfig.ports}">
-                                                            <div class="col-md-4">
-                                                                <div class="form-group">
-                                                                    <div class="input-group">
-                                                                <span class="input-group-addon"
-                                                                      name="${robot.name}-port">${port.name}</span>
-                                                            <span class="input-group-addon">
-                                                                    <a role="button"
-                                                                       data-toggle="dropdown"
-                                                                       class="btn btn-default" data-target="#">
-                                                                        <div id="${robot.name}-${port.name}"
-                                                                             name="${robot.name}-${port.name}"
-                                                                             data-toggle="popover"
-                                                                             name="popover">${modelConfig.getDeviceName(port.name)}<span
-                                                                                class="caret"></span></div>
-                                                                    </a>
-                                                                    <ul id="configureMenu"
-                                                                        class="dropdown-menu multi-level" role="menu"
-                                                                        aria-labelledby="dropdownMenu">
-                                                                        <c:forEach var="device" items="${port.devices}">
-                                                                            <c:if test="${device.types.size() > 0}">
-                                                                                <li class="dropdown-submenu">
-                                                                                    <a id="s-${robot.name}-${port.name}"
-                                                                                       tabindex="-1"
-                                                                                       href="#">${device.name}</a>
-                                                                                    <ul class="dropdown-menu">
-                                                                                        <c:forEach var="type"
-                                                                                                   items="${device.types}">
-                                                                                            <li><a href="#"
-                                                                                                   id="s-${robot.name}-${port.name}">${type.name}</a>
-                                                                                            </li>
-                                                                                        </c:forEach>
+                                            <%--Not working now. Part for rounting service-->
+                                            <%--<div id="myTabContent33" class="tab-content">--%>
+                                                <%--<c:set var="systemConfig"--%>
+                                                       <%--value="${robotWrapper.robotInfo.systemConfigObject}"/>--%>
+                                                <%--<div class="tab-pane active in" id="portsConfig-${robot.name}">--%>
+                                                    <%--<div class="row">--%>
+                                                        <%--<c:set var="modelConfig"--%>
+                                                               <%--value="${robotWrapper.robotInfo.modelConfigObject}"/>--%>
+                                                        <%--<c:forEach var="port" items="${systemConfig.ports}">--%>
+                                                            <%--<div class="col-md-4">--%>
+                                                                <%--<div class="form-group">--%>
+                                                                    <%--<div class="input-group">--%>
+                                                                <%--<span class="input-group-addon"--%>
+                                                                      <%--name="${robot.name}-port">${port.name}</span>--%>
+                                                            <%--<span class="input-group-addon">--%>
+                                                                    <%--<a role="button"--%>
+                                                                       <%--data-toggle="dropdown"--%>
+                                                                       <%--class="btn btn-default" data-target="#">--%>
+                                                                        <%--<div id="${robot.name}-${port.name}"--%>
+                                                                             <%--name="${robot.name}-${port.name}"--%>
+                                                                             <%--data-toggle="popover"--%>
+                                                                             <%--name="popover">${modelConfig.getDeviceName(port.name)}<span--%>
+                                                                                <%--class="caret"></span></div>--%>
+                                                                    <%--</a>--%>
+                                                                    <%--<ul id="configureMenu"--%>
+                                                                        <%--class="dropdown-menu multi-level" role="menu"--%>
+                                                                        <%--aria-labelledby="dropdownMenu">--%>
+                                                                        <%--<c:forEach var="device" items="${port.devices}">--%>
+                                                                            <%--<c:if test="${device.types.size() > 0}">--%>
+                                                                                <%--<li class="dropdown-submenu">--%>
+                                                                                    <%--<a id="s-${robot.name}-${port.name}"--%>
+                                                                                       <%--tabindex="-1"--%>
+                                                                                       <%--href="#">${device.name}</a>--%>
+                                                                                    <%--<ul class="dropdown-menu">--%>
+                                                                                        <%--<c:forEach var="type"--%>
+                                                                                                   <%--items="${device.types}">--%>
+                                                                                            <%--<li><a href="#"--%>
+                                                                                                   <%--id="s-${robot.name}-${port.name}">${type.name}</a>--%>
+                                                                                            <%--</li>--%>
+                                                                                        <%--</c:forEach>--%>
 
-                                                                                    </ul>
+                                                                                    <%--</ul>--%>
 
-                                                                                </li>
-                                                                            </c:if>
-                                                                            <c:if test="${device.types.size() == 0}">
-                                                                                <li class="dropdown">
-                                                                                    <a tabindex="-1"
-                                                                                       href="#"
-                                                                                       id="s-${port.name}">${device.name}</a>
-                                                                                </li>
-                                                                            </c:if>
-                                                                        </c:forEach>
-                                                                    </ul>
-                                                            </span>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </c:forEach>
-                                                    </div>
-                                                </div>
-
-
-                                                <div class="tab-pane fade" id="devicesConfig-${robot.name}">
-
-                                                    <div class="row" style="margin-top:20px;" id="configureDeviceMenu">
-
-                                                        <!-- Form Name -->
+                                                                                <%--</li>--%>
+                                                                            <%--</c:if>--%>
+                                                                            <%--<c:if test="${device.types.size() == 0}">--%>
+                                                                                <%--<li class="dropdown">--%>
+                                                                                    <%--<a tabindex="-1"--%>
+                                                                                       <%--href="#"--%>
+                                                                                       <%--id="s-${port.name}">${device.name}</a>--%>
+                                                                                <%--</li>--%>
+                                                                            <%--</c:if>--%>
+                                                                        <%--</c:forEach>--%>
+                                                                    <%--</ul>--%>
+                                                            <%--</span>--%>
+                                                                    <%--</div>--%>
+                                                                <%--</div>--%>
+                                                            <%--</div>--%>
+                                                        <%--</c:forEach>--%>
+                                                    <%--</div>--%>
+                                                <%--</div>--%>
 
 
-                                                        <div class="btn-group show-on-hover">
-                                                            <button type="button"
-                                                                    class="btn btn-default dropdown-toggle"
-                                                                    data-toggle="dropdown"
-                                                                    id="deviceType-${robot.name}">
-                                                                Device <span
-                                                                    class="caret"></span>
-                                                            </button>
-                                                            <ul class="dropdown-menu" role="menu">
-                                                                <c:forEach var="device"
-                                                                           items="${systemConfig.devices}">
-                                                                    <c:forEach var="type"
-                                                                               items="${device.types}">
-                                                                        <li><a id="configureMenu-${robot.name}"
-                                                                               href="#">${type.name}</a>
-                                                                        </li>
-                                                                    </c:forEach>
-                                                                </c:forEach>
-                                                            </ul>
-                                                        </div>
+                                                <%--<div class="tab-pane fade" id="devicesConfig-${robot.name}">--%>
 
-                                                        <c:forEach var="device"
-                                                                   items="${systemConfig.devices}">
-                                                            <c:forEach var="type"
-                                                                       items="${device.types}">
+                                                    <%--<div class="row" style="margin-top:20px;" id="configureDeviceMenu">--%>
 
-                                                                <div class="panel" hidden
-                                                                     name="propertyType-${robot.name}"
-                                                                     id="property-${robot.name}-${type.name}">
-                                                                    <div class="well">
-                                                                        <div
-                                                                                class="panel-body form-horizontal payment-form"
-                                                                                id="form-${type.name}"
-                                                                                name="propertyForm-${robot.name}"
-                                                                                id="input-${type.name}">
-                                                                            <c:forEach var="entry"
-                                                                                       items="${type.properties}">
-                                                                                <div class="form-group">
-                                                                                    <label
-                                                                                            name="label-${type.name}"
-                                                                                            class="col-sm-3 control-label">${entry.key}</label>
-
-                                                                                    <div class="col-sm-9">
-                                                                                        <input id="input-${type.name}"
-                                                                                               type="text"
-                                                                                               class="form-control"
-                                                                                               value="${entry.value}"
-                                                                                               name="${entry.key}">
-                                                                                    </div>
-                                                                                </div>
-                                                                            </c:forEach>
+                                                        <%--<!-- Form Name -->--%>
 
 
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <!-- / panel preview -->
-                                                            </c:forEach>
-                                                        </c:forEach>
+                                                        <%--<div class="btn-group show-on-hover">--%>
+                                                            <%--<button type="button"--%>
+                                                                    <%--class="btn btn-default dropdown-toggle"--%>
+                                                                    <%--data-toggle="dropdown"--%>
+                                                                    <%--id="deviceType-${robot.name}">--%>
+                                                                <%--Device <span--%>
+                                                                    <%--class="caret"></span>--%>
+                                                            <%--</button>--%>
+                                                            <%--<ul class="dropdown-menu" role="menu">--%>
+                                                                <%--<c:forEach var="device"--%>
+                                                                           <%--items="${systemConfig.devices}">--%>
+                                                                    <%--<c:forEach var="type"--%>
+                                                                               <%--items="${device.types}">--%>
+                                                                        <%--<li><a id="configureMenu-${robot.name}"--%>
+                                                                               <%--href="#">${type.name}</a>--%>
+                                                                        <%--</li>--%>
+                                                                    <%--</c:forEach>--%>
+                                                                <%--</c:forEach>--%>
+                                                            <%--</ul>--%>
+                                                        <%--</div>--%>
+
+                                                        <%--<c:forEach var="device"--%>
+                                                                   <%--items="${systemConfig.devices}">--%>
+                                                            <%--<c:forEach var="type"--%>
+                                                                       <%--items="${device.types}">--%>
+
+                                                                <%--<div class="panel" hidden--%>
+                                                                     <%--name="propertyType-${robot.name}"--%>
+                                                                     <%--id="property-${robot.name}-${type.name}">--%>
+                                                                    <%--<div class="well">--%>
+                                                                        <%--<div--%>
+                                                                                <%--class="panel-body form-horizontal payment-form"--%>
+                                                                                <%--id="form-${type.name}"--%>
+                                                                                <%--name="propertyForm-${robot.name}"--%>
+                                                                                <%--id="input-${type.name}">--%>
+                                                                            <%--<c:forEach var="entry"--%>
+                                                                                       <%--items="${type.properties}">--%>
+                                                                                <%--<div class="form-group">--%>
+                                                                                    <%--<label--%>
+                                                                                            <%--name="label-${type.name}"--%>
+                                                                                            <%--class="col-sm-3 control-label">${entry.key}</label>--%>
+
+                                                                                    <%--<div class="col-sm-9">--%>
+                                                                                        <%--<input id="input-${type.name}"--%>
+                                                                                               <%--type="text"--%>
+                                                                                               <%--class="form-control"--%>
+                                                                                               <%--value="${entry.value}"--%>
+                                                                                               <%--name="${entry.key}">--%>
+                                                                                    <%--</div>--%>
+                                                                                <%--</div>--%>
+                                                                            <%--</c:forEach>--%>
 
 
-                                                    </div>
-                                                    <!-- /.row -->
+                                                                        <%--</div>--%>
+                                                                    <%--</div>--%>
+                                                                <%--</div>--%>
+                                                                <%--<!-- / panel preview -->--%>
+                                                            <%--</c:forEach>--%>
+                                                        <%--</c:forEach>--%>
 
 
-                                                </div>
-                                            </div>
+                                                    <%--</div>--%>
+                                                    <%--<!-- /.row -->--%>
+
+
+                                                <%--</div>--%>
+                                            <%--</div>--%>
 
 
                                             <div class="modal-footer">

@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Transactional
-@Component("RobotDAO")
+@Component("robotDAO")
 @Repository
 public class RobotDAOImpl implements RobotDAO {
 

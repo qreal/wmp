@@ -1,6 +1,6 @@
 package com.qreal.robots.components.dashboard.controller;
 
-import com.qreal.robots.components.dashboard.thrift.gen.RobotServiceThrift;
+import com.qreal.robots.thrift.gen.RobotServiceThrift;
 import org.apache.thrift.protocol.TJSONProtocol;
 import org.apache.thrift.server.TServlet;
 import org.springframework.context.support.AbstractApplicationContext;

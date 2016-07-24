@@ -1,6 +1,5 @@
 package com.qreal.robots.common.config.core;
 
-import com.qreal.robots.common.config.SecurityConfig;
 import com.qreal.robots.components.dashboard.controller.RobotRestServlet;
 import com.qreal.robots.components.database.diagrams.service.server.DiagramDbServer;
 import com.qreal.robots.components.database.robots.service.server.RobotDbServer;
@@ -49,7 +48,7 @@ public class AppInit implements WebApplicationInitializer {
         robotRestService.setLoadOnStartup(1);
         robotRestService.addMapping("/RobotRest");
 
-        ServletRegistration.Dynamic diagramService = servletContext.addServlet("DiagramService", new EditorServlet(dispatcherContext));
+        ServletRegistration.Dynamic diagramService = servletContext.addServlet("DiagramRestServlet", new EditorServlet(dispatcherContext));
         diagramService.setLoadOnStartup(1);
         diagramService.addMapping("/editorService");
 

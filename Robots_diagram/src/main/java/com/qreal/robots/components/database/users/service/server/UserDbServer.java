@@ -1,7 +1,6 @@
 package com.qreal.robots.components.database.users.service.server;
 
-import com.qreal.robots.components.database.robots.service.server.RobotDbServer;
-import com.qreal.robots.components.database.users.thrift.gen.UserDbService;
+import com.qreal.robots.thrift.gen.UserDbService;
 import org.apache.thrift.server.TServer;
 import org.apache.thrift.server.TSimpleServer;
 import org.apache.thrift.transport.TServerSocket;

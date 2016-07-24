@@ -1,10 +1,8 @@
 package com.qreal.robots.components.authorization.controller;
 
-import com.qreal.robots.common.exception_controller.ExceptionHandlerController;
 import com.qreal.robots.components.authorization.model.auth.User;
 import com.qreal.robots.components.database.diagrams.service.client.DiagramService;
 import com.qreal.robots.components.database.users.service.client.UserService;
-import org.apache.thrift.TException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,11 +56,11 @@ public class AuthController {
         ModelAndView model = new ModelAndView();
 
         if (userService.isUserExist(username)) {
-            return registerError(model, String.format("User with %s name is already exist", username));
+            return registerError(model, "User with " + username + " name is already exist");
         }
 
         if (!password.equals(password2)) {
-            return registerError(model, String.format("Passwords are not equals"));
+            return registerError(model, "Passwords are not equals");
         }
         User user = new User(username, passwordEncoder.encode(password), true);
 
@@ -77,7 +75,7 @@ public class AuthController {
     }
 
     private ModelAndView registerError(ModelAndView modelAndView, String message) {
-        logger.info("Someone met problem on registration: " + message);
+        logger.info("Someone met problem on registration: {}", message);
         modelAndView.addObject("error", message);
         modelAndView.setViewName("auth/register");
         return modelAndView;

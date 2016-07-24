@@ -1,10 +1,8 @@
 package com.qreal.robots.components.database.robots.service.client;
 
 import com.qreal.robots.components.dashboard.model.robot.Robot;
-import com.qreal.robots.components.database.diagrams.service.client.DiagramServiceImpl;
-import com.qreal.robots.components.database.robots.service.server.RobotDbServiceHandler;
-import com.qreal.robots.components.database.robots.thrift.gen.RobotDbService;
-import com.qreal.robots.components.database.robots.thrift.gen.TRobot;
+import com.qreal.robots.thrift.gen.RobotDbService;
+import com.qreal.robots.thrift.gen.TRobot;
 import com.qreal.robots.components.database.users.service.client.UserService;
 import org.apache.thrift.TException;
 import org.apache.thrift.protocol.TBinaryProtocol;
@@ -17,7 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
-@Service("RobotService")
+@Service("robotService")
 public class RobotServiceImpl implements RobotService {
 
     private static final Logger logger = LoggerFactory.getLogger(RobotServiceImpl.class);
@@ -44,7 +42,7 @@ public class RobotServiceImpl implements RobotService {
 
         try {
             transport.open();
-            client.registerRobot(RobotDbServiceHandler.convertFromRobot(robot));
+            client.registerRobot(robot.toTRobot());
             transport.close();
             logger.trace("register method registered robot {}", robot.getName());
         } catch (TException e) {
@@ -64,7 +62,7 @@ public class RobotServiceImpl implements RobotService {
     @Override
     public Robot findByName(String name) {
         logger.trace("findByName method called with parameters: robotName = {}", name);
-        TRobot tRobot = null;
+        TRobot tRobot = new TRobot();
         try {
             transport.open();
             tRobot = client.findByName(name);
@@ -74,7 +72,7 @@ public class RobotServiceImpl implements RobotService {
             logger.error("Client RobotService encountered problem while sending findByName request with parameters: " +
                     "name = {}", name, e);
         }
-        return RobotDbServiceHandler.convertToRobot(tRobot, userService.findByUserName(tRobot.getUsername()));
+        return new Robot(tRobot, userService.findByUserName(tRobot.getUsername()));
     }
 
     @Override

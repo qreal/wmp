@@ -1,7 +1,7 @@
 package com.qreal.robots.components.editor.model.diagram;
 
 import java.io.Serializable;
-
+//TODO Anybody using it?
 public class DiagramRequest implements Serializable {
 
     public Diagram getDiagram() {

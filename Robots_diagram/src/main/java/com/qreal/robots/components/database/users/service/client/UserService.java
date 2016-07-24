@@ -6,6 +6,7 @@ import org.apache.thrift.transport.TTransportException;
 
 public interface UserService {
 
+    //todo user must not contain id
     void save(User user);
 
     User findByUserName(String username);

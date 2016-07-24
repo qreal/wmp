@@ -1,13 +1,11 @@
 package com.qreal.robots.components.database.diagrams.service.client;
 
-import com.qreal.robots.components.database.diagrams.DAO.DiagramDAO;
-import com.qreal.robots.components.database.diagrams.DAO.DiagramDAOImpl;
-import com.qreal.robots.components.database.diagrams.service.server.EditorInterfaceConverter;
-import com.qreal.robots.components.database.diagrams.thrift.gen.DiagramDbService;
-import com.qreal.robots.components.database.diagrams.thrift.gen.TDiagram;
-import com.qreal.robots.components.database.diagrams.thrift.gen.TFolder;
+import com.qreal.robots.common.utils.AuthenticatedUser;
+import com.qreal.robots.thrift.gen.DiagramDbService;
 import com.qreal.robots.components.editor.model.diagram.Diagram;
 import com.qreal.robots.components.editor.model.diagram.Folder;
+import com.qreal.robots.thrift.gen.TDiagram;
+import com.qreal.robots.thrift.gen.TFolder;
 import org.apache.thrift.TException;
 import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.protocol.TProtocol;
@@ -15,16 +13,13 @@ import org.apache.thrift.transport.TSocket;
 import org.apache.thrift.transport.TTransport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-@Service("DiagramService")
+@Service("diagramService")
 public class DiagramServiceImpl implements DiagramService {
 
     private static final Logger logger = LoggerFactory.getLogger(DiagramServiceImpl.class);
-
-    private EditorInterfaceConverter converter;
 
     private TTransport transport;
 
@@ -37,13 +32,12 @@ public class DiagramServiceImpl implements DiagramService {
         transport = new TSocket(url, port);
         TProtocol protocol = new TBinaryProtocol(transport);
         client = new DiagramDbService.Client(protocol);
-        converter = new EditorInterfaceConverter();
     }
 
     @Override
     public Long saveDiagram(Diagram diagram, Long folderId) {
         logger.trace("saveDiagram method was called with parameters: diagram = {}, folderId = {}", diagram.getName(), folderId);
-        TDiagram tDiagram = converter.convertToTDiagram(diagram);
+        TDiagram tDiagram = diagram.toTDiagram();
         tDiagram.setFolderId(folderId);
         Long result = null;
         try {
@@ -71,7 +65,7 @@ public class DiagramServiceImpl implements DiagramService {
             logger.error("Client DiagramService encountered problem while sending openDiagram request with parameters:" +
                     "diagramId = {}", diagramId,  e);
         }
-        return converter.convertFromTDiagram(tDiagram);
+        return new Diagram(tDiagram);
     }
 
     @Override
@@ -79,7 +73,7 @@ public class DiagramServiceImpl implements DiagramService {
         logger.trace("rewriteDiagram method called with parameters: diagram = {}", diagram.getName());
         try {
             transport.open();
-            client.rewriteDiagram(converter.convertToTDiagram(diagram));
+            client.rewriteDiagram(diagram.toTDiagram());
             transport.close();
             logger.trace("rewriteDiagram method edited diagram");
         } catch (TException e) {
@@ -108,7 +102,7 @@ public class DiagramServiceImpl implements DiagramService {
         Folder rootFolder = new Folder("root", userName);
         try {
             transport.open();
-            TFolder newFolder = converter.convertToTFolder(rootFolder);
+            TFolder newFolder = rootFolder.toTFolder();
             client.createFolder(newFolder);
             transport.close();
             logger.trace("createRootFolder method created rootFolder for {}", userName);
@@ -121,12 +115,11 @@ public class DiagramServiceImpl implements DiagramService {
     @Override
     public Long createFolder(Folder folder) {
         logger.trace("createFolder method called with parameters: folder = {}", folder.getFolderName());
-        Long result = new Long(0);
-        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
-        folder.setUserName(userName);
+        Long result = 0L;
+        folder.setUserName(AuthenticatedUser.getUserName());
         try {
             transport.open();
-            TFolder newFolder = converter.convertToTFolder(folder);
+            TFolder newFolder = folder.toTFolder();
             result = client.createFolder(newFolder);
             transport.close();
             logger.trace("createFolder method created folder  {}", folder.getFolderName());
@@ -153,19 +146,17 @@ public class DiagramServiceImpl implements DiagramService {
 
     @Override
     public Folder getFolderTree() {
-        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
-        logger.trace("getFolderTree method called with parametrs: userName = {}", userName);
+        logger.trace("getFolderTree method called with parametrs: userName = {}", AuthenticatedUser.getUserName());
         TFolder folder = new TFolder();
         try {
             transport.open();
-            folder = client.getFolderTree(userName);
+            folder = client.getFolderTree(AuthenticatedUser.getUserName());
             transport.close();
             logger.trace("getFolderTree method returned folderTree");
         } catch (TException e) {
             logger.error("Client DiagramService encountered problem while sending getFolderTree request with parameters:" +
-                    "username = {}", userName,  e);
+                    "username = {}", AuthenticatedUser.getUserName(),  e);
         }
-        Folder newFolder = converter.convertFromTFolder(folder);
-        return newFolder;
+        return new Folder(folder);
     }
 }

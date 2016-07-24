@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Component("UserDAO")
+@Component("userDAO")
 @Repository
 @Transactional
 public class UserDAOImpl implements UserDAO {
@@ -21,7 +21,6 @@ public class UserDAOImpl implements UserDAO {
     public static final String ROLE_USER = "ROLE_USER";
 
     private static final Logger logger = LoggerFactory.getLogger(UserDAOImpl.class);
-
 
     @Autowired
     private SessionFactory sessionFactory;
@@ -52,7 +51,7 @@ public class UserDAOImpl implements UserDAO {
                 setParameter("username", username).list();
         logger.trace("findByUserName method extracted list of results from session with {} elements. First will be returned.", users.size());
 
-        return (users.size() > 0) ? users.get(0) : null;
+        return (!users.isEmpty()) ? users.get(0) : null;
     }
 
     @Override
@@ -63,7 +62,7 @@ public class UserDAOImpl implements UserDAO {
         List<User> users = session.createQuery("from User where username=:username")
                 .setParameter("username", username).list();
         logger.trace("isUserExist extracted list with {} users with name {}", users.size(), username);
-        return users.size() > 0;
+        return !users.isEmpty();
 
     }
 

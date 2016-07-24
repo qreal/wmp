@@ -1,6 +1,7 @@
 /// <reference path="../../../interfaces/diagramCore.d.ts" />
 /// <reference path="../../../interfaces/vendor.d.ts" />
 
+
 class DiagramThriftParser extends DiagramJsonParser {
 
     public parse(diagram: TDiagram, nodeTypesMap: Map<NodeType>): DiagramParts {

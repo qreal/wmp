@@ -3,8 +3,8 @@ package com.qreal.robots.components.database.robots.service.server;
 import com.qreal.robots.components.authorization.model.auth.User;
 import com.qreal.robots.components.dashboard.model.robot.Robot;
 import com.qreal.robots.components.database.robots.DAO.RobotDAO;
-import com.qreal.robots.components.database.robots.thrift.gen.RobotDbService;
-import com.qreal.robots.components.database.robots.thrift.gen.TRobot;
+import com.qreal.robots.thrift.gen.RobotDbService;
+import com.qreal.robots.thrift.gen.TRobot;
 import com.qreal.robots.components.database.users.service.client.UserService;
 import org.apache.thrift.TException;
 import org.springframework.context.support.AbstractApplicationContext;
@@ -17,35 +17,27 @@ public class RobotDbServiceHandler implements RobotDbService.Iface {
         this.context = context;
     }
 
-    public static Robot convertToRobot(TRobot tRobot, User user) {
-        return new Robot(tRobot.getName(), tRobot.getSsid(), user);
-    }
-
-    public static TRobot convertFromRobot(Robot robot) {
-        return new TRobot(robot.getName(), robot.getSsid(), robot.getOwner().getUsername());
-    }
 
     @Override
     public void registerRobot(TRobot tRobot) throws TException {
-        UserService userService = (UserService) context.getBean("UserService");
-        RobotDAO robotDAO = (RobotDAO) context.getBean("RobotDAO");
-        User user = null;
-        user = userService.findByUserName(tRobot.getUsername());
+        UserService userService = (UserService) context.getBean("userService");
+        RobotDAO robotDAO = (RobotDAO) context.getBean("robotDAO");
+        User user = userService.findByUserName(tRobot.getUsername());
 
         if (!userRobotExists(user, tRobot.getName())) {
-            robotDAO.save(convertToRobot(tRobot, user));
+            robotDAO.save(new Robot(tRobot, user));
         }
     }
 
     @Override
     public TRobot findByName(String name) throws TException {
-        RobotDAO robotDAO = (RobotDAO) context.getBean("RobotDAO");
-        return convertFromRobot(robotDAO.findByName(name));
+        RobotDAO robotDAO = (RobotDAO) context.getBean("robotDAO");
+        return robotDAO.findByName(name).toTRobot();
     }
 
     @Override
     public void deleteRobot(String name) throws TException {
-        RobotDAO robotDAO = (RobotDAO) context.getBean("RobotDAO");
+        RobotDAO robotDAO = (RobotDAO) context.getBean("robotDAO");
         Robot robot = robotDAO.findByName(name);
         robotDAO.delete(robot);
     }

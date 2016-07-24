@@ -1,5 +1,6 @@
 package com.qreal.robots.components.editor.model.diagram;
 
+import com.qreal.robots.thrift.gen.TProperty;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -23,6 +24,27 @@ public class LinkProperty implements Serializable {
 
     @Column(name = "type")
     private String type;
+
+    public LinkProperty() {
+    }
+
+    public LinkProperty(TProperty tProperty) {
+        if (tProperty.isSetPropertyId()) {
+            this.propertyId = tProperty.getPropertyId();
+        }
+
+        if (tProperty.isSetName()) {
+            this.name = tProperty.getName();
+        }
+
+        if (tProperty.isSetValue()) {
+            this.value = tProperty.getValue();
+        }
+
+        if (tProperty.isSetType()) {
+            this.type = tProperty.getType();
+        }
+    }
 
     public String getPropertyId() {
         return propertyId;
@@ -54,5 +76,25 @@ public class LinkProperty implements Serializable {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public TProperty toTProperty() {
+        TProperty tProperty = new TProperty();
+        if (this.value != null) {
+            tProperty.setValue(value);
+        }
+
+        if (this.name != null) {
+            tProperty.setName(name);
+        }
+
+        if (this.type != null) {
+            tProperty.setType(type);
+        }
+
+        if (this.propertyId != null) {
+            tProperty.setPropertyId(propertyId);
+        }
+        return tProperty;
     }
 }

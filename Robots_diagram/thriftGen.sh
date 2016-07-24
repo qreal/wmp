@@ -1,48 +1,51 @@
-#!/usr/bin/env bash
 
-#Authorization service
-authThriftDir="src/main/java/com/qreal/robots/components/authorization/thrift"
-mkdir -p "$authThriftDir/gen"
-thrift -gen java:beans -out "$PWD/src/main/java" "$authThriftDir/User.thrift"
+thriftSourcesDir="src/main/java/com/qreal/robots/thrift"
+thriftServerGenDir="src/main/java/com/qreal/robots/thrift/gen"
+thriftClientGenDir="src/main/webapp/resources/thrift"
 
-#Dashboard service
-#service side
-dashThriftDir="src/main/java/com/qreal/robots/components/dashboard/thrift"
-mkdir -p "$dashThriftDir/gen"
-thrift -gen java -out "$PWD/src/main/java" "$dashThriftDir/service/robotService.thrift"
+echo delete server gen dir
+[ -d "$thriftServerGenDir" ] && rm -rf "$thriftServerGenDir"
+echo create servet gen dir
+mkdir -p "$thriftServerGenDir"
 
-mkdir -p "src/main/webapp/resources/thrift/"
+echo delete client gen dir
+[ -d "$thriftClientGenDir" ] && rm -rf "$thriftClientGenDir"
+echo create client gen dir
+mkdir -p "$thriftClientGenDir"
 
-#client side
-dashClientDir="src/main/webapp/resources/thrift"
-mkdir -p "$dashClientDir/dashboard"
-thrift -gen js -out "$dashClientDir/dashboard" "$dashThriftDir/service/robotService.thrift"
+echo Dashboard service
+echo service side
+thrift -gen java -out "$PWD/src/main/java" "$thriftSourcesDir/dashboard/robotService.thrift"
+echo client side
+mkdir -p "$thriftClientGenDir/dashboard"
+thrift -gen js -out "$thriftClientGenDir/dashboard" "$thriftSourcesDir/dashboard/robotService.thrift"
 
-#DBAuthorization service
-dbAuthThriftDir="src/main/java/com/qreal/robots/components/database/users/thrift"
-mkdir -p "$dbAuthThriftDir/gen"
-thrift -gen java:beans -out "$PWD/src/main/java" "$dbAuthThriftDir/service/User.thrift"
-thrift -gen java -out "$PWD/src/main/java" "$dbAuthThriftDir/service/UserDbService.thrift"
+echo DBAuthorization service
+echo user
+thrift -gen java:beans -out "$PWD/src/main/java" "$thriftSourcesDir/struct/User.thrift"
+echo DBService
+thrift -gen java -out "$PWD/src/main/java" "$thriftSourcesDir/userDB/UserDbService.thrift"
 
-#DBRobots service
-dbRobotThriftDir="src/main/java/com/qreal/robots/components/database/robots/thrift"
-mkdir -p "$dbRobotThriftDir/gen"
-thrift -gen java:beans -out "$PWD/src/main/java" "$dbRobotThriftDir/Robot.thrift"
-thrift -gen java -out "$PWD/src/main/java" "$dbRobotThriftDir/RobotDbService.thrift"
+echo DBRobots service
+echo robot
+thrift -gen java:beans -out "$PWD/src/main/java" "$thriftSourcesDir/struct/Robot.thrift"
+echo DBService
+thrift -gen java -out "$PWD/src/main/java" "$thriftSourcesDir/robotDB/RobotDbService.thrift"
 
-#DBDiagrams service
-dbDiagramThriftDir="src/main/java/com/qreal/robots/components/database/diagrams/thrift"
-mkdir -p "$dbDiagramThriftDir/gen"
-thrift -gen java:beans -out "$PWD/src/main/java" "$dbDiagramThriftDir/Diagram.thrift"
-thrift -gen java -out "$PWD/src/main/java" "$dbDiagramThriftDir/DiagramDbService.thrift"
+echo DBDiagrams service
+echo diagram
+thrift -gen java:beans -out "$PWD/src/main/java" "$thriftSourcesDir/struct/Diagram.thrift"
+echo DBService
+thrift -gen java -out "$PWD/src/main/java" "$thriftSourcesDir/diagramDB/DiagramDbService.thrift"
 
-#Editor service
-#service side
-editorThriftDir="src/main/java/com/qreal/robots/components/editor/thrift"
-mkdir -p "$editorThriftDir/gen"
-thrift -gen java -out "$PWD/src/main/java" "$editorThriftDir/service/EditorService.thrift"
-
-#client side
-editorClientDir="src/main/webapp/resources/thrift/editor"
-mkdir -p "$editorClientDir"
-thrift -gen js:ts -out "$editorClientDir" "$editorThriftDir/service/EditorService.thrift"
+echo Editor service
+echo service side
+thrift -gen java -out "$PWD/src/main/java" "$thriftSourcesDir/editor/EditorService.thrift"
+echo client side
+mkdir -p "$thriftClientGenDir/editor"
+#import not working normally with typescript
+tail -n +4 "$thriftSourcesDir/editor/EditorService.thrift"  > "$thriftClientGenDir/editor/EditorService.thrift"
+sed -i -e 's/Diagram.TDiagram/TDiagram/g' "$thriftClientGenDir/editor/EditorService.thrift"
+sed -i -e 's/Diagram.TFolder/TFolder/g' "$thriftClientGenDir/editor/EditorService.thrift"
+tail -n +2 "$thriftSourcesDir/struct/Diagram.thrift" >> "$thriftClientGenDir/editor/EditorService.thrift"
+thrift -gen js:ts -out "$thriftClientGenDir/editor" "$thriftClientGenDir/editor/EditorService.thrift"

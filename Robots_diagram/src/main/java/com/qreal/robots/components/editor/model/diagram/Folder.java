@@ -1,11 +1,12 @@
 package com.qreal.robots.components.editor.model.diagram;
 
-import com.qreal.robots.components.editor.thrift.gen.TDiagram;
-import com.qreal.robots.components.editor.thrift.gen.TFolder;
+import com.qreal.robots.thrift.gen.TDiagram;
+import com.qreal.robots.thrift.gen.TFolder;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "folders")
@@ -42,67 +43,61 @@ public class Folder implements Serializable {
     }
 
     public Folder(TFolder tFolder) {
+
         if (tFolder.isSetFolderId()) {
             this.setFolderId(tFolder.getFolderId());
         }
+
         if (tFolder.isSetFolderName()) {
             this.setFolderName(tFolder.getFolderName());
         }
+
+        if (tFolder.isSetUserName()) {
+            this.setUserName(tFolder.getUserName());
+        }
+
         if (tFolder.isSetFolderParentId()) {
             this.setFolderParentId(tFolder.getFolderParentId());
         }
-        List<Diagram> diagrams = new ArrayList<>();
-        if (tFolder.getDiagrams() != null) {
-            Iterator<TDiagram> itrD = tFolder.getDiagrams().iterator();
-            while (itrD.hasNext()) {
-                TDiagram diagram = itrD.next();
-                diagrams.add(new Diagram(diagram));
-            }
+
+        if (tFolder.isSetChildrenFolders()) {
+            childrenFolders = tFolder.getChildrenFolders().stream().map(Folder::new).collect(Collectors.toList());
         }
 
-        List<Folder> children = new ArrayList<Folder>();
-        if (tFolder.getChildrenFolders() != null) {
-            Iterator<TFolder> itrF = tFolder.getChildrenFolders().iterator();
-            while (itrF.hasNext()) {
-                TFolder child = itrF.next();
-                children.add(new Folder(child));
-            }
+        if (tFolder.isSetDiagrams()) {
+            diagrams = tFolder.getDiagrams().stream().map(Diagram::new).collect(Collectors.toList());
         }
 
-        this.setDiagrams(diagrams);
-        this.setChildrenFolders(children);
     }
 
     public TFolder toTFolder() {
-        TFolder folder = new TFolder();
-        if (this.getFolderId() != null) {
-            folder.setFolderId(this.getFolderId());
-        }
-        folder.setFolderName(this.getFolderName());
-        if (this.getFolderParentId() != null) {
-            folder.setFolderParentId(this.getFolderParentId());
+        TFolder tFolder = new TFolder();
+
+        if (this.folderId != null) {
+            tFolder.setFolderId(this.folderId);
         }
 
-        Set<TDiagram> diagrams = new HashSet<TDiagram>();
-        if (this.getDiagrams() != null) {
-            Iterator<Diagram> itrD = this.getDiagrams().iterator();
-            while (itrD.hasNext()) {
-                Diagram diagram = itrD.next();
-                diagrams.add(diagram.toTDiagram());
-            }
+        if (this.folderName != null) {
+            tFolder.setFolderName(this.folderName);
         }
-        Set<TFolder> children = new HashSet<TFolder>();
-        if (this.getChildrenFolders() != null) {
-            Iterator<Folder> itrF = this.getChildrenFolders().iterator();
-            while (itrF.hasNext()) {
-                Folder child = itrF.next();
-                children.add(child.toTFolder());
-            }
-        }
-        folder.setDiagrams(diagrams);
-        folder.setChildrenFolders(children);
 
-        return folder;
+        if (this.userName != null) {
+            tFolder.setUserName(this.userName);
+        }
+
+        if (this.folderParentId != null) {
+            tFolder.setFolderParentId(this.folderParentId);
+        }
+
+        if (this.childrenFolders != null) {
+            tFolder.setChildrenFolders(this.childrenFolders.stream().map(Folder::toTFolder).collect(Collectors.toSet()));
+        }
+
+        if (this.diagrams != null) {
+            tFolder.setDiagrams(this.diagrams.stream().map(Diagram::toTDiagram).collect(Collectors.toSet()));
+        }
+
+        return tFolder;
     }
 
     public void setFolderId(Long folderId) {

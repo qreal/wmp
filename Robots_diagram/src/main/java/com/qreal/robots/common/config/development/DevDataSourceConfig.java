@@ -7,7 +7,6 @@ import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 
 import javax.sql.DataSource;
 
-
 @Configuration
 @Profile("development")
 public class DevDataSourceConfig {

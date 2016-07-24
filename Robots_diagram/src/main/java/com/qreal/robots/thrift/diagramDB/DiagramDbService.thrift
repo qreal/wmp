@@ -1,6 +1,6 @@
-namespace java com.qreal.robots.components.database.diagrams.thrift.gen
+namespace java com.qreal.robots.thrift.gen
 
-include "Diagram.thrift"
+include "../struct/Diagram.thrift"
 
 service DiagramDbService {
     i64 saveDiagram(1: Diagram.TDiagram diagram);

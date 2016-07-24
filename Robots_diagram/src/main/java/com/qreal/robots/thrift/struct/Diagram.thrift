@@ -1,4 +1,4 @@
-namespace java com.qreal.robots.components.database.diagrams.thrift.gen
+namespace java com.qreal.robots.thrift.gen
 
 struct TProperty {
     1 : string propertyId,
@@ -37,7 +37,7 @@ struct TDiagram {
 }
 
 struct TFolder {
-    1 : optional i64 folderId;
+    1 : optional i64 folderId,
     2 : string folderName,
     3 : optional string userName,
     4 : optional i64 folderParentId,

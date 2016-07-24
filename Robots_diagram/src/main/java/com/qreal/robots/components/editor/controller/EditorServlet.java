@@ -1,6 +1,6 @@
 package com.qreal.robots.components.editor.controller;
 
-import com.qreal.robots.components.editor.thrift.gen.EditorServiceThrift;
+import com.qreal.robots.thrift.gen.EditorServiceThrift;
 import org.apache.thrift.protocol.TJSONProtocol;
 import org.apache.thrift.server.TServlet;
 import org.springframework.context.support.AbstractApplicationContext;

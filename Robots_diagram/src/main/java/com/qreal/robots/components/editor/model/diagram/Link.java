@@ -1,10 +1,12 @@
 package com.qreal.robots.components.editor.model.diagram;
 
+import com.qreal.robots.thrift.gen.TLink;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "links")
@@ -25,6 +27,23 @@ public class Link implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinColumn(name = "link_id", referencedColumnName = "id")
     private Set<LinkProperty> properties;
+
+    public Link() {
+    }
+
+    public Link(TLink tLink) {
+        if (tLink.isSetGraphicalId()) {
+            this.graphicalId = tLink.getGraphicalId();
+        }
+
+        if (tLink.isSetLogicalId()) {
+            this.logicalId = tLink.getLogicalId();
+        }
+
+        if (tLink.isSetProperties()) {
+            this.properties = tLink.getProperties().stream().map(LinkProperty::new).collect(Collectors.toSet());
+        }
+    }
 
     public String getId() {
         return id;
@@ -56,5 +75,22 @@ public class Link implements Serializable {
 
     public void setProperties(Set<LinkProperty> properties) {
         this.properties = properties;
+    }
+
+    public TLink toTLink() {
+        TLink tLink = new TLink();
+
+        if (this.logicalId != null) {
+            tLink.setLogicalId(this.logicalId);
+        }
+
+        if (this.graphicalId != null) {
+            tLink.setGraphicalId(this.graphicalId);
+        }
+
+        if (this.properties != null) {
+            tLink.setProperties(properties.stream().map(LinkProperty::toTProperty).collect(Collectors.toSet()));
+        }
+        return tLink;
     }
 }

@@ -1,16 +1,25 @@
 package com.qreal.robots.components.authorization.model.auth;
 
+import com.qreal.robots.thrift.gen.TUserRole;
+
 import javax.persistence.*;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
+/**
+ * Struct represents UserRole.
+ * field user -- owner of role
+ * field role -- name of role
+ * field userRoleID surrogate key for role (todo -- create static table of roles)
+ */
+
 @Entity
 @Table(name = "user_roles",
         uniqueConstraints = @UniqueConstraint(
-                columnNames = {"role", "username"}))
+                columnNames = {"role", "owner"}))
 public class UserRole {
 
-    private Integer userRoleId;
+    private Integer id;
 
     private User user;
 
@@ -25,25 +34,37 @@ public class UserRole {
     }
 
     public UserRole(int id, User user, String role) {
-        this.userRoleId = id;
+        this.id = id;
         this.user = user;
         this.role = role;
     }
 
-    @Id
-    @GeneratedValue(strategy = IDENTITY)
-    @Column(name = "user_role_id",
-            unique = true, nullable = false)
-    public Integer getUserRoleId() {
-        return this.userRoleId;
+    public UserRole(TUserRole tUserRole, User user) {
+        if (tUserRole.isSetId()) {
+            this.id = tUserRole.getId();
+        }
+
+        if (tUserRole.isSetRole()) {
+            this.role = tUserRole.getRole();
+        }
+
+        this.user = user;
     }
 
-    public void setUserRoleId(Integer userRoleId) {
-        this.userRoleId = userRoleId;
+    @Id
+    @GeneratedValue(strategy = IDENTITY)
+    @Column(name = "id",
+            unique = true, nullable = false)
+    public Integer getId() {
+        return this.id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "username", nullable = false)
+    @JoinColumn(name = "owner", nullable = false)
     public User getUser() {
         return this.user;
     }
@@ -59,5 +80,19 @@ public class UserRole {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public TUserRole toTUserRole() {
+        TUserRole tUserRole = new TUserRole();
+
+        if (this.id != null) {
+            tUserRole.setId(this.id);
+        }
+
+        if (this.role != null) {
+            tUserRole.setRole(this.role);
+        }
+
+        return tUserRole;
     }
 }

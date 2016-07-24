@@ -1,7 +1,6 @@
 package com.qreal.robots.components.database.diagrams.service.server;
 
-import com.qreal.robots.components.database.diagrams.service.client.DiagramServiceImpl;
-import com.qreal.robots.components.database.diagrams.thrift.gen.DiagramDbService;
+import com.qreal.robots.thrift.gen.DiagramDbService;
 import org.apache.thrift.server.TServer;
 import org.apache.thrift.server.TSimpleServer;
 import org.apache.thrift.transport.TServerSocket;

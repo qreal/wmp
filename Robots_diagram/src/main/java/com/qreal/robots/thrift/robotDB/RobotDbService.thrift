@@ -1,6 +1,6 @@
-namespace java com.qreal.robots.components.database.robots.thrift.gen
+namespace java com.qreal.robots.thrift.gen
 
-include "Robot.thrift"
+include "..//struct/Robot.thrift"
 
 service RobotDbService {
     void registerRobot(1: Robot.TRobot tRobot),

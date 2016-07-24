@@ -1,6 +1,6 @@
-namespace java com.qreal.robots.components.database.users.thrift.gen
+namespace java com.qreal.robots.thrift.gen
 
-include "User.thrift"
+include "../struct/User.thrift"
 
 service UserDbService {
     void save(1: User.TUser user),

@@ -1,14 +1,12 @@
 package com.qreal.robots.components.database.diagrams.DAO;
 
 import com.qreal.robots.components.editor.model.diagram.Diagram;
-import com.qreal.robots.components.editor.model.diagram.DiagramRequest;
 import com.qreal.robots.components.editor.model.diagram.Folder;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Repository
-@Component("DiagramDAO")
+@Component("diagramDAO")
 @Transactional
 public class DiagramDAOImpl implements DiagramDAO {
 
