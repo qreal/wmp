@@ -23,17 +23,16 @@ public interface RobotService {
     void registerByUsername(Robot robot, String username);
 
     /**
-     * Returns random robot with specified name.
+     * Finds robot with specified Id.
      *
-     * @param name name of robot to find (not unique id)
-     * @see {@link https://github.com/qreal/wmp/issues/7}
+     * @param id id of robot to find
      */
-    Robot findByName(String name);
+    Robot findById(long id);
 
     /**
      * Deletes robot.
      *
-     * @param name robot to delete (Id must be ыуе correctly)
+     * @param id id of robot to delete
      */
-    void delete(String name);
+    void delete(long id);
 }

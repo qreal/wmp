@@ -32,15 +32,15 @@ public class RobotDbServiceHandler implements RobotDbService.Iface {
     }
 
     @Override
-    public TRobot findByName(String name) throws TException {
+    public TRobot findById(long id) throws TException {
         RobotDAO robotDAO = (RobotDAO) context.getBean("robotDAO");
-        return robotDAO.findByName(name).toTRobot();
+        return robotDAO.findById(id).toTRobot();
     }
 
     @Override
-    public void deleteRobot(String name) throws TException {
+    public void deleteRobot(long id) throws TException {
         RobotDAO robotDAO = (RobotDAO) context.getBean("robotDAO");
-        Robot robot = robotDAO.findByName(name);
+        Robot robot = robotDAO.findById(id);
         robotDAO.delete(robot);
     }
 

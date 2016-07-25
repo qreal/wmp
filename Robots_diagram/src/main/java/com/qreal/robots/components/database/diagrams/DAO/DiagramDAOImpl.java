@@ -54,9 +54,9 @@ public class DiagramDAOImpl implements DiagramDAO {
 
     @Override
     public Diagram openDiagram(Long diagramId) {
-        logger.trace("openDiagram method called with parameters: diagramId = {}", diagramId);
+        logger.trace("openDiagram method called with parameters: id = {}", diagramId);
         Session session = sessionFactory.getCurrentSession();
-        List<Diagram> diagrams = session.createQuery("from Diagram where diagramId=:diagramId").
+        List<Diagram> diagrams = session.createQuery("from Diagram where id=:diagramId").
                 setParameter("diagramId", diagramId).list();
         logger.trace("openDiagram method extracted list of results from session with {} elements. First will be " +
                 "returned.", diagrams.size());
@@ -73,7 +73,7 @@ public class DiagramDAOImpl implements DiagramDAO {
 
     @Override
     public void deleteDiagram(Long diagramId) {
-        logger.trace("deleteDiagram method called with parameters: diagramId = {}", diagramId);
+        logger.trace("deleteDiagram method called with parameters: id = {}", diagramId);
         Session session = sessionFactory.getCurrentSession();
         Diagram diagram = (Diagram) session.get(Diagram.class, diagramId);
         session.delete(diagram);

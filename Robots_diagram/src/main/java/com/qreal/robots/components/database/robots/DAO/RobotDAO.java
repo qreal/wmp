@@ -22,12 +22,11 @@ public interface RobotDAO {
     void delete(Robot robot);
 
     /**
-     * Returns random robot with specified name.
+     * Finds robot with specified id.
      *
-     * @param robotName name of robot to find (not unique id)
-     * @see {@link https://github.com/qreal/wmp/issues/7}
+     * @param robotId id of robot to find
      */
-    Robot findByName(String robotName);
+    Robot findById(long robotId);
 
     /**
      * Tells if robot with specified name exists.

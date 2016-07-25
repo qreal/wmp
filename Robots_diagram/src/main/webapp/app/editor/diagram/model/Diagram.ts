@@ -4,7 +4,7 @@ class Diagram {
     private name: string;
 
     public static createFromDAO(diagram: TDiagram) {
-        return new Diagram(diagram.diagramId, diagram.name)
+        return new Diagram(diagram.id, diagram.name)
     }
 
     constructor(id: number, name: string) {

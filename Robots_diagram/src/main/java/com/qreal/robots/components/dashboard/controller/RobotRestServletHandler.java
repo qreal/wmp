@@ -46,11 +46,11 @@ public class RobotRestServletHandler implements RobotServiceThrift.Iface {
      * @see {@link https://github.com/qreal/wmp/issues/7}
      */
     @Override
-    public boolean deleteRobot(String robotName) throws org.apache.thrift.TException {
-        logger.trace("RobotRestServlet got delete request with parameters: robotName = {}", robotName);
+    public boolean deleteRobot(long robotId) throws org.apache.thrift.TException {
+        logger.trace("RobotRestServlet got delete request with parameters: robotId = {}", robotId);
         RobotService robotService = (RobotService) context.getBean("robotService");
-        robotService.delete(robotName);
-        logger.trace("RobotRestServlet deleted robot {}", robotName);
+        robotService.delete(robotId);
+        logger.trace("RobotRestServlet deleted robot with id = {}", robotId);
         return true;
     }
 }

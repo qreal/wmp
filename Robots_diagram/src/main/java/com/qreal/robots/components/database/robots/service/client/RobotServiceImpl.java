@@ -66,32 +66,32 @@ public class RobotServiceImpl implements RobotService {
     }
 
     @Override
-    public Robot findByName(String name) {
-        logger.trace("findByName method called with parameters: robotName = {}", name);
+    public Robot findById(long id) {
+        logger.trace("findById method called with parameters: robotId = {}", id);
         TRobot tRobot = new TRobot();
         try {
             transport.open();
-            tRobot = client.findByName(name);
+            tRobot = client.findById(id);
             transport.close();
-            logger.trace("findByName method got result");
+            logger.trace("findById method got result");
         } catch (TException e) {
-            logger.error("Client RobotService encountered problem while sending findByName request with parameters: " +
-                    "name = {}", name, e);
+            logger.error("Client RobotService encountered problem while sending findById request with parameters: " +
+                    "name = {}", id, e);
         }
         return new Robot(tRobot, userService.findByUserName(tRobot.getUsername()));
     }
 
     @Override
-    public void delete(String name) {
-        logger.trace("delete method called with parameters: name = {}", name);
+    public void delete(long id) {
+        logger.trace("delete method called with parameters: name = {}", id);
         try {
             transport.open();
-            client.deleteRobot(name);
+            client.deleteRobot(id);
             transport.close();
-            logger.trace("delete method deleted robot {}", name);
+            logger.trace("delete method deleted robot {}", id);
         } catch (TException e) {
             logger.error("Client RobotService encountered problem while sending delete request with parameters: " +
-                    "name = {}", name, e);
+                    "name = {}", id, e);
         }
     }
 }

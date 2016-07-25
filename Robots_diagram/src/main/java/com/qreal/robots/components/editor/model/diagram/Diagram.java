@@ -40,8 +40,8 @@ public class Diagram implements Serializable {
      */
     public Diagram(TDiagram tDiagram) {
 
-        if (tDiagram.isSetDiagramId()) {
-            id = tDiagram.getDiagramId();
+        if (tDiagram.isSetId()) {
+            id = tDiagram.getId();
         }
 
         if (tDiagram.isSetName()) {
@@ -66,7 +66,7 @@ public class Diagram implements Serializable {
         TDiagram tDiagram = new TDiagram();
 
         if (id != null) {
-            tDiagram.setDiagramId(id);
+            tDiagram.setId(id);
         }
 
         if (name != null) {

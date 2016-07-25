@@ -11,7 +11,7 @@ class Folder {
         for (var i = 0; i < folder.diagrams.length; i++) {
             diagrams.push(Diagram.createFromDAO(folder.diagrams[i]));
         }
-        var resultFolder: Folder = new Folder(folder.folderId, folder.folderName, parent, diagrams);
+        var resultFolder: Folder = new Folder(folder.id, folder.folderName, parent, diagrams);
 
         for (var i = 0; i < folder.childrenFolders.length; i++) {
             resultFolder.addChild(Folder.createFromDAO(folder.childrenFolders[i], resultFolder));

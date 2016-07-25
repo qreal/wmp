@@ -49,8 +49,8 @@ public class Folder implements Serializable {
      */
     public Folder(TFolder tFolder) {
 
-        if (tFolder.isSetFolderId()) {
-            id = tFolder.getFolderId();
+        if (tFolder.isSetId()) {
+            id = tFolder.getId();
         }
 
         if (tFolder.isSetFolderName()) {
@@ -82,7 +82,7 @@ public class Folder implements Serializable {
         TFolder tFolder = new TFolder();
 
         if (id != null) {
-            tFolder.setFolderId(id);
+            tFolder.setId(id);
         }
 
         if (folderName != null) {

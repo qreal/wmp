@@ -17,7 +17,7 @@ public class Robot {
     /**
      * Surrogate key for Robot.
      */
-    private Integer id;
+    private Long id;
 
     /**
      * Name of robot (unique only in robot's group of owner).
@@ -52,7 +52,7 @@ public class Robot {
     /**
      * Full Robot constructor.
      */
-    public Robot(int id, String name, String ssid, User owner) {
+    public Robot(long id, String name, String ssid, User owner) {
         this.id = id;
         this.owner = owner;
         this.name = name;
@@ -85,11 +85,11 @@ public class Robot {
     @GeneratedValue(strategy = IDENTITY)
     @Column(name = "id",
             unique = true, nullable = false)
-    public Integer getId() {
+    public Long getId() {
         return this.id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

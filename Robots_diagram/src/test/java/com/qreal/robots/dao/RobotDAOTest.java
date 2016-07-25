@@ -30,18 +30,6 @@ public class RobotDAOTest extends BaseDAOTest {
 
 
     @Test
-    public void testFindByNameRobot() {
-        User user = getAndSaveUser(USER_NAME, userDAO);
-        Robot robot = new Robot(ROBOT_NAME, CODE, user);
-        robotDAO.save(robot);
-
-        Robot savedRobot = robotDAO.findByName(ROBOT_NAME);
-
-        assertNotNull(savedRobot);
-        assertEquals(robot.getName(), savedRobot.getName());
-    }
-
-    @Test
     public void testSaveRobot() {
         User user = getAndSaveUser(USER_NAME2, userDAO);
         Robot robot = new Robot(ROBOT_NAME2, CODE, user);

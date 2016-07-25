@@ -33,7 +33,7 @@ struct TDiagram {
     3 : string user,
     4 : set<TDefaultDiagramNode> nodes,
     5 : set<TLink> links,
-    6 : optional i64 id
+    6 : optional i64 folderId
 }
 
 struct TFolder {

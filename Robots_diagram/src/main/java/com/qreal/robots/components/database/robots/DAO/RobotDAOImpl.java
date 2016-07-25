@@ -47,12 +47,12 @@ public class RobotDAOImpl implements RobotDAO {
     }
 
     @Override
-    public Robot findByName(String robotName) {
-        logger.trace("findByName method called with parameters: robotName = {}", robotName);
+    public Robot findById(long robotId) {
+        logger.trace("findById method called with parameters: robotId = {}", robotId);
         Session session = sessionFactory.getCurrentSession();
 
-        List<Robot> robots = session.createQuery("from Robot where name=?").setParameter(0, robotName).list();
-        logger.trace("findByName method extracted list of results from session with {} elements. First will be " +
+        List<Robot> robots = session.createQuery("from Robot where id=?").setParameter(0, robotId).list();
+        logger.trace("findById method extracted list of results from session with {} elements. First will be " +
                 "returned.", robots.size());
         return robots.stream().findFirst().orElse(null);
     }
