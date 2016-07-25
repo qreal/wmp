@@ -33,15 +33,15 @@ public class Link implements Serializable {
 
     public Link(TLink tLink) {
         if (tLink.isSetGraphicalId()) {
-            this.graphicalId = tLink.getGraphicalId();
+            graphicalId = tLink.getGraphicalId();
         }
 
         if (tLink.isSetLogicalId()) {
-            this.logicalId = tLink.getLogicalId();
+            logicalId = tLink.getLogicalId();
         }
 
         if (tLink.isSetProperties()) {
-            this.properties = tLink.getProperties().stream().map(LinkProperty::new).collect(Collectors.toSet());
+            properties = tLink.getProperties().stream().map(LinkProperty::new).collect(Collectors.toSet());
         }
     }
 
@@ -80,15 +80,15 @@ public class Link implements Serializable {
     public TLink toTLink() {
         TLink tLink = new TLink();
 
-        if (this.logicalId != null) {
-            tLink.setLogicalId(this.logicalId);
+        if (logicalId != null) {
+            tLink.setLogicalId(logicalId);
         }
 
-        if (this.graphicalId != null) {
-            tLink.setGraphicalId(this.graphicalId);
+        if (graphicalId != null) {
+            tLink.setGraphicalId(graphicalId);
         }
 
-        if (this.properties != null) {
+        if (properties != null) {
             tLink.setProperties(properties.stream().map(LinkProperty::toTProperty).collect(Collectors.toSet()));
         }
         return tLink;

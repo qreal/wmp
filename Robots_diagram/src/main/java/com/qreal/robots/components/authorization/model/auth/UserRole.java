@@ -41,11 +41,11 @@ public class UserRole {
 
     public UserRole(TUserRole tUserRole, User user) {
         if (tUserRole.isSetId()) {
-            this.id = tUserRole.getId();
+            id = tUserRole.getId();
         }
 
         if (tUserRole.isSetRole()) {
-            this.role = tUserRole.getRole();
+            role = tUserRole.getRole();
         }
 
         this.user = user;
@@ -85,12 +85,12 @@ public class UserRole {
     public TUserRole toTUserRole() {
         TUserRole tUserRole = new TUserRole();
 
-        if (this.id != null) {
-            tUserRole.setId(this.id);
+        if (id != null) {
+            tUserRole.setId(id);
         }
 
-        if (this.role != null) {
-            tUserRole.setRole(this.role);
+        if (role != null) {
+            tUserRole.setRole(role);
         }
 
         return tUserRole;

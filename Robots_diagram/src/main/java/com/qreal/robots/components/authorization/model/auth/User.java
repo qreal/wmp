@@ -53,23 +53,24 @@ public class User {
 
     public  User(TUser tUser) {
         if (tUser.isSetUsername()) {
-            this.username = tUser.getUsername();
+            username = tUser.getUsername();
         }
 
         if (tUser.isSetPassword()) {
-            this.password = tUser.getPassword();
+            password = tUser.getPassword();
         }
 
         if (tUser.isSetEnabled()) {
-            this.enabled = tUser.isEnabled();
+            enabled = tUser.isEnabled();
         }
 
         if (tUser.isSetRoles()) {
-            this.roles = tUser.getRoles().stream().map(tUserRole -> new UserRole(tUserRole, this)).collect(Collectors.toSet());
+            roles = tUser.getRoles().stream().map(tUserRole -> new UserRole(tUserRole, this)).collect(Collectors
+                    .toSet());
         }
 
         if (tUser.isSetRobots()) {
-            this.robots = tUser.getRobots().stream().map(tRobot -> new Robot(tRobot, this)).collect(Collectors.toSet());
+            robots = tUser.getRobots().stream().map(tRobot -> new Robot(tRobot, this)).collect(Collectors.toSet());
         }
     }
 
@@ -125,24 +126,24 @@ public class User {
     public TUser toTUser() {
         TUser tUser = new TUser();
 
-        if (this.username != null) {
-            tUser.setUsername(this.username);
+        if (username != null) {
+            tUser.setUsername(username);
         }
 
-        if (this.password != null) {
-            tUser.setPassword(this.password);
+        if (password != null) {
+            tUser.setPassword(password);
         }
 
-        if (this.enabled != null) {
-            tUser.setEnabled(this.enabled);
+        if (enabled != null) {
+            tUser.setEnabled(enabled);
         }
 
-        if (this.roles != null) {
-            tUser.setRoles(this.getRoles().stream().map(UserRole::toTUserRole).collect(Collectors.toSet()));
+        if (roles != null) {
+            tUser.setRoles(getRoles().stream().map(UserRole::toTUserRole).collect(Collectors.toSet()));
         }
 
-        if (this.robots != null) {
-            tUser.setRobots(this.getRobots().stream().map(Robot::toTRobot).collect(Collectors.toSet()));
+        if (robots != null) {
+            tUser.setRobots(getRobots().stream().map(Robot::toTRobot).collect(Collectors.toSet()));
         }
 
         return tUser;

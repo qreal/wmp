@@ -39,19 +39,19 @@ public class Diagram implements Serializable {
     public Diagram(TDiagram tDiagram) {
 
         if (tDiagram.isSetDiagramId()) {
-            this.setDiagramId(tDiagram.getDiagramId());
+            diagramId = tDiagram.getDiagramId();
         }
 
         if (tDiagram.isSetName()) {
-            this.setName(tDiagram.getName());
+            name = tDiagram.getName();
         }
 
         if (tDiagram.isSetNodes()) {
-            this.setNodes(tDiagram.getNodes().stream().map(DefaultDiagramNode::new).collect(Collectors.toSet()));
+            nodes = tDiagram.getNodes().stream().map(DefaultDiagramNode::new).collect(Collectors.toSet());
         }
 
         if (tDiagram.isSetLinks()) {
-            this.setLinks(tDiagram.getLinks().stream().map(Link::new).collect(Collectors.toSet()));
+            links = tDiagram.getLinks().stream().map(Link::new).collect(Collectors.toSet());
         }
 
     }
@@ -60,19 +60,19 @@ public class Diagram implements Serializable {
 
         TDiagram tDiagram = new TDiagram();
 
-        if (this.diagramId != null) {
+        if (diagramId != null) {
             tDiagram.setDiagramId(diagramId);
         }
 
-        if (this.name != null) {
+        if (name != null) {
             tDiagram.setName(name);
         }
 
-        if (this.nodes != null) {
+        if (nodes != null) {
             tDiagram.setNodes(nodes.stream().map(DefaultDiagramNode::toTDefaultDiagramNode).collect(Collectors.toSet()));
         }
 
-        if (this.links != null) {
+        if (links != null) {
             tDiagram.setLinks(links.stream().map(Link::toTLink).collect(Collectors.toSet()));
         }
 

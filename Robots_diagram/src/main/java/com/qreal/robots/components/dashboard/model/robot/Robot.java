@@ -52,15 +52,15 @@ public class Robot {
 
     public Robot(TRobot tRobot, User owner) {
         if (tRobot.isSetId()) {
-            this.id = tRobot.getId();
+            id = tRobot.getId();
         }
 
         if (tRobot.isSetName()) {
-            this.name = tRobot.getName();
+            name = tRobot.getName();
         }
 
         if (tRobot.isSetSsid()) {
-            this.ssid = tRobot.getSsid();
+            ssid = tRobot.getSsid();
         }
 
         this.owner = owner;
@@ -126,19 +126,19 @@ public class Robot {
     public TRobot toTRobot() {
         TRobot tRobot = new TRobot();
 
-        if (this.id != null) {
+        if (id != null) {
             tRobot.setId(id);
         }
 
-        if (this.name != null) {
-            tRobot.setName(this.name);
+        if (name != null) {
+            tRobot.setName(name);
         }
 
-        if (this.ssid != null) {
-            tRobot.setSsid(this.ssid);
+        if (ssid != null) {
+            tRobot.setSsid(ssid);
         }
 
-        if (this.owner != null) {
+        if (owner != null) {
             tRobot.setUsername(owner.getUsername());
         }
 

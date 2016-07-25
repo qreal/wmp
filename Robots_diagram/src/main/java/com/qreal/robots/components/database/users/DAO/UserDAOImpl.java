@@ -49,9 +49,10 @@ public class UserDAOImpl implements UserDAO {
 
         List<User> users = session.createQuery("from User where username=:username").
                 setParameter("username", username).list();
-        logger.trace("findByUserName method extracted list of results from session with {} elements. First will be returned.", users.size());
+        logger.trace("findByUserName method extracted list of results from session with {} elements. First will be " +
+                "returned.", users.size());
 
-        return (!users.isEmpty()) ? users.get(0) : null;
+        return  users.stream().findFirst().orElse(null);
     }
 
     @Override

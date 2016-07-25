@@ -30,19 +30,19 @@ public class NodeProperty implements Serializable {
 
     public NodeProperty(TProperty tProperty) {
         if (tProperty.isSetPropertyId()) {
-            this.propertyId = tProperty.getPropertyId();
+            propertyId = tProperty.getPropertyId();
         }
 
         if (tProperty.isSetName()) {
-            this.name = tProperty.getName();
+            name = tProperty.getName();
         }
 
         if (tProperty.isSetValue()) {
-            this.value = tProperty.getValue();
+            value = tProperty.getValue();
         }
 
         if (tProperty.isSetType()) {
-            this.type = tProperty.getType();
+            type = tProperty.getType();
         }
     }
 

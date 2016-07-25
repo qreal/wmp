@@ -37,19 +37,19 @@ public class DefaultDiagramNode implements Serializable {
 
     public DefaultDiagramNode(TDefaultDiagramNode tDefaultDiagramNode) {
         if (tDefaultDiagramNode.isSetLogicalId()) {
-            this.logicalId = tDefaultDiagramNode.getLogicalId();
+            logicalId = tDefaultDiagramNode.getLogicalId();
         }
 
         if (tDefaultDiagramNode.isSetGraphicalId()) {
-            this.graphicalId = tDefaultDiagramNode.getGraphicalId();
+            graphicalId = tDefaultDiagramNode.getGraphicalId();
         }
 
         if (tDefaultDiagramNode.isSetType()) {
-            this.type = tDefaultDiagramNode.getType();
+            type = tDefaultDiagramNode.getType();
         }
 
         if (tDefaultDiagramNode.isSetProperties()) {
-            this.properties = tDefaultDiagramNode.getProperties().stream().map(NodeProperty::new).collect(Collectors.toSet());
+            properties = tDefaultDiagramNode.getProperties().stream().map(NodeProperty::new).collect(Collectors.toSet());
         }
     }
 
@@ -96,20 +96,20 @@ public class DefaultDiagramNode implements Serializable {
     TDefaultDiagramNode toTDefaultDiagramNode() {
         TDefaultDiagramNode tDefaultDiagramNode = new TDefaultDiagramNode();
 
-        if (this.logicalId != null) {
-            tDefaultDiagramNode.setLogicalId(this.logicalId);
+        if (logicalId != null) {
+            tDefaultDiagramNode.setLogicalId(logicalId);
         }
 
-        if (this.graphicalId != null) {
-            tDefaultDiagramNode.setGraphicalId(this.graphicalId);
+        if (graphicalId != null) {
+            tDefaultDiagramNode.setGraphicalId(graphicalId);
         }
 
-        if (this.type != null) {
-            tDefaultDiagramNode.setType(this.type);
+        if (type != null) {
+            tDefaultDiagramNode.setType(type);
         }
 
-        if (this.properties != null) {
-            tDefaultDiagramNode.setProperties(this.properties.stream().map(NodeProperty::toTProperty).collect(Collectors.toSet()));
+        if (properties != null) {
+            tDefaultDiagramNode.setProperties(properties.stream().map(NodeProperty::toTProperty).collect(Collectors.toSet()));
         }
         return tDefaultDiagramNode;
     }

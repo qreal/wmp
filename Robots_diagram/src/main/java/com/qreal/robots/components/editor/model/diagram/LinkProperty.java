@@ -30,19 +30,19 @@ public class LinkProperty implements Serializable {
 
     public LinkProperty(TProperty tProperty) {
         if (tProperty.isSetPropertyId()) {
-            this.propertyId = tProperty.getPropertyId();
+            propertyId = tProperty.getPropertyId();
         }
 
         if (tProperty.isSetName()) {
-            this.name = tProperty.getName();
+            name = tProperty.getName();
         }
 
         if (tProperty.isSetValue()) {
-            this.value = tProperty.getValue();
+            value = tProperty.getValue();
         }
 
         if (tProperty.isSetType()) {
-            this.type = tProperty.getType();
+            type = tProperty.getType();
         }
     }
 
@@ -80,19 +80,19 @@ public class LinkProperty implements Serializable {
 
     public TProperty toTProperty() {
         TProperty tProperty = new TProperty();
-        if (this.value != null) {
+        if (value != null) {
             tProperty.setValue(value);
         }
 
-        if (this.name != null) {
+        if (name != null) {
             tProperty.setName(name);
         }
 
-        if (this.type != null) {
+        if (type != null) {
             tProperty.setType(type);
         }
 
-        if (this.propertyId != null) {
+        if (propertyId != null) {
             tProperty.setPropertyId(propertyId);
         }
         return tProperty;

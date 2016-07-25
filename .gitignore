@@ -15,5 +15,10 @@ overlays
 **/gen
 **/webapp/resources/thrift/*
 *~*
-**/.idea/artifacts/**
-**/.idea/libraries/**
+
+**/.idea/**
+!**/.idea/misc.xml
+!**/.idea/modules.xml
+!**/.idea/encodings.xml
+!**/.idea/vcs.xml
+!**/.idea/compiler.xml

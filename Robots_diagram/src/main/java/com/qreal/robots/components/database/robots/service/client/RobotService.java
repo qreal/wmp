@@ -13,9 +13,9 @@ public interface RobotService {
     //todo robot must not contain id
     void registerByUsername(Robot robot, String username);
 
-    //TODO WE DO NOT USE NAME AS UNIQUE ID. SO HERE SHOULD BE ONLY ID (NOT NAME)
+    //todo we do not use name as unique id. so here should be only id (not name)
     Robot findByName(String name);
 
-    //TODO WE DO NOT USE NAME AS UNIQUE ID. SO HERE SHOULD BE ONLY ID (NOT NAME)
+    //todo we do not use name as unique id. so here should be only id (not name)
     void delete(String name);
 }

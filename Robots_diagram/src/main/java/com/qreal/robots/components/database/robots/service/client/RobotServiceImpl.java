@@ -53,7 +53,8 @@ public class RobotServiceImpl implements RobotService {
 
     @Override
     public void registerByUsername(Robot robot, String username) {
-        logger.trace("registerByUsername method called with parameters: robot = {}, username = {}", robot.getName(), username);
+        logger.trace("registerByUsername method called with parameters: robot = {}, username = {}", robot.getName(),
+                username);
         robot.setOwner(userService.findByUserName(username));
         register(robot);
         logger.trace("registerByUsername method registered robot {} with owner {}", robot.getName(), username);

@@ -8,7 +8,7 @@ import com.qreal.robots.thrift.gen.TDiagram;
 import com.qreal.robots.thrift.gen.TFolder;
 import org.springframework.context.support.AbstractApplicationContext;
 
-class EditorServletHandler implements EditorServiceThrift.Iface {
+public class EditorServletHandler implements EditorServiceThrift.Iface {
 
     private AbstractApplicationContext context;
 

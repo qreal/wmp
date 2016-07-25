@@ -2,6 +2,7 @@ package com.qreal.robots.components.editor.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.qreal.robots.common.loaders.TypesLoader;
+import com.qreal.robots.common.utils.AuthenticatedUser;
 import com.qreal.robots.components.authorization.controller.AuthController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +29,7 @@ public class EditorController {
 
     @RequestMapping(value = "/editor", method = RequestMethod.GET)
     public ModelAndView index() {
-        logger.info("User {} requested editor", getUserName());
+        logger.info("User {} requested editor", AuthenticatedUser.getUserName());
         return new ModelAndView("editor/editor");
     }
 
@@ -37,9 +38,4 @@ public class EditorController {
     public JsonNode getTypes(@RequestParam(value="kit") String kit) throws IOException {
         return typesLoader.getTypesJson();
     }
-
-    private String getUserName() {
-        return SecurityContextHolder.getContext().getAuthentication().getName();
-    }
-
 }

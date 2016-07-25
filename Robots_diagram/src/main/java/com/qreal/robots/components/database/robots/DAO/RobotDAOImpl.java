@@ -53,8 +53,9 @@ public class RobotDAOImpl implements RobotDAO {
         Session session = sessionFactory.getCurrentSession();
 
         List<Robot> robots = session.createQuery("from Robot where name=?").setParameter(0, robotName).list();
-        logger.trace("findByName method extracted list of results from session with {} elements. First will be returned.", robots.size());
-        return (robots.size() > 0) ? robots.get(0) : null;
+        logger.trace("findByName method extracted list of results from session with {} elements. First will be " +
+                "returned.", robots.size());
+        return robots.stream().findFirst().orElse(null);
     }
 
     @Override
@@ -64,6 +65,6 @@ public class RobotDAOImpl implements RobotDAO {
 
         List<User> robots = session.createQuery("from Robot where name=?").setParameter(0, robotName).list();
         logger.trace("isRobotExists extracted list with {} robots with name {}", robots.size(), robotName);
-        return robots.size() > 0;
+        return !robots.isEmpty();
     }
 }

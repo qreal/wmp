@@ -67,8 +67,8 @@ public class UserServiceImpl implements UserService {
             transport.close();
             logger.trace("findByUserName method returned answer.");
         } catch (TException e) {
-            logger.error("Client UserService encountered problem while sending findByUserName request with parameters: " +
-                    "username = {}", username, e);
+            logger.error("Client UserService encountered problem while sending findByUserName request with " +
+                    "parameters: username = {}", username, e);
         }
         return user;
     }

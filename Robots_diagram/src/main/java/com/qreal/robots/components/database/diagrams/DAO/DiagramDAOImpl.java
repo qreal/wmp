@@ -41,7 +41,8 @@ public class DiagramDAOImpl implements DiagramDAO {
 
     @Override
     public Long saveDiagram(Diagram diagram, Long folderId) {
-        logger.trace("saveDiagram method called with parameters: diagram = {}, folderID = {}", diagram.getName(), folderId);
+        logger.trace("saveDiagram method called with parameters: diagram = {}, folderID = {}", diagram.getName(),
+                folderId);
         Session session = sessionFactory.getCurrentSession();
         Folder folder = getFolder(folderId);
         folder.getDiagrams().add(diagram);
@@ -58,8 +59,9 @@ public class DiagramDAOImpl implements DiagramDAO {
         List<Diagram> diagrams = session.createQuery("from Diagram where diagramId=:diagramId")
                 .setParameter("diagramId", diagramId)
                 .list();
-        logger.trace("openDiagram method extracted list of results from session with {} elements. First will be returned.", diagrams.size());
-        return diagrams.get(0);
+        logger.trace("openDiagram method extracted list of results from session with {} elements. First will be " +
+                "returned.", diagrams.size());
+        return diagrams.stream().findFirst().orElse(null);
     }
 
     @Override
@@ -103,11 +105,13 @@ public class DiagramDAOImpl implements DiagramDAO {
         logger.trace("getFolderTree method called with parametrs: userName = {}", userName);
         Session session = sessionFactory.getCurrentSession();
 
-        List<Folder> rootFolders = session.createQuery("from Folder where folderName=:folderName and userName=:userName")
+        List<Folder> rootFolders = session.createQuery("from Folder where folderName=:folderName and " +
+                "userName=:userName")
                 .setParameter("folderName", "root")
                 .setParameter("userName", userName)
                 .list();
-        logger.trace("getFolderTree method extracted list of results from session with {} elements. First will be returned.", rootFolders.size());
-        return rootFolders.get(0);
+        logger.trace("getFolderTree method extracted list of results from session with {} elements. First will be " +
+                "returned.", rootFolders.size());
+        return rootFolders.stream().findFirst().orElse(null);
     }
 }

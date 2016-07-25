@@ -45,19 +45,19 @@ public class Folder implements Serializable {
     public Folder(TFolder tFolder) {
 
         if (tFolder.isSetFolderId()) {
-            this.setFolderId(tFolder.getFolderId());
+            folderId = tFolder.getFolderId();
         }
 
         if (tFolder.isSetFolderName()) {
-            this.setFolderName(tFolder.getFolderName());
+            folderName = tFolder.getFolderName();
         }
 
         if (tFolder.isSetUserName()) {
-            this.setUserName(tFolder.getUserName());
+            userName = tFolder.getUserName();
         }
 
         if (tFolder.isSetFolderParentId()) {
-            this.setFolderParentId(tFolder.getFolderParentId());
+            folderParentId = tFolder.getFolderParentId();
         }
 
         if (tFolder.isSetChildrenFolders()) {
@@ -73,28 +73,28 @@ public class Folder implements Serializable {
     public TFolder toTFolder() {
         TFolder tFolder = new TFolder();
 
-        if (this.folderId != null) {
-            tFolder.setFolderId(this.folderId);
+        if (folderId != null) {
+            tFolder.setFolderId(folderId);
         }
 
-        if (this.folderName != null) {
-            tFolder.setFolderName(this.folderName);
+        if (folderName != null) {
+            tFolder.setFolderName(folderName);
         }
 
-        if (this.userName != null) {
-            tFolder.setUserName(this.userName);
+        if (userName != null) {
+            tFolder.setUserName(userName);
         }
 
-        if (this.folderParentId != null) {
-            tFolder.setFolderParentId(this.folderParentId);
+        if (folderParentId != null) {
+            tFolder.setFolderParentId(folderParentId);
         }
 
-        if (this.childrenFolders != null) {
-            tFolder.setChildrenFolders(this.childrenFolders.stream().map(Folder::toTFolder).collect(Collectors.toSet()));
+        if (childrenFolders != null) {
+            tFolder.setChildrenFolders(childrenFolders.stream().map(Folder::toTFolder).collect(Collectors.toSet()));
         }
 
-        if (this.diagrams != null) {
-            tFolder.setDiagrams(this.diagrams.stream().map(Diagram::toTDiagram).collect(Collectors.toSet()));
+        if (diagrams != null) {
+            tFolder.setDiagrams(diagrams.stream().map(Diagram::toTDiagram).collect(Collectors.toSet()));
         }
 
         return tFolder;

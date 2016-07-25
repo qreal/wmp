@@ -20,7 +20,8 @@ public class RobotRestServletHandler implements RobotServiceThrift.Iface {
 
     @Override
     public boolean registerRobot(String robotName, String ssid) throws org.apache.thrift.TException {
-        logger.trace("RobotRestServlet got register request with parameters: robotName = {}, ssid = {}", robotName, ssid);
+        logger.trace("RobotRestServlet got register request with parameters: robotName = {}, ssid = {}", robotName,
+                ssid);
         RobotService robotService = (RobotService) context.getBean("robotService");
         robotService.registerByUsername(new Robot(robotName, ssid), AuthenticatedUser.getUserName());
         logger.trace("RobotRestServlet registered robot {} with ssid {}.", robotName, ssid);
