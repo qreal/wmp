@@ -19,7 +19,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Table(name = "robots")
 public class Robot {
 
-    private Integer id;
+    private Long id;
 
     private String name;
 
@@ -42,7 +42,7 @@ public class Robot {
         owner.getRobots().add(this);
     }
 
-    public Robot(int id, String name, String ssid, User owner) {
+    public Robot(long id, String name, String ssid, User owner) {
         this.id = id;
         this.owner = owner;
         this.name = name;
@@ -72,11 +72,11 @@ public class Robot {
     @GeneratedValue(strategy = IDENTITY)
     @Column(name = "id",
             unique = true, nullable = false)
-    public Integer getId() {
+    public Long getId() {
         return this.id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

@@ -8,7 +8,7 @@ public interface RobotDAO {
 
     void delete(Robot robot);
 
-    Robot findByName(String robotName);
+    Robot findById(long robotId);
 
     boolean isRobotExists(String robotName);
 }

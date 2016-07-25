@@ -36,90 +36,17 @@
             });
 
             $('[name="deleteRobot"]').click(function (event) {
-                var robotName = event.target.id.substring(7);
-
+                var robotId = event.target.id.substring(7);
                 var transport = new Thrift.TXHRTransport("http://localhost:8080/Robots_diagram/RobotRest");
                 var protocol  = new Thrift.TJSONProtocol(transport);
                 var client = new RobotServiceThriftClient(protocol);
                 try {
-                    var result = client.deleteRobot(robotName);
+                    var result = client.deleteRobot(robotId);
                     location.reload();
                 }
                 catch (ouch) {
                 }
             });
-
-//            $('[name="sendDiagram"]').click(function (event) {
-//                var robotName = event.target.id.substring(13);
-//                var data = "robotName=" + robotName + "&program=" + "MUR MUR MUR";
-//                $.ajax({
-//                    type: 'POST',
-//                    url: 'sendDiagram',
-//                    data: data,
-//                    success: function (data) {
-//                        $('#sendDiagramModal-' + robotName).modal('hide');
-//                        alert("Successfully sent ");
-//                    },
-//                    error: function (response, status, error) {
-//                        console.log("error");
-//                    }
-//                });
-//            });
-
-
-//            $('[name="saveModelConfig"]').click(function (event) {
-//                var robotName = event.target.id.substring(18);
-//                var name = robotName + "-port";
-//                var o = [];
-//                $('[name="' + name + '"]').each(function (index, value) {
-//                    var obj = {};
-//                    var key = $(value).text();
-//                    var valueElementName = '[name="' + robotName + '-' + key + '"]';
-//                    var attr = $(valueElementName).attr("data-content");
-//
-//                    if (typeof attr !== typeof undefined && attr !== false) {
-//                        obj[key] = $(valueElementName).attr("data-content");
-//                    } else {
-//                        obj[key] = $(valueElementName).text();
-//                    }
-//                    o.push(obj); // push in the "o" object created
-//                });
-//
-//                var typeProperties = [];
-//                $('[name="propertyForm-' + robotName + '"]').each(function (index, value) {
-//                    var obj = {};
-//                    obj["type"] = $(value).attr("id").substring(5);
-//                    $(value).find(':input').each(function (index2, value2) {
-//                        obj[$(value2).attr("name")] = $(value2).val();
-//                    });
-//                    typeProperties.push(obj);
-//                });
-//
-//                var data = "robotName=" + robotName + "&modelConfigJson=" + JSON.stringify(o) +
-//                        "&typeProperties=" + JSON.stringify(typeProperties);
-//
-//
-//                $.ajax({
-//                    type: 'POST',
-//                    url: 'saveModelConfig',
-//                    data: data,
-//                    success: function (response) {
-//                        var result = JSON.parse(response);
-//                        if (result.status == "OK") {
-//                            $('#configureRobotModal-' + robotName).modal('hide');
-//                            $('#validationError-' + robotName).hide();
-//                            alert("Successfully saved ");
-//                        } else {
-//                            $('#validationError-' + robotName).show();
-//                            $('#validationError-' + robotName).text(result.errors);
-//                        }
-//                    },
-//                    error: function (response, status, error) {
-//                        alert(JSON.parse(response).message);
-//
-//                    }
-//                });
-//            });
 
 
             $("#configureMenu a").click(function (event) {
@@ -283,16 +210,10 @@
                                         </div>
                                         <div class="modal-body">
 
-                                            <%--<h4>Select diagram</h4>--%>
-                                            <%--<select class="form-control">--%>
-                                                <%--<c:forEach var="diagram" items="${user.diagrams}">--%>
-                                                    <%--<option>${diagram.name}</option>--%>
-                                                <%--</c:forEach>--%>
-                                            <%--</select>--%>
-                                        </div>
+                                                                                </div>
                                         <div class="modal-footer">
                                             <button type="button" name="sendDiagram"
-                                                    id="send-diagram-${robot.name}"
+                                                    id="send-diagram-${robot.id}"
                                                     class="btn btn-primary">Send
                                             </button>
                                             <button type="button" class="btn btn-default"
@@ -326,144 +247,6 @@
                                                 <li><a href="#devicesConfig-${robot.name}" data-toggle="tab">Devices</a>
                                                 </li>
                                             </ul>
-                                            <%--Not working now. Part for rounting service-->
-                                            <%--<div id="myTabContent33" class="tab-content">--%>
-                                                <%--<c:set var="systemConfig"--%>
-                                                       <%--value="${robotWrapper.robotInfo.systemConfigObject}"/>--%>
-                                                <%--<div class="tab-pane active in" id="portsConfig-${robot.name}">--%>
-                                                    <%--<div class="row">--%>
-                                                        <%--<c:set var="modelConfig"--%>
-                                                               <%--value="${robotWrapper.robotInfo.modelConfigObject}"/>--%>
-                                                        <%--<c:forEach var="port" items="${systemConfig.ports}">--%>
-                                                            <%--<div class="col-md-4">--%>
-                                                                <%--<div class="form-group">--%>
-                                                                    <%--<div class="input-group">--%>
-                                                                <%--<span class="input-group-addon"--%>
-                                                                      <%--name="${robot.name}-port">${port.name}</span>--%>
-                                                            <%--<span class="input-group-addon">--%>
-                                                                    <%--<a role="button"--%>
-                                                                       <%--data-toggle="dropdown"--%>
-                                                                       <%--class="btn btn-default" data-target="#">--%>
-                                                                        <%--<div id="${robot.name}-${port.name}"--%>
-                                                                             <%--name="${robot.name}-${port.name}"--%>
-                                                                             <%--data-toggle="popover"--%>
-                                                                             <%--name="popover">${modelConfig.getDeviceName(port.name)}<span--%>
-                                                                                <%--class="caret"></span></div>--%>
-                                                                    <%--</a>--%>
-                                                                    <%--<ul id="configureMenu"--%>
-                                                                        <%--class="dropdown-menu multi-level" role="menu"--%>
-                                                                        <%--aria-labelledby="dropdownMenu">--%>
-                                                                        <%--<c:forEach var="device" items="${port.devices}">--%>
-                                                                            <%--<c:if test="${device.types.size() > 0}">--%>
-                                                                                <%--<li class="dropdown-submenu">--%>
-                                                                                    <%--<a id="s-${robot.name}-${port.name}"--%>
-                                                                                       <%--tabindex="-1"--%>
-                                                                                       <%--href="#">${device.name}</a>--%>
-                                                                                    <%--<ul class="dropdown-menu">--%>
-                                                                                        <%--<c:forEach var="type"--%>
-                                                                                                   <%--items="${device.types}">--%>
-                                                                                            <%--<li><a href="#"--%>
-                                                                                                   <%--id="s-${robot.name}-${port.name}">${type.name}</a>--%>
-                                                                                            <%--</li>--%>
-                                                                                        <%--</c:forEach>--%>
-
-                                                                                    <%--</ul>--%>
-
-                                                                                <%--</li>--%>
-                                                                            <%--</c:if>--%>
-                                                                            <%--<c:if test="${device.types.size() == 0}">--%>
-                                                                                <%--<li class="dropdown">--%>
-                                                                                    <%--<a tabindex="-1"--%>
-                                                                                       <%--href="#"--%>
-                                                                                       <%--id="s-${port.name}">${device.name}</a>--%>
-                                                                                <%--</li>--%>
-                                                                            <%--</c:if>--%>
-                                                                        <%--</c:forEach>--%>
-                                                                    <%--</ul>--%>
-                                                            <%--</span>--%>
-                                                                    <%--</div>--%>
-                                                                <%--</div>--%>
-                                                            <%--</div>--%>
-                                                        <%--</c:forEach>--%>
-                                                    <%--</div>--%>
-                                                <%--</div>--%>
-
-
-                                                <%--<div class="tab-pane fade" id="devicesConfig-${robot.name}">--%>
-
-                                                    <%--<div class="row" style="margin-top:20px;" id="configureDeviceMenu">--%>
-
-                                                        <%--<!-- Form Name -->--%>
-
-
-                                                        <%--<div class="btn-group show-on-hover">--%>
-                                                            <%--<button type="button"--%>
-                                                                    <%--class="btn btn-default dropdown-toggle"--%>
-                                                                    <%--data-toggle="dropdown"--%>
-                                                                    <%--id="deviceType-${robot.name}">--%>
-                                                                <%--Device <span--%>
-                                                                    <%--class="caret"></span>--%>
-                                                            <%--</button>--%>
-                                                            <%--<ul class="dropdown-menu" role="menu">--%>
-                                                                <%--<c:forEach var="device"--%>
-                                                                           <%--items="${systemConfig.devices}">--%>
-                                                                    <%--<c:forEach var="type"--%>
-                                                                               <%--items="${device.types}">--%>
-                                                                        <%--<li><a id="configureMenu-${robot.name}"--%>
-                                                                               <%--href="#">${type.name}</a>--%>
-                                                                        <%--</li>--%>
-                                                                    <%--</c:forEach>--%>
-                                                                <%--</c:forEach>--%>
-                                                            <%--</ul>--%>
-                                                        <%--</div>--%>
-
-                                                        <%--<c:forEach var="device"--%>
-                                                                   <%--items="${systemConfig.devices}">--%>
-                                                            <%--<c:forEach var="type"--%>
-                                                                       <%--items="${device.types}">--%>
-
-                                                                <%--<div class="panel" hidden--%>
-                                                                     <%--name="propertyType-${robot.name}"--%>
-                                                                     <%--id="property-${robot.name}-${type.name}">--%>
-                                                                    <%--<div class="well">--%>
-                                                                        <%--<div--%>
-                                                                                <%--class="panel-body form-horizontal payment-form"--%>
-                                                                                <%--id="form-${type.name}"--%>
-                                                                                <%--name="propertyForm-${robot.name}"--%>
-                                                                                <%--id="input-${type.name}">--%>
-                                                                            <%--<c:forEach var="entry"--%>
-                                                                                       <%--items="${type.properties}">--%>
-                                                                                <%--<div class="form-group">--%>
-                                                                                    <%--<label--%>
-                                                                                            <%--name="label-${type.name}"--%>
-                                                                                            <%--class="col-sm-3 control-label">${entry.key}</label>--%>
-
-                                                                                    <%--<div class="col-sm-9">--%>
-                                                                                        <%--<input id="input-${type.name}"--%>
-                                                                                               <%--type="text"--%>
-                                                                                               <%--class="form-control"--%>
-                                                                                               <%--value="${entry.value}"--%>
-                                                                                               <%--name="${entry.key}">--%>
-                                                                                    <%--</div>--%>
-                                                                                <%--</div>--%>
-                                                                            <%--</c:forEach>--%>
-
-
-                                                                        <%--</div>--%>
-                                                                    <%--</div>--%>
-                                                                <%--</div>--%>
-                                                                <%--<!-- / panel preview -->--%>
-                                                            <%--</c:forEach>--%>
-                                                        <%--</c:forEach>--%>
-
-
-                                                    <%--</div>--%>
-                                                    <%--<!-- /.row -->--%>
-
-
-                                                <%--</div>--%>
-                                            <%--</div>--%>
-
 
                                             <div class="modal-footer">
                                                 <button type="button" name="saveModelConfig"
