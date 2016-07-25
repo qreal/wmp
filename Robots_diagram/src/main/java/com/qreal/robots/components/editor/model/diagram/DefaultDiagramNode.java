@@ -1,6 +1,5 @@
 package com.qreal.robots.components.editor.model.diagram;
 
-
 import com.qreal.robots.thrift.gen.TDefaultDiagramNode;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -9,6 +8,9 @@ import java.io.Serializable;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * Diagram's node.
+ */
 @Entity
 @Table(name = "nodes")
 public class DefaultDiagramNode implements Serializable {
@@ -35,6 +37,9 @@ public class DefaultDiagramNode implements Serializable {
     public DefaultDiagramNode() {
     }
 
+    /**
+     * Constructor-converter from Thrift TDefaultDiagramNode to DefaultDiagramNode.
+     */
     public DefaultDiagramNode(TDefaultDiagramNode tDefaultDiagramNode) {
         if (tDefaultDiagramNode.isSetLogicalId()) {
             logicalId = tDefaultDiagramNode.getLogicalId();
@@ -49,7 +54,8 @@ public class DefaultDiagramNode implements Serializable {
         }
 
         if (tDefaultDiagramNode.isSetProperties()) {
-            properties = tDefaultDiagramNode.getProperties().stream().map(NodeProperty::new).collect(Collectors.toSet());
+            properties = tDefaultDiagramNode.getProperties().stream().map(NodeProperty::new).
+                    collect(Collectors.toSet());
         }
     }
 
@@ -93,6 +99,9 @@ public class DefaultDiagramNode implements Serializable {
         this.properties = properties;
     }
 
+    /**
+     * Converter from DefaultDiagramNode to Thrift TDefaultDiagramNode.
+     */
     TDefaultDiagramNode toTDefaultDiagramNode() {
         TDefaultDiagramNode tDefaultDiagramNode = new TDefaultDiagramNode();
 
@@ -109,7 +118,8 @@ public class DefaultDiagramNode implements Serializable {
         }
 
         if (properties != null) {
-            tDefaultDiagramNode.setProperties(properties.stream().map(NodeProperty::toTProperty).collect(Collectors.toSet()));
+            tDefaultDiagramNode.setProperties(properties.stream().map(NodeProperty::toTProperty).
+                    collect(Collectors.toSet()));
         }
         return tDefaultDiagramNode;
     }

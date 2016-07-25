@@ -9,11 +9,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.support.AbstractApplicationContext;
 
+/**
+ * Thrift server side service class for RobotDBService.
+ */
 public class RobotDbServer {
 
     private static final Logger logger = LoggerFactory.getLogger(RobotDbServer.class);
 
-    public static void runTServer(RobotDbService.Processor processor) {
+    private static void runTServer(RobotDbService.Processor processor) {
         int port = 9091;
         logger.info("Starting Robot DB TServer on localhost on port {}", port);
         try {
@@ -26,6 +29,9 @@ public class RobotDbServer {
         }
     }
 
+    /**
+     * Constructor starts Thrift TServer which implements RPC RobotService interface.
+     */
     public RobotDbServer(AbstractApplicationContext context) {
         try {
             RobotDbServiceHandler handler = new RobotDbServiceHandler(context);

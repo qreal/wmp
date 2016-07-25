@@ -8,8 +8,7 @@ import org.springframework.security.core.userdetails.User;
  * It can return name of authenticated user, which interacts with the service.
  */
 public class AuthenticatedUser {
-    public static String getUserName()
-    {
+    public static String getUserName() {
         User authenticatedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return authenticatedUser.getUsername();
     }

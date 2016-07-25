@@ -9,12 +9,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.support.AbstractApplicationContext;
 
+/**
+ * Thrift server side service class for UserDBService.
+ */
 public class UserDbServer {
 
     private static final Logger logger = LoggerFactory.getLogger(UserDbServer.class);
 
-
-    public static void runTServer(UserDbService.Processor processor) {
+    private static void runTServer(UserDbService.Processor processor) {
         int port = 9090;
         logger.info("Starting User DB TServer on localhost on port {}", port);
         try {
@@ -27,6 +29,9 @@ public class UserDbServer {
         }
     }
 
+    /**
+     * Constructor starts Thrift TServer which implements RPC UserService interface.
+     */
     public UserDbServer(AbstractApplicationContext context) {
         try {
             UserDbServiceHandler handler = new UserDbServiceHandler(context);

@@ -52,7 +52,7 @@ public class UserDAOImpl implements UserDAO {
         logger.trace("findByUserName method extracted list of results from session with {} elements. First will be " +
                 "returned.", users.size());
 
-        return  users.stream().findFirst().orElse(null);
+        return users.stream().findFirst().orElse(null);
     }
 
     @Override
@@ -60,8 +60,8 @@ public class UserDAOImpl implements UserDAO {
         logger.trace("isUserExist method called with parameters: username = {}", username);
         Session session = sessionFactory.getCurrentSession();
 
-        List<User> users = session.createQuery("from User where username=:username")
-                .setParameter("username", username).list();
+        List<User> users = session.createQuery("from User where username=:username").
+                setParameter("username", username).list();
         logger.trace("isUserExist extracted list with {} users with name {}", users.size(), username);
         return !users.isEmpty();
 

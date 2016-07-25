@@ -27,14 +27,22 @@ before_install:
   - sudo make install
   - sudo ln -s /usr/local/bin/thrift /usr/bin/thriftD
   - cd ../..
+  #get checkstyle
+  - cd Robots_diagram
+  - wget http://downloads.sourceforge.net/project/checkstyle/checkstyle/7.0/checkstyle-7.0-all.jar
+  - cd ..
 
 install:
   - ./buildApp.sh
 
 script:
+  #run checkstyle
   - cd Robots_diagram
+  - java -jar checkstyle-7.0-all.jar -c ../Travis/checkstyle/checkstyle.xml src
+  #run callTomcat test
   - mvn clean tomcat7:run-war &
   - ../Travis/callTomcat.sh
+
 
 notifications:
   slack: qreal-web:sT5qgA4qZZ9eyLI0yy2Mp81E

@@ -1,13 +1,15 @@
 package com.qreal.robots.components.editor.model.diagram;
 
-import com.qreal.robots.thrift.gen.TDiagram;
 import com.qreal.robots.thrift.gen.TFolder;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.*;
+import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Folder with diagrams and other folders.
+ */
 @Entity
 @Table(name = "folders")
 public class Folder implements Serializable {
@@ -15,7 +17,7 @@ public class Folder implements Serializable {
     @Id
     @Column(name = "folder_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long folderId;
+    private Long id;
 
     @Column(name = "folder_name")
     private String folderName;
@@ -42,10 +44,13 @@ public class Folder implements Serializable {
         this.userName = userName;
     }
 
+    /**
+     * Constructor-converter from Thrift TFolder to Folder.
+     */
     public Folder(TFolder tFolder) {
 
         if (tFolder.isSetFolderId()) {
-            folderId = tFolder.getFolderId();
+            id = tFolder.getFolderId();
         }
 
         if (tFolder.isSetFolderName()) {
@@ -70,11 +75,14 @@ public class Folder implements Serializable {
 
     }
 
+    /**
+     * Converter from Folder to Thrift TFolder.
+     */
     public TFolder toTFolder() {
         TFolder tFolder = new TFolder();
 
-        if (folderId != null) {
-            tFolder.setFolderId(folderId);
+        if (id != null) {
+            tFolder.setFolderId(id);
         }
 
         if (folderName != null) {
@@ -100,12 +108,12 @@ public class Folder implements Serializable {
         return tFolder;
     }
 
-    public void setFolderId(Long folderId) {
-        this.folderId = folderId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public Long getFolderId() {
-        return this.folderId;
+    public Long getId() {
+        return this.id;
     }
 
     public void setFolderName(String name) {
@@ -116,7 +124,9 @@ public class Folder implements Serializable {
         return this.folderName;
     }
 
-    public void setFolderParentId(Long folderParentId) { this.folderParentId = folderParentId; }
+    public void setFolderParentId(Long folderParentId) {
+        this.folderParentId = folderParentId;
+    }
 
     public Long getFolderParentId() {
         return this.folderParentId;

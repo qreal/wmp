@@ -1,21 +1,39 @@
 package com.qreal.robots.components.database.robots.service.client;
 
 import com.qreal.robots.components.dashboard.model.robot.Robot;
-import org.apache.thrift.TException;
 
-//SaveModelConfig was temporary deleted. You can find it in old repository.
-
+/**
+ * RobotDBService interface.
+ */
 public interface RobotService {
 
-    //todo robot must not contain id
+    /**
+     * Saves robot.
+     *
+     * @param robot robot to save (Id must not be set)
+     */
     void register(Robot robot);
 
-    //todo robot must not contain id
+    /**
+     * Register robot with specified owner.
+     *
+     * @param robot    robot to register (Id must not be set)
+     * @param username owner of robot
+     */
     void registerByUsername(Robot robot, String username);
 
-    //todo we do not use name as unique id. so here should be only id (not name)
+    /**
+     * Returns random robot with specified name.
+     *
+     * @param name name of robot to find (not unique id)
+     * @see {@link https://github.com/qreal/wmp/issues/7}
+     */
     Robot findByName(String name);
 
-    //todo we do not use name as unique id. so here should be only id (not name)
+    /**
+     * Deletes robot.
+     *
+     * @param name robot to delete (Id must be ыуе correctly)
+     */
     void delete(String name);
 }

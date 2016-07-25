@@ -8,6 +8,9 @@ import java.io.Serializable;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * Link between nodes.
+ */
 @Entity
 @Table(name = "links")
 public class Link implements Serializable {
@@ -31,6 +34,9 @@ public class Link implements Serializable {
     public Link() {
     }
 
+    /**
+     * Constructor-converter from Thrift TLink to Link.
+     */
     public Link(TLink tLink) {
         if (tLink.isSetGraphicalId()) {
             graphicalId = tLink.getGraphicalId();
@@ -77,6 +83,9 @@ public class Link implements Serializable {
         this.properties = properties;
     }
 
+    /**
+     * Converter from Link to Thrift TLink.
+     */
     public TLink toTLink() {
         TLink tLink = new TLink();
 

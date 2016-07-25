@@ -12,6 +12,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 
+/**
+ * Main controller of Dashboard service.
+ * Pages: / (main page)
+ */
 @Controller
 public class MainController {
 

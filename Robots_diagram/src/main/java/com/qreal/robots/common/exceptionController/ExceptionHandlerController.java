@@ -1,4 +1,4 @@
-package com.qreal.robots.common.exception_controller;
+package com.qreal.robots.common.exceptionController;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

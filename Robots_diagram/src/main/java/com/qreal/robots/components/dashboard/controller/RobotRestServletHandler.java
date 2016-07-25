@@ -2,12 +2,16 @@ package com.qreal.robots.components.dashboard.controller;
 
 import com.qreal.robots.common.utils.AuthenticatedUser;
 import com.qreal.robots.components.dashboard.model.robot.Robot;
-import com.qreal.robots.thrift.gen.RobotServiceThrift;
 import com.qreal.robots.components.database.robots.service.client.RobotService;
+import com.qreal.robots.thrift.gen.RobotServiceThrift;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.support.AbstractApplicationContext;
 
+/**
+ * Thrift RobotRest controller.
+ * RPC functions: registerRobot, deleteRobot
+ */
 public class RobotRestServletHandler implements RobotServiceThrift.Iface {
 
     private static final Logger logger = LoggerFactory.getLogger(MainController.class);
@@ -18,6 +22,13 @@ public class RobotRestServletHandler implements RobotServiceThrift.Iface {
         this.context = context;
     }
 
+
+    /**
+     * RPC function registering robot.
+     *
+     * @param robotName name of robot
+     * @param ssid ssid of robot's wifi
+     */
     @Override
     public boolean registerRobot(String robotName, String ssid) throws org.apache.thrift.TException {
         logger.trace("RobotRestServlet got register request with parameters: robotName = {}, ssid = {}", robotName,
@@ -28,6 +39,12 @@ public class RobotRestServletHandler implements RobotServiceThrift.Iface {
         return true;
     }
 
+    /**
+     * RPC function deleting robot.
+     *
+     * @param robotName name of robot
+     * @see {@link https://github.com/qreal/wmp/issues/7}
+     */
     @Override
     public boolean deleteRobot(String robotName) throws org.apache.thrift.TException {
         logger.trace("RobotRestServlet got delete request with parameters: robotName = {}", robotName);

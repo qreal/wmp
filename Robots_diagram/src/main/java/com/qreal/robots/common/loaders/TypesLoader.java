@@ -18,11 +18,14 @@ public class TypesLoader {
         mapper = new ObjectMapper();
     }
 
+    /**
+     * Provides JSON types for client.
+     */
     public JsonNode getTypesJson() throws IOException {
         ObjectNode resultTypes = mapper.createObjectNode();
 
         ClassLoader classLoader = getClass().getClassLoader();
-        JsonNode typesList =  mapper.readTree(new File(classLoader.getResource("typesList.json").getFile()));
+        JsonNode typesList = mapper.readTree(new File(classLoader.getResource("typesList.json").getFile()));
         JsonNode allTypes = mapper.readTree(new File(classLoader.getResource("elementsTypes_en.json").getFile()));
 
         resultTypes.set("elements", getElementsTypes(typesList, allTypes));
@@ -40,7 +43,7 @@ public class TypesLoader {
     private ObjectNode getBlocksTypes(JsonNode typesList, JsonNode allTypes) {
         ObjectNode resultBlocksNode = mapper.createObjectNode();
         JsonNode listElements = typesList.path("blocks");
-        JsonNode allBlocks= allTypes.path("blocks");
+        JsonNode allBlocks = allTypes.path("blocks");
         JsonNode categoriesNames = allTypes.path("categoriesNames");
         resultBlocksNode.set("general", getGeneralTypes(listElements, allBlocks));
         resultBlocksNode.set("palette", getPaletteTypes(listElements, allBlocks, categoriesNames));

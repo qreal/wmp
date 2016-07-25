@@ -3,12 +3,15 @@ package com.qreal.robots.components.database.robots.service.server;
 import com.qreal.robots.components.authorization.model.auth.User;
 import com.qreal.robots.components.dashboard.model.robot.Robot;
 import com.qreal.robots.components.database.robots.DAO.RobotDAO;
+import com.qreal.robots.components.database.users.service.client.UserService;
 import com.qreal.robots.thrift.gen.RobotDbService;
 import com.qreal.robots.thrift.gen.TRobot;
-import com.qreal.robots.components.database.users.service.client.UserService;
 import org.apache.thrift.TException;
 import org.springframework.context.support.AbstractApplicationContext;
 
+/**
+ * Thrift server side handler for RobotDBService.
+ */
 public class RobotDbServiceHandler implements RobotDbService.Iface {
 
     private AbstractApplicationContext context;
@@ -16,7 +19,6 @@ public class RobotDbServiceHandler implements RobotDbService.Iface {
     public RobotDbServiceHandler(AbstractApplicationContext context) {
         this.context = context;
     }
-
 
     @Override
     public void registerRobot(TRobot tRobot) throws TException {

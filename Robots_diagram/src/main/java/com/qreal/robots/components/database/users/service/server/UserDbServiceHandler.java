@@ -7,6 +7,9 @@ import com.qreal.robots.thrift.gen.UserDbService;
 import org.apache.thrift.TException;
 import org.springframework.context.support.AbstractApplicationContext;
 
+/**
+ * Thrift server side handler for UserDBService.
+ */
 public class UserDbServiceHandler implements UserDbService.Iface {
 
     private AbstractApplicationContext context;

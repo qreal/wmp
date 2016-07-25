@@ -7,22 +7,27 @@ import javax.persistence.*;
 import static javax.persistence.GenerationType.IDENTITY;
 
 /**
- * Struct represents UserRole.
- * field user -- owner of role
- * field role -- name of role
- * field userRoleID surrogate key for role (todo -- create static table of roles)
+ * UserRole in authorization service.
  */
-
 @Entity
 @Table(name = "user_roles",
         uniqueConstraints = @UniqueConstraint(
                 columnNames = {"role", "owner"}))
 public class UserRole {
 
+    /**
+     * Surrogate key for role (maybe static table for roles?).
+     */
     private Integer id;
 
+    /**
+     * Owner of role.
+     */
     private User user;
 
+    /**
+     * Name of role.
+     */
     private String role;
 
     public UserRole() {
@@ -33,12 +38,18 @@ public class UserRole {
         this.role = role;
     }
 
+    /**
+     * Full UserRole constructor.
+     */
     public UserRole(int id, User user, String role) {
         this.id = id;
         this.user = user;
         this.role = role;
     }
 
+    /**
+     * Constructor-converter from Thrift TUserRole to UserRole.
+     */
     public UserRole(TUserRole tUserRole, User user) {
         if (tUserRole.isSetId()) {
             id = tUserRole.getId();
@@ -82,6 +93,9 @@ public class UserRole {
         this.role = role;
     }
 
+    /**
+     * Converter from UserRole to Thrift TUserRole.
+     */
     public TUserRole toTUserRole() {
         TUserRole tUserRole = new TUserRole();
 

@@ -34,20 +34,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
 
-        httpSecurity.authorizeRequests()
-                .antMatchers("/RobotRest/**").permitAll()
-                .antMatchers("/editorService/**").permitAll()
-                .antMatchers("/resources/**").permitAll()
-                .antMatchers("/register").permitAll()
-                .antMatchers("/**").authenticated()
-                .and()
-                .formLogin().loginPage("/login").permitAll()
-                .loginProcessingUrl("/j_spring_security_check").failureUrl("/login?error")
-                .usernameParameter("username").passwordParameter("password")
-                .and()
-                .logout().logoutSuccessUrl("/login").logoutUrl("/j_spring_security_logout")
-                .and()
-                .csrf().disable().httpBasic()
-                .and().exceptionHandling().accessDeniedPage("/login");
+        httpSecurity.authorizeRequests().
+                antMatchers("/RobotRest/**").permitAll().
+                antMatchers("/editorService/**").permitAll().
+                antMatchers("/resources/**").permitAll().
+                antMatchers("/register").permitAll().
+                antMatchers("/**").authenticated().
+                and().
+                formLogin().loginPage("/login").permitAll().
+                loginProcessingUrl("/j_spring_security_check").failureUrl("/login?error").
+                usernameParameter("username").passwordParameter("password").
+                and().
+                logout().logoutSuccessUrl("/login").logoutUrl("/j_spring_security_logout").
+                and().
+                csrf().disable().httpBasic().
+                and().exceptionHandling().accessDeniedPage("/login");
     }
 }

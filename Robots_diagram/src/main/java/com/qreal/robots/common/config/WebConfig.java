@@ -47,8 +47,9 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     @Bean
     public SessionFactory sessionFactory() {
         LocalSessionFactoryBuilder sessionBuilder = new LocalSessionFactoryBuilder(dataSource);
-        sessionBuilder.scanPackages("com.qreal.robots.components.authorization.model", "com.qreal.robots.components.dashboard.model"
-                ,"com.qreal.robots.components.editor.model");
+        sessionBuilder.scanPackages("com.qreal.robots.components.authorization.model", "com.qreal.robots.components" +
+                ".dashboard.model",
+                "com.qreal.robots.components.editor.model");
         sessionBuilder.addProperties(hibernateProperties);
         return sessionBuilder.buildSessionFactory();
     }
@@ -64,7 +65,8 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
         registry.addResourceHandler("/app/**").addResourceLocations("/app/");
         registry.addResourceHandler("/configs/**").addResourceLocations("/configs/");
-        registry.addResourceHandler("/images/**").addResourceLocations("/images/").setCachePeriod(BROWSER_CACHE_CONTROL);
+        registry.addResourceHandler("/images/**").addResourceLocations("/images/").
+                setCachePeriod(BROWSER_CACHE_CONTROL);
 
     }
 }

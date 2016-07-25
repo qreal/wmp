@@ -6,6 +6,9 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.io.Serializable;
 
+/**
+ * Property of a node.
+ */
 @Entity
 @Table(name = "node_properties")
 public class NodeProperty implements Serializable {
@@ -28,6 +31,9 @@ public class NodeProperty implements Serializable {
     public NodeProperty() {
     }
 
+    /**
+     * Constructor-converter from Thrift TProperty to NodeProperty.
+     */
     public NodeProperty(TProperty tProperty) {
         if (tProperty.isSetPropertyId()) {
             propertyId = tProperty.getPropertyId();
@@ -78,6 +84,9 @@ public class NodeProperty implements Serializable {
         this.type = type;
     }
 
+    /**
+     * Converter from NodeProperty to Thrift TProperty.
+     */
     public TProperty toTProperty() {
         TProperty tProperty = new TProperty();
         if (value != null) {

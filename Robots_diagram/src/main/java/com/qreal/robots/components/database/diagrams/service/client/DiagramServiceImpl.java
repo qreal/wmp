@@ -1,9 +1,9 @@
 package com.qreal.robots.components.database.diagrams.service.client;
 
 import com.qreal.robots.common.utils.AuthenticatedUser;
-import com.qreal.robots.thrift.gen.DiagramDbService;
 import com.qreal.robots.components.editor.model.diagram.Diagram;
 import com.qreal.robots.components.editor.model.diagram.Folder;
+import com.qreal.robots.thrift.gen.DiagramDbService;
 import com.qreal.robots.thrift.gen.TDiagram;
 import com.qreal.robots.thrift.gen.TFolder;
 import org.apache.thrift.TException;
@@ -13,9 +13,11 @@ import org.apache.thrift.transport.TSocket;
 import org.apache.thrift.transport.TTransport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+/**
+ * Thrift client side of DiagramDbService.
+ */
 @Service("diagramService")
 public class DiagramServiceImpl implements DiagramService {
 
@@ -25,6 +27,9 @@ public class DiagramServiceImpl implements DiagramService {
 
     private DiagramDbService.Client client;
 
+    /**
+     * Constructor creates connection with Thrift TServer.
+     */
     public DiagramServiceImpl() {
         String url = "localhost";
         int port = 9093;
@@ -45,10 +50,10 @@ public class DiagramServiceImpl implements DiagramService {
             transport.open();
             result = client.saveDiagram(tDiagram);
             transport.close();
-            logger.trace("saveDiagram method saved diagram with id {}", diagram.getDiagramId());
+            logger.trace("saveDiagram method saved diagram with id {}", diagram.getId());
         } catch (TException e) {
-           logger.error("Client DiagramService encountered problem while sending saveDiagram request with parameters: " +
-                   "diagram = {}, folderId = {}", diagram.getName(), folderId, e);
+            logger.error("Client DiagramService encountered problem while sending saveDiagram request with" +
+                    " parameters: diagram = {}, folderId = {}", diagram.getName(), folderId, e);
         }
         return result;
     }
@@ -64,7 +69,7 @@ public class DiagramServiceImpl implements DiagramService {
             logger.trace("openDiagram method returned diagram");
         } catch (TException e) {
             logger.error("Client DiagramService encountered problem while sending openDiagram request with " +
-                    "parameters: diagramId = {}", diagramId,  e);
+                    "parameters: diagramId = {}", diagramId, e);
         }
         return new Diagram(tDiagram);
     }
@@ -79,7 +84,7 @@ public class DiagramServiceImpl implements DiagramService {
             logger.trace("rewriteDiagram method edited diagram");
         } catch (TException e) {
             logger.error("Client DiagramService encountered problem while sending rewriteDiagram request with " +
-                    "parameters: diagram = {}", diagram.getName(),  e);
+                    "parameters: diagram = {}", diagram.getName(), e);
         }
     }
 
@@ -93,7 +98,7 @@ public class DiagramServiceImpl implements DiagramService {
             logger.trace("deleteDiagram method deleted diagram with id {}", diagramId);
         } catch (TException e) {
             logger.error("Client DiagramService encountered problem while sending deleteDiagram request with " +
-                    "parameters: diagramId = {}", diagramId,  e);
+                    "parameters: diagramId = {}", diagramId, e);
         }
     }
 
@@ -109,7 +114,7 @@ public class DiagramServiceImpl implements DiagramService {
             logger.trace("createRootFolder method created rootFolder for {}", userName);
         } catch (TException e) {
             logger.error("Client DiagramService encountered problem while sending createFolder request with " +
-                    "parameters: newFolder = {}", rootFolder.getFolderName(),  e);
+                    "parameters: newFolder = {}", rootFolder.getFolderName(), e);
         }
     }
 
@@ -126,7 +131,7 @@ public class DiagramServiceImpl implements DiagramService {
             logger.trace("createFolder method created folder  {}", folder.getFolderName());
         } catch (TException e) {
             logger.error("Client DiagramService encountered problem while sending createFolder request with " +
-                    "parameters: folder = {}", folder.getFolderName(),  e);
+                    "parameters: folder = {}", folder.getFolderName(), e);
         }
         return result;
     }
@@ -141,13 +146,14 @@ public class DiagramServiceImpl implements DiagramService {
             logger.trace("deleteFolder method deleted folder with id {}", folderId);
         } catch (TException e) {
             logger.error("Client DiagramService encountered problem while sending deleteFolder request with " +
-                    "parameters: folderId = {}", folderId,  e);
+                    "parameters: folderId = {}", folderId, e);
         }
     }
 
     @Override
     public Folder getFolderTree() {
-        logger.trace("getFolderTree method called with parametrs: userName = {}", AuthenticatedUser.getUserName());
+        logger.trace("getFolderTree method called with parametrs: userName = {}",
+                AuthenticatedUser.getUserName());
         TFolder folder = new TFolder();
         try {
             transport.open();
@@ -156,7 +162,7 @@ public class DiagramServiceImpl implements DiagramService {
             logger.trace("getFolderTree method returned folderTree");
         } catch (TException e) {
             logger.error("Client DiagramService encountered problem while sending getFolderTree request with " +
-                    "parameters: username = {}", AuthenticatedUser.getUserName(),  e);
+                    "parameters: username = {}", AuthenticatedUser.getUserName(), e);
         }
         return new Folder(folder);
     }

@@ -1,11 +1,7 @@
 package com.qreal.robots.components.database.users.service.client;
 
 import com.qreal.robots.components.authorization.model.auth.User;
-import com.qreal.robots.components.authorization.model.auth.UserRole;
-import com.qreal.robots.components.dashboard.model.robot.Robot;
 import com.qreal.robots.thrift.gen.TUser;
-import com.qreal.robots.thrift.gen.TUserRole;
-import com.qreal.robots.thrift.gen.TRobot;
 import com.qreal.robots.thrift.gen.UserDbService;
 import org.apache.thrift.TException;
 import org.apache.thrift.protocol.TBinaryProtocol;
@@ -17,12 +13,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.HashSet;
-import java.util.Set;
 
 
-//In service transactions are added to DAO. DAO only DB functions implements.
-
+/**
+ * Thrift client side of UserDBService.
+ */
 @Service("userService")
 public class UserServiceImpl implements UserService {
 
@@ -32,6 +27,9 @@ public class UserServiceImpl implements UserService {
 
     private UserDbService.Client client;
 
+    /**
+     * Constructor creates connection with Thrift TServer.
+     */
     public UserServiceImpl() {
         String url = "localhost";
         int port = 9090;
@@ -41,6 +39,7 @@ public class UserServiceImpl implements UserService {
         client = new UserDbService.Client(protocol);
     }
 
+    @Override
     @Transactional
     public void save(User user) {
         logger.trace("save method called with parameters: user = {}", user.getUsername());
@@ -56,6 +55,7 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
     @Transactional
     public User findByUserName(String username) {
         logger.trace("findByUserName method called with paremeters: username = {}", username);
@@ -73,6 +73,7 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    @Override
     @Transactional
     public boolean isUserExist(String username) {
         logger.trace("isUserExist method called with parameters: username = {}", username);

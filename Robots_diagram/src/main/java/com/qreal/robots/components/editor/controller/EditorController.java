@@ -6,7 +6,6 @@ import com.qreal.robots.common.utils.AuthenticatedUser;
 import com.qreal.robots.components.authorization.controller.AuthController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,6 +16,10 @@ import org.springframework.web.servlet.ModelAndView;
 import java.io.IOException;
 
 @Controller
+/**
+ * Main controller of Editor service.
+ * Pages: editor
+ */
 public class EditorController {
 
     private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
@@ -35,7 +38,7 @@ public class EditorController {
 
     @ResponseBody
     @RequestMapping(value = "getTypes/", method = RequestMethod.POST)
-    public JsonNode getTypes(@RequestParam(value="kit") String kit) throws IOException {
+    public JsonNode getTypes(@RequestParam(value = "kit") String kit) throws IOException {
         return typesLoader.getTypesJson();
     }
 }

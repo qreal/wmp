@@ -39,16 +39,19 @@ public class AppInit implements WebApplicationInitializer {
 
         servletContext.addListener(new ContextLoaderListener(dispatcherContext));
 
-        ServletRegistration.Dynamic dispatcher = servletContext.addServlet("dispatcher", new DispatcherServlet(dispatcherContext));
+        ServletRegistration.Dynamic dispatcher = servletContext.addServlet("dispatcher",
+                new DispatcherServlet(dispatcherContext));
         dispatcher.setLoadOnStartup(1);
         dispatcher.addMapping("/");
 
         // Registration RestService
-        ServletRegistration.Dynamic robotRestService = servletContext.addServlet("RobotRestServlet", new RobotRestServlet(dispatcherContext));
+        ServletRegistration.Dynamic robotRestService = servletContext.addServlet("RobotRestServlet",
+                new RobotRestServlet(dispatcherContext));
         robotRestService.setLoadOnStartup(1);
         robotRestService.addMapping("/RobotRest");
 
-        ServletRegistration.Dynamic diagramService = servletContext.addServlet("DiagramRestServlet", new EditorServlet(dispatcherContext));
+        ServletRegistration.Dynamic diagramService = servletContext.addServlet("DiagramRestServlet",
+                new EditorServlet(dispatcherContext));
         diagramService.setLoadOnStartup(1);
         diagramService.addMapping("/editorService");
 

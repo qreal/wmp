@@ -8,23 +8,30 @@ import javax.persistence.*;
 import static javax.persistence.GenerationType.IDENTITY;
 
 /**
- * Struct represents TRIK robot.
- * field name -- name of robot, not unique
- * field ssid -- ssid of robot's wifi, not unique
- * field owner -- owner of robot
- * field id -- surrogate key
+ * TRIK robot in dashboard service.
  */
-
 @Entity
 @Table(name = "robots")
 public class Robot {
 
+    /**
+     * Surrogate key for Robot.
+     */
     private Integer id;
 
+    /**
+     * Name of robot (unique only in robot's group of owner).
+     */
     private String name;
 
+    /**
+     * SSID of robot's WiFi.
+     */
     private String ssid;
 
+    /**
+     * Owner of robot.
+     */
     private User owner;
 
     public Robot() {
@@ -42,6 +49,9 @@ public class Robot {
         owner.getRobots().add(this);
     }
 
+    /**
+     * Full Robot constructor.
+     */
     public Robot(int id, String name, String ssid, User owner) {
         this.id = id;
         this.owner = owner;
@@ -50,6 +60,9 @@ public class Robot {
         owner.getRobots().add(this);
     }
 
+    /**
+     * Constructor-converter from Thrift TRobot to Robot.
+     */
     public Robot(TRobot tRobot, User owner) {
         if (tRobot.isSetId()) {
             id = tRobot.getId();
@@ -110,11 +123,15 @@ public class Robot {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Robot)) return false;
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        }
+        if (!(object instanceof Robot)) {
+            return false;
+        }
 
-        Robot robot = (Robot) o;
+        Robot robot = (Robot) object;
         return name.equals(robot.name);
     }
 
@@ -123,6 +140,9 @@ public class Robot {
         return name.hashCode();
     }
 
+    /**
+     * Converter from Robot to Thrift TRobot.
+     */
     public TRobot toTRobot() {
         TRobot tRobot = new TRobot();
 
@@ -142,7 +162,7 @@ public class Robot {
             tRobot.setUsername(owner.getUsername());
         }
 
-        return  tRobot;
+        return tRobot;
     }
 
 }

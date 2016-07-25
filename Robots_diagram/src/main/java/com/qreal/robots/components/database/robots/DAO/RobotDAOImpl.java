@@ -2,7 +2,6 @@ package com.qreal.robots.components.database.robots.DAO;
 
 import com.qreal.robots.components.authorization.model.auth.User;
 import com.qreal.robots.components.dashboard.model.robot.Robot;
-import com.qreal.robots.components.database.diagrams.DAO.DiagramDAOImpl;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.slf4j.Logger;

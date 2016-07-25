@@ -1,18 +1,17 @@
 package com.qreal.robots.components.editor.model.diagram;
 
 import com.qreal.robots.thrift.gen.TDiagram;
-import com.qreal.robots.thrift.gen.TDefaultDiagramNode;
-import com.qreal.robots.thrift.gen.TLink;
-import com.qreal.robots.thrift.gen.TProperty;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 import java.util.stream.Collectors;
+
 import static javax.persistence.GenerationType.IDENTITY;
 
+/**
+ * Diagram (now only graphs).
+ */
 @Entity
 @Table(name = "diagrams")
 public class Diagram implements Serializable {
@@ -20,7 +19,7 @@ public class Diagram implements Serializable {
     @Id
     @Column(name = "diagram_id")
     @GeneratedValue(strategy = IDENTITY)
-    private Long diagramId;
+    private Long id;
 
     @Column(name = "name")
     private String name;
@@ -36,10 +35,13 @@ public class Diagram implements Serializable {
     public Diagram() {
     }
 
+    /**
+     * Constructor-converter from Thrift TDiagram to Diagram.
+     */
     public Diagram(TDiagram tDiagram) {
 
         if (tDiagram.isSetDiagramId()) {
-            diagramId = tDiagram.getDiagramId();
+            id = tDiagram.getDiagramId();
         }
 
         if (tDiagram.isSetName()) {
@@ -56,12 +58,15 @@ public class Diagram implements Serializable {
 
     }
 
+    /**
+     * Converter from Diagram to Thrift TDiagram.
+     */
     public TDiagram toTDiagram() {
 
         TDiagram tDiagram = new TDiagram();
 
-        if (diagramId != null) {
-            tDiagram.setDiagramId(diagramId);
+        if (id != null) {
+            tDiagram.setDiagramId(id);
         }
 
         if (name != null) {
@@ -69,7 +74,8 @@ public class Diagram implements Serializable {
         }
 
         if (nodes != null) {
-            tDiagram.setNodes(nodes.stream().map(DefaultDiagramNode::toTDefaultDiagramNode).collect(Collectors.toSet()));
+            tDiagram.setNodes(nodes.stream().map(DefaultDiagramNode::toTDefaultDiagramNode).
+                    collect(Collectors.toSet()));
         }
 
         if (links != null) {
@@ -79,12 +85,12 @@ public class Diagram implements Serializable {
         return tDiagram;
     }
 
-    public Long getDiagramId() {
-        return diagramId;
+    public Long getId() {
+        return id;
     }
 
-    public void setDiagramId(Long diagramId) {
-        this.diagramId = diagramId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {

@@ -2,7 +2,6 @@ package com.qreal.robots.components.authorization.model.auth;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.qreal.robots.components.dashboard.model.robot.Robot;
-import com.qreal.robots.thrift.gen.TRobot;
 import com.qreal.robots.thrift.gen.TUser;
 
 import javax.persistence.*;
@@ -10,19 +9,37 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * User in authorization service.
+ */
 @Entity
 @Table(name = "users")
 public class User {
 
+    /**
+     * Name of user (primary key too).
+     */
     private String username;
 
+    /**
+     * Hash of user password.
+     */
     private String password;
 
+    /**
+     * Is user banned.
+     */
     private Boolean enabled;
 
+    /**
+     * Roles of user.
+     */
     @JsonIgnore
     private Set<UserRole> roles = new HashSet<>(0);
 
+    /**
+     * User's robots.
+     */
     @JsonIgnore
     private Set<Robot> robots = new HashSet<>(0);
 
@@ -35,6 +52,9 @@ public class User {
         this.enabled = enabled;
     }
 
+    /**
+     * User constructor (except robots).
+     */
     public User(String username, String password,
                 boolean enabled, Set<UserRole> userRole) {
         this.username = username;
@@ -43,6 +63,9 @@ public class User {
         this.roles = userRole;
     }
 
+    /**
+     * Full User constructor.
+     */
     public User(String username, String password, boolean enabled, Set<UserRole> userRole, Set<Robot> robots) {
         this.username = username;
         this.password = password;
@@ -51,7 +74,10 @@ public class User {
         this.robots = robots;
     }
 
-    public  User(TUser tUser) {
+    /**
+     * Constructor-converter from Thrift TUser to User.
+     */
+    public User(TUser tUser) {
         if (tUser.isSetUsername()) {
             username = tUser.getUsername();
         }
@@ -65,8 +91,8 @@ public class User {
         }
 
         if (tUser.isSetRoles()) {
-            roles = tUser.getRoles().stream().map(tUserRole -> new UserRole(tUserRole, this)).collect(Collectors
-                    .toSet());
+            roles = tUser.getRoles().stream().map(tUserRole -> new UserRole(tUserRole, this)).collect(Collectors.
+                    toSet());
         }
 
         if (tUser.isSetRobots()) {
@@ -113,7 +139,6 @@ public class User {
         this.roles = roles;
     }
 
-
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "owner")
     public Set<Robot> getRobots() {
         return this.robots;
@@ -123,6 +148,9 @@ public class User {
         this.robots = robots;
     }
 
+    /**
+     * Converter from User to Thrift TUser.
+     */
     public TUser toTUser() {
         TUser tUser = new TUser();
 

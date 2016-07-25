@@ -28,16 +28,16 @@ struct TLink {
 }
 
 struct TDiagram {
-    1 : optional i64 diagramId,
+    1 : optional i64 id,
     2 : string name,
     3 : string user,
     4 : set<TDefaultDiagramNode> nodes,
     5 : set<TLink> links,
-    6 : optional i64 folderId
+    6 : optional i64 id
 }
 
 struct TFolder {
-    1 : optional i64 folderId,
+    1 : optional i64 id,
     2 : string folderName,
     3 : optional string userName,
     4 : optional i64 folderParentId,

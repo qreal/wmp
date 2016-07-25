@@ -1,9 +1,9 @@
 package com.qreal.robots.components.database.robots.service.client;
 
 import com.qreal.robots.components.dashboard.model.robot.Robot;
+import com.qreal.robots.components.database.users.service.client.UserService;
 import com.qreal.robots.thrift.gen.RobotDbService;
 import com.qreal.robots.thrift.gen.TRobot;
-import com.qreal.robots.components.database.users.service.client.UserService;
 import org.apache.thrift.TException;
 import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.protocol.TProtocol;
@@ -14,7 +14,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
+/**
+ * Thrift client side of RobotDBService.
+ */
 @Service("robotService")
 public class RobotServiceImpl implements RobotService {
 
@@ -27,6 +29,9 @@ public class RobotServiceImpl implements RobotService {
 
     private RobotDbService.Client client;
 
+    /**
+     * Constructor creates connection with Thrift TServer.
+     */
     public RobotServiceImpl() {
         String url = "localhost";
         int port = 9091;

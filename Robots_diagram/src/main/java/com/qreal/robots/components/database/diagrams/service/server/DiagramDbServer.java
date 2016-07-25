@@ -9,10 +9,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.support.AbstractApplicationContext;
 
+/**
+ * Thrift server side service class for DiagramDBService.
+ */
 public class DiagramDbServer {
 
     private static final Logger logger = LoggerFactory.getLogger(DiagramDbServer.class);
 
+    /**
+     * Function running TServer with chosen processor.
+     */
     private static void runTServer(DiagramDbService.Processor processor) {
         int port = 9093;
         logger.info("Starting Diagram DB TServer on localhost on port {}", port);
@@ -26,6 +32,9 @@ public class DiagramDbServer {
         }
     }
 
+    /**
+     * Constructor starts Thrift TServer which implements RPC DiagramService interface.
+     */
     public DiagramDbServer(AbstractApplicationContext context) {
         try {
             DiagramDbServiceHandler handler = new DiagramDbServiceHandler(context);
@@ -42,4 +51,3 @@ public class DiagramDbServer {
         }
     }
 }
-
