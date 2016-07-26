@@ -1,9 +1,0 @@
-{
-  "from": "Robot",
-  "type": "connect",
-  "robot": {
-    "ssid": "ssid2",
-    "modelConfig": "<config><initScript></initScript><E1><angularServomotor/></E1>    <E2><angularServomotor invert=\"false\"/></E2></config>",
-    "systemConfig": "<config><deviceClasses><servoMotor period=\"20000000\" invert=\"false\"/></deviceClasses><devicePorts><servoMotor port=\"E1\"/><servoMotor port=\"E2\"/></devicePorts><deviceTypes><angularServomotor class=\"servoMotor\" min=\"600000\" max=\"2200000\" zero=\"1400000\" stop=\"0\" type=\"angular\"/><continuousRotationServomotor class=\"servoMotor\" min=\"600000\" max=\"2200000\" zero=\"1400000\" stop=\"0\" type=\"continuousRotation\"/></deviceTypes></config>"
-  }
-}

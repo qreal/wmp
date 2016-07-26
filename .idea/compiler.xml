@@ -22,18 +22,14 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
-        <module name="overlay-example" />
         <module name="robots-diagram" />
-        <module name="standalone-example" />
-        <module name="stepic-robots-web" />
+        <module name="shared-resources" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel target="1.8">
-      <module name="overlay-example" target="1.8" />
+    <bytecodeTargetLevel>
       <module name="parent" target="1.5" />
       <module name="robots-diagram" target="1.8" />
-      <module name="standalone-example" target="1.8" />
-      <module name="stepic-robots-web" target="1.8" />
+      <module name="shared-resources" target="1.5" />
     </bytecodeTargetLevel>
   </component>
 </project>

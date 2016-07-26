@@ -28,7 +28,7 @@ before_install:
   - sudo ln -s /usr/local/bin/thrift /usr/bin/thriftD
   - cd ../..
   #get checkstyle
-  - cd Robots_diagram
+  - cd RobotsEditor
   - wget http://downloads.sourceforge.net/project/checkstyle/checkstyle/7.0/checkstyle-7.0-all.jar
   - cd ..
 
@@ -37,7 +37,7 @@ install:
 
 script:
   #run checkstyle
-  - cd Robots_diagram
+  - cd RobotsEditor
   - java -jar checkstyle-7.0-all.jar -c ../Travis/checkstyle/checkstyle.xml src
   #run callTomcat test
   - mvn clean install

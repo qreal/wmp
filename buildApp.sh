@@ -1,4 +1,4 @@
-cd Robots_diagram
+cd RobotsEditor
 sh thriftGen.sh
 cd ..
 sudo mvn clean
@@ -9,7 +9,7 @@ grunt
 cd ../../..
 sudo mvn clean
 mvn install
-cd ../Robots_diagram/src/main/webapp
+cd ../RobotsEditor/src/main/webapp
 sudo npm install
 grunt
 cd ../../../..

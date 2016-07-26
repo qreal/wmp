@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="war" name="stepic-robots-web:war">
-    <output-path>$PROJECT_DIR$/StepicRobotsWeb/target</output-path>
-    <root id="archive" name="StepicRobotsWeb.war">
-      <element id="artifact" artifact-name="stepic-robots-web:war exploded" />
-    </root>
-  </artifact>
-</component>
