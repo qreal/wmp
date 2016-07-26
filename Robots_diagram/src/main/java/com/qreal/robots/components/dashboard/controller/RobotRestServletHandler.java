@@ -42,7 +42,7 @@ public class RobotRestServletHandler implements RobotServiceThrift.Iface {
     /**
      * RPC function deleting robot.
      *
-     * @param robotName name of robot
+     * @param robotId name of robot
      * @see {@link https://github.com/qreal/wmp/issues/7}
      */
     @Override

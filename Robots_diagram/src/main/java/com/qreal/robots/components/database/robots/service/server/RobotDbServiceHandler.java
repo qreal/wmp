@@ -52,6 +52,4 @@ public class RobotDbServiceHandler implements RobotDbService.Iface {
         }
         return false;
     }
-
-
 }

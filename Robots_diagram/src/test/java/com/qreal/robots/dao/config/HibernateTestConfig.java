@@ -1,6 +1,5 @@
 package com.qreal.robots.dao.config;
 
-
 import com.qreal.robots.components.database.diagrams.DAO.DiagramDAO;
 import com.qreal.robots.components.database.diagrams.DAO.DiagramDAOImpl;
 import com.qreal.robots.components.database.robots.DAO.RobotDAO;
@@ -24,7 +23,6 @@ import java.util.Properties;
 @EnableTransactionManagement
 public class HibernateTestConfig {
 
-
     @Bean
     public SessionFactory sessionFactory() {
 
@@ -39,7 +37,6 @@ public class HibernateTestConfig {
     public HibernateTransactionManager txManager() {
         return new HibernateTransactionManager(sessionFactory());
     }
-
 
     private Properties getHibernateProperties() {
         Properties ps = new Properties();
@@ -83,5 +80,4 @@ public class HibernateTestConfig {
     public RobotDAO getRobotDao(SessionFactory sessionFactory) {
         return new RobotDAOImpl(sessionFactory);
     }
-
 }

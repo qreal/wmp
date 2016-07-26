@@ -15,11 +15,9 @@ import java.util.Set;
 
 import static org.junit.Assert.*;
 
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {HibernateTestConfig.class})
 public class UserDAOTest extends BaseDAOTest {
-
 
     @Autowired
     private UserDAO userDao;
@@ -32,7 +30,6 @@ public class UserDAOTest extends BaseDAOTest {
 
         assertNotNull(savedUser);
         assertEquals(user.getUsername(), savedUser.getUsername());
-
 
         Set<UserRole> roles = savedUser.getRoles();
         assertEquals(1, roles.size());
@@ -55,6 +52,4 @@ public class UserDAOTest extends BaseDAOTest {
         assertTrue(userDao.isUserExist(USER_NAME3));
         assertFalse(userDao.isUserExist("ASDASD"));
     }
-
-
 }

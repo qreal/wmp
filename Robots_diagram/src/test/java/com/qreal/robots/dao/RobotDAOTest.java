@@ -20,14 +20,12 @@ import static org.junit.Assert.*;
 @ContextConfiguration(classes = {HibernateTestConfig.class})
 public class RobotDAOTest extends BaseDAOTest {
 
-
     public static final String CODE = "CODE";
     @Autowired
     private RobotDAO robotDAO;
 
     @Autowired
     private UserDAO userDAO;
-
 
     @Test
     public void testSaveRobot() {
@@ -51,5 +49,4 @@ public class RobotDAOTest extends BaseDAOTest {
         robotDAO.delete(robot);
         assertFalse(robotDAO.isRobotExists(ROBOT_NAME));
     }
-
 }
