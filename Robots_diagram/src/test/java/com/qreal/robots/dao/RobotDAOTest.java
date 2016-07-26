@@ -21,7 +21,7 @@ import static org.junit.Assert.*;
 public class RobotDAOTest extends BaseDAOTest {
 
     public static final String CODE = "CODE";
-    
+
     @Autowired
     private RobotDAO robotDAO;
 

@@ -40,7 +40,8 @@ script:
   - cd Robots_diagram
   - java -jar checkstyle-7.0-all.jar -c ../Travis/checkstyle/checkstyle.xml src
   #run callTomcat test
-  - mvn clean tomcat7:run-war &
+  - mvn clean install
+  - mvn tomcat7:run-war &
   - ../Travis/callTomcat.sh
 
 

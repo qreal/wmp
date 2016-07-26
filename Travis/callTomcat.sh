@@ -1,6 +1,6 @@
 #!/bin/bash
 iter=1
-all=20
+all=120
 until [ "`curl --silent --show-error --connect-timeout 1 -I http://localhost:8080/Robots_diagram | grep '302 Found'`" != "" ];
 do
   if [ "$iter" -lt "$all" ]
