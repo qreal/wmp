@@ -62,8 +62,10 @@ public class UserServiceImpl implements UserService {
         User user = null;
         try {
             transport.open();
-            TUser tUser = client.findByUserName(username);
-            user = new User(tUser);
+            if (client.isUserExist(username)) {
+                TUser tUser = client.findByUserName(username);
+                user = new User(tUser);
+            }
             transport.close();
             logger.trace("findByUserName method returned answer.");
         } catch (TException e) {
