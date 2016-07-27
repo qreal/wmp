@@ -213,7 +213,7 @@ class DiagramMenuController {
 
     private deleteDiagramFromDatabase(diagramName: string): void {
         var menuManager = this;
-        var transport = new Thrift.TXHRTransport("http://localhost:8080/Robots_diagram/editorService");
+        var transport = new Thrift.TXHRTransport("http://localhost:8080/robots-editor/editorService");
         var protocol  = new Thrift.TJSONProtocol(transport);
         var client    = new EditorServiceThriftClient(protocol);
         try {
@@ -343,7 +343,7 @@ class DiagramMenuController {
     }
 
     private getClient(): EditorServiceThriftClient {
-        var transport = new Thrift.TXHRTransport("http://localhost:8080/Robots_diagram/editorService");
+        var transport = new Thrift.TXHRTransport("http://localhost:8080/robots-editor/editorService");
         var protocol = new Thrift.TJSONProtocol(transport);
         return new EditorServiceThriftClient(protocol);
     }

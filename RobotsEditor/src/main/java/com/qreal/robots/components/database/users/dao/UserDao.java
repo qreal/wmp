@@ -5,7 +5,7 @@ import com.qreal.robots.components.authorization.model.auth.User;
 /**
  * DAO for userDB.
  */
-public interface UserDAO {
+public interface UserDao {
 
     /**
      * Saves user.

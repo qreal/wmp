@@ -2,8 +2,8 @@ package com.qreal.robots.dao;
 
 import com.qreal.robots.components.authorization.model.auth.User;
 import com.qreal.robots.components.dashboard.model.robot.Robot;
-import com.qreal.robots.components.database.robots.dao.RobotDAO;
-import com.qreal.robots.components.database.users.dao.UserDAO;
+import com.qreal.robots.components.database.robots.dao.RobotDao;
+import com.qreal.robots.components.database.users.dao.UserDao;
 import com.qreal.robots.dao.config.HibernateTestConfig;
 
 import org.junit.Test;
@@ -18,23 +18,23 @@ import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {HibernateTestConfig.class})
-public class RobotDAOTest extends BaseDAOTest {
+public class RobotDaoTest extends BaseDaoTest {
 
     public static final String CODE = "CODE";
 
     @Autowired
-    private RobotDAO robotDAO;
+    private RobotDao robotDao;
 
     @Autowired
-    private UserDAO userDAO;
+    private UserDao userDao;
 
     @Test
     public void testSaveRobot() {
-        User user = getAndSaveUser(USER_NAME2, userDAO);
+        User user = getAndSaveUser(USER_NAME2, userDao);
         Robot robot = new Robot(ROBOT_NAME2, CODE, user);
-        robotDAO.save(robot);
+        robotDao.save(robot);
 
-        User savedUser = userDAO.findByUserName(USER_NAME2);
+        User savedUser = userDao.findByUserName(USER_NAME2);
 
         Set<Robot> robots = savedUser.getRobots();
         assertEquals(1, robots.size());
@@ -43,11 +43,11 @@ public class RobotDAOTest extends BaseDAOTest {
 
     @Test
     public void testDelete() {
-        User user = getAndSaveUser(USER_NAME3, userDAO);
+        User user = getAndSaveUser(USER_NAME3, userDao);
         Robot robot = new Robot(ROBOT_NAME, CODE, user);
-        robotDAO.save(robot);
-        assertTrue(robotDAO.isRobotExists(ROBOT_NAME));
-        robotDAO.delete(robot);
-        assertFalse(robotDAO.isRobotExists(ROBOT_NAME));
+        robotDao.save(robot);
+        assertTrue(robotDao.isRobotExists(ROBOT_NAME));
+        robotDao.delete(robot);
+        assertFalse(robotDao.isRobotExists(ROBOT_NAME));
     }
 }

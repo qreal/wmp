@@ -14,19 +14,19 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Repository
-@Component("diagramDAO")
+@Component("diagramDao")
 @Transactional
-public class DiagramDAOImpl implements DiagramDAO {
+public class DiagramDaoImpl implements DiagramDao {
 
-    private static final Logger logger = LoggerFactory.getLogger(DiagramDAOImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(DiagramDaoImpl.class);
 
     @Autowired
     private SessionFactory sessionFactory;
 
-    public DiagramDAOImpl() {
+    public DiagramDaoImpl() {
     }
 
-    public DiagramDAOImpl(SessionFactory sessionFactory) {
+    public DiagramDaoImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
 

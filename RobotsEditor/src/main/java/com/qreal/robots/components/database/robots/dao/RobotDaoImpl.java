@@ -14,19 +14,19 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Transactional
-@Component("robotDAO")
+@Component("robotDao")
 @Repository
-public class RobotDAOImpl implements RobotDAO {
+public class RobotDaoImpl implements RobotDao {
 
-    private static final Logger logger = LoggerFactory.getLogger(RobotDAOImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(RobotDaoImpl.class);
 
     @Autowired
     private SessionFactory sessionFactory;
 
-    public RobotDAOImpl() {
+    public RobotDaoImpl() {
     }
 
-    public RobotDAOImpl(SessionFactory sessionFactory) {
+    public RobotDaoImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
 

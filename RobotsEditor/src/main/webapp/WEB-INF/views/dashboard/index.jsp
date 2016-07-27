@@ -24,7 +24,7 @@
                 var name = $('#robotName').val();
                 var code = $('#ssid').val();
 
-                var transport = new Thrift.TXHRTransport("http://localhost:8080/Robots_diagram/RobotRest");
+                var transport = new Thrift.TXHRTransport("http://localhost:8080/robots-editor/RobotRest");
                 var protocol  = new Thrift.TJSONProtocol(transport);
                 var client    = new RobotServiceThriftClient(protocol);
                 try {
@@ -37,7 +37,7 @@
 
             $('[name="deleteRobot"]').click(function (event) {
                 var robotId = event.target.id.substring(7);
-                var transport = new Thrift.TXHRTransport("http://localhost:8080/Robots_diagram/RobotRest");
+                var transport = new Thrift.TXHRTransport("http://localhost:8080/robots-editor/RobotRest");
                 var protocol  = new Thrift.TJSONProtocol(transport);
                 var client = new RobotServiceThriftClient(protocol);
                 try {

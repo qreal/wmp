@@ -1,11 +1,11 @@
 package com.qreal.robots.dao.config;
 
-import com.qreal.robots.components.database.diagrams.dao.DiagramDAO;
-import com.qreal.robots.components.database.diagrams.dao.DiagramDAOImpl;
-import com.qreal.robots.components.database.robots.dao.RobotDAO;
-import com.qreal.robots.components.database.robots.dao.RobotDAOImpl;
-import com.qreal.robots.components.database.users.dao.UserDAO;
-import com.qreal.robots.components.database.users.dao.UserDAOImpl;
+import com.qreal.robots.components.database.diagrams.dao.DiagramDao;
+import com.qreal.robots.components.database.diagrams.dao.DiagramDaoImpl;
+import com.qreal.robots.components.database.robots.dao.RobotDao;
+import com.qreal.robots.components.database.robots.dao.RobotDaoImpl;
+import com.qreal.robots.components.database.users.dao.UserDao;
+import com.qreal.robots.components.database.users.dao.UserDaoImpl;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -64,20 +64,20 @@ public class HibernateTestConfig {
     }
 
     @Autowired
-    @Bean(name = "diagramDAO")
-    public DiagramDAO getDiagramDao(SessionFactory sessionFactory) {
-        return new DiagramDAOImpl(sessionFactory);
+    @Bean(name = "diagramDao")
+    public DiagramDao getDiagramDao(SessionFactory sessionFactory) {
+        return new DiagramDaoImpl(sessionFactory);
     }
 
     @Autowired
-    @Bean(name = "userDAO")
-    public UserDAO getUserDao(SessionFactory sessionFactory) {
-        return new UserDAOImpl(sessionFactory);
+    @Bean(name = "userDao")
+    public UserDao getUserDao(SessionFactory sessionFactory) {
+        return new UserDaoImpl(sessionFactory);
     }
 
     @Autowired
     @Bean(name = "robotDao")
-    public RobotDAO getRobotDao(SessionFactory sessionFactory) {
-        return new RobotDAOImpl(sessionFactory);
+    public RobotDao getRobotDao(SessionFactory sessionFactory) {
+        return new RobotDaoImpl(sessionFactory);
     }
 }

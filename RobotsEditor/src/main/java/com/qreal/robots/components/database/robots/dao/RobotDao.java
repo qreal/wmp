@@ -5,7 +5,7 @@ import com.qreal.robots.components.dashboard.model.robot.Robot;
 /**
  * DAO for robotDB.
  */
-public interface RobotDAO {
+public interface RobotDao {
 
     /**
      * Saves robot

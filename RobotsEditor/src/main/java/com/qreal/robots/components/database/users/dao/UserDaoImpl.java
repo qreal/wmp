@@ -13,22 +13,22 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Component("userDAO")
+@Component("userDao")
 @Repository
 @Transactional
-public class UserDAOImpl implements UserDAO {
+public class UserDaoImpl implements UserDao {
 
     public static final String ROLE_USER = "ROLE_USER";
 
-    private static final Logger logger = LoggerFactory.getLogger(UserDAOImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(UserDaoImpl.class);
 
     @Autowired
     private SessionFactory sessionFactory;
 
-    public UserDAOImpl() {
+    public UserDaoImpl() {
     }
 
-    public UserDAOImpl(SessionFactory sessionFactory) {
+    public UserDaoImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
 

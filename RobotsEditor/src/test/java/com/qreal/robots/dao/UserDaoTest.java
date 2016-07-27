@@ -2,8 +2,8 @@ package com.qreal.robots.dao;
 
 import com.qreal.robots.components.authorization.model.auth.User;
 import com.qreal.robots.components.authorization.model.auth.UserRole;
-import com.qreal.robots.components.database.users.dao.UserDAO;
-import com.qreal.robots.components.database.users.dao.UserDAOImpl;
+import com.qreal.robots.components.database.users.dao.UserDao;
+import com.qreal.robots.components.database.users.dao.UserDaoImpl;
 import com.qreal.robots.dao.config.HibernateTestConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,10 +17,10 @@ import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {HibernateTestConfig.class})
-public class UserDAOTest extends BaseDAOTest {
+public class UserDaoTest extends BaseDaoTest {
 
     @Autowired
-    private UserDAO userDao;
+    private UserDao userDao;
 
     @Test
     public void testFindByName() {
@@ -33,7 +33,7 @@ public class UserDAOTest extends BaseDAOTest {
 
         Set<UserRole> roles = savedUser.getRoles();
         assertEquals(1, roles.size());
-        assertEquals(UserDAOImpl.ROLE_USER, roles.iterator().next().getRole());
+        assertEquals(UserDaoImpl.ROLE_USER, roles.iterator().next().getRole());
     }
 
     @Test
@@ -43,7 +43,7 @@ public class UserDAOTest extends BaseDAOTest {
 
         Set<UserRole> roles = savedUser.getRoles();
         assertEquals(1, roles.size());
-        assertEquals(UserDAOImpl.ROLE_USER, roles.iterator().next().getRole());
+        assertEquals(UserDaoImpl.ROLE_USER, roles.iterator().next().getRole());
     }
 
     @Test

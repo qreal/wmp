@@ -6,7 +6,7 @@ import com.qreal.robots.components.editor.model.diagram.Folder;
 /**
  * DAO for diagram DB.
  */
-public interface DiagramDAO {
+public interface DiagramDao {
 
     /**
      * Saves diagram in specified folder and creates for it Id.

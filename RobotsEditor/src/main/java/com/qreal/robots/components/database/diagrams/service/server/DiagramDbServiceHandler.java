@@ -1,6 +1,6 @@
 package com.qreal.robots.components.database.diagrams.service.server;
 
-import com.qreal.robots.components.database.diagrams.dao.DiagramDAO;
+import com.qreal.robots.components.database.diagrams.dao.DiagramDao;
 import com.qreal.robots.components.editor.model.diagram.Diagram;
 import com.qreal.robots.components.editor.model.diagram.Folder;
 import com.qreal.robots.thrift.gen.DiagramDbService;
@@ -23,45 +23,45 @@ public class DiagramDbServiceHandler implements DiagramDbService.Iface {
 
     @Override
     public long saveDiagram(TDiagram diagram) {
-        DiagramDAO diagramDAO = (DiagramDAO) context.getBean("diagramDAO");
-        return diagramDAO.saveDiagram(new Diagram(diagram), diagram.getFolderId());
+        DiagramDao diagramDao = (DiagramDao) context.getBean("diagramDao");
+        return diagramDao.saveDiagram(new Diagram(diagram), diagram.getFolderId());
     }
 
     @Override
     public TDiagram openDiagram(long diagramID) {
-        DiagramDAO diagramDAO = (DiagramDAO) context.getBean("diagramDAO");
-        return diagramDAO.openDiagram(diagramID).toTDiagram();
+        DiagramDao diagramDao = (DiagramDao) context.getBean("diagramDao");
+        return diagramDao.openDiagram(diagramID).toTDiagram();
     }
 
     @Override
     public void deleteDiagram(long diagramId) {
-        DiagramDAO diagramDAO = (DiagramDAO) context.getBean("diagramDAO");
-        diagramDAO.deleteDiagram(diagramId);
+        DiagramDao diagramDao = (DiagramDao) context.getBean("diagramDao");
+        diagramDao.deleteDiagram(diagramId);
     }
 
     @Override
     public void rewriteDiagram(TDiagram diagram) {
-        DiagramDAO diagramDAO = (DiagramDAO) context.getBean("diagramDAO");
-        diagramDAO.rewriteDiagram(new Diagram(diagram));
+        DiagramDao diagramDao = (DiagramDao) context.getBean("diagramDao");
+        diagramDao.rewriteDiagram(new Diagram(diagram));
     }
 
     @Override
     public long createFolder(TFolder folder) {
-        DiagramDAO diagramDAO = (DiagramDAO) context.getBean("diagramDAO");
+        DiagramDao diagramDao = (DiagramDao) context.getBean("diagramDao");
         Folder newFolder = new Folder(folder);
-        return diagramDAO.createFolder(newFolder);
+        return diagramDao.createFolder(newFolder);
     }
 
     @Override
     public void deleteFolder(long folderId) {
-        DiagramDAO diagramDAO = (DiagramDAO) context.getBean("diagramDAO");
-        diagramDAO.deleteFolder(folderId);
+        DiagramDao diagramDao = (DiagramDao) context.getBean("diagramDao");
+        diagramDao.deleteFolder(folderId);
     }
 
     @Override
     public TFolder getFolderTree(String username) {
-        DiagramDAO diagramDAO = (DiagramDAO) context.getBean("diagramDAO");
-        Folder folder = diagramDAO.getFolderTree(username);
+        DiagramDao diagramDao = (DiagramDao) context.getBean("diagramDao");
+        Folder folder = diagramDao.getFolderTree(username);
         return folder.toTFolder();
     }
 }

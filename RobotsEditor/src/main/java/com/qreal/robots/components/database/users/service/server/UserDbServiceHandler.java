@@ -1,7 +1,7 @@
 package com.qreal.robots.components.database.users.service.server;
 
 import com.qreal.robots.components.authorization.model.auth.User;
-import com.qreal.robots.components.database.users.dao.UserDAO;
+import com.qreal.robots.components.database.users.dao.UserDao;
 import com.qreal.robots.thrift.gen.TUser;
 import com.qreal.robots.thrift.gen.UserDbService;
 import org.apache.thrift.TException;
@@ -20,19 +20,19 @@ public class UserDbServiceHandler implements UserDbService.Iface {
 
     @Override
     public void save(TUser user) throws TException {
-        UserDAO userDAO = (UserDAO) context.getBean("userDAO");
-        userDAO.save(new User(user));
+        UserDao userDao = (UserDao) context.getBean("userDao");
+        userDao.save(new User(user));
     }
 
     @Override
     public TUser findByUserName(String username) throws TException {
-        UserDAO userDAO = (UserDAO) context.getBean("userDAO");
-        return userDAO.findByUserName(username).toTUser();
+        UserDao userDao = (UserDao) context.getBean("userDao");
+        return userDao.findByUserName(username).toTUser();
     }
 
     @Override
     public boolean isUserExist(String username) throws TException {
-        UserDAO userDAO = (UserDAO) context.getBean("userDAO");
-        return userDAO.isUserExist(username);
+        UserDao userDao = (UserDao) context.getBean("userDao");
+        return userDao.isUserExist(username);
     }
 }
