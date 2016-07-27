@@ -102,7 +102,7 @@ public class DefaultDiagramNode implements Serializable {
     /**
      * Converter from DefaultDiagramNode to Thrift TDefaultDiagramNode.
      */
-    TDefaultDiagramNode toTDefaultDiagramNode() {
+    public TDefaultDiagramNode toTDefaultDiagramNode() {
         TDefaultDiagramNode tDefaultDiagramNode = new TDefaultDiagramNode();
 
         if (logicalId != null) {

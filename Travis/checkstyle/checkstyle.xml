@@ -65,15 +65,6 @@
         </module>
         <!--No if, switch with single line or empty body without braces-->
         <module name="NeedBraces"/>
-        <!--Left and right curly braces placement-->
-        <!-- <module name="LeftCurly">
-            <property name="maxLineLength" value="100"/>
-        </module>
-        <module name="RightCurly"/>
-        <module name="RightCurly">
-            <property name="option" value="alone"/>
-            <property name="tokens" value="CLASS_DEF, METHOD_DEF, CTOR_DEF, LITERAL_FOR, LITERAL_WHILE, LITERAL_DO, STATIC_INIT, INSTANCE_INIT"/>
-        </module> -->
         <!--Whitespaces around operators-->
         <module name="WhitespaceAround">
             <property name="allowEmptyConstructors" value="true"/>
@@ -93,7 +84,6 @@
         <module name="MissingSwitchDefault"/>
         <!--No fall through switch statement-->
         <module name="FallThrough"/>
-        <!-- <module name="ModifierOrder"/> -->
         <!--Empty Line Separators between members-->
         <module name="EmptyLineSeparator">
             <property name="allowMultipleEmptyLines" value="false"/>
@@ -102,7 +92,7 @@
         <!--Formats of packages, types, member, parameter-->
         <!--Package latin and digits no uppercase-->
         <module name="PackageName">
-            <property name="format" value="^[a-zA-Z]+(\.[a-zA-Z][a-zA-Z0-9]*)*$"/>
+            <property name="format" value="^[a-z]+(\.[a-z][a-z0-9]*)*$"/>
             <message key="name.invalidPattern"
              value="Package name ''{0}'' must match pattern ''{1}''."/>
         </module>

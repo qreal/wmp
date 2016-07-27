@@ -1,4 +1,4 @@
-package com.qreal.robots.components.database.users.DAO;
+package com.qreal.robots.components.database.users.dao;
 
 import com.qreal.robots.components.authorization.model.auth.User;
 import com.qreal.robots.components.authorization.model.auth.UserRole;

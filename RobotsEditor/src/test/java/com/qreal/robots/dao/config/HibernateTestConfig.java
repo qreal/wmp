@@ -1,11 +1,11 @@
 package com.qreal.robots.dao.config;
 
-import com.qreal.robots.components.database.diagrams.DAO.DiagramDAO;
-import com.qreal.robots.components.database.diagrams.DAO.DiagramDAOImpl;
-import com.qreal.robots.components.database.robots.DAO.RobotDAO;
-import com.qreal.robots.components.database.robots.DAO.RobotDAOImpl;
-import com.qreal.robots.components.database.users.DAO.UserDAO;
-import com.qreal.robots.components.database.users.DAO.UserDAOImpl;
+import com.qreal.robots.components.database.diagrams.dao.DiagramDAO;
+import com.qreal.robots.components.database.diagrams.dao.DiagramDAOImpl;
+import com.qreal.robots.components.database.robots.dao.RobotDAO;
+import com.qreal.robots.components.database.robots.dao.RobotDAOImpl;
+import com.qreal.robots.components.database.users.dao.UserDAO;
+import com.qreal.robots.components.database.users.dao.UserDAOImpl;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

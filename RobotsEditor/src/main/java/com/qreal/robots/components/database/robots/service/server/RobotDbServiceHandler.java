@@ -2,7 +2,7 @@ package com.qreal.robots.components.database.robots.service.server;
 
 import com.qreal.robots.components.authorization.model.auth.User;
 import com.qreal.robots.components.dashboard.model.robot.Robot;
-import com.qreal.robots.components.database.robots.DAO.RobotDAO;
+import com.qreal.robots.components.database.robots.dao.RobotDAO;
 import com.qreal.robots.components.database.users.service.client.UserService;
 import com.qreal.robots.thrift.gen.RobotDbService;
 import com.qreal.robots.thrift.gen.TRobot;

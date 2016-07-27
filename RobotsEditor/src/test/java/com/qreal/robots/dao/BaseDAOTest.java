@@ -1,6 +1,6 @@
 package com.qreal.robots.dao;
 
-import com.qreal.robots.components.database.users.DAO.UserDAO;
+import com.qreal.robots.components.database.users.dao.UserDAO;
 import com.qreal.robots.components.authorization.model.auth.User;
 
 public class BaseDAOTest {

@@ -1,6 +1,6 @@
 package com.qreal.robots.components.database.diagrams.service.server;
 
-import com.qreal.robots.components.database.diagrams.DAO.DiagramDAO;
+import com.qreal.robots.components.database.diagrams.dao.DiagramDAO;
 import com.qreal.robots.components.editor.model.diagram.Diagram;
 import com.qreal.robots.components.editor.model.diagram.Folder;
 import com.qreal.robots.thrift.gen.DiagramDbService;

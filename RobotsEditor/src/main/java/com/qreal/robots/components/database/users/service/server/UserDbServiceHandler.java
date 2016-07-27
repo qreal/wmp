@@ -1,7 +1,7 @@
 package com.qreal.robots.components.database.users.service.server;
 
 import com.qreal.robots.components.authorization.model.auth.User;
-import com.qreal.robots.components.database.users.DAO.UserDAO;
+import com.qreal.robots.components.database.users.dao.UserDAO;
 import com.qreal.robots.thrift.gen.TUser;
 import com.qreal.robots.thrift.gen.UserDbService;
 import org.apache.thrift.TException;

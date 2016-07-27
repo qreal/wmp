@@ -1,4 +1,4 @@
-package com.qreal.robots.components.database.robots.DAO;
+package com.qreal.robots.components.database.robots.dao;
 
 import com.qreal.robots.components.dashboard.model.robot.Robot;
 

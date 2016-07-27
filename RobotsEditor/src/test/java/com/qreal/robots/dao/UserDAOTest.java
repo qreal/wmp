@@ -2,8 +2,8 @@ package com.qreal.robots.dao;
 
 import com.qreal.robots.components.authorization.model.auth.User;
 import com.qreal.robots.components.authorization.model.auth.UserRole;
-import com.qreal.robots.components.database.users.DAO.UserDAO;
-import com.qreal.robots.components.database.users.DAO.UserDAOImpl;
+import com.qreal.robots.components.database.users.dao.UserDAO;
+import com.qreal.robots.components.database.users.dao.UserDAOImpl;
 import com.qreal.robots.dao.config.HibernateTestConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;

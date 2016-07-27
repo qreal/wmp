@@ -1,4 +1,4 @@
-package com.qreal.robots.components.database.diagrams.DAO;
+package com.qreal.robots.components.database.diagrams.dao;
 
 import com.qreal.robots.components.editor.model.diagram.Diagram;
 import com.qreal.robots.components.editor.model.diagram.Folder;
