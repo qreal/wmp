@@ -4,16 +4,13 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>qreal-web</groupId>
+    <groupId>wmp</groupId>
     <artifactId>parent</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <modules>
-        <module>StepicRobotsWeb</module>
-        <module>Robots_diagram</module>
-        <module>examples/OverlayExample</module>
-        <module>examples/StandaloneExample</module>
+        <module>RobotsEditor</module>
     </modules>
 
     <build>
@@ -62,25 +59,31 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-core</artifactId>
-            <version>4.1.1.RELEASE</version>
+            <version>4.2.1.RELEASE</version>
+            <!--<exclusions>-->
+                <!--<exclusion>-->
+                    <!--<groupId>commons-logging</groupId>-->
+                    <!--<artifactId>commons-logging</artifactId>-->
+                <!--</exclusion>-->
+            <!--</exclusions>-->
         </dependency>
 
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-orm</artifactId>
-            <version>4.1.1.RELEASE</version>
+            <version>4.2.1.RELEASE</version>
         </dependency>
 
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
-            <version>4.1.1.RELEASE</version>
+            <version>4.2.1.RELEASE</version>
         </dependency>
 
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
-            <version>4.1.1.RELEASE</version>
+            <version>4.2.1.RELEASE</version>
         </dependency>
 
         <dependency>
@@ -110,19 +113,19 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-tx</artifactId>
-            <version>4.1.1.RELEASE</version>
+            <version>4.2.1.RELEASE</version>
         </dependency>
 
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-jdbc</artifactId>
-            <version>4.1.1.RELEASE</version>
+            <version>4.2.1.RELEASE</version>
         </dependency>
 
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-oxm</artifactId>
-            <version>4.1.1.RELEASE</version>
+            <version>4.2.1.RELEASE</version>
         </dependency>
 
         <dependency>
@@ -140,7 +143,7 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
-            <version>4.1.1.RELEASE</version>
+            <version>4.2.1.RELEASE</version>
         </dependency>
 
         <dependency>
@@ -184,25 +187,6 @@
             <artifactId>jstl</artifactId>
             <version>1.2</version>
         </dependency>
-        
-        <!-- Log -->
-        <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <version>1.2.17</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>1.7.5</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-            <version>1.7.1</version>
-        </dependency>
 
         <!-- JUnit -->
         <dependency>
@@ -222,5 +206,3 @@
     </dependencies>
 
 </project>
-
-

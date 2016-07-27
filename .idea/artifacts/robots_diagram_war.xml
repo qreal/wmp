@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="robots-diagram:war">
+    <output-path>$PROJECT_DIR$/RobotsEditor/target</output-path>
+    <root id="archive" name="robots-editor.war">
+      <element id="artifact" artifact-name="robots-diagram:war exploded" />
+    </root>
+  </artifact>
+</component>

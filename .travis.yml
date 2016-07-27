@@ -1,0 +1,49 @@
+language: java
+jdk:
+  - oraclejdk8
+
+os:
+  - linux
+dist: trusty
+
+before_install:
+  #update all repo lists
+  - sudo apt-get update -y
+  #install dependencies for thrift
+  - sudo apt-get install automake bison flex g++ git libboost-all-dev libevent-dev libssl-dev libtool make pkg-config -y
+  #install nodejs
+  - sudo apt-get install nodejs npm -y
+  #install curl for tomcat tests
+  - sudo apt-get install curl -y
+  # - sudo apt-get upgrade -y
+  #install 0.9.3 thrift version
+  - mkdir ThriftInstall
+  - cd ThriftInstall
+  - wget http://apache-mirror.rbc.ru/pub/apache/thrift/0.9.3/thrift-0.9.3.tar.gz
+  - tar -xf thrift-0.9.3.tar.gz
+  - cd thrift-0.9.3
+  - ./configure --without-ruby --without-python --without-go --without-erlang
+  - make
+  - sudo make install
+  - sudo ln -s /usr/local/bin/thrift /usr/bin/thriftD
+  - cd ../..
+  #get checkstyle
+  - cd RobotsEditor
+  - wget http://downloads.sourceforge.net/project/checkstyle/checkstyle/7.0/checkstyle-7.0-all.jar
+  - cd ..
+
+install:
+  - ./buildApp.sh
+
+script:
+  #run checkstyle
+  - cd RobotsEditor
+  - java -jar checkstyle-7.0-all.jar -c ../Travis/checkstyle/checkstyle.xml src
+  #run callTomcat test
+  - mvn clean install
+  - mvn tomcat7:run-war &
+  - ../Travis/callTomcat.sh
+
+
+notifications:
+  slack: qreal-web:sT5qgA4qZZ9eyLI0yy2Mp81E
