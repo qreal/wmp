@@ -129,7 +129,7 @@ declare class SubprogramNode extends DefaultDiagramNode {
 
 }
 
-declare class DiagramPaper {
+declare class DiagramScene {
 
     constructor(graph: joint.dia.Graph);
     public getGridSize(): number;
@@ -141,7 +141,7 @@ declare class DiagramPaper {
     public addNodesFromMap(nodesMap: Map<DiagramNode>): void;
     public addLinksFromMap(linksMap: Map<Link>): void;
     public addLinkToMap(linkId: string, linkObject: Link): void;
-    public addLinkToPaper(link: Link): void;
+    public addLinkToScene(link: Link): void;
     public removeNode(nodeId: string): void;
     public removeLink(linkId: string): void;
     public clear(): void;
@@ -177,7 +177,7 @@ declare class DiagramEditor {
 
     constructor();
     public getGraph(): joint.dia.Graph;
-    public getPaper(): DiagramPaper;
+    public getScene(): DiagramScene;
     public clear(): void;
 
 }
@@ -259,7 +259,7 @@ declare abstract class DiagramEditorController {
 
     protected scope: ng.IScope;
     protected diagramEditor: DiagramEditor;
-    protected paperController: PaperController;
+    protected sceneController: SceneController;
     protected propertyEditorController: PropertyEditorController;
     protected elementsTypeLoader: ElementsTypeLoader;
     protected paletteController: PaletteController;
@@ -279,9 +279,9 @@ declare abstract class DiagramEditorController {
 
 }
 
-declare class PaperController {
+declare class SceneController {
 
-    constructor(diagramEditorController: DiagramEditorController, paper: DiagramPaper);
+    constructor(diagramEditorController: DiagramEditorController, scene: DiagramScene);
     public getCurrentElement(): DiagramElement;
     public clearState(): void;
     public createLink(sourceId: string, targetId: string): void;
@@ -298,7 +298,7 @@ declare class PaperController {
 
 declare class PropertyEditorController {
 
-    constructor(paperController: PaperController, undoRedoController: UndoRedoController);
+    constructor(sceneController: SceneController, undoRedoController: UndoRedoController);
     public setNodeProperties(element: DiagramElement): void;
     public clearState(): void;
     public setProperty(key: string, value: string): void;
@@ -380,7 +380,7 @@ declare module GesturesUtils {
 
 declare class GesturesController {
 
-    constructor(paperController: PaperController);
+    constructor(sceneController: SceneController);
     public startDrawing(): void;
     public onMouseMove(event): void;
     public onMouseDown(event): void;

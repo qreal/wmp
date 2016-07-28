@@ -37,7 +37,7 @@ class RobotsDiagramEditorController extends DiagramEditorController {
     }
 
     public handleLoadedTypes(elementTypes: ElementTypes): void {
-        this.propertyEditorController = new PropertyEditorController(this.paperController, this.undoRedoController);
+        this.propertyEditorController = new PropertyEditorController(this.sceneController, this.undoRedoController);
 
         for (var typeName in elementTypes.uncategorisedTypes) {
             this.nodeTypesMap[typeName] = elementTypes.uncategorisedTypes[typeName];
@@ -56,9 +56,9 @@ class RobotsDiagramEditorController extends DiagramEditorController {
 
     public handleLoadedDiagramJson(diagram: TDiagram): void {
         var diagramParts: DiagramParts = this.diagramParser.parse(diagram, this.nodeTypesMap);
-        var paper = this.diagramEditor.getPaper();
-        paper.addNodesFromMap(diagramParts.nodesMap);
-        paper.addLinksFromMap(diagramParts.linksMap);
+        var scene = this.diagramEditor.getScene();
+        scene.addNodesFromMap(diagramParts.nodesMap);
+        scene.addLinksFromMap(diagramParts.linksMap);
     }
 
     public getDiagramParts(): DiagramParts {

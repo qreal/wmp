@@ -484,7 +484,7 @@ var RegionItem = (function () {
         if (text) {
             var textPos = this.getPosition();
             setTimeout(function () {
-                _this.text = _this.worldModel.getPaper().text(textPos.x + 5, textPos.y + 10, text).
+                _this.text = _this.worldModel.getScene().text(textPos.x + 5, textPos.y + 10, text).
                     attr({ "text-anchor": "start", fill: color, "font-size": 14 }).toBack();
             });
         }
@@ -495,7 +495,7 @@ var StartPositionItem = (function () {
     function StartPositionItem(worldModel, x, y, direction) {
         this.width = 15;
         this.height = 15;
-        this.image = worldModel.getPaper().image(GeneralConstants.APP_ROOT_PATH + "images/2dmodel/cross.png", x - this.width / 2, y - this.height / 2, this.width, this.height);
+        this.image = worldModel.getScene().image(GeneralConstants.APP_ROOT_PATH + "images/2dmodel/cross.png", x - this.width / 2, y - this.height / 2, this.width, this.height);
         this.image.transform("R" + direction);
         this.image.toBack();
     }
@@ -506,7 +506,7 @@ var StartPositionItem = (function () {
 })();
 var LineItemImpl = (function () {
     function LineItemImpl(worldModel, xStart, yStart, xEnd, yEnd, width, rgbaColor, isInteractive) {
-        var paper = worldModel.getPaper();
+        var paper = worldModel.getScene();
         this.worldModel = worldModel;
         this.path = paper.path("M" + xStart + " " + yStart + " L" + xEnd + " " + yEnd);
         this.path.attr({
@@ -627,7 +627,7 @@ var LineItemImpl = (function () {
 })();
 var WallItemImpl = (function () {
     function WallItemImpl(worldModel, xStart, yStart, xEnd, yEnd, isInteractive) {
-        var paper = worldModel.getPaper();
+        var paper = worldModel.getScene();
         this.worldModel = worldModel;
         this.path = paper.path("M" + xStart + " " + yStart + " L" + xEnd + " " + yEnd);
         this.path.attr({
@@ -753,7 +753,7 @@ var WallItemImpl = (function () {
 var PencilItemImpl = (function () {
     function PencilItemImpl(worldModel, xStart, yStart, width, color, isInteractive) {
         this.pathArray = new Array();
-        var paper = worldModel.getPaper();
+        var paper = worldModel.getScene();
         this.worldModel = worldModel;
         this.pathArray[0] = ["M", xStart, yStart];
         this.path = paper.path(this.pathArray);
@@ -806,7 +806,7 @@ var PencilItemImpl = (function () {
 var EllipseItemImpl = (function () {
     function EllipseItemImpl(worldModel, xStart, yStart, width, color, isInteractive) {
         this.handleSize = 10;
-        var paper = worldModel.getPaper();
+        var paper = worldModel.getScene();
         this.worldModel = worldModel;
         this.ellipse = paper.ellipse(xStart, yStart, 0, 0);
         this.ellipse.attr({
@@ -1094,7 +1094,7 @@ var WorldModelImpl = (function () {
     WorldModelImpl.prototype.setNoneMode = function () {
         this.drawMode = 0;
     };
-    WorldModelImpl.prototype.getPaper = function () {
+    WorldModelImpl.prototype.getScene = function () {
         return this.paper;
     };
     WorldModelImpl.prototype.setCurrentElement = function (element) {
@@ -1107,7 +1107,7 @@ var WorldModelImpl = (function () {
     WorldModelImpl.prototype.setStartPositionCross = function (x, y, direction, offsetX, offsetY) {
         this.startPositionCross = new StartPositionItem(this, x + offsetX, y + offsetY, direction);
     };
-    WorldModelImpl.prototype.clearPaper = function () {
+    WorldModelImpl.prototype.clearScene = function () {
         while (this.wallItems.length) {
             this.wallItems.pop().remove();
         }
@@ -1909,7 +1909,7 @@ var TwoDModelEngineFacadeImpl = (function () {
 })();
 var CubicBezierItemImpl = (function () {
     function CubicBezierItemImpl(worldModel, xStart, yStart, xEnd, yEnd, cp1X, cp1Y, cp2X, cp2Y, width, rgbaColor, isInteractive) {
-        var paper = worldModel.getPaper();
+        var paper = worldModel.getScene();
         this.worldModel = worldModel;
         this.path = paper.path("M " + xStart + "," + yStart + " C " + cp1X + "," + cp1Y + " " + cp2X + "," + cp2Y +
             " " + xEnd + "," + yEnd);
@@ -1995,7 +1995,7 @@ var SensorItem = (function () {
     function SensorItem(robotItem, worldModel, sensorType, pathToImage, isInteractive, position) {
         this.robotItem = robotItem;
         this.worldModel = worldModel;
-        var paper = worldModel.getPaper();
+        var paper = worldModel.getScene();
         this.sensorType = sensorType;
         this.defineImageSizes(sensorType);
         this.startPosition = this.getStartPosition(position);
@@ -2189,7 +2189,7 @@ var SonarSensorItem = (function (_super) {
     function SonarSensorItem(robotItem, worldModel, sensorType, pathToImage, isInteractive, position) {
         _super.call(this, robotItem, worldModel, sensorType, pathToImage, isInteractive, position);
         this.sonarRange = 255;
-        var paper = worldModel.getPaper();
+        var paper = worldModel.getScene();
         var defaultPosition = this.getStartPosition(position);
         this.regionStartX = defaultPosition.x + this.width / 2;
         this.regionStartY = defaultPosition.y + this.height / 2;
@@ -2530,7 +2530,7 @@ var RobotItemImpl = (function () {
         }
     };
     RobotItemImpl.prototype.createElement = function (worldModel, position, imageFileName) {
-        var paper = worldModel.getPaper();
+        var paper = worldModel.getScene();
         this.image = paper.image(imageFileName, position.x, position.y, this.width, this.height);
         worldModel.addRobotItemElement(this.image);
         this.marker = new Marker(paper, new TwoDPosition(this.startCenter.x, this.startCenter.y));
@@ -2555,7 +2555,7 @@ var EllipseRegion = (function (_super) {
     __extends(EllipseRegion, _super);
     function EllipseRegion(worldModel) {
         _super.call(this, worldModel);
-        this.shape = worldModel.getPaper().ellipse(0, 0, 0, 0);
+        this.shape = worldModel.getScene().ellipse(0, 0, 0, 0);
         this.setColor(this.defaultColor);
         this.setWidht(this.defaultWidth);
         this.setHeight(this.defaultHeight);
@@ -2585,7 +2585,7 @@ var RectangularRegion = (function (_super) {
     __extends(RectangularRegion, _super);
     function RectangularRegion(worldModel) {
         _super.call(this, worldModel);
-        this.shape = worldModel.getPaper().rect(0, 0, 0, 0);
+        this.shape = worldModel.getScene().rect(0, 0, 0, 0);
         this.setColor(this.defaultColor);
         this.setWidht(this.defaultWidth);
         this.setHeight(this.defaultHeight);

@@ -87,20 +87,20 @@ body{
     height: 100%;
 }
 
-.paper-wrapper {
+.scene-wrapper {
     position: relative;
     height: 100%;
     overflow: scroll;
     border: 1px solid gray;
 }
 
-#diagram_paper {
+#diagram-scene {
     position: relative;
     width: 2000px;
     height: 2000px;
 }
 
-#diagram_paper svg {
+#diagram-scene svg {
     background: #ffffff url('bg.png');
 }
 

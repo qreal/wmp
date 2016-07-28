@@ -20,7 +20,7 @@
 /// <reference path="../controller/DiagramElementListener.ts" />
 /// <reference path="../../vendor.d.ts" />
 
-class DiagramPaper extends joint.dia.Paper {
+class DiagramScene extends joint.dia.Paper {
 
     private htmlId: string;
     private graph: joint.dia.Graph;

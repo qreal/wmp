@@ -15,7 +15,7 @@
  */
 
 /// <reference path="PropertyViewFactory.ts" />
-/// <reference path="PaperController.ts" />
+/// <reference path="SceneController.ts" />
 /// <reference path="VariantListMapper.ts" />
 /// <reference path="../model/DiagramElement.ts" />
 /// <reference path="../model/Map.ts" />
@@ -26,12 +26,12 @@
 class PropertyEditorController {
 
     private propertyViewFactory: PropertyViewFactory;
-    private paperController: PaperController;
+    private sceneController: SceneController;
     private undoRedoController: UndoRedoController;
 
-    constructor(paperController: PaperController, undoRedoController: UndoRedoController) {
+    constructor(sceneController: SceneController, undoRedoController: UndoRedoController) {
         this.propertyViewFactory = new PropertyViewFactory();
-        this.paperController = paperController;
+        this.sceneController = sceneController;
         this.undoRedoController = undoRedoController;
         this.initInputStringListener();
         this.initCheckboxListener();
@@ -64,7 +64,7 @@ class PropertyEditorController {
     }
 
     public addChangePropertyCommand(key: string, value: string, changeHtmlFunction: () => void): void {
-        var currentElement: DiagramElement = this.paperController.getCurrentElement();
+        var currentElement: DiagramElement = this.sceneController.getCurrentElement();
         var property: Property = currentElement.getChangeableProperties()[key];
         var changePropertyCommand: Command = new ChangePropertyCommand(key, value, property.value,
             this.setProperty.bind(this), changeHtmlFunction);
@@ -76,7 +76,7 @@ class PropertyEditorController {
     }
 
     public setProperty(key: string, value: string): void {
-        var currentElement: DiagramElement = this.paperController.getCurrentElement();
+        var currentElement: DiagramElement = this.sceneController.getCurrentElement();
         var property: Property = currentElement.getChangeableProperties()[key];
         property.value = value;
         currentElement.setProperty(key, property);
@@ -130,7 +130,7 @@ class PropertyEditorController {
     private initCheckboxListener(): void {
         var controller: PropertyEditorController = this;
         $(document).on('change', '.checkbox', function () {
-            var currentElement: DiagramElement = controller.paperController.getCurrentElement();
+            var currentElement: DiagramElement = controller.sceneController.getCurrentElement();
             var key = $(this).data('type');
             var property: Property = currentElement.getChangeableProperties()[key];
             var currentValue = property.value;

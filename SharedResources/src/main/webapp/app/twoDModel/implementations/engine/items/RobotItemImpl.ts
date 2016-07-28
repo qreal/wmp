@@ -313,7 +313,7 @@ class RobotItemImpl implements RobotItem {
     }
 
     private createElement(worldModel: WorldModel, position: TwoDPosition, imageFileName: string): void {
-        var paper = worldModel.getPaper();
+        var paper = worldModel.getScene();
 
         this.image = paper.image(imageFileName, position.x, position.y, this.width, this.height);
         worldModel.addRobotItemElement(this.image);

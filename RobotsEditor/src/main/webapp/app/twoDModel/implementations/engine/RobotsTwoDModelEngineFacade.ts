@@ -9,7 +9,7 @@ class RobotsTwoDModelEngineFacade extends TwoDModelEngineFacadeImpl {
         var facade = this;
         $(document).ready(() => {
             $('#confirmDelete').find('.modal-footer #confirm').on('click', function() {
-                facade.model.getWorldModel().clearPaper();
+                facade.model.getWorldModel().clearScene();
                 $('#confirmDelete').modal('hide');
             });
         });

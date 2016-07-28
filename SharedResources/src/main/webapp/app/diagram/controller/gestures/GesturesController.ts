@@ -23,8 +23,8 @@
 
 class GesturesController {
 
-    private paperController: PaperController;
-    private paper: DiagramPaper;
+    private sceneController: SceneController;
+    private paper: DiagramScene;
     private timer: number;
     private currentTime: number;
     private date: Date;
@@ -34,8 +34,8 @@ class GesturesController {
     private gesturesMatcher: GesturesMatcher;
     private rightButtonDown;
 
-    constructor(paperController: PaperController, paper: DiagramPaper) {
-        this.paperController = paperController;
+    constructor(paperController: SceneController, paper: DiagramScene) {
+        this.sceneController = paperController;
         this.paper = paper;
         this.date = new Date();
         this.flagDraw = false;
@@ -93,7 +93,7 @@ class GesturesController {
             return;
         }
         this.flagDraw = false;
-        if (this.paperController.getCurrentElement()) {
+        if (this.sceneController.getCurrentElement()) {
             this.finishDraw(event);
         } else {
             this.timer = setTimeout(() => this.finishDraw(event), 1000);
@@ -108,13 +108,13 @@ class GesturesController {
             pencil[i - 1].parentNode.removeChild(pencil[i - 1]);
         }
 
-        var currentElement: DiagramElement = this.paperController.getCurrentElement();
+        var currentElement: DiagramElement = this.sceneController.getCurrentElement();
 
         if (currentElement) {
-            this.paperController.createLinkBetweenCurrentAndEventTargetElements(event);
+            this.sceneController.createLinkBetweenCurrentAndEventTargetElements(event);
         } else {
             var names: string[] = this.gesturesMatcher.getMatches(this.pointList);
-            this.paperController.createNodeInEventPositionFromNames(names, event);
+            this.sceneController.createNodeInEventPositionFromNames(names, event);
         }
         this.pointList = [];
     }
