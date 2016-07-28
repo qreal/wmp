@@ -62,7 +62,7 @@ body{
     margin-left: 0px;
 }
 
-#content-row {
+#main-editor-area {
     width: 100%;
     height: calc(100% - 80px);
     height: -webkit-calc(100% - 80px); /* google, safari */
@@ -74,13 +74,13 @@ body{
     padding-right: 10px;
 }
 
-#diagram_left-menu {
+#diagram-property-editor {
     border: 1px solid gray;
     background: #ffffff;
     height: 100%;
 }
 
-#diagram_right-menu {
+#editor-palette {
     border: 1px solid gray;
     text-align: left;
     background: #ffffff;

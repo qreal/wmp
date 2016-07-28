@@ -513,7 +513,7 @@ var SceneCommandFactory = (function () {
 var SceneController = (function () {
     function SceneController(diagramEditorController, paper) {
         var _this = this;
-        this.contextMenuId = "scene_context_menu";
+        this.contextMenuId = "scene-context-menu";
         this.diagramEditorController = diagramEditorController;
         this.undoRedoController = diagramEditorController.getUndoRedoController();
         this.scene = paper;

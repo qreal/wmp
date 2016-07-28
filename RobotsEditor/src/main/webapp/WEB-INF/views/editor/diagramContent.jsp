@@ -1,13 +1,18 @@
 <div id="diagramContent" class="unselectable" ng-controller="RobotsDiagramEditorController">
-    <ul id="diagram_menu_context_menu" class='custom-menu'>
+    <!-- Context menu in File->'Open diagram' window -->
+    <ul id="open-diagram-context-menu" class='custom-menu'>
         <li data-action="delete">Delete</li>
     </ul>
-    <ul id="scene_context_menu" class='custom-menu'>
+
+    <!-- Scene's elements context menu -->
+    <ul id="scene-context-menu" class='custom-menu'>
         <li data-action="delete">Delete</li>
     </ul>
-    <div class="navbar navbar-inverse navbar-static-top">
+
+    <!-- Toolbars -->
+    <div id="main-toolbar-area" class="navbar navbar-inverse navbar-static-top">
         <div class="container-fluid">
-            <div class="navbar-header">
+            <div id="go-to-dashboard-area" class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
@@ -16,8 +21,8 @@
                 <a class="navbar-brand" href="<c:url value="/"/>">Dashboard</a>
             </div>
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li class="dropdown">
+                <ul id="tool-buttons-left-area" class="nav navbar-nav">
+                    <li id="file-menu" class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">File<b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <li><a href="" role="menuitem" tabindex="-1" ng-click="createNewDiagram()">New</a></li>
@@ -29,37 +34,34 @@
                         </ul>
                     </li>
                     <li>
-                        <p class="navbar-text" ng-click="openTwoDModel()">
+                        <p id="two-d-model-toolbar-button" class="navbar-text" ng-click="openTwoDModel()">
                             <img src="images/2dmodel/2d-model.svg" style="width: 18px; height: 18px; cursor: pointer"/>
                         </p>
                     </li>
                     <li>
-                        <p class="navbar-text" ng-click="undo()">
+                        <p id="undo-toolbar-button" class="navbar-text" ng-click="undo()">
                             <span class="glyphicon glyphicon-chevron-left" style="vertical-align: middle; cursor: pointer"></span>
                         </p>
                     </li>
                     <li>
-                        <p class="navbar-text" ng-click="redo()">
+                        <p id="redo-toolbar-button" class="navbar-text" ng-click="redo()">
                             <span class="glyphicon glyphicon-chevron-right" style="vertical-align: middle; cursor: pointer"></span>
                         </p>
                     </li>
                 </ul>
-
-                <ul class="nav navbar-nav navbar-right">
-
+                <ul id="tool-buttons-right-area" class="nav navbar-nav navbar-right">
                     <sec:authorize access="isAuthenticated()">
-
-                        <li class="dropdown">
-                            <a class="dropdown-toggle" role="button" data-toggle="dropdown" href="#"><i
-                                    class="glyphicon glyphicon-user"></i>
+                        <li id="user-toolbar-menu-area" class="dropdown">
+                            <a class="dropdown-toggle" role="button" data-toggle="dropdown" href="#">
+                                <i class="glyphicon glyphicon-user"></i>
                                 <sec:authentication property="name"/>
                                 <span class="caret"></span>
                             </a>
-                            <ul id="g-account-menu" class="dropdown-menu" role="menu">
+                            <ul id="user-toolbar-menu" class="dropdown-menu" role="menu">
                                 <li><a href="#">My Profile</a></li>
                             </ul>
                         </li>
-                        <li>
+                        <li id="logout-toolbar-area">
                             <c:url value="/j_spring_security_logout" var="logout"/>
                             <a href="${logout}">
                                 <i class="glyphicon glyphicon-lock"></i>
@@ -74,11 +76,12 @@
         </div>
     </div>
 
-    <div id="content-row" class="row unselectable">
-        <div class="col-md-10 content-col">
+    <!-- Main area -->
+    <div id="main-editor-area" class="row unselectable">
+        <div id="editor-and-property-editor-area" class="col-md-10 content-col">
             <div class="row sub-row">
-                <div class="col-md-3 content-col">
-                    <div id="diagram_left-menu">
+                <div id="property-editor-area" class="col-md-3 content-col">
+                    <div id="diagram-property-editor">
                         <legend style="padding: 10px">Property Editor</legend>
                         <table class="table table-condensed" id="property_table">
                             <thead>
@@ -92,7 +95,7 @@
                         </table>
                     </div>
                 </div>
-                <div class="col-md-9 content-col">
+                <div id="diagram-" class="col-md-9 content-col">
                     <div class="scene-wrapper">
                         <div id="diagram-scene">
                         </div>
@@ -100,25 +103,28 @@
                 </div>
             </div>
         </div>
-
-        <div class="col-md-2 content-col">
-            <div id="diagram_right-menu">
+        <div id="palette-editor-area" class="col-md-2 content-col">
+            <div id="editor-palette">
                 <legend style="height: 40px; padding: 10px">Palette</legend>
                 <div id="elements_tree">
                     <ul id="palette-tabs" class="nav nav-tabs">
-                        <li role="presentation" class="active"><a href="#blocks" aria-controls="blocks" role="tab"
-                                                                  data-toggle="tab">Blocks</a></li>
-                        <li role="presentation"><a href="#subprograms" aria-controls="subprograms" role="tab"
-                                                   data-toggle="tab">Subprograms</a></li>
+                        <li role="presentation" class="active">
+                            <a href="#blocks" aria-controls="blocks" role="tab" data-toggle="tab">
+                                Blocks
+                            </a>
+                        </li>
+                        <li role="presentation">
+                            <a href="#subprograms" aria-controls="subprograms" role="tab" data-toggle="tab">
+                                Subprograms
+                            </a>
+                        </li>
                     </ul>
                     <div id="palette-tab-content" class="tab-content">
                         <div role="tabpanel" class="tab-pane active" id="blocks">
-                            <ul id="blocks-navigation">
-                            </ul>
+                            <ul id="blocks-navigation"></ul>
                         </div>
                         <div role="tabpanel" class="tab-pane" id="subprograms">
-                            <ul id="subprograms-navigation">
-                            </ul>
+                            <ul id="subprograms-navigation"></ul>
                         </div>
                     </div>
                 </div>
@@ -126,12 +132,15 @@
         </div>
     </div>
 
+    <!-- File->Open window -->
     <div class="modal fade" id="diagrams" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">Diagrams</h4>
+                    <h4 class="modal-title">
+                        Diagrams
+                    </h4>
                 </div>
                 <div class="modal-body_nopadding">
                     <div class="folderMenu">
@@ -152,7 +161,8 @@
         </div>
     </div>
 
-    <div class="modal fade" id="confirmNew" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <!-- Save confirmation window on creating new diagram -->
+    <div class="modal fade" id="confirm-save-diagram" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">

@@ -35,7 +35,7 @@ class SceneController {
     private undoRedoController: UndoRedoController;
     private lastCellMouseDownPosition: {x: number, y: number};
     private paperCommandFactory: SceneCommandFactory;
-    private contextMenuId = "scene_context_menu";
+    private contextMenuId = "scene-context-menu";
 
     constructor(diagramEditorController: DiagramEditorController, paper: DiagramScene) {
         this.diagramEditorController = diagramEditorController;

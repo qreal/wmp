@@ -17,7 +17,7 @@ class DiagramMenuController {
     private canBeDeleted: boolean;
     private folderTree: Folder;
     private currentFolder: Folder;
-    private contextMenuId = "diagram_menu_context_menu";
+    private contextMenuId = "open-diagram-context-menu";
     private selectedElement: DiagramMenuElement;
 
     constructor(diagramEditorController: RobotsDiagramEditorController) {
@@ -49,7 +49,7 @@ class DiagramMenuController {
     }
 
     public createNewDiagram(): void {
-        $('#confirmNew').modal('show');
+        $('#confirm-save-diagram').modal('show');
     }
 
     public openFolderWindow(): void {
