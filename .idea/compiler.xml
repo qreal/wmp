@@ -22,14 +22,21 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
+        <module name="diagram-service" />
+        <module name="robot-service" />
         <module name="robots-diagram" />
         <module name="shared-resources" />
+        <module name="user-service" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="diagram-service" target="1.8" />
+      <module name="diagram-service (1)" target="1.8" />
       <module name="parent" target="1.5" />
+      <module name="robot-service" target="1.8" />
       <module name="robots-diagram" target="1.8" />
       <module name="shared-resources" target="1.5" />
+      <module name="user-service" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

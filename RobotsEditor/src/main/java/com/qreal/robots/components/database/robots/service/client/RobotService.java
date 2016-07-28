@@ -12,7 +12,7 @@ public interface RobotService {
      *
      * @param robot robot to save (Id must not be set)
      */
-    void register(Robot robot);
+    long register(Robot robot);
 
     /**
      * Register robot with specified owner.
@@ -28,6 +28,13 @@ public interface RobotService {
      * @param id id of robot to find
      */
     Robot findById(long id);
+
+    /**
+     * Test if exists robot with specified Id.
+     *
+     * @param id of robot to test if exists
+     */
+    Boolean isRobotExists(long id);
 
     /**
      * Deletes robot.

@@ -1,5 +1,6 @@
 package com.qreal.robots.components.database.robots.service.client;
 
+import com.qreal.robots.components.authorization.model.auth.User;
 import com.qreal.robots.components.dashboard.model.robot.Robot;
 import com.qreal.robots.components.database.users.service.client.UserService;
 import com.qreal.robots.thrift.gen.RobotDbService;
@@ -42,26 +43,35 @@ public class RobotServiceImpl implements RobotService {
     }
 
     @Override
-    public void register(Robot robot) {
+    public long register(Robot robot) {
         logger.trace("register method called with parameters: robot = {}", robot.getName());
-
+        long idRobot = -1;
         try {
             transport.open();
-            client.registerRobot(robot.toTRobot());
+            idRobot = client.registerRobot(robot.toTRobot());
             transport.close();
             logger.trace("register method registered robot {}", robot.getName());
         } catch (TException e) {
             logger.error("Client RobotService encountered problem while sending register request with parameters: " +
                     "robot = {}", robot.getName(), e);
         }
+        return idRobot;
     }
 
     @Override
     public void registerByUsername(Robot robot, String username) {
         logger.trace("registerByUsername method called with parameters: robot = {}, username = {}", robot.getName(),
                 username);
-        robot.setOwner(userService.findByUserName(username));
-        register(robot);
+        User user = userService.findByUserName(username);
+        robot.setOwner(user);
+        logger.trace("registering robot {}", robot.getName());
+        long idRobot = register(robot);
+        robot.setId(idRobot);
+        logger.trace("robot registered with id {}", robot.getId());
+        logger.trace("updating user {}", username);
+        user.getRobots().add(robot);
+        userService.update(user);
+        logger.trace("user {} updated", username);
         logger.trace("registerByUsername method registered robot {} with owner {}", robot.getName(), username);
     }
 
@@ -80,6 +90,23 @@ public class RobotServiceImpl implements RobotService {
         }
         return new Robot(tRobot, userService.findByUserName(tRobot.getUsername()));
     }
+
+    @Override
+    public Boolean isRobotExists(long id) {
+        logger.trace("isRobotExists method called with parameters: robotId = {}", id);
+        Boolean isRobotExists = false;
+        try {
+            transport.open();
+            isRobotExists = client.isRobotExists(id);
+            transport.close();
+            logger.trace("isRobotExists method got result");
+        } catch (TException e) {
+            logger.error("Client RobotService encountered problem while sending isRobotExists request with parameters: " +
+                    "name = {}", id, e);
+        }
+        return isRobotExists;
+    }
+
 
     @Override
     public void delete(long id) {
