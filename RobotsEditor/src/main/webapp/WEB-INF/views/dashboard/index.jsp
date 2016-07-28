@@ -2,14 +2,16 @@
 
 <html lang="en">
 <head>
-    <title>Robots Diagram</title>
+    <title>WMP Dashboard</title>
 
     <jsp:include page="../include/scripts.jsp"/>
-    <link rel="stylesheet" href="<c:url value='/resources/css/error.css'/>"/>
     <script src="<c:url value='/resources/js/map.js' />"></script>
     <script src="<c:url value='/resources/js/robot.js' />"></script>
     <script src="<c:url value='/resources/thrift/dashboard/robotService_types.js'/> "></script>
     <script src="<c:url value='/resources/thrift/dashboard/RobotServiceThrift.js'/> "></script>
+
+    <link rel="stylesheet" href="<c:url value='/resources/css/error.css'/>"/>
+
     <script type="text/javascript">
         $(document).ready(function () {
             $("#target").click(function () {
@@ -96,6 +98,7 @@
 
         });
     </script>
+
     <style>
         .dropdown-submenu {
             position: relative;
@@ -153,10 +156,8 @@
 
 <%@ include file="../include/navbar.jsp" %>
 
-
 <!-- Main -->
 <div class="container-fluid">
-
 
     <!-- upper section -->
     <div class="row">
