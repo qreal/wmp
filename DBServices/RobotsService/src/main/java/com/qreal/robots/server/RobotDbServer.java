@@ -17,7 +17,7 @@ public class RobotDbServer {
 
     private static void runTServer(RobotDbService.Processor processor) {
         int port = 9091;
-        logger.info("Starting RobotSerial DB TServer on localhost on port {}", port);
+        logger.info("Starting Robots DB TServer on localhost on port {}", port);
         try {
             TServerTransport serverTransport = new TServerSocket(port);
             TThreadPoolServer server = new TThreadPoolServer(new TThreadPoolServer.Args(serverTransport).processor
