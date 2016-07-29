@@ -1,7 +1,8 @@
 package com.qreal.robots.dao;
 
-
 import com.qreal.robots.model.robot.RobotSerial;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * DAO for robotDB.
@@ -9,24 +10,25 @@ import com.qreal.robots.model.robot.RobotSerial;
 public interface RobotDao {
 
     /**
-     * Saves robot
+     * Saves robot.
      *
      * @param robot robot to save (Id must not be set).
      */
-    long save(RobotSerial robot);
+    long save(@NotNull RobotSerial robot);
 
     /**
-     * Deletes robot
+     * Deletes robot.
      *
      * @param robot robot to delete (Id must be set correctly).
      */
-    void delete(RobotSerial robot);
+    void delete(@NotNull RobotSerial robot);
 
     /**
-     * Finds robot with specified id. (Can return null)
+     * Finds robot with specified id. (or null)
      *
      * @param robotId id of robot to find
      */
+    @Nullable
     RobotSerial findById(long robotId);
 
     /**
@@ -38,9 +40,9 @@ public interface RobotDao {
     boolean isRobotExists(long id);
 
     /**
-     * Update robot
+     * Update robot.
      *
      * @param robot robot to update (Id must be set correctly)
      */
-    void updateRobot(RobotSerial robot);
+    void updateRobot(@NotNull RobotSerial robot);
 }

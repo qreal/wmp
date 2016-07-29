@@ -93,21 +93,20 @@ public class RobotServiceImpl implements RobotService {
     }
 
     @Override
-    public Boolean isRobotExists(long id) {
+    public boolean isRobotExists(long id) {
         logger.trace("isRobotExists method called with parameters: robotId = {}", id);
-        Boolean isRobotExists = false;
+        boolean isRobotExists = false;
         try {
             transport.open();
             isRobotExists = client.isRobotExists(id);
             transport.close();
             logger.trace("isRobotExists method got result");
         } catch (TException e) {
-            logger.error("Client RobotService encountered problem while sending isRobotExists request with parameters: " +
-                    "name = {}", id, e);
+            logger.error("Client RobotService encountered problem while sending isRobotExists request with " +
+                    "parameters: name = {}", id, e);
         }
         return isRobotExists;
     }
-
 
     @Override
     public void delete(long id) {

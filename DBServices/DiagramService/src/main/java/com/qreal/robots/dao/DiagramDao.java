@@ -1,8 +1,9 @@
 package com.qreal.robots.dao;
 
-
 import com.qreal.robots.model.Diagram;
 import com.qreal.robots.model.Folder;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * DAO for diagram DB.
@@ -16,11 +17,12 @@ public interface DiagramDao {
      * @param folderId id of folder to save diagram in
      * @return new id of diagram
      */
-    Long saveDiagram(Diagram diagram, Long folderId);
+    Long saveDiagram(@NotNull Diagram diagram, Long folderId);
 
     /**
-     * Returns diagram with specified id.
+     * Returns diagram with specified id. (or null)
      */
+    @Nullable
     Diagram openDiagram(Long diagramId);
 
     /**
@@ -28,7 +30,7 @@ public interface DiagramDao {
      *
      * @param diagram diagram to rewrite (<code>diagram.id</code> must be set correctly).
      */
-    void rewriteDiagram(Diagram diagram);
+    void rewriteDiagram(@NotNull Diagram diagram);
 
     /**
      * Deletes diagram with specified id.
@@ -41,7 +43,7 @@ public interface DiagramDao {
      * @param folder folder to create (Id must not be set)
      * @return new id of folder
      */
-    Long createFolder(Folder folder);
+    Long createFolder(@NotNull Folder folder);
 
     /**
      * Deletes folder with specified id.
@@ -49,12 +51,14 @@ public interface DiagramDao {
     void deleteFolder(Long folderId);
 
     /**
-     * Returns folder with specified id.
+     * Returns folder with specified id. (or null)
      */
+    @Nullable
     Folder getFolder(Long folderId);
 
     /**
-     * Returns root folder of user.
+     * Returns root folder of user. (or null)
      */
+    @Nullable
     Folder getFolderTree(String userName);
 }

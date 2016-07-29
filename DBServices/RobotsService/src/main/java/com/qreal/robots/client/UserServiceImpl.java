@@ -5,9 +5,9 @@ import com.qreal.robots.thrift.gen.UserDbService;
 import org.apache.thrift.TException;
 import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.protocol.TProtocol;
-import org.apache.thrift.transport.TFramedTransport;
 import org.apache.thrift.transport.TSocket;
 import org.apache.thrift.transport.TTransport;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void save(TUser tUser) {
+    public void save(@NotNull TUser tUser) {
         logger.trace("save method called with parameters: user = {}", tUser.getUsername());
         try {
             transport.open();
@@ -56,7 +56,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void update(TUser tUser) {
+    public void update(@NotNull TUser tUser) {
         logger.trace("update method called with parameters: user = {}", tUser.getUsername());
         try {
             transport.open();

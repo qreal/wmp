@@ -2,8 +2,8 @@ package com.qreal.robots.model;
 
 import com.qreal.robots.thrift.gen.TProperty;
 import org.hibernate.annotations.GenericGenerator;
-import javax.persistence.*;
 
+import javax.persistence.*;
 import java.io.Serializable;
 
 /**

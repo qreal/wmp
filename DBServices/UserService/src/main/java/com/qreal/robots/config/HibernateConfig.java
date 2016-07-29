@@ -13,7 +13,6 @@ import java.util.Properties;
 
 @Configuration
 @EnableTransactionManagement
-
 public class HibernateConfig {
     @Autowired
     private DataSource dataSource;

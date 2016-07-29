@@ -1,17 +1,15 @@
 package com.qreal.robots.client;
 
-import com.qreal.robots.dao.UserDao;
 import com.qreal.robots.thrift.gen.RobotDbService;
 import com.qreal.robots.thrift.gen.TRobot;
 import org.apache.thrift.TException;
 import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.protocol.TProtocol;
-import org.apache.thrift.transport.TFramedTransport;
 import org.apache.thrift.transport.TSocket;
 import org.apache.thrift.transport.TTransport;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -39,7 +37,7 @@ public class RobotServiceImpl implements RobotService {
     }
 
     @Override
-    public long register(TRobot robot) {
+    public long register(@NotNull TRobot robot) {
         logger.trace("register method called with parameters: robot = {}", robot.getName());
         long idRobot = -1;
         try {
@@ -70,7 +68,6 @@ public class RobotServiceImpl implements RobotService {
         return tRobot;
     }
 
-
     @Override
     public boolean isRobotExists(long id) {
         logger.trace("isRobotExists method called with parameters: robotId = {}", id);
@@ -81,8 +78,8 @@ public class RobotServiceImpl implements RobotService {
             transport.close();
             logger.trace("isRobotExists method got result");
         } catch (TException e) {
-            logger.error("Client RobotService encountered problem while sending isRobotExists request with parameters: " +
-                    "name = {}", id, e);
+            logger.error("Client RobotService encountered problem while sending isRobotExists request with " +
+                    "parameters: name = {}", id, e);
         }
         return isRobotExists;
     }
@@ -102,7 +99,7 @@ public class RobotServiceImpl implements RobotService {
     }
 
     @Override
-    public void update(TRobot tRobot) {
+    public void update(@NotNull TRobot tRobot) {
         logger.trace("update method called with parameters: tRobot = {}", tRobot.getName());
         try {
             transport.open();

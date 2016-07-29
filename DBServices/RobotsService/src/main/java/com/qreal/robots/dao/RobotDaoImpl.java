@@ -5,6 +5,7 @@ import com.qreal.robots.model.robot.RobotSerial;
 import com.qreal.robots.thrift.gen.TUser;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,9 @@ public class RobotDaoImpl implements RobotDao {
 
     private static final Logger logger = LoggerFactory.getLogger(RobotDaoImpl.class);
 
+    /**
+     * UserService used to resolve foreign key dependencies.
+     */
     @Autowired
     private UserService userService;
 
@@ -34,8 +38,14 @@ public class RobotDaoImpl implements RobotDao {
         this.sessionFactory = sessionFactory;
     }
 
+    /**
+     * Saves robot at local DB using Hibernate ORM.
+     * Foreign key on User (in username) will NOT be checked. (at least for now)
+     *
+     * @param robot robot to save (Id must not be set).
+     */
     @Override
-    public long save(RobotSerial robot) {
+    public long save(@NotNull RobotSerial robot) {
         logger.trace("save method called with parameters: robot = {}", robot.getName());
         Session session = sessionFactory.getCurrentSession();
         session.save(robot);
@@ -43,8 +53,15 @@ public class RobotDaoImpl implements RobotDao {
         return robot.getId();
     }
 
+    /**
+     * Deletes robot from local DB using Hibernate ORM.
+     * Loads User associated with this robot using UserService and deletes robot from it's list of robots.
+     * Consistency kept using RPC calls to UserService.
+     *
+     * @param robot robot to delete (Id must be set correctly).
+     */
     @Override
-    public void delete(RobotSerial robot) {
+    public void delete(@NotNull RobotSerial robot) {
         logger.trace("delete method called with parameters: robot = {}", robot.getName());
         Session session = sessionFactory.getCurrentSession();
 
@@ -63,6 +80,11 @@ public class RobotDaoImpl implements RobotDao {
         logger.trace("delete method deleted robot {}", robot.getName());
     }
 
+    /**
+     * Finds robot by id at local DB using Hibernate ORM.
+     *
+     * @param robotId id of robot to find
+     */
     @Override
     public RobotSerial findById(long robotId) {
         logger.trace("findById method called with parameters: robotId = {}", robotId);
@@ -74,6 +96,11 @@ public class RobotDaoImpl implements RobotDao {
         return robots.stream().findFirst().orElse(null);
     }
 
+    /**
+     * Test if robot exists at local DB using Hibernate ORM.
+     *
+     * @param id id of robot to test if exists
+     */
     @Override
     public boolean isRobotExists(long id) {
         logger.trace("isRobotExists method called with parameters: id = {}", id);
@@ -84,8 +111,13 @@ public class RobotDaoImpl implements RobotDao {
         return !robots.isEmpty();
     }
 
+    /**
+     * Updates robot at local DB using Hibernate ORM.
+     *
+     * @param robot robot to update (Id must be set correctly)
+     */
     @Override
-    public void updateRobot(RobotSerial robot) {
+    public void updateRobot(@NotNull RobotSerial robot) {
         logger.trace("updateRobot method called with parameters: robot = {}", robot.getName());
         Session session = sessionFactory.getCurrentSession();
 

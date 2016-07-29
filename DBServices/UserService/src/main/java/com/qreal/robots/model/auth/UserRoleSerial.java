@@ -10,20 +10,13 @@ import static javax.persistence.GenerationType.IDENTITY;
  * UserRole in authorization service.
  */
 @Entity
-@Table(name = "user_roles",
-        uniqueConstraints = @UniqueConstraint(
-                columnNames = {"role", "owner"}))
+@Table(name = "user_roles")
 public class UserRoleSerial {
 
     /**
      * Surrogate key for role (maybe static table for roles?).
      */
     private Integer id;
-
-    /**
-     * Owner of role.
-     */
-    private UserSerial user;
 
     /**
      * Name of role.
@@ -33,24 +26,14 @@ public class UserRoleSerial {
     public UserRoleSerial() {
     }
 
-    public UserRoleSerial(UserSerial user, String role) {
-        this.user = user;
-        this.role = role;
-    }
-
-    /**
-     * Full UserRole constructor.
-     */
-    public UserRoleSerial(int id, UserSerial user, String role) {
-        this.id = id;
-        this.user = user;
+    public UserRoleSerial(String role) {
         this.role = role;
     }
 
     /**
      * Constructor-converter from Thrift TUserRole to UserRole.
      */
-    public UserRoleSerial(TUserRole tUserRole, UserSerial user) {
+    public UserRoleSerial(TUserRole tUserRole) {
         if (tUserRole.isSetId()) {
             id = tUserRole.getId();
         }
@@ -58,8 +41,6 @@ public class UserRoleSerial {
         if (tUserRole.isSetRole()) {
             role = tUserRole.getRole();
         }
-
-        this.user = user;
     }
 
     @Id
@@ -72,16 +53,6 @@ public class UserRoleSerial {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "owner", nullable = false)
-    public UserSerial getUser() {
-        return this.user;
-    }
-
-    public void setUser(UserSerial user) {
-        this.user = user;
     }
 
     @Column(name = "role", nullable = false, length = 45)
@@ -97,7 +68,7 @@ public class UserRoleSerial {
      * Converter from UserRole to Thrift TUserRole.
      */
 
-    public TUserRole toTUserRole(){
+    public TUserRole toTUserRole() {
         TUserRole tUserRole = new TUserRole();
 
         if (id != null) {
@@ -108,6 +79,6 @@ public class UserRoleSerial {
             tUserRole.setRole(role);
         }
 
-        return  tUserRole;
+        return tUserRole;
     }
 }

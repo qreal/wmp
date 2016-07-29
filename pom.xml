@@ -197,6 +197,14 @@
             <version>19.0</version>
         </dependency>
 
+        <!-- Static analysis -->
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>15.0</version>
+        </dependency>
+
+
     </dependencies>
 
 </project>

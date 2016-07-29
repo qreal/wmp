@@ -1,11 +1,11 @@
 package com.qreal.robots.config.development;
 
-import javax.sql.DataSource;
-import java.util.Properties;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
+
+import javax.sql.DataSource;
+import java.util.Properties;
 
 @Configuration
 public class DevHibernateConfig {
@@ -28,5 +28,4 @@ public class DevHibernateConfig {
         properties.put("hibernate.hbm2ddl.import_files", "data.sql");
         return properties;
     }
-
 }

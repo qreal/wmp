@@ -1,9 +1,9 @@
 package com.qreal.robots.model;
 
-import javax.persistence.*;
 import com.qreal.robots.thrift.gen.TDefaultDiagramNode;
 import org.hibernate.annotations.GenericGenerator;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
 import java.util.stream.Collectors;

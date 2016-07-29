@@ -4,6 +4,7 @@ import com.qreal.robots.model.Diagram;
 import com.qreal.robots.model.Folder;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,11 @@ public class DiagramDaoImpl implements DiagramDao {
         this.sessionFactory = sessionFactory;
     }
 
+    /**
+     * Gets folder from local DB using Hibernate ORM.
+     *
+     * @param folderId id of folder to find
+     */
     @Override
     public Folder getFolder(Long folderId) {
         logger.trace("getFolder method called with parameters: folderID = {}", folderId);
@@ -39,8 +45,14 @@ public class DiagramDaoImpl implements DiagramDao {
         return result;
     }
 
+    /**
+     * Saves diagram to local DB using Hibernate ORM.
+     *
+     * @param diagram  diagram to save (Id must not be set)
+     * @param folderId id of folder to save diagram in
+     */
     @Override
-    public Long saveDiagram(Diagram diagram, Long folderId) {
+    public Long saveDiagram(@NotNull Diagram diagram, Long folderId) {
         logger.trace("saveDiagram method called with parameters: diagram = {}, folderID = {}", diagram.getName(),
                 folderId);
         Session session = sessionFactory.getCurrentSession();
@@ -52,6 +64,11 @@ public class DiagramDaoImpl implements DiagramDao {
         return diagram.getId();
     }
 
+    /**
+     * Gets diagrams from local DB using Hibernate ORM.
+     *
+     * @param diagramId id of diagram to find
+     */
     @Override
     public Diagram openDiagram(Long diagramId) {
         logger.trace("openDiagram method called with parameters: id = {}", diagramId);
@@ -63,14 +80,25 @@ public class DiagramDaoImpl implements DiagramDao {
         return diagrams.stream().findFirst().orElse(null);
     }
 
+    /**
+     * Rewrites diagram at local DB using Hibernate ORM.
+     *
+     * @param diagram diagram to rewrite (<code>diagram.id</code> must be set correctly).
+     */
     @Override
-    public void rewriteDiagram(Diagram diagram) {
+    public void rewriteDiagram(@NotNull Diagram diagram) {
         logger.trace("rewriteDiagram method called with parameters: diagram = {}", diagram.getName());
         Session session = sessionFactory.getCurrentSession();
         session.merge(diagram);
         logger.trace("rewriteDiagram method edited diagram {}", diagram.getName());
     }
 
+    /**
+     * Deletes diagram from local DB using Hibernate ORM.
+     * Possible foreign key to user (in case of root folder) will be ignored.
+     *
+     * @param diagramId id of diagram to delete
+     */
     @Override
     public void deleteDiagram(Long diagramId) {
         logger.trace("deleteDiagram method called with parameters: id = {}", diagramId);
@@ -80,8 +108,13 @@ public class DiagramDaoImpl implements DiagramDao {
         logger.trace("deleteDiagram method deleted diagram with id {}", diagramId);
     }
 
+    /**
+     * Saves folder at local DB using Hibernate ORM.
+     *
+     * @param folder folder to create (Id must not be set)
+     */
     @Override
-    public Long createFolder(Folder folder) {
+    public Long createFolder(@NotNull Folder folder) {
         logger.trace("createFolder method called with parameters: folder = {}", folder.getFolderName());
         Session session = sessionFactory.getCurrentSession();
         session.save(folder);
@@ -90,6 +123,11 @@ public class DiagramDaoImpl implements DiagramDao {
         return folderId;
     }
 
+    /**
+     * Deletes folder from local DB using Hibernate ORM.
+     *
+     * @param folderId id of folder to delete
+     */
     @Override
     public void deleteFolder(Long folderId) {
         logger.trace("deleteFolder method called with parameters: folderId = {}", folderId);
@@ -99,6 +137,11 @@ public class DiagramDaoImpl implements DiagramDao {
         logger.trace("deleteFolder method deleted folder with id {}", folderId);
     }
 
+    /**
+     * Return root folder of user.
+     *
+     * @param userName name of user which root folder seeking
+     */
     @Override
     public Folder getFolderTree(String userName) {
         logger.trace("getFolderTree method called with parametrs: userName = {}", userName);

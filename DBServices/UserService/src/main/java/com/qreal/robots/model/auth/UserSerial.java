@@ -45,34 +45,6 @@ public class UserSerial {
     public UserSerial() {
     }
 
-    public UserSerial(String username, String password, boolean enabled) {
-        this.username = username;
-        this.password = password;
-        this.enabled = enabled;
-    }
-
-    /**
-     * User constructor (except robots).
-     */
-    public UserSerial(String username, String password,
-                boolean enabled, Set<UserRoleSerial> userRole) {
-        this.username = username;
-        this.password = password;
-        this.enabled = enabled;
-        this.roles = userRole;
-    }
-
-    /**
-     * Full User constructor.
-     */
-    public UserSerial(String username, String password, boolean enabled, Set<UserRoleSerial> userRole, Set<Long> robots) {
-        this.username = username;
-        this.password = password;
-        this.enabled = enabled;
-        this.roles = userRole;
-        this.robots = robots;
-    }
-
     /**
      * Constructor-converter from Thrift TUser to UserSerial (without robot).
      */
@@ -91,7 +63,8 @@ public class UserSerial {
         }
 
         if (user.getRoles() != null) {
-            roles = user.getRoles().stream().map(role -> new UserRoleSerial(role, this)).collect(Collectors.toSet());
+            roles = user.getRoles().stream().map(UserRoleSerial::new).collect(Collectors.toSet
+                    ());
         }
     }
 
@@ -125,7 +98,8 @@ public class UserSerial {
         this.enabled = enabled;
     }
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @JoinColumn(name = "role_id", referencedColumnName = "username")
     public Set<UserRoleSerial> getRoles() {
         return this.roles;
     }
@@ -144,8 +118,7 @@ public class UserSerial {
     }
 
     /**
-     * Converter from UserSerial to TUser (without robots)
-     * @return
+     * Converter from UserSerial to TUser (without robots).
      */
     public TUser toTUser() {
         TUser tUser = new TUser();

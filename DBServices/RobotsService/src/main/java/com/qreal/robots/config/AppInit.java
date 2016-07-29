@@ -5,6 +5,9 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 
 public class AppInit {
 
+    /**
+     * Main function creates context and starts server.
+     */
     public static void main(String[] args) {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
         context.scan("com.qreal.robots.config");

@@ -28,9 +28,7 @@ before_install:
   - sudo ln -s /usr/local/bin/thrift /usr/bin/thriftD
   - cd ../..
   #get checkstyle
-  - cd RobotsEditor
   - wget http://downloads.sourceforge.net/project/checkstyle/checkstyle/7.0/checkstyle-7.0-all.jar
-  - cd ..
 
 install:
   - ./buildApp.sh

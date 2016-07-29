@@ -1,6 +1,8 @@
 package com.qreal.robots.dao;
 
 import com.qreal.robots.thrift.gen.TUser;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * DAO for userDB.
@@ -12,22 +14,22 @@ public interface UserDao {
      *
      * @param user user to save (Id must not be set)
      */
-    void save(TUser user);
+    void save(@NotNull TUser user);
 
     /**
      * Finds user by UserName. (Or null)
      *
      * @param username name of user to find
      */
+    @Nullable
     TUser findByUserName(String username);
 
     /**
-     * Updates user state
+     * Updates user state.
      *
-     * @param  user user to update (Id must be set)
+     * @param user user to update (Id must be set)
      */
-
-    void update(TUser user);
+    void update(@NotNull TUser user);
 
 
     /**

@@ -1,7 +1,8 @@
 package com.qreal.robots.client;
 
-
 import com.qreal.robots.thrift.gen.TRobot;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * RobotDBService interface.
@@ -13,13 +14,14 @@ public interface RobotService {
      *
      * @param robot robot to save (Id must not be set)
      */
-    long register(TRobot robot);
+    long register(@NotNull TRobot robot);
 
     /**
-     * Finds robot with specified Id.
+     * Finds robot with specified Id. (or null)
      *
      * @param id id of robot to find
      */
+    @Nullable
     TRobot findById(long id);
 
     /**
@@ -37,9 +39,9 @@ public interface RobotService {
     void delete(long id);
 
     /**
-     * Update robot
+     * Update robot. (Id must be set)
      *
      * @param robot robot to update (Id must be set correctly)
      */
-    void update(TRobot robot);
+    void update(@NotNull TRobot robot);
 }

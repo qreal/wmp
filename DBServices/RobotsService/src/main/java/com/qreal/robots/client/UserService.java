@@ -1,6 +1,8 @@
 package com.qreal.robots.client;
 
 import com.qreal.robots.thrift.gen.TUser;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * UserDBService interface.
@@ -8,25 +10,26 @@ import com.qreal.robots.thrift.gen.TUser;
 public interface UserService {
 
     /**
-     * Saves user
+     * Saves user.
      *
      * @param user user to save (Id must not be set).
      */
-    void save(TUser user);
+    void save(@NotNull TUser user);
 
     /**
-     * Updates user state
+     * Updates user state.
      *
-     * @param  user user to update (Id must be set)
+     * @param user user to update (Id must be set)
      */
 
-    void update(TUser user);
+    void update(@NotNull TUser user);
 
     /**
-     * Finds user by UserName.
+     * Finds user by UserName. (Or null)
      *
      * @param username name of user to find
      */
+    @Nullable
     TUser findByUserName(String username);
 
     /**

@@ -36,27 +36,6 @@ public class RobotSerial {
     public RobotSerial() {
     }
 
-    public RobotSerial(String name, String ssid) {
-        this.name = name;
-        this.ssid = ssid;
-    }
-
-    public RobotSerial(String name, String ssid, String owner) {
-        this.owner = owner;
-        this.name = name;
-        this.ssid = ssid;
-    }
-
-    /**
-     * Full RobotSerial constructor.
-     */
-    public RobotSerial(long id, String name, String ssid, String owner) {
-        this.id = id;
-        this.owner = owner;
-        this.name = name;
-        this.ssid = ssid;
-    }
-
     /**
      * Constructor-converter from Thrift TRobot to RobotSerial.
      */
