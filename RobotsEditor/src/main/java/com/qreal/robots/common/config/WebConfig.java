@@ -29,7 +29,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         return resolver;
     }
 
-
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/WEB-INF/pages/**").addResourceLocations("/pages/");
