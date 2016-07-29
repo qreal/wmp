@@ -8,6 +8,7 @@ import com.qreal.robots.thrift.gen.TRobot;
 import org.apache.thrift.TException;
 import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.protocol.TProtocol;
+import org.apache.thrift.transport.TFramedTransport;
 import org.apache.thrift.transport.TSocket;
 import org.apache.thrift.transport.TTransport;
 import org.slf4j.Logger;
@@ -119,6 +120,20 @@ public class RobotServiceImpl implements RobotService {
         } catch (TException e) {
             logger.error("Client RobotService encountered problem while sending delete request with parameters: " +
                     "name = {}", id, e);
+        }
+    }
+
+    @Override
+    public void update(TRobot tRobot) {
+        logger.trace("update method called with parameters: tRobot = {}", tRobot.getName());
+        try {
+            transport.open();
+            client.updateRobot(tRobot);
+            transport.close();
+            logger.trace("update method updated robot {}", tRobot.getName());
+        } catch (TException e) {
+            logger.error("Client RobotService encountered problem while sending delete request with parameters: " +
+                    "tRobot = {}", tRobot.getName(), e);
         }
     }
 }

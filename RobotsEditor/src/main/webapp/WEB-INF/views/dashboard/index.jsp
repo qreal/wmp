@@ -308,7 +308,7 @@
                                                     </c:if>
 
                                                     <li><a href='#' name="deleteRobot"
-                                                           id="delete-${robot.name}">
+                                                           id="delete-${robot.id}">
                                                         <span class="icon-trash"></span>
                                                         Delete
                                                     </a>

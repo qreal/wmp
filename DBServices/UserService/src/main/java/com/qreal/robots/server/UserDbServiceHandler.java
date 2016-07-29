@@ -1,7 +1,6 @@
 package com.qreal.robots.server;
 
 import com.qreal.robots.dao.UserDao;
-import com.qreal.robots.model.auth.User;
 import com.qreal.robots.thrift.gen.TUser;
 import com.qreal.robots.thrift.gen.UserDbService;
 import org.apache.thrift.TException;
@@ -21,19 +20,19 @@ public class UserDbServiceHandler implements UserDbService.Iface {
     @Override
     public void save(TUser tUser) throws TException {
         UserDao userDao = (UserDao) context.getBean("userDao");
-        userDao.save(new User(tUser));
+        userDao.save(tUser);
     }
 
     @Override
     public void update(TUser user) throws TException {
         UserDao userDao = (UserDao) context.getBean("userDao");
-        userDao.update(new User(user));
+        userDao.update(user);
     }
 
     @Override
     public TUser findByUserName(String username) throws TException {
         UserDao userDao = (UserDao) context.getBean("userDao");
-        return userDao.findByUserName(username).toTUser();
+        return userDao.findByUserName(username);
     }
 
     @Override

@@ -1,9 +1,6 @@
-package com.qreal.robots.model.auth.serial;
+package com.qreal.robots.model.auth;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.qreal.robots.model.auth.User;
-import com.qreal.robots.model.auth.UserRole;
-import com.qreal.robots.model.robot.Robot;
 import com.qreal.robots.thrift.gen.TUser;
 
 import javax.persistence.*;
@@ -77,19 +74,21 @@ public class UserSerial {
     }
 
     /**
-     * Constructor-converter from Thrift TUser to User.
+     * Constructor-converter from Thrift TUser to UserSerial (without robot).
      */
-    public UserSerial(User user) {
+    public UserSerial(TUser user) {
 
-        if (user.getUsername() != null) {
+        if (user.isSetUsername()) {
             username = user.getUsername();
         }
 
-        if (user.getPassword() != null) {
+        if (user.isSetPassword()) {
             password = user.getPassword();
         }
 
-        enabled = user.isEnabled();
+        if (user.isSetEnabled()) {
+            enabled = user.isEnabled();
+        }
 
         if (user.getRoles() != null) {
             roles = user.getRoles().stream().map(role -> new UserRoleSerial(role, this)).collect(Collectors.toSet());
@@ -144,26 +143,30 @@ public class UserSerial {
         this.robots = robots;
     }
 
-    public User toUser() {
-        User user = new User();
+    /**
+     * Converter from UserSerial to TUser (without robots)
+     * @return
+     */
+    public TUser toTUser() {
+        TUser tUser = new TUser();
 
         if (username != null) {
-            user.setUsername(username);
+            tUser.setUsername(username);
         }
 
         if (password != null) {
-            user.setPassword(password);
+            tUser.setPassword(password);
         }
 
-        user.setEnabled(enabled);
+        tUser.setEnabled(enabled);
 
         if (roles != null) {
-            user.setRoles(roles.stream().map(role -> role.toUserRole(user)).collect(Collectors.toSet()));
+            tUser.setRoles(roles.stream().map(UserRoleSerial::toTUserRole).collect(Collectors.toSet()));
         }
 
-        user.setRobots(new HashSet<Robot>());
+        tUser.setRobots(new HashSet<>());
 
-        return user;
+        return tUser;
     }
 
 }

@@ -1,8 +1,12 @@
 package com.qreal.robots.server;
 
 import com.qreal.robots.thrift.gen.UserDbService;
+import org.apache.thrift.server.TNonblockingServer;
 import org.apache.thrift.server.TServer;
 import org.apache.thrift.server.TSimpleServer;
+import org.apache.thrift.server.TThreadPoolServer;
+import org.apache.thrift.transport.TNonblockingServerSocket;
+import org.apache.thrift.transport.TNonblockingServerTransport;
 import org.apache.thrift.transport.TServerSocket;
 import org.apache.thrift.transport.TServerTransport;
 import org.slf4j.Logger;
@@ -21,7 +25,7 @@ public class UserDbServer {
         logger.info("Starting User DB TServer on localhost on port {}", port);
         try {
             TServerTransport serverTransport = new TServerSocket(port);
-            TServer server = new TSimpleServer(new TSimpleServer.Args(serverTransport).processor(processor));
+            TThreadPoolServer server = new TThreadPoolServer(new TThreadPoolServer.Args(serverTransport).processor(processor));
             server.serve();
             logger.info("User DB TServer started successfully");
         } catch (Exception e) {

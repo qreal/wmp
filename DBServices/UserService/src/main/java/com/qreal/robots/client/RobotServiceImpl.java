@@ -1,12 +1,12 @@
 package com.qreal.robots.client;
 
 import com.qreal.robots.dao.UserDao;
-import com.qreal.robots.model.robot.Robot;
 import com.qreal.robots.thrift.gen.RobotDbService;
 import com.qreal.robots.thrift.gen.TRobot;
 import org.apache.thrift.TException;
 import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.protocol.TProtocol;
+import org.apache.thrift.transport.TFramedTransport;
 import org.apache.thrift.transport.TSocket;
 import org.apache.thrift.transport.TTransport;
 import org.slf4j.Logger;
@@ -21,9 +21,6 @@ import org.springframework.stereotype.Service;
 public class RobotServiceImpl implements RobotService {
 
     private static final Logger logger = LoggerFactory.getLogger(RobotServiceImpl.class);
-
-    @Autowired
-    private UserDao userDao;
 
     private TTransport transport;
 
@@ -42,12 +39,12 @@ public class RobotServiceImpl implements RobotService {
     }
 
     @Override
-    public long register(Robot robot) {
+    public long register(TRobot robot) {
         logger.trace("register method called with parameters: robot = {}", robot.getName());
         long idRobot = -1;
         try {
             transport.open();
-            idRobot = client.registerRobot(robot.toTRobot());
+            idRobot = client.registerRobot(robot);
             transport.close();
             logger.trace("register method registered robot {}", robot.getName());
         } catch (TException e) {
@@ -58,18 +55,9 @@ public class RobotServiceImpl implements RobotService {
     }
 
     @Override
-    public void registerByUsername(Robot robot, String username) {
-        logger.trace("registerByUsername method called with parameters: robot = {}, username = {}", robot.getName(),
-                username);
-        robot.setOwner(userDao.findByUserName(username));
-        register(robot);
-        logger.trace("registerByUsername method registered robot {} with owner {}", robot.getName(), username);
-    }
-
-    @Override
-    public Robot findById(long id) {
+    public TRobot findById(long id) {
         logger.trace("findById method called with parameters: robotId = {}", id);
-        TRobot tRobot = new TRobot();
+        TRobot tRobot = null;
         try {
             transport.open();
             tRobot = client.findById(id);
@@ -79,7 +67,7 @@ public class RobotServiceImpl implements RobotService {
             logger.error("Client RobotService encountered problem while sending findById request with parameters: " +
                     "name = {}", id, e);
         }
-        return new Robot(tRobot);
+        return tRobot;
     }
 
 
@@ -101,7 +89,7 @@ public class RobotServiceImpl implements RobotService {
 
     @Override
     public void delete(long id) {
-        logger.trace("delete method called with parameters: name = {}", id);
+        logger.trace("delete method called with parameters: id = {}", id);
         try {
             transport.open();
             client.deleteRobot(id);
@@ -110,6 +98,20 @@ public class RobotServiceImpl implements RobotService {
         } catch (TException e) {
             logger.error("Client RobotService encountered problem while sending delete request with parameters: " +
                     "name = {}", id, e);
+        }
+    }
+
+    @Override
+    public void update(TRobot tRobot) {
+        logger.trace("update method called with parameters: tRobot = {}", tRobot.getName());
+        try {
+            transport.open();
+            client.updateRobot(tRobot);
+            transport.close();
+            logger.trace("update method updated robot {}", tRobot.getName());
+        } catch (TException e) {
+            logger.error("Client RobotService encountered problem while sending delete request with parameters: " +
+                    "tRobot = {}", tRobot.getName(), e);
         }
     }
 }

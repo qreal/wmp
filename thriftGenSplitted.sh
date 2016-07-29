@@ -18,7 +18,10 @@ robotsServiceGen="$robotsService/com/qreal/robots/thrift/gen"
 mkdir -p "$robotsServiceGen"
 echo robots
 thrift -gen java:beans -out "$robotsService" "$robotsServiceThrift/struct/Robot.thrift"
+echo user
+thrift -gen java:beans -out "$robotsService" "$robotsServiceThrift/struct/User.thrift"
 echo DBService
+thrift -gen java -out "$robotsService" "$robotsServiceThrift/service/UserDbService.thrift"
 thrift -gen java -out "$robotsService" "$robotsServiceThrift/service/RobotDbService.thrift"
 
 

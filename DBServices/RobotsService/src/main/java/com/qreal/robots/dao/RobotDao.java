@@ -18,12 +18,12 @@ public interface RobotDao {
     /**
      * Deletes robot
      *
-     * @param robot robot to delete (Id must be ыуе correctly).
+     * @param robot robot to delete (Id must be set correctly).
      */
     void delete(RobotSerial robot);
 
     /**
-     * Finds robot with specified id.
+     * Finds robot with specified id. (Can return null)
      *
      * @param robotId id of robot to find
      */
@@ -36,4 +36,11 @@ public interface RobotDao {
      * @see {@link https://github.com/qreal/wmp/issues/7}
      */
     boolean isRobotExists(long id);
+
+    /**
+     * Update robot
+     *
+     * @param robot robot to update (Id must be set correctly)
+     */
+    void updateRobot(RobotSerial robot);
 }

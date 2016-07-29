@@ -1,8 +1,12 @@
 package com.qreal.robots.server;
 
 import com.qreal.robots.thrift.gen.DiagramDbService;
+import org.apache.thrift.server.TNonblockingServer;
 import org.apache.thrift.server.TServer;
 import org.apache.thrift.server.TSimpleServer;
+import org.apache.thrift.server.TThreadPoolServer;
+import org.apache.thrift.transport.TNonblockingServerSocket;
+import org.apache.thrift.transport.TNonblockingServerTransport;
 import org.apache.thrift.transport.TServerSocket;
 import org.apache.thrift.transport.TServerTransport;
 import org.slf4j.Logger;
@@ -24,7 +28,7 @@ public class DiagramDbServer {
         logger.info("Starting Diagram DB TServer on localhost on port {}", port);
         try {
             TServerTransport serverTransport = new TServerSocket(port);
-            TServer server = new TSimpleServer(new TSimpleServer.Args(serverTransport).processor(processor));
+            TThreadPoolServer server = new TThreadPoolServer(new TThreadPoolServer.Args(serverTransport).processor(processor));
             server.serve();
             logger.info("Diagram DB TServer started successfully");
         } catch (Exception e) {

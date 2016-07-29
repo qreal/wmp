@@ -1,6 +1,5 @@
-package com.qreal.robots.components.database.users.service.client;
+package com.qreal.robots.client;
 
-import com.qreal.robots.components.authorization.model.auth.User;
 import com.qreal.robots.thrift.gen.TUser;
 import com.qreal.robots.thrift.gen.UserDbService;
 import org.apache.thrift.TException;
@@ -42,52 +41,49 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void save(User user) {
-        logger.trace("save method called with parameters: user = {}", user.getUsername());
+    public void save(TUser tUser) {
+        logger.trace("save method called with parameters: user = {}", tUser.getUsername());
         try {
             transport.open();
-            TUser tUser = user.toTUser();
             client.save(tUser);
             transport.close();
-            logger.trace("save method saved user {}", user.getUsername());
+            logger.trace("save method saved user {}", tUser.getUsername());
         } catch (TException e) {
             logger.error("Client UserService encountered problem while sending save request with parameters: " +
-                    "user = {}", user, e);
+                    "user = {}", tUser, e);
         }
     }
 
     @Override
     @Transactional
-    public void update(User user) {
-        logger.trace("update method called with parameters: user = {}", user.getUsername());
+    public void update(TUser tUser) {
+        logger.trace("update method called with parameters: user = {}", tUser.getUsername());
         try {
             transport.open();
-            TUser tUser = user.toTUser();
             client.update(tUser);
             transport.close();
-            logger.trace("update method updated user {}", user.getUsername());
+            logger.trace("update method updated user {}", tUser.getUsername());
         } catch (TException e) {
             logger.error("Client UserService encountered problem while sending update request with parameters: " +
-                    "user = {}", user, e);
+                    "user = {}", tUser.getUsername(), e);
         }
     }
 
     @Override
     @Transactional
-    public User findByUserName(String username) {
+    public TUser findByUserName(String username) {
         logger.trace("findByUserName method called with paremeters: username = {}", username);
-        User user = null;
+        TUser tUser = null;
         try {
             transport.open();
-            TUser tUser = client.findByUserName(username);
-            user = new User(tUser);
+            tUser = client.findByUserName(username);
             transport.close();
             logger.trace("findByUserName method returned answer.");
         } catch (TException e) {
             logger.error("Client UserService encountered problem while sending findByUserName request with " +
                     "parameters: username = {}", username, e);
         }
-        return user;
+        return tUser;
     }
 
     @Override

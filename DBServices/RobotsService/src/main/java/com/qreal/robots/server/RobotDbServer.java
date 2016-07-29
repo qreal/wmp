@@ -1,10 +1,11 @@
 package com.qreal.robots.server;
 
 import com.qreal.robots.thrift.gen.RobotDbService;
+import org.apache.thrift.server.TNonblockingServer;
 import org.apache.thrift.server.TServer;
 import org.apache.thrift.server.TSimpleServer;
-import org.apache.thrift.transport.TServerSocket;
-import org.apache.thrift.transport.TServerTransport;
+import org.apache.thrift.server.TThreadPoolServer;
+import org.apache.thrift.transport.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.support.AbstractApplicationContext;
@@ -21,7 +22,7 @@ public class RobotDbServer {
         logger.info("Starting RobotSerial DB TServer on localhost on port {}", port);
         try {
             TServerTransport serverTransport = new TServerSocket(port);
-            TServer server = new TSimpleServer(new TSimpleServer.Args(serverTransport).processor(processor));
+            TThreadPoolServer server = new TThreadPoolServer(new TThreadPoolServer.Args(serverTransport).processor(processor));
             server.serve();
             logger.info("RobotSerial DB TServer started successfully");
         } catch (Exception e) {

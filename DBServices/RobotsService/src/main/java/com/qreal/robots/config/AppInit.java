@@ -9,6 +9,7 @@ public class AppInit {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
         context.scan("com.qreal.robots.config");
         context.scan("com.qreal.robots.dao");
+        context.scan("com.qreal.robots.client");
         context.register(AppInit.class);
         context.refresh();
 

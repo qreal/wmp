@@ -1,7 +1,7 @@
 package com.qreal.robots.client;
 
 
-import com.qreal.robots.model.robot.Robot;
+import com.qreal.robots.thrift.gen.TRobot;
 
 /**
  * RobotDBService interface.
@@ -13,22 +13,14 @@ public interface RobotService {
      *
      * @param robot robot to save (Id must not be set)
      */
-    long register(Robot robot);
-
-    /**
-     * Register robot with specified owner.
-     *
-     * @param robot    robot to register (Id must not be set)
-     * @param username owner of robot
-     */
-    void registerByUsername(Robot robot, String username);
+    long register(TRobot robot);
 
     /**
      * Finds robot with specified Id.
      *
      * @param id id of robot to find
      */
-    Robot findById(long id);
+    TRobot findById(long id);
 
     /**
      * Test if exists robot with specified Id.
@@ -43,4 +35,11 @@ public interface RobotService {
      * @param id id of robot to delete
      */
     void delete(long id);
+
+    /**
+     * Update robot
+     *
+     * @param robot robot to update (Id must be set correctly)
+     */
+    void update(TRobot robot);
 }

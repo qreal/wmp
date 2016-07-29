@@ -1,6 +1,7 @@
 package com.qreal.robots.components.database.robots.service.client;
 
 import com.qreal.robots.components.dashboard.model.robot.Robot;
+import com.qreal.robots.thrift.gen.TRobot;
 
 /**
  * RobotDBService interface.
@@ -42,4 +43,11 @@ public interface RobotService {
      * @param id id of robot to delete
      */
     void delete(long id);
+
+    /**
+     * Update robot
+     *
+     * @param robot robot to update (Id must be set correctly)
+     */
+    void update(TRobot robot);
 }

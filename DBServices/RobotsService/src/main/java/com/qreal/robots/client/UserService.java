@@ -1,25 +1,18 @@
-package com.qreal.robots.dao;
+package com.qreal.robots.client;
 
 import com.qreal.robots.thrift.gen.TUser;
 
 /**
- * DAO for userDB.
+ * UserDBService interface.
  */
-public interface UserDao {
+public interface UserService {
 
     /**
-     * Saves user.
+     * Saves user
      *
-     * @param user user to save (Id must not be set)
+     * @param user user to save (Id must not be set).
      */
     void save(TUser user);
-
-    /**
-     * Finds user by UserName. (Or null)
-     *
-     * @param username name of user to find
-     */
-    TUser findByUserName(String username);
 
     /**
      * Updates user state
@@ -29,6 +22,12 @@ public interface UserDao {
 
     void update(TUser user);
 
+    /**
+     * Finds user by UserName.
+     *
+     * @param username name of user to find
+     */
+    TUser findByUserName(String username);
 
     /**
      * Test if user with specified name exists.

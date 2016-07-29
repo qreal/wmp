@@ -1,11 +1,10 @@
 package com.qreal.robots.dao;
 
 import com.qreal.robots.client.RobotService;
-import com.qreal.robots.model.auth.User;
-import com.qreal.robots.model.auth.UserRole;
-import com.qreal.robots.model.auth.serial.UserRoleSerial;
-import com.qreal.robots.model.auth.serial.UserSerial;
-import com.qreal.robots.model.robot.Robot;
+import com.qreal.robots.model.auth.UserRoleSerial;
+import com.qreal.robots.model.auth.UserSerial;
+import com.qreal.robots.thrift.gen.TRobot;
+import com.qreal.robots.thrift.gen.TUser;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
@@ -40,13 +39,13 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public void save(User user) {
+    public void save(TUser user) {
         logger.trace("save method called with parameters: user = {}", user.getUsername());
 
         Session session = sessionFactory.getCurrentSession();
         logger.trace("saving robots of user {}", user.getUsername());
-        UserSerial userSerial = saveRobots(user);
-        logger.trace("robots of user {} saved", user.getUsername());
+        UserSerial userSerial = saveOrUpdateRobots(user);
+        logger.trace("robots of user {} saved, id's now in userSerial", user.getUsername());
         session.save(userSerial);
         logger.trace("user {} saved", user.getUsername());
         UserRoleSerial userRole = new UserRoleSerial(userSerial, ROLE_USER);
@@ -56,7 +55,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public User findByUserName(String username) {
+    public TUser findByUserName(String username) {
         logger.trace("findByUserName method called with paremeters: username = {}", username);
         Session session = sessionFactory.getCurrentSession();
 
@@ -64,17 +63,17 @@ public class UserDaoImpl implements UserDao {
                 setParameter("username", username).list();
         logger.trace("findByUserName method extracted list of results from session with {} elements. First will be " +
                 "returned.", users.size());
-        User user = loadRobots(users.stream().findFirst().orElse(null));
+        TUser tUser = loadRobots(users.stream().findFirst().orElse(null));
 
-        return user;
+        return tUser;
     }
 
     @Override
-    public void update(User user) {
-        logger.trace("update method called with paremeters: username = {}", user.getUsername());
+    public void update(TUser tUser) {
+        logger.trace("update method called with paremeters: username = {}", tUser.getUsername());
         Session session = sessionFactory.getCurrentSession();
 
-        session.merge(saveRobots(user));
+        session.merge(saveOrUpdateRobots(tUser));
 
         logger.trace("update method updated user");
 
@@ -91,37 +90,38 @@ public class UserDaoImpl implements UserDao {
         return !users.isEmpty();
     }
 
-    private UserSerial saveRobots(User user) {
-        long idRobot = 0;
-        UserSerial userSerial = new UserSerial(user);
+    private UserSerial saveOrUpdateRobots(TUser tUser) {
+        UserSerial userSerial = new UserSerial(tUser);
 
-
-        for (Robot robot : user.getRobots()) {
-            logger.trace("Robot {} of user {} saving", robot.getName(), user.getUsername());
-            if (robot.getId() == null) {
+        for (TRobot robot : tUser.getRobots()) {
+            logger.trace("Robot {} of user {} saving", robot.getName(), tUser.getUsername());
+            long idRobot;
+            if (!robot.isSetId()) {
                 idRobot = robotService.register(robot);
             }
             else {
+                robotService.update(robot);
                 idRobot = robot.getId();
             }
             userSerial.getRobots().add(idRobot);
-            logger.trace("Robot {} of user {} saved with id {}", robot.getName(), user.getUsername(), robot.getId());
+            logger.trace("Robot {} of user {} saved with id {}", robot.getName(), tUser.getUsername(), robot.getId());
         }
         return userSerial;
     }
 
-    private User loadRobots(UserSerial userSerial) {
-        User user = userSerial.toUser();
+    private TUser loadRobots(UserSerial userSerial) {
+        TUser tUser = userSerial.toTUser();
         for (Long id : userSerial.getRobots()) {
-            logger.trace("Robot with id {} of user {} loading", id, user.getUsername());
+            logger.trace("Robot with id {} of user {} loading", id, tUser.getUsername());
 
-            Robot robot = robotService.findById(id);
-            robot.setOwner(user);
-            user.getRobots().add(robot);
+            TRobot robot = robotService.findById(id);
+            if (robot != null) {
+                tUser.getRobots().add(robot);
+            }
 
-            logger.trace("Robot  {} of user {} loaded", robot.getName(), user.getUsername());
+            logger.trace("Robot  {} of user {} loaded", robot.getName(), tUser.getUsername());
         }
-        return user;
+        return tUser;
     }
 
 }
