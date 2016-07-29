@@ -28,12 +28,12 @@ class TwoDModelEngineFacadeImpl implements TwoDModelEngineFacade {
         var robotModel = new TwoDRobotModel(new TrikRobotModelBase(), "model");
         this.robotModelName = robotModel.getName();
 
-        this.model = new ModelImpl(parseFloat($("#twoDModel_stage").attr("zoom")));
+        this.model = new ModelImpl(parseFloat($("#two-d-model-scene-area").attr("zoom")));
         this.model.addRobotModel(robotModel);
 
         $(document).ready(() => {
             this.initPortsConfiguration($scope, $compile, robotModel);
-            this.makeUnselectable(document.getElementById("twoDModelContent"));
+            this.makeUnselectable(document.getElementById("two-d-model-content"));
         });
 
         $scope.followRobot = () => { this.followRobot(); };
@@ -76,7 +76,7 @@ class TwoDModelEngineFacadeImpl implements TwoDModelEngineFacade {
 
     public followRobot(): void {
         var robotModel = this.model.getRobotModels()[0];
-        robotModel.follow(!$("#follow_button").hasClass('active'));
+        robotModel.follow(!$("#follow-robot-button").hasClass('active'));
     }
 
     private initPortsConfiguration($scope, $compile, twoDRobotModel: TwoDRobotModel): void {

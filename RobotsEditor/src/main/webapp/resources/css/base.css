@@ -39,7 +39,7 @@ body{
     stroke-width: 2px;
 }
 
-#diagramContent {
+#diagram-area {
     position: relative;
     height: 100%;
 }

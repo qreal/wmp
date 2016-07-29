@@ -28,7 +28,7 @@ class UndoRedoController {
         this.pointer = -1;
         var zKey: number = 90;
         this.keyDownHandler = (event) => {
-            if ($("#diagramContent").is(":visible")) {
+            if ($("#diagram-area").is(":visible")) {
                 if (event.keyCode == zKey && event.ctrlKey && event.shiftKey) {
                     event.preventDefault();
                     this.redo();

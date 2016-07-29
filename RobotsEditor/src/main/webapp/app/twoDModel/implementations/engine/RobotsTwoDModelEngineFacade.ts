@@ -8,9 +8,9 @@ class RobotsTwoDModelEngineFacade extends TwoDModelEngineFacadeImpl {
 
         var facade = this;
         $(document).ready(() => {
-            $('#confirmDelete').find('.modal-footer #confirm').on('click', function() {
+            $('#two-d-model-clear-confirmation-window').find('.modal-footer #confirm').on('click', function() {
                 facade.model.getWorldModel().clearScene();
-                $('#confirmDelete').modal('hide');
+                $('#two-d-model-clear-confirmation-window').modal('hide');
             });
         });
 
@@ -31,8 +31,8 @@ class RobotsTwoDModelEngineFacade extends TwoDModelEngineFacadeImpl {
     }
 
     public openDiagramEditor(): void {
-        $("#twoDModelContent").hide();
-        $("#diagramContent").show();
+        $("#two-d-model-area").hide();
+        $("#diagram-area").show();
     }
 
     public resetPosition(): void {

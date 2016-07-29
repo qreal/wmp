@@ -152,8 +152,8 @@ class DisplayWidget {
     }
 
     show(): void {
-        $("#menu_button").hide();
-        $("#close_display").show();
+        $("#hide-controller-model-button").hide();
+        $("#hide-controller-model-area").show();
         $("#controller").show();
         $("#display").show();
         $(".port_name").show();
@@ -161,12 +161,12 @@ class DisplayWidget {
     }
 
     hide(): void {
-        $("#close_display").hide();
+        $("#hide-controller-model-area").hide();
         $("#display").hide();
         $("#controller").hide();
         $(".port_name").hide();
         this.ledWidget.hide();
-        $("#menu_button").show();
+        $("#hide-controller-model-button").show();
     }
     
     displayToFront(): void {

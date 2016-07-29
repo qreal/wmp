@@ -66,8 +66,8 @@ class RobotsDiagramEditorController extends DiagramEditorController {
     }
 
     public openTwoDModel(): void {
-        $("#diagramContent").hide();
-        $("#twoDModelContent").show();
+        $("#diagram-area").hide();
+        $("#two-d-model-area").show();
     }
 
     public clearAll(): void {

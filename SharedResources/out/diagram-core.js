@@ -780,7 +780,7 @@ var SceneController = (function () {
     };
     SceneController.prototype.initCustomContextMenu = function () {
         var controller = this;
-        $("#diagramContent").bind("contextmenu", function (event) {
+        $("#diagram-area").bind("contextmenu", function (event) {
             event.preventDefault();
         });
         $("#" + controller.contextMenuId + " li").click(function () {
@@ -1998,7 +1998,7 @@ var UndoRedoController = (function () {
         this.pointer = -1;
         var zKey = 90;
         this.keyDownHandler = function (event) {
-            if ($("#diagramContent").is(":visible")) {
+            if ($("#diagram-area").is(":visible")) {
                 if (event.keyCode == zKey && event.ctrlKey && event.shiftKey) {
                     event.preventDefault();
                     _this.redo();

@@ -1,4 +1,4 @@
-<div id="diagramContent" class="unselectable" ng-controller="RobotsDiagramEditorController">
+<div id="diagram-area" class="unselectable" ng-controller="RobotsDiagramEditorController">
     <!-- Context menu in File->'Open diagram' window -->
     <ul id="open-diagram-context-menu" class='custom-menu'>
         <li data-action="delete">Delete</li>

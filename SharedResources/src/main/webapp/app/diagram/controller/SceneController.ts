@@ -352,7 +352,7 @@ class SceneController {
 
     private initCustomContextMenu(): void {
         var controller = this;
-        $("#diagramContent").bind("contextmenu", function (event) {
+        $("#diagram-area").bind("contextmenu", function (event) {
             event.preventDefault();
         });
 

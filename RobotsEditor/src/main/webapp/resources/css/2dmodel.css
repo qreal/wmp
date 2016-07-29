@@ -1,19 +1,19 @@
 
 
-#twoDModelContent {
+#two-d-model-area {
     height: 100%;
 }
 
-.twoDModel_table {
+.two-d-model-table {
     margin-left: auto;
     margin-right: auto;
 }
 
-.twoDModel_button {
+.two-d-model-button {
     margin: 2px;
 }
 
-#twoDModel_left-menu, #twoDModel_right-menu {
+#two-d-model-left-window, #two-d-model-right-window {
     position: absolute;
     width: 260px; /*Width of left frame div*/
     top: 70px;
@@ -23,7 +23,7 @@
     text-align: center;
 }
 
-#twoDModel_right-menu {
+#two-d-model-right-window {
     left: auto;
     width: 210px; /*Width of right frame div*/
     top: 70px;
@@ -34,7 +34,7 @@
     border: 1px solid gray;
 }
 
-#twoDModel_stage {
+#two-d-model-scene-area {
     position: fixed;
     top: 70px;
     left: 280px;
@@ -57,7 +57,7 @@
     bottom: 210px;
 }
 
-#twoDModel_palette {
+#two-d-model-left-tabs-content {
     position: absolute;
     left: 0px;
     top: 40px;
@@ -68,7 +68,7 @@
     background: #ffffff;
 }
 
-#controll_buttons_container {
+#two-d-mpde-left-control-buttons-area {
     position: absolute;
     height: 200px;
     left: 0px;
@@ -76,29 +76,29 @@
     right: 0px;
 }
 
-#pen_settings {
+#pen-settings {
 	border: 1px solid gray;
 	padding: 10px;
     margin-left: 15px;
     margin-right: 15px;
 }
 
-.palette_button {
+.palette-left-button {
     width: 80px;
     height: 30px;
 }
 
-.palette_button_right {
+.palette-right-button {
     width: 80px;
     height: 30px;
     margin-left: 15px;
 }
 
-.twoDModel_spinner {
+.two-d-model-spinner {
     width: 200px;
 }
 
-.twoDModel_dropdown {
+.two-d-model-dropdown {
     width: 200px;
 }
 
@@ -115,7 +115,7 @@ ul.nav.nav-tabs li a {
     overflow: auto;
 }
 
-#menu_button {
+#hide-controller-model-button {
     position: absolute;
     top: 5px;
     right: 15px;
@@ -149,7 +149,7 @@ ul.nav.nav-tabs li a {
     height: 4px;
 }
 
-#close_display {
+#hide-controller-model-area {
     position: absolute;
     color: lightgrey;
     cursor: pointer;
@@ -163,22 +163,22 @@ ul.nav.nav-tabs li a {
     color: lightgrey;
 }
 
-#port_M1 {
+#port-M1 {
     top: 45px;
     right: 160px;
 }
 
-#port_M2 {
+#port-M2 {
     top: 45px;
     right: 25px;
 }
 
-#port_M3 {
+#port-M3 {
     top: 245px;
     right: 160px;
 }
 
-#port_M4 {
+#port-M4 {
     top: 245px;
     right: 25px;
 }
