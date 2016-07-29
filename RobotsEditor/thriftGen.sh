@@ -27,7 +27,7 @@ echo DBService
 thrift -gen java -out "$PWD/src/main/java" "$thriftSourcesDir/userDB/UserDbService.thrift"
 
 echo DBRobots service
-echo robot
+echo robots
 thrift -gen java:beans -out "$PWD/src/main/java" "$thriftSourcesDir/struct/Robot.thrift"
 echo DBService
 thrift -gen java -out "$PWD/src/main/java" "$thriftSourcesDir/robotDB/RobotDbService.thrift"

@@ -28,7 +28,7 @@
     </module>
 
     <module name="SuppressionFilter">
-        <property name="file" value="../Travis/checkstyle/supressions.xml" />
+        <property name="file" value="Travis/checkstyle/supressions.xml" />
     </module>
 
     <module name="TreeWalker">

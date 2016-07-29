@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @Transactional(readOnly = true)
     @Override

@@ -116,6 +116,7 @@
           <element id="library" level="project" name="Maven: org.apache.velocity:velocity:1.5" />
           <element id="library" level="project" name="Maven: oro:oro:2.0.8" />
           <element id="library" level="project" name="Maven: commons-collections:commons-collections:3.2.1" />
+          <element id="library" level="project" name="Maven: org.jetbrains:annotations:15.0" />
           <element id="library" level="project" name="Maven: commons-io:commons-io:2.4" />
           <element id="library" level="project" name="Maven: commons-lang:commons-lang:2.6" />
           <element id="library" level="project" name="Maven: org.springframework:spring-core:4.2.1.RELEASE" />

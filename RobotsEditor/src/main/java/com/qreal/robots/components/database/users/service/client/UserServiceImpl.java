@@ -57,6 +57,22 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
+    public void update(User user) {
+        logger.trace("update method called with parameters: user = {}", user.getUsername());
+        try {
+            transport.open();
+            TUser tUser = user.toTUser();
+            client.update(tUser);
+            transport.close();
+            logger.trace("update method updated user {}", user.getUsername());
+        } catch (TException e) {
+            logger.error("Client UserService encountered problem while sending update request with parameters: " +
+                    "user = {}", user, e);
+        }
+    }
+
+    @Override
+    @Transactional
     public User findByUserName(String username) {
         logger.trace("findByUserName method called with paremeters: username = {}", username);
         User user = null;
