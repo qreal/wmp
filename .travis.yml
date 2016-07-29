@@ -49,13 +49,13 @@ script:
   - cd DBServices
   #run DiagramDBService
   - cd DiagramService
-  - mvn package exec:java &
+  - mvn exec:java &
   #run UserDBService
   - cd ../UserService
-  - mvn package exec:java &
+  - mvn exec:java &
   #run RobotsDBService
   - cd ../RobotsService
-  - mvn package exec:java &
+  - mvn exec:java &
   #give odds
   - sleep 60
   #run RobotsEditor
