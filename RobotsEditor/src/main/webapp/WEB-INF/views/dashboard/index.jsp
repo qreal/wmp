@@ -14,21 +14,21 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
-            $("#target").click(function () {
+            $("#add-label-button").click(function () {
                 var robots = JSON.parse('${robots}');
                 robots.forEach(function (robot) {
                     addLabel(robot);
                 });
             });
 
-            $("#registerRobot").click(function () {
+            $("#register-robot-button").click(function () {
 
                 var name = $('#robotName').val();
                 var code = $('#ssid').val();
 
-                var transport = new Thrift.TXHRTransport("http://localhost:8080/robots-editor/RobotRest");
-                var protocol  = new Thrift.TJSONProtocol(transport);
-                var client    = new RobotServiceThriftClient(protocol);
+                var transport = new Thrift.TXHRTransport("http://localhost:8080/robots-editor/RobotRest"); //FIXME
+                var protocol = new Thrift.TJSONProtocol(transport);
+                var client = new RobotServiceThriftClient(protocol);
                 try {
                     var result = client.registerRobot(name, code);
                     location.reload();
@@ -37,9 +37,9 @@
                 }
             });
 
-            $('[name="deleteRobot"]').click(function (event) {
+            $('[name="delete-robot"]').click(function (event) {
                 var robotId = event.target.id.substring(7);
-                var transport = new Thrift.TXHRTransport("http://localhost:8080/robots-editor/RobotRest");
+                var transport = new Thrift.TXHRTransport("http://localhost:8080/robots-editor/RobotRest"); //FIXME
                 var protocol  = new Thrift.TJSONProtocol(transport);
                 var client = new RobotServiceThriftClient(protocol);
                 try {
@@ -80,7 +80,6 @@
                 trigger: 'hover',
                 'placement': 'top'
             });
-
 
             $(window).load(function () {
                 $('[data-toggle="popover"]').each(function (index, value) {
@@ -183,22 +182,13 @@
 
 
         <div class="col-sm-9">
-
-
             <h3><i class="glyphicon glyphicon-dashboard"></i> Dashboard</h3>
-
-
             <hr>
-
             <div id="myTabContent" class="tab-content">
                 <div class="tab-pane active in" id="robots">
-
-
                     <div class="row">
                         <!-- center left-->
-
                         <c:forEach var="robot" items="${robots}">
-
                             <div class="modal fade" id="sendDiagramModal-${robot.name}" tabindex="-1" role="dialog"
                                  aria-labelledby="myModalLabel" aria-hidden="true">
                                 <div class="modal-dialog">
@@ -210,8 +200,7 @@
                                             <h4 class="modal-title" id="sendDiagramLabel">Send diagram</h4>
                                         </div>
                                         <div class="modal-body">
-
-                                                                                </div>
+                                        </div>
                                         <div class="modal-footer">
                                             <button type="button" name="sendDiagram"
                                                     id="send-diagram-${robot.id}"
@@ -308,8 +297,7 @@
 
                                                     </c:if>
 
-                                                    <li><a href='#' name="deleteRobot"
-                                                           id="delete-${robot.id}">
+                                                    <li><a href='#' name="delete-robot" id="delete-${robot.id}">
                                                         <span class="icon-trash"></span>
                                                         Delete
                                                     </a>
@@ -376,7 +364,7 @@
                                                 <button type="button" class="btn btn-default" data-dismiss="modal">
                                                     Close
                                                 </button>
-                                                <button type="button" id="registerRobot" class="btn btn-primary">
+                                                <button id="register-robot-button" type="button" class="btn btn-primary">
                                                     Register
                                                 </button>
                                             </div>
@@ -399,7 +387,7 @@
                 <div class="tab-pane" id="map">
 
                     <div id="yamap" style="width: 100%; height: 600px"></div>
-                    <button id="target">ADD LABEL</button>
+                    <button id="add-label-button">ADD LABEL</button>
 
                 </div>
                 <div class="tab-pane" id="settings">
