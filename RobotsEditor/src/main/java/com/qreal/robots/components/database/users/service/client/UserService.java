@@ -1,6 +1,8 @@
 package com.qreal.robots.components.database.users.service.client;
 
 import com.qreal.robots.components.authorization.model.auth.User;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * UserDBService interface.
@@ -8,17 +10,26 @@ import com.qreal.robots.components.authorization.model.auth.User;
 public interface UserService {
 
     /**
-     * Saves user
+     * Saves user (and robots).
      *
      * @param user user to save (Id must not be set).
      */
-    void save(User user);
+    void save(@NotNull User user);
+
+    /**
+     * Updates user state.
+     *
+     * @param  user user to update (Id must be set)
+     */
+
+    void update(@NotNull User user);
 
     /**
      * Finds user by UserName.
      *
      * @param username name of user to find
      */
+    @Nullable
     User findByUserName(String username);
 
     /**
