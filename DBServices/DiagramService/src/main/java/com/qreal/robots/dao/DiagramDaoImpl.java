@@ -24,6 +24,7 @@ import java.util.List;
 class DiagramDaoImpl implements DiagramDao {
 
     private static final Logger logger = LoggerFactory.getLogger(DiagramDaoImpl.class);
+
     private final SessionFactory sessionFactory;
 
     @Autowired
