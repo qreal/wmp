@@ -15,49 +15,49 @@
  */
 
 /// <reference path="DiagramEditorController.ts" />
-/// <reference path="../model/DiagramPaper.ts" />
+/// <reference path="../model/DiagramScene.ts" />
 /// <reference path="../model/DiagramElement.ts" />
 /// <reference path="../model/PaletteTypes.ts" />
 /// <reference path="../model/DiagramNode.ts" />
 /// <reference path="../model/DefaultDiagramNode.ts" />
 /// <reference path="../model/commands/Command.ts"/>
-/// <reference path="../model/commands/PaperCommandFactory.ts" />
+/// <reference path="../model/commands/SceneCommandFactory.ts" />
 /// <reference path="../../vendor.d.ts" />
 
-class PaperController {
+class SceneController {
 
     private diagramEditorController: DiagramEditorController;
-    private paper: DiagramPaper;
+    private scene: DiagramScene;
     private currentElement: DiagramElement;
     private clickFlag : boolean;
     private rightClickFlag : boolean;
     private gesturesController: GesturesController;
     private undoRedoController: UndoRedoController;
     private lastCellMouseDownPosition: {x: number, y: number};
-    private paperCommandFactory: PaperCommandFactory;
-    private contextMenuId = "paper_context_menu";
+    private paperCommandFactory: SceneCommandFactory;
+    private contextMenuId = "scene_context_menu";
 
-    constructor(diagramEditorController: DiagramEditorController, paper: DiagramPaper) {
+    constructor(diagramEditorController: DiagramEditorController, paper: DiagramScene) {
         this.diagramEditorController = diagramEditorController;
         this.undoRedoController = diagramEditorController.getUndoRedoController();
-        this.paper = paper;
-        this.paperCommandFactory = new PaperCommandFactory(this);
+        this.scene = paper;
+        this.paperCommandFactory = new SceneCommandFactory(this);
         this.clickFlag = false;
         this.rightClickFlag = false;
         this.gesturesController = new GesturesController(this, paper);
         this.lastCellMouseDownPosition = { x: 0, y: 0 };
 
-        this.paper.on('cell:pointerdown', (cellView, event, x, y): void => {
+        this.scene.on('cell:pointerdown', (cellView, event, x, y): void => {
             this.cellPointerdownListener(cellView, event, x, y);
         });
-        this.paper.on('blank:pointerdown', (event, x, y): void => {
+        this.scene.on('blank:pointerdown', (event, x, y): void => {
             this.blankPoinerdownListener(event, x, y);
         });
 
-        this.paper.on('cell:pointerup', (cellView, event, x, y): void => {
+        this.scene.on('cell:pointerup', (cellView, event, x, y): void => {
             this.cellPointerupListener(cellView, event, x, y);
         });
-        this.paper.on('cell:pointermove', (cellView, event, x, y): void => {
+        this.scene.on('cell:pointermove', (cellView, event, x, y): void => {
             this.cellPointermoveListener(cellView, event, x, y);
         });
 
@@ -70,7 +70,7 @@ class PaperController {
 
         document.addEventListener('mousedown', (event) => { this.gesturesController.onMouseDown(event) } );
         document.addEventListener('mouseup', (event) => { this.gesturesController.onMouseUp(event) } );
-        $("#" + this.paper.getId()).mousemove((event) => { this.gesturesController.onMouseMove(event) } );
+        $("#" + this.scene.getId()).mousemove((event) => { this.gesturesController.onMouseMove(event) } );
 
         this.initDropPaletteElementListener();
 
@@ -143,11 +143,11 @@ class PaperController {
     }
 
     public createNodeInEventPositionFromNames(names: string[], event): void {
-        var offsetX = (event.pageX - $("#" + this.paper.getId()).offset().left +
-            $("#" + this.paper.getId()).scrollLeft()) / this.paper.getZoom();
-        var offsetY = (event.pageY - $("#" + this.paper.getId()).offset().top +
-            $("#" + this.paper.getId()).scrollTop()) / this.paper.getZoom();
-        var gridSize: number = this.paper.getGridSize();
+        var offsetX = (event.pageX - $("#" + this.scene.getId()).offset().left +
+            $("#" + this.scene.getId()).scrollLeft()) / this.scene.getZoom();
+        var offsetY = (event.pageY - $("#" + this.scene.getId()).offset().top +
+            $("#" + this.scene.getId()).scrollTop()) / this.scene.getZoom();
+        var gridSize: number = this.scene.getGridSize();
         offsetX -= offsetX % gridSize;
         offsetY -= offsetY % gridSize;
 
@@ -183,7 +183,7 @@ class PaperController {
     }
 
     public createLinkBetweenCurrentAndEventTargetElements(event): void {
-        var diagramPaper: HTMLDivElement = <HTMLDivElement> document.getElementById(this.paper.getId());
+        var diagramPaper: HTMLDivElement = <HTMLDivElement> document.getElementById(this.scene.getId());
 
         var elementBelow = this.diagramEditorController.getGraph().get('cells').find((cell) => {
             if (cell instanceof joint.dia.Link) return false; // Not interested in links.
@@ -194,9 +194,9 @@ class PaperController {
             var mYEnd = cell.getBBox().corner().y;
 
             var leftElementPos:number = (event.pageX - $(diagramPaper).offset().left + $(diagramPaper).scrollLeft()) /
-                this.paper.getZoom();
+                this.scene.getZoom();
             var topElementPos:number = (event.pageY - $(diagramPaper).offset().top + $(diagramPaper).scrollTop()) /
-                this.paper.getZoom();
+                this.scene.getZoom();
 
             if ((mXBegin <= leftElementPos) && (mXEnd >= leftElementPos)
                 && (mYBegin <= topElementPos) && (mYEnd >= topElementPos) && (this.rightClickFlag))
@@ -239,18 +239,18 @@ class PaperController {
 
     public addNode(node: DiagramNode): void {
         if (node instanceof SubprogramNode) {
-            this.paper.addSubprogramNode(node);
+            this.scene.addSubprogramNode(node);
         } else {
-            this.paper.addNode(node);
+            this.scene.addNode(node);
         }
     }
 
     public removeElement(element: DiagramElement): void {
         if (element) {
             if (element instanceof DefaultDiagramNode) {
-                this.paper.removeNode(element.getJointObject().id);
+                this.scene.removeNode(element.getJointObject().id);
             } else {
-                this.paper.removeLink(element.getJointObject().id);
+                this.scene.removeLink(element.getJointObject().id);
             }
 
             if (this.currentElement && element === this.currentElement) {
@@ -261,7 +261,7 @@ class PaperController {
     }
 
     public addLink(link: Link): void {
-        this.paper.addLinkToPaper(link);
+        this.scene.addLinkToPaper(link);
     }
 
     private blankPoinerdownListener(event, x, y): void {
@@ -276,16 +276,16 @@ class PaperController {
         this.clickFlag = true;
         this.rightClickFlag = false;
 
-        var element: DiagramElement = this.paper.getNodeById(cellView.model.id) ||
-            this.paper.getLinkById(cellView.model.id);
+        var element: DiagramElement = this.scene.getNodeById(cellView.model.id) ||
+            this.scene.getLinkById(cellView.model.id);
         this.changeCurrentElement(element);
 
-        if (this.paper.getNodeById(cellView.model.id)) {
+        if (this.scene.getNodeById(cellView.model.id)) {
             if (event.button == 2) {
                 this.rightClickFlag = true;
                 this.gesturesController.startDrawing();
             } else {
-                var node: DiagramNode = this.paper.getNodeById(cellView.model.id);
+                var node: DiagramNode = this.scene.getNodeById(cellView.model.id);
                 this.lastCellMouseDownPosition.x = node.getX();
                 this.lastCellMouseDownPosition.y = node.getY();
             }
@@ -302,10 +302,10 @@ class PaperController {
 
             });
         } else if (event.button !== 2){
-            var node: DiagramNode = this.paper.getNodeById(cellView.model.id);
+            var node: DiagramNode = this.scene.getNodeById(cellView.model.id);
             if (node) {
                 var command: Command = this.paperCommandFactory.makeMoveCommand(node, this.lastCellMouseDownPosition.x,
-                    this.lastCellMouseDownPosition.y, node.getX(), node.getY(), this.paper.getZoom());
+                    this.lastCellMouseDownPosition.y, node.getX(), node.getY(), this.scene.getZoom());
                 this.undoRedoController.addCommand(command);
             }
         }
@@ -316,10 +316,10 @@ class PaperController {
     }
 
     private initDropPaletteElementListener(): void {
-        var controller: PaperController = this;
-        var paper: DiagramPaper = this.paper;
+        var controller: SceneController = this;
+        var paper: DiagramScene = this.scene;
 
-        $("#" + this.paper.getId()).droppable({
+        $("#" + this.scene.getId()).droppable({
             drop: function(event, ui) {
                 var topElementPos: number = (ui.offset.top - $(this).offset().top + $(this).scrollTop()) /
                     paper.getZoom();
@@ -338,14 +338,14 @@ class PaperController {
     }
 
     private selectElement(jointObject): void {
-        var jQueryEl = this.paper.findViewByModel(jointObject).$el;
+        var jQueryEl = this.scene.findViewByModel(jointObject).$el;
         var oldClasses = jQueryEl.attr('class');
         jQueryEl.attr('class', oldClasses + ' selected');
     }
 
     private unselectElement(jointObject): void {
         $('input:text').blur();
-        var jQueryEl = this.paper.findViewByModel(jointObject).$el;
+        var jQueryEl = this.scene.findViewByModel(jointObject).$el;
         var removedClass = jQueryEl.attr('class').replace(new RegExp('(\\s|^)selected(\\s|$)', 'g'), '$2');
         jQueryEl.attr('class', removedClass);
     }
@@ -371,7 +371,7 @@ class PaperController {
         var deleteKey: number = 46;
         $('html').keyup((event) => {
             if(event.keyCode == deleteKey) {
-                if($("#" + this.paper.getId()).is(":visible") && !(document.activeElement.tagName === "INPUT")) {
+                if($("#" + this.scene.getId()).is(":visible") && !(document.activeElement.tagName === "INPUT")) {
                     this.removeCurrentElement();
                 }
             }
@@ -383,7 +383,7 @@ class PaperController {
         removeCommands.push(this.paperCommandFactory.makeChangeCurrentElementCommand(null, this.currentElement));
         if (this.currentElement instanceof DefaultDiagramNode) {
             var node: DiagramNode = <DiagramNode> this.currentElement;
-            var connectedLinks: Link[] = this.paper.getConnectedLinkObjects(node);
+            var connectedLinks: Link[] = this.scene.getConnectedLinkObjects(node);
             connectedLinks.forEach((link: Link) => removeCommands.push(
                 this.paperCommandFactory.makeRemoveLinkCommand(link)));
             removeCommands.push(this.paperCommandFactory.makeRemoveNodeCommand(node));
@@ -398,7 +398,7 @@ class PaperController {
     private initPropertyEditorListener(): void {
         var controller = this;
         $(document).on('focus', ".property-edit-element input", function() {
-            controller.changeCurrentElement(controller.paper.getNodeById($(this).data("id")));
+            controller.changeCurrentElement(controller.scene.getNodeById($(this).data("id")));
         });
     }
 

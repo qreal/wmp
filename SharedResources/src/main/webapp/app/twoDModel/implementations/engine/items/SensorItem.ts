@@ -50,7 +50,7 @@ class SensorItem {
                 pathToImage: string, isInteractive: boolean, position?: TwoDPosition) {
         this.robotItem = robotItem;
         this.worldModel = worldModel;
-        var paper: RaphaelPaper = worldModel.getPaper();
+        var paper: RaphaelPaper = worldModel.getScene();
         this.sensorType = sensorType;
         this.defineImageSizes(sensorType);
         this.startPosition = this.getStartPosition(position);

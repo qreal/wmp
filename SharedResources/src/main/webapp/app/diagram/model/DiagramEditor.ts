@@ -14,29 +14,29 @@
  * limitations under the License.
  */
 
-/// <reference path="DiagramPaper.ts" />
+/// <reference path="DiagramScene.ts" />
 /// <reference path="../../vendor.d.ts" />
 
 class DiagramEditor {
 
     private graph: joint.dia.Graph;
-    private paper: DiagramPaper;
+    private scene: DiagramScene;
 
     constructor() {
         this.graph = new joint.dia.Graph;
-        this.paper = new DiagramPaper("diagram_paper", this.graph);
+        this.scene = new DiagramScene("diagram-scene", this.graph);
     }
 
     public getGraph(): joint.dia.Graph {
         return this.graph;
     }
 
-    public getPaper(): DiagramPaper {
-        return this.paper;
+    public getScene(): DiagramScene {
+        return this.scene;
     }
 
     public clear(): void {
-        this.paper.clear();
+        this.scene.clear();
         this.graph.clear();
     }
 

@@ -131,7 +131,7 @@ class RegionItem {
             var textPos = this.getPosition();
             // hack for right text position
             setTimeout(() => {
-                this.text = this.worldModel.getPaper().text(textPos.x + 5, textPos.y + 10, text).
+                this.text = this.worldModel.getScene().text(textPos.x + 5, textPos.y + 10, text).
                     attr({"text-anchor": "start", fill: color, "font-size": 14}).toBack();
             });
         }

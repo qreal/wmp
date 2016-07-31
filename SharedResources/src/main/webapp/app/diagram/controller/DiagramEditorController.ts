@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-/// <reference path="PaperController.ts" />
+/// <reference path="SceneController.ts" />
 /// <reference path="PropertyEditorController.ts" />
 /// <reference path="loaders/ElementsTypeLoader.ts" />
 /// <reference path="PaletteController.ts" />
@@ -29,7 +29,7 @@ abstract class DiagramEditorController {
 
     protected scope: ng.IScope;
     protected diagramEditor: DiagramEditor;
-    protected paperController: PaperController;
+    protected sceneController: SceneController;
     protected propertyEditorController: PropertyEditorController;
     protected elementsTypeLoader: ElementsTypeLoader;
     protected paletteController: PaletteController;
@@ -45,7 +45,7 @@ abstract class DiagramEditorController {
             return this.getNodeProperties(type);
         }
         this.diagramEditor = new DiagramEditor();
-        this.paperController = new PaperController(this, this.diagramEditor.getPaper());
+        this.sceneController = new SceneController(this, this.diagramEditor.getScene());
         this.elementsTypeLoader = new ElementsTypeLoader();
 
         $scope.undo = () => {
@@ -68,12 +68,12 @@ abstract class DiagramEditorController {
     }
 
     public getNodesMap(): Map<DiagramNode> {
-        var paper = this.diagramEditor.getPaper();
+        var paper = this.diagramEditor.getScene();
         return paper.getNodesMap();
     }
 
     public getLinksMap(): Map<Link> {
-        var paper = this.diagramEditor.getPaper();
+        var paper = this.diagramEditor.getScene();
         return paper.getLinksMap();
     }
 
@@ -99,7 +99,7 @@ abstract class DiagramEditorController {
 
     public clearState(): void {
         this.propertyEditorController.clearState();
-        this.paperController.clearState();
+        this.sceneController.clearState();
         this.diagramEditor.clear();
         this.undoRedoController.clearStack();
     }

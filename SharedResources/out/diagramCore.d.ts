@@ -191,7 +191,7 @@ declare class DiagramEditor {
 
     constructor();
     public getGraph(): joint.dia.Graph;
-    public getPaper(): DiagramPaper;
+    public getScene(): DiagramPaper;
     public clear(): void;
 
 }

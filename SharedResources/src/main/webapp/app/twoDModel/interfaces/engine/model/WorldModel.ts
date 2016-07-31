@@ -23,10 +23,10 @@ interface WorldModel {
     setDrawEllipseMode(): void;
     getDrawMode(): number;
     setNoneMode(): void;
-    getPaper(): RaphaelPaper;
+    getScene(): RaphaelPaper;
     getZoom(): number;
     setCurrentElement(element): void;
-    clearPaper(): void;
+    clearScene(): void;
     deserialize(xml, offsetX: number, offsetY: number): void;
     addRobotItemElement(element: RaphaelElement): void;
     insertBeforeRobots(element: RaphaelElement): void;

@@ -30,7 +30,7 @@
 class WorldModelImpl implements WorldModel {
 
     private drawMode: number = 0;
-    private paper: RaphaelPaper;
+    private pap~er: RaphaelPaper;
     private currentElement: AbstractItem = null;
     private robotItemSet: RaphaelSet;
     private colorFields: ColorFieldItem[] = [];
@@ -182,7 +182,7 @@ class WorldModelImpl implements WorldModel {
         this.drawMode = 0;
     }
 
-    getPaper(): RaphaelPaper {
+    getScene(): RaphaelPaper {
         return this.paper;
     }
 
@@ -198,7 +198,7 @@ class WorldModelImpl implements WorldModel {
         this.startPositionCross = new StartPositionItem(this, x + offsetX, y + offsetY, direction);
     }
 
-    clearPaper(): void {
+    clearScene(): void {
         while (this.wallItems.length) {
             this.wallItems.pop().remove();
         }

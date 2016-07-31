@@ -26,7 +26,7 @@ class CubicBezierItemImpl implements CubicBezierItem {
     constructor(worldModel: WorldModel, xStart: number, yStart: number, xEnd: number, yEnd: number,
                 cp1X: number, cp1Y: number, cp2X: number, cp2Y: number,
                 width: number, rgbaColor: RGBAColor, isInteractive: boolean) {
-        var paper: RaphaelPaper = worldModel.getPaper();
+        var paper: RaphaelPaper = worldModel.getScene();
         this.worldModel = worldModel;
         this.path = paper.path("M " + xStart + "," + yStart + " C " + cp1X + "," + cp1Y + " " + cp2X + "," + cp2Y +
             " " + xEnd + "," + yEnd);

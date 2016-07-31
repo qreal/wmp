@@ -2,7 +2,7 @@
     <ul id="diagram_menu_context_menu" class='custom-menu'>
         <li data-action="delete">Delete</li>
     </ul>
-    <ul id="paper_context_menu" class='custom-menu'>
+    <ul id="scene_context_menu" class='custom-menu'>
         <li data-action="delete">Delete</li>
     </ul>
     <div class="navbar navbar-inverse navbar-static-top">
@@ -93,8 +93,8 @@
                     </div>
                 </div>
                 <div class="col-md-9 content-col">
-                    <div class="paper-wrapper">
-                        <div id="diagram_paper">
+                    <div class="scene-wrapper">
+                        <div id="diagram-scene">
                         </div>
                     </div>
                 </div>

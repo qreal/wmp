@@ -14,37 +14,37 @@
  * limitations under the License.
  */
 
-class PaperCommandFactory {
+class SceneCommandFactory {
 
-    private paperController: PaperController;
+    private sceneController: SceneController;
 
-    constructor(paperController: PaperController) {
-        this.paperController = paperController;
+    constructor(sceneController: SceneController) {
+        this.sceneController = sceneController;
     }
 
     public makeChangeCurrentElementCommand(newElement: DiagramElement, oldElement: DiagramElement): Command {
         return new ChangeCurrentElementCommand(newElement, oldElement,
-            this.paperController.setCurrentElement.bind(this.paperController));
+            this.sceneController.setCurrentElement.bind(this.sceneController));
     }
 
     public makeCreateNodeCommand(node: DiagramNode): Command {
-        return new CreateElementCommand(node, this.paperController.addNode.bind(this.paperController),
-            this.paperController.removeElement.bind(this.paperController));
+        return new CreateElementCommand(node, this.sceneController.addNode.bind(this.sceneController),
+            this.sceneController.removeElement.bind(this.sceneController));
     }
 
     public makeCreateLinkCommand(link: Link): Command {
-        return new CreateElementCommand(link, this.paperController.addLink.bind(this.paperController),
-            this.paperController.removeElement.bind(this.paperController));
+        return new CreateElementCommand(link, this.sceneController.addLink.bind(this.sceneController),
+            this.sceneController.removeElement.bind(this.sceneController));
     }
 
     public makeRemoveNodeCommand(node: DiagramNode): Command {
-        return new RemoveElementCommand(node, this.paperController.removeElement.bind(this.paperController),
-            this.paperController.addNode.bind(this.paperController));
+        return new RemoveElementCommand(node, this.sceneController.removeElement.bind(this.sceneController),
+            this.sceneController.addNode.bind(this.sceneController));
     }
 
     public makeRemoveLinkCommand(link: Link): Command {
-        return new RemoveElementCommand(link, this.paperController.removeElement.bind(this.paperController),
-            this.paperController.addLink.bind(this.paperController));
+        return new RemoveElementCommand(link, this.sceneController.removeElement.bind(this.sceneController),
+            this.sceneController.addLink.bind(this.sceneController));
     }
 
     public makeMoveCommand(node: DiagramNode, oldX: number, oldY: number, newX: number, newY: number,

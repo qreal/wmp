@@ -25,7 +25,7 @@ class PencilItemImpl implements PencilItem {
 
     constructor(worldModel: WorldModel, xStart: number, yStart: number, width: number, color: string,
                 isInteractive: boolean) {
-        var paper = worldModel.getPaper();
+        var paper = worldModel.getScene();
         this.worldModel = worldModel;
         this.pathArray[0] = ["M", xStart, yStart];
         this.path = paper.path(this.pathArray);

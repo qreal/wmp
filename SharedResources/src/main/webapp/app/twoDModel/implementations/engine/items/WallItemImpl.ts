@@ -28,7 +28,7 @@ class WallItemImpl implements WallItem {
 
     constructor(worldModel: WorldModel, xStart: number, yStart: number, xEnd: number, yEnd: number,
                 isInteractive: boolean) {
-        var paper = worldModel.getPaper();
+        var paper = worldModel.getScene();
         this.worldModel = worldModel;
         this.path = paper.path("M" + xStart + " " + yStart + " L" + xEnd + " " + yEnd);
         this.path.attr({
