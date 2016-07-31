@@ -14,19 +14,19 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * Implementation of Diagram DAO.
+ * Visibility level: package.
+ */
 @Repository
 @Component("diagramDao")
 @Transactional
-public class DiagramDaoImpl implements DiagramDao {
+class DiagramDaoImpl implements DiagramDao {
 
     private static final Logger logger = LoggerFactory.getLogger(DiagramDaoImpl.class);
+    private final SessionFactory sessionFactory;
 
     @Autowired
-    private SessionFactory sessionFactory;
-
-    public DiagramDaoImpl() {
-    }
-
     public DiagramDaoImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
@@ -57,7 +57,17 @@ public class DiagramDaoImpl implements DiagramDao {
                 folderId);
         Session session = sessionFactory.getCurrentSession();
         Folder folder = getFolder(folderId);
-        folder.getDiagrams().add(diagram);
+        if (folder == null) {
+            logger.error("Got null folder object for folder id {}.", folderId);
+            return 0L; // FIXME
+        }
+
+        List<Diagram> diagrams = folder.getDiagrams();
+        if (diagrams == null) {
+            logger.error("Got empty diagrams list for folder id {}.", folderId);
+            return 0L; // FIXME
+        }
+        diagrams.add(diagram);
         session.update(folder);
         session.flush();
         logger.trace("saveDiagram method saved diagram {}", diagram.getName());

@@ -23,8 +23,9 @@ public class DiagramDbServer {
         logger.info("Starting Diagram DB TServer on localhost on port {}", port);
         try {
             TServerTransport serverTransport = new TServerSocket(port);
-            TThreadPoolServer server = new TThreadPoolServer(new TThreadPoolServer.Args(serverTransport).processor
-                    (processor));
+            TThreadPoolServer server = new TThreadPoolServer(
+                    new TThreadPoolServer.Args(serverTransport).processor(processor)
+            );
             server.serve();
             logger.info("Diagram DB TServer started successfully");
         } catch (Exception e) {
@@ -33,7 +34,7 @@ public class DiagramDbServer {
     }
 
     /**
-     * Constructor starts Thrift TServer which implements RPC DiagramService interface.
+     * Constructor. Starts Thrift TServer which implements RPC DiagramService interface.
      */
     public DiagramDbServer(AbstractApplicationContext context) {
         try {

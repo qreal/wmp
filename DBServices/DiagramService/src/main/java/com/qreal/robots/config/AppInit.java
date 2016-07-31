@@ -4,7 +4,6 @@ import com.qreal.robots.server.DiagramDbServer;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 public class AppInit {
-
     /**
      * Main function creates context and starts server.
      */

@@ -16,52 +16,50 @@ import org.springframework.transaction.annotation.Transactional;
 public class DiagramDbServiceHandler implements DiagramDbService.Iface {
 
     private AbstractApplicationContext context;
+    private DiagramDao diagramDao;
 
     public DiagramDbServiceHandler(AbstractApplicationContext context) {
         this.context = context;
+
+        this.diagramDao = (DiagramDao) context.getBean("diagramDao");
+        assert diagramDao != null;
     }
 
     @Override
     public long saveDiagram(TDiagram diagram) {
-        DiagramDao diagramDao = (DiagramDao) context.getBean("diagramDao");
         return diagramDao.saveDiagram(new Diagram(diagram), diagram.getFolderId());
     }
 
     @Override
     public TDiagram openDiagram(long diagramID) {
-        DiagramDao diagramDao = (DiagramDao) context.getBean("diagramDao");
-        return diagramDao.openDiagram(diagramID).toTDiagram();
+        Diagram diagram = diagramDao.openDiagram(diagramID);
+        return diagram != null ? diagram.toTDiagram() : null;
     }
 
     @Override
     public void deleteDiagram(long diagramId) {
-        DiagramDao diagramDao = (DiagramDao) context.getBean("diagramDao");
         diagramDao.deleteDiagram(diagramId);
     }
 
     @Override
     public void rewriteDiagram(TDiagram diagram) {
-        DiagramDao diagramDao = (DiagramDao) context.getBean("diagramDao");
         diagramDao.rewriteDiagram(new Diagram(diagram));
     }
 
     @Override
     public long createFolder(TFolder folder) {
-        DiagramDao diagramDao = (DiagramDao) context.getBean("diagramDao");
-        Folder newFolder = new Folder(folder);
-        return diagramDao.createFolder(newFolder);
+        return diagramDao.createFolder(new Folder(folder));
     }
 
     @Override
     public void deleteFolder(long folderId) {
-        DiagramDao diagramDao = (DiagramDao) context.getBean("diagramDao");
         diagramDao.deleteFolder(folderId);
     }
 
     @Override
     public TFolder getFolderTree(String username) {
-        DiagramDao diagramDao = (DiagramDao) context.getBean("diagramDao");
         Folder folder = diagramDao.getFolderTree(username);
-        return folder.toTFolder();
+
+        return folder != null ? folder.toTFolder() : null;
     }
 }
