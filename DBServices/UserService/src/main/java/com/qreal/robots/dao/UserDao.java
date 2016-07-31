@@ -8,7 +8,6 @@ import org.jetbrains.annotations.Nullable;
  * DAO for userDB.
  */
 public interface UserDao {
-
     /**
      * Saves user.
      *
@@ -30,7 +29,6 @@ public interface UserDao {
      * @param user user to update (Id must be set)
      */
     void update(@NotNull TUser user);
-
 
     /**
      * Test if user with specified name exists.

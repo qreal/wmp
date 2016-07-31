@@ -14,7 +14,6 @@ import java.util.stream.Collectors;
 @Entity
 @Table(name = "users")
 public class UserSerial {
-
     /**
      * Name of user (primary key too).
      */
@@ -63,14 +62,12 @@ public class UserSerial {
         }
 
         if (user.getRoles() != null) {
-            roles = user.getRoles().stream().map(UserRoleSerial::new).collect(Collectors.toSet
-                    ());
+            roles = user.getRoles().stream().map(UserRoleSerial::new).collect(Collectors.toSet());
         }
     }
 
     @Id
-    @Column(name = "username", unique = true,
-            nullable = false, length = 45)
+    @Column(name = "username", unique = true, nullable = false, length = 45)
     public String getUsername() {
         return this.username;
     }
@@ -79,8 +76,7 @@ public class UserSerial {
         this.username = username;
     }
 
-    @Column(name = "password",
-            nullable = false, length = 60)
+    @Column(name = "password", nullable = false, length = 60)
     public String getPassword() {
         return this.password;
     }

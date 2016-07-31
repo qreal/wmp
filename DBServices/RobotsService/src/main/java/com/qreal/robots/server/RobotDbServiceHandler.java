@@ -12,22 +12,24 @@ import org.springframework.context.support.AbstractApplicationContext;
  */
 public class RobotDbServiceHandler implements RobotDbService.Iface {
 
-    private AbstractApplicationContext context;
+    private final AbstractApplicationContext context;
+
+    private final RobotDao robotDao;
 
     public RobotDbServiceHandler(AbstractApplicationContext context) {
         this.context = context;
+
+        robotDao = (RobotDao) context.getBean("robotDao");
+        assert robotDao != null;
     }
 
     @Override
     public long registerRobot(TRobot tRobot) throws TException {
-        RobotDao robotDao = (RobotDao) context.getBean("robotDao");
-        RobotSerial robotSerial = new RobotSerial(tRobot);
-        return robotDao.save(robotSerial);
+        return robotDao.save(new RobotSerial(tRobot));
     }
 
     @Override
     public TRobot findById(long id) throws TException {
-        RobotDao robotDao = (RobotDao) context.getBean("robotDao");
         RobotSerial robot = robotDao.findById(id);
         if (robot != null) {
             return robot.toTRobot();
@@ -37,7 +39,6 @@ public class RobotDbServiceHandler implements RobotDbService.Iface {
 
     @Override
     public void deleteRobot(long id) throws TException {
-        RobotDao robotDao = (RobotDao) context.getBean("robotDao");
         RobotSerial robot = robotDao.findById(id);
         if (robot != null) {
             robotDao.delete(robot);
@@ -46,13 +47,11 @@ public class RobotDbServiceHandler implements RobotDbService.Iface {
 
     @Override
     public boolean isRobotExists(long id) throws TException {
-        RobotDao robotDao = (RobotDao) context.getBean("robotDao");
         return robotDao.isRobotExists(id);
     }
 
     @Override
     public void updateRobot(TRobot tRobot) throws TException {
-        RobotDao robotDao = (RobotDao) context.getBean("robotDao");
         RobotSerial robotSerial = new RobotSerial(tRobot);
         robotDao.updateRobot(robotSerial);
     }

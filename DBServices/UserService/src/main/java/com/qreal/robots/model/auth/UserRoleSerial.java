@@ -12,7 +12,6 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Entity
 @Table(name = "user_roles")
 public class UserRoleSerial {
-
     /**
      * Surrogate key for role (maybe static table for roles?).
      */

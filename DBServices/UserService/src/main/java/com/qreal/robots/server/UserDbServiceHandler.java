@@ -11,33 +11,34 @@ import org.springframework.context.support.AbstractApplicationContext;
  */
 public class UserDbServiceHandler implements UserDbService.Iface {
 
-    private AbstractApplicationContext context;
+    private final AbstractApplicationContext context;
+
+    private final UserDao userDao;
 
     public UserDbServiceHandler(AbstractApplicationContext context) {
         this.context = context;
+
+        userDao = (UserDao) context.getBean("userDao");
+        assert userDao != null;
     }
 
     @Override
     public void save(TUser tUser) throws TException {
-        UserDao userDao = (UserDao) context.getBean("userDao");
         userDao.save(tUser);
     }
 
     @Override
     public void update(TUser user) throws TException {
-        UserDao userDao = (UserDao) context.getBean("userDao");
         userDao.update(user);
     }
 
     @Override
     public TUser findByUserName(String username) throws TException {
-        UserDao userDao = (UserDao) context.getBean("userDao");
         return userDao.findByUserName(username);
     }
 
     @Override
     public boolean isUserExist(String username) throws TException {
-        UserDao userDao = (UserDao) context.getBean("userDao");
         return userDao.isUserExist(username);
     }
 }

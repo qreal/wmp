@@ -26,8 +26,7 @@ public class UserDaoImpl implements UserDao {
 
     private static final Logger logger = LoggerFactory.getLogger(UserDaoImpl.class);
 
-    @Autowired
-    private SessionFactory sessionFactory;
+    private final SessionFactory sessionFactory;
 
     /**
      * RobotService used to resolve foreign key dependencies.
@@ -35,9 +34,7 @@ public class UserDaoImpl implements UserDao {
     @Autowired
     private RobotService robotService;
 
-    public UserDaoImpl() {
-    }
-
+    @Autowired
     public UserDaoImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
@@ -98,8 +95,8 @@ public class UserDaoImpl implements UserDao {
     @Override
     public void update(@NotNull TUser tUser) {
         logger.trace("update method called with paremeters: username = {}", tUser.getUsername());
-        Session session = sessionFactory.getCurrentSession();
 
+        Session session = sessionFactory.getCurrentSession();
         session.merge(saveOrUpdateRobots(tUser));
 
         logger.trace("update method updated user");
@@ -114,10 +111,11 @@ public class UserDaoImpl implements UserDao {
     @Override
     public boolean isUserExist(String username) {
         logger.trace("isUserExist method called with parameters: username = {}", username);
-        Session session = sessionFactory.getCurrentSession();
 
+        Session session = sessionFactory.getCurrentSession();
         List users = session.createQuery("from UserSerial where username=:username").
                 setParameter("username", username).list();
+
         logger.trace("isUserExist extracted list with {} users with name {}", users.size(), username);
         return !users.isEmpty();
     }
@@ -156,9 +154,12 @@ public class UserDaoImpl implements UserDao {
             logger.trace("Robot with id {} of user {} loading", id, tUser.getUsername());
 
             TRobot robot = robotService.findById(id);
-            tUser.getRobots().add(robot);
-
-            logger.trace("Robot  {} of user {} loaded", robot.getName(), tUser.getUsername());
+            if (robot != null) {
+                tUser.getRobots().add(robot);
+                logger.trace("Robot  {} of user {} loaded", robot.getName(), tUser.getUsername());
+            } else {
+                logger.error("Got null TRobot object for id '{}'", id);
+            }
         }
         return tUser;
     }

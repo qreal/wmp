@@ -22,7 +22,7 @@ public class DiagramDbServiceHandler implements DiagramDbService.Iface {
     public DiagramDbServiceHandler(AbstractApplicationContext context) {
         this.context = context;
 
-        this.diagramDao = (DiagramDao) context.getBean("diagramDao");
+        diagramDao = (DiagramDao) context.getBean("diagramDao");
         assert diagramDao != null;
     }
 
