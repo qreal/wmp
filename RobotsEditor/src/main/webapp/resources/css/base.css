@@ -58,8 +58,8 @@ body{
     width: 100%;
     height: 100%;
     text-align: center;
-    margin-right: 0px;
-    margin-left: 0px;
+    margin-right: 0;
+    margin-left: 0;
 }
 
 #main-editor-area {
@@ -68,8 +68,8 @@ body{
     height: -webkit-calc(100% - 80px); /* google, safari */
     height: -moz-calc(100% - 80px); /* firefox */
     text-align: center;
-    margin-left: 0px;
-    margin-right: 0px;
+    margin-left: 0;
+    margin-right: 0;
     padding-left: 10px;
     padding-right: 10px;
 }

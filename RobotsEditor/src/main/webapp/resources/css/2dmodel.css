@@ -51,18 +51,18 @@
 
 .tabbable {
     position: absolute;
-    left: 0px;
-    top: 0px;
-    right: 0px;
+    left: 0;
+    top: 0;
+    right: 0;
     bottom: 210px;
 }
 
 #two-d-model-left-tabs-content {
     position: absolute;
-    left: 0px;
+    left: 0;
     top: 40px;
-    right: 0px;
-    bottom: 0px;
+    right: 0;
+    bottom: 0;
     padding-top: 10px;
     border: 1px solid gray;
     background: #ffffff;
@@ -71,9 +71,9 @@
 #two-d-mpde-left-control-buttons-area {
     position: absolute;
     height: 200px;
-    left: 0px;
-    bottom: 0px;
-    right: 0px;
+    left: 0;
+    bottom: 0;
+    right: 0;
 }
 
 #pen-settings {
