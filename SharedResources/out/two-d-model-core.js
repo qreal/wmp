@@ -164,14 +164,14 @@ var DisplayWidget = (function () {
         $("#hide-controller-model-area").show();
         $("#controller").show();
         $("#display").show();
-        $(".port_name").show();
+        $(".port-name").show();
         this.ledWidget.show();
     };
     DisplayWidget.prototype.hide = function () {
         $("#hide-controller-model-area").hide();
         $("#display").hide();
         $("#controller").hide();
-        $(".port_name").hide();
+        $(".port-name").hide();
         this.ledWidget.hide();
         $("#hide-controller-model-button").show();
     };

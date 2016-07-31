@@ -226,10 +226,10 @@
 
             <img id="controller" src="<c:url value='/images/2dmodel/trikKit/controller.png' />" />
 
-            <span id="port-M1" class="port_name">M1</span>
-            <span id="port-M2" class="port_name">M2</span>
-            <span id="port-M3" class="port_name">M3</span>
-            <span id="port-M4" class="port_name">M4</span>
+            <span id="port-M1" class="port-name">M1</span>
+            <span id="port-M2" class="port-name">M2</span>
+            <span id="port-M3" class="port-name">M3</span>
+            <span id="port-M4" class="port-name">M4</span>
 
             <canvas id="display" width="218" height="274"></canvas>
             <div id="led"></div>

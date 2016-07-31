@@ -106,7 +106,7 @@
         <div id="palette-editor-area" class="col-md-2 content-col">
             <div id="editor-palette">
                 <legend style="height: 40px; padding: 10px">Palette</legend>
-                <div id="elements_tree">
+                <div id="elements-tree">
                     <ul id="palette-tabs" class="nav nav-tabs">
                         <li role="presentation" class="active">
                             <a href="#blocks" aria-controls="blocks" role="tab" data-toggle="tab">
@@ -142,16 +142,16 @@
                         Diagrams
                     </h4>
                 </div>
-                <div class="modal-body_nopadding">
-                    <div class="folderMenu">
+                <div class="modal-body-nopadding">
+                    <div class="folder-menu">
                     </div>
-                    <div class="folderPath">
+                    <div class="folder-path">
                     </div>
-                    <div class="folderView">
-                        <ul class="folderTable">
+                    <div class="folder-view">
+                        <ul class="folder-table">
                         </ul>
                     </div>
-                    <div class="savingMenu">
+                    <div class="saving-menu">
                     </div>
                 </div>
                 <div class="modal-footer">

@@ -24,8 +24,8 @@ class PaletteElementView extends HtmlView {
 
     private template: string = '' +
         '<li>' +
-        '   <div class="tree_element" data-type="{0}">' +
-        '       <img class="elementImg" src="{1}" width="{2}" height="{3}">' +
+        '   <div class="tree-element" data-type="{0}">' +
+        '       <img class="element-img" src="{1}" width="{2}" height="{3}">' +
         '       {4}' +
         '   </div>' +
         '</li>';

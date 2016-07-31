@@ -25,9 +25,9 @@
 class PaletteController {
 
     public initDraggable(): void {
-        $(".tree_element").draggable({
+        $(".tree-element").draggable({
             helper: function () {
-                var clone =  $(this).find('.elementImg').clone();
+                var clone =  $(this).find('.element-img').clone();
                 clone.css('position','fixed');
                 clone.css('z-index', '1000');
                 return clone;
