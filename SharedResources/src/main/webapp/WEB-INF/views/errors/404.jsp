@@ -12,14 +12,14 @@
     <div class="row">
       <div class="col-md-12">
         <div class="error-template">
-          <h1>Oops!</h1>
-          <h2>404 Not Found</h2>
+          <h1>404</h1>
+          <h2>Life is pain.</h2>
           <div class="error-details">
-            Sorry, an error has occured, Requested page not found!
+            You are here, but the page is not. <br> Go somewhere else. Or don't. There's no point anyway.
           </div>
           <div class="error-actions">
             <a href="<c:url value="/"/>" class="btn btn-primary btn-lg">
-              <span class="glyphicon glyphicon-home"></span>Take Me Home
+              <span class="glyphicon glyphicon-home"></span> Go away.
             </a>
           </div>
         </div>
