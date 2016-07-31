@@ -19,4 +19,3 @@ cd ..
 #Generate main project
 sudo mvn clean
 mvn install
-echo "Now use tomcat7 to start project"
