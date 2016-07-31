@@ -4,6 +4,9 @@ import com.qreal.robots.thrift.gen.TRobot;
 
 import javax.persistence.*;
 
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+
 import static javax.persistence.GenerationType.IDENTITY;
 
 /**
@@ -125,17 +128,15 @@ public class RobotSerial {
             tRobot.setId(id);
         }
 
-        if (name != null) {
-            tRobot.setName(name);
-        }
+        BiConsumer<String, Consumer<String>> setField = (value, func) -> {
+            if (value != null) {
+                func.accept(value);
+            }
+        };
 
-        if (ssid != null) {
-            tRobot.setSsid(ssid);
-        }
-
-        if (owner != null) {
-            tRobot.setUsername(owner);
-        }
+        setField.accept(name, tRobot::setName);
+        setField.accept(ssid, tRobot::setSsid);
+        setField.accept(owner, tRobot::setUsername);
 
         return tRobot;
     }

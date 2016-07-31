@@ -28,12 +28,9 @@ public class RobotDaoImpl implements RobotDao {
     @Autowired
     private UserService userService;
 
+    private final SessionFactory sessionFactory;
+
     @Autowired
-    private SessionFactory sessionFactory;
-
-    public RobotDaoImpl() {
-    }
-
     public RobotDaoImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
@@ -65,11 +62,14 @@ public class RobotDaoImpl implements RobotDao {
         logger.trace("delete method called with parameters: robot = {}", robot.getName());
         Session session = sessionFactory.getCurrentSession();
 
-        logger.trace("Deleting record from user {}", robot.getOwner());
-        TUser tUser = userService.findByUserName(robot.getOwner());
+        final String owner = robot.getOwner();
+        logger.trace("Deleting record from user {}", owner);
+        TUser tUser = userService.findByUserName(owner);
         if (tUser != null) {
             tUser.getRobots().remove(robot.toTRobot());
             userService.update(tUser);
+        } else {
+            logger.error("Could not find user {} to delete", owner);
         }
         logger.trace("Record from user {} deleted", robot.getOwner());
 

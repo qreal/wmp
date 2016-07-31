@@ -34,8 +34,8 @@ public interface RobotDao {
     /**
      * Tells if robot with specified name exists.
      *
-     * @param id id of robot to test if exists
-     * @see {@link https://github.com/qreal/wmp/issues/7}
+     * @param id id of robot to test if exists.
+     * FIXME: https://github.com/qreal/wmp/issues/7
      */
     boolean isRobotExists(long id);
 
