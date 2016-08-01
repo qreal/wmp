@@ -182,6 +182,10 @@
                             <outputDirectory>${thrift.client.output.dir}/editor</outputDirectory>
                         </configuration>
                     </execution>
+                    <!--
+                    Also explicitly compiling `struct` data files as a workaround for thrift failing to process
+                    include directives for js/ts as target language
+                    -->
                     <execution>
                         <id>js-ts-generation-structs</id>
                         <phase>generate-sources</phase>
