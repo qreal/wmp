@@ -15,13 +15,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class DiagramDbServiceHandler implements DiagramDbService.Iface {
 
-    private AbstractApplicationContext context;
-
     private DiagramDao diagramDao;
 
     public DiagramDbServiceHandler(AbstractApplicationContext context) {
-        this.context = context;
-
         diagramDao = (DiagramDao) context.getBean("diagramDao");
         assert diagramDao != null;
     }

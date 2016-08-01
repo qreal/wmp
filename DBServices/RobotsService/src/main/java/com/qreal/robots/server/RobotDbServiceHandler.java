@@ -12,13 +12,9 @@ import org.springframework.context.support.AbstractApplicationContext;
  */
 public class RobotDbServiceHandler implements RobotDbService.Iface {
 
-    private final AbstractApplicationContext context;
-
     private final RobotDao robotDao;
 
     public RobotDbServiceHandler(AbstractApplicationContext context) {
-        this.context = context;
-
         robotDao = (RobotDao) context.getBean("robotDao");
         assert robotDao != null;
     }

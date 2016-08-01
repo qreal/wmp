@@ -1,6 +1,7 @@
 #!/bin/bash
-
 sh buildApp.sh
+
+mvn clean install
 
 cd DBServices/DiagramService
 mvn clean package
