@@ -16,7 +16,7 @@
 
     <properties>
         <thrift.executable>thrift</thrift.executable>
-        <thrift.src.base>src/main/java/com/qreal/robots/thrift</thrift.src.base>
+        <thrift.src.base>src/main/thrift</thrift.src.base>
         <thrift.output.dir>target/generated-sources/thrift</thrift.output.dir>
         <thrift.client.output.dir>src/main/webapp/resources/thrift</thrift.client.output.dir>
     </properties>
@@ -91,7 +91,7 @@
                         </goals>
                         <configuration>
                             <generator>java</generator>
-                            <thriftSourceRoot>${thrift.src.base}/dashboard</thriftSourceRoot>
+                            <thriftSourceRoot>src/main/thrift/dashboard</thriftSourceRoot>
                             <outputDirectory>${thrift.output.dir}/dashboard</outputDirectory>
                         </configuration>
                     </execution>
@@ -103,7 +103,7 @@
                         </goals>
                         <configuration>
                             <generator>java</generator>
-                            <thriftSourceRoot>${thrift.src.base}/editor</thriftSourceRoot>
+                            <thriftSourceRoot>src/main/thrift/editor</thriftSourceRoot>
                             <outputDirectory>${thrift.output.dir}/editor</outputDirectory>
                         </configuration>
                     </execution>
@@ -115,7 +115,7 @@
                         </goals>
                         <configuration>
                             <generator>java</generator>
-                            <thriftSourceRoot>${thrift.src.base}/diagramDB</thriftSourceRoot>
+                            <thriftSourceRoot>src/main/thrift/diagramDB</thriftSourceRoot>
                             <outputDirectory>${thrift.output.dir}/diagramDb</outputDirectory>
                         </configuration>
                     </execution>
@@ -127,7 +127,7 @@
                         </goals>
                         <configuration>
                             <generator>java</generator>
-                            <thriftSourceRoot>${thrift.src.base}/robotDB</thriftSourceRoot>
+                            <thriftSourceRoot>src/main/thrift/robotDB</thriftSourceRoot>
                             <outputDirectory>${thrift.output.dir}/robotDb</outputDirectory>
                         </configuration>
                     </execution>
@@ -139,7 +139,7 @@
                         </goals>
                         <configuration>
                             <generator>java</generator>
-                            <thriftSourceRoot>${thrift.src.base}/userDB</thriftSourceRoot>
+                            <thriftSourceRoot>src/main/thrift/userDB</thriftSourceRoot>
                             <outputDirectory>${thrift.output.dir}/userDb</outputDirectory>
                         </configuration>
                     </execution>
@@ -151,7 +151,7 @@
                         </goals>
                         <configuration>
                             <generator>java:beans</generator>
-                            <thriftSourceRoot>${thrift.src.base}/struct</thriftSourceRoot>
+                            <thriftSourceRoot>src/main/thrift/struct</thriftSourceRoot>
                             <outputDirectory>${thrift.output.dir}/struct</outputDirectory>
                         </configuration>
                     </execution>
@@ -166,7 +166,7 @@
                         </goals>
                         <configuration>
                             <generator>js</generator>
-                            <thriftSourceRoot>${thrift.src.base}/dashboard</thriftSourceRoot>
+                            <thriftSourceRoot>src/main/thrift/dashboard</thriftSourceRoot>
                             <outputDirectory>${thrift.client.output.dir}/dashboard</outputDirectory>
                         </configuration>
                     </execution>
@@ -178,7 +178,7 @@
                         </goals>
                         <configuration>
                             <generator>js:ts</generator>
-                            <thriftSourceRoot>${thrift.src.base}/editor</thriftSourceRoot>
+                            <thriftSourceRoot>src/main/thrift/editor</thriftSourceRoot>
                             <outputDirectory>${thrift.client.output.dir}/editor</outputDirectory>
                         </configuration>
                     </execution>
@@ -190,7 +190,7 @@
                         </goals>
                         <configuration>
                             <generator>js:ts</generator>
-                            <thriftSourceRoot>${thrift.src.base}/struct</thriftSourceRoot>
+                            <thriftSourceRoot>src/main/thrift/struct</thriftSourceRoot>
                             <outputDirectory>${thrift.client.output.dir}/struct</outputDirectory>
                         </configuration>
                     </execution>

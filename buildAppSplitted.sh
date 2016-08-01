@@ -1,17 +1,12 @@
-#build monolith
-echo "1"
+#!/bin/bash
+
 sh buildApp.sh
-#build splitted parts
-#sh thriftGenSplitted.sh
-echo "2"
-cd DBServices
-#build DiagramDBService
-cd DiagramService
+
+cd DBServices/DiagramService
 mvn clean package
-#build RobotsDBService
+
 cd ../RobotsService
 mvn clean package
-#build UserDbService
+
 cd ../UserService
 mvn clean package
-echo "Now use tomcat7 to start project"
