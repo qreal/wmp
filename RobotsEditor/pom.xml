@@ -182,6 +182,18 @@
                             <outputDirectory>${thrift.client.output.dir}/editor</outputDirectory>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>js-ts-generation-structs</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                        <configuration>
+                            <generator>js:ts</generator>
+                            <thriftSourceRoot>${thrift.src.base}/struct</thriftSourceRoot>
+                            <outputDirectory>${thrift.client.output.dir}/struct</outputDirectory>
+                        </configuration>
+                    </execution>
 
                 </executions>
             </plugin>

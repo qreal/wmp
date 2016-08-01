@@ -13,9 +13,12 @@
           <root url="file://$MODULE_DIR$/src/main/tomcat" />
           <root url="file://$MODULE_DIR$/target/generated-sources/thrift/dashboard" />
           <root url="file://$MODULE_DIR$/target/generated-sources/thrift/diagram" />
+          <root url="file://$MODULE_DIR$/target/generated-sources/thrift/diagramDb" />
           <root url="file://$MODULE_DIR$/target/generated-sources/thrift/editor" />
           <root url="file://$MODULE_DIR$/target/generated-sources/thrift/robot" />
+          <root url="file://$MODULE_DIR$/target/generated-sources/thrift/robotDb" />
           <root url="file://$MODULE_DIR$/target/generated-sources/thrift/struct" />
+          <root url="file://$MODULE_DIR$/target/generated-sources/thrift/userDb" />
         </sourceRoots>
       </configuration>
     </facet>
@@ -48,6 +51,9 @@
       <sourceFolder url="file://$MODULE_DIR$/target/generated-sources/thrift/diagram" isTestSource="false" generated="true" />
       <sourceFolder url="file://$MODULE_DIR$/target/generated-sources/thrift/robot" isTestSource="false" generated="true" />
       <sourceFolder url="file://$MODULE_DIR$/target/generated-sources/thrift/struct" isTestSource="false" generated="true" />
+      <sourceFolder url="file://$MODULE_DIR$/target/generated-sources/thrift/diagramDb" isTestSource="false" generated="true" />
+      <sourceFolder url="file://$MODULE_DIR$/target/generated-sources/thrift/robotDb" isTestSource="false" generated="true" />
+      <sourceFolder url="file://$MODULE_DIR$/target/generated-sources/thrift/userDb" isTestSource="false" generated="true" />
       <excludeFolder url="file://$MODULE_DIR$/target/classes" />
       <excludeFolder url="file://$MODULE_DIR$/target/generated-sources/groovy-stubs" />
       <excludeFolder url="file://$MODULE_DIR$/target/maven-archiver" />

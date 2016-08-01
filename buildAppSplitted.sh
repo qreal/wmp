@@ -1,7 +1,9 @@
 #build monolith
+echo "1"
 sh buildApp.sh
 #build splitted parts
-sh thriftGenSplitted.sh
+#sh thriftGenSplitted.sh
+echo "2"
 cd DBServices
 #build DiagramDBService
 cd DiagramService
