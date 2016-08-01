@@ -30,7 +30,7 @@
 class WorldModelImpl implements WorldModel {
 
     private drawMode: number = 0;
-    private pap~er: RaphaelPaper;
+    private paper: RaphaelPaper;
     private currentElement: AbstractItem = null;
     private robotItemSet: RaphaelSet;
     private colorFields: ColorFieldItem[] = [];
