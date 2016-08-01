@@ -14,6 +14,14 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
 
+    <properties>
+        <thrift.executable>thrift</thrift.executable>
+        <thrift.src.base>src/main/java/com/qreal/robots/thrift</thrift.src.base>
+        <thrift.output.dir>target/generated-sources/thrift</thrift.output.dir>
+        <thrift.client.output.dir>src/main/webapp/resources/thrift</thrift.client.output.dir>
+    </properties>
+
+
     <build>
         <finalName>robots-editor</finalName>
         <plugins>
@@ -26,9 +34,6 @@
                     <server>TomcatServer</server>
                     <path>/${project.build.finalName}</path>
                     <additionalConfigFilesDir>${basedir}/src/main/tomcat/conf</additionalConfigFilesDir>
-                    <!--<systemProperties>-->
-                        <!--<log4j.configuration>file:./src/main/tomcat/conf/log4j2.xml</log4j.configuration>-->
-                    <!--</systemProperties>-->
                     <uriEncoding>utf-8</uriEncoding>
                 </configuration>
             </plugin>
@@ -53,8 +58,6 @@
                         <version>2.3.6</version>
                     </dependency>
                 </dependencies>
-
-
                 <configuration>
                     <providerSelection>1.8</providerSelection>
                 </configuration>
@@ -69,6 +72,147 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <!-- thrift plugin -->
+            <plugin>
+                <groupId>org.apache.thrift.tools</groupId>
+                <artifactId>maven-thrift-plugin</artifactId>
+                <version>0.1.11</version>
+                <configuration>
+                    <thriftExecutable>${thrift.executable}</thriftExecutable>
+                </configuration>
+                <executions>
+                    <!-- server side code -->
+                    <execution>
+                        <id>java-generation-dashboard</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                        <configuration>
+                            <generator>java</generator>
+                            <thriftSourceRoot>${thrift.src.base}/dashboard</thriftSourceRoot>
+                            <outputDirectory>${thrift.output.dir}/dashboard</outputDirectory>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>java-generation-editor</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                        <configuration>
+                            <generator>java</generator>
+                            <thriftSourceRoot>${thrift.src.base}/editor</thriftSourceRoot>
+                            <outputDirectory>${thrift.output.dir}/editor</outputDirectory>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>java-generation-diagram-db</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                        <configuration>
+                            <generator>java</generator>
+                            <thriftSourceRoot>${thrift.src.base}/diagramDB</thriftSourceRoot>
+                            <outputDirectory>${thrift.output.dir}/diagramDb</outputDirectory>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>java-generation-robot-db</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                        <configuration>
+                            <generator>java</generator>
+                            <thriftSourceRoot>${thrift.src.base}/robotDB</thriftSourceRoot>
+                            <outputDirectory>${thrift.output.dir}/robotDb</outputDirectory>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>java-generation-user-db</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                        <configuration>
+                            <generator>java</generator>
+                            <thriftSourceRoot>${thrift.src.base}/userDB</thriftSourceRoot>
+                            <outputDirectory>${thrift.output.dir}/userDb</outputDirectory>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>java-generation-struct</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                        <configuration>
+                            <generator>java:beans</generator>
+                            <thriftSourceRoot>${thrift.src.base}/struct</thriftSourceRoot>
+                            <outputDirectory>${thrift.output.dir}/struct</outputDirectory>
+                        </configuration>
+                    </execution>
+
+
+                    <!-- client side code -->
+                    <execution>
+                        <id>js-generation-service</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                        <configuration>
+                            <generator>js</generator>
+                            <thriftSourceRoot>${thrift.src.base}/dashboard</thriftSourceRoot>
+                            <outputDirectory>${thrift.client.output.dir}/dashboard</outputDirectory>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>js-ts-generation-editor</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                        <configuration>
+                            <generator>js:ts</generator>
+                            <thriftSourceRoot>${thrift.src.base}/editor</thriftSourceRoot>
+                            <outputDirectory>${thrift.client.output.dir}/editor</outputDirectory>
+                        </configuration>
+                    </execution>
+
+                </executions>
+            </plugin>
+
+            <!-- build helper plugin -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>1.10</version>
+                <executions>
+                    <execution>
+                        <id>add-source</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>src/main/java</source>
+                                <source>${thrift.output.dir}/dashboard</source>
+                                <source>${thrift.output.dir}/editor</source>
+                                <source>${thrift.output.dir}/diagramDb</source>
+                                <source>${thrift.output.dir}/robotDb</source>
+                                <source>${thrift.output.dir}/userDb</source>
+                                <source>${thrift.output.dir}/struct</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
 
         </plugins>
 

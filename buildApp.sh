@@ -8,7 +8,7 @@ mvn install
 cd ..
 #Generate robots-editor
 cd RobotsEditor
-sh thriftGen.sh
+#sh thriftGen.sh
 cd src/main/webapp
 sudo npm install
 grunt
