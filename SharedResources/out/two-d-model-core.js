@@ -1818,7 +1818,7 @@ var TwoDModelEngineFacadeImpl = (function () {
         this.model.addRobotModel(robotModel);
         $(document).ready(function () {
             _this.initPortsConfiguration($scope, $compile, robotModel);
-            _this.makeUnselectable(document.getElementById("two-d-model-content"));
+            _this.makeUnselectable(document.getElementById("two-d-model-area"));
         });
         $scope.followRobot = function () { _this.followRobot(); };
         $scope.closeDisplay = function () { _this.closeDisplay(); };
