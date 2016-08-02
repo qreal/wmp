@@ -14,7 +14,7 @@ public class ExceptionHandlerController {
 
     @ExceptionHandler(NoHandlerFoundException.class)
     public String handleNotFoundException(Exception e) {
-        logger.error("Someone met 404 page", e);
+        logger.warn("Someone met 404 page", e);
         return "errors/404";
     }
 

@@ -513,7 +513,7 @@ var SceneCommandFactory = (function () {
 var SceneController = (function () {
     function SceneController(diagramEditorController, paper) {
         var _this = this;
-        this.contextMenuId = "scene_context_menu";
+        this.contextMenuId = "scene-context-menu";
         this.diagramEditorController = diagramEditorController;
         this.undoRedoController = diagramEditorController.getUndoRedoController();
         this.scene = paper;
@@ -780,7 +780,7 @@ var SceneController = (function () {
     };
     SceneController.prototype.initCustomContextMenu = function () {
         var controller = this;
-        $("#diagramContent").bind("contextmenu", function (event) {
+        $("#diagram-area").bind("contextmenu", function (event) {
             event.preventDefault();
         });
         $("#" + controller.contextMenuId + " li").click(function () {
@@ -1288,8 +1288,8 @@ var SubprogramPaletteElementView = (function (_super) {
         this.imageHeight = 30;
         this.template = '' +
             '<li>' +
-            '   <div class="tree_element" data-type="{0}" data-name="{1}" data-id="{2}">' +
-            '       <img class="elementImg" src="{3}" width="{4}" height="{5}">' +
+            '   <div class="tree-element" data-type="{0}" data-name="{1}" data-id="{2}">' +
+            '       <img class="element-img" src="{3}" width="{4}" height="{5}">' +
             '       {6}' +
             '   </div>' +
             '</li>';
@@ -1318,8 +1318,8 @@ var PaletteElementView = (function (_super) {
         this.imageHeight = 30;
         this.template = '' +
             '<li>' +
-            '   <div class="tree_element" data-type="{0}">' +
-            '       <img class="elementImg" src="{1}" width="{2}" height="{3}">' +
+            '   <div class="tree-element" data-type="{0}">' +
+            '       <img class="element-img" src="{1}" width="{2}" height="{3}">' +
             '       {4}' +
             '   </div>' +
             '</li>';
@@ -1364,9 +1364,9 @@ var PaletteController = (function () {
     function PaletteController() {
     }
     PaletteController.prototype.initDraggable = function () {
-        $(".tree_element").draggable({
+        $(".tree-element").draggable({
             helper: function () {
-                var clone = $(this).find('.elementImg').clone();
+                var clone = $(this).find('.element-img').clone();
                 clone.css('position', 'fixed');
                 clone.css('z-index', '1000');
                 return clone;
@@ -1998,7 +1998,7 @@ var UndoRedoController = (function () {
         this.pointer = -1;
         var zKey = 90;
         this.keyDownHandler = function (event) {
-            if ($("#diagramContent").is(":visible")) {
+            if ($("#diagram-area").is(":visible")) {
                 if (event.keyCode == zKey && event.ctrlKey && event.shiftKey) {
                     event.preventDefault();
                     _this.redo();

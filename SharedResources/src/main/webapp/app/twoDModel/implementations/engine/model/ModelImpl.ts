@@ -33,7 +33,7 @@ class ModelImpl implements Model {
     private timeline: Timeline;
 
     constructor(zoom: number) {
-        var interactiveAttr: string = $("#twoDModel_stage").attr("interactive");
+        var interactiveAttr: string = $("#two-d-model-scene-area").attr("interactive");
         this.isInteractive = (interactiveAttr === "false") ? false : true;
         var model = this;
         model.worldModel = new WorldModelImpl(zoom, this.isInteractive);

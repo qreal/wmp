@@ -35,7 +35,7 @@ class SceneController {
     private undoRedoController: UndoRedoController;
     private lastCellMouseDownPosition: {x: number, y: number};
     private paperCommandFactory: SceneCommandFactory;
-    private contextMenuId = "scene_context_menu";
+    private contextMenuId = "scene-context-menu";
 
     constructor(diagramEditorController: DiagramEditorController, paper: DiagramScene) {
         this.diagramEditorController = diagramEditorController;
@@ -352,7 +352,7 @@ class SceneController {
 
     private initCustomContextMenu(): void {
         var controller = this;
-        $("#diagramContent").bind("contextmenu", function (event) {
+        $("#diagram-area").bind("contextmenu", function (event) {
             event.preventDefault();
         });
 

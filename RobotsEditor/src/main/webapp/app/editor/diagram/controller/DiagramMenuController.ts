@@ -18,7 +18,7 @@ class DiagramMenuController {
     private canBeDeleted: boolean;
     private folderTree: Folder;
     private currentFolder: Folder;
-    private contextMenuId = "diagram_menu_context_menu";
+    private contextMenuId = "open-diagram-context-menu";
     private selectedElement: DiagramMenuElement;
 
     constructor(diagramEditorController: RobotsDiagramEditorController) {
@@ -50,7 +50,7 @@ class DiagramMenuController {
     }
 
     public createNewDiagram(): void {
-        $('#confirmNew').modal('show');
+        $('#confirm-save-diagram').modal('show');
     }
 
     public openFolderWindow(): void {
@@ -77,24 +77,24 @@ class DiagramMenuController {
     public showCreatingMenu() {
         var menuManager = this;
         this.clearFolderMenu();
-        $('.folderMenu').append(
+        $('.folder-menu').append(
             "<input type='text'>" +
             "<i id='creating'><span class='glyphicon glyphicon-ok' aria-hidden='true'></span></i>" +
-            "<i id='cancelCreating'><span class='glyphicon glyphicon-remove'></span></i>");
+            "<i id='cancel-creating'><span class='glyphicon glyphicon-remove'></span></i>");
 
-        $('.folderMenu #creating').click(function() {
-            menuManager.clearWarning('.folderMenu p');
-            var folderName: string = $('.folderMenu input:text').val();
+        $('.folder-menu #creating').click(function() {
+            menuManager.clearWarning('.folder-menu p');
+            var folderName: string = $('.folder-menu input:text').val();
             if (folderName === "") {
-                menuManager.writeWarning("Empty name", '.folderMenu');
+                menuManager.writeWarning("Empty name", '.folder-menu');
             }  else if (menuManager.currentFolder.isChildExists(folderName)) {
-                menuManager.writeWarning("The folder with this name already exists", '.folderMenu');
+                menuManager.writeWarning("The folder with this name already exists", '.folder-menu');
             } else {
                 menuManager.createFolderInDatabase(folderName);
             }
         });
 
-        $('.folderMenu #cancelCreating').click(function() {
+        $('.folder-menu #cancel-creating').click(function() {
             menuManager.showFolderMenu();
         });
     }
@@ -103,16 +103,16 @@ class DiagramMenuController {
         var menuManager = this;
         this.clearSavingMenu();
 
-        $('.savingMenu').append("<b>Input diagram name</b><input type:text>");
+        $('.saving-menu').append("<b>Input diagram name</b><input type:text>");
         $('#diagrams .modal-footer').prepend("<button id='saving' type='button' class='btn btn-success'>Save</button>");
 
         $('#saving').click(function() {
-            menuManager.clearWarning('.savingMenu p');
-            var diagramName: string = $('.savingMenu input:text').val();
+            menuManager.clearWarning('.saving-menu p');
+            var diagramName: string = $('.saving-menu input:text').val();
             if (diagramName === "") {
-                menuManager.writeWarning("Empty name", '.savingMenu');
+                menuManager.writeWarning("Empty name", '.saving-menu');
             } else if (menuManager.currentFolder.isDiagramExists(diagramName)) {
-                menuManager.writeWarning("The diagram with this name already exists", '.savingMenu');
+                menuManager.writeWarning("The diagram with this name already exists", '.saving-menu');
             } else {
                 menuManager.saveDiagramInDatabase(diagramName);
             }
@@ -129,13 +129,13 @@ class DiagramMenuController {
     private showFolderMenu(): void {
         var menuManager = this;
         this.clearFolderMenu();
-        $('.folderMenu').append("<i id='levelUp'><span class='glyphicon glyphicon-arrow-left'></span></i>");
-        $('.folderMenu #levelUp').click(function() {
+        $('.folder-menu').append("<i id='level-up'><span class='glyphicon glyphicon-arrow-left'></span></i>");
+        $('.folder-menu #level-up').click(function() {
             menuManager.levelUpFolder();
         });
 
-        $('.folderMenu').append("<i id='creatingMenu'><span class='glyphicon glyphicon-plus'></span></i>");
-        $('.folderMenu #creatingMenu').click(function() {
+        $('.folder-menu').append("<i id='creating-menu'><span class='glyphicon glyphicon-plus'></span></i>");
+        $('.folder-menu #creating-menu').click(function() {
             menuManager.showCreatingMenu();
         });
     }
@@ -245,20 +245,20 @@ class DiagramMenuController {
     }
 
     private writeWarning(message: string, place: string): void {
-        $(place).append("<p class='warningMessage'>" + message + "</p>");
+        $(place).append("<p class='warning-message'>" + message + "</p>");
     }
 
     private clearSavingMenu(): void {
-        $('.savingMenu').empty();
+        $('.saving-menu').empty();
         $('.modal-footer #saving').remove();
     }
 
     private clearFolderMenu(): void {
-        $('.folderMenu').empty();
+        $('.folder-menu').empty();
     }
 
     private clearFolderTable(): void {
-        $('.folderTable li').remove();
+        $('.folder-table li').remove();
     }
 
     private clearWarning(place: string): void {
@@ -268,7 +268,7 @@ class DiagramMenuController {
     private showPathToFolder(): void {
         var path: string = "";
 
-        $('.folderPath p').remove();
+        $('.folder-path p').remove();
 
         var folder: Folder = this.currentFolder;
         while (folder.getParent()) {
@@ -276,7 +276,7 @@ class DiagramMenuController {
             folder = folder.getParent();
         }
 
-        $('.folderPath').prepend("<p>" + path + "</p>");
+        $('.folder-path').prepend("<p>" + path + "</p>");
     }
 
     private showFolderTable(openingFolder): void {
@@ -287,20 +287,20 @@ class DiagramMenuController {
         var diagramNames: string[] = this.currentFolder.getDiagramNames();
         this.showPathToFolder();
         $.each(folderNames, function (i) {
-            $('.folderView ul').prepend("<li class='folders'>" +
+            $('.folder-view ul').prepend("<li class='folders'>" +
                 "<span class='glyphicon glyphicon-folder-open' aria-hidden='true'></span>" +
                 "<span class='glyphicon-class'>" + folderNames[i] + "</span></li>");
         });
         $.each(diagramNames, function (i) {
-            $('.folderView ul').append("<li class='diagrams'>" +
+            $('.folder-view ul').append("<li class='diagrams'>" +
                 "<span class='glyphicon glyphicon-file' aria-hidden='true'></span>" +
                 "<span class='glyphicon-class'>" + diagramNames[i] + "</span></li>");
         });
 
-        $('.folderTable .folders').click(function () {
+        $('.folder-table .folders').click(function () {
             menuManager.showFolderTable(menuManager.currentFolder.findChildByName($(this).text()));
         });
-        $('.folderTable .diagrams').click(function () {
+        $('.folder-table .diagrams').click(function () {
             menuManager.openDiagramFromDatabase($(this).text());
             $('#diagrams').modal('hide');
         });

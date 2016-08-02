@@ -160,20 +160,20 @@ var DisplayWidget = (function () {
         this.context.clearRect(0, 0, this.width, this.height);
     };
     DisplayWidget.prototype.show = function () {
-        $("#menu_button").hide();
-        $("#close_display").show();
+        $("#hide-controller-model-button").hide();
+        $("#hide-controller-model-area").show();
         $("#controller").show();
         $("#display").show();
-        $(".port_name").show();
+        $(".port-name").show();
         this.ledWidget.show();
     };
     DisplayWidget.prototype.hide = function () {
-        $("#close_display").hide();
+        $("#hide-controller-model-area").hide();
         $("#display").hide();
         $("#controller").hide();
-        $(".port_name").hide();
+        $(".port-name").hide();
         this.ledWidget.hide();
-        $("#menu_button").show();
+        $("#hide-controller-model-button").show();
     };
     DisplayWidget.prototype.displayToFront = function () {
         $("#display").css("z-index", 100);
@@ -359,7 +359,7 @@ var Runner = (function () {
 })();
 var StageScroller = (function () {
     function StageScroller(zoom) {
-        this.stage = $("#twoDModel_stage");
+        this.stage = $("#two-d-model-scene-area");
         this.zoom = zoom;
     }
     StageScroller.prototype.scrollToPoint = function (x, y) {
@@ -984,10 +984,10 @@ var WorldModelImpl = (function () {
         this.regions = [];
         this.width = 3000;
         this.height = 3000;
-        this.contextMenuId = "twoDModel_stage_context_menu";
+        this.contextMenuId = "two-d-model-scene-context-menu";
         this.zoom = (zoom) ? zoom : 1;
         this.isInteractive = isInteractive;
-        this.paper = Raphael("twoDModel_stage", this.width, this.height);
+        this.paper = Raphael("two-d-model-scene-area", this.width, this.height);
         this.robotItemSet = this.paper.set();
         $(this.paper.canvas).attr("id", "twoDModel_paper");
         $(this.paper.canvas).css('overflow', 'auto');
@@ -1069,10 +1069,10 @@ var WorldModelImpl = (function () {
         return { start: new TwoDPosition(exStartX, exStartY), end: new TwoDPosition(exEndX, exEndY) };
     };
     WorldModelImpl.prototype.getMousePosition = function (e) {
-        var offset = $("#twoDModel_stage").offset();
+        var offset = $("#two-d-model-scene-area").offset();
         var position = {
-            x: (e.pageX - offset.left + $("#twoDModel_stage").scrollLeft()) / this.zoom,
-            y: (e.pageY - offset.top + $("#twoDModel_stage").scrollTop()) / this.zoom
+            x: (e.pageX - offset.left + $("#two-d-model-scene-area").scrollLeft()) / this.zoom,
+            y: (e.pageY - offset.top + $("#two-d-model-scene-area").scrollTop()) / this.zoom
         };
         return position;
     };
@@ -1226,7 +1226,7 @@ var WorldModelImpl = (function () {
         var shape;
         var isDrawing = false;
         var startDrawPoint;
-        $("#twoDModel_stage").mousedown(function (e) {
+        $("#two-d-model-scene-area").mousedown(function (e) {
             switch (worldModel.drawMode) {
                 case 0:
                     if (e.target.nodeName === "svg") {
@@ -1240,8 +1240,8 @@ var WorldModelImpl = (function () {
                     var position = worldModel.getMousePosition(e);
                     var x = position.x;
                     var y = position.y;
-                    var width = $("#pen_width_spinner").val();
-                    var color = $("#pen_color_dropdown").val();
+                    var width = $("#pen-width-spinner").val();
+                    var color = $("#pen-color-dropdown").val();
                     shape = new LineItemImpl(worldModel, x, y, x, y, width, new RGBAColor(1, color), worldModel.isInteractive);
                     worldModel.colorFields.push(shape);
                     worldModel.setCurrentElement(shape);
@@ -1260,8 +1260,8 @@ var WorldModelImpl = (function () {
                     var position = worldModel.getMousePosition(e);
                     var x = position.x;
                     var y = position.y;
-                    var width = $("#pen_width_spinner").val();
-                    var color = $("#pen_color_dropdown").val();
+                    var width = $("#pen-width-spinner").val();
+                    var color = $("#pen-color-dropdown").val();
                     shape = new PencilItemImpl(worldModel, x, y, width, color, worldModel.isInteractive);
                     worldModel.colorFields.push(shape);
                     worldModel.setCurrentElement(shape);
@@ -1271,8 +1271,8 @@ var WorldModelImpl = (function () {
                     var position = worldModel.getMousePosition(e);
                     var x = position.x;
                     var y = position.y;
-                    var width = $("#pen_width_spinner").val();
-                    var color = $("#pen_color_dropdown").val();
+                    var width = $("#pen-width-spinner").val();
+                    var color = $("#pen-color-dropdown").val();
                     startDrawPoint = {
                         "x": x,
                         "y": y
@@ -1285,7 +1285,7 @@ var WorldModelImpl = (function () {
                 default:
             }
         });
-        $("#twoDModel_stage").mousemove(function (e) {
+        $("#two-d-model-scene-area").mousemove(function (e) {
             if (worldModel.isInteractive && isDrawing) {
                 switch (worldModel.drawMode) {
                     case 1:
@@ -1311,7 +1311,7 @@ var WorldModelImpl = (function () {
                 }
             }
         });
-        $("#twoDModel_stage").mouseup(function (event) {
+        $("#two-d-model-scene-area").mouseup(function (event) {
             isDrawing = false;
             if (worldModel.isInteractive) {
                 if (event.target.nodeName !== "svg" && !(worldModel.currentElement instanceof RobotItemImpl
@@ -1331,7 +1331,7 @@ var WorldModelImpl = (function () {
     };
     WorldModelImpl.prototype.initCustomContextMenu = function () {
         var controller = this;
-        $("#twoDModelContent").bind("contextmenu", function (event) {
+        $("#two-d-model-area").bind("contextmenu", function (event) {
             event.preventDefault();
         });
         $("#" + controller.contextMenuId + " li").click(function () {
@@ -1348,7 +1348,7 @@ var WorldModelImpl = (function () {
         var deleteKey = 46;
         $('html').keyup(function (event) {
             if (event.keyCode == deleteKey) {
-                if ($("#twoDModel_stage").is(":visible") && !(document.activeElement.tagName === "INPUT")) {
+                if ($("#two-d-model-scene-area").is(":visible") && !(document.activeElement.tagName === "INPUT")) {
                     if (!(_this.currentElement instanceof RobotItemImpl || _this.currentElement instanceof SensorItem)) {
                         _this.removeCurrentElement();
                     }
@@ -1620,7 +1620,7 @@ var SensorsConfiguration = (function (_super) {
 var ModelImpl = (function () {
     function ModelImpl(zoom) {
         this.robotModels = [];
-        var interactiveAttr = $("#twoDModel_stage").attr("interactive");
+        var interactiveAttr = $("#two-d-model-scene-area").attr("interactive");
         this.isInteractive = (interactiveAttr === "false") ? false : true;
         var model = this;
         model.worldModel = new WorldModelImpl(zoom, this.isInteractive);
@@ -1814,11 +1814,11 @@ var TwoDModelEngineFacadeImpl = (function () {
         var _this = this;
         var robotModel = new TwoDRobotModel(new TrikRobotModelBase(), "model");
         this.robotModelName = robotModel.getName();
-        this.model = new ModelImpl(parseFloat($("#twoDModel_stage").attr("zoom")));
+        this.model = new ModelImpl(parseFloat($("#two-d-model-scene-area").attr("zoom")));
         this.model.addRobotModel(robotModel);
         $(document).ready(function () {
             _this.initPortsConfiguration($scope, $compile, robotModel);
-            _this.makeUnselectable(document.getElementById("twoDModelContent"));
+            _this.makeUnselectable(document.getElementById("two-d-model-area"));
         });
         $scope.followRobot = function () { _this.followRobot(); };
         $scope.closeDisplay = function () { _this.closeDisplay(); };
@@ -1852,7 +1852,7 @@ var TwoDModelEngineFacadeImpl = (function () {
     };
     TwoDModelEngineFacadeImpl.prototype.followRobot = function () {
         var robotModel = this.model.getRobotModels()[0];
-        robotModel.follow(!$("#follow_button").hasClass('active'));
+        robotModel.follow(!$("#follow-robot-button").hasClass('active'));
     };
     TwoDModelEngineFacadeImpl.prototype.initPortsConfiguration = function ($scope, $compile, twoDRobotModel) {
         var configurationDropdownsContent = "<p>";
