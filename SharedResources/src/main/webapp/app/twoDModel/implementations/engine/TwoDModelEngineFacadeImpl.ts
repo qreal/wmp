@@ -33,7 +33,7 @@ class TwoDModelEngineFacadeImpl implements TwoDModelEngineFacade {
 
         $(document).ready(() => {
             this.initPortsConfiguration($scope, $compile, robotModel);
-            this.makeUnselectable(document.getElementById("two-d-model-content"));
+            this.makeUnselectable(document.getElementById("two-d-model-area"));
         });
 
         $scope.followRobot = () => { this.followRobot(); };
