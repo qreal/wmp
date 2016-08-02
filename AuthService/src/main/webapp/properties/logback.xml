@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>
+                [%level] %d{HH:mm:ss}  %logger{36} - %msg%n
+            </Pattern>
+        </layout>
+    </appender>
+
+    <!--Disabling spring log-->
+    <logger name="org.springframework" level="ERROR" additivity="false">
+        <appender-ref ref="STDOUT" />
+    </logger>
+
+    <!--Disabling hibernate log-->
+    <logger name="org.hibernate" level="ERROR" additivity="false">
+        <appender-ref ref="STDOUT" />
+    </logger>
+
+    <!--Disabling first step auth library log -->
+    <logger name="com.racquettrack" level="ERROR" additivity="false">
+        <appender-ref ref="STDOUT" />
+    </logger>
+
+    <!--Main logging of application-->
+    <logger name="com.resources.auth" level="trace" additivity="false">
+        <appender-ref ref="STDOUT" />
+    </logger>
+
+    <!--Database logging-->
+    <logger name="com.resources.auth.database" level="error" additivity="false">
+        <appender-ref ref="STDOUT" />
+    </logger>
+
+    <root level="trace">
+        <appender-ref ref="STDOUT" />
+    </root>
+
+</configuration>

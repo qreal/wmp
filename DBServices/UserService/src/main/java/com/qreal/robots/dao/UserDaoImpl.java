@@ -1,6 +1,7 @@
 package com.qreal.robots.dao;
 
-import com.qreal.robots.client.RobotService;
+import com.qreal.robots.client.diagrams.DiagramService;
+import com.qreal.robots.client.robots.RobotService;
 import com.qreal.robots.model.auth.UserRoleSerial;
 import com.qreal.robots.model.auth.UserSerial;
 import com.qreal.robots.thrift.gen.TRobot;
@@ -15,7 +16,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Component("userDao")
 @Repository
@@ -33,6 +36,12 @@ public class UserDaoImpl implements UserDao {
      */
     @Autowired
     private RobotService robotService;
+
+    /**
+     * DiagramService used to resolve foreign key dependecies.
+     */
+    @Autowired
+    private DiagramService diagramService;
 
     @Autowired
     public UserDaoImpl(SessionFactory sessionFactory) {
@@ -56,11 +65,15 @@ public class UserDaoImpl implements UserDao {
         logger.trace("saving robots of user {}", user.getUsername());
         UserSerial userSerial = saveOrUpdateRobots(user);
         logger.trace("robots of user {} saved, id's now in userSerial", user.getUsername());
+        Set<UserRoleSerial> roles = new HashSet<UserRoleSerial>();
+        UserRoleSerial userRole = new UserRoleSerial(ROLE_USER);
+        roles.add(userRole);
+        userSerial.setRoles(roles);
         session.save(userSerial);
         logger.trace("user {} saved", user.getUsername());
-        UserRoleSerial userRole = new UserRoleSerial(ROLE_USER);
-        session.save(userRole);
-        logger.trace("userRole of user {} saved", user.getUsername());
+        logger.trace("creating root folder for user {}", user.getUsername());
+        diagramService.createRootFolder(user.getUsername());
+        logger.trace("rootfolder {} created", user.getUsername());
         logger.trace("save method saved user {}", user.getUsername());
     }
 

@@ -1,4 +1,4 @@
-package com.qreal.robots.client;
+package com.qreal.robots.client.robots;
 
 import com.qreal.robots.thrift.gen.TRobot;
 import org.jetbrains.annotations.NotNull;

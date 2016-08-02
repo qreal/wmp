@@ -42,9 +42,12 @@
     <entry_points version="2.0" />
   </component>
   <component name="FrameworkDetectionExcludesConfiguration">
+    <file type="web" url="file://$PROJECT_DIR$/AuthService" />
+    <file type="web" url="file://$PROJECT_DIR$/DashboardService" />
     <file type="web" url="file://$PROJECT_DIR$/DBServices/DiagramService" />
     <file type="web" url="file://$PROJECT_DIR$/DBServices/RobotsService" />
     <file type="web" url="file://$PROJECT_DIR$/DBServices/UserService" />
+    <file type="web" url="file://$PROJECT_DIR$/EditorService" />
     <file type="web" url="file://$PROJECT_DIR$/RobotsEditor" />
     <file type="web" url="file://$PROJECT_DIR$/SharedResources" />
   </component>
@@ -74,6 +77,9 @@
         <option value="$PROJECT_DIR$/DBServices/DiagramService/pom.xml" />
         <option value="$PROJECT_DIR$/DBServices/RobotsService/pom.xml" />
         <option value="$PROJECT_DIR$/DBServices/UserService/pom.xml" />
+        <option value="$PROJECT_DIR$/AuthService/pom.xml" />
+        <option value="$PROJECT_DIR$/EditorService/pom.xml" />
+        <option value="$PROJECT_DIR$/DashboardService/pom.xml" />
       </list>
     </option>
   </component>

@@ -1,0 +1,27 @@
+package com.resources.auth.security.utils;
+
+import com.resources.auth.database.users.User;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+
+/**
+ * This class represent authentication object of user.
+ * It can return name of authenticated user, which interacts with the service or
+ * his UserAuthorities.
+ */
+public class AuthenticatedUser {
+    public static String getAuthenticatedUserName()
+    {
+        User authenticatedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return authenticatedUser.getUsername();
+    }
+
+    public static String getAuthenticatedUserAuthority() {
+        User authenticatedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String auth = "";
+        for (GrantedAuthority authority : authenticatedUser.getAuthorities()) {
+            auth += authority.getAuthority() + " ";
+        }
+        return auth;
+    }
+}

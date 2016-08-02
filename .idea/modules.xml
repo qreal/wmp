@@ -2,7 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/AuthService/auth-service.iml" filepath="$PROJECT_DIR$/AuthService/auth-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/DashboardService/dashboard-service.iml" filepath="$PROJECT_DIR$/DashboardService/dashboard-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/DBServices/DiagramService/diagram-service.iml" filepath="$PROJECT_DIR$/DBServices/DiagramService/diagram-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/EditorService/editor-service.iml" filepath="$PROJECT_DIR$/EditorService/editor-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/parent.iml" filepath="$PROJECT_DIR$/parent.iml" />
       <module fileurl="file://$PROJECT_DIR$/DBServices/RobotsService/robot-service.iml" filepath="$PROJECT_DIR$/DBServices/RobotsService/robot-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/RobotsEditor/robots-diagram.iml" filepath="$PROJECT_DIR$/RobotsEditor/robots-diagram.iml" />

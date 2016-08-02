@@ -22,7 +22,10 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
+        <module name="auth-service" />
+        <module name="dashboard-service" />
         <module name="diagram-service" />
+        <module name="editor-service" />
         <module name="robot-service" />
         <module name="robots-diagram" />
         <module name="shared-resources" />
@@ -30,8 +33,12 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="auth-service" target="1.8" />
+      <module name="dashboard-service" target="1.8" />
+      <module name="DashboardService" target="1.6" />
       <module name="diagram-service" target="1.8" />
       <module name="diagram-service (1)" target="1.8" />
+      <module name="editor-service" target="1.8" />
       <module name="parent" target="1.5" />
       <module name="robot-service" target="1.8" />
       <module name="robots-diagram" target="1.8" />
