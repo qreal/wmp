@@ -13,13 +13,13 @@
     <artifactId>diagram-service</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
-<!--
+
     <properties>
         <thrift.executable>thrift</thrift.executable>
         <thrift.src.base>src/main/java/com/qreal/robots/thrift</thrift.src.base>
         <thrift.output.dir>target/generated-sources/thrift</thrift.output.dir>
     </properties>
--->
+
     <build>
         <plugins>
             <!-- compiler plugin -->
@@ -49,7 +49,7 @@
                 </configuration>
             </plugin>
 
-            <!-- thrift plugin 
+            <!-- thrift plugin -->
             <plugin>
                 <groupId>org.apache.thrift.tools</groupId>
                 <artifactId>maven-thrift-plugin</artifactId>
@@ -84,8 +84,8 @@
                     </execution>
                 </executions>
             </plugin>
-            -->
-            <!-- build helper plugin             
+
+            <!-- build helper plugin -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
@@ -107,7 +107,6 @@
                     </execution>
                 </executions>
             </plugin>
-            -->
         </plugins>
     </build>
 
