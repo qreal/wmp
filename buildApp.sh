@@ -1,21 +1,19 @@
-#Generate Shared resources
+#!/bin/bash
 cd SharedResources/src/main/webapp
 sudo npm install
 grunt
+
 cd ../../..
 sudo mvn clean
 mvn install
-cd ..
-#Generate robots-editor
-cd RobotsEditor
-sh thriftGen.sh
+
+cd ../RobotsEditor
+mvn generate-sources
 cd src/main/webapp
 sudo npm install
 grunt
+
 cd ../../..
 sudo mvn clean
 mvn install
 cd ..
-#Generate main project
-sudo mvn clean
-mvn install

@@ -11,13 +11,9 @@ import org.springframework.context.support.AbstractApplicationContext;
  */
 public class UserDbServiceHandler implements UserDbService.Iface {
 
-    private final AbstractApplicationContext context;
-
     private final UserDao userDao;
 
     public UserDbServiceHandler(AbstractApplicationContext context) {
-        this.context = context;
-
         userDao = (UserDao) context.getBean("userDao");
         assert userDao != null;
     }

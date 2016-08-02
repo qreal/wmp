@@ -4,6 +4,7 @@
     <title>Robots diagram editor</title>
 
     <jsp:include page="../include/scripts.jsp" flush="true"/>
+    <script src="<c:url value='/resources/thrift/struct/Diagram_types.js'/> "></script>
     <script src="<c:url value='/resources/thrift/editor/EditorService_types.js'/> "></script>
     <script src="<c:url value='/resources/thrift/editor/EditorServiceThrift.js'/> "></script>
     <script src="<c:url value='/resources/treeview/jquery.treeview.js' />"></script>
