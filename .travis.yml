@@ -27,42 +27,36 @@ before_install:
   - sudo make install
   - sudo ln -s /usr/local/bin/thrift /usr/bin/thriftD
   - cd ../..
-  #get checkstyle
   - wget http://downloads.sourceforge.net/project/checkstyle/checkstyle/7.0/checkstyle-7.0-all.jar
 
 install:
-  - ./buildAppSplitted.sh
+  - mvn install
 
 script:
   #run checkstyle
-  #RobotsEditor
   - java -jar checkstyle-7.0-all.jar -c Travis/checkstyle/checkstyle.xml RobotsEditor/src
-  #DiagramDBService
   - java -jar checkstyle-7.0-all.jar -c Travis/checkstyle/checkstyle.xml DBServices/DiagramService/src
-  #RobotsDBService
   - java -jar checkstyle-7.0-all.jar -c Travis/checkstyle/checkstyle.xml DBServices/RobotsService/src
-  #UserDBService
   - java -jar checkstyle-7.0-all.jar -c Travis/checkstyle/checkstyle.xml DBServices/UserService/src
 
-
-  #run callTomcat test
+  #run services
   - cd DBServices
-  #run DiagramDBService
   - cd DiagramService
   - mvn exec:java &
-  #run UserDBService
+
   - cd ../UserService
   - mvn exec:java &
-  #run RobotsDBService
+
   - cd ../RobotsService
   - mvn exec:java &
-  #give odds
+
   - sleep 60
-  #run RobotsEditor
+
   - cd ../../RobotsEditor
   - mvn tomcat7:run-war &
-  - ../Travis/callTomcat.sh
 
+  #run tomcat
+  - ../Travis/callTomcat.sh
 
 notifications:
   slack: qreal-web:sT5qgA4qZZ9eyLI0yy2Mp81E
