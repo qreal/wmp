@@ -95,6 +95,18 @@
                             <outputDirectory>${thrift.client.output.dir}/dashboard</outputDirectory>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>js-ts-generation-structs</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                        <configuration>
+                            <generator>js:ts</generator>
+                            <thriftSourceRoot>src/main/thrift/struct</thriftSourceRoot>
+                            <outputDirectory>${thrift.client.output.dir}/struct</outputDirectory>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
 
