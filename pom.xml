@@ -10,11 +10,11 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>SharedResources</module>
-        <module>RobotsEditor</module>
-        <module>DBServices/DiagramService</module>
-        <module>DBServices/RobotsService</module>
-        <module>DBServices/UserService</module>
+        <module>shared-resources</module>
+        <module>robots-editor</module>
+        <module>db-services/diagram-service</module>
+        <module>db-services/robots-service</module>
+        <module>db-services/user-service</module>
     </modules>
 
     <build>
