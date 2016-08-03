@@ -29,6 +29,10 @@ before_install:
   - cd ../..
   #get checkstyle
   - wget http://downloads.sourceforge.net/project/checkstyle/checkstyle/7.0/checkstyle-7.0-all.jar
+  #install first step auth
+  - cd 3dparty/firsstepauth
+  - mvn clean install
+
 
 install:
   - ./buildApp.sh
