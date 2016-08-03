@@ -1,4 +1,5 @@
-<%--<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>--%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ include file="properties.jsp" %>
 <!--.navbar-->
 <nav class="navbar navbar-default">
     <div class="container-fluid">
@@ -16,10 +17,12 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li><a href="/server/home"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                <li><a href="<c:url value="${home}"/>"><span class="glyphicon glyphicon-home"></span> Home</a></li>
                 <%--<sec:authorize access="hasRole('ADMIN')">--%>
-                <li><a href="/server/clientsPanel"><span class="glyphicon glyphicon-cloud"></span> Table servers</a></li>
-                <li><a href="/server/usersPanel"><span class="glyphicon glyphicon-user"></span> Table users</a></li>
+                <li><a href="<c:url value="${clientsPanel}"/>"><span class="glyphicon glyphicon-cloud"></span> Table
+                    servers</a></li>
+                <li><a href="<c:url value="${usersPanel}"/>"><span class="glyphicon glyphicon-user"></span> Table
+                    users</a></li>
                 <%--</sec:authorize>--%>
             </ul>
             <ul class="nav navbar-nav navbar-right">

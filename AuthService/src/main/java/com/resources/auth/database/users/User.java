@@ -56,7 +56,6 @@ public class User implements Serializable, UserDetails {
         this.username = username;
     }
 
-
     public String getPassword() {
         return this.password;
     }
@@ -65,12 +64,13 @@ public class User implements Serializable, UserDetails {
         this.password = password;
     }
 
-
-    //FIXME unchecked casts
-    public Collection<GrantedAuthority> getAuthorities(){
+    public Collection<GrantedAuthority> getAuthorities() {
         return (Collection<GrantedAuthority>) (Collection<?>) authorities;
     }
 
+    /**
+     * Serialize authorities in strings and returns.
+     */
     public Collection<String> getAuthoritiesInStringList() {
         Collection<String> collection = new ArrayList<String>();
         for (UserAuthority authority : authorities) {
@@ -79,6 +79,9 @@ public class User implements Serializable, UserDetails {
         return collection;
     }
 
+    /**
+     * Sets authorities (converting from GrantedAuthority).
+     */
     public void setAuthorities(Collection<GrantedAuthority> authorities) {
         for (GrantedAuthority authority : authorities) {
             UserAuthority authorityCasted = (UserAuthority) authority;
@@ -104,8 +107,7 @@ public class User implements Serializable, UserDetails {
     }
 
     public boolean isAdmin() {
-        boolean isAdmin = getAuthoritiesInStringList().contains("ROLE_ADMIN");
-        return isAdmin;
+        return getAuthoritiesInStringList().contains("ROLE_ADMIN");
     }
 }
 

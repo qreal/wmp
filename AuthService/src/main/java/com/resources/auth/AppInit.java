@@ -1,4 +1,5 @@
 package com.resources.auth;
+
 import com.resources.auth.database.client.Client;
 import com.resources.auth.database.client.ClientDAO;
 import com.resources.auth.database.users.User;

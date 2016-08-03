@@ -10,15 +10,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
+import org.springframework.test.annotation.Commit;
 
 import javax.annotation.Resource;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-/**
- * Created by tanvd on 03.04.16.
- */
+@Component
 public class OAuth2UserDetailsLoaderImpl implements OAuth2UserDetailsLoader {
 
     private static final Logger logger = LoggerFactory.getLogger(OAuth2UserDetailsLoaderImpl.class);
@@ -26,9 +26,8 @@ public class OAuth2UserDetailsLoaderImpl implements OAuth2UserDetailsLoader {
     @Resource(name = "userService")
     UserDAO userService;
 
-    @Resource(name="passwordEncoder")
+    @Resource(name = "passwordEncoder")
     PasswordEncoder passwordEncoder;
-
 
     /**
      * Retrieves the {@link UserDetails} object.
@@ -57,7 +56,7 @@ public class OAuth2UserDetailsLoaderImpl implements OAuth2UserDetailsLoader {
     }
 
     /**
-     * Creates a new user in the internal system. The internal system should store the {@param id} of the User to
+     * Creates a new user in the internal system. The internal system should store the id of the User to
      * establish a link between the OAuth Provider and the internal system.
      *
      * @param id       The id of the user given by the OAuth Provider.
@@ -73,7 +72,6 @@ public class OAuth2UserDetailsLoaderImpl implements OAuth2UserDetailsLoader {
         //Creating random password, login via standard login form shouldn't be accessible for oauth registrated users
         String password = RandomStringGenerator.generateString(20);
 
-
         User user = new User();
         user.setUsername(id.toString());
         user.setPassword(passwordEncoder.encode(password));
@@ -88,7 +86,7 @@ public class OAuth2UserDetailsLoaderImpl implements OAuth2UserDetailsLoader {
     }
 
     /**
-     * Expected to be called only when the user described by {@param userInfo} has already been determined to not
+     * Expected to be called only when the user described by userInfo has already been determined to not
      * exist in the system. Implementations should return true when it is okay for the user to be created. For example,
      * implementations may want to return false if a significant time has elapsed between the user being created in
      * the OAuth Provider and now.

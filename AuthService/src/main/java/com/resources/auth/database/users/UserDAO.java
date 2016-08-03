@@ -15,7 +15,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
 /**
  * This is the main class for work with users tables in database.
  * Because of not very complex logic i decided do not create separate userService
@@ -35,7 +34,7 @@ public class UserDAO {
     private SessionFactory sessionFactory;
 
     /**
-     * Retrieves a single user by id
+     * Retrieves a single user by id.
      */
     public User get(Integer id) {
         Session session = sessionFactory.getCurrentSession();
@@ -66,7 +65,7 @@ public class UserDAO {
      * Retrieves a single user by login.
      * (Take first from list of returned)
      */
-    public UserDetails loadUserByUsername(String login){
+    public UserDetails loadUserByUsername(String login) {
         Session session = sessionFactory.getCurrentSession();
 
         Query query = session.createQuery("FROM User E WHERE E.username = :login");
@@ -92,7 +91,7 @@ public class UserDAO {
     }
 
     /**
-     * Adds a new user
+     * Adds a new user.
      */
     public void add(User person) {
         if (get(person.getUsername()).size() > 0) {
@@ -104,7 +103,7 @@ public class UserDAO {
     }
 
     /**z
-     * Deletes an existing user by id
+     * Deletes an existing user by id.
      */
     public void delete(Integer id) {
 
@@ -116,7 +115,7 @@ public class UserDAO {
     }
 
     /**
-     * Edits an existing user
+     * Edits an existing user.
      */
     public void edit(User person) {
         Session session = sessionFactory.getCurrentSession();

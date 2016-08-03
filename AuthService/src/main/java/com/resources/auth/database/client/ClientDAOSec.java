@@ -18,9 +18,12 @@ public class ClientDAOSec implements ClientDetailsService {
     @Autowired
     ClientDAO clientService;
 
+    /**
+     * Loads client from local DB by id.
+     */
     @Override
-    public ClientDetails loadClientByClientId(String s) throws ClientRegistrationException {
-        ClientDetails clientDetails = clientService.loadClientById(s);
+    public ClientDetails loadClientByClientId(String id) throws ClientRegistrationException {
+        ClientDetails clientDetails = clientService.loadClientById(id);
         if (clientDetails == null) {
             throw new ClientRegistrationException("This client not registered");
         }

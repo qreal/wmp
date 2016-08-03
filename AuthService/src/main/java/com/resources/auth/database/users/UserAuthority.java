@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "UserAuthorities")
-public class UserAuthority implements GrantedAuthority{
+public class UserAuthority implements GrantedAuthority {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,20 +23,20 @@ public class UserAuthority implements GrantedAuthority{
     public UserAuthority() {
     }
 
-    public UserAuthority(String authority){
+    public UserAuthority(String authority) {
         this.authority = authority;
     }
 
-    public UserAuthority(String authority, User user){
+    public UserAuthority(String authority, User user) {
         this.user = user;
         this.authority = authority;
     }
 
-    public String getAuthority(){
+    public String getAuthority() {
         return authority;
     }
 
-    public void setAuthority(String authority){
+    public void setAuthority(String authority) {
         this.authority = authority;
     }
 

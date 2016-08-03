@@ -27,7 +27,6 @@
         <module name="diagram-service" />
         <module name="editor-service" />
         <module name="robot-service" />
-        <module name="robots-diagram" />
         <module name="shared-resources" />
         <module name="user-service" />
       </profile>

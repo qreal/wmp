@@ -13,8 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service("userServiceSec")
 @Transactional
-public class UserDAOSec implements UserDetailsService{
-
+public class UserDAOSec implements UserDetailsService {
 
     public void setUserService(UserDAO userService) {
         this.userService = userService;
@@ -23,9 +22,13 @@ public class UserDAOSec implements UserDetailsService{
     @Autowired
     private UserDAO userService;
 
+    /**
+     * Loads user from local DB by id.
+     */
+    @Override
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
         UserDetails user = userService.loadUserByUsername(login);
-        if (user == null){
+        if (user == null) {
             throw new UsernameNotFoundException("Username not found");
         }
         return user;

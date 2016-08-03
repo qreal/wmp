@@ -21,7 +21,6 @@ public class ClientDAO {
 
     private static final Logger logger = LoggerFactory.getLogger(ClientDAO.class);
 
-
     public void setSessionFactory(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
@@ -30,7 +29,7 @@ public class ClientDAO {
     private SessionFactory sessionFactory;
 
     /**
-     * Retrieves a single client by id
+     * Retrieves a single client by id.
      */
     public Client get(Integer id) {
         Session session = sessionFactory.getCurrentSession();
@@ -62,7 +61,7 @@ public class ClientDAO {
      * Retrieves a single client by idClient.
      * (Take first from list of returned)
      */
-    public ClientDetails loadClientById(String clientId){
+    public ClientDetails loadClientById(String clientId) {
         Session session = sessionFactory.getCurrentSession();
 
         Query query = session.createQuery("FROM Client E WHERE E.clientId = :clientId");
@@ -88,7 +87,7 @@ public class ClientDAO {
     }
 
     /**
-     * Adds a new client
+     * Adds a new client.
      */
     public void add(Client client) {
         if (get(client.getClientId()).size() > 0) {
@@ -101,7 +100,7 @@ public class ClientDAO {
     }
 
     /**
-     * Deletes an existing client by id
+     * Deletes an existing client by id.
      */
     public void delete(Integer id) {
         Session session = sessionFactory.getCurrentSession();
@@ -111,7 +110,7 @@ public class ClientDAO {
     }
 
     /**
-     * Edits an existing client
+     * Edits an existing client.
      */
     public void edit(Client client) {
         Session session = sessionFactory.getCurrentSession();

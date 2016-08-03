@@ -5,7 +5,6 @@ import org.hibernate.annotations.LazyCollectionOption;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.provider.ClientDetails;
 
-
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -16,20 +15,18 @@ import java.util.Set;
 @Table(name = "Clients")
 public class Client implements ClientDetails {
 
-    static Integer idInc = 0;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
-    private int id = 0;
+    private int id;
 
     @Column(name = "ClientId")
     String clientId;
 
     @LazyCollection(LazyCollectionOption.FALSE)
     @ElementCollection
-    @CollectionTable(name="ResourceIds", joinColumns=@JoinColumn(name="ID"))
-    @Column(name="ResourceId")
+    @CollectionTable(name = "ResourceIds", joinColumns = @JoinColumn(name = "ID"))
+    @Column(name = "ResourceId")
     Set<String> resourceIds;
 
     @Column(name = "SecretRequired")
@@ -43,20 +40,20 @@ public class Client implements ClientDetails {
 
     @LazyCollection(LazyCollectionOption.FALSE)
     @ElementCollection
-    @CollectionTable(name="Scopes", joinColumns=@JoinColumn(name="ID"))
-    @Column(name="Scope")
+    @CollectionTable(name = "Scopes", joinColumns = @JoinColumn(name = "ID"))
+    @Column(name = "Scope")
     Set<String> scope;
 
     @LazyCollection(LazyCollectionOption.FALSE)
     @ElementCollection
-    @CollectionTable(name="AuthorizedGrantTypes", joinColumns=@JoinColumn(name="ID"))
-    @Column(name="AuthorizedGrantType")
+    @CollectionTable(name = "AuthorizedGrantTypes", joinColumns = @JoinColumn(name = "ID"))
+    @Column(name = "AuthorizedGrantType")
     Set<String> authorizedGrantTypes;
 
     @LazyCollection(LazyCollectionOption.FALSE)
     @ElementCollection
-    @CollectionTable(name="RegisteredRedirectUris", joinColumns=@JoinColumn(name="ID"))
-    @Column(name="RegisteredRedirectUri")
+    @CollectionTable(name = "RegisteredRedirectUris", joinColumns = @JoinColumn(name = "ID"))
+    @Column(name = "RegisteredRedirectUri")
     Set<String> registeredRedirectUri;
 
     @Column(name = "AccessTokenValiditySeconds")
@@ -68,17 +65,17 @@ public class Client implements ClientDetails {
     @Column(name = "AutoApprove")
     boolean isAutoApprove;
 
-    public Client()
-    {
-        idInc++;
+    public Client() {
     }
 
+    /**
+     * Full Client constructor.
+     */
     public Client(String clientId, boolean isSecretRequired, String clientSecret,
                   boolean isScoped, Set<String> scope, Set<String> authorizedGrantTypes,
                   Integer accessTokenValiditySeconds, Integer refreshTokenValiditySeconds,
                   boolean isAutoApprove)
     {
-        id = idInc;
         this.clientId = clientId;
         this.isSecretRequired = isSecretRequired;
         this.clientSecret = clientSecret;
@@ -88,10 +85,7 @@ public class Client implements ClientDetails {
         this.accessTokenValiditySeconds = accessTokenValiditySeconds;
         this.refreshTokenValiditySeconds = refreshTokenValiditySeconds;
         this.isAutoApprove = isAutoApprove;
-
-        idInc++;
     }
-
 
     public String getClientId() {
         return clientId;
@@ -150,7 +144,7 @@ public class Client implements ClientDetails {
     }
 
     @Override
-    public boolean isAutoApprove(String s) {
+    public boolean isAutoApprove(String string) {
         return isAutoApprove;
     }
 

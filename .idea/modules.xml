@@ -8,7 +8,6 @@
       <module fileurl="file://$PROJECT_DIR$/EditorService/editor-service.iml" filepath="$PROJECT_DIR$/EditorService/editor-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/parent.iml" filepath="$PROJECT_DIR$/parent.iml" />
       <module fileurl="file://$PROJECT_DIR$/DBServices/RobotsService/robot-service.iml" filepath="$PROJECT_DIR$/DBServices/RobotsService/robot-service.iml" />
-      <module fileurl="file://$PROJECT_DIR$/RobotsEditor/robots-diagram.iml" filepath="$PROJECT_DIR$/RobotsEditor/robots-diagram.iml" />
       <module fileurl="file://$PROJECT_DIR$/SharedResources/shared-resources.iml" filepath="$PROJECT_DIR$/SharedResources/shared-resources.iml" />
       <module fileurl="file://$PROJECT_DIR$/DBServices/UserService/user-service.iml" filepath="$PROJECT_DIR$/DBServices/UserService/user-service.iml" />
     </modules>
