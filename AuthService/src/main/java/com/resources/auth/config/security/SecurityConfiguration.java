@@ -27,16 +27,16 @@ import javax.annotation.Resource;
 @Order(2) //EnableResourceServer annotation create WebSecurityConfigurerAdapter with Order(3)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Resource(name = "userServiceSec")
-    UserDAOSec userServiceSec;
+    private UserDAOSec userServiceSec;
 
     @Resource(name = "passwordEncoder")
-    PasswordEncoder encoder;
+    private PasswordEncoder encoder;
 
     @Resource(name = "providerGoogle")
-    OAuth2AuthenticationProvider oAuthProvGoogle;
+    private OAuth2AuthenticationProvider oAuthProvGoogle;
 
     @Resource(name = "providerGithub")
-    OAuth2AuthenticationProvider oAuthProvGithub;
+    private OAuth2AuthenticationProvider oAuthProvGithub;
 
     @Autowired
     public void globalUserDetails(AuthenticationManagerBuilder auth) throws Exception {

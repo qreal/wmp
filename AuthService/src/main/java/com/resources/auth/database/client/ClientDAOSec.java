@@ -11,12 +11,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class ClientDAOSec implements ClientDetailsService {
 
+    @Autowired
+    ClientDAO clientService;
+
     public void setClientService(ClientDAO clientService) {
         this.clientService = clientService;
     }
-
-    @Autowired
-    ClientDAO clientService;
 
     /**
      * Loads client from local DB by id.

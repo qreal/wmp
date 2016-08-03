@@ -1,6 +1,5 @@
 package com.resources.auth.security.oauth;
 
-import com.resources.auth.database.users.UserDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;

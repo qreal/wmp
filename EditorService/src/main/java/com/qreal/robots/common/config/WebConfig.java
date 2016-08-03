@@ -12,7 +12,6 @@ import org.springframework.web.servlet.view.JstlView;
 
 @Configuration
 @EnableWebMvc
-
 @Import({SecurityConfig.class})
 @ComponentScan("com.qreal.robots")
 public class WebConfig extends WebMvcConfigurerAdapter {

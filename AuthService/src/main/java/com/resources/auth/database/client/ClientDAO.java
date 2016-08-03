@@ -21,12 +21,12 @@ public class ClientDAO {
 
     private static final Logger logger = LoggerFactory.getLogger(ClientDAO.class);
 
+    @Resource(name = "sessionFactory")
+    private SessionFactory sessionFactory;
+
     public void setSessionFactory(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
-
-    @Resource(name = "sessionFactory")
-    private SessionFactory sessionFactory;
 
     /**
      * Retrieves a single client by id.

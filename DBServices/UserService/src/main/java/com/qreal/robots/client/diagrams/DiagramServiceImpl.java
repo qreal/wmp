@@ -36,7 +36,6 @@ public class DiagramServiceImpl implements DiagramService {
         client = new DiagramDbService.Client(protocol);
     }
 
-
     @Override
     public void createRootFolder(String userName) {
         logger.trace("createRootFolder method called with parameters: username = {}", userName);

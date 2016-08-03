@@ -15,12 +15,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class UserDAOSec implements UserDetailsService {
 
+    @Autowired
+    private UserDAO userService;
+
     public void setUserService(UserDAO userService) {
         this.userService = userService;
     }
-
-    @Autowired
-    private UserDAO userService;
 
     /**
      * Loads user from local DB by id.

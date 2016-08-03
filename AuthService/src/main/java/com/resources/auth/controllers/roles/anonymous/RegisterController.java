@@ -29,7 +29,7 @@ public class RegisterController {
     private UserDAO userService;
 
     @Resource(name = "passwordEncoder")
-    PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
 
     @RequestMapping(value = "register", method = RequestMethod.GET)
     public String login(ModelMap model) {

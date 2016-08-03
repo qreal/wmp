@@ -27,9 +27,6 @@ public class ClientsPanelController {
 
     private static final Logger logger = LoggerFactory.getLogger(ClientsPanelController.class);
 
-    @Resource(name = "userService")
-    private UserDAO userService;
-
     @Resource(name = "clientService")
     private ClientDAO clientService;
 

@@ -1,6 +1,5 @@
 package com.qreal.robots.database.diagrams.client;
 
-
 import com.qreal.robots.database.diagrams.model.Diagram;
 import com.qreal.robots.database.diagrams.model.Folder;
 

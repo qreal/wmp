@@ -30,11 +30,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(final String username)
             throws UsernameNotFoundException {
 
-        com.qreal.robots.database.users.model.User user =
-                userService.findByUserName(username);
+        com.qreal.robots.database.users.model.User user = userService.findByUserName(username);
 
-        List<GrantedAuthority> authorities =
-                buildUserAuthority(user.getRoles());
+        List<GrantedAuthority> authorities = buildUserAuthority(user.getRoles());
 
         return buildUserForAuthentication(user, authorities);
 

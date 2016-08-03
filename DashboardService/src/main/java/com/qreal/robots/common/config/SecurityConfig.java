@@ -19,13 +19,13 @@ import org.springframework.security.web.access.ExceptionTranslationFilter;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    OAuth2AuthenticationProvider oauthProv;
+    private OAuth2AuthenticationProvider oauthProv;
 
     @Autowired
-    OAuth2AuthenticationEntryPoint oauthAuthenticationEntryPoint;
+    private OAuth2AuthenticationEntryPoint oauthAuthenticationEntryPoint;
 
     @Autowired
-    OAuth2AuthenticationFilter filter;
+    private OAuth2AuthenticationFilter filter;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {

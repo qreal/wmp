@@ -4,7 +4,6 @@ import com.racquettrack.security.oauth.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
 import java.net.URISyntaxException;
@@ -17,7 +16,6 @@ public class OAuthBeans {
 
     private String userInfoUri = "http://localhost:8080/oauth/userInfo";
 
-
     @Bean(name = "properties")
     public OAuth2ServiceProperties oAuth2ServiceProperties() throws URISyntaxException {
         OAuth2ServiceProperties details = new OAuth2ServiceProperties();
@@ -29,7 +27,6 @@ public class OAuthBeans {
         details.setUserInfoUri(userInfoUri);
         return details;
     }
-
 
     @Bean
     @Autowired

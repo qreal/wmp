@@ -96,10 +96,10 @@ public class GithubConfig {
     protected static class OAuthGithubAuth extends WebSecurityConfigurerAdapter {
 
         @Resource(name = "filterGithub")
-        OAuth2AuthenticationFilter filterGithub;
+        private OAuth2AuthenticationFilter filterGithub;
 
         @Resource(name = "entryPointGithub")
-        OAuth2AuthenticationEntryPoint oAuthEntryPointGithub;
+        private OAuth2AuthenticationEntryPoint oAuthEntryPointGithub;
 
         @Bean(name = "filterGithub")
         @Autowired

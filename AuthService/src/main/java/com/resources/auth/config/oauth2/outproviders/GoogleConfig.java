@@ -95,10 +95,10 @@ public class GoogleConfig {
     protected static class OAuthGoogleAuth extends WebSecurityConfigurerAdapter {
 
         @Resource(name = "filterGoogle")
-        OAuth2AuthenticationFilter filterGoogle;
+        private OAuth2AuthenticationFilter filterGoogle;
 
         @Resource(name = "entryPointGoogle")
-        OAuth2AuthenticationEntryPoint oAuthEntryPointGoogle;
+        private OAuth2AuthenticationEntryPoint oAuthEntryPointGoogle;
 
         @Bean(name = "filterGoogle")
         @Autowired
@@ -112,7 +112,6 @@ public class GoogleConfig {
             return filter;
         }
 
-        //.csrf() is optional, enabled by default, if using WebSecurityConfigurerAdapter constructor
         @Override
         @DependsOn("filterGoogle")
         protected void configure(HttpSecurity httpSecurity) throws Exception {

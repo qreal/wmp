@@ -21,19 +21,19 @@ public class Client implements ClientDetails {
     private int id;
 
     @Column(name = "ClientId")
-    String clientId;
+    private String clientId;
 
     @LazyCollection(LazyCollectionOption.FALSE)
     @ElementCollection
     @CollectionTable(name = "ResourceIds", joinColumns = @JoinColumn(name = "ID"))
     @Column(name = "ResourceId")
-    Set<String> resourceIds;
+    private Set<String> resourceIds;
 
     @Column(name = "SecretRequired")
     boolean isSecretRequired;
 
     @Column(name = "ClientSecret")
-    String clientSecret;
+    private String clientSecret;
 
     @Column(name = "Scoped")
     boolean isScoped;
@@ -42,28 +42,28 @@ public class Client implements ClientDetails {
     @ElementCollection
     @CollectionTable(name = "Scopes", joinColumns = @JoinColumn(name = "ID"))
     @Column(name = "Scope")
-    Set<String> scope;
+    private Set<String> scope;
 
     @LazyCollection(LazyCollectionOption.FALSE)
     @ElementCollection
     @CollectionTable(name = "AuthorizedGrantTypes", joinColumns = @JoinColumn(name = "ID"))
     @Column(name = "AuthorizedGrantType")
-    Set<String> authorizedGrantTypes;
+    private Set<String> authorizedGrantTypes;
 
     @LazyCollection(LazyCollectionOption.FALSE)
     @ElementCollection
     @CollectionTable(name = "RegisteredRedirectUris", joinColumns = @JoinColumn(name = "ID"))
     @Column(name = "RegisteredRedirectUri")
-    Set<String> registeredRedirectUri;
+    private Set<String> registeredRedirectUri;
 
     @Column(name = "AccessTokenValiditySeconds")
-    Integer accessTokenValiditySeconds;
+    private Integer accessTokenValiditySeconds;
 
     @Column(name = "RefreshTokenValiditySeconds")
-    Integer refreshTokenValiditySeconds;
+    private Integer refreshTokenValiditySeconds;
 
     @Column(name = "AutoApprove")
-    boolean isAutoApprove;
+    private boolean isAutoApprove;
 
     public Client() {
     }

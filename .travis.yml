@@ -35,8 +35,12 @@ install:
 
 script:
   #run checkstyle
-  #RobotsEditor
-  - java -jar checkstyle-7.0-all.jar -c Travis/checkstyle/checkstyle.xml RobotsEditor/src
+  #AuthService
+  - java -jar checkstyle-7.0-all.jar -c Travis/checkstyle/checkstyle.xml AuthService/src
+  #DashboardService
+  - java -jar checkstyle-7.0-all.jar -c Travis/checkstyle/checkstyle.xml DashboardService/src
+  #EditorService
+  - java -jar checkstyle-7.0-all.jar -c Travis/checkstyle/checkstyle.xml EditorService/src
   #DiagramDBService
   - java -jar checkstyle-7.0-all.jar -c Travis/checkstyle/checkstyle.xml DBServices/DiagramService/src
   #RobotsDBService

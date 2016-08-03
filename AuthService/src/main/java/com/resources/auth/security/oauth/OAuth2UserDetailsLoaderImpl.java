@@ -11,7 +11,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-import org.springframework.test.annotation.Commit;
 
 import javax.annotation.Resource;
 import java.util.HashSet;
@@ -24,10 +23,10 @@ public class OAuth2UserDetailsLoaderImpl implements OAuth2UserDetailsLoader {
     private static final Logger logger = LoggerFactory.getLogger(OAuth2UserDetailsLoaderImpl.class);
 
     @Resource(name = "userService")
-    UserDAO userService;
+    private UserDAO userService;
 
     @Resource(name = "passwordEncoder")
-    PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
 
     /**
      * Retrieves the {@link UserDetails} object.

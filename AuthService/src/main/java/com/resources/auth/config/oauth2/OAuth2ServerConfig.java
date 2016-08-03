@@ -1,8 +1,6 @@
 package com.resources.auth.config.oauth2;
 
-import com.racquettrack.security.oauth.OAuth2UserDetailsLoader;
 import com.resources.auth.security.oauth.UserApprovalHandler;
-import com.resources.auth.security.oauth.OAuth2UserDetailsLoaderImpl;
 import com.resources.auth.config.oauth2.outproviders.GithubConfig;
 import com.resources.auth.config.oauth2.outproviders.GoogleConfig;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +9,6 @@ import org.springframework.context.annotation.*;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;

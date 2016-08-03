@@ -9,12 +9,13 @@ import java.util.Random;
  * Util class for password generation.
  */
 public class RandomStringGenerator {
-    private RandomStringGenerator() {
-    }
 
     private static final Logger logger = LoggerFactory.getLogger(RandomStringGenerator.class);
 
     private static  Random random = new Random();
+
+    private RandomStringGenerator() {
+    }
 
     /**
      * Static method for generation of random strings. Based on jvm random.

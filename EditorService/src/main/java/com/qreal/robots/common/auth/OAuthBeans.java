@@ -16,7 +16,6 @@ public class OAuthBeans {
 
     private String userInfoUri = "http://localhost:8080/oauth/userInfo";
 
-
     @Bean(name = "properties")
     public OAuth2ServiceProperties oAuth2ServiceProperties() throws URISyntaxException {
         OAuth2ServiceProperties details = new OAuth2ServiceProperties();
@@ -28,7 +27,6 @@ public class OAuthBeans {
         details.setUserInfoUri(userInfoUri);
         return details;
     }
-
 
     @Bean
     @Autowired
