@@ -41,12 +41,12 @@ class WorldModelImpl implements WorldModel {
     private width: number = 3000;
     private height: number = 3000;
     private isInteractive: boolean;
-    private contextMenuId = "twoDModel_stage_context_menu";
+    private contextMenuId = "two-d-model-scene-context-menu";
 
     constructor(zoom: number, isInteractive: boolean) {
         this.zoom = (zoom) ? zoom : 1;
         this.isInteractive = isInteractive;
-        this.paper = Raphael("twoDModel_stage", this.width, this.height);
+        this.paper = Raphael("two-d-model-scene-area", this.width, this.height);
         this.robotItemSet = this.paper.set();
 
         $(this.paper.canvas).attr("id", "twoDModel_paper");
@@ -150,10 +150,10 @@ class WorldModelImpl implements WorldModel {
     }
 
     getMousePosition(e) {
-        var offset = $("#twoDModel_stage").offset();
+        var offset = $("#two-d-model-scene-area").offset();
         var position = {
-            x : (e.pageX - offset.left + $("#twoDModel_stage").scrollLeft()) / this.zoom,
-            y : (e.pageY - offset.top + $("#twoDModel_stage").scrollTop()) / this.zoom
+            x : (e.pageX - offset.left + $("#two-d-model-scene-area").scrollLeft()) / this.zoom,
+            y : (e.pageY - offset.top + $("#two-d-model-scene-area").scrollTop()) / this.zoom
         }
         return position;
     }
@@ -342,7 +342,7 @@ class WorldModelImpl implements WorldModel {
         var isDrawing: boolean = false;
         var startDrawPoint;
 
-        $("#twoDModel_stage").mousedown(function(e) {
+        $("#two-d-model-scene-area").mousedown(function(e) {
             switch (worldModel.drawMode) {
                 case 0:
                     if (e.target.nodeName === "svg") {
@@ -356,8 +356,8 @@ class WorldModelImpl implements WorldModel {
                     var position = worldModel.getMousePosition(e);
                     var x = position.x;
                     var y = position.y;
-                    var width = $("#pen_width_spinner").val();
-                    var color = $("#pen_color_dropdown").val();
+                    var width = $("#pen-width-spinner").val();
+                    var color = $("#pen-color-dropdown").val();
                     shape = new LineItemImpl(worldModel, x, y, x, y, width, new RGBAColor(1, color),
                         worldModel.isInteractive);
                     worldModel.colorFields.push(shape);
@@ -377,8 +377,8 @@ class WorldModelImpl implements WorldModel {
                     var position = worldModel.getMousePosition(e);
                     var x = position.x;
                     var y = position.y;
-                    var width = $("#pen_width_spinner").val();
-                    var color = $("#pen_color_dropdown").val();
+                    var width = $("#pen-width-spinner").val();
+                    var color = $("#pen-color-dropdown").val();
                     shape = new PencilItemImpl(worldModel, x, y, width, color, worldModel.isInteractive);
                     worldModel.colorFields.push(shape);
                     worldModel.setCurrentElement(shape);
@@ -388,8 +388,8 @@ class WorldModelImpl implements WorldModel {
                     var position = worldModel.getMousePosition(e);
                     var x = position.x;
                     var y = position.y;
-                    var width = $("#pen_width_spinner").val();
-                    var color = $("#pen_color_dropdown").val();
+                    var width = $("#pen-width-spinner").val();
+                    var color = $("#pen-color-dropdown").val();
                     startDrawPoint = {
                         "x": x,
                         "y": y
@@ -403,7 +403,7 @@ class WorldModelImpl implements WorldModel {
             }
         });
 
-        $("#twoDModel_stage").mousemove((e) => {
+        $("#two-d-model-scene-area").mousemove((e) => {
             if (worldModel.isInteractive && isDrawing) {
                 switch (worldModel.drawMode) {
                     case 1:
@@ -430,7 +430,7 @@ class WorldModelImpl implements WorldModel {
             }
         });
 
-        $("#twoDModel_stage").mouseup(function(event) {
+        $("#two-d-model-scene-area").mouseup(function(event) {
             isDrawing = false;
             if (worldModel.isInteractive) {
                 if (event.target.nodeName !== "svg" && !(worldModel.currentElement instanceof RobotItemImpl
@@ -451,7 +451,7 @@ class WorldModelImpl implements WorldModel {
 
     private initCustomContextMenu(): void {
         var controller = this;
-        $("#twoDModelContent").bind("contextmenu", function (event) {
+        $("#two-d-model-area").bind("contextmenu", function (event) {
             event.preventDefault();
         });
 
@@ -470,7 +470,7 @@ class WorldModelImpl implements WorldModel {
         var deleteKey: number = 46;
         $('html').keyup((event) => {
             if(event.keyCode == deleteKey) {
-                if($("#twoDModel_stage").is(":visible") && !(document.activeElement.tagName === "INPUT")) {
+                if($("#two-d-model-scene-area").is(":visible") && !(document.activeElement.tagName === "INPUT")) {
                     if (!(this.currentElement instanceof RobotItemImpl || this.currentElement instanceof SensorItem)) {
                         this.removeCurrentElement();
                     }

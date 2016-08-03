@@ -20,7 +20,7 @@ class StageScroller {
     private zoom: number;
 
     constructor(zoom: number) {
-        this.stage = $("#twoDModel_stage");
+        this.stage = $("#two-d-model-scene-area");
         this.zoom = zoom;
     }
 
