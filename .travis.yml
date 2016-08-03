@@ -34,25 +34,25 @@ install:
 
 script:
   #run checkstyle
-  - java -jar checkstyle-7.0-all.jar -c Travis/checkstyle/checkstyle.xml RobotsEditor/src
-  - java -jar checkstyle-7.0-all.jar -c Travis/checkstyle/checkstyle.xml DBServices/DiagramService/src
-  - java -jar checkstyle-7.0-all.jar -c Travis/checkstyle/checkstyle.xml DBServices/RobotsService/src
-  - java -jar checkstyle-7.0-all.jar -c Travis/checkstyle/checkstyle.xml DBServices/UserService/src
+  - java -jar checkstyle-7.0-all.jar -c Travis/checkstyle/checkstyle.xml robots-editor/src
+  - java -jar checkstyle-7.0-all.jar -c Travis/checkstyle/checkstyle.xml db-services/diagram-service/src
+  - java -jar checkstyle-7.0-all.jar -c Travis/checkstyle/checkstyle.xml db-services/robots-service/src
+  - java -jar checkstyle-7.0-all.jar -c Travis/checkstyle/checkstyle.xml db-services/user-service/src
 
   #run services
-  - cd DBServices
-  - cd DiagramService
+  - cd db-services
+  - cd diagram-service
   - mvn exec:java &
 
-  - cd ../UserService
+  - cd ../user-service
   - mvn exec:java &
 
-  - cd ../RobotsService
+  - cd ../robots-service
   - mvn exec:java &
 
-  - sleep 60
+  - sleep 30
 
-  - cd ../../RobotsEditor
+  - cd ../../robots-editor
   - mvn tomcat7:run-war &
 
   #run tomcat
