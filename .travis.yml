@@ -31,7 +31,7 @@ before_install:
   - wget http://downloads.sourceforge.net/project/checkstyle/checkstyle/7.0/checkstyle-7.0-all.jar
 
 install:
-  - ./buildAppSplitted.sh
+  - ./buildApp.sh
 
 script:
   #run checkstyle
@@ -60,11 +60,16 @@ script:
   #run RobotsDBService
   - cd ../RobotsService
   - mvn exec:java &
-  #give odds
-  - sleep 60
-  #run RobotsEditor
-  - cd ../../RobotsEditor
+  #run AuthService
+  - cd ../../AuthService
   - mvn tomcat7:run-war &
+  #run DashboardService
+  - cd  ../DashboardService
+  - mvn tomcat7:run-war &
+  #run EditorService
+  - cd ../EditorService
+  - mvn tomcat7:run-war &
+  #start Tomcat test
   - ../Travis/callTomcat.sh
 
 

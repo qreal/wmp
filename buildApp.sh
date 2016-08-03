@@ -22,12 +22,16 @@ sudo mvn clean
 mvn install
 cd ..
 
-cd RobotsEditor
-mvn generate-sources
-cd src/main/webapp
-sudo npm install
-grunt
-cd ../../..
+cd AuthService
 sudo mvn clean
 mvn install
 cd ..
+
+cd DBServices/DiagramService
+mvn clean package
+
+cd ../RobotsService
+mvn clean package
+
+cd ../UserService
+mvn clean package
