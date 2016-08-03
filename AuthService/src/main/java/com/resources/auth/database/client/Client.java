@@ -30,13 +30,13 @@ public class Client implements ClientDetails {
     private Set<String> resourceIds;
 
     @Column(name = "SecretRequired")
-    boolean isSecretRequired;
+    private boolean isSecretRequired;
 
     @Column(name = "ClientSecret")
     private String clientSecret;
 
     @Column(name = "Scoped")
-    boolean isScoped;
+    private boolean isScoped;
 
     @LazyCollection(LazyCollectionOption.FALSE)
     @ElementCollection

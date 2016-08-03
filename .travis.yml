@@ -32,6 +32,7 @@ before_install:
   #install first step auth
   - cd 3dparty/firsstepauth
   - mvn clean install
+  - cd ../..
 
 
 install:

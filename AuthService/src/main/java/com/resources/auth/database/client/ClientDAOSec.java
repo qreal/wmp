@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ClientDAOSec implements ClientDetailsService {
 
     @Autowired
-    ClientDAO clientService;
+    private ClientDAO clientService;
 
     public void setClientService(ClientDAO clientService) {
         this.clientService = clientService;

@@ -2,7 +2,6 @@ package com.resources.auth.controllers.roles.admin;
 
 import com.resources.auth.database.client.Client;
 import com.resources.auth.database.client.ClientDAO;
-import com.resources.auth.database.users.UserDAO;
 import com.resources.auth.security.utils.AuthenticatedUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
