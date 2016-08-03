@@ -1,9 +1,6 @@
 package com.qreal.robots.database.diagrams.model;
 
 import com.qreal.robots.thrift.gen.TLink;
-import org.hibernate.annotations.GenericGenerator;
-
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -11,24 +8,14 @@ import java.util.stream.Collectors;
 /**
  * Link between nodes.
  */
-@Entity
-@Table(name = "links")
 public class Link implements Serializable {
 
-    @Id
-    @GeneratedValue(generator = "uuid")
-    @GenericGenerator(name = "uuid", strategy = "uuid2")
-    @Column(name = "id")
     private String id;
 
-    @Column(name = "logical_id")
     private String logicalId;
 
-    @Column(name = "graphical_id")
     private String graphicalId;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-    @JoinColumn(name = "link_id", referencedColumnName = "id")
     private Set<LinkProperty> properties;
 
     public Link() {

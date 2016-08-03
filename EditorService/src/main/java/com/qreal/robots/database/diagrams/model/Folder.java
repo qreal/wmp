@@ -2,7 +2,6 @@ package com.qreal.robots.database.diagrams.model;
 
 import com.qreal.robots.thrift.gen.TFolder;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -10,30 +9,18 @@ import java.util.stream.Collectors;
 /**
  * Folder with diagrams and other folders.
  */
-@Entity
-@Table(name = "folders")
 public class Folder implements Serializable {
 
-    @Id
-    @Column(name = "folder_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "folder_name")
     private String folderName;
 
-    @Column(name = "username")
     private String userName;
 
-    @Column(name = "folder_parent_id")
     private Long folderParentId;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-    @JoinColumn(name = "folder_parent_id", insertable = false, updatable = false)
     private List<Folder> childrenFolders;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-    @JoinColumn(name = "folder_id", referencedColumnName = "folder_id")
     private List<Diagram> diagrams;
 
     public Folder() {

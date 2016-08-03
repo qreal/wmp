@@ -58,8 +58,45 @@
                     <thriftExecutable>${thrift.executable}</thriftExecutable>
                 </configuration>
                 <executions>
+                    <!-- server side code -->
                     <execution>
-                        <id>java-beans-generation</id>
+                        <id>java-generation-user-db</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                        <configuration>
+                            <generator>java</generator>
+                            <thriftSourceRoot>src/main/thrift/userDB</thriftSourceRoot>
+                            <outputDirectory>${thrift.output.dir}/userDb</outputDirectory>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>java-generation-robot-db</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                        <configuration>
+                            <generator>java</generator>
+                            <thriftSourceRoot>src/main/thrift/robotDB</thriftSourceRoot>
+                            <outputDirectory>${thrift.output.dir}/robotDb</outputDirectory>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>java-generation-dashboard</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                        <configuration>
+                            <generator>java</generator>
+                            <thriftSourceRoot>src/main/thrift/dashboard</thriftSourceRoot>
+                            <outputDirectory>${thrift.output.dir}/dashboard</outputDirectory>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>java-generation-struct</id>
                         <phase>generate-sources</phase>
                         <goals>
                             <goal>compile</goal>
@@ -68,18 +105,6 @@
                             <generator>java:beans</generator>
                             <thriftSourceRoot>src/main/thrift/struct</thriftSourceRoot>
                             <outputDirectory>${thrift.output.dir}/struct</outputDirectory>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>java-generation</id>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>compile</goal>
-                        </goals>
-                        <configuration>
-                            <generator>java</generator>
-                            <thriftSourceRoot>src/main/thrift/service</thriftSourceRoot>
-                            <outputDirectory>${thrift.output.dir}/service</outputDirectory>
                         </configuration>
                     </execution>
                     <!-- client side code -->

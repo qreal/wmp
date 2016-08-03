@@ -3,15 +3,9 @@ package com.qreal.robots.database.robots.model;
 import com.qreal.robots.database.users.model.User;
 import com.qreal.robots.thrift.gen.TRobot;
 
-import javax.persistence.*;
-
-import static javax.persistence.GenerationType.IDENTITY;
-
 /**
  * TRIK robot in dashboard service.
  */
-@Entity
-@Table(name = "robots")
 public class Robot {
 
     /**
@@ -81,10 +75,6 @@ public class Robot {
         owner.getRobots().add(this);
     }
 
-    @Id
-    @GeneratedValue(strategy = IDENTITY)
-    @Column(name = "id",
-            unique = true, nullable = false)
     public Long getId() {
         return this.id;
     }
@@ -93,8 +83,6 @@ public class Robot {
         this.id = id;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "username", nullable = false)
     public User getOwner() {
         return this.owner;
     }
@@ -103,7 +91,6 @@ public class Robot {
         this.owner = owner;
     }
 
-    @Column(name = "name", nullable = false, length = 45)
     public String getName() {
         return this.name;
     }
@@ -112,8 +99,6 @@ public class Robot {
         this.name = name;
     }
 
-    @Column(name = "ssid",
-            nullable = false, length = 45)
     public String getSsid() {
         return ssid;
     }

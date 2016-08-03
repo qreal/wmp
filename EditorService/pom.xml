@@ -1,7 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xmlns="http://maven.apache.org/POM/4.0.0"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
@@ -14,8 +12,16 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
 
+    <properties>
+        <thrift.executable>thrift</thrift.executable>
+        <thrift.src.base>src/main/thrift</thrift.src.base>
+        <thrift.output.dir>target/generated-sources/thrift</thrift.output.dir>
+        <thrift.client.output.dir>src/main/webapp/resources/thrift</thrift.client.output.dir>
+    </properties>
+
     <build>
-        <finalName>robots-editor</finalName>
+        <finalName>editor-service</finalName>
+
         <plugins>
             <plugin>
                 <groupId>org.apache.tomcat.maven</groupId>
@@ -32,55 +38,141 @@
                 </configuration>
             </plugin>
 
+            <!-- compiler plugin -->
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.18.1</version>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.5.1</version>
                 <configuration>
-                    <skipTests>true</skipTests>
+                    <source>1.8</source>
+                    <target>1.8</target>
                 </configuration>
             </plugin>
 
+
+            <!-- thrift plugin -->
             <plugin>
-                <groupId>org.codehaus.gmaven</groupId>
-                <artifactId>gmaven-plugin</artifactId>
-                <version>1.5</version>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.codehaus.groovy</groupId>
-                        <artifactId>groovy-all</artifactId>
-                        <version>2.3.6</version>
-                    </dependency>
-                </dependencies>
-
-
+                <groupId>org.apache.thrift.tools</groupId>
+                <artifactId>maven-thrift-plugin</artifactId>
+                <version>0.1.11</version>
                 <configuration>
-                    <providerSelection>1.8</providerSelection>
+                    <thriftExecutable>${thrift.executable}</thriftExecutable>
                 </configuration>
                 <executions>
+                    <!-- server side code -->
                     <execution>
+                        <id>java-generation-editor</id>
+                        <phase>generate-sources</phase>
                         <goals>
-                            <goal>generateStubs</goal>
                             <goal>compile</goal>
-                            <goal>generateTestStubs</goal>
-                            <goal>testCompile</goal>
                         </goals>
+                        <configuration>
+                            <generator>java</generator>
+                            <thriftSourceRoot>src/main/thrift/editor</thriftSourceRoot>
+                            <outputDirectory>${thrift.output.dir}/editor</outputDirectory>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>java-generation-diagram-db</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                        <configuration>
+                            <generator>java</generator>
+                            <thriftSourceRoot>src/main/thrift/diagramDB</thriftSourceRoot>
+                            <outputDirectory>${thrift.output.dir}/diagramDb</outputDirectory>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>java-generation-user-db</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                        <configuration>
+                            <generator>java</generator>
+                            <thriftSourceRoot>src/main/thrift/userDB</thriftSourceRoot>
+                            <outputDirectory>${thrift.output.dir}/userDb</outputDirectory>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>java-generation-struct</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                        <configuration>
+                            <generator>java:beans</generator>
+                            <thriftSourceRoot>src/main/thrift/struct</thriftSourceRoot>
+                            <outputDirectory>${thrift.output.dir}/struct</outputDirectory>
+                        </configuration>
+                    </execution>
+                    <!-- client side code -->
+                    <execution>
+                        <id>js-ts-generation-editor</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                        <configuration>
+                            <generator>js:ts</generator>
+                            <thriftSourceRoot>src/main/thrift/editor</thriftSourceRoot>
+                            <outputDirectory>${thrift.client.output.dir}/editor</outputDirectory>
+                        </configuration>
+                    </execution>
+                    <!--
+                    Also explicitly compiling `struct` data files as a workaround for thrift failing to process
+                    include directives for js/ts as target language
+                    -->
+                    <execution>
+                        <id>js-ts-generation-structs</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                        <configuration>
+                            <generator>js:ts</generator>
+                            <thriftSourceRoot>src/main/thrift/struct</thriftSourceRoot>
+                            <outputDirectory>${thrift.client.output.dir}/struct</outputDirectory>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
 
+            <!-- build helper plugin -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>1.10</version>
+                <executions>
+                    <execution>
+                        <id>add-source</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>src/main/java</source>
+                                <source>${thrift.output.dir}/struct</source>
+                                <source>${thrift.output.dir}/service</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
-
     </build>
 
     <reporting>
         <plugins>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
                 <version>2.17</version>
                 <configuration>
-                    <configLocation>../Travis/checkstyle/checkstyle.xml</configLocation>
+                    <configLocation>../../Travis/checkstyle/checkstyle.xml</configLocation>
                 </configuration>
                 <reportSets>
                     <reportSet>
@@ -91,6 +183,8 @@
                 </reportSets>
             </plugin>
         </plugins>
+
+
     </reporting>
 
     <dependencies>
@@ -117,91 +211,7 @@
             </exclusions>
         </dependency>
 
-        <!-- Hibernate -->
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-entitymanager</artifactId>
-            <version>4.3.6.Final</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>slf4j-api</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.hsqldb</groupId>
-            <artifactId>hsqldb</artifactId>
-            <version>2.3.1</version>
-        </dependency>
-
-        <!-- MySQL -->
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>5.1.33</version>
-        </dependency>
-        <dependency>
-            <groupId>commons-dbcp</groupId>
-            <artifactId>commons-dbcp</artifactId>
-            <version>1.4</version>
-        </dependency>
-
-        <!-- Tiles -->
-        <dependency>
-            <groupId>org.apache.tiles</groupId>
-            <artifactId>tiles-api</artifactId>
-            <version>3.0.5</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.tiles</groupId>
-            <artifactId>tiles-core</artifactId>
-            <version>3.0.5</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>jcl-over-slf4j</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.tiles</groupId>
-            <artifactId>tiles-jsp</artifactId>
-            <version>3.0.5</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.tiles</groupId>
-            <artifactId>tiles-servlet</artifactId>
-            <version>3.0.5</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.tiles</groupId>
-            <artifactId>tiles-template</artifactId>
-            <version>3.0.5</version>
-        </dependency>
-
-        <!--Thrift-->
-        <dependency>
-            <groupId>org.apache.thrift</groupId>
-            <artifactId>libthrift</artifactId>
-            <version>0.9.3</version>
-        </dependency>
-
-        <!-- Utilities -->
-        <dependency>
-            <groupId>org.codehaus.groovy</groupId>
-            <artifactId>groovy-all</artifactId>
-            <version>2.3.6</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <version>1.4.187</version>
-        </dependency>
-
         <!-- Log -->
-
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-api</artifactId>
@@ -229,10 +239,52 @@
             <artifactId>maven-checkstyle-plugin</artifactId>
             <version>2.17</version>
         </dependency>
+
+        <!--Execution-->
+
+        <dependency>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.5.1</version>
+        </dependency>
+
         <dependency>
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
             <version>RELEASE</version>
         </dependency>
+
+        <!--Thrift-->
+        <dependency>
+            <groupId>org.apache.thrift</groupId>
+            <artifactId>libthrift</artifactId>
+            <version>0.9.3</version>
+        </dependency>
+
+        <!-- for OAuth 2.0 -->
+        <dependency>
+            <groupId>org.springframework.security.oauth</groupId>
+            <artifactId>spring-security-oauth2</artifactId>
+            <version>2.0.8.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>2.6.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.6.2</version>
+        </dependency>
+
+        <!--First Step Auth Lib-->
+        <dependency>
+            <groupId>com.racquettrack</groupId>
+            <artifactId>spring-security-oauth2-client</artifactId>
+            <version>1.6-SNAPSHOT</version>
+        </dependency>
+
     </dependencies>
+
 </project>

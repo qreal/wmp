@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.qreal.robots.database.robots.model.Robot;
 import com.qreal.robots.thrift.gen.TUser;
 
-import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -12,8 +11,6 @@ import java.util.stream.Collectors;
 /**
  * User in authorization service.
  */
-@Entity
-@Table(name = "users")
 public class User {
 
     /**
@@ -100,9 +97,6 @@ public class User {
         }
     }
 
-    @Id
-    @Column(name = "username", unique = true,
-            nullable = false, length = 45)
     public String getUsername() {
         return this.username;
     }
@@ -111,8 +105,6 @@ public class User {
         this.username = username;
     }
 
-    @Column(name = "password",
-            nullable = false, length = 60)
     public String getPassword() {
         return this.password;
     }
@@ -121,7 +113,6 @@ public class User {
         this.password = password;
     }
 
-    @Column(name = "enabled", nullable = false)
     public boolean isEnabled() {
         return this.enabled;
     }
@@ -130,7 +121,6 @@ public class User {
         this.enabled = enabled;
     }
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
     public Set<UserRole> getRoles() {
         return this.roles;
     }
@@ -139,7 +129,6 @@ public class User {
         this.roles = roles;
     }
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "owner")
     public Set<Robot> getRobots() {
         return this.robots;
     }

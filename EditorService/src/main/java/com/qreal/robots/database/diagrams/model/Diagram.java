@@ -2,34 +2,21 @@ package com.qreal.robots.database.diagrams.model;
 
 import com.qreal.robots.thrift.gen.TDiagram;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static javax.persistence.GenerationType.IDENTITY;
-
 /**
  * Diagram (now only graphs).
  */
-@Entity
-@Table(name = "diagrams")
 public class Diagram implements Serializable {
 
-    @Id
-    @Column(name = "diagram_id")
-    @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    @Column(name = "name")
     private String name;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-    @JoinColumn(name = "diagram_id", referencedColumnName = "diagram_id")
     private Set<DefaultDiagramNode> nodes;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-    @JoinColumn(name = "diagram_id", referencedColumnName = "diagram_id")
     private Set<Link> links;
 
     public Diagram() {

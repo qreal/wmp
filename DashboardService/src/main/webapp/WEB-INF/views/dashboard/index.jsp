@@ -1,10 +1,14 @@
 <%@ include file="../include/include.jsp" %>
+<%@ include file="../include/properties.jsp" %>
 
 <html lang="en">
 <head>
     <title>WMP Dashboard</title>
 
+    <%@ include file="../include/properties.jsp" %>
+
     <jsp:include page="../include/scripts.jsp"/>
+
     <script src="<c:url value='/resources/js/map.js' />"></script>
     <script src="<c:url value='/resources/js/robot.js' />"></script>
     <script src="<c:url value='/resources/thrift/dashboard/RobotService_types.js'/> "></script>
@@ -26,7 +30,7 @@
                 var name = $('#robotName').val();
                 var code = $('#ssid').val();
 
-                var transport = new Thrift.TXHRTransport("http://localhost:9080/dashboard-service/RobotRest"); //FIXME
+                var transport = new Thrift.TXHRTransport("<c:out value="${dashboardRestServlet}"/>");
                 var protocol = new Thrift.TJSONProtocol(transport);
                 var client = new RobotServiceThriftClient(protocol);
                 try {
@@ -39,7 +43,7 @@
 
             $('[name="delete-robot"]').click(function (event) {
                 var robotId = event.target.id.substring(7);
-                var transport = new Thrift.TXHRTransport("http://localhost:9080/dashboard-service/RobotRest"); //FIXME
+                var transport = new Thrift.TXHRTransport("<c:out value="${dashboardRestServlet}"/>");
                 var protocol  = new Thrift.TJSONProtocol(transport);
                 var client = new RobotServiceThriftClient(protocol);
                 try {

@@ -48,14 +48,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return filter;
     }
 
-
     //.csrf() is optional, enabled by default, if using WebSecurityConfigurerAdapter constructor
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
 
         httpSecurity.authorizeRequests().
                 antMatchers("/RobotRest/**").permitAll().
-                antMatchers("/editorService/**").permitAll().
                 antMatchers("/resources/**").permitAll().
                 antMatchers("/register").permitAll().
                 antMatchers("/oauth/**").permitAll().

@@ -74,10 +74,15 @@ public class AppInit implements ApplicationListener {
             Set<String> grantTypes = new HashSet<String>();
             grantTypes.add("authorization_code");
 
-            Client robotsDiagram = new Client("dashboardService", true, "secret", true, scopes, grantTypes,
+            Client dashboardService = new Client("dashboardService", true, "secret", true, scopes, grantTypes,
                     64000, 64000, true);
 
-            clientService.add(robotsDiagram);
+            clientService.add(dashboardService);
+
+            Client editorService = new Client("editorService", true, "secret", true, scopes, grantTypes,
+                    64000, 64000, true);
+
+            clientService.add(editorService);
             logger.info("Initalized");
         }
     }

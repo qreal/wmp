@@ -17,16 +17,16 @@ public class AppInit implements WebApplicationInitializer {
     public void onStartup(ServletContext servletContext) throws ServletException {
         AnnotationConfigWebApplicationContext dispatcherContext = new AnnotationConfigWebApplicationContext();
 
-        dispatcherContext.scan("com.qreal.robots.common");
-
-        dispatcherContext.scan("com.qreal.robots.controller");
+        dispatcherContext.scan("com.qreal.robots");
 
         dispatcherContext.register(AppInit.class);
 
         servletContext.addListener(new ContextLoaderListener(dispatcherContext));
 
-        ServletRegistration.Dynamic dispatcher = servletContext.addServlet("dispatcher",
-                new DispatcherServlet(dispatcherContext));
+        DispatcherServlet dispatcherServlet = new DispatcherServlet(dispatcherContext);
+        dispatcherServlet.setThrowExceptionIfNoHandlerFound(true);
+
+        ServletRegistration.Dynamic dispatcher = servletContext.addServlet("dispatcher", dispatcherServlet);
         dispatcher.setLoadOnStartup(1);
         dispatcher.addMapping("/");
 

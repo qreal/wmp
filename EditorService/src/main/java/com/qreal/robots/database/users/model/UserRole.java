@@ -1,19 +1,10 @@
 package com.qreal.robots.database.users.model;
 
-
 import com.qreal.robots.thrift.gen.TUserRole;
-
-import javax.persistence.*;
-
-import static javax.persistence.GenerationType.IDENTITY;
 
 /**
  * UserRole in authorization service.
  */
-@Entity
-@Table(name = "user_roles",
-        uniqueConstraints = @UniqueConstraint(
-                columnNames = {"role", "owner"}))
 public class UserRole {
 
     /**
@@ -63,10 +54,6 @@ public class UserRole {
         this.user = user;
     }
 
-    @Id
-    @GeneratedValue(strategy = IDENTITY)
-    @Column(name = "id",
-            unique = true, nullable = false)
     public Integer getId() {
         return this.id;
     }
@@ -75,8 +62,6 @@ public class UserRole {
         this.id = id;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "owner", nullable = false)
     public User getUser() {
         return this.user;
     }
@@ -85,7 +70,6 @@ public class UserRole {
         this.user = user;
     }
 
-    @Column(name = "role", nullable = false, length = 45)
     public String getRole() {
         return this.role;
     }

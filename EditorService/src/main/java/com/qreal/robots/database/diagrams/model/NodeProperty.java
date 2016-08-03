@@ -1,31 +1,19 @@
 package com.qreal.robots.database.diagrams.model;
 
 import com.qreal.robots.thrift.gen.TProperty;
-import org.hibernate.annotations.GenericGenerator;
-
-import javax.persistence.*;
 import java.io.Serializable;
 
 /**
  * Property of a node.
  */
-@Entity
-@Table(name = "node_properties")
 public class NodeProperty implements Serializable {
 
-    @Id
-    @GeneratedValue(generator = "uuid")
-    @GenericGenerator(name = "uuid", strategy = "uuid2")
-    @Column(name = "property_id")
     private String propertyId;
 
-    @Column(name = "name")
     private String name;
 
-    @Column(name = "value")
     private String value;
 
-    @Column(name = "type")
     private String type;
 
     public NodeProperty() {

@@ -15,7 +15,6 @@ public class AppInit implements WebApplicationInitializer {
 
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
-
         AnnotationConfigWebApplicationContext dispatcherContext = new AnnotationConfigWebApplicationContext();
 
         dispatcherContext.scan("com.qreal.robots");
@@ -36,7 +35,6 @@ public class AppInit implements WebApplicationInitializer {
                 new RobotRestServlet(dispatcherContext));
         robotRestService.setLoadOnStartup(1);
         robotRestService.addMapping("/RobotRest");
-
 
         DelegatingFilterProxy filter = new DelegatingFilterProxy("springSecurityFilterChain");
         filter.setContextAttribute("org.springframework.web.servlet.FrameworkServlet.CONTEXT.dispatcher");

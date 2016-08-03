@@ -1,33 +1,51 @@
 package com.qreal.robots.common.config;
 
+import com.racquettrack.security.oauth.OAuth2AuthenticationEntryPoint;
+import com.racquettrack.security.oauth.OAuth2AuthenticationFilter;
+import com.racquettrack.security.oauth.OAuth2AuthenticationProvider;
+import com.racquettrack.security.oauth.OAuth2ServiceProperties;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.access.ExceptionTranslationFilter;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    @Qualifier("userDetailsService")
-    private UserDetailsService userDetailsService;
+    OAuth2AuthenticationProvider oauthProv;
 
     @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+    OAuth2AuthenticationEntryPoint oauthAuthenticationEntryPoint;
+
+    @Autowired
+    OAuth2AuthenticationFilter filter;
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.authenticationProvider(oauthProv);
     }
 
-    @Bean(name = "passwordEncoder")
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+    @Bean(name = "manager")
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
+
+    @Bean
+    @Autowired
+    public OAuth2AuthenticationFilter oAuth2AuthenticationFilter(OAuth2ServiceProperties serviceProperties,
+                                                                 AuthenticationManager manager) throws Exception {
+        OAuth2AuthenticationFilter filter = new OAuth2AuthenticationFilter("/oauth/callback");
+        filter.setAuthenticationManager(manager);
+        filter.setoAuth2ServiceProperties(serviceProperties);
+        return filter;
     }
 
     //.csrf() is optional, enabled by default, if using WebSecurityConfigurerAdapter constructor
@@ -37,15 +55,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity.authorizeRequests().
                 antMatchers("/editorService/**").permitAll().
                 antMatchers("/resources/**").permitAll().
+                antMatchers("/register").permitAll().
+                antMatchers("/oauth/**").permitAll().
                 antMatchers("/**").authenticated().
                 and().
-                formLogin().loginPage("/login").permitAll().
-                loginProcessingUrl("/j_spring_security_check").failureUrl("/login?error").
-                usernameParameter("username").passwordParameter("password").
+                httpBasic().
+                authenticationEntryPoint(oauthAuthenticationEntryPoint).
                 and().
-                logout().logoutSuccessUrl("/login").logoutUrl("/j_spring_security_logout").
+                addFilterAfter(filter, ExceptionTranslationFilter.class).
+                formLogin().
+                loginProcessingUrl("/").
+                loginPage("/").
                 and().
-                csrf().disable().httpBasic().
-                and().exceptionHandling().accessDeniedPage("/login");
+                logout().logoutSuccessUrl("/").
+                logoutUrl("/j_spring_security_logout").
+                and().
+                csrf().disable();
     }
+
 }
