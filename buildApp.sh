@@ -35,3 +35,7 @@ mvn clean package
 
 cd ../UserService
 mvn clean package
+
+cd ../..
+sudo mvn clean
+mvn install
