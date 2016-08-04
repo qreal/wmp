@@ -42,14 +42,13 @@
     <entry_points version="2.0" />
   </component>
   <component name="FrameworkDetectionExcludesConfiguration">
-    <file type="web" url="file://$PROJECT_DIR$/AuthService" />
-    <file type="web" url="file://$PROJECT_DIR$/DashboardService" />
-    <file type="web" url="file://$PROJECT_DIR$/DBServices/DiagramService" />
-    <file type="web" url="file://$PROJECT_DIR$/DBServices/RobotsService" />
-    <file type="web" url="file://$PROJECT_DIR$/DBServices/UserService" />
-    <file type="web" url="file://$PROJECT_DIR$/EditorService" />
-    <file type="web" url="file://$PROJECT_DIR$/RobotsEditor" />
-    <file type="web" url="file://$PROJECT_DIR$/SharedResources" />
+    <file type="web" url="file://$PROJECT_DIR$/auth-service" />
+    <file type="web" url="file://$PROJECT_DIR$/dashboard-service" />
+    <file type="web" url="file://$PROJECT_DIR$/editor-service" />
+    <file type="web" url="file://$PROJECT_DIR$/db-services/diagram-service" />
+    <file type="web" url="file://$PROJECT_DIR$/db-services/robots-service" />
+    <file type="web" url="file://$PROJECT_DIR$/db-services/user-service" />
+    <file type="web" url="file://$PROJECT_DIR$/shared-resources" />
   </component>
   <component name="JavadocGenerationManager">
     <option name="OUTPUT_DIRECTORY" value="$PROJECT_DIR$/javadoc" />

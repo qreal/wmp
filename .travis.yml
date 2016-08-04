@@ -11,8 +11,6 @@ before_install:
   - sudo apt-get update -y
   #install dependencies for thrift
   - sudo apt-get install automake bison flex g++ git libboost-all-dev libevent-dev libssl-dev libtool make pkg-config -y
-  #install nodejs
-  - sudo apt-get install nodejs npm -y
   #install curl for tomcat tests
   - sudo apt-get install curl -y
   # - sudo apt-get upgrade -y
@@ -22,12 +20,11 @@ before_install:
   - wget http://apache-mirror.rbc.ru/pub/apache/thrift/0.9.3/thrift-0.9.3.tar.gz
   - tar -xf thrift-0.9.3.tar.gz
   - cd thrift-0.9.3
-  - ./configure --without-ruby --without-python --without-go --without-erlang
+  - ./configure --without-ruby --without-python --without-go --without-erlang --without-c_glib --without-cpp --without-tests
   - make
   - sudo make install
   - sudo ln -s /usr/local/bin/thrift /usr/bin/thrift
   - cd ../..
-  #get checkstyle
   - wget http://downloads.sourceforge.net/project/checkstyle/checkstyle/7.0/checkstyle-7.0-all.jar
   #install first step auth
   - cd 3dparty/firsstepauth
@@ -36,47 +33,39 @@ before_install:
 
 
 install:
-  - ./buildApp.sh
+  - mvn install
 
 script:
   #run checkstyle
-  #AuthService
-  - java -jar checkstyle-7.0-all.jar -c Travis/checkstyle/checkstyle.xml AuthService/src
-  #DashboardService
-  - java -jar checkstyle-7.0-all.jar -c Travis/checkstyle/checkstyle.xml DashboardService/src
-  #EditorService
-  - java -jar checkstyle-7.0-all.jar -c Travis/checkstyle/checkstyle.xml EditorService/src
-  #DiagramDBService
-  - java -jar checkstyle-7.0-all.jar -c Travis/checkstyle/checkstyle.xml DBServices/DiagramService/src
-  #RobotsDBService
-  - java -jar checkstyle-7.0-all.jar -c Travis/checkstyle/checkstyle.xml DBServices/RobotsService/src
-  #UserDBService
-  - java -jar checkstyle-7.0-all.jar -c Travis/checkstyle/checkstyle.xml DBServices/UserService/src
+  - java -jar checkstyle-7.0-all.jar -c Travis/checkstyle/checkstyle.xml auth-service/src
+  - java -jar checkstyle-7.0-all.jar -c Travis/checkstyle/checkstyle.xml dashboard-service/src
+  - java -jar checkstyle-7.0-all.jar -c Travis/checkstyle/checkstyle.xml editor-service/src
+  - java -jar checkstyle-7.0-all.jar -c Travis/checkstyle/checkstyle.xml db-services/diagram-service/src
+  - java -jar checkstyle-7.0-all.jar -c Travis/checkstyle/checkstyle.xml db-services/robots-service/src
+  - java -jar checkstyle-7.0-all.jar -c Travis/checkstyle/checkstyle.xml db-services/user-service/src
 
+  #run services
+  - cd db-services
 
-  #run callTomcat test
-  - cd DBServices
-  #run DiagramDBService
-  - cd DiagramService
+  - cd diagram-service
   - mvn exec:java &
-  #run UserDBService
-  - cd ../UserService
+
+  - cd ../user-service
   - mvn exec:java &
-  #run RobotsDBService
-  - cd ../RobotsService
+
+  - cd ../robots-service
   - mvn exec:java &
-  #run AuthService
-  - cd ../../AuthService
+
+  - cd ../../auth-service
   - mvn tomcat7:run-war &
-  #run DashboardService
-  - cd  ../DashboardService
+
+  - cd  ../dashboard-service
   - mvn tomcat7:run-war &
-  #run EditorService
-  - cd ../EditorService
+
+  - cd ../editor-service
   - mvn tomcat7:run-war &
-  #start Tomcat test
+
   - ../Travis/callTomcat.sh
-
 
 notifications:
   slack: qreal-web:sT5qgA4qZZ9eyLI0yy2Mp81E
