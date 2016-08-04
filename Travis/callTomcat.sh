@@ -1,7 +1,7 @@
 #!/bin/bash
 iter=1
 all=120
-until [ "`curl --silent --show-error --connect-timeout 1 -I http://localhost:8080/robots-editor | grep '302 Found'`" != "" ];
+until [ "`curl --silent --show-error --connect-timeout 1 -I http://localhost:8080/ | grep '302 Found'`" != "" ];
 do
   if [ "$iter" -lt "$all" ]
   then
