@@ -4,15 +4,16 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <artifactId>diagram-service</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>war</packaging>
+
     <parent>
         <groupId>wmp</groupId>
         <artifactId>parent</artifactId>
         <version>1.0-SNAPSHOT</version>
+        <relativePath>../../pom.xml</relativePath>
     </parent>
-
-    <artifactId>diagram-service</artifactId>
-    <version>1.0-SNAPSHOT</version>
-    <packaging>war</packaging>
 
     <properties>
         <thrift.executable>thrift</thrift.executable>
