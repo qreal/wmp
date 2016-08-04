@@ -1,4 +1,8 @@
 #!/bin/bash
+
+sudo mvn clean
+mvn install
+
 cd SharedResources/src/main/webapp
 sudo npm install
 grunt
@@ -37,5 +41,3 @@ cd ../UserService
 mvn clean package
 
 cd ../..
-sudo mvn clean
-mvn install
