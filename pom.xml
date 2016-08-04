@@ -10,7 +10,11 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>RobotsEditor</module>
+        <module>shared-resources</module>
+        <module>robots-editor</module>
+        <module>db-services/diagram-service</module>
+        <module>db-services/robots-service</module>
+        <module>db-services/user-service</module>
     </modules>
 
     <build>
@@ -60,12 +64,6 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-core</artifactId>
             <version>4.2.1.RELEASE</version>
-            <!--<exclusions>-->
-                <!--<exclusion>-->
-                    <!--<groupId>commons-logging</groupId>-->
-                    <!--<artifactId>commons-logging</artifactId>-->
-                <!--</exclusion>-->
-            <!--</exclusions>-->
         </dependency>
 
         <dependency>
@@ -196,12 +194,13 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- Google Guava -->
+        <!-- Static analysis -->
         <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>19.0</version>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>15.0</version>
         </dependency>
+
 
     </dependencies>
 

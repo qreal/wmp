@@ -2,9 +2,17 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/db-services/diagram-service/diagram-service.iml" filepath="$PROJECT_DIR$/db-services/diagram-service/diagram-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/DBServices/DiagramService/diagram-service.iml" filepath="$PROJECT_DIR$/DBServices/DiagramService/diagram-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/parent.iml" filepath="$PROJECT_DIR$/parent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/DBServices/RobotsService/robot-service.iml" filepath="$PROJECT_DIR$/DBServices/RobotsService/robot-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/RobotsEditor/robots-diagram.iml" filepath="$PROJECT_DIR$/RobotsEditor/robots-diagram.iml" />
+      <module fileurl="file://$PROJECT_DIR$/robots-editor/robots-editor.iml" filepath="$PROJECT_DIR$/robots-editor/robots-editor.iml" />
+      <module fileurl="file://$PROJECT_DIR$/db-services/robots-service/robots-service.iml" filepath="$PROJECT_DIR$/db-services/robots-service/robots-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/shared-resources/shared-resources.iml" filepath="$PROJECT_DIR$/shared-resources/shared-resources.iml" />
       <module fileurl="file://$PROJECT_DIR$/SharedResources/shared-resources.iml" filepath="$PROJECT_DIR$/SharedResources/shared-resources.iml" />
+      <module fileurl="file://$PROJECT_DIR$/db-services/user-service/user-service.iml" filepath="$PROJECT_DIR$/db-services/user-service/user-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/DBServices/UserService/user-service.iml" filepath="$PROJECT_DIR$/DBServices/UserService/user-service.iml" />
     </modules>
   </component>
 </project>
