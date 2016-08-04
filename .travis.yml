@@ -26,10 +26,6 @@ before_install:
   - sudo ln -s /usr/local/bin/thrift /usr/bin/thrift
   - cd ../..
   - wget http://downloads.sourceforge.net/project/checkstyle/checkstyle/7.0/checkstyle-7.0-all.jar
-  #install first step auth
-  - cd 3dparty/firsstepauth
-  - mvn clean install
-  - cd ../..
 
 
 install:

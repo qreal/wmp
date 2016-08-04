@@ -9,6 +9,7 @@
       <module fileurl="file://$PROJECT_DIR$/parent.iml" filepath="$PROJECT_DIR$/parent.iml" />
       <module fileurl="file://$PROJECT_DIR$/db-services/robots-service/robots-service.iml" filepath="$PROJECT_DIR$/db-services/robots-service/robots-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/shared-resources/shared-resources.iml" filepath="$PROJECT_DIR$/shared-resources/shared-resources.iml" />
+      <module fileurl="file://$PROJECT_DIR$/3dparty/firsstepauth/spring-security-oauth2-client.iml" filepath="$PROJECT_DIR$/3dparty/firsstepauth/spring-security-oauth2-client.iml" />
       <module fileurl="file://$PROJECT_DIR$/db-services/user-service/user-service.iml" filepath="$PROJECT_DIR$/db-services/user-service/user-service.iml" />
     </modules>
   </component>

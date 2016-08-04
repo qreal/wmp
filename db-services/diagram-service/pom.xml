@@ -111,29 +111,6 @@
         </plugins>
     </build>
 
-    <reporting>
-        <plugins>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-checkstyle-plugin</artifactId>
-                <version>2.17</version>
-                <configuration>
-                    <configLocation>../../Travis/checkstyle/checkstyle.xml</configLocation>
-                </configuration>
-                <reportSets>
-                    <reportSet>
-                        <reports>
-                            <report>checkstyle</report>
-                        </reports>
-                    </reportSet>
-                </reportSets>
-            </plugin>
-        </plugins>
-
-
-    </reporting>
-
     <dependencies>
 
         <!-- Hibernate -->
@@ -180,18 +157,21 @@
             <version>1.4.187</version>
         </dependency>
 
-        <!--Checkstyle-->
-        <dependency>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-checkstyle-plugin</artifactId>
-            <version>2.17</version>
-        </dependency>
-
         <!--Execution-->
         <dependency>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>exec-maven-plugin</artifactId>
             <version>1.5.0</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-jdk14</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-nop</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>

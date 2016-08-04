@@ -28,6 +28,7 @@
         <module name="editor-service" />
         <module name="robots-service" />
         <module name="shared-resources" />
+        <module name="spring-security-oauth2-client" />
         <module name="user-service" />
       </profile>
     </annotationProcessing>
@@ -39,6 +40,7 @@
       <module name="parent" target="1.5" />
       <module name="robots-service" target="1.8" />
       <module name="shared-resources" target="1.8" />
+      <module name="spring-security-oauth2-client" target="1.7" />
       <module name="user-service" target="1.8" />
     </bytecodeTargetLevel>
   </component>

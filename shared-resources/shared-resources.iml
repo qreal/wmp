@@ -47,6 +47,10 @@
     <orderEntry type="library" name="Maven: org.codehaus.plexus:plexus-classworlds:2.4" level="project" />
     <orderEntry type="library" name="Maven: org.apache.maven.plugin-tools:maven-plugin-annotations:3.2" level="project" />
     <orderEntry type="library" name="Maven: org.sonatype.plexus:plexus-build-api:0.0.7" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.logging.log4j:log4j-api:2.1" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.logging.log4j:log4j-1.2-api:2.1" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.logging.log4j:log4j-core:2.1" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.logging.log4j:log4j-slf4j-impl:2.1" level="project" />
     <orderEntry type="library" name="Maven: commons-lang:commons-lang:2.6" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-core:4.2.1.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-beans:4.2.1.RELEASE" level="project" />
