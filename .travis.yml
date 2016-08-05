@@ -26,10 +26,10 @@ install:
 
 script:
   #run checkstyle
-  - java -jar checkstyle-7.0-all.jar -c Travis/checkstyle/checkstyle.xml robots-editor/src
-  - java -jar checkstyle-7.0-all.jar -c Travis/checkstyle/checkstyle.xml db-services/diagram-service/src
-  - java -jar checkstyle-7.0-all.jar -c Travis/checkstyle/checkstyle.xml db-services/robots-service/src
-  - java -jar checkstyle-7.0-all.jar -c Travis/checkstyle/checkstyle.xml db-services/user-service/src
+  - java -jar checkstyle-7.0-all.jar -c travis/checkstyle/checkstyle.xml robots-editor/src
+  - java -jar checkstyle-7.0-all.jar -c travis/checkstyle/checkstyle.xml db-services/diagram-service/src
+  - java -jar checkstyle-7.0-all.jar -c travis/checkstyle/checkstyle.xml db-services/robots-service/src
+  - java -jar checkstyle-7.0-all.jar -c travis/checkstyle/checkstyle.xml db-services/user-service/src
 
   #run services
   - cd db-services
@@ -48,7 +48,7 @@ script:
   - mvn tomcat7:run-war-only &
 
   #run tomcat
-  - ../Travis/callTomcat.sh
+  - ../travis/callTomcat.sh
 
 notifications:
   slack: qreal-web:sT5qgA4qZZ9eyLI0yy2Mp81E

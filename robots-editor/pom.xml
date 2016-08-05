@@ -294,7 +294,7 @@
                 <artifactId>maven-checkstyle-plugin</artifactId>
                 <version>2.17</version>
                 <configuration>
-                    <configLocation>${parent.pom.dir}/Travis/checkstyle/checkstyle.xml</configLocation>
+                    <configLocation>${parent.pom.dir}/travis/checkstyle/checkstyle.xml</configLocation>
                 </configuration>
                 <reportSets>
                     <reportSet>
