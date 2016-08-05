@@ -9,22 +9,14 @@ dist: trusty
 before_install:
   #update all repo lists
   - sudo apt-get update -y
-  #install dependencies for thrift
-  - sudo apt-get install automake bison flex g++ git libboost-all-dev libevent-dev libssl-dev libtool make pkg-config -y
   #install curl for tomcat tests
   - sudo apt-get install curl -y
-  # - sudo apt-get upgrade -y
-  #install 0.9.3 thrift version
-  - mkdir ThriftInstall
-  - cd ThriftInstall
-  - wget http://apache-mirror.rbc.ru/pub/apache/thrift/0.9.3/thrift-0.9.3.tar.gz
-  - tar -xf thrift-0.9.3.tar.gz
-  - cd thrift-0.9.3
-  - ./configure --without-ruby --without-python --without-go --without-erlang --without-c_glib --without-cpp --without-tests
-  - make
-  - sudo make install
-  - sudo ln -s /usr/local/bin/thrift /usr/bin/thrift
-  - cd ../..
+  # get thrift 0.9.3
+  - wget "https://www.dropbox.com/s/u4prfzehb94xo9n/thrift"
+  - wget "https://www.dropbox.com/s/ydbf9ghsl6lv5dl/libthrift-0.9.3.jar"
+  - chmod 755 thrift
+  - sudo cp thrift /usr/local/bin/thrift
+  - sudo cp libthrift-0.9.3.jar /usr/local/lib
   - wget http://downloads.sourceforge.net/project/checkstyle/checkstyle/7.0/checkstyle-7.0-all.jar
 
 
@@ -53,13 +45,13 @@ script:
   - mvn exec:java &
 
   - cd ../../auth-service
-  - mvn tomcat7:run-war &
+  - mvn tomcat7:run-war-only &
 
   - cd  ../dashboard-service
-  - mvn tomcat7:run-war &
+  - mvn tomcat7:run-war-only &
 
   - cd ../editor-service
-  - mvn tomcat7:run-war &
+  - mvn tomcat7:run-war-only &
 
   - ../Travis/callTomcat.sh
 
