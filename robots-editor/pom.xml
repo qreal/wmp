@@ -15,7 +15,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <thrift.executable>thrift</thrift.executable>
-        <thrift.src.base>${parent.pom.dir}/thrift</thrift.src.base>
+        <thrift.src.base>${parent.pom.dir}/thrift-definitions</thrift.src.base>
         <thrift.output.dir>target/generated-sources/thrift</thrift.output.dir>
         <thrift.client.output.dir>src/main/webapp/resources/thrift</thrift.client.output.dir>
     </properties>
@@ -120,8 +120,8 @@
                         </goals>
                         <configuration>
                             <generator>java</generator>
-                            <thriftSourceRoot>${thrift.src.base}/diagramDatabase</thriftSourceRoot>
-                            <outputDirectory>${thrift.output.dir}/diagramDatabase</outputDirectory>
+                            <thriftSourceRoot>${thrift.src.base}/diagram-database</thriftSourceRoot>
+                            <outputDirectory>${thrift.output.dir}/diagram-database</outputDirectory>
                         </configuration>
                     </execution>
                     <execution>
@@ -132,8 +132,8 @@
                         </goals>
                         <configuration>
                             <generator>java</generator>
-                            <thriftSourceRoot>${thrift.src.base}/robotDatabase</thriftSourceRoot>
-                            <outputDirectory>${thrift.output.dir}/robotDatabase</outputDirectory>
+                            <thriftSourceRoot>${thrift.src.base}/robot-database</thriftSourceRoot>
+                            <outputDirectory>${thrift.output.dir}/robot-database</outputDirectory>
                         </configuration>
                     </execution>
                     <execution>
@@ -144,8 +144,8 @@
                         </goals>
                         <configuration>
                             <generator>java</generator>
-                            <thriftSourceRoot>${thrift.src.base}/userDatabase</thriftSourceRoot>
-                            <outputDirectory>${thrift.output.dir}/userDatabase</outputDirectory>
+                            <thriftSourceRoot>${thrift.src.base}/user-database</thriftSourceRoot>
+                            <outputDirectory>${thrift.output.dir}/user-database</outputDirectory>
                         </configuration>
                     </execution>
                     <execution>
@@ -224,9 +224,9 @@
                                 <source>src/main/java</source>
                                 <source>${thrift.output.dir}/dashboard</source>
                                 <source>${thrift.output.dir}/editor</source>
-                                <source>${thrift.output.dir}/diagramDatabase</source>
-                                <source>${thrift.output.dir}/robotDatabase</source>
-                                <source>${thrift.output.dir}/userDatabase</source>
+                                <source>${thrift.output.dir}/diagram-database</source>
+                                <source>${thrift.output.dir}/robot-database</source>
+                                <source>${thrift.output.dir}/user-database</source>
                                 <source>${thrift.output.dir}/struct</source>
                             </sources>
                         </configuration>

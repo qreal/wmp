@@ -15,7 +15,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <thrift.executable>thrift</thrift.executable>
-        <thrift.src.base>${parent.pom.dir}/thrift</thrift.src.base>
+        <thrift.src.base>${parent.pom.dir}/thrift-definitions</thrift.src.base>
         <thrift.output.dir>target/generated-sources/thrift</thrift.output.dir>
     </properties>
 
@@ -86,8 +86,8 @@
                         </goals>
                         <configuration>
                             <generator>java</generator>
-                            <thriftSourceRoot>${thrift.src.base}/diagramDatabase</thriftSourceRoot>
-                            <outputDirectory>${thrift.output.dir}/diagramDatabase</outputDirectory>
+                            <thriftSourceRoot>${thrift.src.base}/diagram-database</thriftSourceRoot>
+                            <outputDirectory>${thrift.output.dir}/diagram-database</outputDirectory>
                         </configuration>
                     </execution>
                 </executions>
@@ -109,7 +109,7 @@
                             <sources>
                                 <source>src/main/java</source>
                                 <source>${thrift.output.dir}/struct</source>
-                                <source>${thrift.output.dir}/diagramDatabase</source>
+                                <source>${thrift.output.dir}/diagram-database</source>
                             </sources>
                         </configuration>
                     </execution>

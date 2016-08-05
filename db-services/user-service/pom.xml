@@ -15,7 +15,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <thrift.executable>thrift</thrift.executable>
-        <thrift.src.base>${parent.pom.dir}/thrift</thrift.src.base>
+        <thrift.src.base>${parent.pom.dir}/thrift-definitions</thrift.src.base>
         <thrift.output.dir>target/generated-sources/thrift</thrift.output.dir>
     </properties>
 
@@ -84,8 +84,8 @@
                         </goals>
                         <configuration>
                             <generator>java</generator>
-                            <thriftSourceRoot>${thrift.src.base}/robotDatabase</thriftSourceRoot>
-                            <outputDirectory>${thrift.output.dir}/robotDatabase</outputDirectory>
+                            <thriftSourceRoot>${thrift.src.base}/robot-database</thriftSourceRoot>
+                            <outputDirectory>${thrift.output.dir}/robot-database</outputDirectory>
                         </configuration>
                     </execution>
                     <execution>
@@ -96,8 +96,8 @@
                         </goals>
                         <configuration>
                             <generator>java</generator>
-                            <thriftSourceRoot>${thrift.src.base}/userDatabase</thriftSourceRoot>
-                            <outputDirectory>${thrift.output.dir}/userDatabase</outputDirectory>
+                            <thriftSourceRoot>${thrift.src.base}/user-database</thriftSourceRoot>
+                            <outputDirectory>${thrift.output.dir}/user-database</outputDirectory>
                         </configuration>
                     </execution>
                 </executions>
@@ -119,8 +119,8 @@
                             <sources>
                                 <source>src/main/java</source>
                                 <source>${thrift.output.dir}/struct</source>
-                                <source>${thrift.output.dir}/userDatabase</source>
-                                <source>${thrift.output.dir}/robotDatabase</source>
+                                <source>${thrift.output.dir}/user-database</source>
+                                <source>${thrift.output.dir}/robot-database</source>
                             </sources>
                         </configuration>
                     </execution>
