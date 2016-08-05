@@ -201,6 +201,14 @@
             <version>15.0</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/com.coderplus.maven.plugins/copy-rename-maven-plugin -->
+        <dependency>
+            <groupId>com.coderplus.maven.plugins</groupId>
+            <artifactId>copy-rename-maven-plugin</artifactId>
+            <version>1.0</version>
+        </dependency>
+
+
 
     </dependencies>
 

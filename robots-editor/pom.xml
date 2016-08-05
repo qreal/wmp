@@ -8,18 +8,27 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
 
+    <properties>
+        <parent.pom.dir>..</parent.pom.dir>
+
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <thrift.executable>thrift</thrift.executable>
+        <thrift.src.base>${parent.pom.dir}/thrift</thrift.src.base>
+        <thrift.output.dir>target/generated-sources/thrift</thrift.output.dir>
+        <thrift.client.output.dir>src/main/webapp/resources/thrift</thrift.client.output.dir>
+    </properties>
+
     <parent>
         <groupId>wmp</groupId>
         <artifactId>parent</artifactId>
         <version>1.0-SNAPSHOT</version>
-        <relativePath>../pom.xml</relativePath>
+        <relativePath>${parent.pom.dir}/pom.xml</relativePath>
     </parent>
 
     <properties>
-        <thrift.executable>thrift</thrift.executable>
-        <thrift.src.base>src/main/thrift</thrift.src.base>
-        <thrift.output.dir>target/generated-sources/thrift</thrift.output.dir>
-        <thrift.client.output.dir>src/main/webapp/resources/thrift</thrift.client.output.dir>
+
     </properties>
 
 
@@ -92,7 +101,7 @@
                         </goals>
                         <configuration>
                             <generator>java</generator>
-                            <thriftSourceRoot>src/main/thrift/dashboard</thriftSourceRoot>
+                            <thriftSourceRoot>${parent.pom.dir}/dashboard</thriftSourceRoot>
                             <outputDirectory>${thrift.output.dir}/dashboard</outputDirectory>
                         </configuration>
                     </execution>
@@ -104,7 +113,7 @@
                         </goals>
                         <configuration>
                             <generator>java</generator>
-                            <thriftSourceRoot>src/main/thrift/editor</thriftSourceRoot>
+                            <thriftSourceRoot>${parent.pom.dir}/editor</thriftSourceRoot>
                             <outputDirectory>${thrift.output.dir}/editor</outputDirectory>
                         </configuration>
                     </execution>
@@ -116,8 +125,8 @@
                         </goals>
                         <configuration>
                             <generator>java</generator>
-                            <thriftSourceRoot>src/main/thrift/diagramDB</thriftSourceRoot>
-                            <outputDirectory>${thrift.output.dir}/diagramDb</outputDirectory>
+                            <thriftSourceRoot>${parent.pom.dir}/diagramDatabase</thriftSourceRoot>
+                            <outputDirectory>${thrift.output.dir}/diagramDatabase</outputDirectory>
                         </configuration>
                     </execution>
                     <execution>
@@ -128,8 +137,8 @@
                         </goals>
                         <configuration>
                             <generator>java</generator>
-                            <thriftSourceRoot>src/main/thrift/robotDB</thriftSourceRoot>
-                            <outputDirectory>${thrift.output.dir}/robotDb</outputDirectory>
+                            <thriftSourceRoot>${parent.pom.dir}/robotDatabase</thriftSourceRoot>
+                            <outputDirectory>${thrift.output.dir}/robotDatabase</outputDirectory>
                         </configuration>
                     </execution>
                     <execution>
@@ -140,8 +149,8 @@
                         </goals>
                         <configuration>
                             <generator>java</generator>
-                            <thriftSourceRoot>src/main/thrift/userDB</thriftSourceRoot>
-                            <outputDirectory>${thrift.output.dir}/userDb</outputDirectory>
+                            <thriftSourceRoot>${parent.pom.dir}/userDatabase</thriftSourceRoot>
+                            <outputDirectory>${thrift.output.dir}/userDatabase</outputDirectory>
                         </configuration>
                     </execution>
                     <execution>
@@ -152,7 +161,7 @@
                         </goals>
                         <configuration>
                             <generator>java:beans</generator>
-                            <thriftSourceRoot>src/main/thrift/struct</thriftSourceRoot>
+                            <thriftSourceRoot>${parent.pom.dir}/struct</thriftSourceRoot>
                             <outputDirectory>${thrift.output.dir}/struct</outputDirectory>
                         </configuration>
                     </execution>
@@ -167,7 +176,7 @@
                         </goals>
                         <configuration>
                             <generator>js</generator>
-                            <thriftSourceRoot>src/main/thrift/dashboard</thriftSourceRoot>
+                            <thriftSourceRoot>${parent.pom.dir}/dashboard</thriftSourceRoot>
                             <outputDirectory>${thrift.client.output.dir}/dashboard</outputDirectory>
                         </configuration>
                     </execution>
@@ -179,7 +188,7 @@
                         </goals>
                         <configuration>
                             <generator>js:ts</generator>
-                            <thriftSourceRoot>src/main/thrift/editor</thriftSourceRoot>
+                            <thriftSourceRoot>${parent.pom.dir}/editor</thriftSourceRoot>
                             <outputDirectory>${thrift.client.output.dir}/editor</outputDirectory>
                         </configuration>
                     </execution>
@@ -195,7 +204,7 @@
                         </goals>
                         <configuration>
                             <generator>js:ts</generator>
-                            <thriftSourceRoot>src/main/thrift/struct</thriftSourceRoot>
+                            <thriftSourceRoot>${parent.pom.dir}/struct</thriftSourceRoot>
                             <outputDirectory>${thrift.client.output.dir}/struct</outputDirectory>
                         </configuration>
                     </execution>
@@ -220,9 +229,9 @@
                                 <source>src/main/java</source>
                                 <source>${thrift.output.dir}/dashboard</source>
                                 <source>${thrift.output.dir}/editor</source>
-                                <source>${thrift.output.dir}/diagramDb</source>
-                                <source>${thrift.output.dir}/robotDb</source>
-                                <source>${thrift.output.dir}/userDb</source>
+                                <source>${thrift.output.dir}/diagramDatabase</source>
+                                <source>${thrift.output.dir}/robotDatabase</source>
+                                <source>${thrift.output.dir}/userDatabase</source>
                                 <source>${thrift.output.dir}/struct</source>
                             </sources>
                         </configuration>
@@ -285,7 +294,7 @@
                 <artifactId>maven-checkstyle-plugin</artifactId>
                 <version>2.17</version>
                 <configuration>
-                    <configLocation>../Travis/checkstyle/checkstyle.xml</configLocation>
+                    <configLocation>${parent.pom.dir}/Travis/checkstyle/checkstyle.xml</configLocation>
                 </configuration>
                 <reportSets>
                     <reportSet>

@@ -8,18 +8,25 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
 
+    <properties>
+        <parent.pom.dir>../..</parent.pom.dir>
+
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <thrift.executable>thrift</thrift.executable>
+        <thrift.src.base>${parent.pom.dir}/thrift</thrift.src.base>
+        <thrift.output.dir>target/generated-sources/thrift</thrift.output.dir>
+    </properties>
+
+
     <parent>
         <groupId>wmp</groupId>
         <artifactId>parent</artifactId>
         <version>1.0-SNAPSHOT</version>
-        <relativePath>../../pom.xml</relativePath>
+        <relativePath>${parent.pom.dir}/pom.xml</relativePath>
     </parent>
 
-    <properties>
-        <thrift.executable>thrift</thrift.executable>
-        <thrift.src.base>src/main/thrift</thrift.src.base>
-        <thrift.output.dir>target/generated-sources/thrift</thrift.output.dir>
-    </properties>
 
     <build>
         <plugins>
@@ -67,7 +74,7 @@
                         </goals>
                         <configuration>
                             <generator>java:beans</generator>
-                            <thriftSourceRoot>src/main/thrift/struct</thriftSourceRoot>
+                            <thriftSourceRoot>${thrift.src.base}/struct</thriftSourceRoot>
                             <outputDirectory>${thrift.output.dir}/struct</outputDirectory>
                         </configuration>
                     </execution>
@@ -79,8 +86,8 @@
                         </goals>
                         <configuration>
                             <generator>java</generator>
-                            <thriftSourceRoot>src/main/thrift/service</thriftSourceRoot>
-                            <outputDirectory>${thrift.output.dir}/service</outputDirectory>
+                            <thriftSourceRoot>${thrift.src.base}/diagramDatabase</thriftSourceRoot>
+                            <outputDirectory>${thrift.output.dir}/diagramDatabase</outputDirectory>
                         </configuration>
                     </execution>
                 </executions>
@@ -102,7 +109,7 @@
                             <sources>
                                 <source>src/main/java</source>
                                 <source>${thrift.output.dir}/struct</source>
-                                <source>${thrift.output.dir}/service</source>
+                                <source>${thrift.output.dir}/diagramDatabase</source>
                             </sources>
                         </configuration>
                     </execution>
@@ -119,7 +126,7 @@
                 <artifactId>maven-checkstyle-plugin</artifactId>
                 <version>2.17</version>
                 <configuration>
-                    <configLocation>../../Travis/checkstyle/checkstyle.xml</configLocation>
+                    <configLocation>${parent.pom.dir}/Travis/checkstyle/checkstyle.xml</configLocation>
                 </configuration>
                 <reportSets>
                     <reportSet>
