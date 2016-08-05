@@ -45,13 +45,13 @@ script:
   - mvn exec:java &
 
   - cd ../../auth-service
-  - mvn tomcat7:run-war-only &
+  - mvn tomcat7:run-war &
 
   - cd  ../dashboard-service
-  - mvn tomcat7:run-war-only &
+  - mvn tomcat7:run-war &
 
   - cd ../editor-service
-  - mvn tomcat7:run-war-only &
+  - mvn tomcat7:run-war &
 
   - ../Travis/callTomcat.sh
 
