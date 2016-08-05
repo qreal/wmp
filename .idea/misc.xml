@@ -45,13 +45,8 @@
     <file type="web" url="file://$PROJECT_DIR$/db-services/diagram-service" />
     <file type="web" url="file://$PROJECT_DIR$/db-services/robots-service" />
     <file type="web" url="file://$PROJECT_DIR$/db-services/user-service" />
-    <file type="web" url="file://$PROJECT_DIR$/DBServices/DiagramService" />
-    <file type="web" url="file://$PROJECT_DIR$/DBServices/RobotsService" />
-    <file type="web" url="file://$PROJECT_DIR$/DBServices/UserService" />
     <file type="web" url="file://$PROJECT_DIR$/robots-editor" />
-    <file type="web" url="file://$PROJECT_DIR$/RobotsEditor" />
     <file type="web" url="file://$PROJECT_DIR$/shared-resources" />
-    <file type="web" url="file://$PROJECT_DIR$/SharedResources" />
   </component>
   <component name="JavadocGenerationManager">
     <option name="OUTPUT_DIRECTORY" value="$PROJECT_DIR$/javadoc" />
@@ -75,10 +70,10 @@
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/pom.xml" />
-        <option value="$PROJECT_DIR$/SharedResources/pom.xml" />
-        <option value="$PROJECT_DIR$/DBServices/DiagramService/pom.xml" />
-        <option value="$PROJECT_DIR$/DBServices/RobotsService/pom.xml" />
-        <option value="$PROJECT_DIR$/DBServices/UserService/pom.xml" />
+        <option value="$PROJECT_DIR$/shared-resources/pom.xml" />
+        <option value="$PROJECT_DIR$/db-services/diagram-service/pom.xml" />
+        <option value="$PROJECT_DIR$/db-services/robots-service/pom.xml" />
+        <option value="$PROJECT_DIR$/db-services/user-service/pom.xml" />
       </list>
     </option>
   </component>
