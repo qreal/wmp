@@ -8,19 +8,21 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
 
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <thrift.executable>thrift</thrift.executable>
+        <thrift.src.base>${project.parent.basedir}/thrift-definitions</thrift.src.base>
+        <thrift.output.dir>target/generated-sources/thrift</thrift.output.dir>
+    </properties>
+
     <parent>
         <groupId>wmp</groupId>
         <artifactId>parent</artifactId>
         <version>1.0-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
-
-    <properties>
-        <thrift.executable>thrift</thrift.executable>
-        <thrift.src.base>src/main/thrift</thrift.src.base>
-        <thrift.output.dir>target/generated-sources/thrift</thrift.output.dir>
-    </properties>
-
 
     <build>
         <plugins>
@@ -68,20 +70,32 @@
                         </goals>
                         <configuration>
                             <generator>java:beans</generator>
-                            <thriftSourceRoot>src/main/thrift/struct</thriftSourceRoot>
+                            <thriftSourceRoot>${thrift.src.base}/struct</thriftSourceRoot>
                             <outputDirectory>${thrift.output.dir}/struct</outputDirectory>
                         </configuration>
                     </execution>
                     <execution>
-                        <id>java-generation</id>
+                        <id>java-generation-robotDB</id>
                         <phase>generate-sources</phase>
                         <goals>
                             <goal>compile</goal>
                         </goals>
                         <configuration>
                             <generator>java</generator>
-                            <thriftSourceRoot>src/main/thrift/service</thriftSourceRoot>
-                            <outputDirectory>${thrift.output.dir}/service</outputDirectory>
+                            <thriftSourceRoot>${thrift.src.base}/robot-database</thriftSourceRoot>
+                            <outputDirectory>${thrift.output.dir}/robot-database</outputDirectory>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>java-generation-userDB</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                        <configuration>
+                            <generator>java</generator>
+                            <thriftSourceRoot>${thrift.src.base}/user-database</thriftSourceRoot>
+                            <outputDirectory>${thrift.output.dir}/user-database</outputDirectory>
                         </configuration>
                     </execution>
                 </executions>
@@ -103,7 +117,8 @@
                             <sources>
                                 <source>src/main/java</source>
                                 <source>${thrift.output.dir}/struct</source>
-                                <source>${thrift.output.dir}/service</source>
+                                <source>${thrift.output.dir}/user-database</source>
+                                <source>${thrift.output.dir}/robot-database</source>
                             </sources>
                         </configuration>
                     </execution>
@@ -121,7 +136,7 @@
                 <artifactId>maven-checkstyle-plugin</artifactId>
                 <version>2.17</version>
                 <configuration>
-                    <configLocation>../../Travis/checkstyle/checkstyle.xml</configLocation>
+                    <configLocation>${parent.pom.dir}/travis/checkstyle/checkstyle.xml</configLocation>
                 </configuration>
                 <reportSets>
                     <reportSet>
