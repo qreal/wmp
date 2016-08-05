@@ -11,12 +11,15 @@
           <root url="file://$MODULE_DIR$/src/main/java" />
           <root url="file://$MODULE_DIR$/src/main/resources" />
           <root url="file://$MODULE_DIR$/target/generated-sources/thrift/dashboard" />
+          <root url="file://$MODULE_DIR$/target/generated-sources/thrift/diagram-database" />
           <root url="file://$MODULE_DIR$/target/generated-sources/thrift/diagramDatabase" />
           <root url="file://$MODULE_DIR$/target/generated-sources/thrift/diagramDb" />
           <root url="file://$MODULE_DIR$/target/generated-sources/thrift/editor" />
+          <root url="file://$MODULE_DIR$/target/generated-sources/thrift/robot-database" />
           <root url="file://$MODULE_DIR$/target/generated-sources/thrift/robotDatabase" />
           <root url="file://$MODULE_DIR$/target/generated-sources/thrift/robotDb" />
           <root url="file://$MODULE_DIR$/target/generated-sources/thrift/struct" />
+          <root url="file://$MODULE_DIR$/target/generated-sources/thrift/user-database" />
           <root url="file://$MODULE_DIR$/target/generated-sources/thrift/userDatabase" />
           <root url="file://$MODULE_DIR$/target/generated-sources/thrift/userDb" />
         </sourceRoots>
@@ -49,6 +52,9 @@
       <sourceFolder url="file://$MODULE_DIR$/target/generated-sources/thrift/diagramDatabase" isTestSource="false" generated="true" />
       <sourceFolder url="file://$MODULE_DIR$/target/generated-sources/thrift/robotDatabase" isTestSource="false" generated="true" />
       <sourceFolder url="file://$MODULE_DIR$/target/generated-sources/thrift/userDatabase" isTestSource="false" generated="true" />
+      <sourceFolder url="file://$MODULE_DIR$/target/generated-sources/thrift/diagram-database" isTestSource="false" generated="true" />
+      <sourceFolder url="file://$MODULE_DIR$/target/generated-sources/thrift/robot-database" isTestSource="false" generated="true" />
+      <sourceFolder url="file://$MODULE_DIR$/target/generated-sources/thrift/user-database" isTestSource="false" generated="true" />
       <excludeFolder url="file://$MODULE_DIR$/target/classes" />
       <excludeFolder url="file://$MODULE_DIR$/target/etc" />
       <excludeFolder url="file://$MODULE_DIR$/target/generated-sources/groovy-stubs" />

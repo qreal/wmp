@@ -9,13 +9,11 @@
     <packaging>war</packaging>
 
     <properties>
-        <parent.pom.dir>../..</parent.pom.dir>
-
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <thrift.executable>thrift</thrift.executable>
-        <thrift.src.base>${parent.pom.dir}/thrift-definitions</thrift.src.base>
+        <thrift.src.base>${project.parent.basedir}/thrift-definitions</thrift.src.base>
         <thrift.output.dir>target/generated-sources/thrift</thrift.output.dir>
     </properties>
 
@@ -23,7 +21,7 @@
         <groupId>wmp</groupId>
         <artifactId>parent</artifactId>
         <version>1.0-SNAPSHOT</version>
-        <relativePath>${parent.pom.dir}/pom.xml</relativePath>
+        <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <build>
