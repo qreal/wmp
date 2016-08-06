@@ -28,7 +28,6 @@
         <module name="editor-service" />
         <module name="robots-service" />
         <module name="shared-resources" />
-        <module name="spring-security-oauth2-client" />
         <module name="user-service" />
       </profile>
     </annotationProcessing>

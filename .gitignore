@@ -16,6 +16,7 @@ overlays
 **/webapp/resources/thrift/*
 *~*
 *.jar
+!**/3dparty/*.jar
 **/.idea/**
 !**/.idea/misc.xml
 !**/.idea/modules.xml
