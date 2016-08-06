@@ -3,7 +3,7 @@
                packages="org.apache.logging.log4j.test">
     <Appenders>
         <Appender type="Console" name="Main">
-            <Layout type="PatternLayout" pattern="[editor-service] %d{HH:mm:ss} %C.%M -- %m%n%ex%n"/>
+            <Layout type="PatternLayout" pattern="%d{HH:mm:ss} %C.%M -- %m%n%ex%n"/>
         </Appender>
     </Appenders>
 

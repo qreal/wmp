@@ -92,6 +92,13 @@
             <version>1.4.187</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.codehaus.jettison</groupId>
+            <artifactId>jettison</artifactId>
+            <version>1.3.8</version>
+        </dependency>
+
+
         <!-- for OAuth 2.0 -->
         <dependency>
             <groupId>org.springframework.security.oauth</groupId>

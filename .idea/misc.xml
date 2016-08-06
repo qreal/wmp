@@ -80,6 +80,9 @@
         <option value="$PROJECT_DIR$/EditorService/pom.xml" />
         <option value="$PROJECT_DIR$/DashboardService/pom.xml" />
         <option value="$PROJECT_DIR$/editor-service/pom.xml" />
+        <option value="$PROJECT_DIR$/db-services/diagram-service/pom.xml" />
+        <option value="$PROJECT_DIR$/db-services/robots-service/pom.xml" />
+        <option value="$PROJECT_DIR$/db-services/user-service/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">

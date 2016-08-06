@@ -19,7 +19,7 @@ before_install:
   - sudo cp libthrift-0.9.3.jar /usr/local/lib
   - wget http://downloads.sourceforge.net/project/checkstyle/checkstyle/7.0/checkstyle-7.0-all.jar
   - cd 3dparty
-  - mvn install:install-file -Dfile=spring-security-oauth2-client-1.6-SNAPSHOT.jar
+  - mvn org.apache.maven.plugins:maven-install-plugin:2.5.2:install-file -Dfile=spring-security-oauth2-client-1.6-SNAPSHOT.jar -DpomFile=spring-security-oauth2-client-1.6.xml
   - cd ..
 
 

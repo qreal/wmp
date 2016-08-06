@@ -1,4 +1,4 @@
-namespace java com.qreal.robots.thrift.gen
+namespace java com.qreal.wmp.thrift.gen
 
 struct TRobot {
     1: optional i64 id,

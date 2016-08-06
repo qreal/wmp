@@ -46,7 +46,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <mainClass>com.qreal.robots.config.AppInit</mainClass>
+                    <mainClass>com.qreal.wmp.db.diagram.config.AppInit</mainClass>
                 </configuration>
             </plugin>
 

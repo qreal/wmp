@@ -1,4 +1,4 @@
-namespace java com.qreal.robots.thrift.gen
+namespace java com.qreal.wmp.thrift.gen
 
 include "Robot.thrift"
 
