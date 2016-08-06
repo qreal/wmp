@@ -10,7 +10,6 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>3dparty/firsstepauth</module>
         <module>shared-resources</module>
         <module>auth-service</module>
         <module>dashboard-service</module>
