@@ -112,6 +112,6 @@ public class HibernateConfig {
     /** Encoder hashes password of users.*/
     @Bean(name = "passwordEncoder")
     public BCryptPasswordEncoder getPasswordEncoder() {
-        return new BCryptPasswordEncoder(10);
+        return new BCryptPasswordEncoder();
     }
 }
