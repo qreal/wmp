@@ -1,4 +1,4 @@
-ызкщlanguage: java
+language: java
 jdk:
   - oraclejdk8
 
@@ -45,27 +45,21 @@ script:
 
   - cd diagram-service
   - mvn exec:java &
-  - sleep 15
 
   - cd ../user-service
   - mvn exec:java &
-  - sleep 15
 
   - cd ../robots-service
   - mvn exec:java &
-  - sleep 15
 
   - cd ../../auth-service
-  - mvn tomcat7:run-war &
-  - sleep 35
+  - mvn tomcat7:run-war-only &
 
   - cd  ../dashboard-service
-  - mvn tomcat7:run-war &
-  - sleep 35
+  - mvn tomcat7:run-war-only &
 
   - cd ../editor-service
-  - mvn tomcat7:run-war &
-  - sleep 35
+  - mvn tomcat7:run-war-only &
 
   - ../Travis/callTomcat.sh
 
