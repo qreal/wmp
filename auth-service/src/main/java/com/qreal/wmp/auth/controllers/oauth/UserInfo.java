@@ -20,13 +20,11 @@ import java.util.*;
  */
 @Controller
 public class UserInfo {
-
     private static final Logger logger = LoggerFactory.getLogger(UserInfo.class);
 
     @RequestMapping(value = "/oauth/userInfo", method = RequestMethod.GET)
     @ResponseBody
     public String tokenString() throws IOException, JSONException {
-
         User authenticatedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Collection<String> roles = authenticatedUser.getAuthoritiesInStringList();
 
@@ -43,6 +41,5 @@ public class UserInfo {
         logger.trace("User info was requested of user {} with scopes {}", login, rolesInString);
 
         return jsonMap.toString();
-
     }
 }

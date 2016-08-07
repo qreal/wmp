@@ -43,8 +43,7 @@ public class OAuth2ServerConfig {
     protected static class ResourceServerConfiguration extends ResourceServerConfigurerAdapter {
         @Override
         public void configure(HttpSecurity http) throws Exception {
-            http.
-                    requestMatchers().antMatchers("/oauth/userInfo").
+            http.requestMatchers().antMatchers("/oauth/userInfo").
                     and().
                     authorizeRequests().
                     antMatchers("/oauth/userInfo").

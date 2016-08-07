@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
  */
 @Controller
 public class RouteRoleController {
-
     private static final Logger logger = LoggerFactory.getLogger(RouteRoleController.class);
 
     @RequestMapping(value = "", method = RequestMethod.GET)

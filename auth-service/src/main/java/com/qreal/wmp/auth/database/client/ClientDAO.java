@@ -39,7 +39,7 @@ public class ClientDAO {
         Query query = session.createQuery("FROM Client E WHERE E.clientId = :clientId");
         query.setParameter("clientId", clientId);
         List<Client> results = query.list();
-        if (results.size() > 1 || results.size() == 0) {
+        if (results.size() != 1) {
             logger.trace("Client {} was not found using client id", clientId);
             return null;
         }

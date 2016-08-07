@@ -36,13 +36,12 @@ public class LoginController {
     private HttpServletResponse response;
 
     @RequestMapping(value = "/log", method = RequestMethod.GET)
-    public String login(@RequestParam(value = "error", required = false) String error, ModelMap model) throws
-            UnsupportedEncodingException {
+    public String login(@RequestParam(value = "error", required = false) String error, ModelMap model)
+            throws UnsupportedEncodingException {
 
         if (error != null) {
             model.addAttribute("error", true);
-        }
-        else {
+        } else {
             model.addAttribute("error", false);
         }
 
@@ -55,7 +54,6 @@ public class LoginController {
             model.addAttribute("redirect", redirectUrlEncoded);
             logger.trace("Someone came to login page with not clean redirect. Added redirect {} to links on page.",
                     redirectUrl);
-
         }
 
         return "ROLE_ANONYMOUS/loginView";

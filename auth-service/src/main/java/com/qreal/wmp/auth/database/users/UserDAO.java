@@ -40,7 +40,7 @@ public class UserDAO {
         Query query = session.createQuery("FROM User E WHERE E.username = :login");
         query.setParameter("login", login);
         List<User> results = query.list();
-        if (results.size() > 1 || results.size() == 0) {
+        if (results.size() != 1) {
             logger.trace("User {} was not found using login", login);
             return null;
         }
