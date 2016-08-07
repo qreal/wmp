@@ -18,9 +18,14 @@ before_install:
   - sudo cp thrift /usr/local/bin/thrift
   - sudo cp libthrift-0.9.3.jar /usr/local/lib
   - wget http://downloads.sourceforge.net/project/checkstyle/checkstyle/7.0/checkstyle-7.0-all.jar
+  #install 3dparty
   - cd 3dparty
   - mvn org.apache.maven.plugins:maven-install-plugin:2.5.2:install-file -Dfile=spring-security-oauth2-client-1.6-SNAPSHOT.jar -DpomFile=spring-security-oauth2-client-1.6.xml
   - cd ..
+  #fake random with urandom (do not repeat it on your own computer)
+  - sudo rm /dev/random
+  - sudo mknod /dev/random c 1 9
+
 
 
 install:
@@ -40,27 +45,27 @@ script:
 
   - cd diagram-service
   - mvn exec:java &
-  - sleep 20
+  - sleep 15
 
   - cd ../user-service
   - mvn exec:java &
-  - sleep 20
+  - sleep 15
 
   - cd ../robots-service
   - mvn exec:java &
-  - sleep 20
+  - sleep 15
 
   - cd ../../auth-service
   - mvn tomcat7:run-war &
-  - sleep 60
+  - sleep 35
 
   - cd  ../dashboard-service
   - mvn tomcat7:run-war &
-  - sleep 60
+  - sleep 35
 
   - cd ../editor-service
   - mvn tomcat7:run-war &
-  - sleep 60
+  - sleep 35
 
   - ../Travis/callTomcat.sh
 
