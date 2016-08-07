@@ -34,9 +34,6 @@
 
         <resources>
             <resource>
-                <directory>src/main/webapp/properties</directory>
-            </resource>
-            <resource>
                 <directory>src/main/resources</directory>
             </resource>
         </resources>

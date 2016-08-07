@@ -11,10 +11,10 @@ import org.springframework.security.oauth2.provider.approval.ApprovalStoreUserAp
 
 import java.util.Collection;
 
-//Class used for white list of approvals
-public class UserApprovalHandler extends ApprovalStoreUserApprovalHandler {
+/** White list of approvals for client.*/
+public class ClientsApprovalHandler extends ApprovalStoreUserApprovalHandler {
 
-    private static final Logger logger = LoggerFactory.getLogger(UserApprovalHandler.class);
+    private static final Logger logger = LoggerFactory.getLogger(ClientsApprovalHandler.class);
 
     private boolean useApprovalStore = true;
 

@@ -8,6 +8,10 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+/**
+ * Controller for routing users with specific roles requesting root to specific paths.
+ * Pages: / (GET) (routing processor)
+ */
 @Controller
 public class RouteRoleController {
 
@@ -15,7 +19,7 @@ public class RouteRoleController {
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     public String routeRole(ModelMap model) {
-        String role = AuthenticatedUser.getAuthenticatedUserAuthority();
+        String role = AuthenticatedUser.getAuthenticatedUserAuthorities();
         if (role.contains("ROLE_ADMIN")) {
             logger.trace("Admin {} routed to the main page for role", AuthenticatedUser.getAuthenticatedUserName());
             return "redirect:/clientsPanel";

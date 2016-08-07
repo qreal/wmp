@@ -31,15 +31,11 @@ public class UserDaoImpl implements UserDao {
 
     private final SessionFactory sessionFactory;
 
-    /**
-     * RobotService used to resolve foreign key dependencies.
-     */
+    /** RobotService used to resolve foreign key dependencies.*/
     @Autowired
     private RobotService robotService;
 
-    /**
-     * DiagramService used to resolve foreign key dependecies.
-     */
+    /** DiagramService used to resolve foreign key dependencies.*/
     @Autowired
     private DiagramService diagramService;
 

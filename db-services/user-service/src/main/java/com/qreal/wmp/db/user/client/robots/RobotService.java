@@ -4,9 +4,7 @@ import com.qreal.wmp.thrift.gen.TRobot;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-/**
- * RobotDBService interface.
- */
+/** RobotDBService interface.*/
 public interface RobotService {
 
     /**

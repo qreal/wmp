@@ -5,9 +5,7 @@ import com.qreal.wmp.db.diagram.model.Folder;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-/**
- * DAO for diagram DB.
- */
+/** DAO for diagram DB.*/
 public interface DiagramDao {
 
     /**
@@ -19,9 +17,7 @@ public interface DiagramDao {
      */
     Long saveDiagram(@NotNull Diagram diagram, Long folderId);
 
-    /**
-     * Returns diagram with specified id. (or null)
-     */
+    /** Returns diagram with specified id. (or null)*/
     @Nullable
     Diagram openDiagram(Long diagramId);
 
@@ -32,9 +28,7 @@ public interface DiagramDao {
      */
     void rewriteDiagram(@NotNull Diagram diagram);
 
-    /**
-     * Deletes diagram with specified id.
-     */
+    /** Deletes diagram with specified id.*/
     void deleteDiagram(Long diagramId);
 
     /**
@@ -45,20 +39,14 @@ public interface DiagramDao {
      */
     Long createFolder(@NotNull Folder folder);
 
-    /**
-     * Deletes folder with specified id.
-     */
+    /** Deletes folder with specified id.*/
     void deleteFolder(Long folderId);
 
-    /**
-     * Returns folder with specified id. (or null)
-     */
+    /** Returns folder with specified id. (or null)*/
     @Nullable
     Folder getFolder(Long folderId);
 
-    /**
-     * Returns root folder of user. (or null)
-     */
+    /** Returns root folder of user. (or null)*/
     @Nullable
     Folder getFolderTree(String userName);
 }

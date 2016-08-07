@@ -6,9 +6,7 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.io.Serializable;
 
-/**
- * Property of a link.
- */
+/** Property of a link.*/
 @Entity
 @Table(name = "link_properties")
 public class LinkProperty implements Serializable {
@@ -31,9 +29,7 @@ public class LinkProperty implements Serializable {
     public LinkProperty() {
     }
 
-    /**
-     * Constructor-converter from Thrift TProperty to LinkProperty.
-     */
+    /** Constructor-converter from Thrift TProperty to LinkProperty.*/
     public LinkProperty(TProperty tProperty) {
         if (tProperty.isSetPropertyId()) {
             propertyId = tProperty.getPropertyId();
@@ -84,9 +80,7 @@ public class LinkProperty implements Serializable {
         this.type = type;
     }
 
-    /**
-     * Converter from LinkProperty to Thrift TProperty.
-     */
+    /** Converter from LinkProperty to Thrift TProperty.*/
     public TProperty toTProperty() {
         TProperty tProperty = new TProperty();
         if (value != null) {

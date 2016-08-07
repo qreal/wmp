@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import javax.sql.DataSource;
 import java.util.Properties;
 
+/** Declares transaction manager for Hibernate and it's session factory bean. */
 @Configuration
 @EnableTransactionManagement
 public class HibernateConfig {
@@ -20,6 +21,7 @@ public class HibernateConfig {
     @Autowired
     private Properties hibernateProperties;
 
+    /** Factory of DB sessions. Sessions created using dataSource bean. */
     @Bean
     public SessionFactory sessionFactory() {
         LocalSessionFactoryBuilder sessionBuilder = new LocalSessionFactoryBuilder(dataSource);
@@ -28,6 +30,7 @@ public class HibernateConfig {
         return sessionBuilder.buildSessionFactory();
     }
 
+    /** Transaction manager for session factory. No support for distributed transactions */
     @Bean
     public HibernateTransactionManager txManager() {
         return new HibernateTransactionManager(sessionFactory());

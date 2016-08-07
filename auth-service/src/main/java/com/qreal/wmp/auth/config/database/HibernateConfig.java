@@ -22,10 +22,14 @@ import org.springframework.orm.hibernate5.LocalSessionFactoryBuilder;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+/**
+ * Development configuration of Hibernate ORM.
+ * In development used H2 in-memory database and create-drop strategy of start.
+ */
 @Configuration
 @EnableTransactionManagement(proxyTargetClass = true)
 public class HibernateConfig {
-
+    /** Provides access to DB.*/
     @Bean(name = "dataSource")
     public DataSource dataSource() {
         SimpleDriverDataSource dataSource = new SimpleDriverDataSource();
@@ -36,6 +40,7 @@ public class HibernateConfig {
         return dataSource;
     }
 
+    /** Configuration properties of DB.*/
     @Bean(name = "hibernateProperties")
     public Properties getHibernateProperties() {
         Properties properties = new Properties();
@@ -45,6 +50,7 @@ public class HibernateConfig {
         return properties;
     }
 
+    /** Factory of DB sessions. Sessions created using dataSource bean.*/
     @Autowired
     @Bean(name = "sessionFactory")
     public SessionFactory getSessionFactory(DataSource dataSource) {
@@ -56,6 +62,7 @@ public class HibernateConfig {
         return sessionBuilder.buildSessionFactory();
     }
 
+    /** Transaction manager for session factory. No support for distributed transactions.*/
     @Autowired
     @Bean(name = "transactionManager")
     public HibernateTransactionManager getTransactionManager(SessionFactory sessionFactory) {
@@ -64,6 +71,7 @@ public class HibernateConfig {
         return transactionManager;
     }
 
+    /** DAO for user entity in local DB.*/
     @Autowired
     @DependsOn("transactionManager")
     @Bean(name = "userService")
@@ -73,6 +81,7 @@ public class HibernateConfig {
         return userService;
     }
 
+    /** Adapter from userService to Spring Framework Security class UserDetailsService. */
     @Autowired
     @Bean(name = "userServiceSec")
     public UserDAOSec getUserDaoSec(UserDAO userService) {
@@ -81,6 +90,7 @@ public class HibernateConfig {
         return userServiceSec;
     }
 
+    /** DAO for client entity in local DB.*/
     @Autowired
     @DependsOn("transactionManager")
     @Bean(name = "clientService")
@@ -90,6 +100,7 @@ public class HibernateConfig {
         return clientService;
     }
 
+    /** Adapter from userService to Spring Framework Security OAuth2 class ClientDetailsService. */
     @Autowired
     @Bean(name = "clientServiceSec")
     public ClientDAOSec getClientDaoSec(ClientDAO clientService) {
@@ -98,9 +109,9 @@ public class HibernateConfig {
         return clientServiceSec;
     }
 
+    /** Encoder hashes password of users.*/
     @Bean(name = "passwordEncoder")
     public BCryptPasswordEncoder getPasswordEncoder() {
         return new BCryptPasswordEncoder(10);
     }
-
 }

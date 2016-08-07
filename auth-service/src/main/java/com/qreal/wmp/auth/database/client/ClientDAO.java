@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.util.List;
 
+/** This is the main class for work with client table in database.*/
 @Service("clientService")
 @Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
 @Transactional
@@ -29,39 +30,10 @@ public class ClientDAO {
     }
 
     /**
-     * Retrieves a single client by id.
-     */
-    public Client get(Integer id) {
-        Session session = sessionFactory.getCurrentSession();
-        Client client = session.get(Client.class, id);
-        logger.trace("Client {} taken from database using id {}", client.getClientId(), id);
-
-        return client;
-    }
-
-    /**
-     * Retrieves a list of clients by idClient.
-     * List here to be sure...
-     */
-    public List get(String clientId) {
-        Session session = sessionFactory.getCurrentSession();
-        Query query = session.createQuery("FROM Client E WHERE E.clientId = :clientId");
-        query.setParameter("clientId", clientId);
-        List results = query.list();
-        if (results.isEmpty()) {
-            logger.trace("Client {} was not found using client id", clientId);
-        }
-        else {
-            logger.trace("Client taken from database using client id {}", clientId);
-        }
-        return results;
-    }
-
-    /**
      * Retrieves a single client by idClient.
      * (Take first from list of returned)
      */
-    public ClientDetails loadClientById(String clientId) {
+    public Client loadClientById(String clientId) {
         Session session = sessionFactory.getCurrentSession();
 
         Query query = session.createQuery("FROM Client E WHERE E.clientId = :clientId");
@@ -75,9 +47,7 @@ public class ClientDAO {
         return results.get(0);
     }
 
-    /**
-     * Retrieves all clients from database.
-     */
+    /** Retrieves all clients from database.*/
     public List<Client> getAll() {
         Session session = sessionFactory.getCurrentSession();
         Query query = session.createQuery("FROM Client E");
@@ -86,11 +56,9 @@ public class ClientDAO {
         return results;
     }
 
-    /**
-     * Adds a new client.
-     */
+    /** Adds a new client.*/
     public void add(Client client) {
-        if (get(client.getClientId()).size() > 0) {
+        if (loadClientById(client.getClientId()) != null) {
             return;
         }
         Session session = sessionFactory.getCurrentSession();
@@ -99,9 +67,7 @@ public class ClientDAO {
 
     }
 
-    /**
-     * Deletes an existing client by id.
-     */
+    /** Deletes an existing client by id.*/
     public void delete(Integer id) {
         Session session = sessionFactory.getCurrentSession();
         Client client = session.get(Client.class, id);
@@ -109,13 +75,13 @@ public class ClientDAO {
         logger.trace("{} client with id {} was deleted from database", client.getClientId(), id);
     }
 
-    /**
-     * Edits an existing client.
-     */
+    /** Edits an existing client.*/
     public void edit(Client client) {
         Session session = sessionFactory.getCurrentSession();
 
-        Client existingClient = session.get(Client.class, client.getId());
+//        Client existingClient = session.get(Client.class, client.getId());
+        Client existingClient = session.get(Client.class, client.getClientId());
+
 
         existingClient.setIdClient(client.getClientId());
         existingClient.setAccessTokenValiditySeconds(client.getAccessTokenValiditySeconds());

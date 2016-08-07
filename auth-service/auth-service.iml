@@ -11,13 +11,14 @@
     <facet type="Spring" name="Spring">
       <configuration>
         <fileset id="fileset" name="Spring Application Context" removed="false">
-          <file>file://$MODULE_DIR$/src/main/java/com/resources/auth/config/oauth2/outproviders/GithubConfig.java</file>
-          <file>file://$MODULE_DIR$/src/main/java/com/resources/auth/config/oauth2/outproviders/GoogleConfig.java</file>
-          <file>file://$MODULE_DIR$/src/main/java/com/resources/auth/config/database/HibernateConfig.java</file>
-          <file>file://$MODULE_DIR$/src/main/java/com/resources/auth/config/security/MethodSecurityConfig.java</file>
-          <file>file://$MODULE_DIR$/src/main/java/com/resources/auth/config/oauth2/OAuth2ServerConfig.java</file>
-          <file>file://$MODULE_DIR$/src/main/java/com/resources/auth/config/security/SecurityConfiguration.java</file>
-          <file>file://$MODULE_DIR$/src/main/java/com/resources/auth/config/WebMVCConfig.java</file>
+          <file>file://$MODULE_DIR$/src/main/java/com/qreal/wmp/auth/config/oauth2/outproviders/GithubConfig.java</file>
+          <file>file://$MODULE_DIR$/src/main/java/com/qreal/wmp/auth/config/oauth2/outproviders/GoogleConfig.java</file>
+          <file>file://$MODULE_DIR$/src/main/java/com/qreal/wmp/auth/config/database/HibernateConfig.java</file>
+          <file>file://$MODULE_DIR$/src/main/java/com/qreal/wmp/auth/config/security/MethodSecurityConfig.java</file>
+          <file>file://$MODULE_DIR$/src/main/java/com/qreal/wmp/auth/config/oauth2/OAuth2ServerConfig.java</file>
+          <file>file://$MODULE_DIR$/src/main/java/com/qreal/wmp/auth/config/security/SecurityConfiguration.java</file>
+          <file>file://$MODULE_DIR$/src/main/java/com/qreal/wmp/auth/config/WebMVCConfig.java</file>
+          <file>file://$MODULE_DIR$/src/main/java/com/qreal/wmp/auth/security/oauth/OAuth2UserDetailsLoaderImpl.java</file>
         </fileset>
       </configuration>
     </facet>

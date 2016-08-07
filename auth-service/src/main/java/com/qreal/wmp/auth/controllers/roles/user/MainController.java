@@ -13,6 +13,10 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
+/**
+ * Controller of user's main page.
+ * Pages: /home (GET) (main page for user, contains list of connected clients)
+ */
 @Controller
 public class MainController {
     @Resource(name = "clientService")

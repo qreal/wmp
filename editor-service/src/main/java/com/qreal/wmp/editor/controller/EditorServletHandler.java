@@ -47,18 +47,14 @@ public class EditorServletHandler implements EditorServiceThrift.Iface {
         diagramService.rewriteDiagram(newDiagram);
     }
 
-    /**
-     * Deletes diagram with specified id.
-     */
+    /** Deletes diagram with specified id.*/
     @Override
     public void deleteDiagram(long diagramId) {
         DiagramService diagramService = (DiagramService) context.getBean("diagramService");
         diagramService.deleteDiagram(diagramId);
     }
 
-    /**
-     * Returns diagram with specified id.
-     */
+    /** Returns diagram with specified id.*/
     @Override
     public TDiagram openDiagram(long diagramId) {
         DiagramService diagramService = (DiagramService) context.getBean("diagramService");
@@ -78,18 +74,14 @@ public class EditorServletHandler implements EditorServiceThrift.Iface {
         return diagramService.createFolder(newFolder);
     }
 
-    /**
-     * Deletes folder with specified id.
-     */
+    /** Deletes folder with specified id.*/
     @Override
     public void deleteFolder(long folderId) {
         DiagramService diagramService = (DiagramService) context.getBean("diagramService");
         diagramService.deleteFolder(folderId);
     }
 
-    /**
-     * Returns root folder of user.
-     */
+    /** Returns root folder of user.*/
     @Override
     public TFolder getFolderTree() {
         DiagramService diagramService = (DiagramService) context.getBean("diagramService");

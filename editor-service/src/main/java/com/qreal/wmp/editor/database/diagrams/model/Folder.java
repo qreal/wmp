@@ -6,9 +6,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * Folder with diagrams and other folders.
- */
+/** Folder with diagrams and other folders.*/
 public class Folder implements Serializable {
 
     private Long id;
@@ -31,9 +29,7 @@ public class Folder implements Serializable {
         this.userName = userName;
     }
 
-    /**
-     * Constructor-converter from Thrift TFolder to Folder.
-     */
+    /** Constructor-converter from Thrift TFolder to Folder.*/
     public Folder(TFolder tFolder) {
 
         if (tFolder.isSetId()) {
@@ -62,9 +58,7 @@ public class Folder implements Serializable {
 
     }
 
-    /**
-     * Converter from Folder to Thrift TFolder.
-     */
+    /** Converter from Folder to Thrift TFolder.*/
     public TFolder toTFolder() {
         TFolder tFolder = new TFolder();
 

@@ -5,9 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Random;
 
-/**
- * Util class for password generation.
- */
+/** Util class for password generation.*/
 public class RandomStringGenerator {
 
     private static final Logger logger = LoggerFactory.getLogger(RandomStringGenerator.class);
@@ -17,9 +15,7 @@ public class RandomStringGenerator {
     private RandomStringGenerator() {
     }
 
-    /**
-     * Static method for generation of random strings. Based on jvm random.
-     */
+    /** Static method for generation of random strings. Based on jvm random.*/
     public static String generateString(int lengthOfString) {
         StringBuilder sb = new StringBuilder();
         String randAlph = "qwertyuiop[]asdfghjklzxcvbnm/QWERTYUIOP[]ASDFGHJKLZXCVBNM1234567890-!@#$%^&*()";

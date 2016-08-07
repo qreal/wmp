@@ -22,9 +22,7 @@ public class UserDAOSec implements UserDetailsService {
         this.userService = userService;
     }
 
-    /**
-     * Loads user from local DB by id.
-     */
+    /** Loads user from local DB by id.*/
     @Override
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
         UserDetails user = userService.loadUserByUsername(login);

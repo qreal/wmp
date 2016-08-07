@@ -4,9 +4,7 @@ import com.qreal.wmp.dashboard.database.users.model.User;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-/**
- * UserDBService interface.
- */
+/** UserDBService interface.*/
 public interface UserService {
 
     /**

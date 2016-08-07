@@ -11,16 +11,19 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration;
 
+/** Represents initialization process of web application based on Spring Framework.*/
 public class AppInit implements WebApplicationInitializer {
 
+    /**
+     * Will be called before actual initialization of servlet. Here we can create hierarchy of spring contexts and link
+     * it to servlet context.
+     */
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
         AnnotationConfigWebApplicationContext dispatcherContext = new AnnotationConfigWebApplicationContext();
 
         dispatcherContext.scan("com.qreal.wmp.dashboard");
-
         dispatcherContext.register(AppInit.class);
-
         servletContext.addListener(new ContextLoaderListener(dispatcherContext));
 
         DispatcherServlet dispatcherServlet = new DispatcherServlet(dispatcherContext);

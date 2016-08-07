@@ -15,9 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-/**
- * Thrift client side of DiagramDbService.
- */
+/** Thrift client side of DiagramDbService.*/
 @Service("diagramService")
 public class DiagramServiceImpl implements DiagramService {
 
@@ -27,9 +25,7 @@ public class DiagramServiceImpl implements DiagramService {
 
     private DiagramDbService.Client client;
 
-    /**
-     * Constructor creates connection with Thrift TServer.
-     */
+    /** Constructor creates connection with Thrift TServer.*/
     public DiagramServiceImpl() {
         String url = "localhost";
         int port = 9093;

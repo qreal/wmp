@@ -16,9 +16,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-/**
- * UserDetailsService implementation for SpringSecurity (using UserService).
- */
+/** UserDetailsService implementation for SpringSecurity (using UserService).*/
 @Service("userDetailsService")
 public class UserDetailsServiceImpl implements UserDetailsService {
 

@@ -8,27 +8,22 @@ import java.util.*;
 
 import javax.persistence.*;
 
-/**
- * This is a class of user.
- * This class also used as entity in database.
- */
+/** User in auth service. It can be admin or plain user.*/
 @Entity
-@Table(name = "USERS")
+@Table(name = "Users")
 public class User implements Serializable, UserDetails {
-
+    /** Name of user.*/
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
-    private Integer id;
-
-    @Column(name = "LOGIN")
+    @Column(name = "Username")
     private String username;
 
-    @Column(name = "PASSWORD")
+    /** Password of user.*/
+    @Column(name = "Password")
     private String password;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,
-            orphanRemoval = true, fetch = FetchType.EAGER)
+    /** Security authorities of user.*/
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @JoinColumn(name = "authorities", referencedColumnName = "Username")
     private Collection<UserAuthority> authorities;
 
     public User(){
@@ -38,14 +33,6 @@ public class User implements Serializable, UserDetails {
         this.username = username;
         this.password = password;
         setAuthorities(authority);
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public String getUsername() {
@@ -68,9 +55,7 @@ public class User implements Serializable, UserDetails {
         return (Collection<GrantedAuthority>) (Collection<?>) authorities;
     }
 
-    /**
-     * Serialize authorities in strings and returns.
-     */
+    /** Serializes authorities in strings and returns.*/
     public Collection<String> getAuthoritiesInStringList() {
         Collection<String> collection = new ArrayList<String>();
         for (UserAuthority authority : authorities) {
@@ -79,14 +64,8 @@ public class User implements Serializable, UserDetails {
         return collection;
     }
 
-    /**
-     * Sets authorities (converting from GrantedAuthority).
-     */
+    /** Sets authorities (converting from GrantedAuthority).*/
     public void setAuthorities(Collection<GrantedAuthority> authorities) {
-        for (GrantedAuthority authority : authorities) {
-            UserAuthority authorityCasted = (UserAuthority) authority;
-            authorityCasted.setUser(this);
-        }
         this.authorities = (Collection<UserAuthority>) (Collection<?>) authorities;
     }
 

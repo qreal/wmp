@@ -7,9 +7,7 @@ import com.qreal.wmp.thrift.gen.TRobot;
 import org.apache.thrift.TException;
 import org.springframework.context.support.AbstractApplicationContext;
 
-/**
- * Thrift server side handler for RobotDBService.
- */
+/** Thrift server side handler for RobotDBService.*/
 public class RobotDbServiceHandler implements RobotDbService.Iface {
 
     private final RobotDao robotDao;

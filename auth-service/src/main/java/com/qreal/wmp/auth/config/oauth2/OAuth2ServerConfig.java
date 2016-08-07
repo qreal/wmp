@@ -1,8 +1,8 @@
 package com.qreal.wmp.auth.config.oauth2;
 
-import com.qreal.wmp.auth.security.oauth.UserApprovalHandler;
 import com.qreal.wmp.auth.config.oauth2.outproviders.GithubConfig;
 import com.qreal.wmp.auth.config.oauth2.outproviders.GoogleConfig;
+import com.qreal.wmp.auth.security.oauth.ClientsApprovalHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.*;
@@ -24,19 +24,23 @@ import org.springframework.security.oauth2.provider.token.TokenStore;
 
 import javax.annotation.Resource;
 
+/**
+ * Configuration for OAuth authentication endpoint. It includes configuration for resource server with userInfo
+ * endpoint and configuration for authorization.
+ */
 @Configuration
 @Import({GoogleConfig.class, GithubConfig.class})
 public class OAuth2ServerConfig {
-
+    /** Processor for @Value annotations linked to property files.*/
     @Bean
     public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
         return new PropertySourcesPlaceholderConfigurer();
     }
 
+    /** Configuration for OAuth resource server. This server owns userInfo endpoint.*/
     @Configuration
     @EnableResourceServer
     protected static class ResourceServerConfiguration extends ResourceServerConfigurerAdapter {
-
         @Override
         public void configure(HttpSecurity http) throws Exception {
             http.
@@ -49,15 +53,15 @@ public class OAuth2ServerConfig {
 
     }
 
+    /** Configuration for authorization of resources, such as UserInfo.*/
     @Configuration
     @EnableAuthorizationServer
     protected static class AuthorizationServerConfiguration extends AuthorizationServerConfigurerAdapter {
-
         @Autowired
         private TokenStore tokenStore;
 
         @Autowired
-        private org.springframework.security.oauth2.provider.approval.UserApprovalHandler userApprovalHandler;
+        private org.springframework.security.oauth2.provider.approval.UserApprovalHandler clientsApprovalHandler;
 
         @Resource(name = "clientServiceSec")
         private ClientDetailsService clientServiceSec;
@@ -66,17 +70,20 @@ public class OAuth2ServerConfig {
         @Qualifier("authenticationManagerBean")
         private AuthenticationManager authenticationManager;
 
+        /** Adding clientsServiceSec as repository for Clients search.*/
         @Override
         public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
             clients.withClientDetails(clientServiceSec);
         }
 
+        /** Adding tokenStore, clientsApprovalHandler for clients and configured authenticationManager.*/
         @Override
         public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-            endpoints.tokenStore(tokenStore).userApprovalHandler(userApprovalHandler).
+            endpoints.tokenStore(tokenStore).userApprovalHandler(clientsApprovalHandler).
                     authenticationManager(authenticationManager);
         }
 
+        /** Disabling redundant http-basic authentication for clients.*/
         @Override
         public void configure(AuthorizationServerSecurityConfigurer oauthServer) throws Exception {
             //Needed to disable http-basic authentication in all oauth requests
@@ -87,7 +94,6 @@ public class OAuth2ServerConfig {
 
     @Configuration
     protected static class Stuff {
-
         @Resource(name = "clientServiceSec")
         private ClientDetailsService clientServiceSec;
 
@@ -101,11 +107,12 @@ public class OAuth2ServerConfig {
             return store;
         }
 
+        /** Creating ClientsApprovalHandler with link to clientsService.*/
         @Bean
         @Lazy
         @Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
-        public UserApprovalHandler userApprovalHandler() throws Exception {
-            UserApprovalHandler handler = new UserApprovalHandler();
+        public ClientsApprovalHandler userApprovalHandler() throws Exception {
+            ClientsApprovalHandler handler = new ClientsApprovalHandler();
             handler.setApprovalStore(approvalStore());
             handler.setRequestFactory(new DefaultOAuth2RequestFactory(clientServiceSec));
             handler.setClientDetailsService(clientServiceSec);

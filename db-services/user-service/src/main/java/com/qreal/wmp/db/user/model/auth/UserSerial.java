@@ -8,45 +8,31 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-/**
- * User in authorization service.
- */
+/** User in authorization service.*/
 @Entity
 @Table(name = "users")
 public class UserSerial {
-    /**
-     * Name of user (primary key too).
-     */
+    /** Name of user (primary key too).*/
     private String username;
 
-    /**
-     * Hash of user password.
-     */
+    /** Hash of user password.*/
     private String password;
 
-    /**
-     * Is user banned.
-     */
+    /** Is user banned.*/
     private Boolean enabled;
 
-    /**
-     * Roles of user.
-     */
+    /** Roles of user.*/
     @JsonIgnore
     private Set<UserRoleSerial> roles = new HashSet<>(0);
 
-    /**
-     * User's robots.
-     */
+    /** User's robots.*/
     @JsonIgnore
     private Set<Long> robots = new HashSet<>(0);
 
     public UserSerial() {
     }
 
-    /**
-     * Constructor-converter from Thrift TUser to UserSerial (without robot).
-     */
+    /** Constructor-converter from Thrift TUser to UserSerial (without robot).*/
     public UserSerial(TUser user) {
 
         if (user.isSetUsername()) {
@@ -113,9 +99,7 @@ public class UserSerial {
         this.robots = robots;
     }
 
-    /**
-     * Converter from UserSerial to TUser (without robots).
-     */
+    /** Converter from UserSerial to TUser (without robots).*/
     public TUser toTUser() {
         TUser tUser = new TUser();
 

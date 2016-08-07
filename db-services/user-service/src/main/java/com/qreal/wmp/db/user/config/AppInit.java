@@ -3,6 +3,7 @@ package com.qreal.wmp.db.user.config;
 import com.qreal.wmp.db.user.server.UserDbServer;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
+/** Main class of program. */
 public class AppInit {
 
     /**

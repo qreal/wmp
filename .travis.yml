@@ -40,21 +40,27 @@ script:
 
   - cd diagram-service
   - mvn exec:java &
+  - sleep 20
 
   - cd ../user-service
   - mvn exec:java &
+  - sleep 20
 
   - cd ../robots-service
   - mvn exec:java &
+  - sleep 20
 
   - cd ../../auth-service
-  - mvn tomcat7:run-war &
+  - mvn tomcat7:run-war-only &
+  - sleep 60
 
   - cd  ../dashboard-service
-  - mvn tomcat7:run-war &
+  - mvn tomcat7:run-war-only &
+  - sleep 60
 
   - cd ../editor-service
-  - mvn tomcat7:run-war &
+  - mvn tomcat7:run-war-only &
+  - sleep 60
 
   - ../Travis/callTomcat.sh
 

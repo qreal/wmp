@@ -20,13 +20,16 @@ import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
+/** Configuration for Github OAuth authentication provider.*/
 @Configuration
 public class GithubConfig {
-
     @Configuration
     @PropertySource("classpath:oauthGithub.properties")
     protected static class OAuthAuthentication {
-
+        /**
+         * Properties is a catalogue of REST authentication interface of Github authentication point.
+         * Properties will be loaded from file from resources dir.
+         */
         @Bean(name = "propertiesGithub")
         public OAuth2ServiceProperties oAuth2ServicePropertiesGithub(
                 @Value("${github.accessTokenUri}") String accessTokenUri,
@@ -46,13 +49,14 @@ public class GithubConfig {
             details.setUserInfoUri(userInfoUri);
             details.setUserIdName("email");
 
-            Map<String, String> additionalParams = new HashMap<String, String>();
+            Map<String, String> additionalParams = new HashMap<>();
             additionalParams.put("scope", scope);
             details.setAdditionalAuthParams(additionalParams);
 
             return details;
         }
 
+        /** An adapter from Spring Framework AuthenticationUserDetailsService interface to OAuth2UserDetailsLoader.*/
         @Bean(name = "userDetailsServiceGithub")
         @Autowired
         public OAuth2UserDetailsService<User> oAuth2UserDetailsServiceGithub(
@@ -68,6 +72,7 @@ public class GithubConfig {
             return service;
         }
 
+        /** AuthenticationProvider implementing OAuth authorization_code strategy.*/
         @Bean(name = "providerGithub")
         @Autowired
         public OAuth2AuthenticationProvider oAuth2AuthenticationProviderGithub(
@@ -80,6 +85,7 @@ public class GithubConfig {
             return authProv;
         }
 
+        /** OAuth entry point will redirect user to Github authentication point with correct parameters.*/
         @Bean(name = "entryPointGithub")
         @Autowired
         public OAuth2AuthenticationEntryPoint oAuth2AuthenticationEntryPointGithub(
@@ -93,7 +99,9 @@ public class GithubConfig {
 
     @Configuration("OAuthGithubAuth")
     @Order(98)
+    @PropertySource("classpath:oauthGithub.properties")
     protected static class OAuthGithubAuth extends WebSecurityConfigurerAdapter {
+        private String uriRedirectShort;
 
         @Resource(name = "filterGithub")
         private OAuth2AuthenticationFilter filterGithub;
@@ -101,28 +109,35 @@ public class GithubConfig {
         @Resource(name = "entryPointGithub")
         private OAuth2AuthenticationEntryPoint oAuthEntryPointGithub;
 
+        /**
+         * Authentication filter that will be built into filter chain of Spring Framework Security, will catch
+         * unauthorized sessions on Github path and will pass them to Github authentication provider.
+         */
         @Bean(name = "filterGithub")
         @Autowired
         public OAuth2AuthenticationFilter oAuth2AuthenticationFilter(
                 @Qualifier("propertiesGithub") OAuth2ServiceProperties serviceProperties,
+                @Value("${github.redirectURIShort}") String uriRedirectShort,
                 AuthenticationManager manager)
                 throws Exception {
-            OAuth2AuthenticationFilter filter = new OAuth2AuthenticationFilter("/oauth/callback/github");
+            OAuth2AuthenticationFilter filter = new OAuth2AuthenticationFilter(uriRedirectShort);
             filter.setAuthenticationManager(manager);
             filter.setoAuth2ServiceProperties(serviceProperties);
+            this.uriRedirectShort = uriRedirectShort;
             return filter;
         }
 
+        /** Configuration of Spring Framework security for Github entry.*/
         @Override
         @DependsOn("filterGithub")
         protected void configure(HttpSecurity httpSecurity) throws Exception {
 
             httpSecurity.authorizeRequests().
                     and().
-                    requestMatchers().antMatchers("/oauth/callback/github", "/oauth/github**").
+                    requestMatchers().antMatchers(uriRedirectShort, "/oauth/github**").
                     and().
                     authorizeRequests().
-                    antMatchers("/oauth/callback/github").permitAll().
+                    antMatchers(uriRedirectShort).permitAll().
                     antMatchers("/oauth/github**").authenticated().
                     and().
                     httpBasic().
@@ -130,7 +145,6 @@ public class GithubConfig {
                     and().
                     addFilterAfter(filterGithub, ExceptionTranslationFilter.class).
                     csrf().disable();
-
         }
     }
 }

@@ -24,8 +24,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Controller of usersPanel page.
+ * Pages: /usersPanel (GET) (admin control page for users),
+ * /usersPanel/grantUserAdminRights/{user's name} (POST) (path for granting admin rights for user with specified name),
+ * /usersPanel/withdrawUserAdminRights/{user's name} (POST) (path for withdrawing admin rights from user with
+ * specified name
+ */
 @Controller
-@RequestMapping("usersPanel")
 public class UsersPanelController {
 
     private static final Logger logger = LoggerFactory.getLogger(UsersPanelController.class);
@@ -33,7 +39,7 @@ public class UsersPanelController {
     @Resource(name = "userService")
     private UserDAO userService;
 
-    @RequestMapping(value = "", method = RequestMethod.GET)
+    @RequestMapping(value = "/usersPanel", method = RequestMethod.GET)
     public ModelAndView tableUsersPrepare(ModelMap model, HttpServletRequest request)
             throws UnsupportedEncodingException {
         ModelAndView table = new ModelAndView("ROLE_ADMIN/usersPanel");
@@ -48,32 +54,30 @@ public class UsersPanelController {
         return table;
     }
 
-    @RequestMapping(value = "grantUserAdminRights/{nameEncoded:.+}", method = RequestMethod.POST)
+    @RequestMapping(value = "/usersPanel/grantUserAdminRights/{nameEncoded:.+}", method = RequestMethod.POST)
     public String tableUsersGrantAdmin(@PathVariable("nameEncoded") String nameEncoded)
             throws UnsupportedEncodingException {
         String name = URLDecoder.decode(nameEncoded, "UTF-8");
-        List<User> usersList = userService.get(name);
-        User user = usersList.get(0);
-        Set<GrantedAuthority> authorities = new HashSet<GrantedAuthority>();
+        User user = userService.loadUserByUsername(name);
+        Set<GrantedAuthority> authorities = new HashSet<>();
         authorities.add(new UserAuthority("ROLE_ADMIN"));
         authorities.add(new UserAuthority("ROLE_USER"));
         user.setAuthorities(authorities);
         userService.edit(user);
-        logger.trace("User {} now has admin rights", user.getId());
+        logger.trace("User {} now has admin rights", user.getUsername());
         return "redirect:/usersPanel";
     }
 
-    @RequestMapping(value = "withdrawUserAdminRights/{nameEncoded:.+}", method = RequestMethod.POST)
+    @RequestMapping(value = "/usersPanel/withdrawUserAdminRights/{nameEncoded:.+}", method = RequestMethod.POST)
     public String tableUsersWithdrawAdmin(@PathVariable("nameEncoded") String nameEncoded)
             throws UnsupportedEncodingException {
         String name = URLDecoder.decode(nameEncoded, "UTF-8");
-        List<User> usersList = userService.get(name);
-        User user = usersList.get(0);
-        Set<GrantedAuthority> authorities = new HashSet<GrantedAuthority>();
+        User user = userService.loadUserByUsername(name);
+        Set<GrantedAuthority> authorities = new HashSet<>();
         authorities.add(new UserAuthority("ROLE_USER"));
         user.setAuthorities(authorities);
         userService.edit(user);
-        logger.trace("Admin {} lost admin rights", user.getId());
+        logger.trace("Admin {} lost admin rights", user.getUsername());
         return "redirect:/usersPanel";
     }
 }

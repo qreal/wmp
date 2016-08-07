@@ -3,9 +3,7 @@ package com.qreal.wmp.editor.database.diagrams.model;
 import com.qreal.wmp.thrift.gen.TProperty;
 import java.io.Serializable;
 
-/**
- * Property of a node.
- */
+/** Property of a node.*/
 public class NodeProperty implements Serializable {
 
     private String propertyId;
@@ -19,9 +17,7 @@ public class NodeProperty implements Serializable {
     public NodeProperty() {
     }
 
-    /**
-     * Constructor-converter from Thrift TProperty to NodeProperty.
-     */
+    /** Constructor-converter from Thrift TProperty to NodeProperty.*/
     public NodeProperty(TProperty tProperty) {
         if (tProperty.isSetPropertyId()) {
             propertyId = tProperty.getPropertyId();
@@ -72,9 +68,7 @@ public class NodeProperty implements Serializable {
         this.type = type;
     }
 
-    /**
-     * Converter from NodeProperty to Thrift TProperty.
-     */
+    /** Converter from NodeProperty to Thrift TProperty.*/
     public TProperty toTProperty() {
         TProperty tProperty = new TProperty();
         if (value != null) {

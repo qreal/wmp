@@ -20,8 +20,15 @@ import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.*;
 
+/**
+ * Controller of clientsPanel page.
+ * Pages: /clientsPanel (GET) (admin control page for clients),
+ * /clientsPanel/addClient (GET) (adding client interface),
+ * /clientsPanel/addClient (POST) (adding client processor),
+ * /clientsPanel/configureClient/{client's name} (GET) (configuring client's interface)
+ * /clientsPanel/configureClient (POST) (configuring client processor)
+ */
 @Controller
-@RequestMapping("clientsPanel")
 public class ClientsPanelController {
 
     private static final Logger logger = LoggerFactory.getLogger(ClientsPanelController.class);
@@ -29,7 +36,7 @@ public class ClientsPanelController {
     @Resource(name = "clientService")
     private ClientDAO clientService;
 
-    @RequestMapping(value = "", method = RequestMethod.GET)
+    @RequestMapping(value = "/clientsPanel", method = RequestMethod.GET)
     public ModelAndView tableServersPrepare(ModelMap model, HttpServletRequest request)
             throws UnsupportedEncodingException {
         ModelAndView table = new ModelAndView("ROLE_ADMIN/clientsPanel");
@@ -44,14 +51,14 @@ public class ClientsPanelController {
         return table;
     }
 
-    @RequestMapping(value = "addClient", method = RequestMethod.GET)
+    @RequestMapping(value = "/clientsPanel/addClient", method = RequestMethod.GET)
     public ModelAndView addServer(ModelMap model, HttpServletRequest request) throws IOException {
         ModelAndView modelView = new ModelAndView("ROLE_ADMIN/ClientsPanelActions/addClient");
         modelView.addObject("name", AuthenticatedUser.getAuthenticatedUserName());
         return modelView;
     }
 
-    @RequestMapping(value = "addClient", method = RequestMethod.POST)
+    @RequestMapping(value = "/clientsPanel/addClient", method = RequestMethod.POST)
     public String serverCheck(ModelMap model, HttpServletRequest request) throws IOException {
         String clientId = request.getParameter("clientId");
         String scopes = request.getParameter("scopes");
@@ -69,39 +76,36 @@ public class ClientsPanelController {
         return "redirect:/clientsPanel";
     }
 
-    @RequestMapping(value = "configureClient", method = RequestMethod.POST)
+    @RequestMapping(value = "/clientsPanel/configureClient", method = RequestMethod.POST)
     public String serverConfigureSave(ModelMap model, HttpServletRequest request) throws IOException {
         String clientId = request.getParameter("clientId");
         String scopes = request.getParameter("scopes");
         String secret = request.getParameter("secret");
-        List<Client> clients = clientService.get(clientId);
 
-        Client client = clients.get(0);
-
-        Set<String> scopesSet =  new HashSet<String>(Arrays.asList(scopes.split(" ")));
-        client.setScope(scopesSet);
-
-        client.setClientSecret(secret);
-        if (clients.isEmpty()) {
+        Client client = clientService.loadClientById(clientId);
+        if (client == null) {
             return "redirect:/clientsPanel";
         }
+        Set<String> scopesSet =  new HashSet<>(Arrays.asList(scopes.split(" ")));
+        client.setScope(scopesSet);
+        client.setClientSecret(secret);
+
         clientService.edit(client);
         logger.trace("Client successfully edited with client id {}", client.getClientId());
         return "redirect:/clientsPanel";
     }
 
-    @RequestMapping(value = "configureClient/{clientIdEncoded:.+}", method = RequestMethod.GET)
+    @RequestMapping(value = "/clientsPanel/configureClient/{clientIdEncoded:.+}", method = RequestMethod.GET)
     //need :.+ because of truncating the extension by default
     public ModelAndView configureServer(@PathVariable("clientIdEncoded") String clientIdEncoded,
                                         ModelMap model, HttpServletRequest request)
             throws UnsupportedEncodingException {
         String clientId = URLDecoder.decode(clientIdEncoded, "UTF-8");
-        List<Client> clients = clientService.get(clientId);
+        Client client = clientService.loadClientById(clientId);
         ModelAndView modelView = new ModelAndView("ROLE_ADMIN/ClientsPanelActions/configureClient");
-        if (clients.isEmpty()) {
+        if (client == null) {
             return modelView;
         }
-        Client client = clients.get(0);
         modelView.addObject("name", AuthenticatedUser.getAuthenticatedUserName());
         modelView.addObject("clientId", client.getClientId());
 

@@ -14,17 +14,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.io.IOException;
 import java.util.*;
 
+/**
+ * Controller returning user info of authenticated user. Used for authentication with OpenID Basic.
+ * Pages: /oauth/userInfo (GET) (returns user info (id and roles) in json format)
+ */
 @Controller
-@RequestMapping("oauth")
 public class UserInfo {
 
     private static final Logger logger = LoggerFactory.getLogger(UserInfo.class);
 
-    /**
-     * This class is used to return authentication  information in JSON format.
-     * @return Password and id in JSON
-     */
-    @RequestMapping(value = "userInfo", method = RequestMethod.GET)
+    @RequestMapping(value = "/oauth/userInfo", method = RequestMethod.GET)
     @ResponseBody
     public String tokenString() throws IOException, JSONException {
 

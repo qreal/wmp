@@ -14,10 +14,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 
-
-/**
- * Thrift client side of UserDBService.
- */
+/** Thrift client side of UserDBService.*/
 @Service("userService")
 public class UserServiceImpl implements UserService {
 
@@ -27,9 +24,7 @@ public class UserServiceImpl implements UserService {
 
     private UserDbService.Client client;
 
-    /**
-     * Constructor creates connection with Thrift TServer.
-     */
+    /** Constructor creates connection with Thrift TServer.*/
     public UserServiceImpl() {
         String url = "localhost";
         int port = 9090;

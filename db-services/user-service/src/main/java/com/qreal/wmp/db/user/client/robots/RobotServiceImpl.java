@@ -12,9 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-/**
- * Thrift client side of RobotDBService.
- */
+/** Thrift client side of RobotDBService.*/
 @Service("robotService")
 public class RobotServiceImpl implements RobotService {
 
@@ -24,9 +22,7 @@ public class RobotServiceImpl implements RobotService {
 
     private RobotDbService.Client client;
 
-    /**
-     * Constructor creates connection with Thrift TServer.
-     */
+    /** Constructor creates connection with Thrift TServer.*/
     public RobotServiceImpl() {
         String url = "localhost";
         int port = 9091;

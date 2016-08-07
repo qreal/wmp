@@ -4,9 +4,7 @@ import com.qreal.wmp.db.robot.model.robot.RobotSerial;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-/**
- * DAO for robotDB.
- */
+/** DAO for robotDB.*/
 public interface RobotDao {
 
     /**

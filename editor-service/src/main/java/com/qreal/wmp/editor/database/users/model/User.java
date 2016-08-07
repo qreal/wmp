@@ -8,35 +8,23 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-/**
- * User in authorization service.
- */
+/** User in authorization service.*/
 public class User {
 
-    /**
-     * Name of user (primary key too).
-     */
+    /** Name of user (primary key too).*/
     private String username;
 
-    /**
-     * Hash of user password.
-     */
+    /** Hash of user password.*/
     private String password;
 
-    /**
-     * Is user banned.
-     */
+    /** Is user banned.*/
     private Boolean enabled;
 
-    /**
-     * Roles of user.
-     */
+    /** Roles of user.*/
     @JsonIgnore
     private Set<UserRole> roles = new HashSet<>(0);
 
-    /**
-     * User's robots.
-     */
+    /** User's robots.*/
     @JsonIgnore
     private Set<Robot> robots = new HashSet<>(0);
 
@@ -49,9 +37,7 @@ public class User {
         this.enabled = enabled;
     }
 
-    /**
-     * User constructor (except robots).
-     */
+    /** User constructor (except robots).*/
     public User(String username, String password,
                 boolean enabled, Set<UserRole> userRole) {
         this.username = username;
@@ -60,9 +46,7 @@ public class User {
         this.roles = userRole;
     }
 
-    /**
-     * Full User constructor.
-     */
+    /** Full User constructor.*/
     public User(String username, String password, boolean enabled, Set<UserRole> userRole, Set<Robot> robots) {
         this.username = username;
         this.password = password;
@@ -71,9 +55,7 @@ public class User {
         this.robots = robots;
     }
 
-    /**
-     * Constructor-converter from Thrift TUser to User.
-     */
+    /** Constructor-converter from Thrift TUser to User.*/
     public User(TUser tUser) {
         if (tUser.isSetUsername()) {
             username = tUser.getUsername();
@@ -137,9 +119,7 @@ public class User {
         this.robots = robots;
     }
 
-    /**
-     * Converter from User to Thrift TUser.
-     */
+    /** Converter from User to Thrift TUser.*/
     public TUser toTUser() {
         TUser tUser = new TUser();
 

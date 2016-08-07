@@ -20,6 +20,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Controller of register page.
+ * Pages: /register (POST, GET) (register page and processor of register requests)
+ */
 @Controller
 public class RegisterController {
 
@@ -50,8 +54,8 @@ public class RegisterController {
             return "ROLE_ANONYMOUS/registerView";
         }
 
-        List userWithSameLogin = userService.get(name);
-        if (!userWithSameLogin.isEmpty())
+        User userWithSameLogin = userService.loadUserByUsername(name);
+        if (userWithSameLogin != null)
         {
             model.addAttribute("errorLoginAlreadyRegistered", true);
             return "ROLE_ANONYMOUS/register";

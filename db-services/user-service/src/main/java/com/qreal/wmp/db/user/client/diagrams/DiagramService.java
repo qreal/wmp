@@ -1,8 +1,6 @@
 package com.qreal.wmp.db.user.client.diagrams;
 
-/**
- * DiagramDBService interface.
- */
+/** DiagramDBService interface.*/
 public interface DiagramService {
 
     /**

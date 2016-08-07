@@ -22,9 +22,7 @@ public class RobotDaoImpl implements RobotDao {
 
     private static final Logger logger = LoggerFactory.getLogger(RobotDaoImpl.class);
 
-    /**
-     * UserService used to resolve foreign key dependencies.
-     */
+    /** UserService used to resolve foreign key dependencies.*/
     @Autowired
     private UserService userService;
 

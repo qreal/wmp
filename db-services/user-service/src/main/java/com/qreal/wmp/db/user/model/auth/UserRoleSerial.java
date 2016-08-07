@@ -6,20 +6,14 @@ import javax.persistence.*;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
-/**
- * UserRole in authorization service.
- */
+/** UserRole in authorization service.*/
 @Entity
 @Table(name = "user_roles")
 public class UserRoleSerial {
-    /**
-     * Surrogate key for role (maybe static table for roles?).
-     */
+    /** Surrogate key for role (maybe static table for roles?).*/
     private Integer id;
 
-    /**
-     * Name of role.
-     */
+    /** Name of role.*/
     private String role;
 
     public UserRoleSerial() {
@@ -29,9 +23,7 @@ public class UserRoleSerial {
         this.role = role;
     }
 
-    /**
-     * Constructor-converter from Thrift TUserRole to UserRole.
-     */
+    /** Constructor-converter from Thrift TUserRole to UserRole.*/
     public UserRoleSerial(TUserRole tUserRole) {
         if (tUserRole.isSetId()) {
             id = tUserRole.getId();
@@ -63,10 +55,7 @@ public class UserRoleSerial {
         this.role = role;
     }
 
-    /**
-     * Converter from UserRole to Thrift TUserRole.
-     */
-
+    /** Converter from UserRole to Thrift TUserRole.*/
     public TUserRole toTUserRole() {
         TUserRole tUserRole = new TUserRole();
 

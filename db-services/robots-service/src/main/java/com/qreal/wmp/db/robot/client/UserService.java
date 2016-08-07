@@ -4,9 +4,7 @@ import com.qreal.wmp.thrift.gen.TUser;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-/**
- * UserDBService interface.
- */
+/** UserDBService interface.*/
 public interface UserService {
 
     /**

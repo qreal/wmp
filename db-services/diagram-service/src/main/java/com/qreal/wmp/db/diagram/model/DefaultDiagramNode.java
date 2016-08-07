@@ -8,9 +8,7 @@ import java.io.Serializable;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-/**
- * Diagram's node.
- */
+/** Diagram's node.*/
 @Entity
 @Table(name = "nodes")
 public class DefaultDiagramNode implements Serializable {
@@ -37,9 +35,7 @@ public class DefaultDiagramNode implements Serializable {
     public DefaultDiagramNode() {
     }
 
-    /**
-     * Constructor-converter from Thrift TDefaultDiagramNode to DefaultDiagramNode.
-     */
+    /** Constructor-converter from Thrift TDefaultDiagramNode to DefaultDiagramNode.*/
     public DefaultDiagramNode(TDefaultDiagramNode tDefaultDiagramNode) {
         if (tDefaultDiagramNode.isSetLogicalId()) {
             logicalId = tDefaultDiagramNode.getLogicalId();
@@ -99,9 +95,7 @@ public class DefaultDiagramNode implements Serializable {
         this.properties = properties;
     }
 
-    /**
-     * Converter from DefaultDiagramNode to Thrift TDefaultDiagramNode.
-     */
+    /** Converter from DefaultDiagramNode to Thrift TDefaultDiagramNode.*/
     public TDefaultDiagramNode toTDefaultDiagramNode() {
         TDefaultDiagramNode tDefaultDiagramNode = new TDefaultDiagramNode();
 

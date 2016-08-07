@@ -4,7 +4,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 
 /**
- * This class represent authentication object of user.
+ * Represents authentication object of user.
  * It can return name of authenticated user, which interacts with the service.
  */
 public class AuthenticatedUser {

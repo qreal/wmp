@@ -8,27 +8,20 @@ import javax.persistence.*;
 @Table(name = "UserAuthorities")
 public class UserAuthority implements GrantedAuthority {
 
+    /** Surrogate id of UserAuthority.*/
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private int id;
 
+    /** Name of authority.*/
     @Column(name = "Authority")
     private String authority;
-
-    @ManyToOne
-    @JoinColumn(name = "UserId")
-    private User user;
 
     public UserAuthority() {
     }
 
     public UserAuthority(String authority) {
-        this.authority = authority;
-    }
-
-    public UserAuthority(String authority, User user) {
-        this.user = user;
         this.authority = authority;
     }
 
@@ -48,11 +41,4 @@ public class UserAuthority implements GrantedAuthority {
         this.id = id;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
 }

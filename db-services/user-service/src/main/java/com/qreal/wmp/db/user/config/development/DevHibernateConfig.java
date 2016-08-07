@@ -7,9 +7,14 @@ import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import javax.sql.DataSource;
 import java.util.Properties;
 
+/**
+ * Development configuration of Hibernate ORM.
+ * In development used H2 in-memory database and create-drop strategy of start.
+ */
 @Configuration
 public class DevHibernateConfig {
 
+    /** Provides access to DB. */
     @Bean(name = "dataSource")
     public DataSource dataSource() {
         SimpleDriverDataSource dataSource = new SimpleDriverDataSource();
@@ -20,6 +25,7 @@ public class DevHibernateConfig {
         return dataSource;
     }
 
+    /** Configuration properties of DB. */
     @Bean(name = "hibernateProperties")
     public Properties getHibernateProperties() {
         Properties properties = new Properties();

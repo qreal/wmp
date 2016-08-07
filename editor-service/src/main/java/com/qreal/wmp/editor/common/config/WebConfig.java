@@ -10,15 +10,17 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
+/** Represents files resolve policy of Spring Framework.*/
 @Configuration
 @EnableWebMvc
 @Import({SecurityConfig.class})
 @ComponentScan("com.qreal.wmp.editor")
 public class WebConfig extends WebMvcConfigurerAdapter {
 
-    /* Time, in seconds, to have the browser cache static resources (one week). */
+    /** Time, in seconds, to have the browser cache static resources (one week).*/
     private static final int BROWSER_CACHE_CONTROL = 604800;
 
+    /** Resolves view name in jsp file path.*/
     @Bean
     public InternalResourceViewResolver setupViewResolver() {
         InternalResourceViewResolver resolver = new InternalResourceViewResolver();
@@ -28,6 +30,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         return resolver;
     }
 
+    /** Creates resources handlers for static resources.*/
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/WEB-INF/pages/**").addResourceLocations("/pages/");

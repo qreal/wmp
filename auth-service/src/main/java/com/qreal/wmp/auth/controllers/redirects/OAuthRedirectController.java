@@ -13,13 +13,20 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.Optional;
 
+/**
+ * Controller for redirections after authentication through 3dparty providers.
+ * Pages: /oauth/google (GET) (google authentication path), /oauth/github (GET) (github authentication point)
+ */
 @Controller
-@RequestMapping("oauth")
 public class OAuthRedirectController {
 
     private static final Logger logger = LoggerFactory.getLogger(OAuthRedirectController.class);
 
-    @RequestMapping(value = {"google"},  method = RequestMethod.GET)
+    /**
+     * Redirection for google 3dparty provider. After authentication user will be redirect either to his main page
+     * or to his redirect parameter.
+     */
+    @RequestMapping(value = {"/oauth/google"},  method = RequestMethod.GET)
     public String routeGoogle(@RequestParam("redirect") Optional<String> redirect, ModelMap model)
             throws UnsupportedEncodingException {
         if (redirect.isPresent() && !redirect.get().equals(""))
@@ -29,11 +36,11 @@ public class OAuthRedirectController {
                     AuthenticatedUser.getAuthenticatedUserName(), redirectDecoded);
             return "redirect:" + redirectDecoded;
         }
-        String role = AuthenticatedUser.getAuthenticatedUserAuthority();
+        String role = AuthenticatedUser.getAuthenticatedUserAuthorities();
         if (role.contains("ROLE_ADMIN")) {
             logger.trace("Admin {} logged in via google and redirected to usersPanel",
                     AuthenticatedUser.getAuthenticatedUserName());
-            return "redirect:/usersPanel";
+            return "redirect:/clientsPanel";
         }
         else if (role.contains("ROLE_USER")) {
             logger.trace("User {} logged in via google and redirected to userServers",
@@ -43,7 +50,11 @@ public class OAuthRedirectController {
         return "redirect:/";
     }
 
-    @RequestMapping(value = {"github"},  method = RequestMethod.GET)
+    /**
+     * Redirection for github 3dparty provider. After authentication user will be redirect either to his main page
+     * or to his redirect parameter.
+     */
+    @RequestMapping(value = {"/oauth/github"},  method = RequestMethod.GET)
     public String routeGithub(@RequestParam("redirect") Optional<String> redirect, ModelMap model)
             throws UnsupportedEncodingException {
         if (redirect.isPresent() && !redirect.get().equals(""))
@@ -53,11 +64,11 @@ public class OAuthRedirectController {
                     AuthenticatedUser.getAuthenticatedUserName(), redirectDecoded);
             return "redirect:" + redirectDecoded;
         }
-        String role = AuthenticatedUser.getAuthenticatedUserAuthority();
+        String role = AuthenticatedUser.getAuthenticatedUserAuthorities();
         if (role.contains("ROLE_ADMIN")) {
             logger.trace("Admin {} logged in via github and redirected to usersPanel",
                     AuthenticatedUser.getAuthenticatedUserName());
-            return "redirect:/usersPanel";
+            return "redirect:/clientsPanel";
         }
         else if (role.contains("ROLE_USER")) {
             logger.trace("User {} logged in via github and redirected to userServers",

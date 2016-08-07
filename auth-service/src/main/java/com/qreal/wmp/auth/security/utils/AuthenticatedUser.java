@@ -5,7 +5,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
- * This class represent authentication object of user.
+ * Represents authentication object of user.
  * It can return name of authenticated user, which interacts with the service or
  * his UserAuthorities.
  */
@@ -22,7 +22,7 @@ public class AuthenticatedUser {
     /**
      * Retrieves user authorities of authenticated user from security context of spring.
      */
-    public static String getAuthenticatedUserAuthority() {
+    public static String getAuthenticatedUserAuthorities() {
         User authenticatedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String auth = "";
         for (GrantedAuthority authority : authenticatedUser.getAuthorities()) {

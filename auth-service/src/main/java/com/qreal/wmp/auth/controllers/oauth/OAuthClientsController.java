@@ -1,9 +1,5 @@
 package com.qreal.wmp.auth.controllers.oauth;
 
-import java.security.Principal;
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 import com.qreal.wmp.auth.security.utils.AuthenticatedUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,8 +16,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.security.Principal;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 /**
- * Controller for retrieving the model for and displaying the confirmation page for access to a protected resource.
+ * Controller for service pages of oauth flow.
+ * Pages: /oauth/confirm_access (GET) (user confirming clients scopes to resources),
+ * /oauth/error (GET) (error of oauth flow)
  */
 @Controller
 @SessionAttributes("authorizationRequest")
@@ -59,19 +61,8 @@ public class OAuthClientsController {
 
     @RequestMapping("/oauth/error")
     public String handleError(Map<String, Object> model) throws Exception {
-        // We can add more stuff to the model here for JSP rendering. If the client was a machine then
-        // the JSON will already have been rendered.
         model.put("message", "There was a problem with the OAuth2 protocol");
         logger.debug("Some problem with oauth encountered for user {}", AuthenticatedUser.getAuthenticatedUserName());
         return "OAuth/error";
     }
-
-    public void setClientDetailsService(ClientDetailsService clientDetailsService) {
-        this.clientDetailsService = clientDetailsService;
-    }
-
-    public void setApprovalStore(ApprovalStore approvalStore) {
-        this.approvalStore = approvalStore;
-    }
-
 }

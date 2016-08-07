@@ -9,39 +9,27 @@ import java.util.function.Consumer;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
-/**
- * TRIK robot in dashboard service.
- */
+/** TRIK robot in dashboard service.*/
 @Entity
 @Table(name = "robots")
 public class RobotSerial {
 
-    /**
-     * Surrogate key for RobotSerial.
-     */
+    /** Surrogate key for RobotSerial.*/
     private Long id;
 
-    /**
-     * Name of robot (unique only in robot's group of owner).
-     */
+    /** Name of robot (unique only in robot's group of owner).*/
     private String name;
 
-    /**
-     * SSID of robot's WiFi.
-     */
+    /** SSID of robot's WiFi.*/
     private String ssid;
 
-    /**
-     * Owner of robot.
-     */
+    /** Owner of robot.*/
     private String owner;
 
     public RobotSerial() {
     }
 
-    /**
-     * Constructor-converter from Thrift TRobot to RobotSerial.
-     */
+    /** Constructor-converter from Thrift TRobot to RobotSerial.*/
     public RobotSerial(TRobot tRobot) {
         if (tRobot.isSetId()) {
             id = tRobot.getId();
@@ -118,9 +106,7 @@ public class RobotSerial {
         return name.hashCode();
     }
 
-    /**
-     * Converter from RobotSerial to Thrift TRobot.
-     */
+    /** Converter from RobotSerial to Thrift TRobot.*/
     public TRobot toTRobot() {
         TRobot tRobot = new TRobot();
 

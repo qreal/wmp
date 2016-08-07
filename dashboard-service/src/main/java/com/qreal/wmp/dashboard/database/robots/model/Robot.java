@@ -4,29 +4,19 @@ import com.qreal.wmp.dashboard.database.users.model.User;
 import com.qreal.wmp.thrift.gen.TRobot;
 
 
-/**
- * TRIK robot in dashboard service.
- */
+/** TRIK robot in dashboard service.*/
 public class Robot {
 
-    /**
-     * Surrogate key for Robot.
-     */
+    /** Surrogate key for Robot.*/
     private Long id;
 
-    /**
-     * Name of robot (unique only in robot's group of owner).
-     */
+    /** Name of robot (unique only in robot's group of owner).*/
     private String name;
 
-    /**
-     * SSID of robot's WiFi.
-     */
+    /** SSID of robot's WiFi.*/
     private String ssid;
 
-    /**
-     * Owner of robot.
-     */
+    /** Owner of robot.*/
     private User owner;
 
     public Robot() {
@@ -44,9 +34,7 @@ public class Robot {
         owner.getRobots().add(this);
     }
 
-    /**
-     * Full Robot constructor.
-     */
+    /** Full Robot constructor.*/
     public Robot(long id, String name, String ssid, User owner) {
         this.id = id;
         this.owner = owner;
@@ -55,9 +43,7 @@ public class Robot {
         owner.getRobots().add(this);
     }
 
-    /**
-     * Constructor-converter from Thrift TRobot to Robot.
-     */
+    /** Constructor-converter from Thrift TRobot to Robot.*/
     public Robot(TRobot tRobot, User owner) {
         if (tRobot.isSetId()) {
             id = tRobot.getId();
@@ -126,9 +112,7 @@ public class Robot {
         return name.hashCode();
     }
 
-    /**
-     * Converter from Robot to Thrift TRobot.
-     */
+    /** Converter from Robot to Thrift TRobot.*/
     public TRobot toTRobot() {
         TRobot tRobot = new TRobot();
 

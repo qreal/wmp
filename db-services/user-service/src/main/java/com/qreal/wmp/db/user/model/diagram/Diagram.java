@@ -9,9 +9,7 @@ import java.util.stream.Collectors;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
-/**
- * Diagram (now only graphs).
- */
+/** Diagram (now only graphs).*/
 @Entity
 @Table(name = "diagrams")
 public class Diagram implements Serializable {
@@ -35,9 +33,7 @@ public class Diagram implements Serializable {
     public Diagram() {
     }
 
-    /**
-     * Constructor-converter from Thrift TDiagram to Diagram.
-     */
+    /** Constructor-converter from Thrift TDiagram to Diagram.*/
     public Diagram(TDiagram tDiagram) {
 
         if (tDiagram.isSetId()) {
@@ -58,9 +54,7 @@ public class Diagram implements Serializable {
 
     }
 
-    /**
-     * Converter from Diagram to Thrift TDiagram.
-     */
+    /** Converter from Diagram to Thrift TDiagram.*/
     public TDiagram toTDiagram() {
 
         TDiagram tDiagram = new TDiagram();

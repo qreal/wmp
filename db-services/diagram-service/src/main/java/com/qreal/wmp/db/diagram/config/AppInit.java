@@ -3,6 +3,7 @@ package com.qreal.wmp.db.diagram.config;
 import com.qreal.wmp.db.diagram.server.DiagramDbServer;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
+/** Main class of program. */
 public class AppInit {
     /**
      * Main function creates context and starts server.

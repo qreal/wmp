@@ -15,10 +15,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-/**
- * This is the main class for work with users tables in database.
- * Because of not very complex logic i decided do not create separate userService
- */
+/** This is the main class for work with users table in database.*/
 @Service("userService")
 @Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
 @Transactional
@@ -34,38 +31,10 @@ public class UserDAO {
     }
 
     /**
-     * Retrieves a single user by id.
-     */
-    public User get(Integer id) {
-        Session session = sessionFactory.getCurrentSession();
-        User person = session.get(User.class, id);
-        logger.trace("User {} taken from database using id {}", person.getUsername(), id);
-        return person;
-    }
-
-    /**
-     * Retrieves a list of users by login.
-     * List here to be sure...
-     */
-    public List get(String login) {
-        Session session = sessionFactory.getCurrentSession();
-        Query query = session.createQuery("FROM User E WHERE E.username = :login");
-        query.setParameter("login", login);
-        List results = query.list();
-        if (results.isEmpty()) {
-            logger.trace("User {} was not found using login", login);
-        }
-        else {
-            logger.trace("User was taken from database using login {}", login);
-        }
-        return results;
-    }
-
-    /**
      * Retrieves a single user by login.
      * (Take first from list of returned)
      */
-    public UserDetails loadUserByUsername(String login) {
+    public User loadUserByUsername(String login) {
         Session session = sessionFactory.getCurrentSession();
 
         Query query = session.createQuery("FROM User E WHERE E.username = :login");
@@ -79,9 +48,7 @@ public class UserDAO {
         return results.get(0);
     }
 
-    /**
-     * Retrieves all users from database.
-     */
+    /** Retrieves all users from database.*/
     public List<User> getAll() {
         Session session = sessionFactory.getCurrentSession();
         Query query = session.createQuery("FROM User E");
@@ -90,11 +57,9 @@ public class UserDAO {
         return results;
     }
 
-    /**
-     * Adds a new user.
-     */
+    /** Adds a new user.*/
     public void add(User person) {
-        if (get(person.getUsername()).size() > 0) {
+        if (loadUserByUsername(person.getUsername()) != null) {
             return;
         }
         Session session = sessionFactory.getCurrentSession();
@@ -102,9 +67,7 @@ public class UserDAO {
         logger.trace("{} user was saved to database", person.getUsername());
     }
 
-    /**z
-     * Deletes an existing user by id.
-     */
+    /** Deletes an existing user by id.*/
     public void delete(Integer id) {
 
         Session session = sessionFactory.getCurrentSession();
@@ -114,12 +77,10 @@ public class UserDAO {
 
     }
 
-    /**
-     * Edits an existing user.
-     */
+    /** Edits an existing user.*/
     public void edit(User person) {
         Session session = sessionFactory.getCurrentSession();
-        User existingPerson = session.get(User.class, person.getId());
+        User existingPerson = session.get(User.class, person.getUsername());
         existingPerson.setUsername(person.getUsername());
         existingPerson.setPassword(person.getPassword());
         //If we delete collection we will create orphan, that's not really good
@@ -127,7 +88,6 @@ public class UserDAO {
         existingPerson.getAuthorities().addAll(person.getAuthorities());
         session.save(existingPerson);
         logger.trace("{} user was edited in database", person.getUsername());
-
     }
 
 }

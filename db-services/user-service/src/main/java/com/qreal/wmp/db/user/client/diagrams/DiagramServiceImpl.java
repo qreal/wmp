@@ -12,9 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-/**
- * Thrift client side of DiagramDbService.
- */
+/** Thrift client side of DiagramDbService.*/
 @Service("diagramService")
 public class DiagramServiceImpl implements DiagramService {
 
@@ -24,9 +22,7 @@ public class DiagramServiceImpl implements DiagramService {
 
     private DiagramDbService.Client client;
 
-    /**
-     * Constructor creates connection with Thrift TServer.
-     */
+    /** Constructor creates connection with Thrift TServer.*/
     public DiagramServiceImpl() {
         String url = "localhost";
         int port = 9093;
@@ -50,21 +46,5 @@ public class DiagramServiceImpl implements DiagramService {
             logger.error("Client DiagramService encountered problem while sending createFolder request with " +
                     "parameters: newFolder = {}", rootFolder.getFolderName(), e);
         }
-    }
-
-    private Long createFolder(Folder folder) {
-        logger.trace("createFolder method called with parameters: folder = {}", folder.getFolderName());
-        Long result = 0L;
-        try {
-            transport.open();
-            TFolder newFolder = folder.toTFolder();
-            result = client.createFolder(newFolder);
-            transport.close();
-            logger.trace("createFolder method created folder  {}", folder.getFolderName());
-        } catch (TException e) {
-            logger.error("Client DiagramService encountered problem while sending createFolder request with " +
-                    "parameters: folder = {}", folder.getFolderName(), e);
-        }
-        return result;
     }
 }

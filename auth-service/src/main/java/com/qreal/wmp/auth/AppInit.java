@@ -21,7 +21,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * This is class of application initialization.
+ * This class is listener for all application events.
  * It creates admin account and password for it. Also it creates default user 123.
  */
 @Component
@@ -30,6 +30,7 @@ public class AppInit implements ApplicationListener {
 
     private static final Logger logger = LoggerFactory.getLogger(AppInit.class);
 
+    /**Listener of application events. Will react only if context was initialized.*/
     @EventListener
     public void onApplicationEvent(ApplicationEvent event) {
 
@@ -39,7 +40,7 @@ public class AppInit implements ApplicationListener {
             UserDAO userService = (UserDAO) applicationContext.getBean("userService");
             PasswordEncoder encoder = (PasswordEncoder) applicationContext.getBean("passwordEncoder");
 
-            if (!userService.get("Admin").isEmpty()) {
+            if (userService.loadUserByUsername("Admin") != null) {
                 return;
             }
 
@@ -54,7 +55,7 @@ public class AppInit implements ApplicationListener {
 
             logger.info("CREATED USER {} WITH PASSWORD {}", "Admin", password);
 
-            if (!userService.get("123").isEmpty()) {
+            if (userService.loadUserByUsername("123") != null) {
                 return;
             }
 
@@ -68,7 +69,7 @@ public class AppInit implements ApplicationListener {
 
             ClientDAO clientService = (ClientDAO) applicationContext.getBean("clientService");
 
-            Set<String> scopes = new HashSet<String>();
+            Set<String> scopes = new HashSet<>();
             scopes.add("read");
             scopes.add("write");
 

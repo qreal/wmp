@@ -3,9 +3,7 @@ package com.qreal.wmp.editor.database.diagrams.client;
 import com.qreal.wmp.editor.database.diagrams.model.Diagram;
 import com.qreal.wmp.editor.database.diagrams.model.Folder;
 
-/**
- * DiagramDBService interface.
- */
+/** DiagramDBService interface.*/
 public interface DiagramService {
 
     /**
@@ -49,13 +47,9 @@ public interface DiagramService {
      */
     Long createFolder(Folder folder);
 
-    /**
-     * Deletes folder with specified id.
-     */
+    /** Deletes folder with specified id.*/
     void deleteFolder(Long folderId);
 
-    /**
-     * Returns root folder of user.
-     */
+    /** Returns root folder of user.*/
     Folder getFolderTree();
 }

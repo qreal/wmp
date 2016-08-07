@@ -10,8 +10,12 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration;
 
+/** Represents initialization process of web application based on Spring Framework.*/
 public class WebAppInit implements WebApplicationInitializer {
-
+    /**
+     * Will be called before actual initialization of servlet. Here we can create hierarchy of spring contexts and link
+     * it to servlet context.
+     */
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
         //Root context contains database objects and appinit

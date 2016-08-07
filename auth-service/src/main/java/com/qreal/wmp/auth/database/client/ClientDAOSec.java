@@ -7,6 +7,10 @@ import org.springframework.security.oauth2.provider.ClientRegistrationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * This class provides access to database for spring security oauth2.
+ * It uses clientService to get records from base.
+ */
 @Service("clientServiceSec")
 @Transactional
 public class ClientDAOSec implements ClientDetailsService {
@@ -18,9 +22,7 @@ public class ClientDAOSec implements ClientDetailsService {
         this.clientService = clientService;
     }
 
-    /**
-     * Loads client from local DB by id.
-     */
+    /** Loads client from local DB by id.*/
     @Override
     public ClientDetails loadClientByClientId(String id) throws ClientRegistrationException {
         ClientDetails clientDetails = clientService.loadClientById(id);

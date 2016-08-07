@@ -22,6 +22,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import javax.annotation.Resource;
 
+/** Represents security configuration of web application based on Spring Framework.*/
 @Configuration
 @EnableWebSecurity
 @Order(2) //EnableResourceServer annotation create WebSecurityConfigurerAdapter with Order(3)
@@ -38,6 +39,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Resource(name = "providerGithub")
     private OAuth2AuthenticationProvider oAuthProvGithub;
 
+    /**
+     * Setting up OAuth authentication providers and local db user provider as providers for authentication
+     * manager of Spring Framework security.
+     */
     @Autowired
     public void globalUserDetails(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(oAuthProvGoogle);
@@ -45,7 +50,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(userServiceSec).passwordEncoder(encoder);
     }
 
-    //Security should ignore some urls (for static files permited to all)
+    /** Setting security to ignore some of urls.*/
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers("/webjars/**", "/images/**", "/resources/**", "/oauth/uncache_approvals",
@@ -58,6 +63,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
+    /** Main configuration of Spring Framework security.*/
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.
@@ -86,7 +92,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 and().
 
                 authorizeRequests().
-                antMatchers("/log", "/logErr", "/register**").
+                antMatchers("/log*", "/register**").
                 permitAll().
                 and().
 
@@ -100,13 +106,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
                 formLogin().
                 loginPage("/log").
-                failureUrl("/logErr").
+                failureUrl("/log?error").
                 usernameParameter("username").
                 passwordParameter("password").
                 defaultSuccessUrl("/").
                 loginProcessingUrl("/login");
     }
 
+    /** Store for access tokens for clients.*/
     @Bean
     public TokenStore tokenStore() {
         return new InMemoryTokenStore();

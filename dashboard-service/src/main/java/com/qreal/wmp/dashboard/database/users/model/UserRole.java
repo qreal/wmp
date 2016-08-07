@@ -2,24 +2,16 @@ package com.qreal.wmp.dashboard.database.users.model;
 
 import com.qreal.wmp.thrift.gen.TUserRole;
 
-/**
- * UserRole in authorization service.
- */
+/** UserRole in authorization service.*/
 public class UserRole {
 
-    /**
-     * Surrogate key for role (maybe static table for roles?).
-     */
+    /** Surrogate key for role (maybe static table for roles?).*/
     private Integer id;
 
-    /**
-     * Owner of role.
-     */
+    /** Owner of role.*/
     private User user;
 
-    /**
-     * Name of role.
-     */
+    /** Name of role.*/
     private String role;
 
     public UserRole() {
@@ -30,18 +22,14 @@ public class UserRole {
         this.role = role;
     }
 
-    /**
-     * Full UserRole constructor.
-     */
+    /** Full UserRole constructor.*/
     public UserRole(int id, User user, String role) {
         this.id = id;
         this.user = user;
         this.role = role;
     }
 
-    /**
-     * Constructor-converter from Thrift TUserRole to UserRole.
-     */
+    /** Constructor-converter from Thrift TUserRole to UserRole.*/
     public UserRole(TUserRole tUserRole, User user) {
         if (tUserRole.isSetId()) {
             id = tUserRole.getId();
@@ -78,9 +66,7 @@ public class UserRole {
         this.role = role;
     }
 
-    /**
-     * Converter from UserRole to Thrift TUserRole.
-     */
+    /** Converter from UserRole to Thrift TUserRole.*/
     public TUserRole toTUserRole() {
         TUserRole tUserRole = new TUserRole();
 

@@ -9,9 +9,7 @@ import com.qreal.wmp.thrift.gen.TFolder;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.transaction.annotation.Transactional;
 
-/**
- * Thrift server side handler for DiagramDBService.
- */
+/** Thrift server side handler for DiagramDBService.*/
 @Transactional
 public class DiagramDbServiceHandler implements DiagramDbService.Iface {
 

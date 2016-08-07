@@ -6,9 +6,7 @@ import com.qreal.wmp.thrift.gen.UserDbService;
 import org.apache.thrift.TException;
 import org.springframework.context.support.AbstractApplicationContext;
 
-/**
- * Thrift server side handler for UserDBService.
- */
+/** Thrift server side handler for UserDBService.*/
 public class UserDbServiceHandler implements UserDbService.Iface {
 
     private final UserDao userDao;

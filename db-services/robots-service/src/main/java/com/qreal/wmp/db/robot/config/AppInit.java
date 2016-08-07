@@ -3,6 +3,7 @@ package com.qreal.wmp.db.robot.config;
 import com.qreal.wmp.db.robot.server.RobotDbServer;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
+/** Main class of program. */
 public class AppInit {
 
     /**
