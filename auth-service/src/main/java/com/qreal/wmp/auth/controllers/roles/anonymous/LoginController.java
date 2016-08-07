@@ -26,7 +26,7 @@ public class LoginController {
     private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 
     /**
-     * Used to retrieve inital request which could be intercepted by SpringSec
+     * Used to retrieve inital request which could be intercepted by SpringSec.
      * It is needed cause standard filter will redirect to initial url, but not oauth filters
      */
     @Autowired

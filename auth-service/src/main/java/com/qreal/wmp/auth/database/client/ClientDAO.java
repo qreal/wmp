@@ -79,10 +79,7 @@ public class ClientDAO {
     public void edit(Client client) {
         Session session = sessionFactory.getCurrentSession();
 
-//        Client existingClient = session.get(Client.class, client.getId());
         Client existingClient = session.get(Client.class, client.getClientId());
-
-
         existingClient.setIdClient(client.getClientId());
         existingClient.setAccessTokenValiditySeconds(client.getAccessTokenValiditySeconds());
         existingClient.setAuthorizedGrantTypes(client.getAuthorizedGrantTypes());
