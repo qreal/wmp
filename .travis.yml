@@ -51,15 +51,15 @@ script:
   - sleep 20
 
   - cd ../../auth-service
-  - mvn tomcat7:run-war-only &
+  - mvn tomcat7:run-war &
   - sleep 60
 
   - cd  ../dashboard-service
-  - mvn tomcat7:run-war-only &
+  - mvn tomcat7:run-war &
   - sleep 60
 
   - cd ../editor-service
-  - mvn tomcat7:run-war-only &
+  - mvn tomcat7:run-war &
   - sleep 60
 
   - ../Travis/callTomcat.sh
