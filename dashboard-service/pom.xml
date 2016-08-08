@@ -41,9 +41,6 @@
                     <additionalConfigFilesDir>${basedir}/src/main/tomcat/conf</additionalConfigFilesDir>
                     <port>9080</port>
                     <uriEncoding>utf-8</uriEncoding>
-                    <systemProperties>
-                        <java.security.egd>file:/dev/./urandom</java.security.egd>
-                    </systemProperties>
                 </configuration>
             </plugin>
 

@@ -62,9 +62,10 @@ public class UserDAO {
         if (loadUserByUsername(person.getUsername()) != null) {
             return;
         }
+        logger.info("Saving client {}", person.getUsername());
         Session session = sessionFactory.getCurrentSession();
         session.save(person);
-        logger.trace("{} user was saved to database", person.getUsername());
+        logger.info("Client {} saved", person.getUsername());
     }
 
     /** Deletes an existing user by id.*/

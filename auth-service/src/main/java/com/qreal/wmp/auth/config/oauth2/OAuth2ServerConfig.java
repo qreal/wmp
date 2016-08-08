@@ -89,16 +89,6 @@ public class OAuth2ServerConfig {
             oauthServer.allowFormAuthenticationForClients();
         }
 
-    }
-
-    @Configuration
-    protected static class Stuff {
-        @Resource(name = "clientServiceSec")
-        private ClientDetailsService clientServiceSec;
-
-        @Autowired
-        private TokenStore tokenStore;
-
         @Bean
         public ApprovalStore approvalStore() throws Exception {
             TokenApprovalStore store = new TokenApprovalStore();

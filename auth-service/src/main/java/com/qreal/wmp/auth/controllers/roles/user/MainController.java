@@ -24,7 +24,7 @@ public class MainController {
 
     @RequestMapping(value = "home", method = RequestMethod.GET)
     public ModelAndView tableUsersPrepare(ModelMap model, HttpServletRequest request) {
-        ModelAndView table = new ModelAndView("ROLE_USER/mainView");
+        ModelAndView table = new ModelAndView("user/mainView");
         List<Client> clientsInBase = clientService.getAll();
         table.addObject("clients", clientsInBase);
         table.addObject("name", AuthenticatedUser.getAuthenticatedUserName());

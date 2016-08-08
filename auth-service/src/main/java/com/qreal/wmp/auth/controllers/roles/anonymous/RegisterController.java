@@ -38,7 +38,7 @@ public class RegisterController {
     @RequestMapping(value = "register", method = RequestMethod.GET)
     public String login(ModelMap model) {
         model.addAttribute("error", false);
-        return "ROLE_ANONYMOUS/registerView";
+        return "anonymous/registerView";
     }
 
     @RequestMapping(value = "register", method = RequestMethod.POST)
@@ -51,14 +51,14 @@ public class RegisterController {
 
         if (!pwd1.equals(pwd2)) {
             model.addAttribute("errorPasswordsNotMatch", true);
-            return "ROLE_ANONYMOUS/registerView";
+            return "anonymous/registerView";
         }
 
         User userWithSameLogin = userService.loadUserByUsername(name);
         if (userWithSameLogin != null)
         {
             model.addAttribute("errorLoginAlreadyRegistered", true);
-            return "ROLE_ANONYMOUS/register";
+            return "anonymous/register";
         }
 
         User user = new User(name, passwordEncoder.encode(pwd1), authorities);

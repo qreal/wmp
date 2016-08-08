@@ -20,37 +20,37 @@
                 <th>Login</th>
                 <th>Password</th>
             </tr>
-            <c:forEach var="o" items="${users}" varStatus="status">
-                <c:if test="${!o.isAdmin()}">
+            <c:forEach var="user" items="${users}" varStatus="status">
+                <c:if test="${!user.isAdmin()}">
                 <form class="form-signin" action="usersPanel/grantUserAdminRights/${usersEncoded[status.index]}" method="post">
                 </c:if>
-                <c:if test="${o.isAdmin() && o.username != 'Admin'}">
+                <c:if test="${user.isAdmin() && user.username != 'Admin'}">
                 <form class="form-signin" action="usersPanel/withdrawUserAdminRights/${usersEncoded[status.index]}" method="post">
                 </c:if>
                 <tr>
-                    <td>${o.username}</td>
-                    <td>${o.password}</td>
-                    <c:if test="${!o.isAdmin()}">
+                    <td>${user.username}</td>
+                    <td>${user.password}</td>
+                    <c:if test="${!user.isAdmin()}">
                         <td>
                             <button class="btn btn-sm btn-success  btn-block" type="submit">
                                 Grant Admin Rights
                             </button>
                         </td>
                     </c:if>
-                    <c:if test="${o.isAdmin() && o.username != 'Admin'}">
+                    <c:if test="${user.isAdmin() && user.username != 'Admin'}">
                         <td>
                             <button class="btn btn-sm btn-danger  btn-block" type="submit">
                                 Withdraw Admin Rights
                             </button>
                         </td>
                     </c:if>
-                    <c:if test="${o.isAdmin() && o.username != 'Admin'}">
+                    <c:if test="${user.isAdmin() && user.username != 'Admin'}">
                         <td>
 
                         </td>
                     </c:if>
                 </tr>
-                <c:if test="${o.username != 'Admin'}">
+                <c:if test="${user.username != 'Admin'}">
                 </form>
                 </c:if>
                 </c:forEach>

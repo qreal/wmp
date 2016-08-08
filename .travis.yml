@@ -26,8 +26,6 @@ before_install:
   - sudo rm /dev/random
   - sudo mknod /dev/random c 1 9
 
-
-
 install:
   - mvn install
 
@@ -45,21 +43,27 @@ script:
 
   - cd diagram-service
   - mvn exec:java &
+  - sleep 15
 
   - cd ../user-service
   - mvn exec:java &
+  - sleep 15
 
   - cd ../robots-service
   - mvn exec:java &
+  - sleep 15
 
   - cd ../../auth-service
   - mvn tomcat7:run-war-only &
+  - sleep 30
 
   - cd  ../dashboard-service
   - mvn tomcat7:run-war-only &
+  - sleep 30
 
   - cd ../editor-service
   - mvn tomcat7:run-war-only &
+  - sleep 30
 
   - ../Travis/callTomcat.sh
 

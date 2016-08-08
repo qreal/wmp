@@ -42,7 +42,7 @@ public class UsersPanelController {
     @RequestMapping(value = "/usersPanel", method = RequestMethod.GET)
     public ModelAndView tableUsersPrepare(ModelMap model, HttpServletRequest request)
             throws UnsupportedEncodingException {
-        ModelAndView table = new ModelAndView("ROLE_ADMIN/usersPanel");
+        ModelAndView table = new ModelAndView("admin/usersPanel");
         List<User> users = userService.getAll();
         table.addObject("users", users);
         List<String> usersEncoded = new ArrayList<String>();

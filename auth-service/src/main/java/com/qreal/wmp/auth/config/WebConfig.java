@@ -11,33 +11,35 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
+import org.springframework.web.servlet.view.JstlView;
 
 /** Represents files resolve policy of Spring Framework.*/
 @Configuration
 @EnableWebMvc
 @Import({SecurityConfiguration.class, OAuth2ServerConfig.class, MethodSecurityConfig.class})
-public class WebMVCConfig extends WebMvcConfigurerAdapter {
+public class WebConfig extends WebMvcConfigurerAdapter {
+    /** Time, in seconds, to have the browser cache static resources (one week).*/
+    private static final int BROWSER_CACHE_CONTROL = 604800;
+
     /** Resolves view name in jsp file path.*/
-    @Bean(name = "viewResolver")
-    public InternalResourceViewResolver getViewResolver() {
-        InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
-        viewResolver.setPrefix("/WEB-INF/pages/");
-        viewResolver.setSuffix(".jsp");
-        return viewResolver;
+    @Bean
+    public InternalResourceViewResolver setupViewResolver() {
+        InternalResourceViewResolver resolver = new InternalResourceViewResolver();
+        resolver.setPrefix("/WEB-INF/views/");
+        resolver.setSuffix(".jsp");
+        resolver.setViewClass(JstlView.class);
+        return resolver;
     }
 
     /** Creates resources handlers for static resources.*/
     @Override
-    public void addResourceHandlers(final ResourceHandlerRegistry registry) {
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/WEB-INF/pages/**").addResourceLocations("/pages/");
         registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
-    }
+        registry.addResourceHandler("/app/**").addResourceLocations("/app/");
+        registry.addResourceHandler("/configs/**").addResourceLocations("/configs/");
+        registry.addResourceHandler("/images/**").addResourceLocations("/images/").
+                setCachePeriod(BROWSER_CACHE_CONTROL);
 
-    /**
-     * Configure static resources and it seems that it will route to default tomcat servlet in case dispatcher
-     * couldn't handle request.
-     */
-    @Override
-    public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
-        configurer.enable();
     }
 }

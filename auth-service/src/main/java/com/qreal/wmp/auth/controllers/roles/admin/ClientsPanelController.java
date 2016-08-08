@@ -39,7 +39,7 @@ public class ClientsPanelController {
     @RequestMapping(value = "/clientsPanel", method = RequestMethod.GET)
     public ModelAndView tableServersPrepare(ModelMap model, HttpServletRequest request)
             throws UnsupportedEncodingException {
-        ModelAndView table = new ModelAndView("ROLE_ADMIN/clientsPanel");
+        ModelAndView table = new ModelAndView("admin/clientsPanel");
         List<Client> clientsInBase = clientService.getAll();
         table.addObject("clients", clientsInBase);
         List<String> clientsEncoded = new ArrayList<String>();
@@ -53,7 +53,7 @@ public class ClientsPanelController {
 
     @RequestMapping(value = "/clientsPanel/addClient", method = RequestMethod.GET)
     public ModelAndView addServer(ModelMap model, HttpServletRequest request) throws IOException {
-        ModelAndView modelView = new ModelAndView("ROLE_ADMIN/ClientsPanelActions/addClient");
+        ModelAndView modelView = new ModelAndView("admin/ClientsPanelActions/addClient");
         modelView.addObject("name", AuthenticatedUser.getAuthenticatedUserName());
         return modelView;
     }
@@ -62,13 +62,13 @@ public class ClientsPanelController {
     public String serverCheck(ModelMap model, HttpServletRequest request) throws IOException {
         String clientId = request.getParameter("clientId");
         String scopes = request.getParameter("scopes");
-        Set<String> scopesSet =  new HashSet<String>(Arrays.asList(scopes.split(" ")));
+        Set<String> scopesSet =  new HashSet<>(Arrays.asList(scopes.split(" ")));
         String secret = request.getParameter("secret");
 
         //String autoApproveString = request.g("autoApprove");
         //boolean autoApprove = request.getParameterValues("autoApprove");
 
-        Set<String> grantTypes = new HashSet<String>();
+        Set<String> grantTypes = new HashSet<>();
         grantTypes.add("authorization_code");
         Client client = new Client(clientId, true, secret, true, scopesSet, grantTypes, 64000, 64000, false);
         clientService.add(client);
@@ -102,7 +102,7 @@ public class ClientsPanelController {
             throws UnsupportedEncodingException {
         String clientId = URLDecoder.decode(clientIdEncoded, "UTF-8");
         Client client = clientService.loadClientById(clientId);
-        ModelAndView modelView = new ModelAndView("ROLE_ADMIN/ClientsPanelActions/configureClient");
+        ModelAndView modelView = new ModelAndView("admin/ClientsPanelActions/configureClient");
         if (client == null) {
             return modelView;
         }

@@ -40,12 +40,6 @@
                 </div>
             </div>
 
-            <%--<div class="form-group">--%>
-                <%--<div class="col-sm-12 text-right">--%>
-                    <%--<label><input type="checkbox" value="autoApprove" id="autoApprove">Auto approve</label>--%>
-                <%--</div>--%>
-            <%--</div>--%>
-
             <div class="form-group">
                 <div class="col-sm-12 text-right">
                     <button type="submit" class="btn btn-default preview-add-button">

@@ -56,6 +56,6 @@ public class LoginController {
                     redirectUrl);
         }
 
-        return "ROLE_ANONYMOUS/loginView";
+        return "anonymous/loginView";
     }
 }

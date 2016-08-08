@@ -25,7 +25,7 @@ public class HibernateConfig {
     @Bean
     public SessionFactory sessionFactory() {
         LocalSessionFactoryBuilder sessionBuilder = new LocalSessionFactoryBuilder(dataSource);
-        sessionBuilder.scanPackages("com.qreal.wmp.db.robot.model");
+        sessionBuilder.scanPackages("com.qreal.wmp.db.diagram.model");
         sessionBuilder.addProperties(hibernateProperties);
         return sessionBuilder.buildSessionFactory();
     }

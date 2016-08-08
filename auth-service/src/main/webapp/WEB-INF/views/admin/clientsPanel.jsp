@@ -21,11 +21,11 @@
                 <th style="text-align:center">Secret</th>
                 <th style="text-align:center"> Scope</th>
             </tr>
-            <c:forEach var="o" items="${clients}" varStatus="status">
+            <c:forEach var="client" items="${clients}" varStatus="status">
                 <tr>
-                    <td align="center">${o.clientId}</td>
-                    <td align="center">${o.clientSecret}</td>
-                    <td align="center">${o.scope}</td>
+                    <td align="center">${client.clientId}</td>
+                    <td align="center">${client.clientSecret}</td>
+                    <td align="center">${client.scope}</td>
                     <td align="center"></td>
 
                     <td>

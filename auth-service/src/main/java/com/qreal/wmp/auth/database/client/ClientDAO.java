@@ -61,9 +61,10 @@ public class ClientDAO {
         if (loadClientById(client.getClientId()) != null) {
             return;
         }
+        logger.info("Saving client {}", client.getClientId());
         Session session = sessionFactory.getCurrentSession();
         session.save(client);
-        logger.trace("{} client was saved to database", client.getClientId());
+        logger.info("Client {} saved", client.getClientId());
 
     }
 

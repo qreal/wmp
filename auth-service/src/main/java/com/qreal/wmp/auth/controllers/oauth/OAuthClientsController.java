@@ -56,13 +56,15 @@ public class OAuthClientsController {
         model.put("scopes", scopes);
         logger.trace("User {} authorizing client {} for scopes {}", AuthenticatedUser.getAuthenticatedUserName(),
                 client.getClientId(), client.getScope().toString());
-        return new ModelAndView("OAuth/scopesConfirmation", model);
+        return new ModelAndView("oauth/scopesConfirmation", model);
     }
 
     @RequestMapping("/oauth/error")
-    public String handleError(Map<String, Object> model) throws Exception {
-        model.put("message", "There was a problem with the OAuth2 protocol");
-        logger.debug("Some problem with oauth encountered for user {}", AuthenticatedUser.getAuthenticatedUserName());
-        return "OAuth/error";
+    public ModelAndView handleError() throws Exception {
+        logger.error("There was a problem with the OAuth2 protocol");
+        ModelAndView modelAndView = new ModelAndView("errors/common");
+        modelAndView.addObject("message", "There was a problem with the OAuth2 protocol");
+        logger.error("Some problem with oauth encountered for user {}", AuthenticatedUser.getAuthenticatedUserName());
+        return modelAndView;
     }
 }

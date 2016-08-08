@@ -13,16 +13,15 @@
 
 <jsp:include page="../include/navbar.jsp"/>
 
-<%--<c:if test="${not empty objects}">--%>
   <table class="table" align="center" style="width:50%;">
     <tr>
       <th>ID</th>
       <th>Scopes</th>
     </tr>
-      <c:forEach var="o" items="${clients}">
+      <c:forEach var="client" items="${clients}">
           <tr>
-              <td >${o.clientId}</td>
-              <td >${o.scope}</td>
+              <td >${client.clientId}</td>
+              <td >${client.scope}</td>
           </tr>
       </c:forEach>
   </table>
