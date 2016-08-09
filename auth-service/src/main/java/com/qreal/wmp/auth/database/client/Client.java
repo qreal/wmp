@@ -75,8 +75,7 @@ public class Client implements ClientDetails {
     public Client(String clientId, boolean isSecretRequired, String clientSecret,
                   boolean isScoped, Set<String> scope, Set<String> authorizedGrantTypes,
                   Integer accessTokenValiditySeconds, Integer refreshTokenValiditySeconds,
-                  boolean isAutoApprove)
-    {
+                  boolean isAutoApprove) {
         this.clientId = clientId;
         this.isSecretRequired = isSecretRequired;
         this.clientSecret = clientSecret;

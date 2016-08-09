@@ -17,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 /** Thrift client side of UserDBService.*/
 @Service("userService")
 public class UserServiceImpl implements UserService {
-
     private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
     private TTransport transport;

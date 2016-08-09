@@ -19,7 +19,6 @@ import java.util.stream.Collectors;
 /** UserDetailsService implementation for SpringSecurity (using UserService).*/
 @Service("userDetailsService")
 public class UserDetailsServiceImpl implements UserDetailsService {
-
     @Autowired
     private UserService userService;
 
@@ -27,13 +26,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(final String username)
             throws UsernameNotFoundException {
-
         com.qreal.wmp.editor.database.users.model.User user = userService.findByUserName(username);
-
         List<GrantedAuthority> authorities = buildUserAuthority(user.getRoles());
-
         return buildUserForAuthentication(user, authorities);
-
     }
 
     private User buildUserForAuthentication(com.qreal.wmp.editor.database.users.model.User user,
@@ -43,7 +38,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     private List<GrantedAuthority> buildUserAuthority(Set<UserRole> userRoles) {
-
         Set<GrantedAuthority> setAuths = userRoles.stream().map(userRole -> new SimpleGrantedAuthority(userRole.
                 getRole())).collect(Collectors.toSet());
         List<GrantedAuthority> result = new ArrayList<GrantedAuthority>(setAuths);

@@ -6,7 +6,6 @@ import org.jetbrains.annotations.Nullable;
 
 /** UserDBService interface.*/
 public interface UserService {
-
     /**
      * Saves user (and robots).
      *

@@ -5,7 +5,6 @@ import com.qreal.wmp.thrift.gen.TRobot;
 
 /** TRIK robot in dashboard service.*/
 public class Robot {
-
     /** Surrogate key for Robot.*/
     private Long id;
 

@@ -36,7 +36,7 @@ public class OAuth2UserDetailsLoaderImpl implements OAuth2UserDetailsLoader<User
      */
     @Override
     public UserDetails getUserByUserId(String id) {
-        //TODO Here is vulnarebility, cause someone can login with id from github to user registrated with google.
+        //TODO Here is vulnerability, cause someone can login with id from github to user registrated with google.
         //TODO But Google and Github makes email verification so it is not really bad. But in future we need to fix it.
         logger.trace("Someone trying to login through oauth with {} username", id);
         UserDetails user = userService.loadUserByUsername(id);

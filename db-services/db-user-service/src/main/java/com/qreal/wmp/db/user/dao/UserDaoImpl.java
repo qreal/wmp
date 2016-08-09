@@ -61,7 +61,7 @@ public class UserDaoImpl implements UserDao {
         logger.trace("saving robots of user {}", user.getUsername());
         UserSerial userSerial = saveOrUpdateRobots(user);
         logger.trace("robots of user {} saved, id's now in userSerial", user.getUsername());
-        Set<UserRoleSerial> roles = new HashSet<UserRoleSerial>();
+        Set<UserRoleSerial> roles = new HashSet<>();
         UserRoleSerial userRole = new UserRoleSerial(ROLE_USER);
         roles.add(userRole);
         userSerial.setRoles(roles);

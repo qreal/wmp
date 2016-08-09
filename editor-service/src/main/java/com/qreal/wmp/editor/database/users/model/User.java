@@ -10,7 +10,6 @@ import java.util.stream.Collectors;
 
 /** User in authorization service.*/
 public class User {
-
     /** Name of user (primary key too).*/
     private String username;
 

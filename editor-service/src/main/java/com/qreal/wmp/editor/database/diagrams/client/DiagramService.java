@@ -21,9 +21,9 @@ public interface DiagramService {
     Diagram openDiagram(Long diagramId);
 
     /**
-     * Rewrites diagram with id equal to <code>diagram.id</code>.
+     * Rewrites diagram with id equal to {@diagram.id}.
      *
-     * @param diagram diagram to rewrite (<code>diagram.id</code> must be set correctly).
+     * @param diagram diagram to rewrite (<{@diagram.id} must be set correctly).
      */
     void rewriteDiagram(Diagram diagram);
 

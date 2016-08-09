@@ -4,7 +4,6 @@ import com.qreal.wmp.thrift.gen.TUserRole;
 
 /** UserRole in authorization service.*/
 public class UserRole {
-
     /** Surrogate key for role (maybe static table for roles?).*/
     private Integer id;
 

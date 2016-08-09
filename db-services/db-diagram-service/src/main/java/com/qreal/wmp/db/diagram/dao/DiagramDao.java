@@ -43,10 +43,8 @@ public interface DiagramDao {
     void deleteFolder(Long folderId);
 
     /** Returns folder with specified id. (or null)*/
-    @Nullable
-    Folder getFolder(Long folderId);
+    @Nullable Folder getFolder(Long folderId);
 
     /** Returns root folder of user. (or null)*/
-    @Nullable
-    Folder getFolderTree(String userName);
+    @Nullable Folder getFolderTree(String userName);
 }

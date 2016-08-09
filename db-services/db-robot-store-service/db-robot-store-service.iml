@@ -8,14 +8,14 @@
         </webroots>
       </configuration>
     </facet>
-        <facet type="Spring" name="Spring">
-          <configuration>
-            <fileset id="fileset" name="Spring Application Context" removed="false">
-              <file>file://$MODULE_DIR$/src/main/java/com/qreal/wmp/db/robot/config/development/DevHibernateConfig.java</file>
-              <file>file://$MODULE_DIR$/src/main/java/com/qreal/wmp/db/robot/config/HibernateConfig.java</file>
-            </fileset>
-          </configuration>
-        </facet>
+    <facet type="Spring" name="Spring">
+      <configuration>
+        <fileset id="fileset" name="Spring Application Context" removed="false">
+          <file>file://$MODULE_DIR$/src/main/java/com/qreal/wmp/db/robot/config/development/DevHibernateConfig.java</file>
+          <file>file://$MODULE_DIR$/src/main/java/com/qreal/wmp/db/robot/config/HibernateConfig.java</file>
+        </fileset>
+      </configuration>
+    </facet>
   </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8" inherit-compiler-output="false">
     <output url="file://$MODULE_DIR$/target/classes" />
@@ -27,6 +27,7 @@
       <sourceFolder url="file://$MODULE_DIR$/target/generated-sources/thrift/robotDb" isTestSource="false" generated="true" />
       <sourceFolder url="file://$MODULE_DIR$/target/generated-sources/thrift/struct" isTestSource="false" generated="true" />
       <sourceFolder url="file://$MODULE_DIR$/target/generated-sources/thrift/userDb" isTestSource="false" generated="true" />
+      <excludeFolder url="file://$MODULE_DIR$/target/db-robot-store-service-1.0-SNAPSHOT" />
       <excludeFolder url="file://$MODULE_DIR$/target/maven-archiver" />
       <excludeFolder url="file://$MODULE_DIR$/target/maven-status" />
       <excludeFolder url="file://$MODULE_DIR$/target/robots-service-1.0-SNAPSHOT" />
