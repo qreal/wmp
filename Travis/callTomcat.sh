@@ -1,7 +1,7 @@
 #!/bin/bash
 iter=1
 all=120
-until [ "`curl --silent --show-error --connect-timeout 1 -I http://localhost:8080/robots-editor | grep '302 Found'`" != "" ];
+until [ "`curl --silent --show-error --connect-timeout 1 -I http://localhost:8080/ | grep '302 Found'`" != "" ];
 do
   if [ "$iter" -lt "$all" ]
   then
@@ -13,5 +13,35 @@ do
     exit 1
   fi
 done
-echo "Server returned 302 found"
+echo "auth-service found"
+iter=1
+all=120
+until [ "`curl --silent --show-error --connect-timeout 1 -I http://localhost:9080/dashboard-service/ | grep '302 Found'`" != "" ];
+do
+  if [ "$iter" -lt "$all" ]
+  then
+    echo "--- sleeping for 10 seconds"
+    sleep 10
+    let iter=$iter+1
+  else
+    echo "Server didn't return 302 found for long time"
+    exit 1
+  fi
+done
+echo "dashboard-service found"
+iter=1
+all=120
+until [ "`curl --silent --show-error --connect-timeout 1 -I http://localhost:9081/editor-service/editor | grep '302 Found'`" != "" ];
+do
+  if [ "$iter" -lt "$all" ]
+  then
+    echo "--- sleeping for 10 seconds"
+    sleep 10
+    let iter=$iter+1
+  else
+    echo "Server didn't return 302 found for long time"
+    exit 1
+  fi
+done
+echo "editor-service found"
 exit 0

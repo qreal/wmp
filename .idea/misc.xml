@@ -42,10 +42,15 @@
     <entry_points version="2.0" />
   </component>
   <component name="FrameworkDetectionExcludesConfiguration">
+    <file type="web" url="file://$PROJECT_DIR$/auth-service" />
+    <file type="web" url="file://$PROJECT_DIR$/dashboard-service" />
+    <file type="web" url="file://$PROJECT_DIR$/db-services/db-diagram-service" />
+    <file type="web" url="file://$PROJECT_DIR$/db-services/db-robot-store-service" />
+    <file type="web" url="file://$PROJECT_DIR$/db-services/db-user-service" />
     <file type="web" url="file://$PROJECT_DIR$/db-services/diagram-service" />
     <file type="web" url="file://$PROJECT_DIR$/db-services/robots-service" />
     <file type="web" url="file://$PROJECT_DIR$/db-services/user-service" />
-    <file type="web" url="file://$PROJECT_DIR$/robots-editor" />
+    <file type="web" url="file://$PROJECT_DIR$/editor-service" />
     <file type="web" url="file://$PROJECT_DIR$/shared-resources" />
   </component>
   <component name="JavadocGenerationManager">
@@ -70,11 +75,19 @@
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/auth-service/pom.xml" />
+        <option value="$PROJECT_DIR$/editor-service/pom.xml" />
+        <option value="$PROJECT_DIR$/dashboard-service/pom.xml" />
         <option value="$PROJECT_DIR$/shared-resources/pom.xml" />
         <option value="$PROJECT_DIR$/db-services/diagram-service/pom.xml" />
         <option value="$PROJECT_DIR$/db-services/robots-service/pom.xml" />
         <option value="$PROJECT_DIR$/db-services/user-service/pom.xml" />
       </list>
+    </option>
+    <option name="ignoredFiles">
+      <set>
+        <option value="$PROJECT_DIR$/RobotsEditor/pom.xml" />
+      </set>
     </option>
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">

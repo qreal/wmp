@@ -1,0 +1,141 @@
+.form-signin input[type="text"]
+{
+    margin-bottom: -1px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+.form-signin input[type="password"]
+{
+    margin-bottom: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+.account-wall
+{
+    margin-top: 20px;
+    padding: 40px 0px 20px 0px;
+    background-color: #f7f7f7;
+    -moz-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+    -webkit-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+}
+.login-title
+{
+    color: #555;
+    font-size: 18px;
+    font-weight: 400;
+    display: block;
+}
+.profile-img
+{
+    width: 96px;
+    height: 96px;
+    margin: 0 auto 10px;
+    display: block;
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
+}
+.need-help
+{
+    margin-top: 10px;
+}
+.new-account
+{
+    display: block;
+    margin-top: 10px;
+}
+
+.table-curved {
+    border-collapse: separate;
+    display: inline;
+}
+.table-curved {
+    border: solid #ccc 1px;
+    border-radius: 6px;
+    border-left:0px;
+    display: inline;
+
+}
+
+
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,600);
+
+.form-control{
+    background: transparent;
+}
+form {
+    width: 320px;
+    margin: 20px;
+}
+form > div {
+    position: relative;
+    overflow: hidden;
+}
+form input, form textarea {
+    width: 100%;
+    border: 2px solid gray;
+    background: none;
+    position: relative;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    padding: 8px 12px;
+    outline: 0;
+}
+form input:valid, form textarea:valid {
+    background: white;
+}
+form input:focus, form textarea:focus {
+    border-color: #357EBD;
+}
+form input:focus + label, form textarea:focus + label {
+    background: #357EBD;
+    color: white;
+    font-size: 70%;
+    padding: 1px 6px;
+    z-index: 2;
+    text-transform: uppercase;
+}
+form label {
+    -webkit-transition: background 0.2s, color 0.2s, top 0.2s, bottom 0.2s, right 0.2s, left 0.2s;
+    transition: background 0.2s, color 0.2s, top 0.2s, bottom 0.2s, right 0.2s, left 0.2s;
+    position: absolute;
+    color: #999;
+    padding: 7px 6px;
+    font-weight: normal;
+}
+form textarea {
+    display: block;
+    resize: vertical;
+}
+form.go-bottom input, form.go-bottom textarea {
+    padding: 12px 12px 12px 12px;
+}
+form.go-bottom label {
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+}
+form.go-bottom input:focus, form.go-bottom textarea:focus {
+    padding: 4px 6px 20px 6px;
+}
+form.go-bottom input:focus + label, form.go-bottom textarea:focus + label {
+    top: 100%;
+    margin-top: -16px;
+}
+form.go-right label {
+    border-radius: 0 5px 5px 0;
+    height: 100%;
+    top: 0;
+    right: 100%;
+    width: 100%;
+    margin-right: -100%;
+}
+form.go-right input:focus + label, form.go-right textarea:focus + label {
+    right: 0;
+    margin-right: 0;
+    width: 40%;
+    padding-top: 5px;
+}

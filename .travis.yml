@@ -11,43 +11,60 @@ before_install:
   - sudo apt-get update -y
   #install curl for tomcat tests
   - sudo apt-get install curl -y
-  
   # get thrift 0.9.3
   - wget "https://www.dropbox.com/s/u4prfzehb94xo9n/thrift"
   - wget "https://www.dropbox.com/s/ydbf9ghsl6lv5dl/libthrift-0.9.3.jar"
   - chmod 755 thrift
   - sudo cp thrift /usr/local/bin/thrift
   - sudo cp libthrift-0.9.3.jar /usr/local/lib
-
   - wget http://downloads.sourceforge.net/project/checkstyle/checkstyle/7.0/checkstyle-7.0-all.jar
+  #install 3dparty
+  - cd 3dparty
+  - mvn org.apache.maven.plugins:maven-install-plugin:2.5.2:install-file -Dfile=spring-security-oauth2-client-1.6-SNAPSHOT.jar -DpomFile=spring-security-oauth2-client-1.6.xml
+  - cd ..
+  #fake random with urandom (do not repeat it on your own computer)
+  - sudo rm /dev/random
+  - sudo mknod /dev/random c 1 9
 
 install:
   - mvn install
 
 script:
   #run checkstyle
-  - java -jar checkstyle-7.0-all.jar -c Travis/checkstyle/checkstyle.xml robots-editor/src
-  - java -jar checkstyle-7.0-all.jar -c Travis/checkstyle/checkstyle.xml db-services/diagram-service/src
-  - java -jar checkstyle-7.0-all.jar -c Travis/checkstyle/checkstyle.xml db-services/robots-service/src
-  - java -jar checkstyle-7.0-all.jar -c Travis/checkstyle/checkstyle.xml db-services/user-service/src
+  - java -jar checkstyle-7.0-all.jar -c Travis/checkstyle/checkstyle.xml auth-service/src
+  - java -jar checkstyle-7.0-all.jar -c Travis/checkstyle/checkstyle.xml dashboard-service/src
+  - java -jar checkstyle-7.0-all.jar -c Travis/checkstyle/checkstyle.xml editor-service/src
+  - java -jar checkstyle-7.0-all.jar -c Travis/checkstyle/checkstyle.xml db-services/db-diagram-service/src
+  - java -jar checkstyle-7.0-all.jar -c Travis/checkstyle/checkstyle.xml db-services/db-robot-store-service/src
+  - java -jar checkstyle-7.0-all.jar -c Travis/checkstyle/checkstyle.xml db-services/db-user-service/src
 
   #run services
   - cd db-services
-  - cd diagram-service
-  - mvn exec:java &
 
-  - cd ../user-service
+  - cd db-diagram-service
   - mvn exec:java &
+  - sleep 15
 
-  - cd ../robots-service
+  - cd ../db-user-service
   - mvn exec:java &
+  - sleep 15
 
+  - cd ../db-robot-store-service
+  - mvn exec:java &
+  - sleep 15
+
+  - cd ../../auth-service
+  - mvn tomcat7:run-war-only &
   - sleep 30
 
-  - cd ../../robots-editor
+  - cd  ../dashboard-service
   - mvn tomcat7:run-war-only &
+  - sleep 30
 
-  #run tomcat
+  - cd ../editor-service
+  - mvn tomcat7:run-war-only &
+  - sleep 30
+
   - ../Travis/callTomcat.sh
 
 notifications:

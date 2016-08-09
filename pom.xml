@@ -11,10 +11,12 @@
 
     <modules>
         <module>shared-resources</module>
-        <module>robots-editor</module>
-        <module>db-services/diagram-service</module>
-        <module>db-services/robots-service</module>
-        <module>db-services/user-service</module>
+        <module>auth-service</module>
+        <module>dashboard-service</module>
+        <module>editor-service</module>
+        <module>db-services/db-diagram-service</module>
+        <module>db-services/db-robot-store-service</module>
+        <module>db-services/db-user-service</module>
     </modules>
 
     <build>
@@ -45,6 +47,33 @@
 
     <dependencies>
 
+        <!-- Log -->
+
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>2.6.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-1.2-api</artifactId>
+            <version>2.6.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>2.6.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-slf4j-impl</artifactId>
+            <version>2.6.2</version>
+        </dependency>
+
+
         <!-- Apache Commons IO -->
         <dependency>
             <groupId>commons-io</groupId>
@@ -63,6 +92,12 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-core</artifactId>
+            <version>4.2.1.RELEASE</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
             <version>4.2.1.RELEASE</version>
         </dependency>
 
@@ -200,6 +235,7 @@
             <artifactId>annotations</artifactId>
             <version>15.0</version>
         </dependency>
+
 
 
     </dependencies>
