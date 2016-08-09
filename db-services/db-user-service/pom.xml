@@ -71,8 +71,8 @@
                         </goals>
                         <configuration>
                             <generator>java</generator>
-                            <thriftSourceRoot>${thrift.src.base}/robot-database</thriftSourceRoot>
-                            <outputDirectory>${thrift.output.dir}/robot-database</outputDirectory>
+                            <thriftSourceRoot>${thrift.src.base}/robot-store-database</thriftSourceRoot>
+                            <outputDirectory>${thrift.output.dir}/robot-store-database</outputDirectory>
                         </configuration>
                     </execution>
                     <execution>
