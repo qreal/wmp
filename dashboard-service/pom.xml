@@ -179,49 +179,37 @@
             <type>war</type>
         </dependency>
 
-        <!--Execution-->
-
         <dependency>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.5.1</version>
+            <groupId>wmp</groupId>
+            <artifactId>auth-deps</artifactId>
+            <version>1.0</version>
+            <type>pom</type>
         </dependency>
 
+        <!-- Spring libraries -->
         <dependency>
-            <groupId>org.jetbrains</groupId>
-            <artifactId>annotations</artifactId>
-            <version>RELEASE</version>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
+            <version>4.2.1.RELEASE</version>
         </dependency>
+
+        <!-- Servlet -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.1.0</version>
+            <scope>provided</scope>
+            <optional>true</optional>
+        </dependency>
+
+
+
 
         <!--Thrift-->
         <dependency>
             <groupId>org.apache.thrift</groupId>
             <artifactId>libthrift</artifactId>
             <version>0.9.3</version>
-        </dependency>
-
-        <!-- for OAuth 2.0 -->
-        <dependency>
-            <groupId>org.springframework.security.oauth</groupId>
-            <artifactId>spring-security-oauth2</artifactId>
-            <version>2.0.8.RELEASE</version>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-core</artifactId>
-            <version>2.6.2</version>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>2.6.2</version>
-        </dependency>
-
-        <!--First Step Auth Lib-->
-        <dependency>
-            <groupId>com.racquettrack</groupId>
-            <artifactId>spring-security-oauth2-client</artifactId>
-            <version>1.6-SNAPSHOT</version>
         </dependency>
 
     </dependencies>

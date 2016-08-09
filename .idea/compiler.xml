@@ -33,6 +33,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="auth-deps" target="1.5" />
       <module name="auth-service" target="1.8" />
       <module name="dashboard-service" target="1.8" />
       <module name="db-diagram-service" target="1.8" />
@@ -40,9 +41,12 @@
       <module name="db-user-service" target="1.8" />
       <module name="diagram-service" target="1.8" />
       <module name="editor-service" target="1.8" />
+      <module name="logging-deps" target="1.5" />
+      <module name="logging-deps (1)" target="1.5" />
       <module name="parent" target="1.5" />
       <module name="robots-service" target="1.8" />
       <module name="shared-resources" target="1.8" />
+      <module name="spring-deps" target="1.5" />
       <module name="spring-security-oauth2-client" target="1.7" />
       <module name="user-service" target="1.8" />
     </bytecodeTargetLevel>

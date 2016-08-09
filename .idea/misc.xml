@@ -82,6 +82,8 @@
         <option value="$PROJECT_DIR$/db-services/diagram-service/pom.xml" />
         <option value="$PROJECT_DIR$/db-services/robots-service/pom.xml" />
         <option value="$PROJECT_DIR$/db-services/user-service/pom.xml" />
+        <option value="$PROJECT_DIR$/dependencies/auth/pom.xml" />
+        <option value="$PROJECT_DIR$/dependencies/logging-deps/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">
