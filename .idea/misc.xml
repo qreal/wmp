@@ -44,6 +44,9 @@
   <component name="FrameworkDetectionExcludesConfiguration">
     <file type="web" url="file://$PROJECT_DIR$/auth-service" />
     <file type="web" url="file://$PROJECT_DIR$/dashboard-service" />
+    <file type="web" url="file://$PROJECT_DIR$/db-services/db-diagram-service" />
+    <file type="web" url="file://$PROJECT_DIR$/db-services/db-robot-store-service" />
+    <file type="web" url="file://$PROJECT_DIR$/db-services/db-user-service" />
     <file type="web" url="file://$PROJECT_DIR$/db-services/diagram-service" />
     <file type="web" url="file://$PROJECT_DIR$/db-services/robots-service" />
     <file type="web" url="file://$PROJECT_DIR$/db-services/user-service" />

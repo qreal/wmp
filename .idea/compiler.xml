@@ -24,9 +24,10 @@
         <processorPath useClasspath="true" />
         <module name="auth-service" />
         <module name="dashboard-service" />
-        <module name="diagram-service" />
+        <module name="db-diagram-service" />
+        <module name="db-robot-store-service" />
+        <module name="db-user-service" />
         <module name="editor-service" />
-        <module name="robots-service" />
         <module name="shared-resources" />
         <module name="user-service" />
       </profile>
@@ -34,6 +35,9 @@
     <bytecodeTargetLevel>
       <module name="auth-service" target="1.8" />
       <module name="dashboard-service" target="1.8" />
+      <module name="db-diagram-service" target="1.8" />
+      <module name="db-robot-store-service" target="1.8" />
+      <module name="db-user-service" target="1.8" />
       <module name="diagram-service" target="1.8" />
       <module name="editor-service" target="1.8" />
       <module name="parent" target="1.5" />

@@ -34,22 +34,22 @@ script:
   - java -jar checkstyle-7.0-all.jar -c Travis/checkstyle/checkstyle.xml auth-service/src
   - java -jar checkstyle-7.0-all.jar -c Travis/checkstyle/checkstyle.xml dashboard-service/src
   - java -jar checkstyle-7.0-all.jar -c Travis/checkstyle/checkstyle.xml editor-service/src
-  - java -jar checkstyle-7.0-all.jar -c Travis/checkstyle/checkstyle.xml db-services/diagram-service/src
-  - java -jar checkstyle-7.0-all.jar -c Travis/checkstyle/checkstyle.xml db-services/robots-service/src
-  - java -jar checkstyle-7.0-all.jar -c Travis/checkstyle/checkstyle.xml db-services/user-service/src
+  - java -jar checkstyle-7.0-all.jar -c Travis/checkstyle/checkstyle.xml db-services/db-diagram-service/src
+  - java -jar checkstyle-7.0-all.jar -c Travis/checkstyle/checkstyle.xml db-services/db-robot-store-service/src
+  - java -jar checkstyle-7.0-all.jar -c Travis/checkstyle/checkstyle.xml db-services/db-user-service/src
 
   #run services
   - cd db-services
 
-  - cd diagram-service
+  - cd db-diagram-service
   - mvn exec:java &
   - sleep 15
 
-  - cd ../user-service
+  - cd ../db-user-service
   - mvn exec:java &
   - sleep 15
 
-  - cd ../robots-service
+  - cd ../db-robot-store-service
   - mvn exec:java &
   - sleep 15
 

@@ -4,8 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>wmp</groupId>
-    <artifactId>robots-service</artifactId>
+    <artifactId>db-user-service</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
 
@@ -21,6 +20,7 @@
         <thrift.src.base>src/main/thrift</thrift.src.base>
         <thrift.output.dir>target/generated-sources/thrift</thrift.output.dir>
     </properties>
+
 
     <build>
         <plugins>
@@ -47,7 +47,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <mainClass>com.qreal.wmp.db.robot.config.AppInit</mainClass>
+                    <mainClass>com.qreal.wmp.db.user.config.AppInit</mainClass>
                 </configuration>
             </plugin>
 
@@ -71,6 +71,18 @@
                             <generator>java</generator>
                             <thriftSourceRoot>src/main/thrift/robotDB</thriftSourceRoot>
                             <outputDirectory>${thrift.output.dir}/robotDb</outputDirectory>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>java-generation-diagram-db</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                        <configuration>
+                            <generator>java</generator>
+                            <thriftSourceRoot>src/main/thrift/diagramDB</thriftSourceRoot>
+                            <outputDirectory>${thrift.output.dir}/diagramDb</outputDirectory>
                         </configuration>
                     </execution>
                     <execution>
@@ -118,6 +130,7 @@
                                 <source>${thrift.output.dir}/struct</source>
                                 <source>${thrift.output.dir}/userDB</source>
                                 <source>${thrift.output.dir}/robotDB</source>
+                                <source>${thrift.output.dir}/diagramDB</source>
                             </sources>
                         </configuration>
                     </execution>

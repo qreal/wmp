@@ -4,7 +4,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>diagram-service</artifactId>
+    <groupId>wmp</groupId>
+    <artifactId>db-robot-store-service</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
 
@@ -46,7 +47,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <mainClass>com.qreal.wmp.db.diagram.config.AppInit</mainClass>
+                    <mainClass>com.qreal.wmp.db.robot.config.AppInit</mainClass>
                 </configuration>
             </plugin>
 
@@ -59,20 +60,33 @@
                     <thriftExecutable>${thrift.executable}</thriftExecutable>
                 </configuration>
                 <executions>
+                    <!-- server side code -->
                     <execution>
-                        <id>java-generation-diagram-db</id>
+                        <id>java-generation-robot-db</id>
                         <phase>generate-sources</phase>
                         <goals>
                             <goal>compile</goal>
                         </goals>
                         <configuration>
                             <generator>java</generator>
-                            <thriftSourceRoot>src/main/thrift/diagramDB</thriftSourceRoot>
-                            <outputDirectory>${thrift.output.dir}/diagramDb</outputDirectory>
+                            <thriftSourceRoot>src/main/thrift/robotDB</thriftSourceRoot>
+                            <outputDirectory>${thrift.output.dir}/robotDb</outputDirectory>
                         </configuration>
                     </execution>
                     <execution>
-                        <id>java-beans-generation</id>
+                        <id>java-generation-user-db</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                        <configuration>
+                            <generator>java</generator>
+                            <thriftSourceRoot>src/main/thrift/userDB</thriftSourceRoot>
+                            <outputDirectory>${thrift.output.dir}/userDb</outputDirectory>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>java-generation-struct</id>
                         <phase>generate-sources</phase>
                         <goals>
                             <goal>compile</goal>
@@ -102,12 +116,14 @@
                             <sources>
                                 <source>src/main/java</source>
                                 <source>${thrift.output.dir}/struct</source>
-                                <source>${thrift.output.dir}/diagramDB</source>
+                                <source>${thrift.output.dir}/userDB</source>
+                                <source>${thrift.output.dir}/robotDB</source>
                             </sources>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
+
         </plugins>
     </build>
 

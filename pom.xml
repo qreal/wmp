@@ -14,9 +14,9 @@
         <module>auth-service</module>
         <module>dashboard-service</module>
         <module>editor-service</module>
-        <module>db-services/diagram-service</module>
-        <module>db-services/robots-service</module>
-        <module>db-services/user-service</module>
+        <module>db-services/db-diagram-service</module>
+        <module>db-services/db-robot-store-service</module>
+        <module>db-services/db-user-service</module>
     </modules>
 
     <build>
