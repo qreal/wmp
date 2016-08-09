@@ -138,8 +138,6 @@
             <version>4.2.1.RELEASE</version>
         </dependency>
 
-
-
         <!-- Hibernate -->
         <dependency>
             <groupId>org.hibernate</groupId>

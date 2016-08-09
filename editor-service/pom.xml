@@ -254,12 +254,6 @@
             <optional>true</optional>
         </dependency>
 
-
-
-
-
-
-
         <!--Thrift-->
         <dependency>
             <groupId>org.apache.thrift</groupId>
