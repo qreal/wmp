@@ -13,6 +13,7 @@
         <thrift.executable>thrift</thrift.executable>
         <thrift.src.base>${project.parent.basedir}/thrift-definitions</thrift.src.base>
         <thrift.output.dir>target/generated-sources/thrift</thrift.output.dir>
+        <thrift.client.output.dir>src/main/webapp/resources/thrift</thrift.client.output.dir>
     </properties>
 
     <parent>
