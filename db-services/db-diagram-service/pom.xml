@@ -8,18 +8,21 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
 
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <thrift.executable>thrift</thrift.executable>
+        <thrift.src.base>${project.parent.basedir}/thrift-definitions</thrift.src.base>
+        <thrift.output.dir>target/generated-sources/thrift</thrift.output.dir>
+    </properties>
+
     <parent>
         <groupId>wmp</groupId>
         <artifactId>parent</artifactId>
         <version>1.0-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
-
-    <properties>
-        <thrift.executable>thrift</thrift.executable>
-        <thrift.src.base>src/main/thrift</thrift.src.base>
-        <thrift.output.dir>target/generated-sources/thrift</thrift.output.dir>
-    </properties>
 
     <build>
         <plugins>
@@ -67,8 +70,8 @@
                         </goals>
                         <configuration>
                             <generator>java</generator>
-                            <thriftSourceRoot>src/main/thrift/diagramDB</thriftSourceRoot>
-                            <outputDirectory>${thrift.output.dir}/diagramDb</outputDirectory>
+                            <thriftSourceRoot>${thrift.src.base}/diagram-database</thriftSourceRoot>
+                            <outputDirectory>${thrift.output.dir}/diagram-database</outputDirectory>
                         </configuration>
                     </execution>
                     <execution>
@@ -79,7 +82,7 @@
                         </goals>
                         <configuration>
                             <generator>java:beans</generator>
-                            <thriftSourceRoot>src/main/thrift/struct</thriftSourceRoot>
+                            <thriftSourceRoot>${thrift.src.base}/struct</thriftSourceRoot>
                             <outputDirectory>${thrift.output.dir}/struct</outputDirectory>
                         </configuration>
                     </execution>
@@ -102,7 +105,7 @@
                             <sources>
                                 <source>src/main/java</source>
                                 <source>${thrift.output.dir}/struct</source>
-                                <source>${thrift.output.dir}/diagramDB</source>
+                                <source>${thrift.output.dir}/diagram-database</source>
                             </sources>
                         </configuration>
                     </execution>
