@@ -40,9 +40,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="shared-resources" />
     <orderEntry type="library" name="Maven: org.springframework.security.oauth:spring-security-oauth2:2.0.8.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-context:4.0.9.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-aop:4.0.9.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-expression:4.0.9.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-webmvc:4.0.9.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-web:4.0.9.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.security:spring-security-core:3.2.8.RELEASE" level="project" />
@@ -60,7 +57,6 @@
     <orderEntry type="library" name="Maven: asm:asm:3.1" level="project" />
     <orderEntry type="library" name="Maven: com.sun.jersey:jersey-core:1.14" level="project" />
     <orderEntry type="library" name="Maven: com.sun.jersey:jersey-json:1.14" level="project" />
-    <orderEntry type="library" name="Maven: org.codehaus.jettison:jettison:1.1" level="project" />
     <orderEntry type="library" name="Maven: stax:stax-api:1.0.1" level="project" />
     <orderEntry type="library" name="Maven: com.sun.xml.bind:jaxb-impl:2.2.3-1" level="project" />
     <orderEntry type="library" name="Maven: javax.xml.bind:jaxb-api:2.2.2" level="project" />
