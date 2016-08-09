@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/auth-service" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/dashboard-service" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/db-services/db-diagram-service" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/db-services/db-robot-store-service" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/db-services/db-user-service" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/editor-service" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/shared-resources" charset="UTF-8" />
+  </component>
+</project>

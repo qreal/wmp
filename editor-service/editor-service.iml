@@ -6,6 +6,16 @@
         <webroots>
           <root url="file://$MODULE_DIR$/src/main/webapp" relative="/" />
         </webroots>
+        <sourceRoots>
+          <root url="file://$MODULE_DIR$/src/main/java" />
+          <root url="file://$MODULE_DIR$/src/main/resources" />
+          <root url="file://$MODULE_DIR$/target/generated-sources/thrift/diagram-database" />
+          <root url="file://$MODULE_DIR$/target/generated-sources/thrift/diagramDb" />
+          <root url="file://$MODULE_DIR$/target/generated-sources/thrift/editor" />
+          <root url="file://$MODULE_DIR$/target/generated-sources/thrift/struct" />
+          <root url="file://$MODULE_DIR$/target/generated-sources/thrift/user-database" />
+          <root url="file://$MODULE_DIR$/target/generated-sources/thrift/userDb" />
+        </sourceRoots>
       </configuration>
     </facet>
     <facet type="Spring" name="Spring">
@@ -25,16 +35,15 @@
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/resources" type="java-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/target/generated-sources/thrift/diagramDb" isTestSource="false" generated="true" />
       <sourceFolder url="file://$MODULE_DIR$/target/generated-sources/thrift/editor" isTestSource="false" generated="true" />
       <sourceFolder url="file://$MODULE_DIR$/target/generated-sources/thrift/struct" isTestSource="false" generated="true" />
-      <sourceFolder url="file://$MODULE_DIR$/target/generated-sources/thrift/userDb" isTestSource="false" generated="true" />
+      <sourceFolder url="file://$MODULE_DIR$/target/generated-sources/thrift/diagram-database" isTestSource="false" generated="true" />
+      <sourceFolder url="file://$MODULE_DIR$/target/generated-sources/thrift/user-database" isTestSource="false" generated="true" />
       <excludeFolder url="file://$MODULE_DIR$/target/editor-service" />
       <excludeFolder url="file://$MODULE_DIR$/target/etc" />
       <excludeFolder url="file://$MODULE_DIR$/target/maven-archiver" />
       <excludeFolder url="file://$MODULE_DIR$/target/maven-status" />
       <excludeFolder url="file://$MODULE_DIR$/target/node" />
-      <excludeFolder url="file://$MODULE_DIR$/target/tomcat" />
       <excludeFolder url="file://$MODULE_DIR$/target/war" />
     </content>
     <orderEntry type="inheritedJdk" />
