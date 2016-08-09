@@ -1,4 +1,4 @@
-package com.qreal.wmp.db.user.model.diagram;
+package com.qreal.wmp.db.diagram.model;
 
 import com.qreal.wmp.thrift.gen.TProperty;
 import org.hibernate.annotations.GenericGenerator;
@@ -8,8 +8,8 @@ import java.io.Serializable;
 
 /** Property of a node.*/
 @Entity
-@Table(name = "node_properties")
-public class NodeProperty implements Serializable {
+@Table(name = "properties")
+public class Property implements Serializable {
 
     @Id
     @GeneratedValue(generator = "uuid")
@@ -26,11 +26,11 @@ public class NodeProperty implements Serializable {
     @Column(name = "type")
     private String type;
 
-    public NodeProperty() {
+    public Property() {
     }
 
     /** Constructor-converter from Thrift TProperty to NodeProperty.*/
-    public NodeProperty(TProperty tProperty) {
+    public Property(TProperty tProperty) {
         if (tProperty.isSetPropertyId()) {
             propertyId = tProperty.getPropertyId();
         }

@@ -1,10 +1,10 @@
-package com.qreal.wmp.editor.database.diagrams.model;
+package com.qreal.wmp.db.user.model.diagram;
 
 import com.qreal.wmp.thrift.gen.TProperty;
 import java.io.Serializable;
 
 /** Property of a node.*/
-public class NodeProperty implements Serializable {
+public class Property implements Serializable {
 
     private String propertyId;
 
@@ -14,11 +14,11 @@ public class NodeProperty implements Serializable {
 
     private String type;
 
-    public NodeProperty() {
+    public Property() {
     }
 
     /** Constructor-converter from Thrift TProperty to NodeProperty.*/
-    public NodeProperty(TProperty tProperty) {
+    public Property(TProperty tProperty) {
         if (tProperty.isSetPropertyId()) {
             propertyId = tProperty.getPropertyId();
         }

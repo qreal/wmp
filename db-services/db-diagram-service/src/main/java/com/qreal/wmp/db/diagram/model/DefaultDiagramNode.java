@@ -30,7 +30,7 @@ public class DefaultDiagramNode implements Serializable {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinColumn(name = "node_id", referencedColumnName = "id")
-    private Set<NodeProperty> properties;
+    private Set<Property> properties;
 
     public DefaultDiagramNode() {
     }
@@ -50,7 +50,7 @@ public class DefaultDiagramNode implements Serializable {
         }
 
         if (tDefaultDiagramNode.isSetProperties()) {
-            properties = tDefaultDiagramNode.getProperties().stream().map(NodeProperty::new).
+            properties = tDefaultDiagramNode.getProperties().stream().map(Property::new).
                     collect(Collectors.toSet());
         }
     }
@@ -87,11 +87,11 @@ public class DefaultDiagramNode implements Serializable {
         this.type = type;
     }
 
-    public Set<NodeProperty> getProperties() {
+    public Set<Property> getProperties() {
         return properties;
     }
 
-    public void setProperties(Set<NodeProperty> properties) {
+    public void setProperties(Set<Property> properties) {
         this.properties = properties;
     }
 
@@ -112,7 +112,7 @@ public class DefaultDiagramNode implements Serializable {
         }
 
         if (properties != null) {
-            tDefaultDiagramNode.setProperties(properties.stream().map(NodeProperty::toTProperty).
+            tDefaultDiagramNode.setProperties(properties.stream().map(Property::toTProperty).
                     collect(Collectors.toSet()));
         }
         return tDefaultDiagramNode;

@@ -1,33 +1,20 @@
 package com.qreal.wmp.db.user.model.diagram;
 
 import com.qreal.wmp.thrift.gen.TLink;
-import org.hibernate.annotations.GenericGenerator;
-
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 /** Link between nodes.*/
-@Entity
-@Table(name = "links")
 public class Link implements Serializable {
 
-    @Id
-    @GeneratedValue(generator = "uuid")
-    @GenericGenerator(name = "uuid", strategy = "uuid2")
-    @Column(name = "id")
     private String id;
 
-    @Column(name = "logical_id")
     private String logicalId;
 
-    @Column(name = "graphical_id")
     private String graphicalId;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-    @JoinColumn(name = "link_id", referencedColumnName = "id")
-    private Set<LinkProperty> properties;
+    private Set<Property> properties;
 
     public Link() {
     }
@@ -43,7 +30,7 @@ public class Link implements Serializable {
         }
 
         if (tLink.isSetProperties()) {
-            properties = tLink.getProperties().stream().map(LinkProperty::new).collect(Collectors.toSet());
+            properties = tLink.getProperties().stream().map(Property::new).collect(Collectors.toSet());
         }
     }
 
@@ -71,11 +58,11 @@ public class Link implements Serializable {
         this.graphicalId = graphicalId;
     }
 
-    public Set<LinkProperty> getProperties() {
+    public Set<Property> getProperties() {
         return properties;
     }
 
-    public void setProperties(Set<LinkProperty> properties) {
+    public void setProperties(Set<Property> properties) {
         this.properties = properties;
     }
 
@@ -92,7 +79,7 @@ public class Link implements Serializable {
         }
 
         if (properties != null) {
-            tLink.setProperties(properties.stream().map(LinkProperty::toTProperty).collect(Collectors.toSet()));
+            tLink.setProperties(properties.stream().map(Property::toTProperty).collect(Collectors.toSet()));
         }
         return tLink;
     }

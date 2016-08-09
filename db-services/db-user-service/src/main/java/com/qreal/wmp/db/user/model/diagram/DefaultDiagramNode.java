@@ -1,36 +1,22 @@
 package com.qreal.wmp.db.user.model.diagram;
 
 import com.qreal.wmp.thrift.gen.TDefaultDiagramNode;
-import org.hibernate.annotations.GenericGenerator;
-
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 /** Diagram's node.*/
-@Entity
-@Table(name = "nodes")
 public class DefaultDiagramNode implements Serializable {
 
-    @Id
-    @GeneratedValue(generator = "uuid")
-    @GenericGenerator(name = "uuid", strategy = "uuid2")
-    @Column(name = "id")
     private String id;
 
-    @Column(name = "logical_id")
     private String logicalId;
 
-    @Column(name = "graphical_id")
     private String graphicalId;
 
-    @Column(name = "type")
     private String type;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-    @JoinColumn(name = "node_id", referencedColumnName = "id")
-    private Set<NodeProperty> properties;
+    private Set<Property> properties;
 
     public DefaultDiagramNode() {
     }
@@ -50,7 +36,7 @@ public class DefaultDiagramNode implements Serializable {
         }
 
         if (tDefaultDiagramNode.isSetProperties()) {
-            properties = tDefaultDiagramNode.getProperties().stream().map(NodeProperty::new).
+            properties = tDefaultDiagramNode.getProperties().stream().map(Property::new).
                     collect(Collectors.toSet());
         }
     }
@@ -87,11 +73,11 @@ public class DefaultDiagramNode implements Serializable {
         this.type = type;
     }
 
-    public Set<NodeProperty> getProperties() {
+    public Set<Property> getProperties() {
         return properties;
     }
 
-    public void setProperties(Set<NodeProperty> properties) {
+    public void setProperties(Set<Property> properties) {
         this.properties = properties;
     }
 
@@ -112,7 +98,7 @@ public class DefaultDiagramNode implements Serializable {
         }
 
         if (properties != null) {
-            tDefaultDiagramNode.setProperties(properties.stream().map(NodeProperty::toTProperty).
+            tDefaultDiagramNode.setProperties(properties.stream().map(Property::toTProperty).
                     collect(Collectors.toSet()));
         }
         return tDefaultDiagramNode;

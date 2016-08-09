@@ -1,6 +1,7 @@
 package com.qreal.wmp.editor.database.diagrams.model;
 
 import com.qreal.wmp.thrift.gen.TLink;
+
 import java.io.Serializable;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -14,7 +15,7 @@ public class Link implements Serializable {
 
     private String graphicalId;
 
-    private Set<LinkProperty> properties;
+    private Set<Property> properties;
 
     public Link() {
     }
@@ -30,7 +31,7 @@ public class Link implements Serializable {
         }
 
         if (tLink.isSetProperties()) {
-            properties = tLink.getProperties().stream().map(LinkProperty::new).collect(Collectors.toSet());
+            properties = tLink.getProperties().stream().map(Property::new).collect(Collectors.toSet());
         }
     }
 
@@ -58,11 +59,11 @@ public class Link implements Serializable {
         this.graphicalId = graphicalId;
     }
 
-    public Set<LinkProperty> getProperties() {
+    public Set<Property> getProperties() {
         return properties;
     }
 
-    public void setProperties(Set<LinkProperty> properties) {
+    public void setProperties(Set<Property> properties) {
         this.properties = properties;
     }
 
@@ -79,7 +80,7 @@ public class Link implements Serializable {
         }
 
         if (properties != null) {
-            tLink.setProperties(properties.stream().map(LinkProperty::toTProperty).collect(Collectors.toSet()));
+            tLink.setProperties(properties.stream().map(Property::toTProperty).collect(Collectors.toSet()));
         }
         return tLink;
     }
