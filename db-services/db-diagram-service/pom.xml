@@ -9,7 +9,6 @@
     <packaging>war</packaging>
 
     <properties>
-        <thrift.executable>thrift</thrift.executable>
         <thrift.src.base>${project.parent.basedir}/thrift-definitions</thrift.src.base>
         <thrift.output.dir>target/generated-sources/thrift</thrift.output.dir>
     </properties>
@@ -137,27 +136,6 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-jdbc</artifactId>
             <version>${springframework.version}</version>
-        </dependency>
-
-        <!-- Servlet -->
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-            <version>3.1.0</version>
-            <scope>provided</scope>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>javax.servlet.jsp</groupId>
-            <artifactId>jsp-api</artifactId>
-            <version>2.2</version>
-            <scope>provided</scope>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>jstl</artifactId>
-            <version>1.2</version>
         </dependency>
 
         <!-- Hibernate -->

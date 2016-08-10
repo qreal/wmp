@@ -9,7 +9,6 @@
     <packaging>war</packaging>
 
     <properties>
-        <thrift.executable>thrift</thrift.executable>
         <thrift.src.base>${project.parent.basedir}/thrift-definitions</thrift.src.base>
         <thrift.output.dir>target/generated-sources/thrift</thrift.output.dir>
     </properties>

@@ -21,7 +21,7 @@
                 <directory>src/main/resources</directory>
             </resource>
         </resources>
-        
+
         <plugins>
             <plugin>
                 <groupId>org.apache.tomcat.maven</groupId>
@@ -41,6 +41,7 @@
 
     <dependencies>
 
+        <!-- Local dependencies -->
         <dependency>
             <groupId>wmp</groupId>
             <artifactId>shared-resources</artifactId>
@@ -104,7 +105,6 @@
             <scope>provided</scope>
             <optional>true</optional>
         </dependency>
-
         <dependency>
             <groupId>javax.servlet.jsp</groupId>
             <artifactId>jsp-api</artifactId>
@@ -112,13 +112,11 @@
             <scope>provided</scope>
             <optional>true</optional>
         </dependency>
-
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>jstl</artifactId>
             <version>1.2</version>
         </dependency>
-
 
         <!-- Hibernate dependencies-->
         <dependency>
@@ -157,7 +155,6 @@
             <artifactId>h2</artifactId>
             <version>1.4.187</version>
         </dependency>
-
         <dependency>
             <groupId>org.codehaus.jettison</groupId>
             <artifactId>jettison</artifactId>

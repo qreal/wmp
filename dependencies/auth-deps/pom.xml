@@ -8,7 +8,7 @@
     <packaging>pom</packaging>
 
     <properties>
-        <springframework.security.version>4.1.1.RELEASE</springframework.security.version>
+        <springframework.security.version>3.2.3.RELEASE</springframework.security.version>
     </properties>
 
     <dependencies>
@@ -52,5 +52,6 @@
             <artifactId>spring-security-oauth2-client</artifactId>
             <version>1.6-SNAPSHOT</version>
         </dependency>
+
     </dependencies>
 </project>

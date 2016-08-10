@@ -14,7 +14,9 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <springframework.version>4.2.1.RELEASE</springframework.version>
-        <springframework.security.version>4.1.1.RELEASE</springframework.security.version>
+        <springframework.security.version>3.2.3.RELEASE</springframework.security.version>
+
+        <thrift.executable>thrift</thrift.executable>
     </properties>
 
     <modules>
