@@ -6,7 +6,7 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.io.Serializable;
 
-/** Property of a node.*/
+/** Property of an entity.*/
 @Entity
 @Table(name = "properties")
 public class Property implements Serializable {

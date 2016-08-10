@@ -4,7 +4,7 @@ import com.qreal.wmp.thrift.gen.TProperty;
 
 import java.io.Serializable;
 
-/** Property of a node.*/
+/** Property of an entity.*/
 public class Property implements Serializable {
 
     private String propertyId;
