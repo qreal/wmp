@@ -16,6 +16,12 @@
     <build>
         <finalName>auth-service</finalName>
 
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+        </resources>
+        
         <plugins>
             <plugin>
                 <groupId>org.apache.tomcat.maven</groupId>
