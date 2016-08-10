@@ -2,28 +2,31 @@
         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-
     <groupId>wmp</groupId>
     <artifactId>auth-deps</artifactId>
     <version>1.0</version>
     <packaging>pom</packaging>
+
+    <properties>
+        <springframework.security.version>4.1.1.RELEASE</springframework.security.version>
+    </properties>
 
     <dependencies>
 
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-core</artifactId>
-            <version>3.2.3.RELEASE</version>
+            <version>${springframework.security.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-web</artifactId>
-            <version>3.2.3.RELEASE</version>
+            <version>${springframework.security.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-config</artifactId>
-            <version>3.2.3.RELEASE</version>
+            <version>${springframework.security.version}</version>
         </dependency>
 
         <!-- for OAuth 2.0 -->
