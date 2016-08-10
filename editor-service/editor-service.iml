@@ -13,8 +13,6 @@
           <root url="file://$MODULE_DIR$/target/generated-sources/thrift/struct" />
           <root url="file://$MODULE_DIR$/target/generated-sources/thrift/diagram-database" />
           <root url="file://$MODULE_DIR$/target/generated-sources/thrift/user-database" />
-          <root url="file://$MODULE_DIR$/target/generated-sources/thrift/diagramDb" />
-          <root url="file://$MODULE_DIR$/target/generated-sources/thrift/userDb" />
         </sourceRoots>
       </configuration>
     </facet>

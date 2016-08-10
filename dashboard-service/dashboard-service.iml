@@ -13,8 +13,6 @@
           <root url="file://$MODULE_DIR$/target/generated-sources/thrift/struct" />
           <root url="file://$MODULE_DIR$/target/generated-sources/thrift/robot-store-database" />
           <root url="file://$MODULE_DIR$/target/generated-sources/thrift/user-database" />
-          <root url="file://$MODULE_DIR$/target/generated-sources/thrift/robotDb" />
-          <root url="file://$MODULE_DIR$/target/generated-sources/thrift/userDb" />
         </sourceRoots>
       </configuration>
     </facet>
