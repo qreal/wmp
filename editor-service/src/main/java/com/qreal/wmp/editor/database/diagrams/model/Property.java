@@ -1,36 +1,25 @@
-package com.qreal.wmp.db.user.model.diagram;
+package com.qreal.wmp.editor.database.diagrams.model;
 
 import com.qreal.wmp.thrift.gen.TProperty;
-import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.*;
 import java.io.Serializable;
 
-/** Property of a link.*/
-@Entity
-@Table(name = "link_properties")
-public class LinkProperty implements Serializable {
+/** Property of an entity.*/
+public class Property implements Serializable {
 
-    @Id
-    @GeneratedValue(generator = "uuid")
-    @GenericGenerator(name = "uuid", strategy = "uuid2")
-    @Column(name = "property_id")
     private String propertyId;
 
-    @Column(name = "name")
     private String name;
 
-    @Column(name = "value")
     private String value;
 
-    @Column(name = "type")
     private String type;
 
-    public LinkProperty() {
+    public Property() {
     }
 
-    /** Constructor-converter from Thrift TProperty to LinkProperty.*/
-    public LinkProperty(TProperty tProperty) {
+    /** Constructor-converter from Thrift TProperty to Property.*/
+    public Property(TProperty tProperty) {
         if (tProperty.isSetPropertyId()) {
             propertyId = tProperty.getPropertyId();
         }
@@ -80,7 +69,7 @@ public class LinkProperty implements Serializable {
         this.type = type;
     }
 
-    /** Converter from LinkProperty to Thrift TProperty.*/
+    /** Converter from Property to Thrift TProperty.*/
     public TProperty toTProperty() {
         TProperty tProperty = new TProperty();
         if (value != null) {
