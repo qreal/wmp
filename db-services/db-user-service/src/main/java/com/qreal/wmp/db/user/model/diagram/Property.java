@@ -17,7 +17,7 @@ public class Property implements Serializable {
     public Property() {
     }
 
-    /** Constructor-converter from Thrift TProperty to NodeProperty.*/
+    /** Constructor-converter from Thrift TProperty to Property.*/
     public Property(TProperty tProperty) {
         if (tProperty.isSetPropertyId()) {
             propertyId = tProperty.getPropertyId();
@@ -68,7 +68,7 @@ public class Property implements Serializable {
         this.type = type;
     }
 
-    /** Converter from NodeProperty to Thrift TProperty.*/
+    /** Converter from Property to Thrift TProperty.*/
     public TProperty toTProperty() {
         TProperty tProperty = new TProperty();
         if (value != null) {
