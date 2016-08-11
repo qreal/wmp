@@ -30,6 +30,7 @@ class DiagramScene extends joint.dia.Paper {
     private zoom: number;
 
     constructor(id: string, graph: joint.dia.Graph) {
+        super();
         this.htmlId = id;
         this.graph = graph;
         this.nodesMap = {};
