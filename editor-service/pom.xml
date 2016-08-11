@@ -254,8 +254,13 @@
             <artifactId>spring-tx</artifactId>
             <version>${springframework.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-taglibs</artifactId>
+            <version>${springframework.security.version}</version>
+        </dependency>
 
-        <!-- Servlet -->
+        <!-- Servlet modules. servlet-api and jsp-api provided by Tomcat in run-time -->
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
