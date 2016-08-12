@@ -7,10 +7,6 @@
     <packaging>war</packaging>
 
     <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-
-        <thrift.executable>thrift</thrift.executable>
         <thrift.src.base>${project.parent.basedir}/thrift-definitions</thrift.src.base>
         <thrift.output.dir>target/generated-sources/thrift</thrift.output.dir>
         <thrift.client.output.dir>src/main/webapp/resources/thrift</thrift.client.output.dir>
@@ -173,25 +169,66 @@
 
     <dependencies>
 
+        <!-- Local dependencies -->
         <dependency>
             <groupId>wmp</groupId>
             <artifactId>shared-resources</artifactId>
             <version>1.0-SNAPSHOT</version>
             <type>war</type>
         </dependency>
-
-        <!--Execution-->
-
         <dependency>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.5.1</version>
+            <groupId>wmp</groupId>
+            <artifactId>auth-deps</artifactId>
+            <version>1.0</version>
+            <type>pom</type>
         </dependency>
 
+        <!-- Spring -->
         <dependency>
-            <groupId>org.jetbrains</groupId>
-            <artifactId>annotations</artifactId>
-            <version>RELEASE</version>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
+            <version>${springframework.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>${springframework.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>${springframework.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
+            <version>${springframework.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-taglibs</artifactId>
+            <version>${springframework.security.version}</version>
+        </dependency>
+
+        <!-- Servlet modules. servlet-api and jsp-api provided by Tomcat in run-time -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.1.0</version>
+            <scope>provided</scope>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet.jsp</groupId>
+            <artifactId>jsp-api</artifactId>
+            <version>2.2</version>
+            <scope>provided</scope>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.2</version>
         </dependency>
 
         <!--Thrift-->
@@ -199,30 +236,6 @@
             <groupId>org.apache.thrift</groupId>
             <artifactId>libthrift</artifactId>
             <version>0.9.3</version>
-        </dependency>
-
-        <!-- for OAuth 2.0 -->
-        <dependency>
-            <groupId>org.springframework.security.oauth</groupId>
-            <artifactId>spring-security-oauth2</artifactId>
-            <version>2.0.8.RELEASE</version>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-core</artifactId>
-            <version>2.6.2</version>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>2.6.2</version>
-        </dependency>
-
-        <!--First Step Auth Lib-->
-        <dependency>
-            <groupId>com.racquettrack</groupId>
-            <artifactId>spring-security-oauth2-client</artifactId>
-            <version>1.6-SNAPSHOT</version>
         </dependency>
 
     </dependencies>
