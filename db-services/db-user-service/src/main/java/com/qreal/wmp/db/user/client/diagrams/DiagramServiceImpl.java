@@ -10,10 +10,15 @@ import org.apache.thrift.transport.TSocket;
 import org.apache.thrift.transport.TTransport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.PostConstruct;
 
 /** Thrift client side of DiagramDbService.*/
 @Service("diagramService")
+@PropertySource("classpath:client.properties")
 public class DiagramServiceImpl implements DiagramService {
 
     private static final Logger logger = LoggerFactory.getLogger(DiagramServiceImpl.class);
@@ -22,10 +27,15 @@ public class DiagramServiceImpl implements DiagramService {
 
     private DiagramDbService.Client client;
 
-    /** Constructor creates connection with Thrift TServer.*/
-    public DiagramServiceImpl() {
-        String url = "localhost";
-        int port = 9093;
+    @Value("${diagramServerPort}")
+    private int port;
+
+    @Value("${diagramServerPath}")
+    private String url;
+
+    /** Creates connection with Thrift TServer.*/
+    @PostConstruct
+    public void start() {
         logger.info("Client DiagramService was created with Thrift socket on url = {}, port = {}", url, port);
         transport = new TSocket(url, port);
         TProtocol protocol = new TBinaryProtocol(transport);

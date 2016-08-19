@@ -14,7 +14,7 @@ import java.util.Properties;
 /** Declares transaction manager for Hibernate and it's session factory bean. */
 @Configuration
 @EnableTransactionManagement
-public class HibernateConfig {
+public class Hibernate {
     @Autowired
     private DataSource dataSource;
 

@@ -6,15 +6,32 @@ import org.apache.thrift.transport.TServerSocket;
 import org.apache.thrift.transport.TServerTransport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.support.AbstractApplicationContext;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.PostConstruct;
 
 /** Thrift server side service class for UserDBService.*/
-public class UserDbServer {
+@Component
+@PropertySource("classpath:server.properties")
+public class UserDbServer implements ApplicationContextAware {
 
     private static final Logger logger = LoggerFactory.getLogger(UserDbServer.class);
 
-    private static void runTServer(UserDbService.Processor processor) {
-        int port = 9090;
+    @Value("${userServerPort}")
+    private int port;
+
+    /** Not used for now. **/
+    @Value("${userServerPath}")
+    private String url;
+
+    private ApplicationContext context;
+
+    private static void runTServer(UserDbService.Processor processor, int port) {
         logger.info("Starting User DB TServer on localhost on port {}", port);
         try {
             TServerTransport serverTransport = new TServerSocket(port);
@@ -28,14 +45,13 @@ public class UserDbServer {
     }
 
     /** Constructor starts Thrift TServer which implements RPC UserService interface.*/
-    public UserDbServer(AbstractApplicationContext context) {
+    @PostConstruct
+    public void start() {
         try {
             UserDbServiceHandler handler = new UserDbServiceHandler(context);
             UserDbService.Processor processor = new UserDbService.Processor(handler);
 
-            Runnable runServer = () -> {
-                runTServer(processor);
-            };
+            Runnable runServer = () -> runTServer(processor, port);
             logger.trace("Creating new thread for User DB TServer");
 
             new Thread(runServer).start();
@@ -44,5 +60,10 @@ public class UserDbServer {
         } catch (Exception x) {
             logger.error("UserDbServer encountered problem while creating TServer.", x);
         }
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        context = applicationContext;
     }
 }

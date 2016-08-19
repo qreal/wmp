@@ -10,9 +10,12 @@ import org.apache.thrift.transport.TSocket;
 import org.apache.thrift.transport.TTransport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.PostConstruct;
 
 /** Thrift client side of UserDBService.*/
 @Service("userService")
@@ -23,10 +26,15 @@ public class UserServiceImpl implements UserService {
 
     private UserDbService.Client client;
 
+    @Value("${userServerPort}")
+    private int port;
+
+    @Value("${userServerPath}")
+    private String url;
+
     /** Constructor creates connection with Thrift TServer.*/
-    public UserServiceImpl() {
-        String url = "localhost";
-        int port = 9090;
+    @PostConstruct
+    public void start() {
         logger.info("Client UserService was created with Thrift socket on url = {}, port = {}", url, port);
         transport = new TSocket(url, port);
         TProtocol protocol = new TBinaryProtocol(transport);

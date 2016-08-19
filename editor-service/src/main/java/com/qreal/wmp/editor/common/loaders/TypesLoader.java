@@ -20,9 +20,7 @@ public class TypesLoader {
         mapper = new ObjectMapper();
     }
 
-    /**
-     * Provides JSON types for client.
-     */
+    /** Provides JSON types for client.*/
     public JsonNode getTypesJson() throws IOException {
         ObjectNode resultTypes = mapper.createObjectNode();
 

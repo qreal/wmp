@@ -1,4 +1,4 @@
-package com.qreal.wmp.db.robot.config;
+package com.qreal.wmp.db.diagram.config;
 
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,7 @@ import java.util.Properties;
 /** Declares transaction manager for Hibernate and it's session factory bean. */
 @Configuration
 @EnableTransactionManagement
-public class HibernateConfig {
+public class Hibernate {
     @Autowired
     private DataSource dataSource;
 
@@ -25,7 +25,7 @@ public class HibernateConfig {
     @Bean
     public SessionFactory sessionFactory() {
         LocalSessionFactoryBuilder sessionBuilder = new LocalSessionFactoryBuilder(dataSource);
-        sessionBuilder.scanPackages("com.qreal.wmp.db.robot.model");
+        sessionBuilder.scanPackages("com.qreal.wmp.db.diagram.model");
         sessionBuilder.addProperties(hibernateProperties);
         return sessionBuilder.buildSessionFactory();
     }

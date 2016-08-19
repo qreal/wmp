@@ -5,8 +5,6 @@
 <head>
     <title>WMP Dashboard</title>
 
-    <%@ include file="../include/properties.jsp" %>
-
     <jsp:include page="../include/scripts.jsp"/>
 
     <script src="<c:url value='/resources/js/map.js' />"></script>

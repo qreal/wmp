@@ -17,6 +17,24 @@
         <springframework.security.version>3.2.3.RELEASE</springframework.security.version>
 
         <thrift.executable>thrift</thrift.executable>
+
+        <path.editor>/editor</path.editor>
+        <path.auth>/auth</path.auth>
+        <path.dashboard>/dashboard</path.dashboard>
+
+        <!-- Use either 8080 for all ports if you start all in one tomcat, or different ports if you start
+        standalone -->
+        <port.editor>8082</port.editor>
+        <port.auth>8080</port.auth>
+        <port.dashboard>8081</port.dashboard>
+
+        <path.db.diagram>localhost</path.db.diagram>
+        <path.db.robot>localhost</path.db.robot>
+        <path.db.user>localhost</path.db.user>
+
+        <port.db.diagram>9090</port.db.diagram>
+        <port.db.robot>9091</port.db.robot>
+        <port.db.user>9092</port.db.user>
     </properties>
 
     <modules>

@@ -22,6 +22,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
+        <module name="allintomcat-deployment" />
         <module name="auth-service" />
         <module name="dashboard-service" />
         <module name="db-diagram-service" />
@@ -33,6 +34,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="1.8">
+      <module name="allintomcat-deployment" target="1.8" />
       <module name="auth-deps" target="1.5" />
       <module name="auth-service" target="1.8" />
       <module name="dashboard-service" target="1.8" />
