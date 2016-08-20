@@ -27,7 +27,7 @@ public class EditorController {
     @Autowired
     private TypesLoader typesLoader;
 
-    @RequestMapping(value = "/editor", method = RequestMethod.GET)
+    @RequestMapping(value = "/", method = RequestMethod.GET)
     public ModelAndView index() {
         logger.info("User {} requested editor", AuthenticatedUser.getUserName());
         return new ModelAndView("editor/editor");

@@ -19,6 +19,7 @@ import javax.annotation.PostConstruct;
 
 /** Thrift client side of UserDBService.*/
 @Service("userService")
+@PropertySource("classpath:client.properties")
 public class UserServiceImpl implements UserService {
     private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 

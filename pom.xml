@@ -25,9 +25,12 @@
 
         <!-- Use either 8080 for all ports if you start all in one tomcat, or different ports if you start
         standalone -->
-        <port.editor>8082</port.editor>
+        <port.editor>8080</port.editor>
         <port.auth>8080</port.auth>
-        <port.dashboard>8081</port.dashboard>
+        <port.dashboard>8080</port.dashboard>
+
+        <path.editor.service>/editorRest</path.editor.service>
+        <path.dashboard.service>/dashboardRest</path.dashboard.service>
 
         <path.db.diagram>localhost</path.db.diagram>
         <path.db.robot>localhost</path.db.robot>
@@ -48,6 +51,7 @@
         <module>db-services/db-user-service</module>
         <module>dependencies/auth-deps</module>
         <module>dependencies/logging-deps</module>
+        <module>deployment/allintomcat</module>
     </modules>
 
     <build>

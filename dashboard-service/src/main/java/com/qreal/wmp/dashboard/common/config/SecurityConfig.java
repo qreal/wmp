@@ -1,5 +1,6 @@
 package com.qreal.wmp.dashboard.common.config;
 
+import com.qreal.wmp.dashboard.common.utils.PropertyLoader;
 import com.racquettrack.security.oauth.OAuth2AuthenticationEntryPoint;
 import com.racquettrack.security.oauth.OAuth2AuthenticationFilter;
 import com.racquettrack.security.oauth.OAuth2AuthenticationProvider;
@@ -68,7 +69,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.authorizeRequests().
-                antMatchers("/RobotRest/**").permitAll().
+                antMatchers(PropertyLoader.load("service.properties", "path.dashboard.service") + "/**").permitAll().
                 antMatchers("/resources/**").permitAll().
                 antMatchers("/register").permitAll().
                 antMatchers("/oauth/**").permitAll().

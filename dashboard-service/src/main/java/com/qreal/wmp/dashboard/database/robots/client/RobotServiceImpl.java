@@ -33,10 +33,10 @@ public class RobotServiceImpl implements RobotService {
 
     private RobotDbService.Client client;
 
-    @Value("${robotServerPort}")
+    @Value("${port.db.robot}")
     private int port;
 
-    @Value("${robotServerPath}")
+    @Value("${path.db.robot}")
     private String url;
 
     /** Constructor creates connection with Thrift TServer.*/
