@@ -18,6 +18,7 @@
 
         <thrift.executable>thrift</thrift.executable>
 
+        <!-- Don't forget to manually update ports and paths in callTomcat.sh -->
         <path.editor>/editor</path.editor>
         <path.auth>/auth</path.auth>
         <path.dashboard>/dashboard</path.dashboard>
