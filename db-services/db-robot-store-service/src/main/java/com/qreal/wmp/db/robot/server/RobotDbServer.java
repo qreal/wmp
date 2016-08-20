@@ -22,7 +22,7 @@ public class RobotDbServer implements ApplicationContextAware {
 
     private static final Logger logger = LoggerFactory.getLogger(RobotDbServer.class);
 
-    @Value("${robotServerPort}")
+    @Value("${port.db.robot}")
     private int port;
 
     private ApplicationContext context;

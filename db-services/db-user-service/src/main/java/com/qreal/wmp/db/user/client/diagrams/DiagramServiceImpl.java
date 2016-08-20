@@ -27,10 +27,10 @@ public class DiagramServiceImpl implements DiagramService {
 
     private DiagramDbService.Client client;
 
-    @Value("${diagramServerPort}")
+    @Value("${port.db.diagram}")
     private int port;
 
-    @Value("${diagramServerPath}")
+    @Value("${path.db.diagram}")
     private String url;
 
     /** Creates connection with Thrift TServer.*/

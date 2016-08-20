@@ -22,7 +22,7 @@ public class UserDbServer implements ApplicationContextAware {
 
     private static final Logger logger = LoggerFactory.getLogger(UserDbServer.class);
 
-    @Value("${userServerPort}")
+    @Value("${port.db.user}")
     private int port;
 
     private ApplicationContext context;

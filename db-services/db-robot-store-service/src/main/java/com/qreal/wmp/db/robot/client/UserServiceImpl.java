@@ -28,10 +28,10 @@ public class UserServiceImpl implements UserService {
 
     private UserDbService.Client client;
 
-    @Value("${userServerPort}")
+    @Value("${port.db.user}")
     private int port;
 
-    @Value("${userServerPath}")
+    @Value("${path.db.user}")
     private String url;
 
     /** Creates connection with Thrift TServer.*/

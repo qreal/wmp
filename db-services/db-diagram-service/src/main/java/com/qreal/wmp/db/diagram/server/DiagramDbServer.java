@@ -22,7 +22,7 @@ public class DiagramDbServer implements ApplicationContextAware {
 
     private static final Logger logger = LoggerFactory.getLogger(DiagramDbServer.class);
 
-    @Value("${diagramServerPort}")
+    @Value("${port.db.diagram}")
     private int port;
 
     private ApplicationContext context;
