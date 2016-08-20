@@ -27,6 +27,7 @@ public class UserDbServer implements ApplicationContextAware {
 
     private ApplicationContext context;
 
+    /** Function running TServer with chosen processor.*/
     private static void runTServer(UserDbService.Processor processor, int port) {
         logger.info("Starting User DB TServer on localhost on port {}", port);
         try {

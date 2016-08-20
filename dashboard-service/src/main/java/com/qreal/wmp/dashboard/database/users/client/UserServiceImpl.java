@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService {
     @Value("${path.db.user}")
     private String url;
 
-    /** Constructor creates connection with Thrift TServer.*/
+    /** Creates connection with Thrift TServer.*/
     @PostConstruct
     public void start() {
         logger.info("Client UserService was created with Thrift socket on url = {}, port = {}", url, port);

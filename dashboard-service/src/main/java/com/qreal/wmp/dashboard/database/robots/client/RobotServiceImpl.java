@@ -39,7 +39,7 @@ public class RobotServiceImpl implements RobotService {
     @Value("${path.db.robot}")
     private String url;
 
-    /** Constructor creates connection with Thrift TServer.*/
+    /** Creates connection with Thrift TServer.*/
     @PostConstruct
     public void start() {
         logger.info("Client RobotService was created with Thrift socket on url = {}, port = {}", url, port);

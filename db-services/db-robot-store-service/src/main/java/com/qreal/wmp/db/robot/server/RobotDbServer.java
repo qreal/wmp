@@ -27,6 +27,7 @@ public class RobotDbServer implements ApplicationContextAware {
 
     private ApplicationContext context;
 
+    /** Function running TServer with chosen processor.*/
     private static void runTServer(RobotDbService.Processor processor, int port) {
         logger.info("Starting Robots DB TServer on localhost on port {}", port);
         try {
