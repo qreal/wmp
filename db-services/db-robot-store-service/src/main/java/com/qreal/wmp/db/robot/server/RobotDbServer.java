@@ -25,10 +25,6 @@ public class RobotDbServer implements ApplicationContextAware {
     @Value("${robotServerPort}")
     private int port;
 
-    /** Not used for now. **/
-    @Value("${robotServerPath}")
-    private String url;
-
     private ApplicationContext context;
 
     private static void runTServer(RobotDbService.Processor processor, int port) {

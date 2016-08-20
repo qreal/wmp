@@ -45,6 +45,4 @@ public class AppInit implements WebApplicationInitializer {
 
         servletContext.addFilter("springSecurityFilterChain", filter).addMappingForUrlPatterns(null, false, "/*");
     }
-
-
 }

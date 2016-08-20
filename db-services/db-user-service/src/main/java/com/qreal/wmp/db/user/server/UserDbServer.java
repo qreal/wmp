@@ -25,10 +25,6 @@ public class UserDbServer implements ApplicationContextAware {
     @Value("${userServerPort}")
     private int port;
 
-    /** Not used for now. **/
-    @Value("${userServerPath}")
-    private String url;
-
     private ApplicationContext context;
 
     private static void runTServer(UserDbService.Processor processor, int port) {

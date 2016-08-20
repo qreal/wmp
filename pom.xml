@@ -25,13 +25,15 @@
 
         <!-- Use either 8080 for all ports if you start all in one tomcat, or different ports if you start
         standalone -->
-        <port.editor>8080</port.editor>
+        <!-- Use different ports before pushing to Github. Travis works only with different ports configuration -->
+        <port.editor>8081</port.editor>
         <port.auth>8080</port.auth>
-        <port.dashboard>8080</port.dashboard>
+        <port.dashboard>8082</port.dashboard>
 
         <path.editor.service>/editorRest</path.editor.service>
         <path.dashboard.service>/dashboardRest</path.dashboard.service>
 
+        <!-- Paths for db not used for now -->
         <path.db.diagram>localhost</path.db.diagram>
         <path.db.robot>localhost</path.db.robot>
         <path.db.user>localhost</path.db.user>

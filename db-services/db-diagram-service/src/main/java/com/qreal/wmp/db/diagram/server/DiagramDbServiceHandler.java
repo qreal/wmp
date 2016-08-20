@@ -7,7 +7,6 @@ import com.qreal.wmp.thrift.gen.DiagramDbService;
 import com.qreal.wmp.thrift.gen.TDiagram;
 import com.qreal.wmp.thrift.gen.TFolder;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.transaction.annotation.Transactional;
 
 /** Thrift server side handler for DiagramDBService.*/

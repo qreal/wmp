@@ -16,8 +16,7 @@ done
 echo "auth-service found"
 iter=1
 all=120
-until [ "`curl --silent --show-error --connect-timeout 1 -I http://localhost:8081/dashboard | grep '302
-Found'`" != "" ];
+until [ "`curl --silent --show-error --connect-timeout 1 -I http://localhost:8082/dashboard | grep '302 Found'`" != "" ];
 do
   if [ "$iter" -lt "$all" ]
   then
@@ -32,8 +31,7 @@ done
 echo "dashboard-service found"
 iter=1
 all=120
-until [ "`curl --silent --show-error --connect-timeout 1 -I http://localhost:8082/editor/editor | grep '302
-Found'`" != "" ];
+until [ "`curl --silent --show-error --connect-timeout 1 -I http://localhost:8081/editor | grep '302 Found'`" != "" ];
 do
   if [ "$iter" -lt "$all" ]
   then

@@ -25,10 +25,6 @@ public class DiagramDbServer implements ApplicationContextAware {
     @Value("${diagramServerPort}")
     private int port;
 
-    /** Not used for now. **/
-    @Value("${diagramServerPath}")
-    private String url;
-
     private ApplicationContext context;
 
     /** Function running TServer with chosen processor.*/
