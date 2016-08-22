@@ -29,6 +29,7 @@
         <module>db-services/db-user-service</module>
         <module>dependencies/auth-deps</module>
         <module>dependencies/logging-deps</module>
+        <module>3dparty/spring-security-oauth2-client</module>
     </modules>
 
     <build>

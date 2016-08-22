@@ -7,6 +7,9 @@ os:
 dist: trusty
 
 before_install:
+  #load all submodules
+  - git submodule init
+  - git submodule update
   #update all repo lists
   - sudo apt-get update -y
   #install curl for tomcat tests
@@ -18,10 +21,6 @@ before_install:
   - sudo cp thrift /usr/local/bin/thrift
   - sudo cp libthrift-0.9.3.jar /usr/local/lib
   - wget http://downloads.sourceforge.net/project/checkstyle/checkstyle/7.0/checkstyle-7.0-all.jar
-  #install 3dparty
-  - cd 3dparty
-  - mvn org.apache.maven.plugins:maven-install-plugin:2.5.2:install-file -Dfile=spring-security-oauth2-client-1.6-SNAPSHOT.jar -DpomFile=spring-security-oauth2-client-1.6.xml
-  - cd ..
   #fake random with urandom (do not repeat it on your own computer)
   - sudo rm /dev/random
   - sudo mknod /dev/random c 1 9
