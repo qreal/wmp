@@ -54,6 +54,7 @@
         <module>dependencies/auth-deps</module>
         <module>dependencies/logging-deps</module>
         <module>deployment/allintomcat</module>
+        <module>3dparty/spring-security-oauth2-client</module>
     </modules>
 
     <build>
