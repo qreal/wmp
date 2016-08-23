@@ -18,22 +18,7 @@
 
         <thrift.executable>thrift</thrift.executable>
 
-        <!-- Don't forget to manually update ports and paths in callTomcat.sh -->
-        <path.editor>/editor</path.editor>
-        <path.auth>/auth</path.auth>
-        <path.dashboard>/dashboard</path.dashboard>
-
-        <!-- Use either 8080 for all ports if you start all in one tomcat, or different ports if you start
-        standalone -->
-        <!-- Use different ports before pushing to Github. Travis works only with different ports configuration -->
-        <port.editor>8081</port.editor>
-        <port.auth>8080</port.auth>
-        <port.dashboard>8082</port.dashboard>
-
-        <path.editor.service>/editorRest</path.editor.service>
-        <path.dashboard.service>/dashboardRest</path.dashboard.service>
-
-        <!-- Paths for db not used for now -->
+        <!-- Db services configuration -->
         <path.db.diagram>localhost</path.db.diagram>
         <path.db.robot>localhost</path.db.robot>
         <path.db.user>localhost</path.db.user>
@@ -42,6 +27,53 @@
         <port.db.robot>9091</port.db.robot>
         <port.db.user>9092</port.db.user>
     </properties>
+
+    <!-- You can use default ports and paths stating right profile, or add your own -->
+    <!-- Profiles state ports and paths only for tomcat based services for now -->
+    <profiles>
+        <profile>
+            <id>Travis</id>
+            <properties>
+                <!-- Tomcat based services configuration -->
+                <port.editor>8081</port.editor>
+                <port.auth>8080</port.auth>
+                <port.dashboard>8082</port.dashboard>
+                <path.editor>/editor</path.editor>
+                <path.auth>/auth</path.auth>
+                <path.dashboard>/dashboard</path.dashboard>
+                <path.editor.service>/editorRest</path.editor.service>
+                <path.dashboard.service>/dashboardRest</path.dashboard.service>
+            </properties>
+        </profile>
+        <profile>
+            <id>OneTomcatForAll</id>
+            <properties>
+                <!-- Tomcat based services configuration -->
+                <port.editor>8080</port.editor>
+                <port.auth>8080</port.auth>
+                <port.dashboard>8080</port.dashboard>
+                <path.editor>/editor</path.editor>
+                <path.auth>/auth</path.auth>
+                <path.dashboard>/dashboard</path.dashboard>
+                <path.editor.service>/editorRest</path.editor.service>
+                <path.dashboard.service>/dashboardRest</path.dashboard.service>
+            </properties>
+        </profile>
+        <profile>
+            <id>DifferentPorts</id>
+            <properties>
+                <!-- Tomcat based services configuration -->
+                <port.editor>8081</port.editor>
+                <port.auth>8080</port.auth>
+                <port.dashboard>8082</port.dashboard>
+                <path.editor>/editor</path.editor>
+                <path.auth>/auth</path.auth>
+                <path.dashboard>/dashboard</path.dashboard>
+                <path.editor.service>/editorRest</path.editor.service>
+                <path.dashboard.service>/dashboardRest</path.dashboard.service>
+            </properties>
+        </profile>
+    </profiles>
 
     <modules>
         <module>shared-resources</module>

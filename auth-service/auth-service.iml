@@ -34,6 +34,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Maven: com.racquettrack:spring-security-oauth2-client:1.6-SNAPSHOT" level="project" />
     <orderEntry type="module" module-name="shared-resources" />
     <orderEntry type="library" name="Maven: org.springframework.security:spring-security-core:3.2.3.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: aopalliance:aopalliance:1.0" level="project" />
@@ -53,7 +54,7 @@
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-core:2.6.2" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.6.2" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.6.0" level="project" />
-    <orderEntry type="library" name="Maven: com.racquettrack:spring-security-oauth2-client:1.6-SNAPSHOT" level="project" />
+    <orderEntry type="module" module-name="spring-security-oauth2-client" />
     <orderEntry type="library" name="Maven: com.sun.jersey:jersey-server:1.14" level="project" />
     <orderEntry type="library" name="Maven: asm:asm:3.1" level="project" />
     <orderEntry type="library" name="Maven: com.sun.jersey:jersey-core:1.14" level="project" />
