@@ -1,0 +1,3 @@
+[submodule "3dparty/spring-security-oauth2-client"]
+	path = 3dparty/spring-security-oauth2-client
+	url = https://github.com/TanVD/spring-security-oauth2-client.git
