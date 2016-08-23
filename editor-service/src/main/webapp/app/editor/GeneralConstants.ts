@@ -1,8 +1,12 @@
+/// <reference path="../../../../../target/properties/ServerProperties.ts" />
+
 class GeneralConstants {
 
-    static APP_ROOT_PATH: string = "${path.editor}/";
+    static APP_ROOT_PATH: string = ServerProperties.pathEditor + "/";
     static DEFAULT_KIT: string = "2015";
-    static DASHBOARD_REST_SERVLET: string = "http://localhost:${port.dashboard}${path.dashboard}${path.dashboard.service}";
-    static EDITOR_REST_SERVLET: string = "http://localhost:${port.editor}${path.editor}${path.editor.service}";
+    static DASHBOARD_REST_SERVLET: string = "http://localhost:" + ServerProperties.portDashboard +
+        ServerProperties.pathDashboard + ServerProperties.pathDashboardService;
+    static EDITOR_REST_SERVLET: string = "http://localhost:" + ServerProperties.portEditor +
+        ServerProperties.pathEditor + ServerProperties.pathEditorService;
     
 }
