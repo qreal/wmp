@@ -32,7 +32,7 @@
     <!-- Profiles state ports and paths only for tomcat based services for now -->
     <profiles>
         <profile>
-            <id>Travis</id>
+            <id>travis</id>
             <properties>
                 <!-- Tomcat based services configuration -->
                 <port.editor>8081</port.editor>
@@ -46,7 +46,7 @@
             </properties>
         </profile>
         <profile>
-            <id>OneTomcatForAll</id>
+            <id>one-tomcat-for-all</id>
             <properties>
                 <!-- Tomcat based services configuration -->
                 <port.editor>8080</port.editor>
@@ -58,9 +58,12 @@
                 <path.editor.service>/editorRest</path.editor.service>
                 <path.dashboard.service>/dashboardRest</path.dashboard.service>
             </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
         </profile>
         <profile>
-            <id>DifferentPorts</id>
+            <id>different-ports</id>
             <properties>
                 <!-- Tomcat based services configuration -->
                 <port.editor>8081</port.editor>
