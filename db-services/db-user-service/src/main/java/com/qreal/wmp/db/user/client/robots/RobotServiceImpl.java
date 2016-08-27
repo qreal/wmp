@@ -10,10 +10,15 @@ import org.apache.thrift.transport.TTransport;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.PostConstruct;
 
 /** Thrift client side of RobotDBService.*/
 @Service("robotService")
+@PropertySource("classpath:client.properties")
 public class RobotServiceImpl implements RobotService {
 
     private static final Logger logger = LoggerFactory.getLogger(RobotServiceImpl.class);
@@ -22,10 +27,15 @@ public class RobotServiceImpl implements RobotService {
 
     private RobotDbService.Client client;
 
-    /** Constructor creates connection with Thrift TServer.*/
-    public RobotServiceImpl() {
-        String url = "localhost";
-        int port = 9091;
+    @Value("${port.db.robot}")
+    private int port;
+
+    @Value("${path.db.robot}")
+    private String url;
+
+    /** Creates connection with Thrift TServer.*/
+    @PostConstruct
+    public void start() {
         logger.info("Client RobotService was created with Thrift socket on url = {}, port = {}", url, port);
         transport = new TSocket(url, port);
         TProtocol protocol = new TBinaryProtocol(transport);

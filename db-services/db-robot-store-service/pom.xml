@@ -22,6 +22,16 @@
     </parent>
 
     <build>
+        <finalName>db-robot-service</finalName>
+
+        <resources>
+            <!-- Used to export maven variables to property file -->
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+
         <plugins>
             <!-- compiler plugin -->
             <plugin>

@@ -1,4 +1,4 @@
-package com.qreal.wmp.db.robot.config.development;
+package com.qreal.wmp.db.diagram.config.development;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,7 +12,7 @@ import java.util.Properties;
  * In development used H2 in-memory database and create-drop strategy of start.
  */
 @Configuration
-public class DevHibernateConfig {
+public class DevHibernate {
 
     /** Provides access to DB. */
     @Bean(name = "dataSource")

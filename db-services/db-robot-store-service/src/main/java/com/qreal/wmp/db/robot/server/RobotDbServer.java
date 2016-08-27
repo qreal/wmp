@@ -6,15 +6,29 @@ import org.apache.thrift.transport.TServerSocket;
 import org.apache.thrift.transport.TServerTransport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.support.AbstractApplicationContext;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.PostConstruct;
 
 /** Thrift server side service class for RobotDBService.*/
-public class RobotDbServer {
+@Component
+@PropertySource("classpath:server.properties")
+public class RobotDbServer implements ApplicationContextAware {
 
     private static final Logger logger = LoggerFactory.getLogger(RobotDbServer.class);
 
-    private static void runTServer(RobotDbService.Processor processor) {
-        int port = 9091;
+    @Value("${port.db.robot}")
+    private int port;
+
+    private ApplicationContext context;
+
+    /** Function running TServer with chosen processor.*/
+    private static void runTServer(RobotDbService.Processor processor, int port) {
         logger.info("Starting Robots DB TServer on localhost on port {}", port);
         try {
             TServerTransport serverTransport = new TServerSocket(port);
@@ -27,20 +41,24 @@ public class RobotDbServer {
         }
     }
 
-    /** Constructor starts Thrift TServer which implements RPC RobotService interface.*/
-    public RobotDbServer(AbstractApplicationContext context) {
+    /** Starts Thrift TServer which implements RPC RobotService interface.*/
+    @PostConstruct
+    public void start() {
         try {
             RobotDbServiceHandler handler = new RobotDbServiceHandler(context);
             RobotDbService.Processor processor = new RobotDbService.Processor(handler);
 
-            Runnable runServer = () -> {
-                runTServer(processor);
-            };
+            Runnable runServer = () -> runTServer(processor, port);
             logger.trace("Creating new thread for RobotSerial DB TServer");
             new Thread(runServer).start();
             logger.trace("Thread created. Server started.");
         } catch (Exception x) {
             logger.error("RobotDBServer encountered problem while creating TServer.", x);
         }
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        context = applicationContext;
     }
 }

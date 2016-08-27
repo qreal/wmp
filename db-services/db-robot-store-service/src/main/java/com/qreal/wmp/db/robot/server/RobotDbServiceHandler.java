@@ -5,14 +5,14 @@ import com.qreal.wmp.db.robot.model.robot.RobotSerial;
 import com.qreal.wmp.thrift.gen.RobotDbService;
 import com.qreal.wmp.thrift.gen.TRobot;
 import org.apache.thrift.TException;
-import org.springframework.context.support.AbstractApplicationContext;
+import org.springframework.context.ApplicationContext;
 
 /** Thrift server side handler for RobotDBService.*/
 public class RobotDbServiceHandler implements RobotDbService.Iface {
 
     private final RobotDao robotDao;
 
-    public RobotDbServiceHandler(AbstractApplicationContext context) {
+    public RobotDbServiceHandler(ApplicationContext context) {
         robotDao = (RobotDao) context.getBean("robotDao");
         assert robotDao != null;
     }

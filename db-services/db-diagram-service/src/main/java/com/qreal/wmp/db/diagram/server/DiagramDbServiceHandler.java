@@ -6,7 +6,7 @@ import com.qreal.wmp.db.diagram.model.Folder;
 import com.qreal.wmp.thrift.gen.DiagramDbService;
 import com.qreal.wmp.thrift.gen.TDiagram;
 import com.qreal.wmp.thrift.gen.TFolder;
-import org.springframework.context.support.AbstractApplicationContext;
+import org.springframework.context.ApplicationContext;
 import org.springframework.transaction.annotation.Transactional;
 
 /** Thrift server side handler for DiagramDBService.*/
@@ -15,7 +15,7 @@ public class DiagramDbServiceHandler implements DiagramDbService.Iface {
 
     private DiagramDao diagramDao;
 
-    public DiagramDbServiceHandler(AbstractApplicationContext context) {
+    public DiagramDbServiceHandler(ApplicationContext context) {
         diagramDao = (DiagramDao) context.getBean("diagramDao");
         assert diagramDao != null;
     }

@@ -23,26 +23,52 @@
         <finalName>editor-service</finalName>
 
         <resources>
+            <!-- Used to export maven variables to property file -->
             <resource>
                 <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+
+            <!-- Used to move ts files to target with maven variables exporting  -->
+            <resource>
+                <targetPath>../properties</targetPath>
+                <directory>src/main/webapp/app/editor/properties</directory>
+                <filtering>true</filtering>
             </resource>
         </resources>
 
         <plugins>
+
+            <!-- Plugin customizing process of war building -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                    <webResources>
+                        <!-- Used to export maven variables to jsp file -->
+                        <resource>
+                            <targetPath>WEB-INF/views/include</targetPath>
+                            <directory>${basedir}/src/main/webapp/WEB-INF/views/include</directory>
+                            <includes>
+                                <include>properties.jsp</include>
+                            </includes>
+                            <filtering>true</filtering>
+                        </resource>
+                    </webResources>
+                </configuration>
+            </plugin>
+
+            <!-- Tomcat plugin for deployment standalone -->
             <plugin>
                 <groupId>org.apache.tomcat.maven</groupId>
                 <artifactId>tomcat7-maven-plugin</artifactId>
                 <version>2.2</version>
                 <configuration>
-                    <url>http://localhost:8080/manager/text</url>
                     <server>TomcatServer</server>
-                    <path>/${project.build.finalName}</path>
-                    <additionalConfigFilesDir>${basedir}/src/main/tomcat/conf</additionalConfigFilesDir>
-                    <port>9081</port>
+                    <path>${path.editor}</path>
+                    <port>${port.editor}</port>
                     <uriEncoding>utf-8</uriEncoding>
-                    <systemProperties>
-                        <java.security.egd>file:/dev/./urandom</java.security.egd>
-                    </systemProperties>
                 </configuration>
             </plugin>
 
@@ -187,6 +213,7 @@
 
                     <execution>
                         <id>install node and npm</id>
+                        <phase>compile</phase>
                         <goals>
                             <goal>install-node-and-npm</goal>
                         </goals>
@@ -198,6 +225,7 @@
 
                     <execution>
                         <id>npm install</id>
+                        <phase>compile</phase>
                         <goals>
                             <goal>npm</goal>
                         </goals>
@@ -208,6 +236,7 @@
 
                     <execution>
                         <id>grunt build</id>
+                        <phase>compile</phase>
                         <goals>
                             <goal>grunt</goal>
                         </goals>

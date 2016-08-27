@@ -6,7 +6,7 @@ import com.qreal.wmp.dashboard.database.robots.model.Robot;
 import com.qreal.wmp.thrift.gen.RobotServiceThrift;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.support.AbstractApplicationContext;
+import org.springframework.context.ApplicationContext;
 
 /**
  * Thrift RobotRest controller.
@@ -16,9 +16,9 @@ public class RobotRestServletHandler implements RobotServiceThrift.Iface {
 
     private static final Logger logger = LoggerFactory.getLogger(MainController.class);
 
-    private AbstractApplicationContext context;
+    private ApplicationContext context;
 
-    public RobotRestServletHandler(AbstractApplicationContext context) {
+    public RobotRestServletHandler(ApplicationContext context) {
         this.context = context;
     }
 

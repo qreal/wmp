@@ -1,0 +1,57 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>allintomcat-deployment</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>war</packaging>
+
+    <parent>
+        <groupId>wmp</groupId>
+        <artifactId>parent</artifactId>
+        <version>1.0-SNAPSHOT</version>
+        <relativePath>../../pom.xml</relativePath>
+    </parent>
+
+    <build>
+        <plugins>
+            <!-- Tomcat plugin starting all tomcat services in one server -->
+            <!-- Port one for all servers, default 8080 -->
+            <plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <version>2.2</version>
+                <configuration>
+                    <webapps>
+                        <webapp>
+                            <groupId>wmp</groupId>
+                            <artifactId>auth-service</artifactId>
+                            <version>1.0-SNAPSHOT</version>
+                            <type>war</type>
+                            <contextPath>${path.auth}</contextPath>
+                            <asWebapp>true</asWebapp>
+                        </webapp>
+                        <webapp>
+                            <groupId>wmp</groupId>
+                            <artifactId>editor-service</artifactId>
+                            <version>1.0-SNAPSHOT</version>
+                            <type>war</type>
+                            <contextPath>${path.editor}</contextPath>
+                            <asWebapp>true</asWebapp>
+                        </webapp>
+                        <webapp>
+                            <groupId>wmp</groupId>
+                            <artifactId>dashboard-service</artifactId>
+                            <version>1.0-SNAPSHOT</version>
+                            <type>war</type>
+                            <contextPath>${path.dashboard}</contextPath>
+                            <asWebapp>true</asWebapp>
+                        </webapp>
+                    </webapps>
+                </configuration>
+            </plugin>
+
+        </plugins>
+    </build>
+
+</project>

@@ -17,7 +17,66 @@
         <springframework.security.version>3.2.3.RELEASE</springframework.security.version>
 
         <thrift.executable>thrift</thrift.executable>
+
+        <!-- Db services configuration -->
+        <path.db.diagram>localhost</path.db.diagram>
+        <path.db.robot>localhost</path.db.robot>
+        <path.db.user>localhost</path.db.user>
+
+        <port.db.diagram>9090</port.db.diagram>
+        <port.db.robot>9091</port.db.robot>
+        <port.db.user>9092</port.db.user>
     </properties>
+
+    <!-- You can use default ports and paths stating right profile, or add your own -->
+    <!-- Profiles state ports and paths only for tomcat based services for now -->
+    <profiles>
+        <profile>
+            <id>travis</id>
+            <properties>
+                <!-- Tomcat based services configuration -->
+                <port.editor>8081</port.editor>
+                <port.auth>8080</port.auth>
+                <port.dashboard>8082</port.dashboard>
+                <path.editor>/editor</path.editor>
+                <path.auth>/auth</path.auth>
+                <path.dashboard>/dashboard</path.dashboard>
+                <path.editor.service>/editorRest</path.editor.service>
+                <path.dashboard.service>/dashboardRest</path.dashboard.service>
+            </properties>
+        </profile>
+        <profile>
+            <id>one-tomcat-for-all</id>
+            <properties>
+                <!-- Tomcat based services configuration -->
+                <port.editor>8080</port.editor>
+                <port.auth>8080</port.auth>
+                <port.dashboard>8080</port.dashboard>
+                <path.editor>/editor</path.editor>
+                <path.auth>/auth</path.auth>
+                <path.dashboard>/dashboard</path.dashboard>
+                <path.editor.service>/editorRest</path.editor.service>
+                <path.dashboard.service>/dashboardRest</path.dashboard.service>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <id>different-ports</id>
+            <properties>
+                <!-- Tomcat based services configuration -->
+                <port.editor>8081</port.editor>
+                <port.auth>8080</port.auth>
+                <port.dashboard>8082</port.dashboard>
+                <path.editor>/editor</path.editor>
+                <path.auth>/auth</path.auth>
+                <path.dashboard>/dashboard</path.dashboard>
+                <path.editor.service>/editorRest</path.editor.service>
+                <path.dashboard.service>/dashboardRest</path.dashboard.service>
+            </properties>
+        </profile>
+    </profiles>
 
     <modules>
         <module>shared-resources</module>
@@ -29,6 +88,7 @@
         <module>db-services/db-user-service</module>
         <module>dependencies/auth-deps</module>
         <module>dependencies/logging-deps</module>
+        <module>deployment/allintomcat</module>
         <module>3dparty/spring-security-oauth2-client</module>
     </modules>
 

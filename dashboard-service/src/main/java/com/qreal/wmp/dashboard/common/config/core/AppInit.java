@@ -1,5 +1,6 @@
 package com.qreal.wmp.dashboard.common.config.core;
 
+import com.qreal.wmp.dashboard.common.utils.PropertyLoader;
 import com.qreal.wmp.dashboard.controller.RobotRestServlet;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
@@ -33,11 +34,11 @@ public class AppInit implements WebApplicationInitializer {
         dispatcher.setLoadOnStartup(1);
         dispatcher.addMapping("/");
 
-        // Registration RestService
+        //Thrift services servlet
         ServletRegistration.Dynamic robotRestService = servletContext.addServlet("RobotRestServlet",
                 new RobotRestServlet(dispatcherContext));
         robotRestService.setLoadOnStartup(1);
-        robotRestService.addMapping("/RobotRest");
+        robotRestService.addMapping(PropertyLoader.load("service.properties", "path.dashboard.service"));
 
         DelegatingFilterProxy filter = new DelegatingFilterProxy("springSecurityFilterChain");
         filter.setContextAttribute("org.springframework.web.servlet.FrameworkServlet.CONTEXT.dispatcher");

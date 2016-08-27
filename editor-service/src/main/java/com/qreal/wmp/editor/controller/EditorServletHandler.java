@@ -6,7 +6,7 @@ import com.qreal.wmp.editor.database.diagrams.model.Folder;
 import com.qreal.wmp.thrift.gen.EditorServiceThrift;
 import com.qreal.wmp.thrift.gen.TDiagram;
 import com.qreal.wmp.thrift.gen.TFolder;
-import org.springframework.context.support.AbstractApplicationContext;
+import org.springframework.context.ApplicationContext;
 
 /**
  * Thrift EditorRest controller.
@@ -16,9 +16,9 @@ import org.springframework.context.support.AbstractApplicationContext;
  */
 public class EditorServletHandler implements EditorServiceThrift.Iface {
 
-    private AbstractApplicationContext context;
+    private ApplicationContext context;
 
-    public EditorServletHandler(AbstractApplicationContext context) {
+    public EditorServletHandler(ApplicationContext context) {
         this.context = context;
     }
 

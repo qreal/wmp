@@ -23,22 +23,43 @@
         <finalName>dashboard-service</finalName>
 
         <resources>
+            <!-- Used to export maven variables to property files -->
             <resource>
                 <directory>src/main/resources</directory>
+                <filtering>true</filtering>
             </resource>
         </resources>
 
         <plugins>
+
+            <!-- Plugin customizing process of war building -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                    <webResources>
+                        <!-- Used to export maven variables to jsp file -->
+                        <resource>
+                            <targetPath>WEB-INF/views/include</targetPath>
+                            <directory>${basedir}/src/main/webapp/WEB-INF/views/include</directory>
+                            <includes>
+                                <include>properties.jsp</include>
+                            </includes>
+                            <filtering>true</filtering>
+                        </resource>
+                    </webResources>
+                </configuration>
+            </plugin>
+
+            <!-- Tomcat plugin for deployment standalone -->
             <plugin>
                 <groupId>org.apache.tomcat.maven</groupId>
                 <artifactId>tomcat7-maven-plugin</artifactId>
                 <version>2.2</version>
                 <configuration>
-                    <url>http://localhost:8080/manager/text</url>
-                    <server>TomcatServer</server>
-                    <path>/${project.build.finalName}</path>
-                    <additionalConfigFilesDir>${basedir}/src/main/tomcat/conf</additionalConfigFilesDir>
-                    <port>9080</port>
+                    <path>${path.dashboard}</path>
+                    <port>${port.dashboard}</port>
                     <uriEncoding>utf-8</uriEncoding>
                 </configuration>
             </plugin>

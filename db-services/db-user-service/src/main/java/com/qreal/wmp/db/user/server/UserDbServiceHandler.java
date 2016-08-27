@@ -4,14 +4,14 @@ import com.qreal.wmp.db.user.dao.UserDao;
 import com.qreal.wmp.thrift.gen.TUser;
 import com.qreal.wmp.thrift.gen.UserDbService;
 import org.apache.thrift.TException;
-import org.springframework.context.support.AbstractApplicationContext;
+import org.springframework.context.ApplicationContext;
 
 /** Thrift server side handler for UserDBService.*/
 public class UserDbServiceHandler implements UserDbService.Iface {
 
     private final UserDao userDao;
 
-    public UserDbServiceHandler(AbstractApplicationContext context) {
+    public UserDbServiceHandler(ApplicationContext context) {
         userDao = (UserDao) context.getBean("userDao");
         assert userDao != null;
     }
