@@ -2,9 +2,21 @@ module.exports = function (grunt) {
 
     grunt.initConfig({
         ts: {
+            editorCore: {
+                src: ["app/editor/core/**/*.ts"],
+                out: "resources/js/compiled/editorCore.js"
+            },
+            twoDModelCore: {
+                src: ["app/twoDModel/core/**/*.ts"],
+                out: "resources/js/compiled/twoDModelCore.js"
+            },
             editor: {
                 src: ["app/editor/diagram/**/*.ts", "app/editor/*.ts"],
                 out: "resources/js/compiled/editor.js"
+            },
+            undoRedoPlugin: {
+                src: ["app/editor/plugins/undo-redo/**/*.ts"],
+                out: "resources/js/compiled/undoRedoPlugin.js"
             },
             interpreter: {
                 src: ["app/editor/interpreter/**/*.ts"],
@@ -18,5 +30,5 @@ module.exports = function (grunt) {
     });
 
     grunt.loadNpmTasks("grunt-ts");
-    grunt.registerTask("default", ["ts:editor", "ts:interpreter", "ts:twoDModelRobots"]);
+    grunt.registerTask("default", ["ts:editorCore", "ts:twoDModelCore", "ts:editor", "ts:undoRedoPlugin", "ts:interpreter", "ts:twoDModelRobots"]);
 }

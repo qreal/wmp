@@ -1,4 +1,4 @@
-/// <reference path="../../../interfaces/diagramCore.d.ts" />
+/// <reference path="../../../interfaces/diagramFull.d.ts" />
 /// <reference path="../../model/Diagram.ts" />
 /// <reference path="../../../../../resources/thrift/struct/Diagram_types.d.ts" />
 /// <reference path="../../../../../resources/thrift/editor/EditorService_types.d.ts" />

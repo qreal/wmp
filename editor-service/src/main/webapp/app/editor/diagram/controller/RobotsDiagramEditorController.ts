@@ -1,7 +1,7 @@
 /// <reference path="DiagramMenuController.ts" />
 /// <reference path="parsers/DiagramThriftParser.ts" />
 /// <reference path="../../interfaces/interpreter.d.ts" />
-/// <reference path="../../interfaces/diagramCore.d.ts" />
+/// <reference path="../../interfaces/diagramFull.d.ts" />
 /// <reference path="../../interfaces/vendor.d.ts" />
 
 class RobotsDiagramEditorController extends DiagramEditorController {
