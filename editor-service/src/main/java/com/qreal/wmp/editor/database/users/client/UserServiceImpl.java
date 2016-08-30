@@ -1,13 +1,15 @@
 package com.qreal.wmp.editor.database.users.client;
 
+import com.qreal.wmp.editor.database.exceptions.NotFound;
 import com.qreal.wmp.editor.database.users.model.User;
-import com.qreal.wmp.thrift.gen.TUser;
-import com.qreal.wmp.thrift.gen.UserDbService;
+import com.qreal.wmp.thrift.gen.*;
 import org.apache.thrift.TException;
 import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.transport.TSocket;
 import org.apache.thrift.transport.TTransport;
+import org.apache.thrift.transport.TTransportException;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -44,52 +46,78 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void save(User user) {
-        logger.trace("save method called with parameters: user = {}", user.getUsername());
+    public void save(@NotNull User user) {
+        TUser tUser = user.toTUser();
+        logger.trace("save method called with parameters: user = {}", tUser.getUsername());
         try {
             transport.open();
-            TUser tUser = user.toTUser();
-            client.save(tUser);
-            transport.close();
-            logger.trace("save method saved user {}", user.getUsername());
-        } catch (TException e) {
-            logger.error("Client UserService encountered problem while sending save request with parameters: " +
-                    "user = {}", user, e);
+            try {
+                client.save(tUser);
+            } catch (TIdNotDefined e) {
+                logger.error("save method encountered exception IdNotDefined. User was not created", e);
+            } catch (TException e) {
+                logger.error("Client UserService encountered problem while sending save request with parameters: " +
+                        "user = {}", tUser, e);
+            }
+            finally {
+                transport.close();
+            }
+        } catch (TTransportException e) {
+            logger.error("Client UserService encountered problem while opening transport.", e);
         }
+        logger.trace("save method saved user {}", tUser.getUsername());
     }
 
     @Override
     @Transactional
-    public void update(User user) {
-        logger.trace("update method called with parameters: user = {}", user.getUsername());
+    public void update(@NotNull User user) {
+        TUser tUser = user.toTUser();
+        logger.trace("update method called with parameters: user = {}", tUser.getUsername());
         try {
             transport.open();
-            TUser tUser = user.toTUser();
-            client.update(tUser);
-            transport.close();
-            logger.trace("update method updated user {}", user.getUsername());
-        } catch (TException e) {
-            logger.error("Client UserService encountered problem while sending update request with parameters: " +
-                    "user = {}", user, e);
+            try {
+                client.update(tUser);
+            } catch (TNotFound e) {
+                logger.error("update method encountered exception NotFound. You've tried to update not existed user" +
+                        ".", e);
+            } catch (TIdNotDefined e) {
+                logger.error("update method encountered exception IdNotDefined. You've tried to update user, but not" +
+                        " specified it's id.", e);
+            } catch (TException e) {
+                logger.error("Client UserService encountered problem while sending update request with parameters: " +
+                        "user = {}", tUser.getUsername(), e);
+            } finally {
+                transport.close();
+            }
+        } catch (TTransportException e) {
+            logger.error("Client UserService encountered problem while opening transport.", e);
         }
+        logger.trace("update method updated user {}", tUser.getUsername());
+
     }
 
     @Override
     @Transactional
-    public User findByUserName(String username) {
+    public User findByUserName(String username) throws NotFound {
         logger.trace("findByUserName method called with paremeters: username = {}", username);
-        User user = null;
+        TUser tUser = null;
         try {
             transport.open();
-            TUser tUser = client.findByUserName(username);
-            user = new User(tUser);
-            transport.close();
-            logger.trace("findByUserName method returned answer.");
-        } catch (TException e) {
-            logger.error("Client UserService encountered problem while sending findByUserName request with " +
-                    "parameters: username = {}", username, e);
+            try {
+                tUser = client.findByUserName(username);
+            } catch (TNotFound e) {
+                throw new NotFound(e.getId(), e.getMessage());
+            } catch (TException e) {
+                logger.error("Client UserService encountered problem while sending findByUserName request with " +
+                        "parameters: username = {}", username, e);
+            } finally {
+                transport.close();
+            }
+        } catch (TTransportException e) {
+            logger.error("Client UserService encountered problem while opening transport.", e);
         }
-        return user;
+        logger.trace("findByUserName method returned answer.");
+        return new User(tUser);
     }
 
     @Override
@@ -99,13 +127,18 @@ public class UserServiceImpl implements UserService {
         boolean isUserExist = false;
         try {
             transport.open();
-            isUserExist = client.isUserExist(username);
-            transport.close();
-            logger.trace("isUserExist returned answer");
-        } catch (TException e) {
-            logger.error("Client UserService encountered problem while sending isUserExist request with parameters: " +
-                    "username = {}", username, e);
+            try {
+                isUserExist = client.isUserExist(username);
+            } catch (TException e) {
+                logger.error("Client UserService encountered problem while sending isUserExist request with " +
+                        "parameters: username = {}", username, e);
+            } finally {
+                transport.close();
+            }
+        } catch (TTransportException e) {
+            logger.error("Client UserService encountered problem while opening transport.", e);
         }
+        logger.trace("isUserExist returned answer");
         return isUserExist;
     }
 }

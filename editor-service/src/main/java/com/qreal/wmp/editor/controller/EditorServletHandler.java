@@ -3,9 +3,12 @@ package com.qreal.wmp.editor.controller;
 import com.qreal.wmp.editor.database.diagrams.client.DiagramService;
 import com.qreal.wmp.editor.database.diagrams.model.Diagram;
 import com.qreal.wmp.editor.database.diagrams.model.Folder;
+import com.qreal.wmp.editor.database.exceptions.NotFound;
 import com.qreal.wmp.thrift.gen.EditorServiceThrift;
 import com.qreal.wmp.thrift.gen.TDiagram;
 import com.qreal.wmp.thrift.gen.TFolder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 
 /**
@@ -15,6 +18,8 @@ import org.springframework.context.ApplicationContext;
  * RPC functions for folders: createFolder, deleteFolder, getFolderTree
  */
 public class EditorServletHandler implements EditorServiceThrift.Iface {
+
+    private static final Logger logger = LoggerFactory.getLogger(EditorController.class);
 
     private ApplicationContext context;
 
@@ -58,7 +63,16 @@ public class EditorServletHandler implements EditorServiceThrift.Iface {
     @Override
     public TDiagram openDiagram(long diagramId) {
         DiagramService diagramService = (DiagramService) context.getBean("diagramService");
-        return diagramService.openDiagram(diagramId).toTDiagram();
+        TDiagram result = null;
+        try {
+            Diagram diagram = diagramService.openDiagram(diagramId);
+            result = diagram.toTDiagram();
+        } catch (NotFound e) {
+            //TODO Here we should not return null, but send exception to client side.
+            logger.error("openDiagram method encountered exception NotFound. Instead of diagram will be returned null" +
+                    ".", e);
+        }
+        return result;
     }
 
     /**
@@ -85,7 +99,16 @@ public class EditorServletHandler implements EditorServiceThrift.Iface {
     @Override
     public TFolder getFolderTree() {
         DiagramService diagramService = (DiagramService) context.getBean("diagramService");
-        return diagramService.getFolderTree().toTFolder();
+        TFolder result = null;
+        try {
+            Folder folder = diagramService.getFolderTree();
+            result = folder.toTFolder();
+        } catch (NotFound e) {
+            //TODO Here we should not return null, but send exception to client side.
+            logger.error("getFolderTree method encountered exception NotFound. Instead of folder tree will be " +
+                    "returned null.", e);
+        }
+        return result;
     }
 
 }

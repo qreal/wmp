@@ -3,14 +3,14 @@ package com.qreal.wmp.editor.database.diagrams.client;
 import com.qreal.wmp.editor.common.utils.AuthenticatedUser;
 import com.qreal.wmp.editor.database.diagrams.model.Diagram;
 import com.qreal.wmp.editor.database.diagrams.model.Folder;
-import com.qreal.wmp.thrift.gen.DiagramDbService;
-import com.qreal.wmp.thrift.gen.TDiagram;
-import com.qreal.wmp.thrift.gen.TFolder;
+import com.qreal.wmp.editor.database.exceptions.NotFound;
+import com.qreal.wmp.thrift.gen.*;
 import org.apache.thrift.TException;
 import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.transport.TSocket;
 import org.apache.thrift.transport.TTransport;
+import org.apache.thrift.transport.TTransportException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -54,29 +54,43 @@ public class DiagramServiceImpl implements DiagramService {
         Long result = null;
         try {
             transport.open();
-            result = client.saveDiagram(tDiagram);
-            transport.close();
-            logger.trace("saveDiagram method saved diagram with id {}", diagram.getId());
-        } catch (TException e) {
-            logger.error("Client DiagramService encountered problem while sending saveDiagram request with" +
-                    " parameters: diagram = {}, folderId = {}", diagram.getName(), folderId, e);
+            try {
+                result = client.saveDiagram(tDiagram);
+            } catch (TIdAlreadyDefined e) {
+                logger.error("saveDiagram method encountered exception IdAlreadyDefined. Diagram was not saved.", e);
+            } catch (TException e) {
+                logger.error("Client DiagramService encountered problem while sending saveDiagram request with" +
+                        " parameters: diagram = {}, folderId = {}", diagram.getName(), folderId, e);
+            } finally {
+                transport.close();
+            }
+        } catch (TTransportException e) {
+            logger.error("Client DiagramService encountered problem while opening transport.", e);
         }
+        logger.trace("saveDiagram method saved diagram with id {}", diagram.getId());
         return result;
     }
 
     @Override
-    public Diagram openDiagram(Long diagramId) {
+    public Diagram openDiagram(Long diagramId) throws NotFound {
         logger.trace("openDiagram method was called with parameters: diagramId = {}", diagramId);
         TDiagram tDiagram = null;
         try {
             transport.open();
-            tDiagram = client.openDiagram(diagramId);
-            transport.close();
-            logger.trace("openDiagram method returned diagram");
-        } catch (TException e) {
-            logger.error("Client DiagramService encountered problem while sending openDiagram request with " +
-                    "parameters: diagramId = {}", diagramId, e);
+            try {
+                tDiagram = client.openDiagram(diagramId);
+            } catch (TNotFound e) {
+                throw new NotFound(e.getId(), e.getMessage());
+            } catch (TException e) {
+                logger.error("Client DiagramService encountered problem while sending openDiagram request with " +
+                        "parameters: diagramId = {}", diagramId, e);
+            } finally {
+                transport.close();
+            }
+        } catch (TTransportException e) {
+            logger.error("Client DiagramService encountered problem while opening transport.", e);
         }
+        logger.trace("openDiagram method returned diagram");
         return new Diagram(tDiagram);
     }
 
@@ -85,13 +99,24 @@ public class DiagramServiceImpl implements DiagramService {
         logger.trace("rewriteDiagram method called with parameters: diagram = {}", diagram.getName());
         try {
             transport.open();
-            client.rewriteDiagram(diagram.toTDiagram());
-            transport.close();
-            logger.trace("rewriteDiagram method edited diagram");
-        } catch (TException e) {
-            logger.error("Client DiagramService encountered problem while sending rewriteDiagram request with " +
-                    "parameters: diagram = {}", diagram.getName(), e);
+            try {
+                client.rewriteDiagram(diagram.toTDiagram());
+            } catch (TIdNotDefined e) {
+                logger.error("rewriteDiagram method encountered exception IdNotDefined. You've tried to update " +
+                        "diagram, but not specified it's id.", e);
+            } catch (TNotFound e) {
+                logger.error("rewriteDiagram method encountered exception NotFound. You've tried to update not " +
+                        "existed diagram.", e);
+            } catch (TException e) {
+                logger.error("Client DiagramService encountered problem while sending rewriteDiagram request with " +
+                        "parameters: diagram = {}", diagram.getName(), e);
+            } finally {
+                transport.close();
+            }
+        } catch (TTransportException e) {
+            logger.error("Client DiagramService encountered problem while opening transport.", e);
         }
+        logger.trace("rewriteDiagram method edited diagram");
     }
 
     @Override
@@ -99,13 +124,22 @@ public class DiagramServiceImpl implements DiagramService {
         logger.trace("deleteDiagram method called with parameters: diagramId = {}", diagramId);
         try {
             transport.open();
-            client.deleteDiagram(diagramId);
-            transport.close();
-            logger.trace("deleteDiagram method deleted diagram with id {}", diagramId);
-        } catch (TException e) {
-            logger.error("Client DiagramService encountered problem while sending deleteDiagram request with " +
-                    "parameters: diagramId = {}", diagramId, e);
+            try {
+                client.deleteDiagram(diagramId);
+            } catch (TNotFound e) {
+                logger.error("rewriteDiagram method encountered exception NotFound. You've tried to delete not " +
+                        "existed diagram.", e);
+            } catch (TException e) {
+                logger.error("Client DiagramService encountered problem while sending deleteDiagram request with " +
+                        "parameters: diagramId = {}", diagramId, e);
+            } finally {
+                transport.close();
+            }
+        } catch (TTransportException e) {
+            logger.error("Client DiagramService encountered problem while opening transport.", e);
         }
+        logger.trace("deleteDiagram method deleted diagram with id {}", diagramId);
+
     }
 
     @Override
@@ -114,14 +148,22 @@ public class DiagramServiceImpl implements DiagramService {
         Folder rootFolder = new Folder("root", userName);
         try {
             transport.open();
-            TFolder newFolder = rootFolder.toTFolder();
-            client.createFolder(newFolder);
-            transport.close();
-            logger.trace("createRootFolder method created rootFolder for {}", userName);
-        } catch (TException e) {
-            logger.error("Client DiagramService encountered problem while sending createFolder request with " +
-                    "parameters: newFolder = {}", rootFolder.getFolderName(), e);
+            try {
+                TFolder newFolder = rootFolder.toTFolder();
+                client.createFolder(newFolder);
+            } catch (TIdAlreadyDefined e) {
+                logger.error("createRootFolder method encountered exception IdAlreadyDefined. Folder was not created.",
+                        e);
+            } catch (TException e) {
+                logger.error("Client DiagramService encountered problem while sending createFolder request with " +
+                        "parameters: newFolder = {}", rootFolder.getFolderName(), e);
+            } finally {
+                transport.close();
+            }
+        } catch (TTransportException e) {
+            logger.error("Client DiagramService encountered problem while opening transport.", e);
         }
+        logger.trace("createRootFolder method created rootFolder for {}", userName);
     }
 
     @Override
@@ -131,14 +173,21 @@ public class DiagramServiceImpl implements DiagramService {
         folder.setUserName(AuthenticatedUser.getUserName());
         try {
             transport.open();
-            TFolder newFolder = folder.toTFolder();
-            result = client.createFolder(newFolder);
-            transport.close();
-            logger.trace("createFolder method created folder  {}", folder.getFolderName());
-        } catch (TException e) {
-            logger.error("Client DiagramService encountered problem while sending createFolder request with " +
-                    "parameters: folder = {}", folder.getFolderName(), e);
+            try {
+                TFolder newFolder = folder.toTFolder();
+                result = client.createFolder(newFolder);
+            } catch (TIdAlreadyDefined e) {
+                logger.error("createFolder method encountered exception IdAlreadyDefined. Folder was not created.", e);
+            } catch (TException e) {
+                logger.error("Client DiagramService encountered problem while sending createFolder request with " +
+                        "parameters: folder = {}", folder.getFolderName(), e);
+            } finally {
+                transport.close();
+            }
+        } catch (TTransportException e) {
+            logger.error("Client DiagramService encountered problem while opening transport.", e);
         }
+        logger.trace("createFolder method created folder  {}", folder.getFolderName());
         return result;
     }
 
@@ -147,29 +196,45 @@ public class DiagramServiceImpl implements DiagramService {
         logger.trace("deleteFolder method called with parameters: folderId = {}", folderId);
         try {
             transport.open();
-            client.deleteFolder(folderId);
-            transport.close();
-            logger.trace("deleteFolder method deleted folder with id {}", folderId);
-        } catch (TException e) {
-            logger.error("Client DiagramService encountered problem while sending deleteFolder request with " +
-                    "parameters: folderId = {}", folderId, e);
+            try {
+                client.deleteFolder(folderId);
+            } catch (TNotFound e) {
+                logger.error("deleteFolder method encountered exception NotFound. You've tried to delete not " +
+                        "existed folder.", e);
+            } catch (TException e) {
+                logger.error("Client DiagramService encountered problem while sending deleteFolder request with " +
+                        "parameters: folderId = {}", folderId, e);
+            } finally {
+                transport.close();
+            }
+        } catch (TTransportException e) {
+            logger.error("Client DiagramService encountered problem while opening transport.", e);
         }
+        logger.trace("deleteFolder method deleted folder with id {}", folderId);
     }
 
     @Override
-    public Folder getFolderTree() {
+    public Folder getFolderTree() throws NotFound {
         logger.trace("getFolderTree method called with parametrs: userName = {}",
                 AuthenticatedUser.getUserName());
         TFolder folder = new TFolder();
         try {
             transport.open();
-            folder = client.getFolderTree(AuthenticatedUser.getUserName());
-            transport.close();
-            logger.trace("getFolderTree method returned folderTree");
-        } catch (TException e) {
-            logger.error("Client DiagramService encountered problem while sending getFolderTree request with " +
-                    "parameters: username = {}", AuthenticatedUser.getUserName(), e);
+            try {
+                folder = client.getFolderTree(AuthenticatedUser.getUserName());
+            } catch (TNotFound e) {
+                throw new NotFound(e.getId(), e.getMessage());
+            } catch (TException e) {
+                logger.error("Client DiagramService encountered problem while sending getFolderTree request with " +
+                        "parameters: username = {}", AuthenticatedUser.getUserName(), e);
+            }
+            finally {
+                transport.close();
+            }
+        } catch (TTransportException e) {
+            logger.error("Client DiagramService encountered problem while opening transport.", e);
         }
+        logger.trace("getFolderTree method returned folderTree");
         return new Folder(folder);
     }
 }

@@ -1,7 +1,6 @@
-package com.qreal.wmp.dashboard.database.users.client;
+package com.qreal.wmp.db.robot.client.users;
 
-import com.qreal.wmp.dashboard.database.exceptions.NotFound;
-import com.qreal.wmp.dashboard.database.users.model.User;
+import com.qreal.wmp.db.robot.client.exceptions.NotFound;
 import com.qreal.wmp.thrift.gen.*;
 import org.apache.thrift.TException;
 import org.apache.thrift.protocol.TBinaryProtocol;
@@ -15,9 +14,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
+import javax.transaction.Transactional;
 
 /** Thrift client side of UserDBService.*/
 @Service("userService")
@@ -47,9 +46,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void save(@NotNull User user) {
-        TUser tUser = user.toTUser();
-        logger.trace("save method called with parameters: user = {}", user.getUsername());
+    public void save(@NotNull TUser tUser) {
+        logger.trace("save method called with parameters: user = {}", tUser.getUsername());
         try {
             transport.open();
             try {
@@ -58,21 +56,22 @@ public class UserServiceImpl implements UserService {
                 logger.error("save method encountered exception IdNotDefined. User was not created", e);
             } catch (TException e) {
                 logger.error("Client UserService encountered problem while sending save request with parameters: " +
-                        "user = {}", user, e);
-            } finally {
+                        "user = {}", tUser, e);
+            }
+            finally {
                 transport.close();
             }
         } catch (TTransportException e) {
             logger.error("Client UserService encountered problem while opening transport.", e);
         }
-        logger.trace("save method saved user {}", user.getUsername());
+        logger.trace("save method saved user {}", tUser.getUsername());
+
     }
 
     @Override
     @Transactional
-    public void update(@NotNull User user) {
-        TUser tUser = user.toTUser();
-        logger.trace("update method called with parameters: user = {}", user.getUsername());
+    public void update(@NotNull TUser tUser) {
+        logger.trace("update method called with parameters: user = {}", tUser.getUsername());
         try {
             transport.open();
             try {
@@ -85,19 +84,20 @@ public class UserServiceImpl implements UserService {
                         " specified it's id.", e);
             } catch (TException e) {
                 logger.error("Client UserService encountered problem while sending update request with parameters: " +
-                        "user = {}", user, e);
+                        "user = {}", tUser.getUsername(), e);
             } finally {
                 transport.close();
             }
         } catch (TTransportException e) {
             logger.error("Client UserService encountered problem while opening transport.", e);
         }
-        logger.trace("update method updated user {}", user.getUsername());
+        logger.trace("update method updated user {}", tUser.getUsername());
+
     }
 
     @Override
     @Transactional
-    public User findByUserName(String username) throws NotFound {
+    public TUser findByUserName(String username) throws NotFound {
         logger.trace("findByUserName method called with paremeters: username = {}", username);
         TUser tUser = null;
         try {
@@ -116,7 +116,7 @@ public class UserServiceImpl implements UserService {
             logger.error("Client UserService encountered problem while opening transport.", e);
         }
         logger.trace("findByUserName method returned answer.");
-        return new User(tUser);
+        return tUser;
     }
 
     @Override

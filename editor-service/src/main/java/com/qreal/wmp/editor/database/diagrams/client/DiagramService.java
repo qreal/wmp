@@ -2,6 +2,7 @@ package com.qreal.wmp.editor.database.diagrams.client;
 
 import com.qreal.wmp.editor.database.diagrams.model.Diagram;
 import com.qreal.wmp.editor.database.diagrams.model.Folder;
+import com.qreal.wmp.editor.database.exceptions.NotFound;
 
 /** DiagramDBService interface.*/
 public interface DiagramService {
@@ -18,12 +19,12 @@ public interface DiagramService {
     /**
      * Returns diagram with specified id.
      */
-    Diagram openDiagram(Long diagramId);
+    Diagram openDiagram(Long diagramId) throws NotFound;
 
     /**
-     * Rewrites diagram with id equal to {@diagram.id}.
+     * Rewrites diagram with id equal to diagram.id.
      *
-     * @param diagram diagram to rewrite (<{@diagram.id} must be set correctly).
+     * @param diagram diagram to rewrite (diagram.id must be set correctly).
      */
     void rewriteDiagram(Diagram diagram);
 
@@ -51,5 +52,5 @@ public interface DiagramService {
     void deleteFolder(Long folderId);
 
     /** Returns root folder of user.*/
-    Folder getFolderTree();
+    Folder getFolderTree() throws NotFound;
 }

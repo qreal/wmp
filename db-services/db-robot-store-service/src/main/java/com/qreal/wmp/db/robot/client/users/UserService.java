@@ -1,12 +1,12 @@
-package com.qreal.wmp.db.robot.client;
+package com.qreal.wmp.db.robot.client.users;
 
+import com.qreal.wmp.db.robot.client.exceptions.NotFound;
 import com.qreal.wmp.thrift.gen.TUser;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /** UserDBService interface.*/
 public interface UserService {
-
     /**
      * Saves user.
      *
@@ -28,7 +28,7 @@ public interface UserService {
      * @param username name of user to find
      */
     @Nullable
-    TUser findByUserName(String username);
+    TUser findByUserName(String username) throws NotFound;
 
     /**
      * Test if user with specified name exists.

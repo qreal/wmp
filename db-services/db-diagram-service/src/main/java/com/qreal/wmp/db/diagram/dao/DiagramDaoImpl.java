@@ -91,6 +91,18 @@ class DiagramDaoImpl implements DiagramDao {
         return diagrams.stream().findFirst().orElse(null);
     }
 
+    /** Checks whether diagram with specified id exists.*/
+    @Override
+    public boolean isExistsDiagram(Long diagramId) {
+        logger.trace("isExistsDiagram method called with parameters: id = {}", diagramId);
+        Session session = sessionFactory.getCurrentSession();
+        List<Diagram> diagrams = session.createQuery("from Diagram where id=:diagramId").
+                setParameter("diagramId", diagramId).list();
+        logger.trace("isExistsDiagram method extracted list of results from session with {} elements.",
+                diagrams.size());
+        return !diagrams.isEmpty();
+    }
+
     /**
      * Rewrites diagram at local DB using Hibernate ORM.
      *
@@ -133,6 +145,18 @@ class DiagramDaoImpl implements DiagramDao {
         logger.trace("createFolder method created folder with id {}", folderId);
         return folderId;
     }
+
+    /** Checks whether folder with specified id exists.*/
+    @Override
+    public boolean isExistsFolder(Long folderId) {
+        logger.trace("isExistsFolder method called with parameters: id = {}", folderId);
+        Session session = sessionFactory.getCurrentSession();
+        List<Folder> folders = session.createQuery("from Folder where id=:folderId").
+                setParameter("folderId", folderId).list();
+        logger.trace("isExistsFolder method extracted list of results from session with {} elements.", folders.size());
+        return !folders.isEmpty();    }
+
+
 
     /**
      * Deletes folder from local DB using Hibernate ORM.

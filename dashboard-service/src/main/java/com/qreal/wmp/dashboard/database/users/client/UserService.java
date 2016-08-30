@@ -1,5 +1,6 @@
 package com.qreal.wmp.dashboard.database.users.client;
 
+import com.qreal.wmp.dashboard.database.exceptions.NotFound;
 import com.qreal.wmp.dashboard.database.users.model.User;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -28,7 +29,7 @@ public interface UserService {
      * @param username name of user to find
      */
     @Nullable
-    User findByUserName(String username);
+    User findByUserName(String username) throws NotFound;
 
     /**
      * Test if user with specified name exists.

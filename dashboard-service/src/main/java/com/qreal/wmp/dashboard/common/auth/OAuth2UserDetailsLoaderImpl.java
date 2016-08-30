@@ -1,5 +1,6 @@
 package com.qreal.wmp.dashboard.common.auth;
 
+import com.qreal.wmp.dashboard.database.exceptions.NotFound;
 import com.qreal.wmp.dashboard.database.users.client.UserService;
 import com.qreal.wmp.dashboard.database.users.model.User;
 import com.qreal.wmp.dashboard.database.users.model.UserRole;
@@ -34,15 +35,15 @@ public class OAuth2UserDetailsLoaderImpl implements OAuth2UserDetailsLoader<User
     @Override
     public UserDetails getUserByUserId(String id) {
         logger.trace("OAuth passed user {} for authentication", id);
-        if (!userService.isUserExist(id)) {
-            logger.trace("User {} was not found", id);
-            return null;
-        } else {
+        UserDetails userDetails = null;
+        try {
             User user = userService.findByUserName(id);
-            UserDetails userDetails = convert(user);
+            userDetails = convert(user);
             logger.trace("User {} was found", id);
-            return userDetails;
+        } catch (NotFound e) {
+            logger.trace("User {} was not found", id);
         }
+        return userDetails;
     }
 
     /** Updates user retrieved from OAuth authentication point. Not used right now.*/

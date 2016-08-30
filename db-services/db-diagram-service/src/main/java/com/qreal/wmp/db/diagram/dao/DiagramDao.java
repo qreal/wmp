@@ -10,6 +10,7 @@ public interface DiagramDao {
 
     /**
      * Saves diagram in specified folder and creates for it Id.
+     * Expect correct input.
      *
      * @param diagram  diagram to save (Id must not be set)
      * @param folderId id of folder to save diagram in
@@ -20,6 +21,9 @@ public interface DiagramDao {
     /** Returns diagram with specified id. (or null)*/
     @Nullable
     Diagram openDiagram(Long diagramId);
+
+    /** Checks whether diagram with specified id exists.*/
+    boolean isExistsDiagram(Long diagramId);
 
     /**
      * Rewrites diagram with id equal to <code>diagram.id</code>.
@@ -38,6 +42,9 @@ public interface DiagramDao {
      * @return new id of folder
      */
     Long createFolder(@NotNull Folder folder);
+
+    /** Checks whether folder with specified id exists.*/
+    boolean isExistsFolder(Long folderId);
 
     /** Deletes folder with specified id.*/
     void deleteFolder(Long folderId);

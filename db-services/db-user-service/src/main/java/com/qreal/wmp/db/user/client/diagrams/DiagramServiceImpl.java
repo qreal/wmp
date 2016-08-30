@@ -3,11 +3,13 @@ package com.qreal.wmp.db.user.client.diagrams;
 import com.qreal.wmp.db.user.model.diagram.Folder;
 import com.qreal.wmp.thrift.gen.DiagramDbService;
 import com.qreal.wmp.thrift.gen.TFolder;
+import com.qreal.wmp.thrift.gen.TIdAlreadyDefined;
 import org.apache.thrift.TException;
 import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.transport.TSocket;
 import org.apache.thrift.transport.TTransport;
+import org.apache.thrift.transport.TTransportException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -48,13 +50,22 @@ public class DiagramServiceImpl implements DiagramService {
         Folder rootFolder = new Folder("root", userName);
         try {
             transport.open();
-            TFolder newFolder = rootFolder.toTFolder();
-            client.createFolder(newFolder);
-            transport.close();
-            logger.trace("createRootFolder method created rootFolder for {}", userName);
-        } catch (TException e) {
-            logger.error("Client DiagramService encountered problem while sending createFolder request with " +
-                    "parameters: newFolder = {}", rootFolder.getFolderName(), e);
+            try {
+                TFolder newFolder = rootFolder.toTFolder();
+                client.createFolder(newFolder);
+            } catch (TIdAlreadyDefined e) {
+                logger.error("createRootFolder method encountered exception IdAlreadyDefined. Folder was not created",
+                        e);
+            } catch (TException e) {
+                logger.error("Client DiagramService encountered problem while sending createFolder request with " +
+                        "parameters: newFolder = {}", rootFolder.getFolderName(), e);
+            }
+            finally {
+                transport.close();
+            }
+        } catch (TTransportException e) {
+            logger.error("Client DiagramService encountered problem while opening transport.", e);
         }
+        logger.trace("createRootFolder method created rootFolder for {}", userName);
     }
 }

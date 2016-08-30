@@ -27,6 +27,7 @@
       <sourceFolder url="file://$MODULE_DIR$/target/generated-sources/thrift/robot-store-database" isTestSource="false" generated="true" />
       <sourceFolder url="file://$MODULE_DIR$/target/generated-sources/thrift/struct" isTestSource="false" generated="true" />
       <sourceFolder url="file://$MODULE_DIR$/target/generated-sources/thrift/user-database" isTestSource="false" generated="true" />
+      <sourceFolder url="file://$MODULE_DIR$/target/generated-sources/thrift/exception" isTestSource="false" generated="true" />
       <excludeFolder url="file://$MODULE_DIR$/target/classes" />
       <excludeFolder url="file://$MODULE_DIR$/target/db-robot-service" />
       <excludeFolder url="file://$MODULE_DIR$/target/db-robot-store-service-1.0-SNAPSHOT" />

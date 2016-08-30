@@ -117,6 +117,18 @@
                             <outputDirectory>${thrift.output.dir}/struct</outputDirectory>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>java-generation-exceptions</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                        <configuration>
+                            <generator>java:beans</generator>
+                            <thriftSourceRoot>${thrift.src.base}/exception</thriftSourceRoot>
+                            <outputDirectory>${thrift.output.dir}/exception</outputDirectory>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
 

@@ -1,5 +1,6 @@
 package com.qreal.wmp.dashboard.database.robots.client;
 
+import com.qreal.wmp.dashboard.database.exceptions.NotFound;
 import com.qreal.wmp.dashboard.database.robots.model.Robot;
 import com.qreal.wmp.thrift.gen.TRobot;
 import org.jetbrains.annotations.NotNull;
@@ -29,7 +30,7 @@ public interface RobotService {
      * @param id id of robot to find
      */
     @Nullable
-    Robot findById(long id);
+    Robot findById(long id) throws NotFound;
 
     /**
      * Test if exists robot with specified Id.

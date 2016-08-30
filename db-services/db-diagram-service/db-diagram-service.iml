@@ -27,6 +27,7 @@
       <sourceFolder url="file://$MODULE_DIR$/src/main/resources" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/target/generated-sources/thrift/struct" isTestSource="false" generated="true" />
       <sourceFolder url="file://$MODULE_DIR$/target/generated-sources/thrift/diagram-database" isTestSource="false" generated="true" />
+      <sourceFolder url="file://$MODULE_DIR$/target/generated-sources/thrift/exception" isTestSource="false" generated="true" />
       <excludeFolder url="file://$MODULE_DIR$/target/db-diagram-service" />
       <excludeFolder url="file://$MODULE_DIR$/target/db-diagram-service-1.0-SNAPSHOT" />
       <excludeFolder url="file://$MODULE_DIR$/target/maven-archiver" />

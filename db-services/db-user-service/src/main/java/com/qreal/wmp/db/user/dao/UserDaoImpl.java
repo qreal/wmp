@@ -1,6 +1,7 @@
 package com.qreal.wmp.db.user.dao;
 
 import com.qreal.wmp.db.user.client.diagrams.DiagramService;
+import com.qreal.wmp.db.user.client.exceptions.NotFound;
 import com.qreal.wmp.db.user.client.robots.RobotService;
 import com.qreal.wmp.db.user.model.auth.UserRoleSerial;
 import com.qreal.wmp.db.user.model.auth.UserSerial;
@@ -161,13 +162,12 @@ public class UserDaoImpl implements UserDao {
         TUser tUser = userSerial.toTUser();
         for (Long id : userSerial.getRobots()) {
             logger.trace("Robot with id {} of user {} loading", id, tUser.getUsername());
-
-            TRobot robot = robotService.findById(id);
-            if (robot != null) {
+            try {
+                TRobot robot = robotService.findById(id);
                 tUser.getRobots().add(robot);
                 logger.trace("Robot  {} of user {} loaded", robot.getName(), tUser.getUsername());
-            } else {
-                logger.error("Got null TRobot object for id '{}'", id);
+            } catch (NotFound notFound) {
+                logger.error("Inconsistent state: User contains robot with id {}, but this robot doesn't exist.", id);
             }
         }
         return tUser;

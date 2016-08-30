@@ -32,6 +32,7 @@
       <sourceFolder url="file://$MODULE_DIR$/target/generated-sources/thrift/user-database" isTestSource="false" generated="true" />
       <sourceFolder url="file://$MODULE_DIR$/target/editor-service/resources/js/compiled" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/webapp/app/editor/properties" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/target/generated-sources/thrift/exception" isTestSource="false" generated="true" />
       <excludeFolder url="file://$MODULE_DIR$/target/editor-service" />
       <excludeFolder url="file://$MODULE_DIR$/target/etc" />
       <excludeFolder url="file://$MODULE_DIR$/target/maven-archiver" />
@@ -44,7 +45,6 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Maven: com.racquettrack:spring-security-oauth2-client:1.6-SNAPSHOT" level="project" />
     <orderEntry type="module" module-name="shared-resources" />
     <orderEntry type="library" name="Maven: org.springframework.security:spring-security-core:3.2.3.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: aopalliance:aopalliance:1.0" level="project" />

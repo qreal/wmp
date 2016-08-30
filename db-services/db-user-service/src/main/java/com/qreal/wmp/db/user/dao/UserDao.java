@@ -4,7 +4,8 @@ import com.qreal.wmp.thrift.gen.TUser;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-/** DAO for userDB.*/
+/** DAO user for UserDB. It operates only with DB and expects correct input. All scheme consistency keeping operations
+ * will be performed automatically.*/
 public interface UserDao {
     /**
      * Saves user.

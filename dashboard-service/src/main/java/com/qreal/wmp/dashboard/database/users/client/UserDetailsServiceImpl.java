@@ -1,5 +1,6 @@
 package com.qreal.wmp.dashboard.database.users.client;
 
+import com.qreal.wmp.dashboard.database.exceptions.NotFound;
 import com.qreal.wmp.dashboard.database.users.model.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -19,20 +20,26 @@ import java.util.stream.Collectors;
 /** UserDetailsService implementation for SpringSecurity (using UserService).*/
 @Service("userDetailsService")
 public class UserDetailsServiceImpl implements UserDetailsService {
+    private final UserService userService;
 
     @Autowired
-    private UserService userService;
+    public UserDetailsServiceImpl(UserService userService) {
+        this.userService = userService;
+    }
 
     @Transactional(readOnly = true)
     @Override
     public UserDetails loadUserByUsername(final String username)
             throws UsernameNotFoundException {
 
-        com.qreal.wmp.dashboard.database.users.model.User user =
-                userService.findByUserName(username);
+        com.qreal.wmp.dashboard.database.users.model.User user = null;
+        try {
+            user = userService.findByUserName(username);
+        } catch (NotFound notFound) {
+            throw new UsernameNotFoundException("User not found");
+        }
 
-        List<GrantedAuthority> authorities =
-                buildUserAuthority(user.getRoles());
+        List<GrantedAuthority> authorities = buildUserAuthority(user.getRoles());
 
         return buildUserForAuthentication(user, authorities);
 
@@ -48,8 +55,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         Set<GrantedAuthority> setAuths = userRoles.stream().map(userRole -> new SimpleGrantedAuthority(userRole.
                 getRole())).collect(Collectors.toSet());
-        List<GrantedAuthority> result = new ArrayList<GrantedAuthority>(setAuths);
-        return result;
+        return new ArrayList<GrantedAuthority>(setAuths);
     }
 
 }
