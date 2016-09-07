@@ -3,6 +3,7 @@ package com.qreal.wmp.dashboard.database.users.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.qreal.wmp.dashboard.database.robots.model.Robot;
 import com.qreal.wmp.thrift.gen.TUser;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -22,11 +23,11 @@ public class User {
 
     /** Roles of user.*/
     @JsonIgnore
-    private Set<UserRole> roles = new HashSet<>(0);
+    private Set<UserRole> roles = new HashSet<>();
 
     /** User's robots.*/
     @JsonIgnore
-    private Set<Robot> robots = new HashSet<>(0);
+    private Set<Robot> robots = new HashSet<>();
 
     public User() {
     }
@@ -103,6 +104,7 @@ public class User {
         this.enabled = enabled;
     }
 
+    @NotNull
     public Set<UserRole> getRoles() {
         return this.roles;
     }
@@ -111,6 +113,7 @@ public class User {
         this.roles = roles;
     }
 
+    @NotNull
     public Set<Robot> getRobots() {
         return this.robots;
     }

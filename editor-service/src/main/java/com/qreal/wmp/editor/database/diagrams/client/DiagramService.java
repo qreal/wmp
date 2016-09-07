@@ -2,7 +2,10 @@ package com.qreal.wmp.editor.database.diagrams.client;
 
 import com.qreal.wmp.editor.database.diagrams.model.Diagram;
 import com.qreal.wmp.editor.database.diagrams.model.Folder;
+import com.qreal.wmp.editor.database.exceptions.Aborted;
+import com.qreal.wmp.editor.database.exceptions.ErrorConnection;
 import com.qreal.wmp.editor.database.exceptions.NotFound;
+import org.jetbrains.annotations.NotNull;
 
 /** DiagramDBService interface.*/
 public interface DiagramService {
@@ -14,31 +17,30 @@ public interface DiagramService {
      * @param folderId id of folder to save diagram in
      * @return new id of diagram
      */
-    Long saveDiagram(Diagram diagram, Long folderId);
+    Long saveDiagram(@NotNull Diagram diagram, Long folderId) throws Aborted, ErrorConnection;
 
-    /**
-     * Returns diagram with specified id.
-     */
-    Diagram openDiagram(Long diagramId) throws NotFound;
+    /** Returns diagram with specified id.*/
+    @NotNull
+    Diagram openDiagram(Long diagramId) throws NotFound, ErrorConnection;
 
     /**
      * Rewrites diagram with id equal to diagram.id.
      *
      * @param diagram diagram to rewrite (diagram.id must be set correctly).
      */
-    void rewriteDiagram(Diagram diagram);
+    void rewriteDiagram(@NotNull Diagram diagram) throws Aborted, ErrorConnection;
 
     /**
      * Deletes diagram with specified id.
      */
-    void deleteDiagram(Long diagramId);
+    void deleteDiagram(Long diagramId) throws Aborted, ErrorConnection;
 
     /**
      * Creates root folder for user with specified username.
      *
      * @param userName name of user root folder created for
      */
-    void createRootFolder(String userName);
+    void createRootFolder(String userName) throws Aborted, ErrorConnection;
 
     /**
      * Creates folder and assign it id.
@@ -46,11 +48,12 @@ public interface DiagramService {
      * @param folder folder to create (Id must not be set)
      * @return new id of folder
      */
-    Long createFolder(Folder folder);
+    Long createFolder(@NotNull Folder folder) throws Aborted, ErrorConnection;
 
     /** Deletes folder with specified id.*/
-    void deleteFolder(Long folderId);
+    void deleteFolder(Long folderId) throws Aborted, ErrorConnection;
 
     /** Returns root folder of user.*/
-    Folder getFolderTree() throws NotFound;
+    @NotNull
+    Folder getFolderTree() throws NotFound, ErrorConnection;
 }

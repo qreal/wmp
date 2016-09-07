@@ -1,8 +1,10 @@
 package com.qreal.wmp.editor.database.diagrams.model;
 
 import com.qreal.wmp.thrift.gen.TLink;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -15,7 +17,7 @@ public class Link implements Serializable {
 
     private String graphicalId;
 
-    private Set<Property> properties;
+    private Set<Property> properties = new HashSet<>();
 
     public Link() {
     }
@@ -59,6 +61,7 @@ public class Link implements Serializable {
         this.graphicalId = graphicalId;
     }
 
+    @NotNull
     public Set<Property> getProperties() {
         return properties;
     }

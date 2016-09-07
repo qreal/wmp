@@ -1,6 +1,7 @@
 package com.qreal.wmp.dashboard.controller;
 
 import com.qreal.wmp.dashboard.common.utils.AuthenticatedUser;
+import com.qreal.wmp.dashboard.database.exceptions.ErrorConnection;
 import com.qreal.wmp.dashboard.database.exceptions.NotFound;
 import com.qreal.wmp.dashboard.database.users.client.UserService;
 import com.qreal.wmp.dashboard.database.users.model.User;
@@ -22,8 +23,12 @@ public class MainController {
 
     private static final Logger logger = LoggerFactory.getLogger(MainController.class);
 
+    private final UserService userService;
+
     @Autowired
-    private UserService userService;
+    public MainController(UserService userService) {
+        this.userService = userService;
+    }
 
     @RequestMapping("/")
     public ModelAndView home(HttpSession session) {
@@ -34,6 +39,8 @@ public class MainController {
             user = userService.findByUserName(AuthenticatedUser.getUserName());
         } catch (NotFound notFound) {
             logger.error("Authentication error: authenticated user not in database.");
+        } catch (ErrorConnection errorConnection) {
+            logger.error("Connection error: user service not online.");
         }
 
         ModelAndView model = new ModelAndView();

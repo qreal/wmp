@@ -20,6 +20,7 @@ before_install:
   - chmod 755 thrift
   - sudo cp thrift /usr/local/bin/thrift
   - sudo cp libthrift-0.9.3.jar /usr/local/lib
+  # get checkstyle
   - wget http://downloads.sourceforge.net/project/checkstyle/checkstyle/7.0/checkstyle-7.0-all.jar
   #fake random with urandom (do not repeat it on your own computer)
   - sudo rm /dev/random

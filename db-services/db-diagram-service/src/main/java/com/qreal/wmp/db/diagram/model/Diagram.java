@@ -1,9 +1,11 @@
 package com.qreal.wmp.db.diagram.model;
 
 import com.qreal.wmp.thrift.gen.TDiagram;
+import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -24,11 +26,11 @@ public class Diagram implements Serializable {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinColumn(name = "diagram_id", referencedColumnName = "diagram_id")
-    private Set<DefaultDiagramNode> nodes;
+    private Set<DefaultDiagramNode> nodes = new HashSet<>();
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinColumn(name = "diagram_id", referencedColumnName = "diagram_id")
-    private Set<Link> links;
+    private Set<Link> links = new HashSet<>();
 
     public Diagram() {
     }
@@ -99,6 +101,7 @@ public class Diagram implements Serializable {
         this.nodes = nodes;
     }
 
+    @NotNull
     public Set<DefaultDiagramNode> getNodes() {
         return nodes;
     }
@@ -107,6 +110,7 @@ public class Diagram implements Serializable {
         this.links = links;
     }
 
+    @NotNull
     public Set<Link> getLinks() {
         return links;
     }

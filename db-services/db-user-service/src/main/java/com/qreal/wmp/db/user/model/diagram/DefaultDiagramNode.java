@@ -1,7 +1,10 @@
 package com.qreal.wmp.db.user.model.diagram;
 
 import com.qreal.wmp.thrift.gen.TDefaultDiagramNode;
+import org.jetbrains.annotations.NotNull;
+
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -16,7 +19,7 @@ public class DefaultDiagramNode implements Serializable {
 
     private String type;
 
-    private Set<Property> properties;
+    private Set<Property> properties = new HashSet<>();
 
     public DefaultDiagramNode() {
     }
@@ -73,6 +76,7 @@ public class DefaultDiagramNode implements Serializable {
         this.type = type;
     }
 
+    @NotNull
     public Set<Property> getProperties() {
         return properties;
     }

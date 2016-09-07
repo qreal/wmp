@@ -1,7 +1,7 @@
-package com.qreal.wmp.db.robot.client.exceptions;
+package com.qreal.wmp.db.robot.exceptions;
 
 public class NotFound extends Exception {
-    String id;
+    private final String id;
 
     public NotFound(String id, String message) {
         super(message);

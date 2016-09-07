@@ -15,17 +15,21 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
 
-@Controller
 /**
  * Main controller of Editor service.
  * Pages: editor
  */
+@Controller
 public class EditorController {
 
     private static final Logger logger = LoggerFactory.getLogger(EditorController.class);
 
+    private final TypesLoader typesLoader;
+
     @Autowired
-    private TypesLoader typesLoader;
+    public EditorController(TypesLoader typesLoader) {
+        this.typesLoader = typesLoader;
+    }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ModelAndView index() {

@@ -14,7 +14,7 @@ import java.util.Map;
 @Component
 public class TypesLoader {
 
-    private ObjectMapper mapper;
+    private final ObjectMapper mapper;
 
     public TypesLoader() {
         mapper = new ObjectMapper();

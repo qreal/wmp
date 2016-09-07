@@ -2,9 +2,11 @@ package com.qreal.wmp.db.diagram.model;
 
 import com.qreal.wmp.thrift.gen.TLink;
 import org.hibernate.annotations.GenericGenerator;
+import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -27,7 +29,7 @@ public class Link implements Serializable {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinColumn(name = "link_id", referencedColumnName = "id")
-    private Set<Property> properties;
+    private Set<Property> properties = new HashSet<>();
 
     public Link() {
     }
@@ -71,6 +73,7 @@ public class Link implements Serializable {
         this.graphicalId = graphicalId;
     }
 
+    @NotNull
     public Set<Property> getProperties() {
         return properties;
     }

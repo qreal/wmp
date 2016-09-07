@@ -1,5 +1,7 @@
 package com.qreal.wmp.dashboard.common.auth;
 
+import com.qreal.wmp.dashboard.database.exceptions.Aborted;
+import com.qreal.wmp.dashboard.database.exceptions.ErrorConnection;
 import com.qreal.wmp.dashboard.database.exceptions.NotFound;
 import com.qreal.wmp.dashboard.database.users.client.UserService;
 import com.qreal.wmp.dashboard.database.users.model.User;
@@ -24,8 +26,12 @@ public class OAuth2UserDetailsLoaderImpl implements OAuth2UserDetailsLoader<User
 
     private static final Logger logger = LoggerFactory.getLogger(OAuth2UserDetailsLoaderImpl.class);
 
+    private final UserService userService;
+
     @Autowired
-    private UserService userService;
+    public OAuth2UserDetailsLoaderImpl(UserService userService) {
+        this.userService = userService;
+    }
 
     /**
      * Finds user using userService for OAuth authentication point.
@@ -42,6 +48,9 @@ public class OAuth2UserDetailsLoaderImpl implements OAuth2UserDetailsLoader<User
             logger.trace("User {} was found", id);
         } catch (NotFound e) {
             logger.trace("User {} was not found", id);
+        } catch (ErrorConnection e) {
+            //TODO what to do in that case?
+            logger.error("Fatal error: must find user but can't because of connection error with user service", id);
         }
         return userDetails;
     }
@@ -66,7 +75,15 @@ public class OAuth2UserDetailsLoaderImpl implements OAuth2UserDetailsLoader<User
         UserRole userRole = new UserRole(user, ROLE_USER);
         roles.add(userRole);
         user.setRoles(roles);
-        userService.save(user);
+        try {
+            userService.save(user);
+        } catch (Aborted e) {
+            //TODO what to do in that case?
+            logger.error("Fatal error: must create user but can't because operation was aborted.");
+        } catch (ErrorConnection e) {
+            //TODO what to do in that case?
+            logger.error("Fatal error: must create user but can't because of connection error with user service.");
+        }
         UserDetails userDetails = convert(user);
         logger.trace("User {} was created.", id);
         return userDetails;

@@ -1,6 +1,8 @@
 package com.qreal.wmp.dashboard.controller;
 
 import com.qreal.wmp.dashboard.common.utils.AuthenticatedUser;
+import com.qreal.wmp.dashboard.database.exceptions.Aborted;
+import com.qreal.wmp.dashboard.database.exceptions.ErrorConnection;
 import com.qreal.wmp.dashboard.database.robots.client.RobotService;
 import com.qreal.wmp.dashboard.database.robots.model.Robot;
 import com.qreal.wmp.thrift.gen.RobotServiceThrift;
@@ -34,7 +36,15 @@ public class RobotRestServletHandler implements RobotServiceThrift.Iface {
         logger.trace("RobotRestServlet got register request with parameters: robotName = {}, ssid = {}", robotName,
                 ssid);
         RobotService robotService = (RobotService) context.getBean("robotService");
-        robotService.registerByUsername(new Robot(robotName, ssid), AuthenticatedUser.getUserName());
+        try {
+            robotService.registerByUsername(new Robot(robotName, ssid), AuthenticatedUser.getUserName());
+        } catch (Aborted e) {
+            //TODO Here we should send exception to client side.
+            logger.error("registerRobot method encountered exception Aborted. Robot was not registered", e);
+        } catch (ErrorConnection e) {
+            //TODO Here we should send exception to client side.
+            logger.error("registerRobot method encountered exception ErrorConnection. Robot was not registered", e);
+        }
         logger.trace("RobotRestServlet registered robot {} with ssid {}.", robotName, ssid);
         return true;
     }
@@ -49,7 +59,15 @@ public class RobotRestServletHandler implements RobotServiceThrift.Iface {
     public boolean deleteRobot(long robotId) throws org.apache.thrift.TException {
         logger.trace("RobotRestServlet got delete request with parameters: robotId = {}", robotId);
         RobotService robotService = (RobotService) context.getBean("robotService");
-        robotService.delete(robotId);
+        try {
+            robotService.delete(robotId);
+        } catch (Aborted e) {
+            //TODO Here we should send exception to client side.
+            logger.error("deleteRobot method encountered exception Aborted. Robot was not deleted", e);
+        } catch (ErrorConnection e) {
+            //TODO Here we should send exception to client side.
+            logger.error("deleteRobot method encountered exception ErrorConnection. Robot was not deleted", e);
+        }
         logger.trace("RobotRestServlet deleted robot with id = {}", robotId);
         return true;
     }

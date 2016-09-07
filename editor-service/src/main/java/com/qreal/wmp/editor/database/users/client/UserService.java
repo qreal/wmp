@@ -1,18 +1,20 @@
 package com.qreal.wmp.editor.database.users.client;
 
+import com.qreal.wmp.editor.database.exceptions.Aborted;
+import com.qreal.wmp.editor.database.exceptions.ErrorConnection;
 import com.qreal.wmp.editor.database.exceptions.NotFound;
 import com.qreal.wmp.editor.database.users.model.User;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 /** UserDBService interface.*/
 public interface UserService {
+
     /**
      * Saves user (and robots).
      *
      * @param user user to save (Id must not be set).
      */
-    void save(@NotNull User user);
+    void save(@NotNull User user) throws Aborted, ErrorConnection;
 
     /**
      * Updates user state.
@@ -20,21 +22,20 @@ public interface UserService {
      * @param  user user to update (Id must be set)
      */
 
-    void update(@NotNull User user);
+    void update(@NotNull User user) throws Aborted, ErrorConnection;
 
     /**
      * Finds user by UserName.
      *
      * @param username name of user to find
      */
-    @Nullable
-    User findByUserName(String username) throws NotFound;
+    @NotNull
+    User findByUserName(String username) throws NotFound, ErrorConnection;
 
     /**
      * Test if user with specified name exists.
      *
      * @param username name of user to test if exists
-     * @return [description]
      */
-    boolean isUserExist(String username);
+    boolean isUserExist(String username) throws ErrorConnection;
 }

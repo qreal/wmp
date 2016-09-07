@@ -2,6 +2,7 @@ package com.qreal.wmp.db.user.model.auth;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.qreal.wmp.thrift.gen.TUser;
+import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -23,11 +24,11 @@ public class UserSerial {
 
     /** Roles of user.*/
     @JsonIgnore
-    private Set<UserRoleSerial> roles = new HashSet<>(0);
+    private Set<UserRoleSerial> roles = new HashSet<>();
 
     /** User's robots.*/
     @JsonIgnore
-    private Set<Long> robots = new HashSet<>(0);
+    private Set<Long> robots = new HashSet<>();
 
     public UserSerial() {
     }
@@ -82,6 +83,7 @@ public class UserSerial {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinColumn(name = "role_id", referencedColumnName = "username")
+    @NotNull
     public Set<UserRoleSerial> getRoles() {
         return this.roles;
     }
@@ -91,6 +93,7 @@ public class UserSerial {
     }
 
     @ElementCollection
+    @NotNull
     public Set<Long> getRobots() {
         return this.robots;
     }

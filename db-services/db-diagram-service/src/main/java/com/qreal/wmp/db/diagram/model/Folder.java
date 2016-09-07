@@ -1,9 +1,11 @@
 package com.qreal.wmp.db.diagram.model;
 
 import com.qreal.wmp.thrift.gen.TFolder;
+import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,11 +30,11 @@ public class Folder implements Serializable {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinColumn(name = "folder_parent_id", insertable = false, updatable = false)
-    private List<Folder> childrenFolders;
+    private List<Folder> childrenFolders = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinColumn(name = "folder_id", referencedColumnName = "folder_id")
-    private List<Diagram> diagrams;
+    private List<Diagram> diagrams = new ArrayList<>();
 
     public Folder() {
     }
@@ -130,6 +132,7 @@ public class Folder implements Serializable {
         this.childrenFolders = folderParentId;
     }
 
+    @NotNull
     public List<Folder> getChildrenFolders() {
         return this.childrenFolders;
     }
@@ -138,6 +141,7 @@ public class Folder implements Serializable {
         this.diagrams = diagrams;
     }
 
+    @NotNull
     public List<Diagram> getDiagrams() {
         return this.diagrams;
     }

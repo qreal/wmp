@@ -32,8 +32,9 @@ public class RobotDbServer implements ApplicationContextAware {
         logger.info("Starting Robots DB TServer on localhost on port {}", port);
         try {
             TServerTransport serverTransport = new TServerSocket(port);
-            TThreadPoolServer server = new TThreadPoolServer(new TThreadPoolServer.Args(serverTransport).processor
-                    (processor));
+            TThreadPoolServer server = new TThreadPoolServer(
+                    new TThreadPoolServer.Args(serverTransport).processor(processor)
+            );
             server.serve();
             logger.info("RobotSerial DB TServer started successfully");
         } catch (Exception e) {

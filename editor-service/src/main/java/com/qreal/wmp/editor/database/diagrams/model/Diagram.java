@@ -1,8 +1,10 @@
 package com.qreal.wmp.editor.database.diagrams.model;
 
 import com.qreal.wmp.thrift.gen.TDiagram;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -13,9 +15,9 @@ public class Diagram implements Serializable {
 
     private String name;
 
-    private Set<DefaultDiagramNode> nodes;
+    private Set<DefaultDiagramNode> nodes = new HashSet<>();
 
-    private Set<Link> links;
+    private Set<Link> links = new HashSet<>();
 
     public Diagram() {
     }
@@ -86,6 +88,7 @@ public class Diagram implements Serializable {
         this.nodes = nodes;
     }
 
+    @NotNull
     public Set<DefaultDiagramNode> getNodes() {
         return nodes;
     }
@@ -94,6 +97,7 @@ public class Diagram implements Serializable {
         this.links = links;
     }
 
+    @NotNull
     public Set<Link> getLinks() {
         return links;
     }

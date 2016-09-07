@@ -30,6 +30,7 @@
       <sourceFolder url="file://$MODULE_DIR$/target/generated-sources/thrift/user-database" isTestSource="false" generated="true" />
       <sourceFolder url="file://$MODULE_DIR$/target/generated-sources/thrift/robot-store-database" isTestSource="false" generated="true" />
       <sourceFolder url="file://$MODULE_DIR$/target/generated-sources/thrift/exception" isTestSource="false" generated="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/main/test" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/target/db-user-service" />
       <excludeFolder url="file://$MODULE_DIR$/target/db-user-service-1.0-SNAPSHOT" />
       <excludeFolder url="file://$MODULE_DIR$/target/maven-archiver" />

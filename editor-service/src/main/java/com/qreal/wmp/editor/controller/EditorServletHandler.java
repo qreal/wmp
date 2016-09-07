@@ -3,6 +3,8 @@ package com.qreal.wmp.editor.controller;
 import com.qreal.wmp.editor.database.diagrams.client.DiagramService;
 import com.qreal.wmp.editor.database.diagrams.model.Diagram;
 import com.qreal.wmp.editor.database.diagrams.model.Folder;
+import com.qreal.wmp.editor.database.exceptions.Aborted;
+import com.qreal.wmp.editor.database.exceptions.ErrorConnection;
 import com.qreal.wmp.editor.database.exceptions.NotFound;
 import com.qreal.wmp.thrift.gen.EditorServiceThrift;
 import com.qreal.wmp.thrift.gen.TDiagram;
@@ -21,7 +23,7 @@ public class EditorServletHandler implements EditorServiceThrift.Iface {
 
     private static final Logger logger = LoggerFactory.getLogger(EditorController.class);
 
-    private ApplicationContext context;
+    private final ApplicationContext context;
 
     public EditorServletHandler(ApplicationContext context) {
         this.context = context;
@@ -37,26 +39,54 @@ public class EditorServletHandler implements EditorServiceThrift.Iface {
     public long saveDiagram(TDiagram tDiagram) throws org.apache.thrift.TException {
         DiagramService diagramService = (DiagramService) context.getBean("diagramService");
         Diagram diagram = new Diagram(tDiagram);
-        return diagramService.saveDiagram(diagram, tDiagram.getFolderId());
+        long id = 0;
+        try {
+            id = diagramService.saveDiagram(diagram, tDiagram.getFolderId());
+        } catch (Aborted e) {
+            //TODO Here we should not return 0, but send exception to client side.
+            logger.error("saveDiagram method encountered exception Aborted. Instead of diagramId will be returned 0.",
+                    e);
+        } catch (ErrorConnection e) {
+            //TODO Here we should not return 0, but send exception to client side.
+            logger.error("saveDiagram method encountered exception ErrorConnection. Instead of diagramId will be  " +
+                    "returned 0.", e);
+        }
+        return id;
     }
 
     /**
-     * Rewrites diagram with id equal to {@diagram.id}.
+     * Rewrites diagram with id equal to diagram.id.
      *
-     * @param diagram diagram to rewrite ({@diagram.id} must be set correctly).
+     * @param diagram diagram to rewrite (diagram.id must be set correctly).
      */
     @Override
     public void rewriteDiagram(TDiagram diagram) {
         DiagramService diagramService = (DiagramService) context.getBean("diagramService");
         Diagram newDiagram = new Diagram(diagram);
-        diagramService.rewriteDiagram(newDiagram);
+        try {
+            diagramService.rewriteDiagram(newDiagram);
+        } catch (Aborted e) {
+            //TODO Here we should  send exception to client side.
+            logger.error("rewriteDiagram method encountered exception Aborted. Diagram was not rewrote.", e);
+        } catch (ErrorConnection e) {
+            //TODO Here we should not return 0, but send exception to client side.
+            logger.error("rewriteDiagram method encountered exception ErrorConnection. Diagram was not rewrote.", e);
+        }
     }
 
     /** Deletes diagram with specified id.*/
     @Override
     public void deleteDiagram(long diagramId) {
         DiagramService diagramService = (DiagramService) context.getBean("diagramService");
-        diagramService.deleteDiagram(diagramId);
+        try {
+            diagramService.deleteDiagram(diagramId);
+        } catch (Aborted e) {
+            //TODO Here we should  send exception to client side.
+            logger.error("deleteDiagram method encountered exception Aborted. Diagram was not deleted.", e);
+        } catch (ErrorConnection e) {
+            //TODO Here we should  send exception to client side.
+            logger.error("deleteDiagram method encountered exception ErrorConnection. Diagram was not deleted.", e);
+        }
     }
 
     /** Returns diagram with specified id.*/
@@ -71,6 +101,10 @@ public class EditorServletHandler implements EditorServiceThrift.Iface {
             //TODO Here we should not return null, but send exception to client side.
             logger.error("openDiagram method encountered exception NotFound. Instead of diagram will be returned null" +
                     ".", e);
+        } catch (ErrorConnection e) {
+            //TODO Here we should not return null, but send exception to client side.
+            logger.error("openDiagram method encountered exception ErrorConnection. Instead of diagram will be " +
+                    "returned null.", e);
         }
         return result;
     }
@@ -85,14 +119,34 @@ public class EditorServletHandler implements EditorServiceThrift.Iface {
     public long createFolder(TFolder folder) {
         DiagramService diagramService = (DiagramService) context.getBean("diagramService");
         Folder newFolder = new Folder(folder);
-        return diagramService.createFolder(newFolder);
+        long id = 0;
+        try {
+            id = diagramService.createFolder(newFolder);
+        } catch (Aborted e) {
+            //TODO Here we should not return 0, but send exception to client side.
+            logger.error("createFolder method encountered exception Aborted. Instead of folderId will be returned 0.",
+                    e);
+        } catch (ErrorConnection e) {
+            //TODO Here we should not return 0, but send exception to client side.
+            logger.error("createFolder method encountered exception ErrorConnection. Instead of folderId will be " +
+                            "returned 0.", e);
+        }
+        return id;
     }
 
     /** Deletes folder with specified id.*/
     @Override
     public void deleteFolder(long folderId) {
         DiagramService diagramService = (DiagramService) context.getBean("diagramService");
-        diagramService.deleteFolder(folderId);
+        try {
+            diagramService.deleteFolder(folderId);
+        } catch (Aborted e) {
+            //TODO Here we should  send exception to client side.
+            logger.error("deleteFolder method encountered exception Aborted. Folder was not deleted.", e);
+        } catch (ErrorConnection e) {
+            //TODO Here we should  send exception to client side.
+            logger.error("deleteFolder method encountered exception ErrorConnection. Folder was not deleted.", e);
+        }
     }
 
     /** Returns root folder of user.*/
@@ -106,6 +160,10 @@ public class EditorServletHandler implements EditorServiceThrift.Iface {
         } catch (NotFound e) {
             //TODO Here we should not return null, but send exception to client side.
             logger.error("getFolderTree method encountered exception NotFound. Instead of folder tree will be " +
+                    "returned null.", e);
+        } catch (ErrorConnection e) {
+            //TODO Here we should not return null, but send exception to client side.
+            logger.error("getFolderTree method encountered exception ErrorConnection. Instead of folder tree will be " +
                     "returned null.", e);
         }
         return result;

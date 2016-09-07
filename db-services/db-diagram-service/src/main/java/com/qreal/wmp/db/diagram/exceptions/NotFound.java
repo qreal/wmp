@@ -1,4 +1,4 @@
-package com.qreal.wmp.editor.database.exceptions;
+package com.qreal.wmp.db.diagram.exceptions;
 
 public class NotFound extends Exception {
     private final String id;
