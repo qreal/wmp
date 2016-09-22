@@ -22,7 +22,7 @@ public class Hibernate {
     private Properties hibernateProperties;
 
     /** Factory of DB sessions. Sessions created using dataSource bean. */
-    @Bean
+    @Bean(name = "sessionFactory")
     public SessionFactory sessionFactory() {
         LocalSessionFactoryBuilder sessionBuilder = new LocalSessionFactoryBuilder(dataSource);
         sessionBuilder.scanPackages("com.qreal.wmp.db.diagram.model");

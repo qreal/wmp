@@ -1,6 +1,7 @@
 package com.qreal.wmp.db.diagram.model;
 
 import com.qreal.wmp.thrift.gen.TDefaultDiagramNode;
+import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 import org.jetbrains.annotations.NotNull;
 
@@ -13,6 +14,7 @@ import java.util.stream.Collectors;
 /** Diagram's node.*/
 @Entity
 @Table(name = "nodes")
+@Data
 public class DefaultDiagramNode implements Serializable {
 
     @Id
@@ -114,7 +116,7 @@ public class DefaultDiagramNode implements Serializable {
             tDefaultDiagramNode.setType(type);
         }
 
-        if (properties != null) {
+        if (properties != null && !properties.isEmpty()) {
             tDefaultDiagramNode.setProperties(properties.stream().map(Property::toTProperty).
                     collect(Collectors.toSet()));
         }

@@ -1,6 +1,7 @@
 package com.qreal.wmp.db.diagram.model;
 
 import com.qreal.wmp.thrift.gen.TProperty;
+import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -9,6 +10,7 @@ import java.io.Serializable;
 /** Property of an entity.*/
 @Entity
 @Table(name = "properties")
+@Data
 public class Property implements Serializable {
 
     @Id

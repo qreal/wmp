@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class DiagramDbServiceHandler implements DiagramDbService.Iface {
 
-    private final DiagramDao diagramDao;
+    private DiagramDao diagramDao;
 
     public DiagramDbServiceHandler(ApplicationContext context) {
         diagramDao = (DiagramDao) context.getBean("diagramDao");
@@ -38,7 +38,7 @@ public class DiagramDbServiceHandler implements DiagramDbService.Iface {
     public TDiagram openDiagram(long diagramId) throws TNotFound {
         Diagram diagram = null;
         try {
-            diagram = diagramDao.openDiagram(diagramId);
+            diagram = diagramDao.getDiagram(diagramId);
         }
         catch (NotFound e) {
             throw new TNotFound(String.valueOf(diagramId), "Diagram not found.");
@@ -74,8 +74,9 @@ public class DiagramDbServiceHandler implements DiagramDbService.Iface {
             throw new TIdAlreadyDefined("Folder id not null. To save folder you should not assign id to folder.");
         }
         try {
-            id = diagramDao.createFolder(new Folder(folder));
+            id = diagramDao.saveFolder(new Folder(folder));
         } catch (Aborted e) {
+            //For now never happens
             throw new TAborted(e.getTextCause(), e.getMessage(), e.getFullClassName());
         }
         return id;
@@ -99,5 +100,20 @@ public class DiagramDbServiceHandler implements DiagramDbService.Iface {
             throw new TNotFound(username, "FolderTree for specified user not found.");
         }
         return folder.toTFolder();
+    }
+
+    /** Only for sake of testing. */
+    public DiagramDao getDiagramDao() {
+        return diagramDao;
+    }
+
+    /** Only for sake of testing. */
+    public void setDiagramDao(DiagramDao diagramDao) {
+        this.diagramDao = diagramDao;
+    }
+
+    /** Only for sake of testing. */
+    public void rewindDiagramDao() {
+        this.diagramDao = null;
     }
 }

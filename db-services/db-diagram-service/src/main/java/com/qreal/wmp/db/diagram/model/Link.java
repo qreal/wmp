@@ -1,6 +1,7 @@
 package com.qreal.wmp.db.diagram.model;
 
 import com.qreal.wmp.thrift.gen.TLink;
+import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 import org.jetbrains.annotations.NotNull;
 
@@ -13,6 +14,7 @@ import java.util.stream.Collectors;
 /** Link between nodes.*/
 @Entity
 @Table(name = "links")
+@Data
 public class Link implements Serializable {
 
     @Id
@@ -94,7 +96,7 @@ public class Link implements Serializable {
             tLink.setGraphicalId(graphicalId);
         }
 
-        if (properties != null) {
+        if (properties != null && !properties.isEmpty()) {
             tLink.setProperties(properties.stream().map(Property::toTProperty).collect(Collectors.toSet()));
         }
         return tLink;

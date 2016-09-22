@@ -19,7 +19,7 @@ public interface DiagramDao {
     Long saveDiagram(@NotNull Diagram diagram, Long folderId) throws Aborted;
 
     /** Returns diagram with specified id.*/
-    @NotNull Diagram openDiagram(Long diagramId) throws NotFound;
+    @NotNull Diagram getDiagram(Long diagramId) throws NotFound;
 
     /** Checks whether diagram with specified id exists.*/
     boolean isExistsDiagram(Long diagramId);
@@ -40,7 +40,7 @@ public interface DiagramDao {
      * @param folder folder to create (Id must not be set)
      * @return new id of folder
      */
-    Long createFolder(@NotNull Folder folder) throws Aborted;
+    Long saveFolder(@NotNull Folder folder) throws Aborted;
 
     /** Checks whether folder with specified id exists.*/
     boolean isExistsFolder(Long folderId);

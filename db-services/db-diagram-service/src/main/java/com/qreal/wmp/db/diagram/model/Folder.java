@@ -1,17 +1,21 @@
 package com.qreal.wmp.db.diagram.model;
 
 import com.qreal.wmp.thrift.gen.TFolder;
+import lombok.Data;
 import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /** Folder with diagrams and other folders.*/
 @Entity
 @Table(name = "folders")
+@Data
 public class Folder implements Serializable {
 
     @Id
@@ -25,16 +29,18 @@ public class Folder implements Serializable {
     @Column(name = "username")
     private String userName;
 
+    //FIXME
+    //Do we really need this field?
     @Column(name = "folder_parent_id")
     private Long folderParentId;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinColumn(name = "folder_parent_id", insertable = false, updatable = false)
-    private List<Folder> childrenFolders = new ArrayList<>();
+    private Set<Folder> childrenFolders = new HashSet<>();
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinColumn(name = "folder_id", referencedColumnName = "folder_id")
-    private List<Diagram> diagrams = new ArrayList<>();
+    private Set<Diagram> diagrams = new HashSet<>();
 
     public Folder() {
     }
@@ -64,11 +70,11 @@ public class Folder implements Serializable {
         }
 
         if (tFolder.isSetChildrenFolders()) {
-            childrenFolders = tFolder.getChildrenFolders().stream().map(Folder::new).collect(Collectors.toList());
+            childrenFolders = tFolder.getChildrenFolders().stream().map(Folder::new).collect(Collectors.toSet());
         }
 
         if (tFolder.isSetDiagrams()) {
-            diagrams = tFolder.getDiagrams().stream().map(Diagram::new).collect(Collectors.toList());
+            diagrams = tFolder.getDiagrams().stream().map(Diagram::new).collect(Collectors.toSet());
         }
 
     }
@@ -93,11 +99,11 @@ public class Folder implements Serializable {
             tFolder.setFolderParentId(folderParentId);
         }
 
-        if (childrenFolders != null) {
+        if (childrenFolders != null && !childrenFolders.isEmpty()) {
             tFolder.setChildrenFolders(childrenFolders.stream().map(Folder::toTFolder).collect(Collectors.toSet()));
         }
 
-        if (diagrams != null) {
+        if (diagrams != null && !diagrams.isEmpty()) {
             tFolder.setDiagrams(diagrams.stream().map(Diagram::toTDiagram).collect(Collectors.toSet()));
         }
 
@@ -128,21 +134,21 @@ public class Folder implements Serializable {
         return this.folderParentId;
     }
 
-    public void setChildrenFolders(List<Folder> folderParentId) {
+    public void setChildrenFolders(Set<Folder> folderParentId) {
         this.childrenFolders = folderParentId;
     }
 
     @NotNull
-    public List<Folder> getChildrenFolders() {
+    public Set<Folder> getChildrenFolders() {
         return this.childrenFolders;
     }
 
-    public void setDiagrams(List<Diagram> diagrams) {
+    public void setDiagrams(Set<Diagram> diagrams) {
         this.diagrams = diagrams;
     }
 
     @NotNull
-    public List<Diagram> getDiagrams() {
+    public Set<Diagram> getDiagrams() {
         return this.diagrams;
     }
 

@@ -2,8 +2,10 @@ package com.qreal.wmp.db.diagram.config;
 
 import com.qreal.wmp.db.diagram.exceptions.Aborted;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.ComponentScan;
 
 /** Main class of program. */
+@ComponentScan("com.qreal.wmp.db.diagram")
 public class AppInit {
     /** Main function creates context and starts server.*/
     public static void main(String[] args) throws Aborted {
@@ -11,6 +13,7 @@ public class AppInit {
         context.scan("com.qreal.wmp.db.diagram.config");
         context.scan("com.qreal.wmp.db.diagram.dao");
         context.scan("com.qreal.wmp.db.diagram.server");
+        context.scan("com.qreal.wmp.db.diagram.test");
         context.register(AppInit.class);
         context.refresh();
     }

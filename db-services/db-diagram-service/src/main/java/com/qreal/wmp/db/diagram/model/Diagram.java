@@ -1,6 +1,7 @@
 package com.qreal.wmp.db.diagram.model;
 
 import com.qreal.wmp.thrift.gen.TDiagram;
+import lombok.Data;
 import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.*;
@@ -14,6 +15,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 /** Diagram (now only graphs).*/
 @Entity
 @Table(name = "diagrams")
+@Data
 public class Diagram implements Serializable {
 
     @Id
@@ -69,12 +71,12 @@ public class Diagram implements Serializable {
             tDiagram.setName(name);
         }
 
-        if (nodes != null) {
+        if (nodes != null && !nodes.isEmpty()) {
             tDiagram.setNodes(nodes.stream().map(DefaultDiagramNode::toTDefaultDiagramNode).
                     collect(Collectors.toSet()));
         }
 
-        if (links != null) {
+        if (links != null && !links.isEmpty()) {
             tDiagram.setLinks(links.stream().map(Link::toTLink).collect(Collectors.toSet()));
         }
 

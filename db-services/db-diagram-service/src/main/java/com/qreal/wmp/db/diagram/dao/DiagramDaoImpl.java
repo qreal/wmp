@@ -15,6 +15,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Implementation of Diagram DAO.
@@ -23,7 +24,7 @@ import java.util.List;
 @Repository
 @Component("diagramDao")
 @Transactional
-class DiagramDaoImpl implements DiagramDao {
+public class DiagramDaoImpl implements DiagramDao {
 
     private static final Logger logger = LoggerFactory.getLogger(DiagramDaoImpl.class);
 
@@ -64,7 +65,7 @@ class DiagramDaoImpl implements DiagramDao {
                 folderId);
         Session session = sessionFactory.getCurrentSession();
         Folder folder = null;
-        List<Diagram> diagrams = null;
+        Set<Diagram> diagrams = null;
         try {
             folder = getFolder(folderId);
             diagrams = folder.getDiagrams();
@@ -87,14 +88,14 @@ class DiagramDaoImpl implements DiagramDao {
      */
     @Override
     @NotNull
-    public Diagram openDiagram(Long diagramId) throws NotFound {
-        logger.trace("openDiagram method called with parameters: id = {}", diagramId);
+    public Diagram getDiagram(Long diagramId) throws NotFound {
+        logger.trace("getDiagram method called with parameters: id = {}", diagramId);
         Session session = sessionFactory.getCurrentSession();
         Diagram diagram = (Diagram) session.get(Diagram.class, diagramId);
         if (diagram == null) {
             throw new NotFound(String.valueOf(diagramId), "Diagram with specified Id not found.");
         }
-        logger.trace("openDiagram method extracted diagram");
+        logger.trace("getDiagram method extracted diagram");
         return diagram;
     }
 
@@ -113,8 +114,7 @@ class DiagramDaoImpl implements DiagramDao {
      * @param diagram diagram to rewrite (Id must be set correctly).
      */
     @Override
-    public void rewriteDiagram(@NotNull Diagram diagram) throws Aborted {
-        logger.trace("rewriteDiagram method called with parameters: diagram = {}", diagram.getName());
+    public void rewriteDiagram(@NotNull Diagram diagram) throws Aborted {logger.trace("rewriteDiagram method called with parameters: diagram = {}", diagram.getName());
         Session session = sessionFactory.getCurrentSession();
         if (!isExistsDiagram(diagram.getId())) {
             throw new Aborted("Diagram with specified Id doesn't exist. Use save instead.", "rewriteDiagram safely " +
@@ -149,12 +149,12 @@ class DiagramDaoImpl implements DiagramDao {
      * @param folder folder to create (Id must not be set)
      */
     @Override
-    public Long createFolder(@NotNull Folder folder) {
-        logger.trace("createFolder method called with parameters: folder = {}", folder.getFolderName());
+    public Long saveFolder(@NotNull Folder folder) {
+        logger.trace("saveFolder method called with parameters: folder = {}", folder.getFolderName());
         Session session = sessionFactory.getCurrentSession();
         session.save(folder);
         Long folderId = folder.getId();
-        logger.trace("createFolder method created folder with id {}", folderId);
+        logger.trace("saveFolder method created folder with id {}", folderId);
         return folderId;
     }
 
@@ -176,7 +176,7 @@ class DiagramDaoImpl implements DiagramDao {
     public void deleteFolder(Long folderId) throws Aborted {
         logger.trace("deleteFolder method called with parameters: folderId = {}", folderId);
         Session session = sessionFactory.getCurrentSession();
-        if (!isExistsDiagram(folderId)) {
+        if (!isExistsFolder(folderId)) {
             throw new Aborted("Folder with specified Id doesn't exist.", "deleteFolder safely aborted.",
                     DiagramDaoImpl.class.getName());
         }
