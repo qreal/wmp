@@ -1,6 +1,7 @@
 package com.qreal.wmp.db.user.model.diagram;
 
 import com.qreal.wmp.thrift.gen.TDiagram;
+import lombok.Data;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
@@ -9,6 +10,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /** Diagram (now only graphs).*/
+@Data
 public class Diagram implements Serializable {
 
     private Long id;

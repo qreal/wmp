@@ -2,16 +2,19 @@ package com.qreal.wmp.db.user.model.auth;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.qreal.wmp.thrift.gen.TUser;
+import lombok.Data;
 import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 /** User in authorization service.*/
 @Entity
 @Table(name = "users")
+@Data
 public class UserSerial {
     /** Name of user (primary key too).*/
     private String username;

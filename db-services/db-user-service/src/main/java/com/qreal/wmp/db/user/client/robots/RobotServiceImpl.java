@@ -162,7 +162,7 @@ public class RobotServiceImpl implements RobotService {
             try {
                 client.updateRobot(tRobot);
             } catch (TIdNotDefined e) {
-                logger.error("update method encountered exception IdNotDefined. You've tried to update robot, but not" +
+                logger.error("Update method encountered exception IdNotDefined. You've tried to update robot, but not" +
                         " specified it's id.", e);
             } catch (TAborted e) {
                 throw new Aborted(e.getTextCause(), e.getMessage(), e.getFullClassName());

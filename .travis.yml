@@ -44,8 +44,8 @@ script:
   - mvn test
   - cd ../db-robot-store-service
   - mvn test
-#  - cd ../db-user-service
-#  - mvn test
+  - cd ../db-user-service
+  - mvn test
   - cd ../..
 
   #run services

@@ -151,7 +151,7 @@
             <artifactId>assertj-core</artifactId>
             <version>3.5.2</version>
         </dependency>
-        
+
         <!-- Code generation-->
         <dependency>
             <groupId>org.projectlombok</groupId>

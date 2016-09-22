@@ -1,14 +1,18 @@
 package com.qreal.wmp.db.user.model.auth;
 
 import com.qreal.wmp.thrift.gen.TUserRole;
+import lombok.Data;
 
 import javax.persistence.*;
+
+import java.util.Objects;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
 /** UserRole in authorization service.*/
 @Entity
 @Table(name = "user_roles")
+@Data
 public class UserRoleSerial {
     /** Surrogate key for role (maybe static table for roles?).*/
     private Integer id;

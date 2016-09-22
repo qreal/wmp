@@ -35,10 +35,10 @@ public class UserDaoImpl implements UserDao {
     private final SessionFactory sessionFactory;
 
     /** RobotService used to resolve foreign key dependencies.*/
-    private final RobotService robotService;
+    private RobotService robotService;
 
     /** DiagramService used to resolve foreign key dependencies.*/
-    private final DiagramService diagramService;
+    private DiagramService diagramService;
 
     @Autowired
     public UserDaoImpl(SessionFactory sessionFactory, RobotService robotService, DiagramService diagramService) {
@@ -53,11 +53,11 @@ public class UserDaoImpl implements UserDao {
      * User's roles will be saved at local DB using Hibernate ORM.
      * Consistency kept using RPC calls to RobotsService.
      *
-     * @param user user to save (Id must not be set)
+     * @param user user to saveUser (Id must not be set)
      */
     @Override
-    public void save(@NotNull TUser user) throws Aborted, ErrorConnection {
-        logger.trace("save method called with parameters: user = {}", user.getUsername());
+    public void saveUser(@NotNull TUser user) throws Aborted, ErrorConnection {
+        logger.trace("saveUser method called with parameters: user = {}", user.getUsername());
 
         Session session = sessionFactory.getCurrentSession();
         UserSerial userSerial = saveOrUpdateRobots(user);
@@ -70,7 +70,7 @@ public class UserDaoImpl implements UserDao {
         diagramService.createRootFolder(user.getUsername());
         logger.trace("rootfolder {} created", user.getUsername());
 
-        logger.trace("save method saved user {}", user.getUsername());
+        logger.trace("saveUser method saved user {}", user.getUsername());
     }
 
     /**
@@ -97,17 +97,17 @@ public class UserDaoImpl implements UserDao {
      * Consistency kept using RPC calls to RobotsService.
      */
     @Override
-    public void update(@NotNull TUser tUser) throws Aborted, ErrorConnection {
-        logger.trace("update method called with parameters: username = {}", tUser.getUsername());
+    public void updateUser(@NotNull TUser tUser) throws Aborted, ErrorConnection {
+        logger.trace("updateUser method called with parameters: username = {}", tUser.getUsername());
         Session session = sessionFactory.getCurrentSession();
         if (!isExistsUser(tUser.getUsername())) {
             logger.error("User with specified username doesn't exists.");
-            throw new Aborted("User with specified username doesn't exists", "update safely aborted",
+            throw new Aborted("User with specified username doesn't exists", "updateUser safely aborted",
                     UserDaoImpl.class.getName());
         }
         UserSerial userSerial = saveOrUpdateRobots(tUser);
         session.merge(userSerial);
-        logger.trace("update method updated user");
+        logger.trace("updateUser method updated user");
 
     }
 
@@ -122,6 +122,42 @@ public class UserDaoImpl implements UserDao {
         Session session = sessionFactory.getCurrentSession();
         UserSerial userSerial = (UserSerial) session.get(UserSerial.class, username);
         return userSerial != null;
+    }
+
+    /** For the sake of testing.*/
+    @Override
+    public void setRobotService(RobotService robotService) {
+        this.robotService = robotService;
+    }
+
+    /** For the sake of testing.*/
+    @Override
+    public RobotService getRobotService() {
+        return robotService;
+    }
+
+    /** For the sake of testing.*/
+    @Override
+    public void rewindRobotService() {
+        robotService = null;
+    }
+
+    /** For the sake of testing.*/
+    @Override
+    public void setDiagramService(DiagramService diagramService) {
+        this.diagramService = diagramService;
+    }
+
+    /** For the sake of testing.*/
+    @Override
+    public DiagramService getDiagramService() {
+        return diagramService;
+    }
+
+    /** For the sake of testing.*/
+    @Override
+    public void rewindDiagramService() {
+        this.diagramService = null;
     }
 
 
@@ -167,10 +203,12 @@ public class UserDaoImpl implements UserDao {
     }
 
     private UserSerial addUserRole(@NotNull UserSerial userSerial) {
-        Set<UserRoleSerial> roles = new HashSet<>();
-        UserRoleSerial userRole = new UserRoleSerial(ROLE_USER);
-        roles.add(userRole);
-        userSerial.setRoles(roles);
+        if (!userSerial.getRoles().contains(new UserRoleSerial(ROLE_USER))) {
+            Set<UserRoleSerial> roles = new HashSet<>();
+            UserRoleSerial userRole = new UserRoleSerial(ROLE_USER);
+            roles.add(userRole);
+            userSerial.setRoles(roles);
+        }
         return userSerial;
     }
 

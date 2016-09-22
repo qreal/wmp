@@ -1,5 +1,7 @@
 package com.qreal.wmp.db.user.dao;
 
+import com.qreal.wmp.db.user.client.diagrams.DiagramService;
+import com.qreal.wmp.db.user.client.robots.RobotService;
 import com.qreal.wmp.db.user.exceptions.Aborted;
 import com.qreal.wmp.db.user.exceptions.ErrorConnection;
 import com.qreal.wmp.db.user.exceptions.NotFound;
@@ -13,9 +15,9 @@ public interface UserDao {
     /**
      * Saves user.
      *
-     * @param user user to save (Id must not be set)
+     * @param user user to saveUser (Id must not be set)
      */
-    void save(@NotNull TUser user) throws Aborted, ErrorConnection;
+    void saveUser(@NotNull TUser user) throws Aborted, ErrorConnection;
 
     /**
      * Finds user by UserName.
@@ -28,9 +30,9 @@ public interface UserDao {
     /**
      * Updates user state.
      *
-     * @param user user to update (Id must be set)
+     * @param user user to updateUser (Id must be set)
      */
-    void update(@NotNull TUser user) throws Aborted, ErrorConnection;
+    void updateUser(@NotNull TUser user) throws Aborted, ErrorConnection;
 
     /**
      * Test if user with specified name exists.
@@ -39,4 +41,22 @@ public interface UserDao {
      * @return [description]
      */
     boolean isExistsUser(String username);
+
+    /** For the sake of testing.*/
+    void setRobotService(RobotService robotService);
+
+    /** For the sake of testing.*/
+    RobotService getRobotService();
+
+    /** For the sake of testing.*/
+    void rewindRobotService();
+
+    /** For the sake of testing.*/
+    void setDiagramService(DiagramService diagramService);
+
+    /** For the sake of testing.*/
+    DiagramService getDiagramService();
+
+    /** For the sake of testing.*/
+    void rewindDiagramService();
 }

@@ -1,9 +1,12 @@
 package com.qreal.wmp.db.user.model.diagram;
 
 import com.qreal.wmp.thrift.gen.TProperty;
+import lombok.Data;
+
 import java.io.Serializable;
 
 /** Property of an entity.*/
+@Data
 public class Property implements Serializable {
 
     private String propertyId;

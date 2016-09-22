@@ -4,8 +4,10 @@ import com.qreal.wmp.db.user.exceptions.Aborted;
 import com.qreal.wmp.db.user.exceptions.ErrorConnection;
 import com.qreal.wmp.db.user.exceptions.NotFound;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.ComponentScan;
 
 /** Main class of program. */
+@ComponentScan("com.qreal.wmp.db.user")
 public class AppInit {
 
     /** Main function creates context and starts server.*/
@@ -15,6 +17,8 @@ public class AppInit {
         context.scan("com.qreal.wmp.db.user.dao");
         context.scan("com.qreal.wmp.db.user.client");
         context.scan("com.qreal.wmp.db.user.server");
+        context.scan("com.qreal.wmp.db.user.test");
+
 
         context.register(AppInit.class);
         context.refresh();

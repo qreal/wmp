@@ -10,7 +10,7 @@ import org.springframework.context.ApplicationContext;
 /** Thrift server side handler for UserDBService.*/
 public class UserDbServiceHandler implements UserDbService.Iface {
 
-    private final UserDao userDao;
+    private UserDao userDao;
 
     public UserDbServiceHandler(ApplicationContext context) {
         userDao = (UserDao) context.getBean("userDao");
@@ -20,10 +20,10 @@ public class UserDbServiceHandler implements UserDbService.Iface {
     @Override
     public void save(TUser tUser) throws TIdNotDefined, TAborted, TErrorConnection {
         if (!tUser.isSetUsername()) {
-            throw new TIdNotDefined("User username is null. To save user you should assign username to user.");
+            throw new TIdNotDefined("User username is null. To saveUser user you should assign username to user.");
         }
         try {
-            userDao.save(tUser);
+            userDao.saveUser(tUser);
         } catch (ErrorConnection e) {
             throw new TErrorConnection(e.getNameClient(), e.getMessage());
         } catch (Aborted e) {
@@ -37,7 +37,7 @@ public class UserDbServiceHandler implements UserDbService.Iface {
             throw new TIdNotDefined("User username is null. To rewrite user you should specify username.");
         }
         try {
-            userDao.update(user);
+            userDao.updateUser(user);
         } catch (ErrorConnection e) {
             throw new TErrorConnection(e.getNameClient(), e.getMessage());
         } catch (Aborted e) {
@@ -61,5 +61,20 @@ public class UserDbServiceHandler implements UserDbService.Iface {
     @Override
     public boolean isUserExist(String username) {
         return userDao.isExistsUser(username);
+    }
+
+    /** Only for sake of testing. */
+    public UserDao getUserDao() {
+        return userDao;
+    }
+
+    /** Only for sake of testing. */
+    public void setUserDao(UserDao userDao) {
+        this.userDao = userDao;
+    }
+
+    /** Only for sake of testing. */
+    public void rewindUserDao() {
+        this.userDao = null;
     }
 }
