@@ -11,7 +11,7 @@ import org.springframework.context.ApplicationContext;
 /** Thrift server side handler for RobotDBService.*/
 public class RobotDbServiceHandler implements RobotDbService.Iface {
 
-    private final RobotDao robotDao;
+    private RobotDao robotDao;
 
     public RobotDbServiceHandler(ApplicationContext context) {
         robotDao = (RobotDao) context.getBean("robotDao");
@@ -22,10 +22,10 @@ public class RobotDbServiceHandler implements RobotDbService.Iface {
     public long registerRobot(TRobot tRobot) throws TAborted, TIdAlreadyDefined {
         long id = 0;
         if (tRobot.isSetId()) {
-            throw new TIdAlreadyDefined("Robot id not null. To save robot you should not assign id to robot.");
+            throw new TIdAlreadyDefined("Robot id not null. To saveRobot robot you should not assign id to robot.");
         }
         try {
-            id = robotDao.save(new RobotSerial(tRobot));
+            id = robotDao.saveRobot(new RobotSerial(tRobot));
         } catch (Aborted e) {
             throw new TAborted(e.getTextCause(), e.getMessage(), e.getFullClassName());
         }
@@ -36,7 +36,7 @@ public class RobotDbServiceHandler implements RobotDbService.Iface {
     public TRobot findById(long robotId) throws TNotFound {
         RobotSerial robot = null;
         try {
-            robot = robotDao.findById(robotId);
+            robot = robotDao.getRobot(robotId);
         } catch (NotFound e) {
             throw new TNotFound(String.valueOf(robotId), "Robot not found.");
         }
@@ -46,7 +46,7 @@ public class RobotDbServiceHandler implements RobotDbService.Iface {
     @Override
     public void deleteRobot(long robotId) throws TAborted, TErrorConnection {
         try {
-            robotDao.delete(robotId);
+            robotDao.deleteRobot(robotId);
         } catch (ErrorConnection e) {
             throw new TErrorConnection(e.getNameClient(), e.getMessage());
         } catch (Aborted e) {
@@ -69,5 +69,20 @@ public class RobotDbServiceHandler implements RobotDbService.Iface {
         } catch (Aborted e) {
             throw new TAborted(e.getTextCause(), e.getMessage(), e.getFullClassName());
         }
+    }
+
+    /** Only for sake of testing. */
+    public RobotDao getRobotDao() {
+        return robotDao;
+    }
+
+    /** Only for sake of testing. */
+    public void setRobotDao(RobotDao robotDao) {
+        this.robotDao = robotDao;
+    }
+
+    /** Only for sake of testing. */
+    public void rewindRobotDao() {
+        this.robotDao = null;
     }
 }

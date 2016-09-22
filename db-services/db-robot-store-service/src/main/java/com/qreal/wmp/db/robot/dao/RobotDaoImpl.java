@@ -5,6 +5,7 @@ import com.qreal.wmp.db.robot.exceptions.Aborted;
 import com.qreal.wmp.db.robot.exceptions.ErrorConnection;
 import com.qreal.wmp.db.robot.exceptions.NotFound;
 import com.qreal.wmp.db.robot.model.robot.RobotSerial;
+import com.qreal.wmp.thrift.gen.TRobot;
 import com.qreal.wmp.thrift.gen.TUser;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -16,8 +17,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 @Transactional
 @Component("robotDao")
 @Repository
@@ -26,7 +25,7 @@ public class RobotDaoImpl implements RobotDao {
     private static final Logger logger = LoggerFactory.getLogger(RobotDaoImpl.class);
 
     /** UserService used to resolve foreign key dependencies.*/
-    private final UserService userService;
+    private UserService userService;
 
     private final SessionFactory sessionFactory;
 
@@ -36,18 +35,37 @@ public class RobotDaoImpl implements RobotDao {
         this.userService = userService;
     }
 
+    /** Used for the sake of testing.*/
+    @Override
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
+
+    /** Used for the sake of testing.*/
+    @Override
+    public UserService getUserService() {
+        return userService;
+    }
+
+
+    /** Used for the sake of testing.*/
+    @Override
+    public void rewindUserService() {
+        this.userService = null;
+    }
+
     /**
      * Saves robot at local DB using Hibernate ORM.
      * Foreign key on User (in username) will NOT be checked. (at least for now)
      *
-     * @param robot robot to save (Id must not be set).
+     * @param robot robot to saveRobot (Id must not be set).
      */
     @Override
-    public long save(@NotNull RobotSerial robot) {
-        logger.trace("save method called with parameters: robot = {}", robot.getName());
+    public long saveRobot(@NotNull RobotSerial robot) {
+        logger.trace("saveRobot method called with parameters: robot = {}", robot.getName());
         Session session = sessionFactory.getCurrentSession();
         session.save(robot);
-        logger.trace("save method saved robot {}", robot.getName());
+        logger.trace("saveRobot method saved robot {}", robot.getName());
         return robot.getId();
     }
 
@@ -56,19 +74,19 @@ public class RobotDaoImpl implements RobotDao {
      * Loads User associated with this robot using UserService and deletes robot from it's list of robots.
      * Consistency kept using RPC calls to UserService.
      *
-     * @param robotId robot to delete (Id must be set correctly).
+     * @param robotId robot to deleteRobot (Id must be set correctly).
      */
     @Override
-    public void delete(long robotId) throws Aborted, ErrorConnection {
-        logger.trace("delete method called with parameters: id = {}", robotId);
+    public void deleteRobot(long robotId) throws Aborted, ErrorConnection {
+        logger.trace("deleteRobot method called with parameters: id = {}", robotId);
         Session session = sessionFactory.getCurrentSession();
 
         RobotSerial robot = null;
         try {
-            robot = findById(robotId);
+            robot = getRobot(robotId);
         } catch (NotFound e) {
             logger.error("Robot with specified Id doesn't exist.", e);
-            throw new Aborted("Robot with specified Id doesn't exist.", "delete was safely aborted",
+            throw new Aborted("Robot with specified Id doesn't exist.", "deleteRobot was safely aborted",
                     RobotDaoImpl.class.getName());
         }
 
@@ -80,9 +98,10 @@ public class RobotDaoImpl implements RobotDao {
         } catch (NotFound e) {
             logger.error("Inconsistent state: Robot contains user with id {}, but this user doesn't exist.", owner, e);
             throw new Aborted("Inconsistent state: Robot contains user with id {}, but this user doesn't exist.",
-                    "delete safely aborted", RobotDaoImpl.class.getName());
+                    "deleteRobot safely aborted", RobotDaoImpl.class.getName());
         }
-        tUser.getRobots().remove(robot.toTRobot());
+        TRobot tRobot = robot.toTRobot();
+        tUser.getRobots().remove(tRobot);
         userService.update(tUser);
 
         logger.trace("Record from user {} deleted", robot.getOwner());
@@ -91,7 +110,7 @@ public class RobotDaoImpl implements RobotDao {
         session.delete(robot);
         logger.trace("Robot {] deleted", robot.getName());
 
-        logger.trace("delete method deleted robot with id {}", robotId);
+        logger.trace("deleteRobot method deleted robot with id {}", robotId);
     }
 
     /**
@@ -101,8 +120,8 @@ public class RobotDaoImpl implements RobotDao {
      */
     @Override
     @NotNull
-    public RobotSerial findById(long robotId) throws NotFound {
-        logger.trace("findById method called with parameters: robotId = {}", robotId);
+    public RobotSerial getRobot(long robotId) throws NotFound {
+        logger.trace("getRobot method called with parameters: robotId = {}", robotId);
         Session session = sessionFactory.getCurrentSession();
 
         RobotSerial robot = (RobotSerial) session.get(RobotSerial.class, robotId);
@@ -136,7 +155,7 @@ public class RobotDaoImpl implements RobotDao {
         Session session = sessionFactory.getCurrentSession();
         if (!isExistsRobot(robot.getId())) {
             logger.error("Robot with specified Id doesn't exists.");
-            throw new Aborted("Robot with specified Id doesn't exists. Use save instead.", "updateRobot safely " +
+            throw new Aborted("Robot with specified Id doesn't exists. Use saveRobot instead.", "updateRobot safely " +
                     "aborted.", RobotDaoImpl.class.getName());
         }
         session.merge(robot);

@@ -42,8 +42,8 @@ script:
   - cd db-services
   - cd db-diagram-service
   - mvn test
-#  - cd ../db-robot-store-service
-#  - mvn test
+  - cd ../db-robot-store-service
+  - mvn test
 #  - cd ../db-user-service
 #  - mvn test
   - cd ../..

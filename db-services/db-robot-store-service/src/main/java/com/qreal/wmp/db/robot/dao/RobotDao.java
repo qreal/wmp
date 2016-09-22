@@ -1,5 +1,6 @@
 package com.qreal.wmp.db.robot.dao;
 
+import com.qreal.wmp.db.robot.client.users.UserService;
 import com.qreal.wmp.db.robot.exceptions.Aborted;
 import com.qreal.wmp.db.robot.exceptions.ErrorConnection;
 import com.qreal.wmp.db.robot.exceptions.NotFound;
@@ -12,16 +13,16 @@ public interface RobotDao {
     /**
      * Saves robot.
      *
-     * @param robot robot to save (Id must not be set).
+     * @param robot robot to saveRobot (Id must not be set).
      */
-    long save(@NotNull RobotSerial robot) throws Aborted;
+    long saveRobot(@NotNull RobotSerial robot) throws Aborted;
 
     /**
      * Deletes robot.
      *
-     * @param robotId robot to delete (Id must be set correctly).
+     * @param robotId robot to deleteRobot (Id must be set correctly).
      */
-    void delete(long robotId) throws Aborted, ErrorConnection;
+    void deleteRobot(long robotId) throws Aborted, ErrorConnection;
 
     /**
      * Finds robot with specified id.
@@ -29,7 +30,7 @@ public interface RobotDao {
      * @param robotId id of robot to find
      */
     @NotNull
-    RobotSerial findById(long robotId) throws NotFound;
+    RobotSerial getRobot(long robotId) throws NotFound;
 
     /**
      * Tells if robot with specified name exists.
@@ -44,4 +45,14 @@ public interface RobotDao {
      * @param robot robot to update (Id must be set correctly)
      */
     void updateRobot(@NotNull RobotSerial robot) throws Aborted;
+
+    /** For the sake of testing.*/
+    void setUserService(UserService userService);
+
+    /** For the sake of testing.*/
+    UserService getUserService();
+
+    /** For the sake of testing.*/
+    void rewindUserService();
+
 }

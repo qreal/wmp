@@ -1,9 +1,11 @@
 package com.qreal.wmp.db.robot.model.robot;
 
 import com.qreal.wmp.thrift.gen.TRobot;
+import lombok.Data;
 
 import javax.persistence.*;
 
+import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
@@ -12,6 +14,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 /** TRIK robot in dashboard service.*/
 @Entity
 @Table(name = "robots")
+@Data
 public class RobotSerial {
 
     /** Surrogate key for RobotSerial.*/
@@ -86,24 +89,6 @@ public class RobotSerial {
 
     public void setSsid(String ssid) {
         this.ssid = ssid;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        if (this == object) {
-            return true;
-        }
-        if (!(object instanceof RobotSerial)) {
-            return false;
-        }
-
-        RobotSerial robot = (RobotSerial) object;
-        return name.equals(robot.name);
-    }
-
-    @Override
-    public int hashCode() {
-        return name.hashCode();
     }
 
     /** Converter from RobotSerial to Thrift TRobot.*/
