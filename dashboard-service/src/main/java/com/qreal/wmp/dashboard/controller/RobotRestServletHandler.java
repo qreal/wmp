@@ -1,8 +1,8 @@
 package com.qreal.wmp.dashboard.controller;
 
 import com.qreal.wmp.dashboard.common.utils.AuthenticatedUser;
-import com.qreal.wmp.dashboard.database.exceptions.Aborted;
-import com.qreal.wmp.dashboard.database.exceptions.ErrorConnection;
+import com.qreal.wmp.dashboard.database.exceptions.AbortedException;
+import com.qreal.wmp.dashboard.database.exceptions.ErrorConnectionException;
 import com.qreal.wmp.dashboard.database.robots.client.RobotService;
 import com.qreal.wmp.dashboard.database.robots.model.Robot;
 import com.qreal.wmp.thrift.gen.RobotServiceThrift;
@@ -38,10 +38,10 @@ public class RobotRestServletHandler implements RobotServiceThrift.Iface {
         RobotService robotService = (RobotService) context.getBean("robotService");
         try {
             robotService.registerByUsername(new Robot(robotName, ssid), AuthenticatedUser.getUserName());
-        } catch (Aborted e) {
+        } catch (AbortedException e) {
             //TODO Here we should send exception to client side.
             logger.error("registerRobot method encountered exception Aborted. Robot was not registered", e);
-        } catch (ErrorConnection e) {
+        } catch (ErrorConnectionException e) {
             //TODO Here we should send exception to client side.
             logger.error("registerRobot method encountered exception ErrorConnection. Robot was not registered", e);
         }
@@ -61,10 +61,10 @@ public class RobotRestServletHandler implements RobotServiceThrift.Iface {
         RobotService robotService = (RobotService) context.getBean("robotService");
         try {
             robotService.delete(robotId);
-        } catch (Aborted e) {
+        } catch (AbortedException e) {
             //TODO Here we should send exception to client side.
             logger.error("deleteRobot method encountered exception Aborted. Robot was not deleted", e);
-        } catch (ErrorConnection e) {
+        } catch (ErrorConnectionException e) {
             //TODO Here we should send exception to client side.
             logger.error("deleteRobot method encountered exception ErrorConnection. Robot was not deleted", e);
         }

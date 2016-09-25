@@ -1,7 +1,7 @@
 package com.qreal.wmp.db.user.client.diagrams;
 
-import com.qreal.wmp.db.user.exceptions.Aborted;
-import com.qreal.wmp.db.user.exceptions.ErrorConnection;
+import com.qreal.wmp.db.user.exceptions.AbortedException;
+import com.qreal.wmp.db.user.exceptions.ErrorConnectionException;
 import com.qreal.wmp.db.user.model.diagram.Folder;
 import com.qreal.wmp.thrift.gen.DiagramDbService;
 import com.qreal.wmp.thrift.gen.TAborted;
@@ -48,7 +48,7 @@ public class DiagramServiceImpl implements DiagramService {
     }
 
     @Override
-    public void createRootFolder(String userName) throws Aborted, ErrorConnection {
+    public void createRootFolder(String userName) throws AbortedException, ErrorConnectionException {
         logger.trace("createRootFolder method called with parameters: username = {}", userName);
         Folder rootFolder = new Folder("root", userName);
         try {
@@ -60,19 +60,19 @@ public class DiagramServiceImpl implements DiagramService {
                 logger.error("createRootFolder method encountered exception IdAlreadyDefined. Folder was not created",
                         e);
             } catch (TAborted e) {
-                throw new Aborted(e.getTextCause(), e.getMessage(), e.getFullClassName());
+                throw new AbortedException(e.getTextCause(), e.getMessage(), e.getFullClassName());
             } catch (TException e) {
                 logger.error("Client DiagramService encountered problem while sending createFolder request with " +
                         "parameters: newFolder = {}", rootFolder.getFolderName(), e);
-                throw new ErrorConnection(DiagramServiceImpl.class.getName(), "Client DiagramService encountered " +
-                        "problem while sending createFolder request");
+                throw new ErrorConnectionException(DiagramServiceImpl.class.getName(), "Client DiagramService " +
+                        "encountered problem while sending createFolder request");
             } finally {
                 transport.close();
             }
         } catch (TTransportException e) {
             logger.error("Client DiagramService encountered problem while opening transport.", e);
-            throw new ErrorConnection(DiagramServiceImpl.class.getName(), "Client DiagramService encountered problem " +
-                    "while opening transport.");
+            throw new ErrorConnectionException(DiagramServiceImpl.class.getName(), "Client DiagramService encountered" +
+                    " problem while opening transport.");
         }
         logger.trace("createRootFolder method created rootFolder for {}", userName);
     }

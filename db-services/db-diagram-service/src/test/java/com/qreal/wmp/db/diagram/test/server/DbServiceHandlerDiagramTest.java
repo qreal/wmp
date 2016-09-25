@@ -2,13 +2,12 @@ package com.qreal.wmp.db.diagram.test.server;
 
 import com.qreal.wmp.db.diagram.config.AppInit;
 import com.qreal.wmp.db.diagram.dao.DiagramDao;
-import com.qreal.wmp.db.diagram.exceptions.Aborted;
-import com.qreal.wmp.db.diagram.exceptions.NotFound;
+import com.qreal.wmp.db.diagram.exceptions.AbortedException;
+import com.qreal.wmp.db.diagram.exceptions.NotFoundException;
 import com.qreal.wmp.db.diagram.model.Diagram;
 import com.qreal.wmp.db.diagram.server.DiagramDbServiceHandler;
 import com.qreal.wmp.thrift.gen.*;
 import org.junit.After;
-import static org.assertj.core.api.Assertions.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,17 +18,18 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {AppInit.class})
 @Transactional
 public class DbServiceHandlerDiagramTest {
-
-    public DiagramDbServiceHandler handler;
+    private DiagramDbServiceHandler handler;
 
     @Autowired
-    public ApplicationContext context;
+    private ApplicationContext context;
 
     @Before
     public void setMocking() {
@@ -47,7 +47,7 @@ public class DbServiceHandlerDiagramTest {
     /** Test saveDiagram operation for diagram. */
     @Test
     @Rollback
-    public void saveDiagram_correctInput_diagramDaoCalled() throws TAborted, TIdAlreadyDefined, Aborted {
+    public void saveDiagram_correctInput_diagramDaoCalled() throws Exception {
         long idFolder = 0L;
         TDiagram testDiagram = createDiagram("testDiagram", idFolder);
 
@@ -70,7 +70,7 @@ public class DbServiceHandlerDiagramTest {
     /** Test openDiagram operation for diagram. */
     @Test
     @Rollback
-    public void openDiagram_diagramExists_returnsTDiagram() throws TNotFound, NotFound {
+    public void openDiagram_diagramExists_returnsTDiagram() throws Exception {
         long idFolder = 0L;
         long idDiagram = 0L;
         TDiagram tDiagram = createDiagram("testDiagram", idFolder, idDiagram);
@@ -87,10 +87,11 @@ public class DbServiceHandlerDiagramTest {
     /** Test openDiagram operation for diagram. */
     @Test
     @Rollback
-    public void openDiagram_diagramNotExists_throwsTNotFound() throws NotFound {
+    public void openDiagram_diagramNotExists_throwsTNotFound() throws Exception {
         long idDiagramNotCorrect = 0L;
 
-        when(handler.getDiagramDao().getDiagram(idDiagramNotCorrect)).thenThrow(new NotFound("0", "Exception"));
+        when(handler.getDiagramDao().getDiagram(idDiagramNotCorrect)).
+                thenThrow(new NotFoundException("0", "Exception"));
 
         assertThatThrownBy(() -> handler.openDiagram(idDiagramNotCorrect)).isInstanceOf(TNotFound.class);
     }
@@ -98,8 +99,7 @@ public class DbServiceHandlerDiagramTest {
     /** Test deleteDiagram operation for diagram. */
     @Test
     @Rollback
-    public void deleteDiagram_correctInput_diagramDaoCalled() throws TAborted, TIdAlreadyDefined,
-            TNotFound, NotFound, Aborted {
+    public void deleteDiagram_correctInput_diagramDaoCalled() throws Exception {
         long idDiagram = 0L;
 
         handler.deleteDiagram(idDiagram);
@@ -110,10 +110,11 @@ public class DbServiceHandlerDiagramTest {
     /** Test deleteDiagram operation for diagram. */
     @Test
     @Rollback
-    public void deleteDiagram_daoThrowsAborted_throwsTAborted() throws Aborted {
+    public void deleteDiagram_daoThrowsAborted_throwsTAborted() throws Exception {
         long idDiagram = 0L;
 
-        doThrow(new Aborted("0", "Exception", "Exception")).when(handler.getDiagramDao()).deleteDiagram(idDiagram);
+        doThrow(new AbortedException("0", "Exception", "Exception")).
+                when(handler.getDiagramDao()).deleteDiagram(idDiagram);
 
         assertThatThrownBy(() -> handler.deleteDiagram(idDiagram)).isInstanceOf(TAborted.class);
     }
@@ -121,7 +122,7 @@ public class DbServiceHandlerDiagramTest {
     /** Test rewriteDiagram operation for diagram. */
     @Test
     @Rollback
-    public void rewriteDiagram_correctInput_diagramDaoCalled() throws TIdNotDefined, TAborted, Aborted {
+    public void rewriteDiagram_correctInput_diagramDaoCalled() throws Exception {
         long idFolder = 0L;
         long idDiagram = 0L;
         TDiagram tDiagram = createDiagram("testDiagram", idFolder, idDiagram);
@@ -135,7 +136,7 @@ public class DbServiceHandlerDiagramTest {
     /** Test rewriteDiagram operation for diagram. */
     @Test
     @Rollback
-    public void rewriteDiagram_idNotSet_throwsTIdNotDefined() throws TIdNotDefined, TAborted, Aborted {
+    public void rewriteDiagram_idNotSet_throwsTIdNotDefined() throws Exception {
         long idFolder = 0L;
         TDiagram tDiagram = createDiagram("testDiagram", idFolder);
 
@@ -145,21 +146,16 @@ public class DbServiceHandlerDiagramTest {
     /** Test rewriteDiagram operation for diagram. */
     @Test
     @Rollback
-    public void rewriteDiagram_daoThrowsAborted_throwsTAborted() throws TIdNotDefined, TAborted, Aborted {
+    public void rewriteDiagram_daoThrowsAborted_throwsTAborted() throws Exception {
         long idFolder = 0L;
         long idDiagram = 0L;
         TDiagram tDiagram = createDiagram("testDiagram", idFolder, idDiagram);
         Diagram diagram = new Diagram(tDiagram);
 
-        doThrow(new Aborted("0", "Exception", "Exception")).when(handler.getDiagramDao()).rewriteDiagram(diagram);
+        doThrow(new AbortedException("0", "Exception", "Exception")).
+                when(handler.getDiagramDao()).rewriteDiagram(diagram);
 
         assertThatThrownBy(() -> handler.rewriteDiagram(tDiagram)).isInstanceOf(TAborted.class);
-    }
-
-    private TDiagram createDiagram(String nameDiagram) {
-        TDiagram tDiagram = new TDiagram();
-        tDiagram.setName(nameDiagram);
-        return tDiagram;
     }
 
     private TDiagram createDiagram(String nameDiagram, Long idFolder) {

@@ -1,9 +1,9 @@
 package com.qreal.wmp.db.user.server;
 
 import com.qreal.wmp.db.user.dao.UserDao;
-import com.qreal.wmp.db.user.exceptions.Aborted;
-import com.qreal.wmp.db.user.exceptions.ErrorConnection;
-import com.qreal.wmp.db.user.exceptions.NotFound;
+import com.qreal.wmp.db.user.exceptions.AbortedException;
+import com.qreal.wmp.db.user.exceptions.ErrorConnectionException;
+import com.qreal.wmp.db.user.exceptions.NotFoundException;
 import com.qreal.wmp.thrift.gen.*;
 import org.springframework.context.ApplicationContext;
 
@@ -24,9 +24,9 @@ public class UserDbServiceHandler implements UserDbService.Iface {
         }
         try {
             userDao.saveUser(tUser);
-        } catch (ErrorConnection e) {
+        } catch (ErrorConnectionException e) {
             throw new TErrorConnection(e.getNameClient(), e.getMessage());
-        } catch (Aborted e) {
+        } catch (AbortedException e) {
             throw new TAborted(e.getTextCause(), e.getMessage(), e.getFullClassName());
         }
     }
@@ -38,9 +38,9 @@ public class UserDbServiceHandler implements UserDbService.Iface {
         }
         try {
             userDao.updateUser(user);
-        } catch (ErrorConnection e) {
+        } catch (ErrorConnectionException e) {
             throw new TErrorConnection(e.getNameClient(), e.getMessage());
-        } catch (Aborted e) {
+        } catch (AbortedException e) {
             throw new TAborted(e.getTextCause(), e.getMessage(), e.getFullClassName());
         }
     }
@@ -50,9 +50,9 @@ public class UserDbServiceHandler implements UserDbService.Iface {
         TUser tUser = null;
         try {
             tUser = userDao.findByUserName(username);
-        } catch (ErrorConnection e) {
+        } catch (ErrorConnectionException e) {
             throw new TErrorConnection(e.getNameClient(), e.getMessage());
-        } catch (NotFound e) {
+        } catch (NotFoundException e) {
             throw new TNotFound(username, "User with specified username not found");
         }
         return tUser;

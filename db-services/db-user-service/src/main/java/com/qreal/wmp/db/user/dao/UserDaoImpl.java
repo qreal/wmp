@@ -2,9 +2,9 @@ package com.qreal.wmp.db.user.dao;
 
 import com.qreal.wmp.db.user.client.diagrams.DiagramService;
 import com.qreal.wmp.db.user.client.robots.RobotService;
-import com.qreal.wmp.db.user.exceptions.Aborted;
-import com.qreal.wmp.db.user.exceptions.ErrorConnection;
-import com.qreal.wmp.db.user.exceptions.NotFound;
+import com.qreal.wmp.db.user.exceptions.AbortedException;
+import com.qreal.wmp.db.user.exceptions.ErrorConnectionException;
+import com.qreal.wmp.db.user.exceptions.NotFoundException;
 import com.qreal.wmp.db.user.model.auth.UserRoleSerial;
 import com.qreal.wmp.db.user.model.auth.UserSerial;
 import com.qreal.wmp.thrift.gen.TRobot;
@@ -20,7 +20,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Component("userDao")
@@ -56,7 +55,7 @@ public class UserDaoImpl implements UserDao {
      * @param user user to saveUser (Id must not be set)
      */
     @Override
-    public void saveUser(@NotNull TUser user) throws Aborted, ErrorConnection {
+    public void saveUser(@NotNull TUser user) throws AbortedException, ErrorConnectionException {
         logger.trace("saveUser method called with parameters: user = {}", user.getUsername());
 
         Session session = sessionFactory.getCurrentSession();
@@ -80,12 +79,12 @@ public class UserDaoImpl implements UserDao {
      * @param username name of user to find
      */
     @Override
-    public TUser findByUserName(String username) throws NotFound, ErrorConnection {
+    public TUser findByUserName(String username) throws NotFoundException, ErrorConnectionException {
         logger.trace("findByUserName method called with parameters: username = {}", username);
         Session session = sessionFactory.getCurrentSession();
         UserSerial userSerial = (UserSerial) session.get(UserSerial.class, username);
         if (userSerial == null) {
-            throw new NotFound(username, "User with specified username not found.");
+            throw new NotFoundException(username, "User with specified username not found.");
         }
         return loadRobots(userSerial);
 
@@ -97,12 +96,12 @@ public class UserDaoImpl implements UserDao {
      * Consistency kept using RPC calls to RobotsService.
      */
     @Override
-    public void updateUser(@NotNull TUser tUser) throws Aborted, ErrorConnection {
+    public void updateUser(@NotNull TUser tUser) throws AbortedException, ErrorConnectionException {
         logger.trace("updateUser method called with parameters: username = {}", tUser.getUsername());
         Session session = sessionFactory.getCurrentSession();
         if (!isExistsUser(tUser.getUsername())) {
             logger.error("User with specified username doesn't exists.");
-            throw new Aborted("User with specified username doesn't exists", "updateUser safely aborted",
+            throw new AbortedException("User with specified username doesn't exists", "updateUser safely aborted",
                     UserDaoImpl.class.getName());
         }
         UserSerial userSerial = saveOrUpdateRobots(tUser);
@@ -166,7 +165,7 @@ public class UserDaoImpl implements UserDao {
      * Robot will be updated if robot's id set. Otherwise robot will be saved.
      * Id's of all robots will be saved in UserSerial robots field.
      */
-    private UserSerial saveOrUpdateRobots(@NotNull TUser tUser) throws Aborted, ErrorConnection {
+    private UserSerial saveOrUpdateRobots(@NotNull TUser tUser) throws AbortedException, ErrorConnectionException {
         UserSerial userSerial = new UserSerial(tUser);
         for (TRobot robot : tUser.getRobots()) {
             logger.trace("Robot {} of user {} saving", robot.getName(), tUser.getUsername());
@@ -187,7 +186,7 @@ public class UserDaoImpl implements UserDao {
      * Loads robots using RobotsService.
      * Robots are loaded from RobotsService using id's of them saved in UserSerial.
      */
-    private TUser loadRobots(@NotNull UserSerial userSerial) throws ErrorConnection {
+    private TUser loadRobots(@NotNull UserSerial userSerial) throws ErrorConnectionException {
         TUser tUser = userSerial.toTUser();
         for (Long id : userSerial.getRobots()) {
             logger.trace("Robot with id {} of user {} loading", id, tUser.getUsername());
@@ -195,7 +194,7 @@ public class UserDaoImpl implements UserDao {
                 TRobot robot = robotService.findById(id);
                 tUser.getRobots().add(robot);
                 logger.trace("Robot  {} of user {} loaded", robot.getName(), tUser.getUsername());
-            } catch (NotFound notFound) {
+            } catch (NotFoundException notFound) {
                 logger.error("Inconsistent state: User contains robot with id {}, but this robot doesn't exist.", id);
             }
         }

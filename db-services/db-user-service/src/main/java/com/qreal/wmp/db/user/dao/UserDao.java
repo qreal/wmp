@@ -2,9 +2,9 @@ package com.qreal.wmp.db.user.dao;
 
 import com.qreal.wmp.db.user.client.diagrams.DiagramService;
 import com.qreal.wmp.db.user.client.robots.RobotService;
-import com.qreal.wmp.db.user.exceptions.Aborted;
-import com.qreal.wmp.db.user.exceptions.ErrorConnection;
-import com.qreal.wmp.db.user.exceptions.NotFound;
+import com.qreal.wmp.db.user.exceptions.AbortedException;
+import com.qreal.wmp.db.user.exceptions.ErrorConnectionException;
+import com.qreal.wmp.db.user.exceptions.NotFoundException;
 import com.qreal.wmp.thrift.gen.TUser;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -17,7 +17,7 @@ public interface UserDao {
      *
      * @param user user to saveUser (Id must not be set)
      */
-    void saveUser(@NotNull TUser user) throws Aborted, ErrorConnection;
+    void saveUser(@NotNull TUser user) throws AbortedException, ErrorConnectionException;
 
     /**
      * Finds user by UserName.
@@ -25,14 +25,14 @@ public interface UserDao {
      * @param username name of user to find
      */
     @Nullable
-    TUser findByUserName(String username) throws NotFound, ErrorConnection;
+    TUser findByUserName(String username) throws NotFoundException, ErrorConnectionException;
 
     /**
      * Updates user state.
      *
      * @param user user to updateUser (Id must be set)
      */
-    void updateUser(@NotNull TUser user) throws Aborted, ErrorConnection;
+    void updateUser(@NotNull TUser user) throws AbortedException, ErrorConnectionException;
 
     /**
      * Test if user with specified name exists.

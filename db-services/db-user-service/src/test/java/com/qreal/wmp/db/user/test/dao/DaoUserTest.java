@@ -4,9 +4,9 @@ import com.qreal.wmp.db.user.client.diagrams.DiagramService;
 import com.qreal.wmp.db.user.client.robots.RobotService;
 import com.qreal.wmp.db.user.config.AppInit;
 import com.qreal.wmp.db.user.dao.UserDao;
-import com.qreal.wmp.db.user.exceptions.Aborted;
-import com.qreal.wmp.db.user.exceptions.ErrorConnection;
-import com.qreal.wmp.db.user.exceptions.NotFound;
+import com.qreal.wmp.db.user.exceptions.AbortedException;
+import com.qreal.wmp.db.user.exceptions.ErrorConnectionException;
+import com.qreal.wmp.db.user.exceptions.NotFoundException;
 import com.qreal.wmp.thrift.gen.TRobot;
 import com.qreal.wmp.thrift.gen.TUser;
 import com.qreal.wmp.thrift.gen.TUserRole;
@@ -23,7 +23,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -31,13 +32,12 @@ import static org.mockito.Mockito.*;
 @Transactional
 public class DaoUserTest {
     @Autowired
-    public UserDao userDao;
+    private UserDao userDao;
 
     @Before
     public void setMocking() {
         RobotService mockedRobotService = mock(RobotService.class);
         userDao.setRobotService(mockedRobotService);
-
         DiagramService mockedDiagramService = mock(DiagramService.class);
         userDao.setDiagramService(mockedDiagramService);
     }
@@ -51,7 +51,7 @@ public class DaoUserTest {
     /** Test saveUser operation for user. */
     @Test
     @Rollback
-    public void saveUser_correctInput_savesUserInDb() throws Aborted, ErrorConnection, NotFound {
+    public void saveUser_correctInput_savesUserInDb() throws Exception {
         TUser tUser = createUser("username", "password", true);
         addRoleToUser(tUser, "ROLE_USER");
         long idRobot = 0L;
@@ -72,7 +72,7 @@ public class DaoUserTest {
     /** Test saveUser operation for user. */
     @Test
     @Rollback
-    public void saveUser_correctInput_createsRootFolder() throws Aborted, ErrorConnection, NotFound {
+    public void saveUser_correctInput_createsRootFolder() throws Exception {
         TUser tUser = createUser("username", "password", true);
         addRoleToUser(tUser, "ROLE_USER");
         long idRobot = 0L;
@@ -94,7 +94,7 @@ public class DaoUserTest {
     /** Test saveUser operation for user. */
     @Test
     @Rollback
-    public void saveUser_correctInput_registerRobot() throws Aborted, ErrorConnection, NotFound {
+    public void saveUser_correctInput_registerRobot() throws Exception {
         TUser tUser = createUser("username", "password", true);
         addRoleToUser(tUser, "ROLE_USER");
         long idRobot = 0L;
@@ -116,21 +116,22 @@ public class DaoUserTest {
     /** Test saveUser operation for user. */
     @Test
     @Rollback
-    public void saveUser_clientRobotsThrowsAborted_throwsAborted() throws Aborted, ErrorConnection {
+    public void saveUser_clientRobotsThrowsAborted_throwsAborted() throws Exception {
         TUser tUser = createUser("username", "password", true);
         addRoleToUser(tUser, "ROLE_USER");
         TRobot tRobot = createRobot("robot", "ssid", tUser.getUsername());
         addRobotToUser(tRobot, tUser);
 
-        when(userDao.getRobotService().register(tRobot)).thenThrow(new Aborted("0", "Exception", "Exception"));
+        when(userDao.getRobotService().register(tRobot)).
+                thenThrow(new AbortedException("0", "Exception", "Exception"));
 
-        assertThatThrownBy(() -> userDao.saveUser(tUser)).isInstanceOf(Aborted.class);
+        assertThatThrownBy(() -> userDao.saveUser(tUser)).isInstanceOf(AbortedException.class);
     }
 
     /** Test saveUser operation for user. */
     @Test
     @Rollback
-    public void saveUser_clientDiagramThrowsAborted_throwsAborted() throws Aborted, ErrorConnection {
+    public void saveUser_clientDiagramThrowsAborted_throwsAborted() throws Exception {
         TUser tUser = createUser("username", "password", true);
         addRoleToUser(tUser, "ROLE_USER");
         long idRobot = 0L;
@@ -139,30 +140,30 @@ public class DaoUserTest {
 
         when(userDao.getRobotService().register(tRobot)).thenReturn(idRobot);
 
-        doThrow(new Aborted("0", "Exception", "Exception")).when(userDao.getDiagramService()).
+        doThrow(new AbortedException("0", "Exception", "Exception")).when(userDao.getDiagramService()).
                 createRootFolder(tUser.getUsername());
 
-        assertThatThrownBy(() -> userDao.saveUser(tUser)).isInstanceOf(Aborted.class);
+        assertThatThrownBy(() -> userDao.saveUser(tUser)).isInstanceOf(AbortedException.class);
     }
 
     /** Test saveUser operation for user. */
     @Test
     @Rollback
-    public void saveUser_clientRobotsThrowsErrorConnection_throwsErrorConnection() throws Aborted, ErrorConnection {
+    public void saveUser_clientRobotsThrowsErrorConnection_throwsErrorConnection() throws Exception {
         TUser tUser = createUser("username", "password", true);
         addRoleToUser(tUser, "ROLE_USER");
         TRobot tRobot = createRobot("robot", "ssid", tUser.getUsername());
         addRobotToUser(tRobot, tUser);
 
-        when(userDao.getRobotService().register(tRobot)).thenThrow(new ErrorConnection("0", "Exception"));
+        when(userDao.getRobotService().register(tRobot)).thenThrow(new ErrorConnectionException("0", "Exception"));
 
-        assertThatThrownBy(() -> userDao.saveUser(tUser)).isInstanceOf(ErrorConnection.class);
+        assertThatThrownBy(() -> userDao.saveUser(tUser)).isInstanceOf(ErrorConnectionException.class);
     }
 
     /** Test saveUser operation for user. */
     @Test
     @Rollback
-    public void saveUser_clientDiagramThrowsErrorConnection_throwsErrorConnection() throws Aborted, ErrorConnection {
+    public void saveUser_clientDiagramThrowsErrorConnection_throwsErrorConnection() throws Exception {
         TUser tUser = createUser("username", "password", true);
         addRoleToUser(tUser, "ROLE_USER");
         long idRobot = 0L;
@@ -170,16 +171,16 @@ public class DaoUserTest {
         addRobotToUser(tRobot, tUser);
 
         when(userDao.getRobotService().register(tRobot)).thenReturn(idRobot);
-        doThrow(new ErrorConnection("0", "Exception")).when(userDao.getDiagramService()).
+        doThrow(new ErrorConnectionException("0", "Exception")).when(userDao.getDiagramService()).
                 createRootFolder(tUser.getUsername());
 
-        assertThatThrownBy(() -> userDao.saveUser(tUser)).isInstanceOf(ErrorConnection.class);
+        assertThatThrownBy(() -> userDao.saveUser(tUser)).isInstanceOf(ErrorConnectionException.class);
     }
 
     /** Test findByUsername operation for user. */
     @Test
     @Rollback
-    public void findByUsername_correctInput_gotUser() throws Aborted, ErrorConnection, NotFound {
+    public void findByUsername_correctInput_gotUser() throws Exception {
         TUser tUser = createUser("username", "password", true);
         addRoleToUser(tUser, "ROLE_USER");
         long idRobot = 0L;
@@ -203,14 +204,13 @@ public class DaoUserTest {
     public void findByUsername_userNotExists_throwsNotFound() {
         String usernameNotCorrect = "username";
 
-        assertThatThrownBy(() -> userDao.findByUserName(usernameNotCorrect)).isInstanceOf(NotFound.class);
+        assertThatThrownBy(() -> userDao.findByUserName(usernameNotCorrect)).isInstanceOf(NotFoundException.class);
     }
 
     /** Test findByUsername operation for user. */
     @Test
     @Rollback
-    public void findByUsername_clientRobotThrowsErrorConnection_throwsErrorConnection() throws Aborted,
-            ErrorConnection, NotFound {
+    public void findByUsername_clientRobotThrowsErrorConnection_throwsErrorConnection() throws Exception {
         String username = "username";
         TUser tUser = createUser(username, "password", true);
         addRoleToUser(tUser, "ROLE_USER");
@@ -220,16 +220,16 @@ public class DaoUserTest {
 
         when(userDao.getRobotService().register(tRobot)).thenReturn(idRobot);
         userDao.saveUser(tUser);
-        when(userDao.getRobotService().findById(idRobot)).thenThrow(new ErrorConnection("0", "Exception"));
+        when(userDao.getRobotService().findById(idRobot)).thenThrow(new ErrorConnectionException("0", "Exception"));
 
-        assertThatThrownBy(() -> userDao.findByUserName(username)).isInstanceOf(ErrorConnection.class);
+        assertThatThrownBy(() -> userDao.findByUserName(username)).isInstanceOf(ErrorConnectionException.class);
     }
 
 
     /** Test delete operation for user. */
     @Test
     @Rollback
-    public void updateUser_correctInput_updatesUserInDb() throws Aborted, ErrorConnection, NotFound {
+    public void updateUser_correctInput_updatesUserInDb() throws Exception {
         TUser tUser = createUser("username", "password", true);
         addRoleToUser(tUser, "ROLE_USER");
         long idRobot = 0L;
@@ -266,7 +266,7 @@ public class DaoUserTest {
     /** Test delete operation for user. */
     @Test
     @Rollback
-    public void updateUser_correctInput_updatesUsersRobots() throws Aborted, ErrorConnection, NotFound {
+    public void updateUser_correctInput_updatesUsersRobots() throws Exception {
         TUser tUser = createUser("username", "password", true);
         addRoleToUser(tUser, "ROLE_USER");
         long idRobot = 0L;
@@ -306,13 +306,13 @@ public class DaoUserTest {
     public void updateUser_notExistsUser_throwsAborted() {
         TUser tUser = createUser("username", "password", true);
 
-        assertThatThrownBy(() -> userDao.updateUser(tUser)).isInstanceOf(Aborted.class);
+        assertThatThrownBy(() -> userDao.updateUser(tUser)).isInstanceOf(AbortedException.class);
     }
 
     /** Test delete operation for user. */
     @Test
     @Rollback
-    public void updateUser_clientRobotThrowsAborted_throwsAborted() throws Aborted, ErrorConnection, NotFound {
+    public void updateUser_clientRobotThrowsAborted_throwsAborted() throws Exception {
         TUser tUser = createUser("username", "password", true);
         addRoleToUser(tUser, "ROLE_USER");
         long idRobot = 0L;
@@ -333,15 +333,15 @@ public class DaoUserTest {
         TRobot tRobotChanged = createRobot("robotChanged", "ssidChanhed", tUser.getUsername(), idRobot);
         addRobotToUser(tRobotChanged, tUserChanged);
 
-        doThrow(new Aborted("0", "Exception", "Exception")).when(userDao.getRobotService()).update(tRobotChanged);
-        assertThatThrownBy(() -> userDao.updateUser(tUserChanged)).isInstanceOf(Aborted.class);
+        doThrow(new AbortedException("0", "Exception", "Exception")).when(userDao.getRobotService()).
+                update(tRobotChanged);
+        assertThatThrownBy(() -> userDao.updateUser(tUserChanged)).isInstanceOf(AbortedException.class);
     }
 
     /** Test delete operation for user. */
     @Test
     @Rollback
-    public void updateUser_clientRobotThrowsErrorConnection_throwsErrorConnection() throws Aborted, ErrorConnection,
-            NotFound {
+    public void updateUser_clientRobotThrowsErrorConnection_throwsErrorConnection() throws Exception {
         TUser tUser = createUser("username", "password", true);
         addRoleToUser(tUser, "ROLE_USER");
         long idRobot = 0L;
@@ -362,14 +362,14 @@ public class DaoUserTest {
         TRobot tRobotChanged = createRobot("robotChanged", "ssidChanhed", tUser.getUsername(), idRobot);
         addRobotToUser(tRobotChanged, tUserChanged);
 
-        doThrow(new ErrorConnection("0", "Exception")).when(userDao.getRobotService()).update(tRobotChanged);
-        assertThatThrownBy(() -> userDao.updateUser(tUserChanged)).isInstanceOf(ErrorConnection.class);
+        doThrow(new ErrorConnectionException("0", "Exception")).when(userDao.getRobotService()).update(tRobotChanged);
+        assertThatThrownBy(() -> userDao.updateUser(tUserChanged)).isInstanceOf(ErrorConnectionException.class);
     }
 
     /** Test isExistsUser operation for user. */
     @Test
     @Rollback
-    public void isExistsUser_userExists_returnsTrue() throws Aborted, ErrorConnection {
+    public void isExistsUser_userExists_returnsTrue() throws Exception {
         String username = "username";
 
         TUser tUser = createUser(username, "password", true);
@@ -381,7 +381,7 @@ public class DaoUserTest {
         when(userDao.getRobotService().register(tRobot)).thenReturn(idRobot);
         userDao.saveUser(tUser);
 
-       assertThat(userDao.isExistsUser(username)).isTrue();
+        assertThat(userDao.isExistsUser(username)).isTrue();
     }
 
     /** Test saveUser operation for user. */

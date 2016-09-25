@@ -2,9 +2,10 @@ package com.qreal.wmp.db.diagram.test.dao;
 
 import com.qreal.wmp.db.diagram.config.AppInit;
 import com.qreal.wmp.db.diagram.dao.DiagramDao;
-import com.qreal.wmp.db.diagram.exceptions.Aborted;
-import com.qreal.wmp.db.diagram.exceptions.NotFound;
-import com.qreal.wmp.db.diagram.model.*;
+import com.qreal.wmp.db.diagram.exceptions.AbortedException;
+import com.qreal.wmp.db.diagram.exceptions.NotFoundException;
+import com.qreal.wmp.db.diagram.model.Diagram;
+import com.qreal.wmp.db.diagram.model.Folder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,21 +13,22 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import static org.assertj.core.api.Assertions.*;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {AppInit.class})
 @Transactional
 public class DaoDiagramTest {
     @Autowired
-    public DiagramDao diagramDao;
+    private DiagramDao diagramDao;
 
     //TODO how to divide this and third test?
     /** Test saveDiagram operation for diagram. */
     @Test
     @Rollback
-    public void saveDiagram_correctDiagramAndFolder_diagramSavedInDb() throws Aborted, NotFound {
+    public void saveDiagram_correctDiagramAndFolder_diagramSavedInDb() throws Exception {
         Folder testFolder = createAndSaveFolder("testFolder", "testUser");
 
         Diagram testDiagram = new Diagram();
@@ -48,14 +50,15 @@ public class DaoDiagramTest {
         Diagram testDiagram = new Diagram();
         testDiagram.setName("testDiagram");
 
-        assertThatThrownBy(() -> diagramDao.saveDiagram(testDiagram, idFolderNotCorrect)).isInstanceOf(Aborted.class);
+        assertThatThrownBy(() -> diagramDao.saveDiagram(testDiagram, idFolderNotCorrect)).
+                isInstanceOf(AbortedException.class);
     }
 
     //TODO how to divide this and first test?
     /** Test getDiagram operation for diagram. */
     @Test
     @Rollback
-    public void getDiagram_diagramExists_gotDiagram() throws Aborted, NotFound {
+    public void getDiagram_diagramExists_gotDiagram() throws Exception {
         Folder testFolder = createAndSaveFolder("testFolder", "testUser");
         Diagram testDiagram = createAndSaveDiagram("testDiagram", testFolder);
 
@@ -67,37 +70,37 @@ public class DaoDiagramTest {
     /** Test getDiagram operation for diagram. */
     @Test
     @Rollback
-    public void getDiagram_diagramNotExists_throwsNotFound() throws Aborted, NotFound {
+    public void getDiagram_diagramNotExists_throwsNotFound() throws Exception {
         long idDiagramNotCorrect = 0L;
 
-        assertThatThrownBy(() ->  diagramDao.getDiagram(idDiagramNotCorrect)).isInstanceOf(NotFound.class);
+        assertThatThrownBy(() ->  diagramDao.getDiagram(idDiagramNotCorrect)).isInstanceOf(NotFoundException.class);
     }
 
     /** Test deleteDiagram operation for diagram. */
     @Test
     @Rollback
-    public void deleteDiagram_diagramExists_diagramDeletedFromDb() throws Aborted, NotFound {
+    public void deleteDiagram_diagramExists_diagramDeletedFromDb() throws Exception {
         Folder testFolder = createAndSaveFolder("testFolder", "testUser");
         Diagram testDiagram = createAndSaveDiagram("testDiagram", testFolder);
 
         diagramDao.deleteDiagram(testDiagram.getId());
 
-        assertThatThrownBy(() -> diagramDao.getDiagram(testDiagram.getId())).isInstanceOf(NotFound.class);
+        assertThatThrownBy(() -> diagramDao.getDiagram(testDiagram.getId())).isInstanceOf(NotFoundException.class);
     }
 
     /** Test deleteDiagram operation for diagram. */
     @Test
     @Rollback
-    public void deleteDiagram_diagramNotExists_throwsAborted() throws Aborted, NotFound {
+    public void deleteDiagram_diagramNotExists_throwsAborted() throws Exception {
         long idDiagramNotCorrect = 0L;
 
-        assertThatThrownBy(() -> diagramDao.deleteDiagram(idDiagramNotCorrect)).isInstanceOf(Aborted.class);
+        assertThatThrownBy(() -> diagramDao.deleteDiagram(idDiagramNotCorrect)).isInstanceOf(AbortedException.class);
     }
 
     /** Test isExistsDiagram operation for folder. */
     @Test
     @Rollback
-    public void isExistsDiagram_diagramExists_returnsTrue() throws Aborted, NotFound {
+    public void isExistsDiagram_diagramExists_returnsTrue() throws Exception {
         Folder testFolder = createAndSaveFolder("testFolder", "testUser");
         Diagram testDiagram = createAndSaveDiagram("testDiagram", testFolder);
 
@@ -107,7 +110,7 @@ public class DaoDiagramTest {
     /** Test isExistsDiagram operation for folder. */
     @Test
     @Rollback
-    public void isExistsDiagram_diagramNotExists_returnsFalse() throws Aborted, NotFound {
+    public void isExistsDiagram_diagramNotExists_returnsFalse() throws Exception {
         long idDiagramNotCorrect = 0L;
 
         assertThat(diagramDao.isExistsDiagram(idDiagramNotCorrect)).isFalse();
@@ -116,7 +119,7 @@ public class DaoDiagramTest {
     /** Test rewriteDiagram operation for diagram. */
     @Test
     @Rollback
-    public void rewriteDiagram_diagramExists_rewritesDiagramInDb() throws Aborted, NotFound {
+    public void rewriteDiagram_diagramExists_rewritesDiagramInDb() throws Exception {
         Folder testFolder = createAndSaveFolder("testFolder", "testUser");
         Diagram testDiagram = createAndSaveDiagram("testDiagram", testFolder);
 
@@ -134,24 +137,24 @@ public class DaoDiagramTest {
     /** Test rewriteDiagram operation for diagram. */
     @Test
     @Rollback
-    public void rewriteDiagram_diagramNotExists_throwsAborted() throws Aborted, NotFound {
+    public void rewriteDiagram_diagramNotExists_throwsAborted() throws Exception {
         Long diagramIdNotCorrect = 0L;
 
         Diagram rewriteDiagram = new Diagram();
         rewriteDiagram.setName("testDiagramRewrite");
         rewriteDiagram.setId(diagramIdNotCorrect);
 
-        assertThatThrownBy(() -> diagramDao.rewriteDiagram(rewriteDiagram)).isInstanceOf(Aborted.class);
+        assertThatThrownBy(() -> diagramDao.rewriteDiagram(rewriteDiagram)).isInstanceOf(AbortedException.class);
     }
 
-    private Folder createAndSaveFolder(String nameOfFolder, String nameOfUser) throws Aborted {
+    private Folder createAndSaveFolder(String nameOfFolder, String nameOfUser) throws Exception {
         Folder testFolder = new Folder(nameOfFolder, nameOfUser);
         long idFolderCreated = diagramDao.saveFolder(testFolder);
         testFolder.setId(idFolderCreated);
         return testFolder;
     }
 
-    private Diagram createAndSaveDiagram(String nameOfDiagram, Folder folder) throws Aborted {
+    private Diagram createAndSaveDiagram(String nameOfDiagram, Folder folder) throws Exception {
         Diagram testDiagram = new Diagram();
         testDiagram.setName(nameOfDiagram);
         long idDiagramCreated = diagramDao.saveDiagram(testDiagram, folder.getId());

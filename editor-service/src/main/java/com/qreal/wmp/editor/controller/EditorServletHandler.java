@@ -3,9 +3,9 @@ package com.qreal.wmp.editor.controller;
 import com.qreal.wmp.editor.database.diagrams.client.DiagramService;
 import com.qreal.wmp.editor.database.diagrams.model.Diagram;
 import com.qreal.wmp.editor.database.diagrams.model.Folder;
-import com.qreal.wmp.editor.database.exceptions.Aborted;
-import com.qreal.wmp.editor.database.exceptions.ErrorConnection;
-import com.qreal.wmp.editor.database.exceptions.NotFound;
+import com.qreal.wmp.editor.database.exceptions.AbortedException;
+import com.qreal.wmp.editor.database.exceptions.ErrorConnectionException;
+import com.qreal.wmp.editor.database.exceptions.NotFoundException;
 import com.qreal.wmp.thrift.gen.EditorServiceThrift;
 import com.qreal.wmp.thrift.gen.TDiagram;
 import com.qreal.wmp.thrift.gen.TFolder;
@@ -42,11 +42,11 @@ public class EditorServletHandler implements EditorServiceThrift.Iface {
         long id = 0;
         try {
             id = diagramService.saveDiagram(diagram, tDiagram.getFolderId());
-        } catch (Aborted e) {
+        } catch (AbortedException e) {
             //TODO Here we should not return 0, but send exception to client side.
             logger.error("saveDiagram method encountered exception Aborted. Instead of diagramId will be returned 0.",
                     e);
-        } catch (ErrorConnection e) {
+        } catch (ErrorConnectionException e) {
             //TODO Here we should not return 0, but send exception to client side.
             logger.error("saveDiagram method encountered exception ErrorConnection. Instead of diagramId will be  " +
                     "returned 0.", e);
@@ -65,10 +65,10 @@ public class EditorServletHandler implements EditorServiceThrift.Iface {
         Diagram newDiagram = new Diagram(diagram);
         try {
             diagramService.rewriteDiagram(newDiagram);
-        } catch (Aborted e) {
+        } catch (AbortedException e) {
             //TODO Here we should  send exception to client side.
             logger.error("rewriteDiagram method encountered exception Aborted. Diagram was not rewrote.", e);
-        } catch (ErrorConnection e) {
+        } catch (ErrorConnectionException e) {
             //TODO Here we should not return 0, but send exception to client side.
             logger.error("rewriteDiagram method encountered exception ErrorConnection. Diagram was not rewrote.", e);
         }
@@ -80,10 +80,10 @@ public class EditorServletHandler implements EditorServiceThrift.Iface {
         DiagramService diagramService = (DiagramService) context.getBean("diagramService");
         try {
             diagramService.deleteDiagram(diagramId);
-        } catch (Aborted e) {
+        } catch (AbortedException e) {
             //TODO Here we should  send exception to client side.
             logger.error("deleteDiagram method encountered exception Aborted. Diagram was not deleted.", e);
-        } catch (ErrorConnection e) {
+        } catch (ErrorConnectionException e) {
             //TODO Here we should  send exception to client side.
             logger.error("deleteDiagram method encountered exception ErrorConnection. Diagram was not deleted.", e);
         }
@@ -97,11 +97,11 @@ public class EditorServletHandler implements EditorServiceThrift.Iface {
         try {
             Diagram diagram = diagramService.openDiagram(diagramId);
             result = diagram.toTDiagram();
-        } catch (NotFound e) {
+        } catch (NotFoundException e) {
             //TODO Here we should not return null, but send exception to client side.
             logger.error("openDiagram method encountered exception NotFound. Instead of diagram will be returned null" +
                     ".", e);
-        } catch (ErrorConnection e) {
+        } catch (ErrorConnectionException e) {
             //TODO Here we should not return null, but send exception to client side.
             logger.error("openDiagram method encountered exception ErrorConnection. Instead of diagram will be " +
                     "returned null.", e);
@@ -122,11 +122,11 @@ public class EditorServletHandler implements EditorServiceThrift.Iface {
         long id = 0;
         try {
             id = diagramService.createFolder(newFolder);
-        } catch (Aborted e) {
+        } catch (AbortedException e) {
             //TODO Here we should not return 0, but send exception to client side.
             logger.error("createFolder method encountered exception Aborted. Instead of folderId will be returned 0.",
                     e);
-        } catch (ErrorConnection e) {
+        } catch (ErrorConnectionException e) {
             //TODO Here we should not return 0, but send exception to client side.
             logger.error("createFolder method encountered exception ErrorConnection. Instead of folderId will be " +
                             "returned 0.", e);
@@ -140,10 +140,10 @@ public class EditorServletHandler implements EditorServiceThrift.Iface {
         DiagramService diagramService = (DiagramService) context.getBean("diagramService");
         try {
             diagramService.deleteFolder(folderId);
-        } catch (Aborted e) {
+        } catch (AbortedException e) {
             //TODO Here we should  send exception to client side.
             logger.error("deleteFolder method encountered exception Aborted. Folder was not deleted.", e);
-        } catch (ErrorConnection e) {
+        } catch (ErrorConnectionException e) {
             //TODO Here we should  send exception to client side.
             logger.error("deleteFolder method encountered exception ErrorConnection. Folder was not deleted.", e);
         }
@@ -157,11 +157,11 @@ public class EditorServletHandler implements EditorServiceThrift.Iface {
         try {
             Folder folder = diagramService.getFolderTree();
             result = folder.toTFolder();
-        } catch (NotFound e) {
+        } catch (NotFoundException e) {
             //TODO Here we should not return null, but send exception to client side.
             logger.error("getFolderTree method encountered exception NotFound. Instead of folder tree will be " +
                     "returned null.", e);
-        } catch (ErrorConnection e) {
+        } catch (ErrorConnectionException e) {
             //TODO Here we should not return null, but send exception to client side.
             logger.error("getFolderTree method encountered exception ErrorConnection. Instead of folder tree will be " +
                     "returned null.", e);

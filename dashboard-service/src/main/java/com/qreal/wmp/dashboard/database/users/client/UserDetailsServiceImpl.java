@@ -1,7 +1,7 @@
 package com.qreal.wmp.dashboard.database.users.client;
 
-import com.qreal.wmp.dashboard.database.exceptions.ErrorConnection;
-import com.qreal.wmp.dashboard.database.exceptions.NotFound;
+import com.qreal.wmp.dashboard.database.exceptions.ErrorConnectionException;
+import com.qreal.wmp.dashboard.database.exceptions.NotFoundException;
 import com.qreal.wmp.dashboard.database.users.model.UserRole;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,9 +40,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         com.qreal.wmp.dashboard.database.users.model.User user = null;
         try {
             user = userService.findByUserName(username);
-        } catch (NotFound notFound) {
+        } catch (NotFoundException notFound) {
             throw new UsernameNotFoundException("User not found");
-        } catch (ErrorConnection e) {
+        } catch (ErrorConnectionException e) {
             logger.error("Fatal Error: Can't connect to UserService", e);
         }
 

@@ -1,7 +1,7 @@
 package com.qreal.wmp.db.diagram.dao;
 
-import com.qreal.wmp.db.diagram.exceptions.Aborted;
-import com.qreal.wmp.db.diagram.exceptions.NotFound;
+import com.qreal.wmp.db.diagram.exceptions.AbortedException;
+import com.qreal.wmp.db.diagram.exceptions.NotFoundException;
 import com.qreal.wmp.db.diagram.model.Diagram;
 import com.qreal.wmp.db.diagram.model.Folder;
 import org.jetbrains.annotations.NotNull;
@@ -16,10 +16,10 @@ public interface DiagramDao {
      * @param folderId id of folder to save diagram in
      * @return new id of diagram
      */
-    Long saveDiagram(@NotNull Diagram diagram, Long folderId) throws Aborted;
+    Long saveDiagram(@NotNull Diagram diagram, Long folderId) throws AbortedException;
 
     /** Returns diagram with specified id.*/
-    @NotNull Diagram getDiagram(Long diagramId) throws NotFound;
+    @NotNull Diagram getDiagram(Long diagramId) throws NotFoundException;
 
     /** Checks whether diagram with specified id exists.*/
     boolean isExistsDiagram(Long diagramId);
@@ -29,10 +29,10 @@ public interface DiagramDao {
      *
      * @param diagram diagram to rewrite (Id must be set correctly).
      */
-    void rewriteDiagram(@NotNull Diagram diagram) throws Aborted;
+    void rewriteDiagram(@NotNull Diagram diagram) throws AbortedException;
 
     /** Deletes diagram with specified id.*/
-    void deleteDiagram(Long diagramId) throws Aborted;
+    void deleteDiagram(Long diagramId) throws AbortedException;
 
     /**
      * Creates folder and assign it id.
@@ -40,17 +40,17 @@ public interface DiagramDao {
      * @param folder folder to create (Id must not be set)
      * @return new id of folder
      */
-    Long saveFolder(@NotNull Folder folder) throws Aborted;
+    Long saveFolder(@NotNull Folder folder) throws AbortedException;
 
     /** Checks whether folder with specified id exists.*/
     boolean isExistsFolder(Long folderId);
 
     /** Deletes folder with specified id.*/
-    void deleteFolder(Long folderId) throws Aborted;
+    void deleteFolder(Long folderId) throws AbortedException;
 
     /** Returns folder with specified id.*/
-    @NotNull Folder getFolder(Long folderId) throws NotFound;
+    @NotNull Folder getFolder(Long folderId) throws NotFoundException;
 
     /** Returns root folder of user.*/
-    @NotNull Folder getFolderTree(String userName) throws NotFound;
+    @NotNull Folder getFolderTree(String userName) throws NotFoundException;
 }

@@ -1,9 +1,10 @@
 package com.qreal.wmp.editor.database.exceptions;
 
-public class NotFound extends Exception {
+/** NotFound exception says that object was not found in DB.*/
+public class NotFoundException extends Exception {
     private final String id;
 
-    public NotFound(String id, String message) {
+    public NotFoundException(String id, String message) {
         super(message);
         this.id = id;
     }

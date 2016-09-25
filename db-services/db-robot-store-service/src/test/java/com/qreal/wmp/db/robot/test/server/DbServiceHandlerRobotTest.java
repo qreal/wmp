@@ -2,9 +2,9 @@ package com.qreal.wmp.db.robot.test.server;
 
 import com.qreal.wmp.db.robot.config.AppInit;
 import com.qreal.wmp.db.robot.dao.RobotDao;
-import com.qreal.wmp.db.robot.exceptions.Aborted;
-import com.qreal.wmp.db.robot.exceptions.ErrorConnection;
-import com.qreal.wmp.db.robot.exceptions.NotFound;
+import com.qreal.wmp.db.robot.exceptions.AbortedException;
+import com.qreal.wmp.db.robot.exceptions.ErrorConnectionException;
+import com.qreal.wmp.db.robot.exceptions.NotFoundException;
 import com.qreal.wmp.db.robot.model.robot.RobotSerial;
 import com.qreal.wmp.db.robot.server.RobotDbServiceHandler;
 import com.qreal.wmp.thrift.gen.*;
@@ -18,18 +18,19 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import static org.assertj.core.api.Assertions.*;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {AppInit.class})
 @Transactional
 public class DbServiceHandlerRobotTest {
-    public RobotDbServiceHandler handler;
+    private RobotDbServiceHandler handler;
 
     @Autowired
-    public ApplicationContext context;
+    private ApplicationContext context;
 
     @Before
     public void setMocking() {
@@ -47,7 +48,7 @@ public class DbServiceHandlerRobotTest {
     /** Test registerRobot operation for robot. */
     @Test
     @Rollback
-    public void registerRobot_correctInput_robotDaoCalled() throws TAborted, TIdAlreadyDefined, Aborted {
+    public void registerRobot_correctInput_robotDaoCalled() throws Exception {
         TRobot tRobot = createRobot("robot");
         RobotSerial robot = new RobotSerial(tRobot);
 
@@ -59,7 +60,7 @@ public class DbServiceHandlerRobotTest {
     /** Test registerRobot operation for robot. */
     @Test
     @Rollback
-    public void registerRobot_idSet_throwsTIdAlreadyDefined() throws TAborted, TIdAlreadyDefined, Aborted {
+    public void registerRobot_idSet_throwsTIdAlreadyDefined() throws Exception {
         Long idRobot = 0L;
         TRobot tRobot = createRobot("robot", idRobot);
 
@@ -69,11 +70,11 @@ public class DbServiceHandlerRobotTest {
     /** Test registerRobot operation for robot. */
     @Test
     @Rollback
-    public void registerRobot_daoThrowsAborted_throwsTAborted() throws TAborted, TIdAlreadyDefined, Aborted {
+    public void registerRobot_daoThrowsAborted_throwsTAborted() throws Exception {
         TRobot tRobot = createRobot("robot");
         RobotSerial robot = new RobotSerial(tRobot);
 
-        when(handler.getRobotDao().saveRobot(robot)).thenThrow(new Aborted("0", "Exception", "Exception"));
+        when(handler.getRobotDao().saveRobot(robot)).thenThrow(new AbortedException("0", "Exception", "Exception"));
 
         assertThatThrownBy(() -> handler.registerRobot(tRobot)).isInstanceOf(TAborted.class);
     }
@@ -81,7 +82,7 @@ public class DbServiceHandlerRobotTest {
     /** Test findById operation for robot. */
     @Test
     @Rollback
-    public void findById_robotExists_returnsRobot() throws TAborted, TIdAlreadyDefined, Aborted, NotFound, TNotFound {
+    public void findById_robotExists_returnsRobot() throws Exception {
         long idRobot = 0L;
         TRobot tRobot = createRobot("robot", idRobot);
         RobotSerial robot = new RobotSerial(tRobot);
@@ -96,10 +97,10 @@ public class DbServiceHandlerRobotTest {
     /** Test findById operation for robot. */
     @Test
     @Rollback
-    public void findById_robotNotExists_throwsTNotFound() throws NotFound, TNotFound {
+    public void findById_robotNotExists_throwsTNotFound() throws Exception {
         long idRobotNotCorrect = 0L;
 
-        when(handler.getRobotDao().getRobot(idRobotNotCorrect)).thenThrow(new NotFound("0", "Exception"));
+        when(handler.getRobotDao().getRobot(idRobotNotCorrect)).thenThrow(new NotFoundException("0", "Exception"));
 
         assertThatThrownBy(() -> handler.findById(idRobotNotCorrect)).isInstanceOf(TNotFound.class);
     }
@@ -107,7 +108,7 @@ public class DbServiceHandlerRobotTest {
     /** Test deleteRobot operation for robot. */
     @Test
     @Rollback
-    public void deleteRobot_correctInput_robotDaoCalled() throws TErrorConnection, TAborted, Aborted, ErrorConnection {
+    public void deleteRobot_correctInput_robotDaoCalled() throws Exception {
         long idRobot = 0L;
 
         handler.deleteRobot(idRobot);
@@ -118,11 +119,10 @@ public class DbServiceHandlerRobotTest {
     /** Test deleteRobot operation for robot. */
     @Test
     @Rollback
-    public void deleteRobot_daoThrowsErrorConnection_throwsTErrorConnection() throws TErrorConnection, TAborted,
-            Aborted, ErrorConnection {
+    public void deleteRobot_daoThrowsErrorConnection_throwsTErrorConnection() throws Exception {
         long idRobotNotCorrect = 0L;
 
-        doThrow(new ErrorConnection("Exception", "Exception")).when(handler.getRobotDao()).
+        doThrow(new ErrorConnectionException("Exception", "Exception")).when(handler.getRobotDao()).
                 deleteRobot(idRobotNotCorrect);
 
         assertThatThrownBy(() -> handler.deleteRobot(idRobotNotCorrect)).isInstanceOf(TErrorConnection.class);
@@ -131,11 +131,10 @@ public class DbServiceHandlerRobotTest {
     /** Test deleteRobot operation for robot. */
     @Test
     @Rollback
-    public void deleteRobot_daoThrowsAborted_throwsTAborted() throws TErrorConnection, TAborted,
-            Aborted, ErrorConnection {
+    public void deleteRobot_daoThrowsAborted_throwsTAborted() throws Exception {
         long idRobotNotCorrect = 0L;
 
-        doThrow(new Aborted("0", "Exception", "Exception")).when(handler.getRobotDao()).
+        doThrow(new AbortedException("0", "Exception", "Exception")).when(handler.getRobotDao()).
                 deleteRobot(idRobotNotCorrect);
 
         assertThatThrownBy(() -> handler.deleteRobot(idRobotNotCorrect)).isInstanceOf(TAborted.class);
@@ -155,7 +154,7 @@ public class DbServiceHandlerRobotTest {
     /** Test updateRobot operation for robot. */
     @Test
     @Rollback
-    public void updateRobot_correctInput_robotDaoCalled() throws TIdNotDefined, TAborted, Aborted {
+    public void updateRobot_correctInput_robotDaoCalled() throws Exception {
         long idRobot = 0L;
         TRobot tRobot = createRobot("robot", idRobot);
         RobotSerial robot = new RobotSerial(tRobot);
@@ -168,7 +167,7 @@ public class DbServiceHandlerRobotTest {
     /** Test updateRobot operation for robot. */
     @Test
     @Rollback
-    public void updateRobot_idNotSet_throwsTIdNotDefined() throws TIdNotDefined, TAborted, Aborted {
+    public void updateRobot_idNotSet_throwsTIdNotDefined() throws Exception {
         TRobot tRobot = createRobot("robot");
 
         assertThatThrownBy(() -> handler.updateRobot(tRobot)).isInstanceOf(TIdNotDefined.class);
@@ -177,12 +176,12 @@ public class DbServiceHandlerRobotTest {
     /** Test updateRobot operation for robot. */
     @Test
     @Rollback
-    public void updateRobot_daoThrowsAborted_throwsTAborted() throws TIdNotDefined, TAborted, Aborted {
+    public void updateRobot_daoThrowsAborted_throwsTAborted() throws Exception {
         long idRobot = 0L;
         TRobot tRobot = createRobot("robot", idRobot);
         RobotSerial robot = new RobotSerial(tRobot);
 
-        doThrow(new Aborted("0", "Exception", "Exception")).when(handler.getRobotDao()).
+        doThrow(new AbortedException("0", "Exception", "Exception")).when(handler.getRobotDao()).
                 updateRobot(robot);
 
         assertThatThrownBy(() -> handler.updateRobot(tRobot)).isInstanceOf(TAborted.class);

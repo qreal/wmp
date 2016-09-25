@@ -1,8 +1,8 @@
 package com.qreal.wmp.dashboard.database.robots.client;
 
-import com.qreal.wmp.dashboard.database.exceptions.Aborted;
-import com.qreal.wmp.dashboard.database.exceptions.ErrorConnection;
-import com.qreal.wmp.dashboard.database.exceptions.NotFound;
+import com.qreal.wmp.dashboard.database.exceptions.AbortedException;
+import com.qreal.wmp.dashboard.database.exceptions.ErrorConnectionException;
+import com.qreal.wmp.dashboard.database.exceptions.NotFoundException;
 import com.qreal.wmp.dashboard.database.robots.model.Robot;
 import com.qreal.wmp.dashboard.database.users.client.UserService;
 import com.qreal.wmp.dashboard.database.users.model.User;
@@ -57,7 +57,7 @@ public class RobotServiceImpl implements RobotService {
     }
 
     @Override
-    public long register(@NotNull Robot robot) throws Aborted, ErrorConnection {
+    public long register(@NotNull Robot robot) throws AbortedException, ErrorConnectionException {
         logger.trace("register method called with parameters: robot = {}", robot.getName());
         long idRobot = -1;
         try {
@@ -68,34 +68,35 @@ public class RobotServiceImpl implements RobotService {
                 logger.error("register method encountered exception IdAlreadyDefined. Robot was not registered.",
                         e);
             } catch (TAborted e) {
-                throw new Aborted(e.getTextCause(), e.getMessage(), e.getFullClassName());
+                throw new AbortedException(e.getTextCause(), e.getMessage(), e.getFullClassName());
             } catch (TErrorConnection e) {
-                throw new ErrorConnection(e.getNameClient(), e.getMessage());
+                throw new ErrorConnectionException(e.getNameClient(), e.getMessage());
             } catch (TException e) {
                 logger.error("Client RobotService encountered problem while sending register request with parameters:" +
                         " robot = {}", robot.getName(), e);
-                throw new ErrorConnection(RobotServiceImpl.class.getName(), "Client RobotService encountered problem " +
-                        "while sending register request");
+                throw new ErrorConnectionException(RobotServiceImpl.class.getName(), "Client RobotService encountered" +
+                        " problem while sending register request");
             } finally {
                 transport.close();
             }
         } catch (TTransportException e) {
             logger.error("Client RobotService encountered problem while opening transport.", e);
-            throw new ErrorConnection(RobotServiceImpl.class.getName(), "Client RobotService encountered problem " +
-                    "while opening transport.");
+            throw new ErrorConnectionException(RobotServiceImpl.class.getName(), "Client RobotService encountered " +
+                    "problem while opening transport.");
         }
         logger.trace("register method registered robot {}", robot.getName());
         return idRobot;
     }
 
     @Override
-    public void registerByUsername(@NotNull Robot robot, String username) throws Aborted, ErrorConnection {
+    public void registerByUsername(@NotNull Robot robot, String username) throws AbortedException,
+            ErrorConnectionException {
         logger.trace("registerByUsername method called with parameters: robot = {}, username = {}", robot.getName(),
                 username);
         User user = null;
         try {
             user = userService.findByUserName(username);
-        } catch (NotFound notFound) {
+        } catch (NotFoundException notFound) {
             logger.error("registerByUsername called with username of not existing user.");
             return;
         }
@@ -113,7 +114,7 @@ public class RobotServiceImpl implements RobotService {
 
     @Override
     @NotNull
-    public Robot findById(long id) throws NotFound, ErrorConnection {
+    public Robot findById(long id) throws NotFoundException, ErrorConnectionException {
         logger.trace("findById method called with parameters: robotId = {}", id);
         TRobot tRobot = new TRobot();
         try {
@@ -121,32 +122,32 @@ public class RobotServiceImpl implements RobotService {
             try {
                 tRobot = client.findById(id);
             } catch (TNotFound e) {
-                throw new NotFound(e.getId(), e.getMessage());
+                throw new NotFoundException(e.getId(), e.getMessage());
             } catch (TException e) {
                 logger.error("Client RobotService encountered problem while sending findById request with parameters:" +
                         "  name = {}", id, e);
-                throw new ErrorConnection(RobotServiceImpl.class.getName(), "Client RobotService encountered problem " +
-                        "while sending findById request");
+                throw new ErrorConnectionException(RobotServiceImpl.class.getName(), "Client RobotService encountered" +
+                        " problem while sending findById request");
             } finally {
                 transport.close();
             }
         } catch (TTransportException e) {
             logger.error("Client RobotService encountered problem while opening transport.", e);
-            throw new ErrorConnection(RobotServiceImpl.class.getName(), "Client RobotService encountered problem " +
-                    "while opening transport.");
+            throw new ErrorConnectionException(RobotServiceImpl.class.getName(), "Client RobotService encountered " +
+                    "problem while opening transport.");
         }
         logger.trace("findById method got result");
         User user = null;
         try {
             user = userService.findByUserName(tRobot.getUsername());
-        } catch (NotFound e) {
+        } catch (NotFoundException e) {
             logger.error("Inconsistent state: Robot contains user with id {}, but this user doesn't exist.", e);
         }
         return new Robot(tRobot, user);
     }
 
     @Override
-    public boolean isRobotExists(long id) throws ErrorConnection {
+    public boolean isRobotExists(long id) throws ErrorConnectionException {
         logger.trace("isRobotExists method called with parameters: robotId = {}", id);
         boolean isRobotExists = false;
         try {
@@ -156,47 +157,47 @@ public class RobotServiceImpl implements RobotService {
             } catch (TException e) {
                 logger.error("Client RobotService encountered problem while sending isRobotExists request with " +
                         "parameters: name = {}", id, e);
-                throw new ErrorConnection(RobotServiceImpl.class.getName(), "Client RobotService encountered problem " +
-                        "while sending isRobotExists request");
+                throw new ErrorConnectionException(RobotServiceImpl.class.getName(), "Client RobotService encountered" +
+                        " problem while sending isRobotExists request");
             } finally {
                 transport.close();
             }
         } catch (TTransportException e) {
             logger.error("Client RobotService encountered problem while opening transport.", e);
-            throw new ErrorConnection(RobotServiceImpl.class.getName(), "Client RobotService encountered problem " +
-                    "while opening transport.");
+            throw new ErrorConnectionException(RobotServiceImpl.class.getName(), "Client RobotService encountered " +
+                    "problem while opening transport.");
         }
         logger.trace("isRobotExists method got result");
         return isRobotExists;
     }
 
     @Override
-    public void delete(long id) throws Aborted, ErrorConnection {
+    public void delete(long id) throws AbortedException, ErrorConnectionException {
         logger.trace("delete method called with parameters: name = {}", id);
         try {
             transport.open();
             try {
                 client.deleteRobot(id);
             } catch (TAborted e) {
-                throw new Aborted(e.getTextCause(), e.getMessage(), e.getFullClassName());
+                throw new AbortedException(e.getTextCause(), e.getMessage(), e.getFullClassName());
             } catch (TException e) {
                 logger.error("Client RobotService encountered problem while sending delete request with parameters: " +
                         "name = {}", id, e);
-                throw new ErrorConnection(RobotServiceImpl.class.getName(), "Client RobotService encountered problem " +
-                        "while sending delete request");
+                throw new ErrorConnectionException(RobotServiceImpl.class.getName(), "Client RobotService encountered" +
+                        " problem while sending delete request");
             } finally {
                 transport.close();
             }
         } catch (TTransportException e) {
             logger.error("Client RobotService encountered problem while opening transport.", e);
-            throw new ErrorConnection(RobotServiceImpl.class.getName(), "Client RobotService encountered problem " +
-                    "while opening transport.");
+            throw new ErrorConnectionException(RobotServiceImpl.class.getName(), "Client RobotService encountered " +
+                    "problem while opening transport.");
         }
         logger.trace("delete method deleted robot {}", id);
     }
 
     @Override
-    public void update(@NotNull TRobot tRobot) throws Aborted, ErrorConnection {
+    public void update(@NotNull TRobot tRobot) throws AbortedException, ErrorConnectionException {
         logger.trace("update method called with parameters: tRobot = {}", tRobot.getName());
         try {
             transport.open();
@@ -206,19 +207,19 @@ public class RobotServiceImpl implements RobotService {
                 logger.error("update method encountered exception IdNotDefined. You've tried to update robot, but not" +
                         " specified it's id.", e);
             } catch (TAborted e) {
-                throw new Aborted(e.getTextCause(), e.getMessage(), e.getFullClassName());
+                throw new AbortedException(e.getTextCause(), e.getMessage(), e.getFullClassName());
             } catch (TException e) {
                 logger.error("Client RobotService encountered problem while sending update request with parameters: " +
                         "tRobot = {}", tRobot.getName(), e);
-                throw new ErrorConnection(RobotServiceImpl.class.getName(), "Client RobotService encountered problem " +
-                        "while sending update request");
+                throw new ErrorConnectionException(RobotServiceImpl.class.getName(), "Client RobotService encountered" +
+                        " problem while sending update request");
             } finally {
                 transport.close();
             }
         } catch (TTransportException e) {
             logger.error("Client RobotService encountered problem while opening transport.", e);
-            throw new ErrorConnection(RobotServiceImpl.class.getName(), "Client RobotService encountered problem " +
-                    "while opening transport.");
+            throw new ErrorConnectionException(RobotServiceImpl.class.getName(), "Client RobotService encountered " +
+                    "problem while opening transport.");
         }
         logger.trace("update method updated robot {}", tRobot.getName());
     }

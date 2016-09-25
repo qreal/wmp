@@ -2,9 +2,9 @@ package com.qreal.wmp.db.user.test.server;
 
 import com.qreal.wmp.db.user.config.AppInit;
 import com.qreal.wmp.db.user.dao.UserDao;
-import com.qreal.wmp.db.user.exceptions.Aborted;
-import com.qreal.wmp.db.user.exceptions.ErrorConnection;
-import com.qreal.wmp.db.user.exceptions.NotFound;
+import com.qreal.wmp.db.user.exceptions.AbortedException;
+import com.qreal.wmp.db.user.exceptions.ErrorConnectionException;
+import com.qreal.wmp.db.user.exceptions.NotFoundException;
 import com.qreal.wmp.db.user.server.UserDbServiceHandler;
 import com.qreal.wmp.thrift.gen.*;
 import org.junit.After;
@@ -17,19 +17,19 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import static org.assertj.core.api.Assertions.*;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {AppInit.class})
 @Transactional
 public class DbServiceHandlerUserTest {
-
-    public UserDbServiceHandler handler;
+    private UserDbServiceHandler handler;
 
     @Autowired
-    public ApplicationContext context;
+    private ApplicationContext context;
 
     @Before
     public void setMocking() {
@@ -47,8 +47,7 @@ public class DbServiceHandlerUserTest {
     /** Test saveUser operation for user. */
     @Test
     @Rollback
-    public void saveUser_correctInput_userDaoCalled() throws TErrorConnection, TIdNotDefined, TAborted, Aborted,
-            ErrorConnection {
+    public void saveUser_correctInput_userDaoCalled() throws Exception {
         TUser tUser = createUser("username", "password", true);
 
         handler.save(tUser);
@@ -68,11 +67,10 @@ public class DbServiceHandlerUserTest {
     /** Test saveUser operation for user. */
     @Test
     @Rollback
-    public void saveUser_daoThrowsAborted_throwsTAborted() throws TAborted, TIdNotDefined,
-            TErrorConnection, Aborted, ErrorConnection {
+    public void saveUser_daoThrowsAborted_throwsTAborted() throws Exception {
         TUser tUser = createUser("username", "password", true);
 
-        doThrow(new Aborted("0", "Exception", "Exception")).when(handler.getUserDao()).saveUser(tUser);
+        doThrow(new AbortedException("0", "Exception", "Exception")).when(handler.getUserDao()).saveUser(tUser);
 
         assertThatThrownBy(() -> handler.save(tUser)).isInstanceOf(TAborted.class);
     }
@@ -80,10 +78,10 @@ public class DbServiceHandlerUserTest {
     /** Test saveUser operation for user. */
     @Test
     @Rollback
-    public void saveUser_daoThrowsErrorConnection_throwsTErrorConnection() throws Aborted, ErrorConnection {
+    public void saveUser_daoThrowsErrorConnection_throwsTErrorConnection() throws Exception {
         TUser tUser = createUser("username", "password", true);
 
-        doThrow(new ErrorConnection("0", "Exception")).when(handler.getUserDao()).saveUser(tUser);
+        doThrow(new ErrorConnectionException("0", "Exception")).when(handler.getUserDao()).saveUser(tUser);
 
         assertThatThrownBy(() -> handler.save(tUser)).isInstanceOf(TErrorConnection.class);
     }
@@ -91,7 +89,7 @@ public class DbServiceHandlerUserTest {
     /** Test findByUsername operation for user. */
     @Test
     @Rollback
-    public void findByUsername_correctInput_gotUser() throws NotFound, ErrorConnection, TNotFound, TErrorConnection {
+    public void findByUsername_correctInput_gotUser() throws Exception {
         String username = "username";
         TUser tUser = createUser("username", "password", true);
 
@@ -105,10 +103,10 @@ public class DbServiceHandlerUserTest {
     /** Test findByUsername operation for user. */
     @Test
     @Rollback
-    public void findByUsername_daoThrowsNotFound_throwsTNotFound() throws NotFound, ErrorConnection {
+    public void findByUsername_daoThrowsNotFound_throwsTNotFound() throws Exception {
         String username = "username";
 
-        when(handler.getUserDao().findByUserName(username)).thenThrow(new NotFound("0", "Exception"));
+        when(handler.getUserDao().findByUserName(username)).thenThrow(new NotFoundException("0", "Exception"));
 
         assertThatThrownBy(() -> handler.findByUserName(username)).isInstanceOf(TNotFound.class);
     }
@@ -116,11 +114,10 @@ public class DbServiceHandlerUserTest {
     /** Test findByUsername operation for user. */
     @Test
     @Rollback
-    public void findByUsername_daoThrowsErrorConnection_throwsTErrorConnection() throws TAborted, TIdNotDefined,
-            TErrorConnection, Aborted, ErrorConnection, NotFound, TNotFound {
+    public void findByUsername_daoThrowsErrorConnection_throwsTErrorConnection() throws Exception {
         String username = "username";
 
-        when(handler.getUserDao().findByUserName(username)).thenThrow(new ErrorConnection("0", "Exception"));
+        when(handler.getUserDao().findByUserName(username)).thenThrow(new ErrorConnectionException("0", "Exception"));
 
         assertThatThrownBy(() -> handler.findByUserName(username)).isInstanceOf(TErrorConnection.class);
     }
@@ -128,8 +125,7 @@ public class DbServiceHandlerUserTest {
     /** Test updateUser operation for user. */
     @Test
     @Rollback
-    public void updateUser_correctInput_userDaoCalled() throws TIdNotDefined, TErrorConnection, TAborted, Aborted,
-            ErrorConnection {
+    public void updateUser_correctInput_userDaoCalled() throws Exception {
         TUser tUser = createUser("username", "password", true);
 
         handler.update(tUser);
@@ -149,10 +145,10 @@ public class DbServiceHandlerUserTest {
     /** Test updateUser operation for user. */
     @Test
     @Rollback
-    public void updateUser_daoThrowsAborted_throwsTAborted() throws Aborted, ErrorConnection {
+    public void updateUser_daoThrowsAborted_throwsTAborted() throws Exception {
         TUser tUser = createUser("username", "password", true);
 
-        doThrow(new Aborted("0", "Exception", "Exception")).when(handler.getUserDao()).updateUser(tUser);
+        doThrow(new AbortedException("0", "Exception", "Exception")).when(handler.getUserDao()).updateUser(tUser);
 
         assertThatThrownBy(() -> handler.update(tUser)).isInstanceOf(TAborted.class);
     }
@@ -160,10 +156,10 @@ public class DbServiceHandlerUserTest {
     /** Test updateUser operation for user. */
     @Test
     @Rollback
-    public void updateUser_daoThrowsErrorConnection_throwsTErrorConnection() throws Aborted, ErrorConnection {
+    public void updateUser_daoThrowsErrorConnection_throwsTErrorConnection() throws Exception {
         TUser tUser = createUser("username", "password", true);
 
-        doThrow(new ErrorConnection("0", "Exception")).when(handler.getUserDao()).updateUser(tUser);
+        doThrow(new ErrorConnectionException("0", "Exception")).when(handler.getUserDao()).updateUser(tUser);
 
         assertThatThrownBy(() -> handler.update(tUser)).isInstanceOf(TErrorConnection.class);
     }

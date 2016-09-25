@@ -1,9 +1,9 @@
 package com.qreal.wmp.db.robot.dao;
 
 import com.qreal.wmp.db.robot.client.users.UserService;
-import com.qreal.wmp.db.robot.exceptions.Aborted;
-import com.qreal.wmp.db.robot.exceptions.ErrorConnection;
-import com.qreal.wmp.db.robot.exceptions.NotFound;
+import com.qreal.wmp.db.robot.exceptions.AbortedException;
+import com.qreal.wmp.db.robot.exceptions.ErrorConnectionException;
+import com.qreal.wmp.db.robot.exceptions.NotFoundException;
 import com.qreal.wmp.db.robot.model.robot.RobotSerial;
 import com.qreal.wmp.thrift.gen.TRobot;
 import com.qreal.wmp.thrift.gen.TUser;
@@ -77,16 +77,16 @@ public class RobotDaoImpl implements RobotDao {
      * @param robotId robot to deleteRobot (Id must be set correctly).
      */
     @Override
-    public void deleteRobot(long robotId) throws Aborted, ErrorConnection {
+    public void deleteRobot(long robotId) throws AbortedException, ErrorConnectionException {
         logger.trace("deleteRobot method called with parameters: id = {}", robotId);
         Session session = sessionFactory.getCurrentSession();
 
         RobotSerial robot = null;
         try {
             robot = getRobot(robotId);
-        } catch (NotFound e) {
+        } catch (NotFoundException e) {
             logger.error("Robot with specified Id doesn't exist.", e);
-            throw new Aborted("Robot with specified Id doesn't exist.", "deleteRobot was safely aborted",
+            throw new AbortedException("Robot with specified Id doesn't exist.", "deleteRobot was safely aborted",
                     RobotDaoImpl.class.getName());
         }
 
@@ -95,10 +95,10 @@ public class RobotDaoImpl implements RobotDao {
         TUser tUser = null;
         try {
             tUser = userService.findByUserName(owner);
-        } catch (NotFound e) {
+        } catch (NotFoundException e) {
             logger.error("Inconsistent state: Robot contains user with id {}, but this user doesn't exist.", owner, e);
-            throw new Aborted("Inconsistent state: Robot contains user with id {}, but this user doesn't exist.",
-                    "deleteRobot safely aborted", RobotDaoImpl.class.getName());
+            throw new AbortedException("Inconsistent state: Robot contains user with id {}, but this user doesn't " +
+                    "exist.", "deleteRobot safely aborted", RobotDaoImpl.class.getName());
         }
         TRobot tRobot = robot.toTRobot();
         tUser.getRobots().remove(tRobot);
@@ -120,13 +120,13 @@ public class RobotDaoImpl implements RobotDao {
      */
     @Override
     @NotNull
-    public RobotSerial getRobot(long robotId) throws NotFound {
+    public RobotSerial getRobot(long robotId) throws NotFoundException {
         logger.trace("getRobot method called with parameters: robotId = {}", robotId);
         Session session = sessionFactory.getCurrentSession();
 
         RobotSerial robot = (RobotSerial) session.get(RobotSerial.class, robotId);
         if (robot == null) {
-            throw new NotFound(String.valueOf(robotId), "Robot with specified id not found.");
+            throw new NotFoundException(String.valueOf(robotId), "Robot with specified id not found.");
         }
         return robot;
     }
@@ -150,13 +150,13 @@ public class RobotDaoImpl implements RobotDao {
      * @param robot robot to update (Id must be set correctly)
      */
     @Override
-    public void updateRobot(@NotNull RobotSerial robot) throws Aborted {
+    public void updateRobot(@NotNull RobotSerial robot) throws AbortedException {
         logger.trace("updateRobot method called with parameters: robot = {}", robot.getName());
         Session session = sessionFactory.getCurrentSession();
         if (!isExistsRobot(robot.getId())) {
             logger.error("Robot with specified Id doesn't exists.");
-            throw new Aborted("Robot with specified Id doesn't exists. Use saveRobot instead.", "updateRobot safely " +
-                    "aborted.", RobotDaoImpl.class.getName());
+            throw new AbortedException("Robot with specified Id doesn't exists. Use saveRobot instead.", "updateRobot" +
+                    " safely aborted.", RobotDaoImpl.class.getName());
         }
         session.merge(robot);
 

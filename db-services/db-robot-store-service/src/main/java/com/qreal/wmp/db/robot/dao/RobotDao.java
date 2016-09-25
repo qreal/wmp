@@ -1,9 +1,9 @@
 package com.qreal.wmp.db.robot.dao;
 
 import com.qreal.wmp.db.robot.client.users.UserService;
-import com.qreal.wmp.db.robot.exceptions.Aborted;
-import com.qreal.wmp.db.robot.exceptions.ErrorConnection;
-import com.qreal.wmp.db.robot.exceptions.NotFound;
+import com.qreal.wmp.db.robot.exceptions.AbortedException;
+import com.qreal.wmp.db.robot.exceptions.ErrorConnectionException;
+import com.qreal.wmp.db.robot.exceptions.NotFoundException;
 import com.qreal.wmp.db.robot.model.robot.RobotSerial;
 import org.jetbrains.annotations.NotNull;
 
@@ -15,14 +15,14 @@ public interface RobotDao {
      *
      * @param robot robot to saveRobot (Id must not be set).
      */
-    long saveRobot(@NotNull RobotSerial robot) throws Aborted;
+    long saveRobot(@NotNull RobotSerial robot) throws AbortedException;
 
     /**
      * Deletes robot.
      *
      * @param robotId robot to deleteRobot (Id must be set correctly).
      */
-    void deleteRobot(long robotId) throws Aborted, ErrorConnection;
+    void deleteRobot(long robotId) throws AbortedException, ErrorConnectionException;
 
     /**
      * Finds robot with specified id.
@@ -30,7 +30,7 @@ public interface RobotDao {
      * @param robotId id of robot to find
      */
     @NotNull
-    RobotSerial getRobot(long robotId) throws NotFound;
+    RobotSerial getRobot(long robotId) throws NotFoundException;
 
     /**
      * Tells if robot with specified name exists.
@@ -44,7 +44,7 @@ public interface RobotDao {
      *
      * @param robot robot to update (Id must be set correctly)
      */
-    void updateRobot(@NotNull RobotSerial robot) throws Aborted;
+    void updateRobot(@NotNull RobotSerial robot) throws AbortedException;
 
     /** For the sake of testing.*/
     void setUserService(UserService userService);

@@ -1,8 +1,8 @@
 package com.qreal.wmp.db.diagram.server;
 
 import com.qreal.wmp.db.diagram.dao.DiagramDao;
-import com.qreal.wmp.db.diagram.exceptions.Aborted;
-import com.qreal.wmp.db.diagram.exceptions.NotFound;
+import com.qreal.wmp.db.diagram.exceptions.AbortedException;
+import com.qreal.wmp.db.diagram.exceptions.NotFoundException;
 import com.qreal.wmp.db.diagram.model.Diagram;
 import com.qreal.wmp.db.diagram.model.Folder;
 import com.qreal.wmp.thrift.gen.*;
@@ -28,7 +28,7 @@ public class DiagramDbServiceHandler implements DiagramDbService.Iface {
         long id = 0;
         try {
             id = diagramDao.saveDiagram(new Diagram(diagram), diagram.getFolderId());
-        } catch (Aborted e) {
+        } catch (AbortedException e) {
             throw new TAborted(e.getTextCause(), e.getMessage(), e.getFullClassName());
         }
         return id;
@@ -40,7 +40,7 @@ public class DiagramDbServiceHandler implements DiagramDbService.Iface {
         try {
             diagram = diagramDao.getDiagram(diagramId);
         }
-        catch (NotFound e) {
+        catch (NotFoundException e) {
             throw new TNotFound(String.valueOf(diagramId), "Diagram not found.");
         }
         return diagram.toTDiagram();
@@ -50,7 +50,7 @@ public class DiagramDbServiceHandler implements DiagramDbService.Iface {
     public void deleteDiagram(long diagramId) throws TAborted {
         try {
             diagramDao.deleteDiagram(diagramId);
-        } catch (Aborted e) {
+        } catch (AbortedException e) {
             throw new TAborted(e.getTextCause(), e.getMessage(), e.getFullClassName());
         }
     }
@@ -62,7 +62,7 @@ public class DiagramDbServiceHandler implements DiagramDbService.Iface {
         }
         try {
             diagramDao.rewriteDiagram(new Diagram(diagram));
-        } catch (Aborted e) {
+        } catch (AbortedException e) {
             throw new TAborted(e.getTextCause(), e.getMessage(), e.getFullClassName());
         }
     }
@@ -75,7 +75,7 @@ public class DiagramDbServiceHandler implements DiagramDbService.Iface {
         }
         try {
             id = diagramDao.saveFolder(new Folder(folder));
-        } catch (Aborted e) {
+        } catch (AbortedException e) {
             //For now never happens
             throw new TAborted(e.getTextCause(), e.getMessage(), e.getFullClassName());
         }
@@ -86,7 +86,7 @@ public class DiagramDbServiceHandler implements DiagramDbService.Iface {
     public void deleteFolder(long folderId) throws TAborted {
         try {
             diagramDao.deleteFolder(folderId);
-        } catch (Aborted e) {
+        } catch (AbortedException e) {
             throw new TAborted(e.getTextCause(), e.getMessage(), e.getFullClassName());
         }
     }
@@ -96,7 +96,7 @@ public class DiagramDbServiceHandler implements DiagramDbService.Iface {
         Folder folder = null;
         try {
             folder = diagramDao.getFolderTree(username);
-        } catch (NotFound e) {
+        } catch (NotFoundException e) {
             throw new TNotFound(username, "FolderTree for specified user not found.");
         }
         return folder.toTFolder();

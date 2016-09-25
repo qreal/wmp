@@ -1,8 +1,8 @@
 package com.qreal.wmp.editor.common.auth;
 
-import com.qreal.wmp.editor.database.exceptions.Aborted;
-import com.qreal.wmp.editor.database.exceptions.ErrorConnection;
-import com.qreal.wmp.editor.database.exceptions.NotFound;
+import com.qreal.wmp.editor.database.exceptions.AbortedException;
+import com.qreal.wmp.editor.database.exceptions.ErrorConnectionException;
+import com.qreal.wmp.editor.database.exceptions.NotFoundException;
 import com.qreal.wmp.editor.database.users.client.UserService;
 import com.qreal.wmp.editor.database.users.model.User;
 import com.qreal.wmp.editor.database.users.model.UserRole;
@@ -46,9 +46,9 @@ public class OAuth2UserDetailsLoaderImpl implements OAuth2UserDetailsLoader<User
             User user = userService.findByUserName(id);
             userDetails = convert(user);
             logger.trace("User {} was found", id);
-        } catch (NotFound e) {
+        } catch (NotFoundException e) {
             logger.trace("User {} was not found", id);
-        } catch (ErrorConnection e) {
+        } catch (ErrorConnectionException e) {
             //TODO what to do in that case?
             logger.error("Fatal error: must find user but can't because of connection error with user service", id);
         }
@@ -77,10 +77,10 @@ public class OAuth2UserDetailsLoaderImpl implements OAuth2UserDetailsLoader<User
         user.setRoles(roles);
         try {
             userService.save(user);
-        } catch (Aborted e) {
+        } catch (AbortedException e) {
             //TODO what to do in that case?
             logger.error("Fatal error: must create user but can't because operation was aborted.");
-        } catch (ErrorConnection e) {
+        } catch (ErrorConnectionException e) {
             //TODO what to do in that case?
             logger.error("Fatal error: must create user but can't because of connection error with user service.");
         }

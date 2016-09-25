@@ -1,9 +1,9 @@
 package com.qreal.wmp.db.robot.server;
 
 import com.qreal.wmp.db.robot.dao.RobotDao;
-import com.qreal.wmp.db.robot.exceptions.Aborted;
-import com.qreal.wmp.db.robot.exceptions.ErrorConnection;
-import com.qreal.wmp.db.robot.exceptions.NotFound;
+import com.qreal.wmp.db.robot.exceptions.AbortedException;
+import com.qreal.wmp.db.robot.exceptions.ErrorConnectionException;
+import com.qreal.wmp.db.robot.exceptions.NotFoundException;
 import com.qreal.wmp.db.robot.model.robot.RobotSerial;
 import com.qreal.wmp.thrift.gen.*;
 import org.springframework.context.ApplicationContext;
@@ -26,7 +26,7 @@ public class RobotDbServiceHandler implements RobotDbService.Iface {
         }
         try {
             id = robotDao.saveRobot(new RobotSerial(tRobot));
-        } catch (Aborted e) {
+        } catch (AbortedException e) {
             throw new TAborted(e.getTextCause(), e.getMessage(), e.getFullClassName());
         }
         return id;
@@ -37,7 +37,7 @@ public class RobotDbServiceHandler implements RobotDbService.Iface {
         RobotSerial robot = null;
         try {
             robot = robotDao.getRobot(robotId);
-        } catch (NotFound e) {
+        } catch (NotFoundException e) {
             throw new TNotFound(String.valueOf(robotId), "Robot not found.");
         }
         return robot.toTRobot();
@@ -47,9 +47,9 @@ public class RobotDbServiceHandler implements RobotDbService.Iface {
     public void deleteRobot(long robotId) throws TAborted, TErrorConnection {
         try {
             robotDao.deleteRobot(robotId);
-        } catch (ErrorConnection e) {
+        } catch (ErrorConnectionException e) {
             throw new TErrorConnection(e.getNameClient(), e.getMessage());
-        } catch (Aborted e) {
+        } catch (AbortedException e) {
             throw new TAborted(e.getTextCause(), e.getMessage(), e.getFullClassName());
         }
     }
@@ -66,7 +66,7 @@ public class RobotDbServiceHandler implements RobotDbService.Iface {
         }
         try {
             robotDao.updateRobot(new RobotSerial(tRobot));
-        } catch (Aborted e) {
+        } catch (AbortedException e) {
             throw new TAborted(e.getTextCause(), e.getMessage(), e.getFullClassName());
         }
     }

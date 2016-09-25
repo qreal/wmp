@@ -3,9 +3,8 @@ package com.qreal.wmp.db.robot.test.dao;
 import com.qreal.wmp.db.robot.client.users.UserService;
 import com.qreal.wmp.db.robot.config.AppInit;
 import com.qreal.wmp.db.robot.dao.RobotDao;
-import com.qreal.wmp.db.robot.exceptions.Aborted;
-import com.qreal.wmp.db.robot.exceptions.ErrorConnection;
-import com.qreal.wmp.db.robot.exceptions.NotFound;
+import com.qreal.wmp.db.robot.exceptions.AbortedException;
+import com.qreal.wmp.db.robot.exceptions.NotFoundException;
 import com.qreal.wmp.db.robot.model.robot.RobotSerial;
 import com.qreal.wmp.thrift.gen.TRobot;
 import com.qreal.wmp.thrift.gen.TUser;
@@ -21,17 +20,16 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {AppInit.class})
 @Transactional
 public class DaoRobotTest {
     @Autowired
-    public RobotDao robotDao;
+    private RobotDao robotDao;
 
     @Before
     public void setMocking() {
@@ -47,7 +45,7 @@ public class DaoRobotTest {
     /** Test saveRobot operation for robot. */
     @Test
     @Rollback
-    public void saveRobot_correctInput_savesRobotInDb() throws Aborted, NotFound {
+    public void saveRobot_correctInput_savesRobotInDb() throws Exception {
         RobotSerial robot = createRobot("robot", "ssid", "owner");
         long idRobot = robotDao.saveRobot(robot);
         robot.setId(idRobot);
@@ -60,7 +58,7 @@ public class DaoRobotTest {
     /** Test saveRobot operation for robot. */
     @Test
     @Rollback
-    public void getRobot_robotExists_gotRobot() throws Aborted, NotFound {
+    public void getRobot_robotExists_gotRobot() throws Exception {
         RobotSerial robot = createAndSaveRobot("robot", "ssid", "owner");
 
         RobotSerial gotRobot = robotDao.getRobot(robot.getId());
@@ -71,16 +69,16 @@ public class DaoRobotTest {
     /** Test saveRobot operation for robot. */
     @Test
     @Rollback
-    public void getRobot_robotNotExists_throwsNotFound() throws Aborted, NotFound {
+    public void getRobot_robotNotExists_throwsNotFound() throws Exception {
         long idRobotNotCorrect = 0L;
 
-        assertThatThrownBy(() -> robotDao.getRobot(idRobotNotCorrect)).isInstanceOf(NotFound.class);
+        assertThatThrownBy(() -> robotDao.getRobot(idRobotNotCorrect)).isInstanceOf(NotFoundException.class);
     }
 
     /** Test deleteRobot operation for robot. */
     @Test
     @Rollback
-    public void deleteRobot_correctInput_deletesRobotFromDb() throws Aborted, ErrorConnection, NotFound {
+    public void deleteRobot_correctInput_deletesRobotFromDb() throws Exception {
         RobotSerial robot = createAndSaveRobot("robot", "ssid", "owner");
         TRobot tRobot = robot.toTRobot();
         TUser owner = createUser("owner");
@@ -88,13 +86,13 @@ public class DaoRobotTest {
 
         robotDao.deleteRobot(tRobot.getId());
 
-        assertThatThrownBy(() -> robotDao.getRobot(tRobot.getId())).isInstanceOf(NotFound.class);
+        assertThatThrownBy(() -> robotDao.getRobot(tRobot.getId())).isInstanceOf(NotFoundException.class);
     }
 
     /** Test deleteRobot operation for robot. */
     @Test
     @Rollback
-    public void deleteRobot_correctInput_callFindInUserService() throws Aborted, ErrorConnection, NotFound {
+    public void deleteRobot_correctInput_callFindInUserService() throws Exception {
         RobotSerial robot = createAndSaveRobot("robot", "ssid", "owner");
         TRobot tRobot = robot.toTRobot();
         TUser owner = createUser("owner");
@@ -108,7 +106,7 @@ public class DaoRobotTest {
     /** Test deleteRobot operation for robot. */
     @Test
     @Rollback
-    public void deleteRobot_correctInput_deleteRobotFromOwnerList() throws Aborted, ErrorConnection, NotFound {
+    public void deleteRobot_correctInput_deleteRobotFromOwnerList() throws Exception {
         RobotSerial robot = createAndSaveRobot("robot", "ssid", "owner");
         TRobot tRobot = robot.toTRobot();
         TUser owner = createUser("owner");
@@ -122,7 +120,7 @@ public class DaoRobotTest {
     /** Test deleteRobot operation for robot. */
     @Test
     @Rollback
-    public void deleteRobot_correctInput_callUpdateInUserService() throws Aborted, ErrorConnection, NotFound {
+    public void deleteRobot_correctInput_callUpdateInUserService() throws Exception {
         RobotSerial robot = createAndSaveRobot("robot", "ssid", "owner");
         TRobot tRobot = robot.toTRobot();
         TUser owner = createUser("owner");
@@ -136,28 +134,28 @@ public class DaoRobotTest {
     /** Test deleteRobot operation for robot. */
     @Test
     @Rollback
-    public void deleteRobot_robotNotExists_throwsAborted() throws Aborted, ErrorConnection, NotFound {
+    public void deleteRobot_robotNotExists_throwsAborted() throws Exception {
         long idRobotNotCorrect = 0L;
 
-        assertThatThrownBy(() -> robotDao.deleteRobot(idRobotNotCorrect)).isInstanceOf(Aborted.class);
+        assertThatThrownBy(() -> robotDao.deleteRobot(idRobotNotCorrect)).isInstanceOf(AbortedException.class);
     }
 
     /** Test deleteRobot operation for robot. */
     @Test
     @Rollback
-    public void deleteRobot_userNotExists_throwsAborted() throws Aborted, ErrorConnection, NotFound {
+    public void deleteRobot_userNotExists_throwsAborted() throws Exception {
         String owner = "owner";
         RobotSerial testRobot = createAndSaveRobot("robot", "ssid", owner);
 
-        when(robotDao.getUserService().findByUserName(owner)).thenThrow(new NotFound(owner, "Exception"));
+        when(robotDao.getUserService().findByUserName(owner)).thenThrow(new NotFoundException(owner, "Exception"));
 
-        assertThatThrownBy(() -> robotDao.deleteRobot(testRobot.getId())).isInstanceOf(Aborted.class);
+        assertThatThrownBy(() -> robotDao.deleteRobot(testRobot.getId())).isInstanceOf(AbortedException.class);
     }
 
     /** Test exists operation for robot. */
     @Test
     @Rollback
-    public void isExistsRobot_robotExists_returnsTrue() throws Aborted, NotFound, ErrorConnection {
+    public void isExistsRobot_robotExists_returnsTrue() throws Exception {
         RobotSerial testRobot = createAndSaveRobot("robot", "ssid", "owner");
 
         assertThat(robotDao.isExistsRobot(testRobot.getId())).isTrue();
@@ -166,7 +164,7 @@ public class DaoRobotTest {
     /** Test exists operation for robot. */
     @Test
     @Rollback
-    public void isExistsRobot_robotNotExists_returnsFalse() throws Aborted, NotFound, ErrorConnection {
+    public void isExistsRobot_robotNotExists_returnsFalse() throws Exception {
         long idRobotNotCorrect = 0L;
 
         assertThat(robotDao.isExistsRobot(idRobotNotCorrect)).isFalse();
@@ -175,7 +173,7 @@ public class DaoRobotTest {
     /** Test update operation for robot. */
     @Test
     @Rollback
-    public void updateRobot_robotExists_updatesRobot() throws Aborted, NotFound, ErrorConnection {
+    public void updateRobot_robotExists_updatesRobot() throws Exception {
         RobotSerial testRobot = createAndSaveRobot("robot", "ssid", "owner");
 
         RobotSerial changedRobot = createRobot("robotChanged", "ssidChanged", "ownerChanged");
@@ -189,12 +187,12 @@ public class DaoRobotTest {
     /** Test update operation for robot. */
     @Test
     @Rollback
-    public void updateRobot_robotNotExists_throwsAborted() throws Aborted, NotFound, ErrorConnection {
+    public void updateRobot_robotNotExists_throwsAborted() throws Exception {
         long idRobotNotCorrect = 0L;
         RobotSerial changedRobot = createRobot("robotChanged", "ssidChanged", "ownerChanged");
         changedRobot.setId(idRobotNotCorrect);
 
-        assertThatThrownBy(() -> robotDao.updateRobot(changedRobot)).isInstanceOf(Aborted.class);
+        assertThatThrownBy(() -> robotDao.updateRobot(changedRobot)).isInstanceOf(AbortedException.class);
     }
 
     private RobotSerial createRobot(String name, String ssid, String owner) {
@@ -205,7 +203,7 @@ public class DaoRobotTest {
         return robotSerial;
     }
 
-    private RobotSerial createAndSaveRobot(String name, String ssid, String owner) throws Aborted {
+    private RobotSerial createAndSaveRobot(String name, String ssid, String owner) throws Exception {
         RobotSerial robotSerial = createRobot(name, ssid, owner);
         long idRobot = robotDao.saveRobot(robotSerial);
         robotSerial.setId(idRobot);
@@ -218,7 +216,7 @@ public class DaoRobotTest {
         return tUser;
     }
 
-    private void addRobotToUser(TUser tUser, TRobot tRobot) throws NotFound, ErrorConnection {
+    private void addRobotToUser(TUser tUser, TRobot tRobot) throws Exception {
         if (tUser.getRobots() == null) {
             tUser.setRobots(new HashSet<>());
         }

@@ -4,8 +4,6 @@ import com.qreal.wmp.thrift.gen.TRobot;
 import lombok.Data;
 
 import javax.persistence.*;
-
-import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 

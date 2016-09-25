@@ -1,8 +1,8 @@
 package com.qreal.wmp.dashboard.controller;
 
 import com.qreal.wmp.dashboard.common.utils.AuthenticatedUser;
-import com.qreal.wmp.dashboard.database.exceptions.ErrorConnection;
-import com.qreal.wmp.dashboard.database.exceptions.NotFound;
+import com.qreal.wmp.dashboard.database.exceptions.ErrorConnectionException;
+import com.qreal.wmp.dashboard.database.exceptions.NotFoundException;
 import com.qreal.wmp.dashboard.database.users.client.UserService;
 import com.qreal.wmp.dashboard.database.users.model.User;
 import org.slf4j.Logger;
@@ -37,9 +37,9 @@ public class MainController {
         User user = null;
         try {
             user = userService.findByUserName(AuthenticatedUser.getUserName());
-        } catch (NotFound notFound) {
+        } catch (NotFoundException notFound) {
             logger.error("Authentication error: authenticated user not in database.");
-        } catch (ErrorConnection errorConnection) {
+        } catch (ErrorConnectionException errorConnection) {
             logger.error("Connection error: user service not online.");
         }
 
