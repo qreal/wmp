@@ -15,7 +15,7 @@ exception TAborted {
 
 /** Used in case of connection errors.*/
 exception TErrorConnection {
-    1: string nameClient,
+    1: string clientName,
     2: string message
 }
 
