@@ -34,9 +34,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Transactional(readOnly = true)
     @Override
-    public UserDetails loadUserByUsername(final String username)
-            throws UsernameNotFoundException {
-
+    public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
         com.qreal.wmp.dashboard.database.users.model.User user = null;
         try {
             user = userService.findByUserName(username);
@@ -47,22 +45,16 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
 
         List<GrantedAuthority> authorities = buildUserAuthority(user.getRoles());
-
         return buildUserForAuthentication(user, authorities);
-
     }
 
     private User buildUserForAuthentication(com.qreal.wmp.dashboard.database.users.model.User user,
                                             List<GrantedAuthority> authorities) {
-        return new User(user.getUsername(), user.getPassword(),
-                user.isEnabled(), true, true, true, authorities);
+        return new User(user.getUsername(), user.getPassword(), user.isEnabled(), true, true, true, authorities);
     }
 
     private List<GrantedAuthority> buildUserAuthority(Set<UserRole> userRoles) {
-
-        Set<GrantedAuthority> setAuths = userRoles.stream().map(userRole -> new SimpleGrantedAuthority(userRole.
-                getRole())).collect(Collectors.toSet());
-        return new ArrayList<>(setAuths);
+        return userRoles.stream().map(userRole ->
+                new SimpleGrantedAuthority(userRole.getRole())).collect(Collectors.toList());
     }
-
 }
