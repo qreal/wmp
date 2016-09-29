@@ -24,7 +24,6 @@ public class RobotRestServletHandler implements RobotServiceThrift.Iface {
         this.context = context;
     }
 
-
     /**
      * RPC function registering robot.
      *

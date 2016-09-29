@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void save(@NotNull User user) throws AbortedException, ErrorConnectionException {
         TUser tUser = user.toTUser();
-        logger.trace("save method called with parameters: user = {}", user.getUsername());
+        logger.trace("save() was called with parameters: user = {}.", user.getUsername());
         try {
             transport.open();
             try {
@@ -59,30 +59,30 @@ public class UserServiceImpl implements UserService {
             } catch (TAborted e) {
                 throw new AbortedException(e.getTextCause(), e.getMessage(), e.getFullClassName());
             } catch (TIdNotDefined e) {
-                logger.error("save method encountered exception IdNotDefined. User was not created", e);
+                logger.error("save() encountered an IdNotDefined exception. User was not created.", e);
             } catch (TErrorConnection e) {
                 throw new ErrorConnectionException(e.getNameClient(), e.getMessage());
             } catch (TException e) {
-                logger.error("Client UserService encountered problem while sending save request with parameters: " +
-                        "user = {}", user, e);
-                throw new ErrorConnectionException(UserServiceImpl.class.getName(), "Client UserService encountered " +
-                        "problem while sending save request");
+                logger.error("Client UserService encountered a problem while sending save request with parameters:" +
+                        " user = {}", user, e);
+                throw new ErrorConnectionException(UserServiceImpl.class.getName(), "Client UserService encountered" +
+                        " a problem while sending save request");
             } finally {
                 transport.close();
             }
         } catch (TTransportException e) {
-            logger.error("Client UserService encountered problem while opening transport.", e);
-            throw new ErrorConnectionException(UserServiceImpl.class.getName(), "Client UserService encountered " +
-                    "problem while opening transport.");
+            logger.error("Client UserService encountered a problem while opening transport.", e);
+            throw new ErrorConnectionException(UserServiceImpl.class.getName(), "Client UserService encountered" +
+                    " a problem while opening transport.");
         }
-        logger.trace("save method saved user {}", user.getUsername());
+        logger.trace("save() successfully saved {} user.", user.getUsername());
     }
 
     @Override
     @Transactional
     public void update(@NotNull User user) throws AbortedException, ErrorConnectionException {
         TUser tUser = user.toTUser();
-        logger.trace("update method called with parameters: user = {}", user.getUsername());
+        logger.trace("update() was called with parameters: user = {}", user.getUsername());
         try {
             transport.open();
             try {
@@ -90,31 +90,31 @@ public class UserServiceImpl implements UserService {
             } catch (TAborted e) {
                 throw new AbortedException(e.getTextCause(), e.getMessage(), e.getFullClassName());
             } catch (TIdNotDefined e) {
-                logger.error("update method encountered exception IdNotDefined. You've tried to update user, but not" +
-                        " specified it's id.", e);
+                logger.error("update() encountered an IdNotDefined exception. You've tried to update user, " +
+                        "but did not specified its id.", e);
             } catch (TErrorConnection e) {
                 throw new ErrorConnectionException(e.getNameClient(), e.getMessage());
             } catch (TException e) {
-                logger.error("Client UserService encountered problem while sending update request with parameters: " +
-                        "user = {}", user, e);
-                throw new ErrorConnectionException(UserServiceImpl.class.getName(), "Client UserService encountered " +
-                        "problem while sending update request");
+                logger.error("Client UserService encountered a problem while sending update request with parameters:" +
+                        " user = {}", user, e);
+                throw new ErrorConnectionException(UserServiceImpl.class.getName(), "Client UserService encountered" +
+                        " a problem while sending update request");
             } finally {
                 transport.close();
             }
         } catch (TTransportException e) {
             logger.error("Client UserService encountered problem while opening transport.", e);
-            throw new ErrorConnectionException(UserServiceImpl.class.getName(), "Client UserService encountered " +
-                    "problem while opening transport.");
+            throw new ErrorConnectionException(UserServiceImpl.class.getName(), "Client UserService encountered" +
+                    " a problem while opening transport.");
         }
-        logger.trace("update method updated user {}", user.getUsername());
+        logger.trace("update() successfully updated {} user.", user.getUsername());
     }
 
     @Override
     @Transactional
     @NotNull
     public User findByUserName(String username) throws NotFoundException, ErrorConnectionException {
-        logger.trace("findByUserName method called with parameters: username = {}", username);
+        logger.trace("findByUserName() was called with parameters: username = {}.", username);
         TUser tUser = null;
         try {
             transport.open();
@@ -125,26 +125,26 @@ public class UserServiceImpl implements UserService {
             } catch (TErrorConnection e) {
                 throw new ErrorConnectionException(e.getNameClient(), e.getMessage());
             } catch (TException e) {
-                logger.error("Client UserService encountered problem while sending findByUserName request with " +
-                        "parameters: username = {}", username, e);
-                throw new ErrorConnectionException(UserServiceImpl.class.getName(), "Client UserService encountered " +
-                        "problem while sending findByUserName request");
+                logger.error("Client UserService encountered a problem while sending findByUserName request with" +
+                        " parameters: username = {}", username, e);
+                throw new ErrorConnectionException(UserServiceImpl.class.getName(), "Client UserService encountered" +
+                        " a problem while sending findByUserName request");
             } finally {
                 transport.close();
             }
         } catch (TTransportException e) {
-            logger.error("Client UserService encountered problem while opening transport.", e);
-            throw new ErrorConnectionException(UserServiceImpl.class.getName(), "Client UserService encountered " +
-                    "problem while opening transport.");
+            logger.error("Client UserService encountered a problem while opening transport.", e);
+            throw new ErrorConnectionException(UserServiceImpl.class.getName(), "Client UserService encountered" +
+                    " a problem while opening transport.");
         }
-        logger.trace("findByUserName method returned answer.");
+        logger.trace("findByUserName() successfully returned an answer.");
         return new User(tUser);
     }
 
     @Override
     @Transactional
     public boolean isUserExist(String username) throws ErrorConnectionException {
-        logger.trace("isUserExist method called with parameters: username = {}", username);
+        logger.trace("isUserExist() was called with parameters: username = {}", username);
         boolean isUserExist = false;
         try {
             transport.open();
@@ -153,19 +153,19 @@ public class UserServiceImpl implements UserService {
             } catch (TErrorConnection e) {
                 throw new ErrorConnectionException(e.getNameClient(), e.getMessage());
             } catch (TException e) {
-                logger.error("Client UserService encountered problem while sending isUserExist request with " +
-                        "parameters: username = {}", username, e);
-                throw new ErrorConnectionException(UserServiceImpl.class.getName(), "Client UserService encountered " +
-                        "problem while sending isUserExist request");
+                logger.error("Client UserService encountered a problem while sending isUserExist request with" +
+                        " parameters: username = {}", username, e);
+                throw new ErrorConnectionException(UserServiceImpl.class.getName(), "Client UserService encountered" +
+                        " a problem while sending isUserExist request");
             } finally {
                 transport.close();
             }
         } catch (TTransportException e) {
-            logger.error("Client UserService encountered problem while opening transport.", e);
-            throw new ErrorConnectionException(UserServiceImpl.class.getName(), "Client UserService encountered " +
-                    "problem while opening transport.");
+            logger.error("Client UserService encountered a problem while opening transport.", e);
+            throw new ErrorConnectionException(UserServiceImpl.class.getName(), "Client UserService encountered" +
+                    " a problem while opening transport.");
         }
-        logger.trace("isUserExist returned answer");
+        logger.trace("isUserExist() successfully returned an answer");
         return isUserExist;
     }
 }

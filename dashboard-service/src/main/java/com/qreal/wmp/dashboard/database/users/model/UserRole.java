@@ -4,14 +4,13 @@ import com.qreal.wmp.thrift.gen.TUserRole;
 
 /** UserRole in authorization service.*/
 public class UserRole {
-
-    /** Surrogate key for role (maybe static table for roles?).*/
+    /** Surrogate key for role (maybe static table for roles?). */
     private Integer id;
 
-    /** Owner of role.*/
+    /** Owner of the role. */
     private User user;
 
-    /** Name of role.*/
+    /** Name of the role. */
     private String role;
 
     public UserRole() {
@@ -24,9 +23,8 @@ public class UserRole {
 
     /** Full UserRole constructor.*/
     public UserRole(int id, User user, String role) {
+        this(user, role);
         this.id = id;
-        this.user = user;
-        this.role = role;
     }
 
     /** Constructor-converter from Thrift TUserRole to UserRole.*/
