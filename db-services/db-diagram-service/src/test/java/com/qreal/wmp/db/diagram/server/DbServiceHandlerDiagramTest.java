@@ -1,11 +1,10 @@
-package com.qreal.wmp.db.diagram.test.server;
+package com.qreal.wmp.db.diagram.server;
 
 import com.qreal.wmp.db.diagram.config.AppInit;
 import com.qreal.wmp.db.diagram.dao.DiagramDao;
 import com.qreal.wmp.db.diagram.exceptions.AbortedException;
 import com.qreal.wmp.db.diagram.exceptions.NotFoundException;
 import com.qreal.wmp.db.diagram.model.Diagram;
-import com.qreal.wmp.db.diagram.server.DiagramDbServiceHandler;
 import com.qreal.wmp.thrift.gen.*;
 import org.junit.After;
 import org.junit.Before;

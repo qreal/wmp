@@ -1,4 +1,4 @@
-package com.qreal.wmp.db.diagram.test.server;
+package com.qreal.wmp.db.diagram.server;
 
 import com.qreal.wmp.db.diagram.config.AppInit;
 import com.qreal.wmp.db.diagram.dao.DiagramDao;
@@ -118,14 +118,14 @@ public class DbServiceHandlerFolderTest {
     private TFolder createFolder(String folderName) {
         TFolder tFolder = new TFolder();
         tFolder.setFolderName(folderName);
-        return  tFolder;
+        return tFolder;
     }
 
     private TFolder createFolder(String folderName, Long idFolder) {
         TFolder tFolder = new TFolder();
         tFolder.setFolderName(folderName);
         tFolder.setId(idFolder);
-        return  tFolder;
+        return tFolder;
     }
 
     private TFolder createFolder(String folderName, Long idFolder, String userName) {
@@ -133,6 +133,6 @@ public class DbServiceHandlerFolderTest {
         tFolder.setFolderName(folderName);
         tFolder.setId(idFolder);
         tFolder.setUserName(userName);
-        return  tFolder;
+        return tFolder;
     }
 }

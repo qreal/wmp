@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
 @Table(name = "nodes")
 @Data
 public class DefaultDiagramNode implements Serializable {
-
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
@@ -91,8 +90,7 @@ public class DefaultDiagramNode implements Serializable {
         this.type = type;
     }
 
-    @NotNull
-    public Set<Property> getProperties() {
+    public @NotNull Set<Property> getProperties() {
         return properties;
     }
 

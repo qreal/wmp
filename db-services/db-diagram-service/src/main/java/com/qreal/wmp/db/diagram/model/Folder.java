@@ -10,12 +10,11 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-/** Folder with diagrams and other folders.*/
+/** Folder with diagrams and other folders. */
 @Entity
 @Table(name = "folders")
 @Data
 public class Folder implements Serializable {
-
     @Id
     @Column(name = "folder_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -74,7 +73,6 @@ public class Folder implements Serializable {
         if (tFolder.isSetDiagrams()) {
             diagrams = tFolder.getDiagrams().stream().map(Diagram::new).collect(Collectors.toSet());
         }
-
     }
 
     /** Converter from Folder to Thrift TFolder.*/
@@ -136,8 +134,7 @@ public class Folder implements Serializable {
         this.childrenFolders = folderParentId;
     }
 
-    @NotNull
-    public Set<Folder> getChildrenFolders() {
+    public @NotNull Set<Folder> getChildrenFolders() {
         return this.childrenFolders;
     }
 
@@ -145,8 +142,7 @@ public class Folder implements Serializable {
         this.diagrams = diagrams;
     }
 
-    @NotNull
-    public Set<Diagram> getDiagrams() {
+    public @NotNull Set<Diagram> getDiagrams() {
         return this.diagrams;
     }
 

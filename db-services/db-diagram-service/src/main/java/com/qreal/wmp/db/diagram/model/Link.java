@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
 @Table(name = "links")
 @Data
 public class Link implements Serializable {
-
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")

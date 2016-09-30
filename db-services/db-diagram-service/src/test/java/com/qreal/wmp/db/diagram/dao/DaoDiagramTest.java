@@ -1,4 +1,4 @@
-package com.qreal.wmp.db.diagram.test.dao;
+package com.qreal.wmp.db.diagram.dao;
 
 import com.qreal.wmp.db.diagram.config.AppInit;
 import com.qreal.wmp.db.diagram.dao.DiagramDao;

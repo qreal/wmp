@@ -1,6 +1,6 @@
 package com.qreal.wmp.db.diagram.exceptions;
 
-/** NotFound exception says that object was not found in DB.*/
+/** An exception saying that an object was not found in the DB. */
 public class NotFoundException extends Exception {
     private final String id;
 

@@ -12,12 +12,11 @@ import java.util.stream.Collectors;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
-/** Diagram (now only graphs).*/
+/** Diagram (now only graphs). */
 @Entity
 @Table(name = "diagrams")
 @Data
 public class Diagram implements Serializable {
-
     @Id
     @Column(name = "diagram_id")
     @GeneratedValue(strategy = IDENTITY)
@@ -39,7 +38,6 @@ public class Diagram implements Serializable {
 
     /** Constructor-converter from Thrift TDiagram to Diagram.*/
     public Diagram(TDiagram tDiagram) {
-
         if (tDiagram.isSetId()) {
             id = tDiagram.getId();
         }
@@ -55,12 +53,10 @@ public class Diagram implements Serializable {
         if (tDiagram.isSetLinks()) {
             links = tDiagram.getLinks().stream().map(Link::new).collect(Collectors.toSet());
         }
-
     }
 
     /** Converter from Diagram to Thrift TDiagram.*/
     public TDiagram toTDiagram() {
-
         TDiagram tDiagram = new TDiagram();
 
         if (id != null) {
@@ -103,8 +99,7 @@ public class Diagram implements Serializable {
         this.nodes = nodes;
     }
 
-    @NotNull
-    public Set<DefaultDiagramNode> getNodes() {
+    public @NotNull Set<DefaultDiagramNode> getNodes() {
         return nodes;
     }
 
@@ -112,8 +107,7 @@ public class Diagram implements Serializable {
         this.links = links;
     }
 
-    @NotNull
-    public Set<Link> getLinks() {
+    public @NotNull Set<Link> getLinks() {
         return links;
     }
 }

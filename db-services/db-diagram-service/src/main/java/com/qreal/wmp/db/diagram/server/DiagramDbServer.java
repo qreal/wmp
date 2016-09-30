@@ -15,11 +15,10 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 
-/** Thrift server side service class for DiagramDBService.*/
+/** Thrift server side service class for DiagramDBService. */
 @Component
 @PropertySource("classpath:server.properties")
 public class DiagramDbServer implements ApplicationContextAware {
-
     private static final Logger logger = LoggerFactory.getLogger(DiagramDbServer.class);
 
     @Value("${port.db.diagram}")
@@ -27,7 +26,7 @@ public class DiagramDbServer implements ApplicationContextAware {
 
     private ApplicationContext context;
 
-    /** Function running TServer with chosen processor.*/
+    /** Function running TServer with a chosen processor. */
     private static void runTServer(DiagramDbService.Processor processor, int port) {
         logger.info("Starting Diagram DB TServer on localhost on port {}", port);
         try {
@@ -42,7 +41,7 @@ public class DiagramDbServer implements ApplicationContextAware {
         }
     }
 
-    /** Starts Thrift TServer which implements RPC DiagramService interface.*/
+    /** Starts Thrift TServer which implements RPC DiagramService interface. */
     @PostConstruct
     public void start() {
         try {

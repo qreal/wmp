@@ -12,7 +12,6 @@ import java.io.Serializable;
 @Table(name = "properties")
 @Data
 public class Property implements Serializable {
-
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")

@@ -1,4 +1,4 @@
-package com.qreal.wmp.db.diagram.test.dao;
+package com.qreal.wmp.db.diagram.dao;
 
 import com.qreal.wmp.db.diagram.config.AppInit;
 import com.qreal.wmp.db.diagram.dao.DiagramDao;
@@ -14,8 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * Tests saving of all models in hibernate.
- * Error here witnesses about error in hibernate model.
+ * Tests for saving models in Hibernate.
+ * Error here witnesses about error in Hibernate model.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {AppInit.class})

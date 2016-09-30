@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 /** Thrift server side handler for DiagramDBService.*/
 @Transactional
 public class DiagramDbServiceHandler implements DiagramDbService.Iface {
-
     private DiagramDao diagramDao;
 
     public DiagramDbServiceHandler(ApplicationContext context) {
@@ -23,7 +22,7 @@ public class DiagramDbServiceHandler implements DiagramDbService.Iface {
     @Override
     public long saveDiagram(TDiagram diagram) throws TIdAlreadyDefined, TAborted {
         if (diagram.isSetId()) {
-            throw new TIdAlreadyDefined("Diagram id not null. To save diagram you should not assign id to diagram.");
+            throw new TIdAlreadyDefined("Diagram Id not null. To save a diagram you should not assign Id to it.");
         }
         long id = 0;
         try {
@@ -71,7 +70,7 @@ public class DiagramDbServiceHandler implements DiagramDbService.Iface {
     public long createFolder(TFolder folder) throws TAborted, TIdAlreadyDefined {
         long id = 0;
         if (folder.isSetId()) {
-            throw new TIdAlreadyDefined("Folder id not null. To save folder you should not assign id to folder.");
+            throw new TIdAlreadyDefined("Folder Id not null. To save a folder you should not assign Id to it.");
         }
         try {
             id = diagramDao.saveFolder(new Folder(folder));
@@ -103,17 +102,17 @@ public class DiagramDbServiceHandler implements DiagramDbService.Iface {
     }
 
     /** Only for sake of testing. */
-    public DiagramDao getDiagramDao() {
+    DiagramDao getDiagramDao() {
         return diagramDao;
     }
 
     /** Only for sake of testing. */
-    public void setDiagramDao(DiagramDao diagramDao) {
+    void setDiagramDao(DiagramDao diagramDao) {
         this.diagramDao = diagramDao;
     }
 
     /** Only for sake of testing. */
-    public void rewindDiagramDao() {
+    void rewindDiagramDao() {
         this.diagramDao = null;
     }
 }
