@@ -9,10 +9,9 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-/** Link between nodes.*/
+/** Link between nodes. */
 @Data
 public class Link implements Serializable {
-
     private String id;
 
     private String logicalId;

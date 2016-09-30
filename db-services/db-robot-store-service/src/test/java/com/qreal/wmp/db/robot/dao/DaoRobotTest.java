@@ -34,12 +34,12 @@ public class DaoRobotTest {
     @Before
     public void setMocking() {
         UserService mockedUserService = mock(UserService.class);
-        ((RobotDaoImpl) robotDao).setUserService(mockedUserService);
+        robotDao.setUserService(mockedUserService);
     }
 
     @After
     public void deleteMocking() {
-        ((RobotDaoImpl) robotDao).rewindUserService();
+        robotDao.rewindUserService();
     }
 
     /** Test saveRobot operation for robot. */
@@ -100,7 +100,7 @@ public class DaoRobotTest {
 
         robotDao.deleteRobot(tRobot.getId());
 
-        verify(((RobotDaoImpl) robotDao).getUserService()).findByUserName("owner");
+        verify(robotDao.getUserService()).findByUserName("owner");
     }
 
     /** Test deleteRobot operation for robot. */
@@ -128,7 +128,7 @@ public class DaoRobotTest {
 
         robotDao.deleteRobot(tRobot.getId());
 
-        verify(((RobotDaoImpl) robotDao).getUserService()).update(owner);
+        verify(robotDao.getUserService()).update(owner);
     }
 
     /** Test deleteRobot operation for robot. */
@@ -147,7 +147,7 @@ public class DaoRobotTest {
         String owner = "owner";
         RobotSerial testRobot = createAndSaveRobot("robot", "ssid", owner);
 
-        when(((RobotDaoImpl) robotDao).getUserService().findByUserName(owner))
+        when(robotDao.getUserService().findByUserName(owner))
                 .thenThrow(new NotFoundException(owner, "Exception"));
 
         assertThatThrownBy(() -> robotDao.deleteRobot(testRobot.getId())).isInstanceOf(AbortedException.class);
@@ -222,7 +222,7 @@ public class DaoRobotTest {
             tUser.setRobots(new HashSet<>());
         }
         tUser.getRobots().add(tRobot);
-        when(((RobotDaoImpl) robotDao).getUserService().findByUserName(tUser.getUsername())).thenReturn(tUser);
+        when(robotDao.getUserService().findByUserName(tUser.getUsername())).thenReturn(tUser);
     }
 
 }

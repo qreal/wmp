@@ -9,10 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/** Folder with diagrams and other folders.*/
+/** Folder with diagrams and other folders. */
 @Data
 public class Folder implements Serializable {
-
     private Long id;
 
     private String folderName;
@@ -59,7 +58,6 @@ public class Folder implements Serializable {
         if (tFolder.isSetDiagrams()) {
             diagrams = tFolder.getDiagrams().stream().map(Diagram::new).collect(Collectors.toList());
         }
-
     }
 
     /** Converter from Folder to Thrift TFolder.*/
@@ -121,8 +119,7 @@ public class Folder implements Serializable {
         this.childrenFolders = folderParentId;
     }
 
-    @NotNull
-    public List<Folder> getChildrenFolders() {
+    public @NotNull List<Folder> getChildrenFolders() {
         return this.childrenFolders;
     }
 
@@ -130,8 +127,7 @@ public class Folder implements Serializable {
         this.diagrams = diagrams;
     }
 
-    @NotNull
-    public List<Diagram> getDiagrams() {
+    public @NotNull List<Diagram> getDiagrams() {
         return this.diagrams;
     }
 

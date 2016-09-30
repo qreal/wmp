@@ -15,11 +15,10 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 
-/** Thrift server side service class for UserDBService.*/
+/** Thrift server-side service class for UserDBService.*/
 @Component
 @PropertySource("classpath:server.properties")
 public class UserDbServer implements ApplicationContextAware {
-
     private static final Logger logger = LoggerFactory.getLogger(UserDbServer.class);
 
     @Value("${port.db.user}")
@@ -27,15 +26,15 @@ public class UserDbServer implements ApplicationContextAware {
 
     private ApplicationContext context;
 
-    /** Function running TServer with chosen processor.*/
+    /** Function running TServer with a chosen processor.*/
     private static void runTServer(UserDbService.Processor processor, int port) {
-        logger.info("Starting User DB TServer on localhost on port {}", port);
+        logger.info("Starting User DB TServer on localhost on port {}.", port);
         try {
             TServerTransport serverTransport = new TServerSocket(port);
             TThreadPoolServer server = new TThreadPoolServer(new TThreadPoolServer.Args(serverTransport).processor
                     (processor));
             server.serve();
-            logger.info("User DB TServer started successfully");
+            logger.info("User DB TServer started successfully.");
         } catch (Exception e) {
             logger.error("UserDbServer encountered problem while starting TServer. TServer cannot be started.", e);
         }
@@ -49,7 +48,7 @@ public class UserDbServer implements ApplicationContextAware {
             UserDbService.Processor processor = new UserDbService.Processor(handler);
 
             Runnable runServer = () -> runTServer(processor, port);
-            logger.trace("Creating new thread for User DB TServer");
+            logger.trace("Creating new thread for User DB TServer.");
 
             new Thread(runServer).start();
             logger.trace("Thread created. Server started.");

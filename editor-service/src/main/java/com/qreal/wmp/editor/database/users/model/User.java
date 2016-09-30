@@ -11,16 +11,16 @@ import java.util.stream.Collectors;
 
 /** User in authorization service.*/
 public class User {
-    /** Name of user (primary key too).*/
+    /** Name of the user (primary key too).*/
     private String username;
 
-    /** Hash of user password.*/
+    /** Hash of the user's password.*/
     private String password;
 
-    /** Is user banned.*/
+    /** Is the user banned.*/
     private Boolean enabled;
 
-    /** Roles of user.*/
+    /** Roles of the user.*/
     @JsonIgnore
     private Set<UserRole> roles = new HashSet<>();
 
@@ -40,18 +40,13 @@ public class User {
     /** User constructor (except robots).*/
     public User(String username, String password,
                 boolean enabled, Set<UserRole> userRole) {
-        this.username = username;
-        this.password = password;
-        this.enabled = enabled;
+        this(username, password, enabled);
         this.roles = userRole;
     }
 
     /** Full User constructor.*/
     public User(String username, String password, boolean enabled, Set<UserRole> userRole, Set<Robot> robots) {
-        this.username = username;
-        this.password = password;
-        this.enabled = enabled;
-        this.roles = userRole;
+        this(username, password, enabled, userRole);
         this.robots = robots;
     }
 
@@ -103,8 +98,7 @@ public class User {
         this.enabled = enabled;
     }
 
-    @NotNull
-    public Set<UserRole> getRoles() {
+    public @NotNull Set<UserRole> getRoles() {
         return this.roles;
     }
 
@@ -112,8 +106,7 @@ public class User {
         this.roles = roles;
     }
 
-    @NotNull
-    public Set<Robot> getRobots() {
+    public @NotNull Set<Robot> getRobots() {
         return this.robots;
     }
 

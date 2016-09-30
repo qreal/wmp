@@ -13,7 +13,7 @@ public class AppInit {
         context.scan("com.qreal.wmp.db.diagram.config");
         context.scan("com.qreal.wmp.db.diagram.dao");
         context.scan("com.qreal.wmp.db.diagram.server");
-        context.scan("com.qreal.wmp.db.diagram.test");
+
         context.register(AppInit.class);
         context.refresh();
     }

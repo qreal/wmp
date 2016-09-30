@@ -34,8 +34,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Transactional(readOnly = true)
     @Override
-    public UserDetails loadUserByUsername(final String username)
-            throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
 
         com.qreal.wmp.editor.database.users.model.User user = null;
         try {

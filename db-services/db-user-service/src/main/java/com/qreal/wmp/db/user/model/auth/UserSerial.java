@@ -15,16 +15,16 @@ import java.util.stream.Collectors;
 @Table(name = "users")
 @Data
 public class UserSerial {
-    /** Name of user (primary key too).*/
+    /** Name of the user (primary key too).*/
     private String username;
 
-    /** Hash of user password.*/
+    /** Hash of the user's password.*/
     private String password;
 
-    /** Is user banned.*/
+    /** Is the user banned.*/
     private Boolean enabled;
 
-    /** Roles of user.*/
+    /** Roles of the user.*/
     @JsonIgnore
     private Set<UserRoleSerial> roles = new HashSet<>();
 

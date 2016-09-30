@@ -72,7 +72,7 @@ class DiagramDaoImpl implements DiagramDao {
         diagrams.add(diagram);
         session.update(folder);
         session.flush();
-        logger.trace("saveDiagram() saved {} diagram successfully", diagram.getName());
+        logger.trace("saveDiagram() successfully saved diagram {}.", diagram.getName());
         return diagram.getId();
     }
 
@@ -114,7 +114,7 @@ class DiagramDaoImpl implements DiagramDao {
                     "rewriteDiagram() safely aborted.", DiagramDaoImpl.class.getName());
         }
         session.merge(diagram);
-        logger.trace("rewriteDiagram() successfully edited {} diagram.", diagram.getName());
+        logger.trace("rewriteDiagram() successfully edited diagram {}.", diagram.getName());
     }
 
     /**

@@ -26,7 +26,6 @@ import java.util.Set;
 @Repository
 @Transactional
 public class UserDaoImpl implements UserDao {
-
     private static final String ROLE_USER = "ROLE_USER";
 
     private static final Logger logger = LoggerFactory.getLogger(UserDaoImpl.class);
@@ -47,128 +46,87 @@ public class UserDaoImpl implements UserDao {
     }
 
     /**
-     * Saves user, user's roles and robots. At local DB will be saved all information of user using Hibernate ORM.
-     * User's robots will be passed for saving to RobotService, their's ids will be saved with user.
+     * Saves the user, user's roles and robots. At local DB all the information will be saved using Hibernate ORM.
+     * User's robots will be passed for saving to RobotService, their ids will be saved with user.
      * User's roles will be saved at local DB using Hibernate ORM.
      * Consistency kept using RPC calls to RobotsService.
-     *
      * @param user user to saveUser (Id must not be set)
      */
     @Override
     public void saveUser(@NotNull TUser user) throws AbortedException, ErrorConnectionException {
-        logger.trace("saveUser method called with parameters: user = {}", user.getUsername());
+        logger.trace("saveUser() was called with parameters: user = {}.", user.getUsername());
 
         Session session = sessionFactory.getCurrentSession();
         UserSerial userSerial = saveOrUpdateRobots(user);
-        logger.trace("robots of user {} saved, id's now in userSerial", user.getUsername());
+        logger.trace("robots of user {} saved, theay are now in userSerial.", user.getUsername());
 
         userSerial = addUserRole(userSerial);
         session.save(userSerial);
-        logger.trace("user {} saved", user.getUsername());
+        logger.trace("user {} saved.", user.getUsername());
 
         diagramService.createRootFolder(user.getUsername());
-        logger.trace("rootfolder {} created", user.getUsername());
+        logger.trace("rootfolder {} created.", user.getUsername());
 
-        logger.trace("saveUser method saved user {}", user.getUsername());
+        logger.trace("saveUser() successfully saved user {}.", user.getUsername());
     }
 
     /**
-     * Finds user, his roles and robots. User and his roles will be loaded from local DB by Hibernate ORM.
-     * User's robots will be loaded from RobotsService using their's ids persisted with user here.
-     *
+     * Finds the user, his roles and robots. The user and his roles will be loaded from local DB by Hibernate ORM.
+     * User's robots will be loaded from RobotsService using their ids persisted with user here.
      * @param username name of user to find
      */
     @Override
     public TUser findByUserName(String username) throws NotFoundException, ErrorConnectionException {
-        logger.trace("findByUserName method called with parameters: username = {}", username);
+        logger.trace("findByUserName() was called with parameters: username = {}.", username);
         Session session = sessionFactory.getCurrentSession();
         UserSerial userSerial = (UserSerial) session.get(UserSerial.class, username);
         if (userSerial == null) {
             throw new NotFoundException(username, "User with specified username not found.");
         }
         return loadRobots(userSerial);
-
     }
 
     /**
-     * Updates user, his roles and robots. User and his roles will be updated at local DB using Hibernate ORM.
+     * Updates the user, his roles and robots. The user and his roles will be updated at local DB using Hibernate ORM.
      * User's robots will be updated using RobotsService.
      * Consistency kept using RPC calls to RobotsService.
      */
     @Override
     public void updateUser(@NotNull TUser tUser) throws AbortedException, ErrorConnectionException {
-        logger.trace("updateUser method called with parameters: username = {}", tUser.getUsername());
+        logger.trace("updateUser() was called with parameters: username = {}.", tUser.getUsername());
         Session session = sessionFactory.getCurrentSession();
         if (!isExistsUser(tUser.getUsername())) {
             logger.error("User with specified username doesn't exists.");
-            throw new AbortedException("User with specified username doesn't exists", "updateUser safely aborted",
+            throw new AbortedException("User with specified username doesn't exists", "updateUser() safely aborted",
                     UserDaoImpl.class.getName());
         }
         UserSerial userSerial = saveOrUpdateRobots(tUser);
         session.merge(userSerial);
-        logger.trace("updateUser method updated user");
+        logger.trace("updateUser() successfully updated the user.");
 
     }
 
     /**
-     * Tests if user exist. Test if user exists at local DB using Hibernate ORM.
-     *
+     * Tests if a user exist at local DB using Hibernate ORM.
      * @param username name of user to test if exists
      */
     @Override
     public boolean isExistsUser(String username) {
-        logger.trace("isExistsUser method called with parameters: username = {}", username);
+        logger.trace("isExistsUser() was called with parameters: username = {}.", username);
         Session session = sessionFactory.getCurrentSession();
         UserSerial userSerial = (UserSerial) session.get(UserSerial.class, username);
         return userSerial != null;
     }
 
-    /** For the sake of testing.*/
-    @Override
-    public void setRobotService(RobotService robotService) {
-        this.robotService = robotService;
-    }
-
-    /** For the sake of testing.*/
-    @Override
-    public RobotService getRobotService() {
-        return robotService;
-    }
-
-    /** For the sake of testing.*/
-    @Override
-    public void rewindRobotService() {
-        robotService = null;
-    }
-
-    /** For the sake of testing.*/
-    @Override
-    public void setDiagramService(DiagramService diagramService) {
-        this.diagramService = diagramService;
-    }
-
-    /** For the sake of testing.*/
-    @Override
-    public DiagramService getDiagramService() {
-        return diagramService;
-    }
-
-    /** For the sake of testing.*/
-    @Override
-    public void rewindDiagramService() {
-        this.diagramService = null;
-    }
-
-
     /**
      * Saves or updates robots using RobotsService.
-     * Robot will be updated if robot's id set. Otherwise robot will be saved.
-     * Id's of all robots will be saved in UserSerial robots field.
+     * A robot will be updated if robot's Id is set. Otherwise a robot will be saved.
+     * Ids of all robots will be saved in UserSerial robots field.
      */
     private UserSerial saveOrUpdateRobots(@NotNull TUser tUser) throws AbortedException, ErrorConnectionException {
         UserSerial userSerial = new UserSerial(tUser);
         for (TRobot robot : tUser.getRobots()) {
-            logger.trace("Robot {} of user {} saving", robot.getName(), tUser.getUsername());
+            logger.trace("Saving robot {} of user {}.", robot.getName(), tUser.getUsername());
             long idRobot = 0;
             if (!robot.isSetId()) {
                 idRobot = robotService.register(robot);
@@ -177,19 +135,19 @@ public class UserDaoImpl implements UserDao {
                 idRobot = robot.getId();
             }
             userSerial.getRobots().add(idRobot);
-            logger.trace("Robot {} of user {} saved with id {}", robot.getName(), tUser.getUsername(), robot.getId());
+            logger.trace("Robot {} of user {} saved with id {}.", robot.getName(), tUser.getUsername(), robot.getId());
         }
         return userSerial;
     }
 
     /**
      * Loads robots using RobotsService.
-     * Robots are loaded from RobotsService using id's of them saved in UserSerial.
+     * Robots are loaded from RobotsService using their ids saved in UserSerial.
      */
     private TUser loadRobots(@NotNull UserSerial userSerial) throws ErrorConnectionException {
         TUser tUser = userSerial.toTUser();
         for (Long id : userSerial.getRobots()) {
-            logger.trace("Robot with id {} of user {} loading", id, tUser.getUsername());
+            logger.trace("Loading a robot with id {} of user {}", id, tUser.getUsername());
             try {
                 TRobot robot = robotService.findById(id);
                 tUser.getRobots().add(robot);
@@ -211,4 +169,33 @@ public class UserDaoImpl implements UserDao {
         return userSerial;
     }
 
+    /** For the sake of testing.*/
+    void setRobotService(RobotService robotService) {
+        this.robotService = robotService;
+    }
+
+    /** For the sake of testing.*/
+    RobotService getRobotService() {
+        return robotService;
+    }
+
+    /** For the sake of testing.*/
+    void rewindRobotService() {
+        robotService = null;
+    }
+
+    /** For the sake of testing.*/
+    void setDiagramService(DiagramService diagramService) {
+        this.diagramService = diagramService;
+    }
+
+    /** For the sake of testing.*/
+    DiagramService getDiagramService() {
+        return diagramService;
+    }
+
+    /** For the sake of testing.*/
+    void rewindDiagramService() {
+        this.diagramService = null;
+    }
 }

@@ -17,8 +17,6 @@ public class AppInit {
         context.scan("com.qreal.wmp.db.user.dao");
         context.scan("com.qreal.wmp.db.user.client");
         context.scan("com.qreal.wmp.db.user.server");
-        context.scan("com.qreal.wmp.db.user.test");
-
 
         context.register(AppInit.class);
         context.refresh();

@@ -7,10 +7,10 @@ public class UserRole {
     /** Surrogate key for role (maybe static table for roles?).*/
     private Integer id;
 
-    /** Owner of role.*/
+    /** Owner of the role.*/
     private User user;
 
-    /** Name of role.*/
+    /** Name of the role.*/
     private String role;
 
     public UserRole() {

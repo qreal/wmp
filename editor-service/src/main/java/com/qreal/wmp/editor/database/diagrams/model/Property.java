@@ -6,7 +6,6 @@ import java.io.Serializable;
 
 /** Property of an entity.*/
 public class Property implements Serializable {
-
     private String propertyId;
 
     private String name;

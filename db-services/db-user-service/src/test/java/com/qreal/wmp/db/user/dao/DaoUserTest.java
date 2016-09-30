@@ -1,4 +1,4 @@
-package com.qreal.wmp.db.user.test.dao;
+package com.qreal.wmp.db.user.dao;
 
 import com.qreal.wmp.db.user.client.diagrams.DiagramService;
 import com.qreal.wmp.db.user.client.robots.RobotService;

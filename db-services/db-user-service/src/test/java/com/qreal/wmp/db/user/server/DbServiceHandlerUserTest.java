@@ -1,4 +1,4 @@
-package com.qreal.wmp.db.user.test.server;
+package com.qreal.wmp.db.user.server;
 
 import com.qreal.wmp.db.user.config.AppInit;
 import com.qreal.wmp.db.user.dao.UserDao;

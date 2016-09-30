@@ -10,7 +10,6 @@ import java.util.stream.Collectors;
 
 /** Diagram's node.*/
 public class DefaultDiagramNode implements Serializable {
-
     private String id;
 
     private String logicalId;
@@ -76,8 +75,7 @@ public class DefaultDiagramNode implements Serializable {
         this.type = type;
     }
 
-    @NotNull
-    public Set<Property> getProperties() {
+    public @NotNull Set<Property> getProperties() {
         return properties;
     }
 

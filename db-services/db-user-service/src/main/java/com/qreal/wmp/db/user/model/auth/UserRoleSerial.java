@@ -15,7 +15,7 @@ public class UserRoleSerial {
     /** Surrogate key for role (maybe static table for roles?).*/
     private Integer id;
 
-    /** Name of role.*/
+    /** Name of the role. */
     private String role;
 
     public UserRoleSerial() {

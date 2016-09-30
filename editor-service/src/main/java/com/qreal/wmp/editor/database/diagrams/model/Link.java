@@ -10,7 +10,6 @@ import java.util.stream.Collectors;
 
 /** Link between nodes.*/
 public class Link implements Serializable {
-
     private String id;
 
     private String logicalId;
@@ -61,8 +60,7 @@ public class Link implements Serializable {
         this.graphicalId = graphicalId;
     }
 
-    @NotNull
-    public Set<Property> getProperties() {
+    public @NotNull Set<Property> getProperties() {
         return properties;
     }
 

@@ -10,7 +10,6 @@ import java.util.stream.Collectors;
 
 /** Diagram (now only graphs).*/
 public class Diagram implements Serializable {
-
     private Long id;
 
     private String name;
@@ -88,8 +87,7 @@ public class Diagram implements Serializable {
         this.nodes = nodes;
     }
 
-    @NotNull
-    public Set<DefaultDiagramNode> getNodes() {
+    public @NotNull Set<DefaultDiagramNode> getNodes() {
         return nodes;
     }
 
@@ -97,8 +95,7 @@ public class Diagram implements Serializable {
         this.links = links;
     }
 
-    @NotNull
-    public Set<Link> getLinks() {
+    public @NotNull Set<Link> getLinks() {
         return links;
     }
 }

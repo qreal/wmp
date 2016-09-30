@@ -1,9 +1,9 @@
 package com.qreal.wmp.editor.database.exceptions;
 
-/** ErrorConnection inform about error of connection between client and service.*/
+/** ErrorConnection informs about an error in connection between client and service. */
 public class ErrorConnectionException extends Exception {
 
-    /** Name of client in which error occurred.*/
+    /** Name of a client which produced an error. */
     private final String nameClient;
 
     public ErrorConnectionException(String nameClient, String message) {

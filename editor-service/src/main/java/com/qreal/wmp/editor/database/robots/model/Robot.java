@@ -3,18 +3,18 @@ package com.qreal.wmp.editor.database.robots.model;
 import com.qreal.wmp.editor.database.users.model.User;
 import com.qreal.wmp.thrift.gen.TRobot;
 
-/** TRIK robot in dashboard service.*/
+/** Representation of a TRIK robot in dashboard service.*/
 public class Robot {
-    /** Surrogate key for Robot.*/
+    /** Surrogate key for the robot.*/
     private Long id;
 
-    /** Name of robot (unique only in robot's group of owner).*/
+    /** Name of the robot (unique only in robot's group of owner).*/
     private String name;
 
     /** SSID of robot's WiFi.*/
     private String ssid;
 
-    /** Owner of robot.*/
+    /** Owner of the robot.*/
     private User owner;
 
     public Robot() {
@@ -26,18 +26,15 @@ public class Robot {
     }
 
     public Robot(String name, String ssid, User owner) {
+        this(name, ssid);
         this.owner = owner;
-        this.name = name;
-        this.ssid = ssid;
         owner.getRobots().add(this);
     }
 
     /** Full Robot constructor.*/
     public Robot(long id, String name, String ssid, User owner) {
+        this(name, ssid, owner);
         this.id = id;
-        this.owner = owner;
-        this.name = name;
-        this.ssid = ssid;
         owner.getRobots().add(this);
     }
 
@@ -132,5 +129,4 @@ public class Robot {
 
         return tRobot;
     }
-
 }
