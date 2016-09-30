@@ -9,22 +9,21 @@ import java.util.function.Consumer;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
-/** TRIK robot in dashboard service.*/
+/** Representation of a TRIK robot in dashboard service. */
 @Entity
 @Table(name = "robots")
 @Data
 public class RobotSerial {
-
     /** Surrogate key for RobotSerial.*/
     private Long id;
 
-    /** Name of robot (unique only in robot's group of owner).*/
+    /** Name of the robot (unique only in robot's group of owner).*/
     private String name;
 
     /** SSID of robot's WiFi.*/
     private String ssid;
 
-    /** Owner of robot.*/
+    /** Owner of the robot.*/
     private String owner;
 
     public RobotSerial() {

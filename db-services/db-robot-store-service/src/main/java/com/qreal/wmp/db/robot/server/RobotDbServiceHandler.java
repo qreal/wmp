@@ -8,9 +8,8 @@ import com.qreal.wmp.db.robot.model.robot.RobotSerial;
 import com.qreal.wmp.thrift.gen.*;
 import org.springframework.context.ApplicationContext;
 
-/** Thrift server side handler for RobotDBService.*/
+/** Thrift server-side handler for RobotDBService.*/
 public class RobotDbServiceHandler implements RobotDbService.Iface {
-
     private RobotDao robotDao;
 
     public RobotDbServiceHandler(ApplicationContext context) {
@@ -22,7 +21,7 @@ public class RobotDbServiceHandler implements RobotDbService.Iface {
     public long registerRobot(TRobot tRobot) throws TAborted, TIdAlreadyDefined {
         long id = 0;
         if (tRobot.isSetId()) {
-            throw new TIdAlreadyDefined("Robot id not null. To saveRobot robot you should not assign id to robot.");
+            throw new TIdAlreadyDefined("Robot id not null. To save a robot you should not assign it an Id.");
         }
         try {
             id = robotDao.saveRobot(new RobotSerial(tRobot));
@@ -48,7 +47,7 @@ public class RobotDbServiceHandler implements RobotDbService.Iface {
         try {
             robotDao.deleteRobot(robotId);
         } catch (ErrorConnectionException e) {
-            throw new TErrorConnection(e.getNameClient(), e.getMessage());
+            throw new TErrorConnection(e.getClientName(), e.getMessage());
         } catch (AbortedException e) {
             throw new TAborted(e.getTextCause(), e.getMessage(), e.getFullClassName());
         }
@@ -62,7 +61,7 @@ public class RobotDbServiceHandler implements RobotDbService.Iface {
     @Override
     public void updateRobot(TRobot tRobot) throws TAborted, TIdNotDefined {
         if (!tRobot.isSetId()) {
-            throw new TIdNotDefined("Robot id is null. To rewrite robot you should specify id.");
+            throw new TIdNotDefined("Robot Id is null. To rewrite robot you should specify its id.");
         }
         try {
             robotDao.updateRobot(new RobotSerial(tRobot));
@@ -72,17 +71,17 @@ public class RobotDbServiceHandler implements RobotDbService.Iface {
     }
 
     /** Only for sake of testing. */
-    public RobotDao getRobotDao() {
+    RobotDao getRobotDao() {
         return robotDao;
     }
 
     /** Only for sake of testing. */
-    public void setRobotDao(RobotDao robotDao) {
+    void setRobotDao(RobotDao robotDao) {
         this.robotDao = robotDao;
     }
 
     /** Only for sake of testing. */
-    public void rewindRobotDao() {
+    void rewindRobotDao() {
         this.robotDao = null;
     }
 }

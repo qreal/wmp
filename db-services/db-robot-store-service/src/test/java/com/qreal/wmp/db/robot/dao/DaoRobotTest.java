@@ -1,4 +1,4 @@
-package com.qreal.wmp.db.robot.test.dao;
+package com.qreal.wmp.db.robot.dao;
 
 import com.qreal.wmp.db.robot.client.users.UserService;
 import com.qreal.wmp.db.robot.config.AppInit;
@@ -34,12 +34,12 @@ public class DaoRobotTest {
     @Before
     public void setMocking() {
         UserService mockedUserService = mock(UserService.class);
-        robotDao.setUserService(mockedUserService);
+        ((RobotDaoImpl) robotDao).setUserService(mockedUserService);
     }
 
     @After
     public void deleteMocking() {
-        robotDao.rewindUserService();
+        ((RobotDaoImpl) robotDao).rewindUserService();
     }
 
     /** Test saveRobot operation for robot. */
@@ -100,7 +100,7 @@ public class DaoRobotTest {
 
         robotDao.deleteRobot(tRobot.getId());
 
-        verify(robotDao.getUserService()).findByUserName("owner");
+        verify(((RobotDaoImpl) robotDao).getUserService()).findByUserName("owner");
     }
 
     /** Test deleteRobot operation for robot. */
@@ -128,7 +128,7 @@ public class DaoRobotTest {
 
         robotDao.deleteRobot(tRobot.getId());
 
-        verify(robotDao.getUserService()).update(owner);
+        verify(((RobotDaoImpl) robotDao).getUserService()).update(owner);
     }
 
     /** Test deleteRobot operation for robot. */
@@ -147,7 +147,8 @@ public class DaoRobotTest {
         String owner = "owner";
         RobotSerial testRobot = createAndSaveRobot("robot", "ssid", owner);
 
-        when(robotDao.getUserService().findByUserName(owner)).thenThrow(new NotFoundException(owner, "Exception"));
+        when(((RobotDaoImpl) robotDao).getUserService().findByUserName(owner))
+                .thenThrow(new NotFoundException(owner, "Exception"));
 
         assertThatThrownBy(() -> robotDao.deleteRobot(testRobot.getId())).isInstanceOf(AbortedException.class);
     }
@@ -221,7 +222,7 @@ public class DaoRobotTest {
             tUser.setRobots(new HashSet<>());
         }
         tUser.getRobots().add(tRobot);
-        when(robotDao.getUserService().findByUserName(tUser.getUsername())).thenReturn(tUser);
+        when(((RobotDaoImpl) robotDao).getUserService().findByUserName(tUser.getUsername())).thenReturn(tUser);
     }
 
 }

@@ -1,4 +1,4 @@
-package com.qreal.wmp.db.robot.test.server;
+package com.qreal.wmp.db.robot.server;
 
 import com.qreal.wmp.db.robot.config.AppInit;
 import com.qreal.wmp.db.robot.dao.RobotDao;
