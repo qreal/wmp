@@ -61,7 +61,7 @@ public class UserServiceImpl implements UserService {
             } catch (TIdNotDefined e) {
                 logger.error("save() encountered an IdNotDefined exception. User was not created.", e);
             } catch (TErrorConnection e) {
-                throw new ErrorConnectionException(e.getNameClient(), e.getMessage());
+                throw new ErrorConnectionException(e.getClientName(), e.getMessage());
             } catch (TException e) {
                 logger.error("Client UserService encountered a problem while sending save request with parameters:" +
                         " user = {}", user, e);
@@ -93,7 +93,7 @@ public class UserServiceImpl implements UserService {
                 logger.error("update() encountered an IdNotDefined exception. You've tried to update user, " +
                         "but did not specified its id.", e);
             } catch (TErrorConnection e) {
-                throw new ErrorConnectionException(e.getNameClient(), e.getMessage());
+                throw new ErrorConnectionException(e.getClientName(), e.getMessage());
             } catch (TException e) {
                 logger.error("Client UserService encountered a problem while sending update request with parameters:" +
                         " user = {}", user, e);
@@ -123,7 +123,7 @@ public class UserServiceImpl implements UserService {
             } catch (TNotFound e) {
                 throw new NotFoundException(e.getId(), e.getMessage());
             } catch (TErrorConnection e) {
-                throw new ErrorConnectionException(e.getNameClient(), e.getMessage());
+                throw new ErrorConnectionException(e.getClientName(), e.getMessage());
             } catch (TException e) {
                 logger.error("Client UserService encountered a problem while sending findByUserName request with" +
                         " parameters: username = {}", username, e);
@@ -151,7 +151,7 @@ public class UserServiceImpl implements UserService {
             try {
                 isUserExist = client.isUserExist(username);
             } catch (TErrorConnection e) {
-                throw new ErrorConnectionException(e.getNameClient(), e.getMessage());
+                throw new ErrorConnectionException(e.getClientName(), e.getMessage());
             } catch (TException e) {
                 logger.error("Client UserService encountered a problem while sending isUserExist request with" +
                         " parameters: username = {}", username, e);

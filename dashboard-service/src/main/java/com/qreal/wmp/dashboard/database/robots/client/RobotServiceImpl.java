@@ -65,12 +65,11 @@ public class RobotServiceImpl implements RobotService {
             try {
                 idRobot = client.registerRobot(robot.toTRobot());
             } catch (TIdAlreadyDefined e) {
-                logger.error("register() encountered IdAlreadyDefined exception. Robot was not registered.",
-                        e);
+                logger.error("register() encountered IdAlreadyDefined exception. Robot was not registered.", e);
             } catch (TAborted e) {
                 throw new AbortedException(e.getTextCause(), e.getMessage(), e.getFullClassName());
             } catch (TErrorConnection e) {
-                throw new ErrorConnectionException(e.getNameClient(), e.getMessage());
+                throw new ErrorConnectionException(e.getClientName(), e.getMessage());
             } catch (TException e) {
                 logger.error("Client RobotService encountered a problem while sending register request with" +
                         " parameters: robot = {}", robot.getName(), e);
