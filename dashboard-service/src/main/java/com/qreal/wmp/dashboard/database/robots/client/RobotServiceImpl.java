@@ -68,15 +68,15 @@ public class RobotServiceImpl implements RobotService {
         final AtomicLong idRobot = new AtomicLong(-1);
         ThriftRequest request = new ThriftRequest(transport, "register", "robot = " + robot.getName() + ".")
                 .registerHandler(
-                        TIdAlreadyDefined.class,
-                        e -> logger.error("register() encountered IdAlreadyDefined exception. Robot was not"
-                                + " registered.", e))
+                    TIdAlreadyDefined.class,
+                    e -> logger.error("register() encountered IdAlreadyDefined exception. Robot was not"
+                        + " registered.", e))
                 .registerHandler(
-                        /// TODO: Is this handler really needed? Default handler does the same, but also logs exception.
-                        TErrorConnection.class,
-                        (TErrorConnection e) -> {
-                            throw new ErrorConnectionException(e.getClientName(), e.getMessage());
-                        });
+                    /// TODO: Is this handler really needed? Default handler does the same, but also logs exception.
+                    TErrorConnection.class,
+                    (TErrorConnection e) -> {
+                        throw new ErrorConnectionException(e.getClientName(), e.getMessage());
+                    });
 
         try {
             request.run(() -> idRobot.set(client.registerRobot(robot.toTRobot())));
@@ -84,7 +84,7 @@ public class RobotServiceImpl implements RobotService {
             if (e.getCause() instanceof ErrorConnectionException) {
                 throw (ErrorConnectionException) e.getCause();
             } else {
-                throw new RuntimeException("Unknown exception was rethrown by handler", e.getCause());
+                throw new IncorrectRethrownException(e.getCause());
             }
         }
 
@@ -125,8 +125,8 @@ public class RobotServiceImpl implements RobotService {
         tRobot[0] = new TRobot();
         ThriftRequest request = new ThriftRequest(transport, "findById", "name = " + id + ".")
                 .registerHandler(
-                        TNotFound.class,
-                        (TNotFound e) -> { throw new NotFoundException(e.getId(), e.getMessage()); });
+                    TNotFound.class,
+                    (TNotFound e) -> { throw new NotFoundException(e.getId(), e.getMessage()); });
 
         try {
             request.run(() -> tRobot[0] = client.findById(id));
@@ -136,7 +136,7 @@ public class RobotServiceImpl implements RobotService {
             if (e.getCause() instanceof NotFoundException) {
                 throw (NotFoundException) e.getCause();
             } else {
-                throw new RuntimeException("Unknown exception was rethrown by handler", e.getCause());
+                throw new IncorrectRethrownException(e.getCause());
             }
         }
 
@@ -159,7 +159,7 @@ public class RobotServiceImpl implements RobotService {
         try {
             request.run(() -> isRobotExists.set(client.isRobotExists(id)));
         } catch (AbortedException e) {
-            throw new RuntimeException("Operation that should not be aborted was aborted", e);
+            throw new InvalidAbortException(e);
         }
 
         logger.trace("isRobotExists method got result");
@@ -183,6 +183,20 @@ public class RobotServiceImpl implements RobotService {
                                 + " a robot, but did not specified its id.", e));
         request.run(() -> client.updateRobot(tRobot));
         logger.trace("update() successfully updated {} robot", tRobot.getName());
+    }
+
+    /** Thrown when exception was thrown by exception handler but was not expected in a method. */
+    public static class IncorrectRethrownException extends RuntimeException {
+        IncorrectRethrownException(Throwable e) {
+            super("Unknown exception was rethrown by handler", e);
+        }
+    }
+
+    /** Thrown when operation that can not be aborted was aborted. */
+    public static class InvalidAbortException extends RuntimeException {
+        InvalidAbortException(Throwable e) {
+            super("Operation that should not be aborted was aborted", e);
+        }
     }
 
     /**
@@ -277,7 +291,7 @@ public class RobotServiceImpl implements RobotService {
                         throw new RethrownException(rethrownException);
                     }
 
-                    throw new RuntimeException("Unhandled exception in Thrift request", e);
+                    throw new UnhandledExceptionInThriftException(e);
                 } finally {
                     transport.close();
                 }
@@ -285,6 +299,16 @@ public class RobotServiceImpl implements RobotService {
                 logger.error("Client RobotService encountered a problem while opening transport.", e);
                 throw new ErrorConnectionException(RobotServiceImpl.class.getName(), "Client RobotService encountered"
                         + " a problem while opening transport.");
+            }
+        }
+
+        /**
+         * Thrown when exception was not handled by any registered handler and by default handler. Means that something
+         * unexpected happen.
+         */
+        public static class UnhandledExceptionInThriftException extends RuntimeException {
+            UnhandledExceptionInThriftException(Exception e) {
+                super(e);
             }
         }
 
