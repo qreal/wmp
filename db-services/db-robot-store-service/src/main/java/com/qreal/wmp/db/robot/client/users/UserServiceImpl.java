@@ -59,7 +59,7 @@ public class UserServiceImpl implements UserService {
             } catch (TAborted e) {
                 throw new AbortedException(e.getTextCause(), e.getMessage(), e.getFullClassName());
             } catch (TErrorConnection e) {
-                throw new ErrorConnectionException(e.getNameClient(), e.getMessage());
+                throw new ErrorConnectionException(e.getClientName(), e.getMessage());
             } catch (TException e) {
                 logger.error("Client UserService encountered problem while sending save request with parameters: " +
                         "user = {}", tUser, e);
@@ -91,7 +91,7 @@ public class UserServiceImpl implements UserService {
             } catch (TAborted e) {
                 throw new AbortedException(e.getTextCause(), e.getMessage(), e.getFullClassName());
             } catch (TErrorConnection e) {
-                throw new ErrorConnectionException(e.getNameClient(), e.getMessage());
+                throw new ErrorConnectionException(e.getClientName(), e.getMessage());
             } catch (TException e) {
                 logger.error("Client UserService encountered problem while sending update request with parameters: " +
                         "user = {}", tUser.getUsername(), e);
@@ -122,7 +122,7 @@ public class UserServiceImpl implements UserService {
             } catch (TNotFound e) {
                 throw new NotFoundException(e.getId(), e.getMessage());
             } catch (TErrorConnection e) {
-                throw new ErrorConnectionException(e.getNameClient(), e.getMessage());
+                throw new ErrorConnectionException(e.getClientName(), e.getMessage());
             } catch (TException e) {
                 logger.error("Client UserService encountered problem while sending findByUserName request with " +
                         "parameters: username = {}", username, e);

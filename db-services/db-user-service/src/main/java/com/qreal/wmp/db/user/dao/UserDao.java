@@ -1,7 +1,5 @@
 package com.qreal.wmp.db.user.dao;
 
-import com.qreal.wmp.db.user.client.diagrams.DiagramService;
-import com.qreal.wmp.db.user.client.robots.RobotService;
 import com.qreal.wmp.db.user.exceptions.AbortedException;
 import com.qreal.wmp.db.user.exceptions.ErrorConnectionException;
 import com.qreal.wmp.db.user.exceptions.NotFoundException;
@@ -41,22 +39,4 @@ public interface UserDao {
      * @return [description]
      */
     boolean isExistsUser(String username);
-
-    /** For the sake of testing.*/
-    void setRobotService(RobotService robotService);
-
-    /** For the sake of testing.*/
-    RobotService getRobotService();
-
-    /** For the sake of testing.*/
-    void rewindRobotService();
-
-    /** For the sake of testing.*/
-    void setDiagramService(DiagramService diagramService);
-
-    /** For the sake of testing.*/
-    DiagramService getDiagramService();
-
-    /** For the sake of testing.*/
-    void rewindDiagramService();
 }

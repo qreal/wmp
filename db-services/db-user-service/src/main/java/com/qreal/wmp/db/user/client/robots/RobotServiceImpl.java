@@ -137,7 +137,7 @@ public class RobotServiceImpl implements RobotService {
             } catch (TAborted e) {
                 throw new AbortedException(e.getTextCause(), e.getMessage(), e.getFullClassName());
             } catch (TErrorConnection e) {
-                throw new ErrorConnectionException(e.getNameClient(), e.getMessage());
+                throw new ErrorConnectionException(e.getClientName(), e.getMessage());
             } catch (TException e) {
                 logger.error("Client RobotService encountered problem while sending delete request with parameters: " +
                         "name = {}", id, e);

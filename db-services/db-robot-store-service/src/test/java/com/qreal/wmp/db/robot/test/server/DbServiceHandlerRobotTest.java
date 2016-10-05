@@ -15,6 +15,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,10 +24,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
+@ActiveProfiles("testHandler")
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {AppInit.class})
 @Transactional
 public class DbServiceHandlerRobotTest {
+    
+    @Autowired
+    private RobotDao robotDaoMocked;
+    
     private RobotDbServiceHandler handler;
 
     @Autowired
@@ -37,12 +43,11 @@ public class DbServiceHandlerRobotTest {
         if (handler == null) {
             handler = new RobotDbServiceHandler(context);
         }
-        handler.setRobotDao(mock(RobotDao.class));
     }
 
     @After
     public void deleteMocking() {
-        handler.rewindRobotDao();
+        reset(robotDaoMocked);
     }
 
     /** Test registerRobot operation for robot. */
@@ -54,7 +59,7 @@ public class DbServiceHandlerRobotTest {
 
         handler.registerRobot(tRobot);
 
-        verify(handler.getRobotDao()).saveRobot(robot);
+        verify(robotDaoMocked).saveRobot(robot);
     }
 
     /** Test registerRobot operation for robot. */
@@ -74,7 +79,7 @@ public class DbServiceHandlerRobotTest {
         TRobot tRobot = createRobot("robot");
         RobotSerial robot = new RobotSerial(tRobot);
 
-        when(handler.getRobotDao().saveRobot(robot)).thenThrow(new AbortedException("0", "Exception", "Exception"));
+        when(robotDaoMocked.saveRobot(robot)).thenThrow(new AbortedException("0", "Exception", "Exception"));
 
         assertThatThrownBy(() -> handler.registerRobot(tRobot)).isInstanceOf(TAborted.class);
     }
@@ -87,7 +92,7 @@ public class DbServiceHandlerRobotTest {
         TRobot tRobot = createRobot("robot", idRobot);
         RobotSerial robot = new RobotSerial(tRobot);
 
-        when(handler.getRobotDao().getRobot(idRobot)).thenReturn(robot);
+        when(robotDaoMocked.getRobot(idRobot)).thenReturn(robot);
 
         TRobot gotTRobot = handler.findById(idRobot);
 
@@ -100,7 +105,7 @@ public class DbServiceHandlerRobotTest {
     public void findById_robotNotExists_throwsTNotFound() throws Exception {
         long idRobotNotCorrect = 0L;
 
-        when(handler.getRobotDao().getRobot(idRobotNotCorrect)).thenThrow(new NotFoundException("0", "Exception"));
+        when(robotDaoMocked.getRobot(idRobotNotCorrect)).thenThrow(new NotFoundException("0", "Exception"));
 
         assertThatThrownBy(() -> handler.findById(idRobotNotCorrect)).isInstanceOf(TNotFound.class);
     }
@@ -113,7 +118,7 @@ public class DbServiceHandlerRobotTest {
 
         handler.deleteRobot(idRobot);
 
-        verify(handler.getRobotDao()).deleteRobot(idRobot);
+        verify(robotDaoMocked).deleteRobot(idRobot);
     }
 
     /** Test deleteRobot operation for robot. */
@@ -122,7 +127,7 @@ public class DbServiceHandlerRobotTest {
     public void deleteRobot_daoThrowsErrorConnection_throwsTErrorConnection() throws Exception {
         long idRobotNotCorrect = 0L;
 
-        doThrow(new ErrorConnectionException("Exception", "Exception")).when(handler.getRobotDao()).
+        doThrow(new ErrorConnectionException("Exception", "Exception")).when(robotDaoMocked).
                 deleteRobot(idRobotNotCorrect);
 
         assertThatThrownBy(() -> handler.deleteRobot(idRobotNotCorrect)).isInstanceOf(TErrorConnection.class);
@@ -134,7 +139,7 @@ public class DbServiceHandlerRobotTest {
     public void deleteRobot_daoThrowsAborted_throwsTAborted() throws Exception {
         long idRobotNotCorrect = 0L;
 
-        doThrow(new AbortedException("0", "Exception", "Exception")).when(handler.getRobotDao()).
+        doThrow(new AbortedException("0", "Exception", "Exception")).when(robotDaoMocked).
                 deleteRobot(idRobotNotCorrect);
 
         assertThatThrownBy(() -> handler.deleteRobot(idRobotNotCorrect)).isInstanceOf(TAborted.class);
@@ -146,7 +151,7 @@ public class DbServiceHandlerRobotTest {
     public void isRobotExists_robotExists_returnsTrue() {
         long idRobot = 0L;
 
-        when(handler.getRobotDao().isExistsRobot(idRobot)).thenReturn(true);
+        when(robotDaoMocked.isExistsRobot(idRobot)).thenReturn(true);
 
         assertThat(handler.isRobotExists(idRobot)).isTrue();
     }
@@ -161,7 +166,7 @@ public class DbServiceHandlerRobotTest {
 
         handler.updateRobot(tRobot);
 
-        verify(handler.getRobotDao()).updateRobot(robot);
+        verify(robotDaoMocked).updateRobot(robot);
     }
 
     /** Test updateRobot operation for robot. */
@@ -181,7 +186,7 @@ public class DbServiceHandlerRobotTest {
         TRobot tRobot = createRobot("robot", idRobot);
         RobotSerial robot = new RobotSerial(tRobot);
 
-        doThrow(new AbortedException("0", "Exception", "Exception")).when(handler.getRobotDao()).
+        doThrow(new AbortedException("0", "Exception", "Exception")).when(robotDaoMocked).
                 updateRobot(robot);
 
         assertThatThrownBy(() -> handler.updateRobot(tRobot)).isInstanceOf(TAborted.class);

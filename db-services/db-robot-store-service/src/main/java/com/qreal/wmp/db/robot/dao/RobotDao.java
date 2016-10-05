@@ -1,6 +1,5 @@
 package com.qreal.wmp.db.robot.dao;
 
-import com.qreal.wmp.db.robot.client.users.UserService;
 import com.qreal.wmp.db.robot.exceptions.AbortedException;
 import com.qreal.wmp.db.robot.exceptions.ErrorConnectionException;
 import com.qreal.wmp.db.robot.exceptions.NotFoundException;
@@ -45,14 +44,4 @@ public interface RobotDao {
      * @param robot robot to update (Id must be set correctly)
      */
     void updateRobot(@NotNull RobotSerial robot) throws AbortedException;
-
-    /** For the sake of testing.*/
-    void setUserService(UserService userService);
-
-    /** For the sake of testing.*/
-    UserService getUserService();
-
-    /** For the sake of testing.*/
-    void rewindUserService();
-
 }

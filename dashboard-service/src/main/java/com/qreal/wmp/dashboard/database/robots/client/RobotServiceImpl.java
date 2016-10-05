@@ -66,17 +66,17 @@ public class RobotServiceImpl implements RobotService {
         // Usage of atomics here is to be able to modify this value in lambda function. AtomicLong serves
         // as immutable wrapper to mutable value on a heap, just like "ref" in F#.
         final AtomicLong idRobot = new AtomicLong(-1);
-        ThriftRequest request = new ThriftRequest(transport, "register", "robot = " + robot.getName() + ".")
+
+        ThriftRequest request = new ThriftRequest(transport, "register", "robot = " + robot.getName() + ".").
+                registerHandler(TIdAlreadyDefined.class,
+                        e -> logger.error("register() encountered IdAlreadyDefined exception. Robot was not registered.",
+                                e))
                 .registerHandler(
-                    TIdAlreadyDefined.class,
-                    e -> logger.error("register() encountered IdAlreadyDefined exception. Robot was not"
-                        + " registered.", e))
-                .registerHandler(
-                    /// TODO: Is this handler really needed? Default handler does the same, but also logs exception.
-                    TErrorConnection.class,
-                    (TErrorConnection e) -> {
-                        throw new ErrorConnectionException(e.getClientName(), e.getMessage());
-                    });
+                        /// TODO: Is this handler really needed? Default handler does the same, but also logs exception.
+                        TErrorConnection.class,
+                        (TErrorConnection e) -> {
+                            throw new ErrorConnectionException(e.getClientName(), e.getMessage());
+                        });
 
         try {
             request.run(() -> idRobot.set(client.registerRobot(robot.toTRobot())));

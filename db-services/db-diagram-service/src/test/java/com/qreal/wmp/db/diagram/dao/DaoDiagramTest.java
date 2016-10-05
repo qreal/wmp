@@ -1,7 +1,6 @@
 package com.qreal.wmp.db.diagram.dao;
 
 import com.qreal.wmp.db.diagram.config.AppInit;
-import com.qreal.wmp.db.diagram.dao.DiagramDao;
 import com.qreal.wmp.db.diagram.exceptions.AbortedException;
 import com.qreal.wmp.db.diagram.exceptions.NotFoundException;
 import com.qreal.wmp.db.diagram.model.Diagram;

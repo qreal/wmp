@@ -10,10 +10,7 @@ public class AppInit {
     /** Main function creates context and starts server.*/
     public static void main(String[] args) throws AbortedException {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
-        context.scan("com.qreal.wmp.db.diagram.config");
-        context.scan("com.qreal.wmp.db.diagram.dao");
-        context.scan("com.qreal.wmp.db.diagram.server");
-        context.scan("com.qreal.wmp.db.diagram.test");
+        context.scan("com.qreal.wmp.db.diagram");
         context.register(AppInit.class);
         context.refresh();
     }

@@ -15,15 +15,11 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.Set;
 
-@Component("userDao")
-@Repository
 @Transactional
 public class UserDaoImpl implements UserDao {
 
@@ -122,43 +118,6 @@ public class UserDaoImpl implements UserDao {
         UserSerial userSerial = (UserSerial) session.get(UserSerial.class, username);
         return userSerial != null;
     }
-
-    /** For the sake of testing.*/
-    @Override
-    public void setRobotService(RobotService robotService) {
-        this.robotService = robotService;
-    }
-
-    /** For the sake of testing.*/
-    @Override
-    public RobotService getRobotService() {
-        return robotService;
-    }
-
-    /** For the sake of testing.*/
-    @Override
-    public void rewindRobotService() {
-        robotService = null;
-    }
-
-    /** For the sake of testing.*/
-    @Override
-    public void setDiagramService(DiagramService diagramService) {
-        this.diagramService = diagramService;
-    }
-
-    /** For the sake of testing.*/
-    @Override
-    public DiagramService getDiagramService() {
-        return diagramService;
-    }
-
-    /** For the sake of testing.*/
-    @Override
-    public void rewindDiagramService() {
-        this.diagramService = null;
-    }
-
 
     /**
      * Saves or updates robots using RobotsService.

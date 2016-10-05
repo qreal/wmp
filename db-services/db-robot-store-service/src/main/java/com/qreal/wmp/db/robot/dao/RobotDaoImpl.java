@@ -13,13 +13,9 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
-@Component("robotDao")
-@Repository
 public class RobotDaoImpl implements RobotDao {
 
     private static final Logger logger = LoggerFactory.getLogger(RobotDaoImpl.class);
@@ -33,25 +29,6 @@ public class RobotDaoImpl implements RobotDao {
     public RobotDaoImpl(SessionFactory sessionFactory, UserService userService) {
         this.sessionFactory = sessionFactory;
         this.userService = userService;
-    }
-
-    /** Used for the sake of testing.*/
-    @Override
-    public void setUserService(UserService userService) {
-        this.userService = userService;
-    }
-
-    /** Used for the sake of testing.*/
-    @Override
-    public UserService getUserService() {
-        return userService;
-    }
-
-
-    /** Used for the sake of testing.*/
-    @Override
-    public void rewindUserService() {
-        this.userService = null;
     }
 
     /**

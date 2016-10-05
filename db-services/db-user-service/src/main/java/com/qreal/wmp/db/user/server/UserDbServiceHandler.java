@@ -62,19 +62,4 @@ public class UserDbServiceHandler implements UserDbService.Iface {
     public boolean isUserExist(String username) {
         return userDao.isExistsUser(username);
     }
-
-    /** Only for sake of testing. */
-    public UserDao getUserDao() {
-        return userDao;
-    }
-
-    /** Only for sake of testing. */
-    public void setUserDao(UserDao userDao) {
-        this.userDao = userDao;
-    }
-
-    /** Only for sake of testing. */
-    public void rewindUserDao() {
-        this.userDao = null;
-    }
 }

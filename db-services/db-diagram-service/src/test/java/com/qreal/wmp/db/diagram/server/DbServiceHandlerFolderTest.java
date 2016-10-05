@@ -5,7 +5,6 @@ import com.qreal.wmp.db.diagram.dao.DiagramDao;
 import com.qreal.wmp.db.diagram.exceptions.AbortedException;
 import com.qreal.wmp.db.diagram.exceptions.NotFoundException;
 import com.qreal.wmp.db.diagram.model.Folder;
-import com.qreal.wmp.db.diagram.server.DiagramDbServiceHandler;
 import com.qreal.wmp.thrift.gen.TAborted;
 import com.qreal.wmp.thrift.gen.TFolder;
 import com.qreal.wmp.thrift.gen.TIdAlreadyDefined;

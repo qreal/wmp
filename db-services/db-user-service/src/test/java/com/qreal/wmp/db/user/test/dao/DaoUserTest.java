@@ -11,15 +11,16 @@ import com.qreal.wmp.thrift.gen.TRobot;
 import com.qreal.wmp.thrift.gen.TUser;
 import com.qreal.wmp.thrift.gen.TUserRole;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -30,22 +31,21 @@ import static org.mockito.Mockito.*;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {AppInit.class})
 @Transactional
+@ActiveProfiles("testDao")
 public class DaoUserTest {
     @Autowired
     private UserDao userDao;
 
-    @Before
-    public void setMocking() {
-        RobotService mockedRobotService = mock(RobotService.class);
-        userDao.setRobotService(mockedRobotService);
-        DiagramService mockedDiagramService = mock(DiagramService.class);
-        userDao.setDiagramService(mockedDiagramService);
-    }
+    @Resource(name = "mockedRobotService")
+    private RobotService robotServiceMocked;
+
+    @Resource(name = "mockedDiagramService")
+    private DiagramService diagramServiceMocked;
 
     @After
     public void deleteMocking() {
-        userDao.rewindDiagramService();
-        userDao.rewindRobotService();
+        reset(robotServiceMocked);
+        reset(diagramServiceMocked);
     }
 
     /** Test saveUser operation for user. */
@@ -58,10 +58,10 @@ public class DaoUserTest {
         TRobot tRobot = createRobot("robot", "ssid", tUser.getUsername());
         addRobotToUser(tRobot, tUser);
 
-        when(userDao.getRobotService().register(tRobot)).thenReturn(idRobot);
+        when(robotServiceMocked.register(tRobot)).thenReturn(idRobot);
         userDao.saveUser(tUser);
 
-        when(userDao.getRobotService().findById(idRobot)).thenReturn(tRobot);
+        when(robotServiceMocked.findById(idRobot)).thenReturn(tRobot);
         TUser gotUser = userDao.findByUserName("username");
         //To add id we need to recalculate hash. So we need to create whole new object
         updateUserRolesIds(tUser, gotUser);
@@ -79,16 +79,16 @@ public class DaoUserTest {
         TRobot tRobot = createRobot("robot", "ssid", tUser.getUsername());
         addRobotToUser(tRobot, tUser);
 
-        when(userDao.getRobotService().register(tRobot)).thenReturn(idRobot);
+        when(robotServiceMocked.register(tRobot)).thenReturn(idRobot);
         userDao.saveUser(tUser);
 
-        when(userDao.getRobotService().findById(idRobot)).thenReturn(tRobot);
+        when(robotServiceMocked.findById(idRobot)).thenReturn(tRobot);
         TUser gotUser = userDao.findByUserName("username");
 
         //To add id we need to recalculate hash. So we need to create whole new object
         updateUserRolesIds(tUser, gotUser);
 
-        verify(userDao.getDiagramService()).createRootFolder(tUser.getUsername());
+        verify(diagramServiceMocked).createRootFolder(tUser.getUsername());
     }
 
     /** Test saveUser operation for user. */
@@ -101,16 +101,16 @@ public class DaoUserTest {
         TRobot tRobot = createRobot("robot", "ssid", tUser.getUsername());
         addRobotToUser(tRobot, tUser);
 
-        when(userDao.getRobotService().register(tRobot)).thenReturn(idRobot);
+        when(robotServiceMocked.register(tRobot)).thenReturn(idRobot);
         userDao.saveUser(tUser);
 
-        when(userDao.getRobotService().findById(idRobot)).thenReturn(tRobot);
+        when(robotServiceMocked.findById(idRobot)).thenReturn(tRobot);
         TUser gotUser = userDao.findByUserName("username");
 
         //To add id we need to recalculate hash. So we need to create whole new object
         updateUserRolesIds(tUser, gotUser);
 
-        verify(userDao.getRobotService()).register(tRobot);
+        verify(robotServiceMocked).register(tRobot);
     }
 
     /** Test saveUser operation for user. */
@@ -122,8 +122,7 @@ public class DaoUserTest {
         TRobot tRobot = createRobot("robot", "ssid", tUser.getUsername());
         addRobotToUser(tRobot, tUser);
 
-        when(userDao.getRobotService().register(tRobot)).
-                thenThrow(new AbortedException("0", "Exception", "Exception"));
+        when(robotServiceMocked.register(tRobot)).thenThrow(new AbortedException("0", "Exception", "Exception"));
 
         assertThatThrownBy(() -> userDao.saveUser(tUser)).isInstanceOf(AbortedException.class);
     }
@@ -138,9 +137,9 @@ public class DaoUserTest {
         TRobot tRobot = createRobot("robot", "ssid", tUser.getUsername());
         addRobotToUser(tRobot, tUser);
 
-        when(userDao.getRobotService().register(tRobot)).thenReturn(idRobot);
+        when(robotServiceMocked.register(tRobot)).thenReturn(idRobot);
 
-        doThrow(new AbortedException("0", "Exception", "Exception")).when(userDao.getDiagramService()).
+        doThrow(new AbortedException("0", "Exception", "Exception")).when(diagramServiceMocked).
                 createRootFolder(tUser.getUsername());
 
         assertThatThrownBy(() -> userDao.saveUser(tUser)).isInstanceOf(AbortedException.class);
@@ -155,7 +154,7 @@ public class DaoUserTest {
         TRobot tRobot = createRobot("robot", "ssid", tUser.getUsername());
         addRobotToUser(tRobot, tUser);
 
-        when(userDao.getRobotService().register(tRobot)).thenThrow(new ErrorConnectionException("0", "Exception"));
+        when(robotServiceMocked.register(tRobot)).thenThrow(new ErrorConnectionException("0", "Exception"));
 
         assertThatThrownBy(() -> userDao.saveUser(tUser)).isInstanceOf(ErrorConnectionException.class);
     }
@@ -170,8 +169,8 @@ public class DaoUserTest {
         TRobot tRobot = createRobot("robot", "ssid", tUser.getUsername());
         addRobotToUser(tRobot, tUser);
 
-        when(userDao.getRobotService().register(tRobot)).thenReturn(idRobot);
-        doThrow(new ErrorConnectionException("0", "Exception")).when(userDao.getDiagramService()).
+        when(robotServiceMocked.register(tRobot)).thenReturn(idRobot);
+        doThrow(new ErrorConnectionException("0", "Exception")).when(diagramServiceMocked).
                 createRootFolder(tUser.getUsername());
 
         assertThatThrownBy(() -> userDao.saveUser(tUser)).isInstanceOf(ErrorConnectionException.class);
@@ -186,10 +185,10 @@ public class DaoUserTest {
         long idRobot = 0L;
         TRobot tRobot = createRobot("robot", "ssid", tUser.getUsername());
         addRobotToUser(tRobot, tUser);
-        when(userDao.getRobotService().register(tRobot)).thenReturn(idRobot);
+        when(robotServiceMocked.register(tRobot)).thenReturn(idRobot);
         userDao.saveUser(tUser);
 
-        when(userDao.getRobotService().findById(idRobot)).thenReturn(tRobot);
+        when(robotServiceMocked.findById(idRobot)).thenReturn(tRobot);
         TUser gotUser = userDao.findByUserName("username");
 
         //To add id we need to recalculate hash. So we need to create whole new object
@@ -218,9 +217,9 @@ public class DaoUserTest {
         TRobot tRobot = createRobot("robot", "ssid", tUser.getUsername());
         addRobotToUser(tRobot, tUser);
 
-        when(userDao.getRobotService().register(tRobot)).thenReturn(idRobot);
+        when(robotServiceMocked.register(tRobot)).thenReturn(idRobot);
         userDao.saveUser(tUser);
-        when(userDao.getRobotService().findById(idRobot)).thenThrow(new ErrorConnectionException("0", "Exception"));
+        when(robotServiceMocked.findById(idRobot)).thenThrow(new ErrorConnectionException("0", "Exception"));
 
         assertThatThrownBy(() -> userDao.findByUserName(username)).isInstanceOf(ErrorConnectionException.class);
     }
@@ -236,10 +235,10 @@ public class DaoUserTest {
         TRobot tRobot = createRobot("robot", "ssid", tUser.getUsername());
         addRobotToUser(tRobot, tUser);
 
-        when(userDao.getRobotService().register(tRobot)).thenReturn(idRobot);
+        when(robotServiceMocked.register(tRobot)).thenReturn(idRobot);
         userDao.saveUser(tUser);
 
-        when(userDao.getRobotService().findById(idRobot)).thenReturn(tRobot);
+        when(robotServiceMocked.findById(idRobot)).thenReturn(tRobot);
         TUser gotUser = userDao.findByUserName("username");
         //To add id we need to recalculate hash. So we need to create whole new object
         updateUserRolesIds(tUser, gotUser);
@@ -251,7 +250,7 @@ public class DaoUserTest {
         TRobot tRobotChanged = createRobot("robotChanged", "ssidChanhed", tUser.getUsername(), idRobot);
         addRobotToUser(tRobotChanged, tUserChanged);
 
-        when(userDao.getRobotService().findById(idRobot)).thenReturn(tRobotChanged);
+        when(robotServiceMocked.findById(idRobot)).thenReturn(tRobotChanged);
 
         userDao.updateUser(tUserChanged);
 
@@ -273,10 +272,10 @@ public class DaoUserTest {
         TRobot tRobot = createRobot("robot", "ssid", tUser.getUsername());
         addRobotToUser(tRobot, tUser);
 
-        when(userDao.getRobotService().register(tRobot)).thenReturn(idRobot);
+        when(robotServiceMocked.register(tRobot)).thenReturn(idRobot);
         userDao.saveUser(tUser);
 
-        when(userDao.getRobotService().findById(idRobot)).thenReturn(tRobot);
+        when(robotServiceMocked.findById(idRobot)).thenReturn(tRobot);
         TUser gotUser = userDao.findByUserName("username");
         //To add id we need to recalculate hash. So we need to create whole new object
         updateUserRolesIds(tUser, gotUser);
@@ -288,7 +287,7 @@ public class DaoUserTest {
         TRobot tRobotChanged = createRobot("robotChanged", "ssidChanhed", tUser.getUsername(), idRobot);
         addRobotToUser(tRobotChanged, tUserChanged);
 
-        when(userDao.getRobotService().findById(idRobot)).thenReturn(tRobotChanged);
+        when(robotServiceMocked.findById(idRobot)).thenReturn(tRobotChanged);
 
         userDao.updateUser(tUserChanged);
 
@@ -297,7 +296,7 @@ public class DaoUserTest {
         updateUserRolesIds(tUserChanged, gotUser);
 
 
-        verify(userDao.getRobotService()).update(tRobotChanged);
+        verify(robotServiceMocked).update(tRobotChanged);
     }
 
     /** Test delete operation for user. */
@@ -319,10 +318,10 @@ public class DaoUserTest {
         TRobot tRobot = createRobot("robot", "ssid", tUser.getUsername());
         addRobotToUser(tRobot, tUser);
 
-        when(userDao.getRobotService().register(tRobot)).thenReturn(idRobot);
+        when(robotServiceMocked.register(tRobot)).thenReturn(idRobot);
         userDao.saveUser(tUser);
 
-        when(userDao.getRobotService().findById(idRobot)).thenReturn(tRobot);
+        when(robotServiceMocked.findById(idRobot)).thenReturn(tRobot);
         TUser gotUser = userDao.findByUserName("username");
         //To add id we need to recalculate hash. So we need to create whole new object
         updateUserRolesIds(tUser, gotUser);
@@ -333,7 +332,7 @@ public class DaoUserTest {
         TRobot tRobotChanged = createRobot("robotChanged", "ssidChanhed", tUser.getUsername(), idRobot);
         addRobotToUser(tRobotChanged, tUserChanged);
 
-        doThrow(new AbortedException("0", "Exception", "Exception")).when(userDao.getRobotService()).
+        doThrow(new AbortedException("0", "Exception", "Exception")).when(robotServiceMocked).
                 update(tRobotChanged);
         assertThatThrownBy(() -> userDao.updateUser(tUserChanged)).isInstanceOf(AbortedException.class);
     }
@@ -348,10 +347,10 @@ public class DaoUserTest {
         TRobot tRobot = createRobot("robot", "ssid", tUser.getUsername());
         addRobotToUser(tRobot, tUser);
 
-        when(userDao.getRobotService().register(tRobot)).thenReturn(idRobot);
+        when(robotServiceMocked.register(tRobot)).thenReturn(idRobot);
         userDao.saveUser(tUser);
 
-        when(userDao.getRobotService().findById(idRobot)).thenReturn(tRobot);
+        when(robotServiceMocked.findById(idRobot)).thenReturn(tRobot);
         TUser gotUser = userDao.findByUserName("username");
         //To add id we need to recalculate hash. So we need to create whole new object
         updateUserRolesIds(tUser, gotUser);
@@ -362,7 +361,7 @@ public class DaoUserTest {
         TRobot tRobotChanged = createRobot("robotChanged", "ssidChanhed", tUser.getUsername(), idRobot);
         addRobotToUser(tRobotChanged, tUserChanged);
 
-        doThrow(new ErrorConnectionException("0", "Exception")).when(userDao.getRobotService()).update(tRobotChanged);
+        doThrow(new ErrorConnectionException("0", "Exception")).when(robotServiceMocked).update(tRobotChanged);
         assertThatThrownBy(() -> userDao.updateUser(tUserChanged)).isInstanceOf(ErrorConnectionException.class);
     }
 
@@ -378,7 +377,7 @@ public class DaoUserTest {
         TRobot tRobot = createRobot("robot", "ssid", tUser.getUsername());
         addRobotToUser(tRobot, tUser);
 
-        when(userDao.getRobotService().register(tRobot)).thenReturn(idRobot);
+        when(robotServiceMocked.register(tRobot)).thenReturn(idRobot);
         userDao.saveUser(tUser);
 
         assertThat(userDao.isExistsUser(username)).isTrue();
