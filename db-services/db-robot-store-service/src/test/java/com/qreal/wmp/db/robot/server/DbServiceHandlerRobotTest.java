@@ -6,7 +6,6 @@ import com.qreal.wmp.db.robot.exceptions.AbortedException;
 import com.qreal.wmp.db.robot.exceptions.ErrorConnectionException;
 import com.qreal.wmp.db.robot.exceptions.NotFoundException;
 import com.qreal.wmp.db.robot.model.robot.RobotSerial;
-import com.qreal.wmp.db.robot.server.RobotDbServiceHandler;
 import com.qreal.wmp.thrift.gen.*;
 import org.junit.After;
 import org.junit.Before;

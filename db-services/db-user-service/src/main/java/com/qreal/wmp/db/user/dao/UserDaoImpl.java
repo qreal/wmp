@@ -9,6 +9,7 @@ import com.qreal.wmp.db.user.model.auth.UserRoleSerial;
 import com.qreal.wmp.db.user.model.auth.UserSerial;
 import com.qreal.wmp.thrift.gen.TRobot;
 import com.qreal.wmp.thrift.gen.TUser;
+import org.apache.thrift.TException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.jetbrains.annotations.NotNull;
@@ -60,7 +61,11 @@ public class UserDaoImpl implements UserDao {
         session.save(userSerial);
         logger.trace("user {} saved.", user.getUsername());
 
-        diagramService.createRootFolder(user.getUsername());
+        try {
+            diagramService.createRootFolder(user.getUsername());
+        } catch (TException e) {
+            e.printStackTrace();
+        }
         logger.trace("rootfolder {} created.", user.getUsername());
 
         logger.trace("saveUser() successfully saved user {}.", user.getUsername());
@@ -125,9 +130,17 @@ public class UserDaoImpl implements UserDao {
             logger.trace("Saving robot {} of user {}.", robot.getName(), tUser.getUsername());
             long idRobot = 0;
             if (!robot.isSetId()) {
-                idRobot = robotService.register(robot);
+                try {
+                    idRobot = robotService.register(robot);
+                } catch (TException e) {
+                    e.printStackTrace();
+                }
             } else {
-                robotService.update(robot);
+                try {
+                    robotService.update(robot);
+                } catch (TException e) {
+                    e.printStackTrace();
+                }
                 idRobot = robot.getId();
             }
             userSerial.getRobots().add(idRobot);
@@ -145,7 +158,12 @@ public class UserDaoImpl implements UserDao {
         for (Long id : userSerial.getRobots()) {
             logger.trace("Loading a robot with id {} of user {}", id, tUser.getUsername());
             try {
-                TRobot robot = robotService.findById(id);
+                TRobot robot = null;
+                try {
+                    robot = robotService.findById(id);
+                } catch (TException e) {
+                    e.printStackTrace();
+                }
                 tUser.getRobots().add(robot);
                 logger.trace("Robot  {} of user {} loaded", robot.getName(), tUser.getUsername());
             } catch (NotFoundException notFound) {
@@ -163,35 +181,5 @@ public class UserDaoImpl implements UserDao {
             userSerial.setRoles(roles);
         }
         return userSerial;
-    }
-
-    /** For the sake of testing.*/
-    void setRobotService(RobotService robotService) {
-        this.robotService = robotService;
-    }
-
-    /** For the sake of testing.*/
-    RobotService getRobotService() {
-        return robotService;
-    }
-
-    /** For the sake of testing.*/
-    void rewindRobotService() {
-        robotService = null;
-    }
-
-    /** For the sake of testing.*/
-    void setDiagramService(DiagramService diagramService) {
-        this.diagramService = diagramService;
-    }
-
-    /** For the sake of testing.*/
-    DiagramService getDiagramService() {
-        return diagramService;
-    }
-
-    /** For the sake of testing.*/
-    void rewindDiagramService() {
-        this.diagramService = null;
     }
 }

@@ -5,7 +5,6 @@ import com.qreal.wmp.db.user.dao.UserDao;
 import com.qreal.wmp.db.user.exceptions.AbortedException;
 import com.qreal.wmp.db.user.exceptions.ErrorConnectionException;
 import com.qreal.wmp.db.user.exceptions.NotFoundException;
-import com.qreal.wmp.db.user.server.UserDbServiceHandler;
 import com.qreal.wmp.thrift.gen.*;
 import org.junit.After;
 import org.junit.Before;

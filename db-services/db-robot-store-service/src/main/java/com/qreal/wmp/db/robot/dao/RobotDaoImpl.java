@@ -7,6 +7,7 @@ import com.qreal.wmp.db.robot.exceptions.NotFoundException;
 import com.qreal.wmp.db.robot.model.robot.RobotSerial;
 import com.qreal.wmp.thrift.gen.TRobot;
 import com.qreal.wmp.thrift.gen.TUser;
+import org.apache.thrift.TException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.jetbrains.annotations.NotNull;
@@ -73,10 +74,16 @@ public class RobotDaoImpl implements RobotDao {
             logger.error("Inconsistent state: Robot contains user with id {}, but this user doesn't exist.", owner, e);
             throw new AbortedException("Inconsistent state: Robot contains user with id {}, but this user doesn't " +
                     "exist.", "deleteRobot() safely aborted", RobotDaoImpl.class.getName());
+        } catch (TException e) {
+            e.printStackTrace();
         }
         TRobot tRobot = robot.toTRobot();
         tUser.getRobots().remove(tRobot);
-        userService.update(tUser);
+        try {
+            userService.update(tUser);
+        } catch (TException e) {
+            e.printStackTrace();
+        }
 
         logger.trace("Record from user {} deleted", robot.getOwner());
 

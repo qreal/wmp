@@ -2,7 +2,6 @@ package com.qreal.wmp.db.robot.dao;
 
 import com.qreal.wmp.db.robot.client.users.UserService;
 import com.qreal.wmp.db.robot.config.AppInit;
-import com.qreal.wmp.db.robot.dao.RobotDao;
 import com.qreal.wmp.db.robot.exceptions.AbortedException;
 import com.qreal.wmp.db.robot.exceptions.NotFoundException;
 import com.qreal.wmp.db.robot.model.robot.RobotSerial;

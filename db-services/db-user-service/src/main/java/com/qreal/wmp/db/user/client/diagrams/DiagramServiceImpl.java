@@ -4,15 +4,12 @@ import com.qreal.wmp.db.user.exceptions.AbortedException;
 import com.qreal.wmp.db.user.exceptions.ErrorConnectionException;
 import com.qreal.wmp.db.user.model.diagram.Folder;
 import com.qreal.wmp.thrift.gen.DiagramDbService;
-import com.qreal.wmp.thrift.gen.TAborted;
 import com.qreal.wmp.thrift.gen.TFolder;
-import com.qreal.wmp.thrift.gen.TIdAlreadyDefined;
 import org.apache.thrift.TException;
 import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.transport.TSocket;
 import org.apache.thrift.transport.TTransport;
-import org.apache.thrift.transport.TTransportException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -48,31 +45,15 @@ public class DiagramServiceImpl implements DiagramService {
     }
 
     @Override
-    public void createRootFolder(String userName) throws AbortedException, ErrorConnectionException {
+    public void createRootFolder(String userName) throws AbortedException, ErrorConnectionException, TException {
         logger.trace("createRootFolder() was called with parameters: username = {}.", userName);
         Folder rootFolder = new Folder("root", userName);
+        transport.open();
         try {
-            transport.open();
-            try {
-                TFolder newFolder = rootFolder.toTFolder();
-                client.createFolder(newFolder);
-            } catch (TIdAlreadyDefined e) {
-                logger.error("createRootFolder() encountered an IdAlreadyDefined exception. Folder was not created.",
-                        e);
-            } catch (TAborted e) {
-                throw new AbortedException(e.getTextCause(), e.getMessage(), e.getFullClassName());
-            } catch (TException e) {
-                logger.error("Client DiagramService encountered a problem while sending createFolder request with " +
-                        "parameters: newFolder = {}", rootFolder.getFolderName(), e);
-                throw new ErrorConnectionException(DiagramServiceImpl.class.getName(), "Client DiagramService " +
-                        "encountered a problem while sending createFolder request");
-            } finally {
-                transport.close();
-            }
-        } catch (TTransportException e) {
-            logger.error("Client DiagramService encountered problem while opening transport.", e);
-            throw new ErrorConnectionException(DiagramServiceImpl.class.getName(), "Client DiagramService encountered " +
-                    "a problem while opening transport.");
+            TFolder newFolder = rootFolder.toTFolder();
+            client.createFolder(newFolder);
+        } finally {
+            transport.close();
         }
         logger.trace("createRootFolder() created rootFolder for user {}.", userName);
     }
