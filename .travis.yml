@@ -27,6 +27,7 @@ before_install:
   - sudo mknod /dev/random c 1 9
 
 install:
+  #install and run tests
   - mvn install -P travis
 
 script:
@@ -37,16 +38,6 @@ script:
   - java -jar checkstyle-7.0-all.jar -c Travis/checkstyle/checkstyle.xml db-services/db-diagram-service/src
   - java -jar checkstyle-7.0-all.jar -c Travis/checkstyle/checkstyle.xml db-services/db-robot-store-service/src
   - java -jar checkstyle-7.0-all.jar -c Travis/checkstyle/checkstyle.xml db-services/db-user-service/src
-
-  #run tests
-  - cd db-services
-  - cd db-diagram-service
-  - mvn test
-  - cd ../db-robot-store-service
-  - mvn test
-  - cd ../db-user-service
-  - mvn test
-  - cd ../..
 
   #run services
   - cd db-services

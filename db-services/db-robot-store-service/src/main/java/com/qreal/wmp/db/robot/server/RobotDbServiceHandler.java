@@ -6,10 +6,12 @@ import com.qreal.wmp.db.robot.exceptions.ErrorConnectionException;
 import com.qreal.wmp.db.robot.exceptions.NotFoundException;
 import com.qreal.wmp.db.robot.model.robot.RobotSerial;
 import com.qreal.wmp.thrift.gen.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
 /** Thrift server-side handler for RobotDBService.*/
 public class RobotDbServiceHandler implements RobotDbService.Iface {
+    @Autowired
     private RobotDao robotDao;
 
     public RobotDbServiceHandler(ApplicationContext context) {
@@ -68,20 +70,5 @@ public class RobotDbServiceHandler implements RobotDbService.Iface {
         } catch (AbortedException e) {
             throw new TAborted(e.getTextCause(), e.getMessage(), e.getFullClassName());
         }
-    }
-
-    /** Only for sake of testing. */
-    RobotDao getRobotDao() {
-        return robotDao;
-    }
-
-    /** Only for sake of testing. */
-    void setRobotDao(RobotDao robotDao) {
-        this.robotDao = robotDao;
-    }
-
-    /** Only for sake of testing. */
-    void rewindRobotDao() {
-        this.robotDao = null;
     }
 }

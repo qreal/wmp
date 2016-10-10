@@ -35,4 +35,5 @@ public class Hibernate {
     public HibernateTransactionManager txManager() {
         return new HibernateTransactionManager(sessionFactory());
     }
+
 }
