@@ -3,13 +3,15 @@ package com.qreal.wmp.dashboard.database.users.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.qreal.wmp.dashboard.database.robots.model.Robot;
 import com.qreal.wmp.thrift.gen.TUser;
-import org.jetbrains.annotations.NotNull;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 /** User in authorization service. */
+@Data
 public class User {
     /** Name of the user (primary key too). */
     private String username;
@@ -72,46 +74,6 @@ public class User {
         if (tUser.isSetRobots()) {
             robots = tUser.getRobots().stream().map(tRobot -> new Robot(tRobot, this)).collect(Collectors.toSet());
         }
-    }
-
-    public String getUsername() {
-        return this.username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return this.password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public boolean isEnabled() {
-        return this.enabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
-
-    public @NotNull Set<UserRole> getRoles() {
-        return this.roles;
-    }
-
-    public void setRoles(Set<UserRole> roles) {
-        this.roles = roles;
-    }
-
-    public @NotNull Set<Robot> getRobots() {
-        return this.robots;
-    }
-
-    public void setRobots(Set<Robot> robots) {
-        this.robots = robots;
     }
 
     /** Converter from User to Thrift TUser.*/

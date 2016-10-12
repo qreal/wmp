@@ -87,6 +87,12 @@
     <orderEntry type="library" name="Maven: org.springframework.security:spring-security-taglibs:3.2.3.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.security:spring-security-acl:3.2.3.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-jdbc:3.2.8.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.aspectj:aspectjrt:1.8.9" level="project" />
+    <orderEntry type="library" name="Maven: org.aspectj:aspectjweaver:1.8.9" level="project" />
+    <orderEntry type="library" name="Maven: cglib:cglib:3.2.4" level="project" />
+    <orderEntry type="library" name="Maven: org.ow2.asm:asm:5.1" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.ant:ant:1.9.6" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.ant:ant-launcher:1.9.6" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: javax.servlet:javax.servlet-api:3.1.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: javax.servlet.jsp:jsp-api:2.2" level="project" />
     <orderEntry type="library" name="Maven: javax.servlet:jstl:1.2" level="project" />

@@ -5,6 +5,7 @@ import com.qreal.wmp.editor.database.diagrams.model.Folder;
 import com.qreal.wmp.editor.database.exceptions.AbortedException;
 import com.qreal.wmp.editor.database.exceptions.ErrorConnectionException;
 import com.qreal.wmp.editor.database.exceptions.NotFoundException;
+import org.apache.thrift.TException;
 import org.jetbrains.annotations.NotNull;
 
 /** DiagramDBService interface.*/
@@ -17,30 +18,31 @@ public interface DiagramService {
      * @param folderId id of folder to save diagram in
      * @return new id of diagram
      */
-    Long saveDiagram(@NotNull Diagram diagram, Long folderId) throws AbortedException, ErrorConnectionException;
+    Long saveDiagram(@NotNull Diagram diagram, Long folderId) throws AbortedException, ErrorConnectionException,
+            TException;
 
     /** Returns diagram with specified id.*/
     @NotNull
-    Diagram openDiagram(Long diagramId) throws NotFoundException, ErrorConnectionException;
+    Diagram openDiagram(Long diagramId) throws NotFoundException, ErrorConnectionException, TException;
 
     /**
      * Rewrites diagram with id equal to diagram.id.
      *
      * @param diagram diagram to rewrite (diagram.id must be set correctly).
      */
-    void rewriteDiagram(@NotNull Diagram diagram) throws AbortedException, ErrorConnectionException;
+    void rewriteDiagram(@NotNull Diagram diagram) throws AbortedException, ErrorConnectionException, TException;
 
     /**
      * Deletes diagram with specified id.
      */
-    void deleteDiagram(Long diagramId) throws AbortedException, ErrorConnectionException;
+    void deleteDiagram(Long diagramId) throws AbortedException, ErrorConnectionException, TException;
 
     /**
      * Creates root folder for user with specified username.
      *
      * @param userName name of user root folder created for
      */
-    void createRootFolder(String userName) throws AbortedException, ErrorConnectionException;
+    void createRootFolder(String userName) throws AbortedException, ErrorConnectionException, TException;
 
     /**
      * Creates folder and assign it id.
@@ -48,12 +50,12 @@ public interface DiagramService {
      * @param folder folder to create (Id must not be set)
      * @return new id of folder
      */
-    Long createFolder(@NotNull Folder folder) throws AbortedException, ErrorConnectionException;
+    Long createFolder(@NotNull Folder folder) throws AbortedException, ErrorConnectionException, TException;
 
     /** Deletes folder with specified id.*/
-    void deleteFolder(Long folderId) throws AbortedException, ErrorConnectionException;
+    void deleteFolder(Long folderId) throws AbortedException, ErrorConnectionException, TException;
 
     /** Returns root folder of user.*/
     @NotNull
-    Folder getFolderTree() throws NotFoundException, ErrorConnectionException;
+    Folder getFolderTree() throws NotFoundException, ErrorConnectionException, TException;
 }

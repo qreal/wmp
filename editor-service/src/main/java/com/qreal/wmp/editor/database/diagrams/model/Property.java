@@ -1,10 +1,12 @@
 package com.qreal.wmp.editor.database.diagrams.model;
 
 import com.qreal.wmp.thrift.gen.TProperty;
+import lombok.Data;
 
 import java.io.Serializable;
 
 /** Property of an entity.*/
+@Data
 public class Property implements Serializable {
     private String propertyId;
 
@@ -14,8 +16,7 @@ public class Property implements Serializable {
 
     private String type;
 
-    public Property() {
-    }
+    public Property() { }
 
     /** Constructor-converter from Thrift TProperty to Property.*/
     public Property(TProperty tProperty) {
@@ -34,38 +35,6 @@ public class Property implements Serializable {
         if (tProperty.isSetType()) {
             type = tProperty.getType();
         }
-    }
-
-    public String getPropertyId() {
-        return propertyId;
-    }
-
-    public void setPropertyId(String propertyId) {
-        this.propertyId = propertyId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getValue() {
-        return value;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 
     /** Converter from Property to Thrift TProperty.*/

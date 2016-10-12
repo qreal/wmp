@@ -7,6 +7,7 @@ import com.qreal.wmp.editor.database.users.client.UserService;
 import com.qreal.wmp.editor.database.users.model.User;
 import com.qreal.wmp.editor.database.users.model.UserRole;
 import com.racquettrack.security.oauth.OAuth2UserDetailsLoader;
+import org.apache.thrift.TException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +52,9 @@ public class OAuth2UserDetailsLoaderImpl implements OAuth2UserDetailsLoader<User
         } catch (ErrorConnectionException e) {
             //TODO what to do in that case?
             logger.error("Fatal error: must find user but can't because of connection error with user service", id);
+        } catch (TException e) {
+            //should never happen
+            e.printStackTrace();
         }
         return userDetails;
     }
@@ -70,11 +74,8 @@ public class OAuth2UserDetailsLoaderImpl implements OAuth2UserDetailsLoader<User
     @Override
     public UserDetails createUser(String id, Map<String, Object> userInfo) {
         logger.trace("OAuth passed user {} for creation.", id);
-        User user = new User(id, id, true);
-        Set<UserRole> roles = new HashSet<>();
-        UserRole userRole = new UserRole(user, ROLE_USER);
-        roles.add(userRole);
-        user.setRoles(roles);
+        User user = createUserFromId(id);
+
         try {
             userService.save(user);
         } catch (AbortedException e) {
@@ -83,9 +84,13 @@ public class OAuth2UserDetailsLoaderImpl implements OAuth2UserDetailsLoader<User
         } catch (ErrorConnectionException e) {
             //TODO what to do in that case?
             logger.error("Fatal error: must create user but can't because of connection error with user service.");
+        } catch (TException e) {
+            e.printStackTrace();
         }
+
         UserDetails userDetails = convert(user);
         logger.trace("User {} was created.", id);
+
         return userDetails;
     }
 
@@ -95,9 +100,18 @@ public class OAuth2UserDetailsLoaderImpl implements OAuth2UserDetailsLoader<User
         return true;
     }
 
+    private User createUserFromId(String username) {
+        User user = new User(username, username, true);
+        Set<UserRole> roles = new HashSet<>();
+        UserRole userRole = new UserRole(user, ROLE_USER);
+        roles.add(userRole);
+        user.setRoles(roles);
+        return user;
+    }
+
     private org.springframework.security.core.userdetails.User convert(User user) {
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
-                user.isEnabled(), true, true, true, buildUserAuthority(user.getRoles()));
+                user.getEnabled(), true, true, true, buildUserAuthority(user.getRoles()));
     }
 
     private List<GrantedAuthority> buildUserAuthority(Set<UserRole> userRoles) {

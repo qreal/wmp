@@ -45,7 +45,7 @@ public class DiagramServiceImpl implements DiagramService {
     }
 
     @Override
-    public void createRootFolder(String userName) throws AbortedException, ErrorConnectionException, TException {
+    public void createRootFolder(String userName)  throws AbortedException, ErrorConnectionException, TException {
         logger.trace("createRootFolder() was called with parameters: username = {}.", userName);
         Folder rootFolder = new Folder("root", userName);
         transport.open();

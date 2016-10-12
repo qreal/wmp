@@ -1,5 +1,6 @@
 package com.qreal.wmp.db.robot.client.users;
 
+import com.qreal.wmp.db.robot.exceptions.AbortedException;
 import com.qreal.wmp.db.robot.exceptions.ErrorConnectionException;
 import com.qreal.wmp.db.robot.exceptions.NotFoundException;
 import com.qreal.wmp.thrift.gen.TUser;
@@ -46,7 +47,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void save(@NotNull TUser tUser) throws TException {
+    public void save(@NotNull TUser tUser) throws AbortedException, ErrorConnectionException, TException {
         logger.trace("save() was called with parameters: user = {}.", tUser.getUsername());
         transport.open();
         try {
@@ -59,7 +60,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void update(@NotNull TUser tUser) throws TException {
+    public void update(@NotNull TUser tUser) throws AbortedException, ErrorConnectionException, TException {
         logger.trace("update() was called with parameters: user = {}.", tUser.getUsername());
         transport.open();
         try {

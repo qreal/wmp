@@ -12,5 +12,4 @@ public class AuthenticatedUser {
         User authenticatedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return authenticatedUser.getUsername();
     }
-
 }

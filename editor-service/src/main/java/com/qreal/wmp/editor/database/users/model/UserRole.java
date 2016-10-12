@@ -1,8 +1,14 @@
 package com.qreal.wmp.editor.database.users.model;
 
 import com.qreal.wmp.thrift.gen.TUserRole;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 /** UserRole in authorization service.*/
+@Data
+@EqualsAndHashCode(exclude = "user")
+@ToString(exclude = "user")
 public class UserRole {
     /** Surrogate key for role (maybe static table for roles?).*/
     private Integer id;
@@ -39,30 +45,6 @@ public class UserRole {
         }
 
         this.user = user;
-    }
-
-    public Integer getId() {
-        return this.id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public User getUser() {
-        return this.user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public String getRole() {
-        return this.role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
     }
 
     /** Converter from UserRole to Thrift TUserRole.*/
