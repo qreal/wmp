@@ -7,6 +7,7 @@ import org.springframework.context.annotation.ComponentScan;
 /** Main class of program. */
 @ComponentScan("com.qreal.wmp.db.diagram")
 public class AppInit {
+
     /** Main function creates context and starts server.*/
     public static void main(String[] args) throws AbortedException {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();

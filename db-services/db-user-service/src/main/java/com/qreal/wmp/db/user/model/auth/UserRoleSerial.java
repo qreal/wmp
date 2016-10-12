@@ -12,10 +12,15 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Table(name = "user_roles")
 @Data
 public class UserRoleSerial {
+
     /** Surrogate key for role (maybe static table for roles?).*/
+    @Id
+    @GeneratedValue(strategy = IDENTITY)
+    @Column(name = "id", unique = true, nullable = false)
     private Integer id;
 
     /** Name of the role. */
+    @Column(name = "role", nullable = false, length = 45)
     private String role;
 
     public UserRoleSerial() {
@@ -34,27 +39,6 @@ public class UserRoleSerial {
         if (tUserRole.isSetRole()) {
             role = tUserRole.getRole();
         }
-    }
-
-    @Id
-    @GeneratedValue(strategy = IDENTITY)
-    @Column(name = "id",
-            unique = true, nullable = false)
-    public Integer getId() {
-        return this.id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    @Column(name = "role", nullable = false, length = 45)
-    public String getRole() {
-        return this.role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
     }
 
     /** Converter from UserRole to Thrift TUserRole.*/

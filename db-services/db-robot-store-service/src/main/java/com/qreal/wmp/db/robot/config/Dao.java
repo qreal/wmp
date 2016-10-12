@@ -33,7 +33,6 @@ public class Dao {
             return mock(UserService.class);
         }
 
-
         @Bean(name = "robotDao")
         @Autowired
         RobotDao createDao(SessionFactory sessionFactory, @Qualifier("mockedUserService") UserService userService) {

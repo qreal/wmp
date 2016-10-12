@@ -45,46 +45,6 @@ public class DefaultDiagramNode implements Serializable {
         }
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getLogicalId() {
-        return logicalId;
-    }
-
-    public void setLogicalId(String logicalId) {
-        this.logicalId = logicalId;
-    }
-
-    public String getGraphicalId() {
-        return graphicalId;
-    }
-
-    public void setGraphicalId(String graphicalId) {
-        this.graphicalId = graphicalId;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public @NotNull Set<Property> getProperties() {
-        return properties;
-    }
-
-    public void setProperties(Set<Property> properties) {
-        this.properties = properties;
-    }
-
     /** Converter from DefaultDiagramNode to Thrift TDefaultDiagramNode.*/
     public TDefaultDiagramNode toTDefaultDiagramNode() {
         TDefaultDiagramNode tDefaultDiagramNode = new TDefaultDiagramNode();

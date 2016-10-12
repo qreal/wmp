@@ -13,11 +13,11 @@ import org.hibernate.SessionFactory;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 public class RobotDaoImpl implements RobotDao {
+
     private static final Logger logger = LoggerFactory.getLogger(RobotDaoImpl.class);
 
     /** UserService used to resolve foreign key dependencies. */
@@ -25,7 +25,6 @@ public class RobotDaoImpl implements RobotDao {
 
     private final SessionFactory sessionFactory;
 
-    @Autowired
     public RobotDaoImpl(SessionFactory sessionFactory, UserService userService) {
         this.sessionFactory = sessionFactory;
         this.userService = userService;
@@ -56,7 +55,18 @@ public class RobotDaoImpl implements RobotDao {
         logger.trace("deleteRobot() was called with parameters: id = {}.", robotId);
         Session session = sessionFactory.getCurrentSession();
 
-        RobotSerial robot = null;
+        RobotSerial robot = getRobotCheckingConsistency(robotId);
+        deleteRobotRecordFromUser(robot);
+
+        logger.trace("Deleting robot {}", robot.getName());
+        session.delete(robot);
+        logger.trace("Robot {] deleted", robot.getName());
+
+        logger.trace("deleteRobot() successfully deleted robot with id {}", robotId);
+    }
+
+    private RobotSerial getRobotCheckingConsistency(long robotId) throws AbortedException {
+        RobotSerial robot;
         try {
             robot = getRobot(robotId);
         } catch (NotFoundException e) {
@@ -64,9 +74,22 @@ public class RobotDaoImpl implements RobotDao {
             throw new AbortedException("Robot with specified Id doesn't exist.", "deleteRobot() was safely aborted",
                     RobotDaoImpl.class.getName());
         }
+        return robot;
+    }
 
-        final String owner = robot.getOwner();
+    private void deleteRobotRecordFromUser(RobotSerial robotSerial) throws AbortedException, ErrorConnectionException {
+        final String owner = robotSerial.getOwner();
         logger.trace("Deleting record from user {}", owner);
+        TUser tUser = loadOwner(owner);
+
+        TRobot tRobot = robotSerial.toTRobot();
+        tUser.getRobots().remove(tRobot);
+
+        updateOwner(tUser);
+        logger.trace("Record from user {} deleted", robotSerial.getOwner());
+    }
+
+    private TUser loadOwner(String owner) throws ErrorConnectionException, AbortedException {
         TUser tUser = null;
         try {
             tUser = userService.findByUserName(owner);
@@ -77,21 +100,15 @@ public class RobotDaoImpl implements RobotDao {
         } catch (TException e) {
             e.printStackTrace();
         }
-        TRobot tRobot = robot.toTRobot();
-        tUser.getRobots().remove(tRobot);
+        return  tUser;
+    }
+
+    private void updateOwner(TUser tUser) throws AbortedException, ErrorConnectionException {
         try {
             userService.update(tUser);
         } catch (TException e) {
             e.printStackTrace();
         }
-
-        logger.trace("Record from user {} deleted", robot.getOwner());
-
-        logger.trace("Deleting robot {}", robot.getName());
-        session.delete(robot);
-        logger.trace("Robot {] deleted", robot.getName());
-
-        logger.trace("deleteRobot() successfully deleted robot with id {}", robotId);
     }
 
     /**
@@ -138,21 +155,5 @@ public class RobotDaoImpl implements RobotDao {
         session.merge(robot);
 
         logger.trace("updateRobot() successfully updated a robot");
-    }
-
-    /** Used for the sake of testing.*/
-    void setUserService(UserService userService) {
-        this.userService = userService;
-    }
-
-    /** Used for the sake of testing.*/
-    UserService getUserService() {
-        return userService;
-    }
-
-
-    /** Used for the sake of testing.*/
-    void rewindUserService() {
-        this.userService = null;
     }
 }

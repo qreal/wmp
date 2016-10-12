@@ -15,15 +15,21 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Data
 public class RobotSerial {
     /** Surrogate key for RobotSerial.*/
+    @Id
+    @GeneratedValue(strategy = IDENTITY)
+    @Column(name = "id", unique = true, nullable = false)
     private Long id;
 
     /** Name of the robot (unique only in robot's group of owner).*/
+    @Column(name = "name", nullable = false, length = 45)
     private String name;
 
     /** SSID of robot's WiFi.*/
+    @Column(name = "ssid", nullable = false, length = 45)
     private String ssid;
 
     /** Owner of the robot.*/
+    @Column(name = "username", nullable = false)
     private String owner;
 
     public RobotSerial() {
@@ -46,46 +52,6 @@ public class RobotSerial {
         if (tRobot.isSetUsername()) {
             owner = tRobot.getUsername();
         }
-    }
-
-    @Id
-    @GeneratedValue(strategy = IDENTITY)
-    @Column(name = "id",
-            unique = true, nullable = false)
-    public Long getId() {
-        return this.id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    @Column(name = "username", nullable = false)
-    public String getOwner() {
-        return this.owner;
-    }
-
-    public void setOwner(String owner) {
-        this.owner = owner;
-    }
-
-    @Column(name = "name", nullable = false, length = 45)
-    public String getName() {
-        return this.name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @Column(name = "ssid",
-            nullable = false, length = 45)
-    public String getSsid() {
-        return ssid;
-    }
-
-    public void setSsid(String ssid) {
-        this.ssid = ssid;
     }
 
     /** Converter from RobotSerial to Thrift TRobot.*/

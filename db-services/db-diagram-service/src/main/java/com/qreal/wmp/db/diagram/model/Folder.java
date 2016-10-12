@@ -2,7 +2,6 @@ package com.qreal.wmp.db.diagram.model;
 
 import com.qreal.wmp.thrift.gen.TFolder;
 import lombok.Data;
-import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -104,53 +103,5 @@ public class Folder implements Serializable {
         }
 
         return tFolder;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getId() {
-        return this.id;
-    }
-
-    public void setFolderName(String name) {
-        this.folderName = name;
-    }
-
-    public String getFolderName() {
-        return this.folderName;
-    }
-
-    public void setFolderParentId(Long folderParentId) {
-        this.folderParentId = folderParentId;
-    }
-
-    public Long getFolderParentId() {
-        return this.folderParentId;
-    }
-
-    public void setChildrenFolders(Set<Folder> folderParentId) {
-        this.childrenFolders = folderParentId;
-    }
-
-    public @NotNull Set<Folder> getChildrenFolders() {
-        return this.childrenFolders;
-    }
-
-    public void setDiagrams(Set<Diagram> diagrams) {
-        this.diagrams = diagrams;
-    }
-
-    public @NotNull Set<Diagram> getDiagrams() {
-        return this.diagrams;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getUserName() {
-        return this.userName;
     }
 }

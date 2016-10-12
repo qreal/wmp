@@ -35,7 +35,6 @@ public class UserDaoImpl implements UserDao {
     /** DiagramService used to resolve foreign key dependencies.*/
     private DiagramService diagramService;
 
-    @Autowired
     public UserDaoImpl(SessionFactory sessionFactory, RobotService robotService, DiagramService diagramService) {
         this.sessionFactory = sessionFactory;
         this.robotService = robotService;
@@ -53,124 +52,14 @@ public class UserDaoImpl implements UserDao {
     public void saveUser(@NotNull TUser user) throws AbortedException, ErrorConnectionException {
         logger.trace("saveUser() was called with parameters: user = {}.", user.getUsername());
 
-        Session session = sessionFactory.getCurrentSession();
         UserSerial userSerial = saveOrUpdateRobots(user);
-        logger.trace("robots of user {} saved, theay are now in userSerial.", user.getUsername());
-
         userSerial = addUserRole(userSerial);
-        session.save(userSerial);
-        logger.trace("user {} saved.", user.getUsername());
+        createRootFolderForUser(userSerial);
 
-        try {
-            diagramService.createRootFolder(user.getUsername());
-        } catch (TException e) {
-            e.printStackTrace();
-        }
-        logger.trace("rootfolder {} created.", user.getUsername());
+        Session session = sessionFactory.getCurrentSession();
+        session.save(userSerial);
 
         logger.trace("saveUser() successfully saved user {}.", user.getUsername());
-    }
-
-    /**
-     * Finds the user, his roles and robots. The user and his roles will be loaded from local DB by Hibernate ORM.
-     * User's robots will be loaded from RobotsService using their ids persisted with user here.
-     * @param username name of user to find
-     */
-    @Override
-    public TUser findByUserName(String username) throws NotFoundException, ErrorConnectionException {
-        logger.trace("findByUserName() was called with parameters: username = {}.", username);
-        Session session = sessionFactory.getCurrentSession();
-        UserSerial userSerial = (UserSerial) session.get(UserSerial.class, username);
-        if (userSerial == null) {
-            throw new NotFoundException(username, "User with specified username not found.");
-        }
-        return loadRobots(userSerial);
-    }
-
-    /**
-     * Updates the user, his roles and robots. The user and his roles will be updated at local DB using Hibernate ORM.
-     * User's robots will be updated using RobotsService.
-     * Consistency kept using RPC calls to RobotsService.
-     */
-    @Override
-    public void updateUser(@NotNull TUser tUser) throws AbortedException, ErrorConnectionException {
-        logger.trace("updateUser() was called with parameters: username = {}.", tUser.getUsername());
-        Session session = sessionFactory.getCurrentSession();
-        if (!isExistsUser(tUser.getUsername())) {
-            logger.error("User with specified username doesn't exists.");
-            throw new AbortedException("User with specified username doesn't exists", "updateUser() safely aborted",
-                    UserDaoImpl.class.getName());
-        }
-        UserSerial userSerial = saveOrUpdateRobots(tUser);
-        session.merge(userSerial);
-        logger.trace("updateUser() successfully updated the user.");
-
-    }
-
-    /**
-     * Tests if a user exist at local DB using Hibernate ORM.
-     * @param username name of user to test if exists
-     */
-    @Override
-    public boolean isExistsUser(String username) {
-        logger.trace("isExistsUser() was called with parameters: username = {}.", username);
-        Session session = sessionFactory.getCurrentSession();
-        UserSerial userSerial = (UserSerial) session.get(UserSerial.class, username);
-        return userSerial != null;
-    }
-
-    /**
-     * Saves or updates robots using RobotsService.
-     * A robot will be updated if robot's Id is set. Otherwise a robot will be saved.
-     * Ids of all robots will be saved in UserSerial robots field.
-     */
-    private UserSerial saveOrUpdateRobots(@NotNull TUser tUser) throws AbortedException, ErrorConnectionException {
-        UserSerial userSerial = new UserSerial(tUser);
-        for (TRobot robot : tUser.getRobots()) {
-            logger.trace("Saving robot {} of user {}.", robot.getName(), tUser.getUsername());
-            long idRobot = 0;
-            if (!robot.isSetId()) {
-                try {
-                    idRobot = robotService.register(robot);
-                } catch (TException e) {
-                    e.printStackTrace();
-                }
-            } else {
-                try {
-                    robotService.update(robot);
-                } catch (TException e) {
-                    e.printStackTrace();
-                }
-                idRobot = robot.getId();
-            }
-            userSerial.getRobots().add(idRobot);
-            logger.trace("Robot {} of user {} saved with id {}.", robot.getName(), tUser.getUsername(), robot.getId());
-        }
-        return userSerial;
-    }
-
-    /**
-     * Loads robots using RobotsService.
-     * Robots are loaded from RobotsService using their ids saved in UserSerial.
-     */
-    private TUser loadRobots(@NotNull UserSerial userSerial) throws ErrorConnectionException {
-        TUser tUser = userSerial.toTUser();
-        for (Long id : userSerial.getRobots()) {
-            logger.trace("Loading a robot with id {} of user {}", id, tUser.getUsername());
-            try {
-                TRobot robot = null;
-                try {
-                    robot = robotService.findById(id);
-                } catch (TException e) {
-                    e.printStackTrace();
-                }
-                tUser.getRobots().add(robot);
-                logger.trace("Robot  {} of user {} loaded", robot.getName(), tUser.getUsername());
-            } catch (NotFoundException notFound) {
-                logger.error("Inconsistent state: User contains robot with id {}, but this robot doesn't exist.", id);
-            }
-        }
-        return tUser;
     }
 
     private UserSerial addUserRole(@NotNull UserSerial userSerial) {
@@ -181,5 +70,146 @@ public class UserDaoImpl implements UserDao {
             userSerial.setRoles(roles);
         }
         return userSerial;
+    }
+
+    private void createRootFolderForUser(UserSerial userSerial) throws AbortedException, ErrorConnectionException {
+        try {
+            diagramService.createRootFolder(userSerial.getUsername());
+        } catch (TException e) {
+            e.printStackTrace();
+        }
+        logger.trace("rootfolder {} created.", userSerial.getUsername());
+    }
+
+    /**
+     * Finds the user, his roles and robots. The user and his roles will be loaded from local DB by Hibernate ORM.
+     * User's robots will be loaded from RobotsService using their ids persisted with user here.
+     * @param username name of user to find
+     */
+    @Override
+    public TUser findByUserName(String username) throws NotFoundException, ErrorConnectionException {
+        logger.trace("findByUserName() was called with parameters: username = {}.", username);
+
+        Session session = sessionFactory.getCurrentSession();
+        UserSerial userSerial = (UserSerial) session.get(UserSerial.class, username);
+
+        if (userSerial == null) {
+            throw new NotFoundException(username, "User with specified username not found.");
+        }
+
+        return loadRobots(userSerial);
+    }
+
+    /**
+     * Loads robots using RobotsService.
+     * Robots are loaded from RobotsService using their ids saved in UserSerial.
+     */
+    private TUser loadRobots(@NotNull UserSerial userSerial) throws ErrorConnectionException {
+        TUser tUser = userSerial.toTUser();
+        for (Long robotId : userSerial.getRobots()) {
+            logger.trace("Loading a robot with id {} of user {}", robotId, tUser.getUsername());
+            try {
+                TRobot robot = getRobot(robotId);
+                tUser.getRobots().add(robot);
+                logger.trace("Robot  {} of user {} loaded", robot.getName(), tUser.getUsername());
+            } catch (NotFoundException notFound) {
+                logger.error("Inconsistent state: User contains robot with id {}, but this robot doesn't exist.",
+                        robotId);
+            }
+        }
+        return tUser;
+    }
+
+    private TRobot getRobot(long robotId) throws NotFoundException, ErrorConnectionException {
+        TRobot robot = null;
+        try {
+            robot = robotService.findById(robotId);
+        } catch (TException e) {
+            e.printStackTrace();
+        }
+        return robot;
+    }
+
+    /**
+     * Updates the user, his roles and robots. The user and his roles will be updated at local DB using Hibernate ORM.
+     * User's robots will be updated using RobotsService.
+     * Consistency kept using RPC calls to RobotsService.
+     */
+    @Override
+    public void updateUser(@NotNull TUser tUser) throws AbortedException, ErrorConnectionException {
+        logger.trace("updateUser() was called with parameters: username = {}.", tUser.getUsername());
+
+        if (!isExistsUser(tUser.getUsername())) {
+            logger.error("User with specified username doesn't exists.");
+            throw new AbortedException("User with specified username doesn't exists", "updateUser() safely aborted",
+                    UserDaoImpl.class.getName());
+        }
+
+        UserSerial userSerial = saveOrUpdateRobots(tUser);
+
+        Session session = sessionFactory.getCurrentSession();
+        session.merge(userSerial);
+
+        logger.trace("updateUser() successfully updated the user.");
+    }
+
+    /**
+     * Saves or updates robots using RobotsService.
+     * A robot will be updated if robot's Id is set. Otherwise a robot will be saved.
+     * Ids of all robots will be saved in UserSerial robots field.
+     */
+    private UserSerial saveOrUpdateRobots(@NotNull TUser tUser) throws AbortedException, ErrorConnectionException {
+        UserSerial userSerial = new UserSerial(tUser);
+
+        for (TRobot robot : tUser.getRobots()) {
+            logger.trace("Saving robot {} of user {}.", robot.getName(), tUser.getUsername());
+            long idRobot;
+            if (!robot.isSetId()) {
+                idRobot = saveRobot(robot);
+            } else {
+                idRobot = updateRobot(robot);
+            }
+
+            userSerial.getRobots().add(idRobot);
+            logger.trace("Robot {} of user {} saved with id {}.", robot.getName(), tUser.getUsername(), robot.getId());
+        }
+        logger.trace("robots of user {} saved, they are now in userSerial.", userSerial.getUsername());
+
+        return userSerial;
+    }
+
+    private long saveRobot(TRobot tRobot) throws AbortedException, ErrorConnectionException {
+        long idRobot = -1;
+        try {
+            idRobot = robotService.register(tRobot);
+        } catch (TException e) {
+            //This must never happen
+            e.printStackTrace();
+        }
+        return idRobot;
+    }
+
+    private long updateRobot(TRobot tRobot) throws AbortedException, ErrorConnectionException {
+        try {
+            robotService.update(tRobot);
+        } catch (TException e) {
+            //This must never happen
+            e.printStackTrace();
+        }
+        return tRobot.getId();
+    }
+
+    /**
+     * Tests if a user exist at local DB using Hibernate ORM.
+     * @param username name of user to test if exists
+     */
+    @Override
+    public boolean isExistsUser(String username) {
+        logger.trace("isExistsUser() was called with parameters: username = {}.", username);
+
+        Session session = sessionFactory.getCurrentSession();
+        UserSerial userSerial = (UserSerial) session.get(UserSerial.class, username);
+
+        return userSerial != null;
     }
 }

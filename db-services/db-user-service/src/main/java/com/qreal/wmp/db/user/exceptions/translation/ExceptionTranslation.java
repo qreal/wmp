@@ -16,6 +16,7 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
+/** Provides translation from Thrift exception to exceptions specific for application.*/
 @Aspect
 @Component
 @EnableAspectJAutoProxy(proxyTargetClass = true)
@@ -26,7 +27,11 @@ public class ExceptionTranslation {
 
     private static final Logger loggerRobot = LoggerFactory.getLogger(RobotServiceImpl.class);
 
-
+    /**
+     * Advice will be weaved to DiagramService class and will provide translation from
+     * Thrift exceptions to application specific. Weaving performed by Spring at application
+     * initialization step.
+     */
     @Around("execution(* com.qreal.wmp.db.user.client.diagrams.*.*(..))")
     public Object catchExceptionDiagram(ProceedingJoinPoint joinPoint) throws Throwable {
         try {
@@ -41,12 +46,17 @@ public class ExceptionTranslation {
             throw new NotFoundException(e.getId(), e.getMessage());
         } catch (TTransportException e) {
             loggerDiagram.error("Client DiagramService encountered a problem while opening transport.", e);
-            throw new ErrorConnectionException(DiagramServiceImpl.class.getName(), "Client DiagramService encountered " +
-                    "a problem  while opening transport.");
+            throw new ErrorConnectionException(DiagramServiceImpl.class.getName(), "Client DiagramService " +
+                    "encountered a problem  while opening transport.");
         }
         return null;
     }
 
+    /**
+     * Advice will be weaved to RobotService class and will provide translation from
+     * Thrift exceptions to application specific. Weaving performed by Spring at application
+     * initialization step.
+     */
     @Around("execution(* com.qreal.wmp.db.user.client.robots.*.*(..))")
     public Object catchExceptionRobots(ProceedingJoinPoint joinPoint) throws Throwable {
         try {

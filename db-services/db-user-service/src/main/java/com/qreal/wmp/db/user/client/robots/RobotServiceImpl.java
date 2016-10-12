@@ -55,7 +55,7 @@ public class RobotServiceImpl implements RobotService {
         } finally {
             transport.close();
         }
-        logger.trace("register() succesfully registered robot {}", robot.getName());
+        logger.trace("register() successfully registered robot {}", robot.getName());
         return idRobot;
     }
 

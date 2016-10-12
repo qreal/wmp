@@ -12,5 +12,4 @@ public interface DiagramService {
      * @param userName name of user root folder created for
      */
     void createRootFolder(String userName) throws AbortedException, ErrorConnectionException, TException;
-
 }

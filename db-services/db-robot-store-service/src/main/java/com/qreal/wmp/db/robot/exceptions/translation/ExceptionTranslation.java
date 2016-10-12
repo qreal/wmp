@@ -18,6 +18,7 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
+/** Provides translation from Thrift exception to exceptions specific for application.*/
 @Aspect
 @Component
 @EnableAspectJAutoProxy(proxyTargetClass = true)
@@ -26,6 +27,11 @@ public class ExceptionTranslation {
 
     private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
+    /**
+     * Advice will be weaved to UserService class and will provide translation from
+     * Thrift exceptions to application specific. Weaving performed by Spring at application
+     * initialization step.
+     */
     @Around("execution(* com.qreal.wmp.db.robot.client.users.*.*(..))")
     public Object catchException(ProceedingJoinPoint joinPoint) throws Throwable {
         try {

@@ -9,27 +9,17 @@ import org.hibernate.SessionFactory;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
 
-/**
- * Implementation of Diagram DAO.
- * Visibility level: package.
- */
-@Repository
-@Component("diagramDao")
 @Transactional
-class DiagramDaoImpl implements DiagramDao {
+public class DiagramDaoImpl implements DiagramDao {
     private static final Logger logger = LoggerFactory.getLogger(DiagramDaoImpl.class);
 
     private final SessionFactory sessionFactory;
 
-    @Autowired
     public DiagramDaoImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }

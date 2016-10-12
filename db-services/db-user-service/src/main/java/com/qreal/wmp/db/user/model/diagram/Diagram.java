@@ -68,36 +68,4 @@ public class Diagram implements Serializable {
 
         return tDiagram;
     }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setNodes(Set<DefaultDiagramNode> nodes) {
-        this.nodes = nodes;
-    }
-
-    public @NotNull Set<DefaultDiagramNode> getNodes() {
-        return nodes;
-    }
-
-    public void setLinks(Set<Link> links) {
-        this.links = links;
-    }
-
-    public @NotNull Set<Link> getLinks() {
-        return links;
-    }
 }
