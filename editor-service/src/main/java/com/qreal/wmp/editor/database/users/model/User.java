@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.qreal.wmp.editor.database.robots.model.Robot;
 import com.qreal.wmp.thrift.gen.TUser;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 import java.util.HashSet;
 import java.util.Set;

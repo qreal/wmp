@@ -47,8 +47,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             throw new UsernameNotFoundException("Fatal Error: Can't connect to UserService");
 
         } catch (TException e) {
-            //Should never happen
-            e.printStackTrace();
+            logger.error("TException was not translated", e);
             throw new UsernameNotFoundException("Unknown TException.");
         }
 

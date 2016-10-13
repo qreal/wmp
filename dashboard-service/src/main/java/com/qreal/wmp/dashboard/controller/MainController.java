@@ -43,8 +43,7 @@ public class MainController {
         } catch (ErrorConnectionException errorConnection) {
             logger.error("Connection error: user service not online.");
         } catch (TException e) {
-            //Should never happen
-            e.printStackTrace();
+            logger.error("TException was not translated", e);
         }
 
         ModelAndView model = new ModelAndView();

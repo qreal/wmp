@@ -98,7 +98,7 @@ public class RobotDaoImpl implements RobotDao {
             throw new AbortedException("Inconsistent state: Robot contains user with id {}, but this user doesn't " +
                     "exist.", "deleteRobot() safely aborted", RobotDaoImpl.class.getName());
         } catch (TException e) {
-            e.printStackTrace();
+            logger.error("TException was not translated", e);
         }
         return  tUser;
     }
@@ -107,7 +107,7 @@ public class RobotDaoImpl implements RobotDao {
         try {
             userService.update(tUser);
         } catch (TException e) {
-            e.printStackTrace();
+            logger.error("TException was not translated", e);
         }
     }
 

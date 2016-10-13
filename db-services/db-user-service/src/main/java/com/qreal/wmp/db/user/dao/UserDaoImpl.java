@@ -15,7 +15,6 @@ import org.hibernate.SessionFactory;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
@@ -76,7 +75,7 @@ public class UserDaoImpl implements UserDao {
         try {
             diagramService.createRootFolder(userSerial.getUsername());
         } catch (TException e) {
-            e.printStackTrace();
+            logger.error("TException was not translated", e);
         }
         logger.trace("rootfolder {} created.", userSerial.getUsername());
     }
@@ -125,7 +124,7 @@ public class UserDaoImpl implements UserDao {
         try {
             robot = robotService.findById(robotId);
         } catch (TException e) {
-            e.printStackTrace();
+            logger.error("TException was not translated", e);
         }
         return robot;
     }
@@ -183,8 +182,7 @@ public class UserDaoImpl implements UserDao {
         try {
             idRobot = robotService.register(tRobot);
         } catch (TException e) {
-            //This must never happen
-            e.printStackTrace();
+            logger.error("TException was not translated", e);
         }
         return idRobot;
     }
@@ -193,8 +191,7 @@ public class UserDaoImpl implements UserDao {
         try {
             robotService.update(tRobot);
         } catch (TException e) {
-            //This must never happen
-            e.printStackTrace();
+            logger.error("TException was not translated", e);
         }
         return tRobot.getId();
     }

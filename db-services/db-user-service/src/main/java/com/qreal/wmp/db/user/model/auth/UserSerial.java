@@ -2,7 +2,6 @@ package com.qreal.wmp.db.user.model.auth;
 
 import com.qreal.wmp.thrift.gen.TUser;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 import java.util.HashSet;

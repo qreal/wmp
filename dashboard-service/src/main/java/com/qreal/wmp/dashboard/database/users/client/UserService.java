@@ -5,7 +5,6 @@ import com.qreal.wmp.dashboard.database.exceptions.ErrorConnectionException;
 import com.qreal.wmp.dashboard.database.exceptions.NotFoundException;
 import com.qreal.wmp.dashboard.database.users.model.User;
 import org.apache.thrift.TException;
-import org.apache.thrift.transport.TTransportException;
 import org.jetbrains.annotations.NotNull;
 
 /** UserDBService interface.*/

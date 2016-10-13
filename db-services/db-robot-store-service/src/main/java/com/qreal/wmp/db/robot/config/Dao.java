@@ -20,7 +20,7 @@ public class Dao {
     public static class ProdConfig {
         @Bean(name = "robotDao")
         @Autowired
-        RobotDao createDao(SessionFactory sessionFactory, @Qualifier("userService") UserService userService) {
+        public RobotDao createDao(SessionFactory sessionFactory, @Qualifier("userService") UserService userService) {
             return new RobotDaoImpl(sessionFactory, userService);
         }
     }
@@ -29,13 +29,14 @@ public class Dao {
     @Profile("testDao")
     public static class TestDaoConfig {
         @Bean(name = "mockedUserService")
-        UserService createUserService() {
+        public UserService createUserService() {
             return mock(UserService.class);
         }
 
         @Bean(name = "robotDao")
         @Autowired
-        RobotDao createDao(SessionFactory sessionFactory, @Qualifier("mockedUserService") UserService userService) {
+        public RobotDao createDao(SessionFactory sessionFactory, @Qualifier("mockedUserService") UserService
+                userService) {
             return new RobotDaoImpl(sessionFactory, userService);
         }
     }
@@ -44,7 +45,7 @@ public class Dao {
     @Profile("testHandler")
     public static class TestHandlerConfig {
         @Bean(name = "robotDao")
-        RobotDao createDao() {
+        public RobotDao createDao() {
             return mock(RobotDao.class);
         }
     }

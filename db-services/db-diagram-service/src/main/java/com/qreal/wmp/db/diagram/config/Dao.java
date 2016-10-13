@@ -19,7 +19,7 @@ public class Dao {
     public static class ProdConfig {
         @Bean(name = "diagramDao")
         @Autowired
-        DiagramDao createDao(SessionFactory sessionFactory) {
+        public DiagramDao createDao(SessionFactory sessionFactory) {
             return new DiagramDaoImpl(sessionFactory);
         }
     }
@@ -28,7 +28,7 @@ public class Dao {
     @Profile("testHandler")
     public static class TestHandlerConfig {
         @Bean(name = "diagramDao")
-        DiagramDao createDao() {
+        public DiagramDao createDao() {
             return mock(DiagramDao.class);
         }
     }

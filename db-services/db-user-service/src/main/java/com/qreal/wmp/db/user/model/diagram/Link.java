@@ -2,7 +2,6 @@ package com.qreal.wmp.db.user.model.diagram;
 
 import com.qreal.wmp.thrift.gen.TLink;
 import lombok.Data;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 import java.util.HashSet;

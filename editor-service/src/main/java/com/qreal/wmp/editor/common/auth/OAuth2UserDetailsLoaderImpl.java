@@ -53,8 +53,7 @@ public class OAuth2UserDetailsLoaderImpl implements OAuth2UserDetailsLoader<User
             //TODO what to do in that case?
             logger.error("Fatal error: must find user but can't because of connection error with user service", id);
         } catch (TException e) {
-            //should never happen
-            e.printStackTrace();
+            logger.error("TException was not translated", e);
         }
         return userDetails;
     }
@@ -85,7 +84,7 @@ public class OAuth2UserDetailsLoaderImpl implements OAuth2UserDetailsLoader<User
             //TODO what to do in that case?
             logger.error("Fatal error: must create user but can't because of connection error with user service.");
         } catch (TException e) {
-            e.printStackTrace();
+            logger.error("TException was not translated", e);
         }
 
         UserDetails userDetails = convert(user);

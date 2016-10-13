@@ -73,8 +73,7 @@ public class EditorServletHandler implements EditorServiceThrift.Iface {
             //TODO Here we should not return 0, but send exception to client side.
             logger.error("rewriteDiagram method encountered exception ErrorConnection. Diagram was not rewrote.", e);
         } catch (TException e) {
-            //should never happen
-            e.printStackTrace();
+            logger.error("TException was not translated", e);
         }
     }
 
@@ -91,8 +90,7 @@ public class EditorServletHandler implements EditorServiceThrift.Iface {
             //TODO Here we should  send exception to client side.
             logger.error("deleteDiagram method encountered exception ErrorConnection. Diagram was not deleted.", e);
         } catch (TException e) {
-            //should never happen
-            e.printStackTrace();
+            logger.error("TException was not translated", e);
         }
     }
 
@@ -113,8 +111,7 @@ public class EditorServletHandler implements EditorServiceThrift.Iface {
             logger.error("openDiagram method encountered exception ErrorConnection. Instead of diagram will be " +
                     "returned null.", e);
         } catch (TException e) {
-            //should never happen
-            e.printStackTrace();
+            logger.error("TException was not translated", e);
         }
         return result;
     }
@@ -141,8 +138,7 @@ public class EditorServletHandler implements EditorServiceThrift.Iface {
             logger.error("createFolder method encountered exception ErrorConnection. Instead of folderId will be " +
                             "returned 0.", e);
         } catch (TException e) {
-            //should never happen
-            e.printStackTrace();
+            logger.error("TException was not translated", e);
         }
         return id;
     }
@@ -160,8 +156,7 @@ public class EditorServletHandler implements EditorServiceThrift.Iface {
             //TODO Here we should  send exception to client side.
             logger.error("deleteFolder method encountered exception ErrorConnection. Folder was not deleted.", e);
         } catch (TException e) {
-            //should never happen
-            e.printStackTrace();
+            logger.error("TException was not translated", e);
         }
     }
 
@@ -182,8 +177,7 @@ public class EditorServletHandler implements EditorServiceThrift.Iface {
             logger.error("getFolderTree method encountered exception ErrorConnection. Instead of folder tree will be " +
                     "returned null.", e);
         } catch (TException e) {
-            //should never happen
-            e.printStackTrace();
+            logger.error("TException was not translated", e);
         }
         return result;
     }
