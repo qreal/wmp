@@ -13,6 +13,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,10 +22,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
+@ActiveProfiles("testHandler")
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {AppInit.class})
 @Transactional
 public class DbServiceHandlerDiagramTest {
+    @Autowired
+    private DiagramDao diagramDaoMocked;
+
     private DiagramDbServiceHandler handler;
 
     @Autowired
@@ -35,12 +40,11 @@ public class DbServiceHandlerDiagramTest {
         if (handler == null) {
             handler = new DiagramDbServiceHandler(context);
         }
-        handler.setDiagramDao(mock(DiagramDao.class));
     }
 
     @After
     public void deleteMocking() {
-        handler.rewindDiagramDao();
+        reset(diagramDaoMocked);
     }
 
     /** Test saveDiagram operation for diagram. */
@@ -52,7 +56,7 @@ public class DbServiceHandlerDiagramTest {
 
         handler.saveDiagram(testDiagram);
 
-        verify(handler.getDiagramDao()).saveDiagram(new Diagram(testDiagram), testDiagram.getFolderId());
+        verify(diagramDaoMocked).saveDiagram(new Diagram(testDiagram), testDiagram.getFolderId());
     }
 
     /** Test saveDiagram operation for diagram. */
@@ -75,7 +79,7 @@ public class DbServiceHandlerDiagramTest {
         TDiagram tDiagram = createDiagram("testDiagram", idFolder, idDiagram);
         Diagram diagram = new Diagram(tDiagram);
 
-        when(handler.getDiagramDao().getDiagram(idDiagram)).thenReturn(diagram);
+        when(diagramDaoMocked.getDiagram(idDiagram)).thenReturn(diagram);
 
         TDiagram gotDiagram = handler.openDiagram(idDiagram);
         gotDiagram.setFolderId(idFolder);
@@ -89,7 +93,7 @@ public class DbServiceHandlerDiagramTest {
     public void openDiagram_diagramNotExists_throwsTNotFound() throws Exception {
         long idDiagramNotCorrect = 0L;
 
-        when(handler.getDiagramDao().getDiagram(idDiagramNotCorrect)).
+        when(diagramDaoMocked.getDiagram(idDiagramNotCorrect)).
                 thenThrow(new NotFoundException("0", "Exception"));
 
         assertThatThrownBy(() -> handler.openDiagram(idDiagramNotCorrect)).isInstanceOf(TNotFound.class);
@@ -103,7 +107,7 @@ public class DbServiceHandlerDiagramTest {
 
         handler.deleteDiagram(idDiagram);
 
-        verify(handler.getDiagramDao()).deleteDiagram(idDiagram);
+        verify(diagramDaoMocked).deleteDiagram(idDiagram);
     }
 
     /** Test deleteDiagram operation for diagram. */
@@ -113,7 +117,7 @@ public class DbServiceHandlerDiagramTest {
         long idDiagram = 0L;
 
         doThrow(new AbortedException("0", "Exception", "Exception")).
-                when(handler.getDiagramDao()).deleteDiagram(idDiagram);
+                when(diagramDaoMocked).deleteDiagram(idDiagram);
 
         assertThatThrownBy(() -> handler.deleteDiagram(idDiagram)).isInstanceOf(TAborted.class);
     }
@@ -129,7 +133,7 @@ public class DbServiceHandlerDiagramTest {
 
         handler.rewriteDiagram(tDiagram);
 
-        verify(handler.getDiagramDao()).rewriteDiagram(diagram);
+        verify(diagramDaoMocked).rewriteDiagram(diagram);
     }
 
     /** Test rewriteDiagram operation for diagram. */
@@ -152,7 +156,7 @@ public class DbServiceHandlerDiagramTest {
         Diagram diagram = new Diagram(tDiagram);
 
         doThrow(new AbortedException("0", "Exception", "Exception")).
-                when(handler.getDiagramDao()).rewriteDiagram(diagram);
+                when(diagramDaoMocked).rewriteDiagram(diagram);
 
         assertThatThrownBy(() -> handler.rewriteDiagram(tDiagram)).isInstanceOf(TAborted.class);
     }

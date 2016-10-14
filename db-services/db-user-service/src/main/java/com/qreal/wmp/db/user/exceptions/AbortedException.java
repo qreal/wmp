@@ -1,12 +1,12 @@
 package com.qreal.wmp.db.user.exceptions;
 
-/** Aborted exception inform about inconsistency of DB or any other situation lead to abort of operation.*/
+/** Aborted exception informs about DB inconsistencies or any other situation leading to operation abort.*/
 public class AbortedException extends Exception {
 
     /** Cause of operation abort. */
     private final String textCause;
 
-    /** Name of class where operation met exceptional situation.*/
+    /** Name of class where operation met exceptional situation. */
     private final String fullClassName;
 
     public AbortedException(String textCause, String message, String fullClassName) {

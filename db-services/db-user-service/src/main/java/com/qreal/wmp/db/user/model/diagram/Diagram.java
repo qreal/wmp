@@ -2,7 +2,6 @@ package com.qreal.wmp.db.user.model.diagram;
 
 import com.qreal.wmp.thrift.gen.TDiagram;
 import lombok.Data;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -12,7 +11,6 @@ import java.util.stream.Collectors;
 /** Diagram (now only graphs).*/
 @Data
 public class Diagram implements Serializable {
-
     private Long id;
 
     private String name;
@@ -68,39 +66,5 @@ public class Diagram implements Serializable {
         }
 
         return tDiagram;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setNodes(Set<DefaultDiagramNode> nodes) {
-        this.nodes = nodes;
-    }
-
-    @NotNull
-    public Set<DefaultDiagramNode> getNodes() {
-        return nodes;
-    }
-
-    public void setLinks(Set<Link> links) {
-        this.links = links;
-    }
-
-    @NotNull
-    public Set<Link> getLinks() {
-        return links;
     }
 }

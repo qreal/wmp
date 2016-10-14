@@ -2,17 +2,15 @@ package com.qreal.wmp.db.user.model.diagram;
 
 import com.qreal.wmp.thrift.gen.TFolder;
 import lombok.Data;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/** Folder with diagrams and other folders.*/
+/** Folder with diagrams and other folders. */
 @Data
 public class Folder implements Serializable {
-
     private Long id;
 
     private String folderName;
@@ -59,7 +57,6 @@ public class Folder implements Serializable {
         if (tFolder.isSetDiagrams()) {
             diagrams = tFolder.getDiagrams().stream().map(Diagram::new).collect(Collectors.toList());
         }
-
     }
 
     /** Converter from Folder to Thrift TFolder.*/
@@ -91,55 +88,5 @@ public class Folder implements Serializable {
         }
 
         return tFolder;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getId() {
-        return this.id;
-    }
-
-    public void setFolderName(String name) {
-        this.folderName = name;
-    }
-
-    public String getFolderName() {
-        return this.folderName;
-    }
-
-    public void setFolderParentId(Long folderParentId) {
-        this.folderParentId = folderParentId;
-    }
-
-    public Long getFolderParentId() {
-        return this.folderParentId;
-    }
-
-    public void setChildrenFolders(List<Folder> folderParentId) {
-        this.childrenFolders = folderParentId;
-    }
-
-    @NotNull
-    public List<Folder> getChildrenFolders() {
-        return this.childrenFolders;
-    }
-
-    public void setDiagrams(List<Diagram> diagrams) {
-        this.diagrams = diagrams;
-    }
-
-    @NotNull
-    public List<Diagram> getDiagrams() {
-        return this.diagrams;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getUserName() {
-        return this.userName;
     }
 }

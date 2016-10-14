@@ -7,35 +7,33 @@ import com.qreal.wmp.thrift.gen.TUser;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-/** DAO user for UserDB. It operates only with DB and expects correct input. All scheme consistency keeping operations
- * will be performed automatically.*/
+/**
+ * DAO user for UserDB. It operates only with DB and expects correct input. All scheme consistency keeping operations
+ * will be performed automatically.
+ */
 public interface UserDao {
     /**
-     * Saves user.
-     *
-     * @param user user to saveUser (Id must not be set)
+     * Saves a user.
+     * @param user user to save (Id must not be set).
      */
     void saveUser(@NotNull TUser user) throws AbortedException, ErrorConnectionException;
 
     /**
-     * Finds user by UserName.
-     *
-     * @param username name of user to find
+     * Finds a user by UserName.
+     * @param username name of a user to find.
      */
     @Nullable
     TUser findByUserName(String username) throws NotFoundException, ErrorConnectionException;
 
     /**
      * Updates user state.
-     *
-     * @param user user to updateUser (Id must be set)
+     * @param user user to update (Id must be set)
      */
     void updateUser(@NotNull TUser user) throws AbortedException, ErrorConnectionException;
 
     /**
-     * Test if user with specified name exists.
-     *
-     * @param username name of user to test if exists
+     * Tests if a user with specified name exists.
+     * @param username name of a user to find.
      * @return [description]
      */
     boolean isExistsUser(String username);

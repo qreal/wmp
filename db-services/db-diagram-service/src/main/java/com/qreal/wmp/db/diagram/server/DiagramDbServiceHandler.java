@@ -24,7 +24,7 @@ public class DiagramDbServiceHandler implements DiagramDbService.Iface {
         if (diagram.isSetId()) {
             throw new TIdAlreadyDefined("Diagram Id not null. To save a diagram you should not assign Id to it.");
         }
-        long id = 0;
+        long id;
         try {
             id = diagramDao.saveDiagram(new Diagram(diagram), diagram.getFolderId());
         } catch (AbortedException e) {
@@ -35,7 +35,7 @@ public class DiagramDbServiceHandler implements DiagramDbService.Iface {
 
     @Override
     public TDiagram openDiagram(long diagramId) throws TNotFound {
-        Diagram diagram = null;
+        Diagram diagram;
         try {
             diagram = diagramDao.getDiagram(diagramId);
         }
@@ -68,7 +68,7 @@ public class DiagramDbServiceHandler implements DiagramDbService.Iface {
 
     @Override
     public long createFolder(TFolder folder) throws TAborted, TIdAlreadyDefined {
-        long id = 0;
+        long id;
         if (folder.isSetId()) {
             throw new TIdAlreadyDefined("Folder Id not null. To save a folder you should not assign Id to it.");
         }
@@ -92,27 +92,12 @@ public class DiagramDbServiceHandler implements DiagramDbService.Iface {
 
     @Override
     public TFolder getFolderTree(String username) throws TNotFound {
-        Folder folder = null;
+        Folder folder;
         try {
             folder = diagramDao.getFolderTree(username);
         } catch (NotFoundException e) {
             throw new TNotFound(username, "FolderTree for specified user not found.");
         }
         return folder.toTFolder();
-    }
-
-    /** Only for sake of testing. */
-    DiagramDao getDiagramDao() {
-        return diagramDao;
-    }
-
-    /** Only for sake of testing. */
-    void setDiagramDao(DiagramDao diagramDao) {
-        this.diagramDao = diagramDao;
-    }
-
-    /** Only for sake of testing. */
-    void rewindDiagramDao() {
-        this.diagramDao = null;
     }
 }

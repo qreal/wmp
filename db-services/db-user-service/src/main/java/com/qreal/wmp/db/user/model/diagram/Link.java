@@ -2,17 +2,15 @@ package com.qreal.wmp.db.user.model.diagram;
 
 import com.qreal.wmp.thrift.gen.TLink;
 import lombok.Data;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-/** Link between nodes.*/
+/** Link between nodes. */
 @Data
 public class Link implements Serializable {
-
     private String id;
 
     private String logicalId;
@@ -37,39 +35,6 @@ public class Link implements Serializable {
         if (tLink.isSetProperties()) {
             properties = tLink.getProperties().stream().map(Property::new).collect(Collectors.toSet());
         }
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getLogicalId() {
-        return logicalId;
-    }
-
-    public void setLogicalId(String logicalId) {
-        this.logicalId = logicalId;
-    }
-
-    public String getGraphicalId() {
-        return graphicalId;
-    }
-
-    public void setGraphicalId(String graphicalId) {
-        this.graphicalId = graphicalId;
-    }
-
-    @NotNull
-    public Set<Property> getProperties() {
-        return properties;
-    }
-
-    public void setProperties(Set<Property> properties) {
-        this.properties = properties;
     }
 
     /** Converter from Link to Thrift TLink.*/

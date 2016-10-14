@@ -9,6 +9,7 @@ import com.qreal.wmp.editor.database.exceptions.NotFoundException;
 import com.qreal.wmp.thrift.gen.EditorServiceThrift;
 import com.qreal.wmp.thrift.gen.TDiagram;
 import com.qreal.wmp.thrift.gen.TFolder;
+import org.apache.thrift.TException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
@@ -71,6 +72,8 @@ public class EditorServletHandler implements EditorServiceThrift.Iface {
         } catch (ErrorConnectionException e) {
             //TODO Here we should not return 0, but send exception to client side.
             logger.error("rewriteDiagram method encountered exception ErrorConnection. Diagram was not rewrote.", e);
+        } catch (TException e) {
+            logger.error("TException was not translated", e);
         }
     }
 
@@ -86,6 +89,8 @@ public class EditorServletHandler implements EditorServiceThrift.Iface {
         } catch (ErrorConnectionException e) {
             //TODO Here we should  send exception to client side.
             logger.error("deleteDiagram method encountered exception ErrorConnection. Diagram was not deleted.", e);
+        } catch (TException e) {
+            logger.error("TException was not translated", e);
         }
     }
 
@@ -105,6 +110,8 @@ public class EditorServletHandler implements EditorServiceThrift.Iface {
             //TODO Here we should not return null, but send exception to client side.
             logger.error("openDiagram method encountered exception ErrorConnection. Instead of diagram will be " +
                     "returned null.", e);
+        } catch (TException e) {
+            logger.error("TException was not translated", e);
         }
         return result;
     }
@@ -130,6 +137,8 @@ public class EditorServletHandler implements EditorServiceThrift.Iface {
             //TODO Here we should not return 0, but send exception to client side.
             logger.error("createFolder method encountered exception ErrorConnection. Instead of folderId will be " +
                             "returned 0.", e);
+        } catch (TException e) {
+            logger.error("TException was not translated", e);
         }
         return id;
     }
@@ -146,6 +155,8 @@ public class EditorServletHandler implements EditorServiceThrift.Iface {
         } catch (ErrorConnectionException e) {
             //TODO Here we should  send exception to client side.
             logger.error("deleteFolder method encountered exception ErrorConnection. Folder was not deleted.", e);
+        } catch (TException e) {
+            logger.error("TException was not translated", e);
         }
     }
 
@@ -165,6 +176,8 @@ public class EditorServletHandler implements EditorServiceThrift.Iface {
             //TODO Here we should not return null, but send exception to client side.
             logger.error("getFolderTree method encountered exception ErrorConnection. Instead of folder tree will be " +
                     "returned null.", e);
+        } catch (TException e) {
+            logger.error("TException was not translated", e);
         }
         return result;
     }

@@ -2,19 +2,25 @@ package com.qreal.wmp.editor.database.robots.model;
 
 import com.qreal.wmp.editor.database.users.model.User;
 import com.qreal.wmp.thrift.gen.TRobot;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
-/** TRIK robot in dashboard service.*/
+/** Representation of a TRIK robot in dashboard service.*/
+@Data
+@EqualsAndHashCode(exclude = "owner")
+@ToString(exclude = "owner")
 public class Robot {
-    /** Surrogate key for Robot.*/
+    /** Surrogate key for the robot.*/
     private Long id;
 
-    /** Name of robot (unique only in robot's group of owner).*/
+    /** Name of the robot (unique only in robot's group of owner).*/
     private String name;
 
     /** SSID of robot's WiFi.*/
     private String ssid;
 
-    /** Owner of robot.*/
+    /** Owner of the robot.*/
     private User owner;
 
     public Robot() {
@@ -26,18 +32,15 @@ public class Robot {
     }
 
     public Robot(String name, String ssid, User owner) {
+        this(name, ssid);
         this.owner = owner;
-        this.name = name;
-        this.ssid = ssid;
         owner.getRobots().add(this);
     }
 
     /** Full Robot constructor.*/
     public Robot(long id, String name, String ssid, User owner) {
+        this(name, ssid, owner);
         this.id = id;
-        this.owner = owner;
-        this.name = name;
-        this.ssid = ssid;
         owner.getRobots().add(this);
     }
 
@@ -58,56 +61,6 @@ public class Robot {
         this.owner = owner;
 
         owner.getRobots().add(this);
-    }
-
-    public Long getId() {
-        return this.id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public User getOwner() {
-        return this.owner;
-    }
-
-    public void setOwner(User owner) {
-        this.owner = owner;
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSsid() {
-        return ssid;
-    }
-
-    public void setSsid(String ssid) {
-        this.ssid = ssid;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        if (this == object) {
-            return true;
-        }
-        if (!(object instanceof Robot)) {
-            return false;
-        }
-
-        Robot robot = (Robot) object;
-        return name.equals(robot.name);
-    }
-
-    @Override
-    public int hashCode() {
-        return name.hashCode();
     }
 
     /** Converter from Robot to Thrift TRobot.*/
@@ -132,5 +85,4 @@ public class Robot {
 
         return tRobot;
     }
-
 }

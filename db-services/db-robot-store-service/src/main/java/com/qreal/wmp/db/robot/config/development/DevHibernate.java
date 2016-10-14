@@ -34,5 +34,4 @@ public class DevHibernate {
         properties.put("hibernate.hbm2ddl.import_files", "data.sql");
         return properties;
     }
-
 }

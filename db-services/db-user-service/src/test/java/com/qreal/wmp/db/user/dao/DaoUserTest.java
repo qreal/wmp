@@ -1,9 +1,8 @@
-package com.qreal.wmp.db.user.test.dao;
+package com.qreal.wmp.db.user.dao;
 
 import com.qreal.wmp.db.user.client.diagrams.DiagramService;
 import com.qreal.wmp.db.user.client.robots.RobotService;
 import com.qreal.wmp.db.user.config.AppInit;
-import com.qreal.wmp.db.user.dao.UserDao;
 import com.qreal.wmp.db.user.exceptions.AbortedException;
 import com.qreal.wmp.db.user.exceptions.ErrorConnectionException;
 import com.qreal.wmp.db.user.exceptions.NotFoundException;

@@ -5,6 +5,7 @@ import com.qreal.wmp.dashboard.database.exceptions.ErrorConnectionException;
 import com.qreal.wmp.dashboard.database.exceptions.NotFoundException;
 import com.qreal.wmp.dashboard.database.users.client.UserService;
 import com.qreal.wmp.dashboard.database.users.model.User;
+import org.apache.thrift.TException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,11 +42,15 @@ public class MainController {
             logger.error("Authentication error: authenticated user not in database.");
         } catch (ErrorConnectionException errorConnection) {
             logger.error("Connection error: user service not online.");
+        } catch (TException e) {
+            logger.error("TException was not translated", e);
         }
 
         ModelAndView model = new ModelAndView();
-        model.addObject("user", user);
-        model.addObject("robots", user.getRobots());
+        if (user != null) {
+            model.addObject("user", user);
+            model.addObject("robots", user.getRobots());
+        }
         model.setViewName("dashboard/index");
 
         logger.info("For user {} main page was created", AuthenticatedUser.getUserName());

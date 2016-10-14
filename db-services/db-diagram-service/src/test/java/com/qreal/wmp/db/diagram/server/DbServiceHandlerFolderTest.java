@@ -16,6 +16,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,10 +25,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
+@ActiveProfiles("testHandler")
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {AppInit.class})
 @Transactional
 public class DbServiceHandlerFolderTest {
+    @Autowired
+    private DiagramDao diagramDaoMocked;
+
     private DiagramDbServiceHandler handler;
 
     @Autowired
@@ -38,12 +43,11 @@ public class DbServiceHandlerFolderTest {
         if (handler == null) {
             handler = new DiagramDbServiceHandler(context);
         }
-        handler.setDiagramDao(mock(DiagramDao.class));
     }
 
     @After
     public void deleteMocking() {
-        handler.rewindDiagramDao();
+        reset(diagramDaoMocked);
     }
 
     /** Test createFolder operation for diagram. */
@@ -55,7 +59,7 @@ public class DbServiceHandlerFolderTest {
 
         handler.createFolder(tFolder);
 
-        verify(handler.getDiagramDao()).saveFolder(folder);
+        verify(diagramDaoMocked).saveFolder(folder);
     }
 
     /** Test createFolder operation for diagram. */
@@ -75,7 +79,7 @@ public class DbServiceHandlerFolderTest {
 
         handler.deleteFolder(idFolder);
 
-        verify(handler.getDiagramDao()).deleteFolder(idFolder);
+        verify(diagramDaoMocked).deleteFolder(idFolder);
     }
 
     @Test
@@ -84,7 +88,7 @@ public class DbServiceHandlerFolderTest {
         long idFolder = 0L;
 
         doThrow(new AbortedException("0", "Exception", "Exception")).
-                when(handler.getDiagramDao()).deleteFolder(idFolder);
+                when(diagramDaoMocked).deleteFolder(idFolder);
 
         assertThatThrownBy(() -> handler.deleteFolder(idFolder)).isInstanceOf(TAborted.class);
     }
@@ -97,7 +101,7 @@ public class DbServiceHandlerFolderTest {
         TFolder tFolder = createFolder("root", idFolder, username);
         Folder folder = new Folder(tFolder);
 
-        when(handler.getDiagramDao().getFolderTree(username)).thenReturn(folder);
+        when(diagramDaoMocked.getFolderTree(username)).thenReturn(folder);
 
         TFolder gotFolder = handler.getFolderTree(username);
 
@@ -109,7 +113,7 @@ public class DbServiceHandlerFolderTest {
     public void getFolderTree_notExistsFolder_throwsTNotFound() throws Exception {
         String username = "testUser";
 
-        doThrow(new NotFoundException("0", "Exception")).when(handler.getDiagramDao()).getFolderTree(username);
+        doThrow(new NotFoundException("0", "Exception")).when(diagramDaoMocked).getFolderTree(username);
 
         assertThatThrownBy(() -> handler.getFolderTree(username)).isInstanceOf(TNotFound.class);
     }

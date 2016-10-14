@@ -2,9 +2,14 @@ package com.qreal.wmp.dashboard.database.robots.model;
 
 import com.qreal.wmp.dashboard.database.users.model.User;
 import com.qreal.wmp.thrift.gen.TRobot;
-
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 /** TRIK robot in dashboard service.*/
+@Data
+@EqualsAndHashCode(exclude = "owner")
+@ToString(exclude = "owner")
 public class Robot {
 
     /** Surrogate key for Robot.*/
@@ -62,56 +67,6 @@ public class Robot {
         owner.getRobots().add(this);
     }
 
-    public Long getId() {
-        return this.id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public User getOwner() {
-        return this.owner;
-    }
-
-    public void setOwner(User owner) {
-        this.owner = owner;
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSsid() {
-        return ssid;
-    }
-
-    public void setSsid(String ssid) {
-        this.ssid = ssid;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        if (this == object) {
-            return true;
-        }
-        if (!(object instanceof Robot)) {
-            return false;
-        }
-
-        Robot robot = (Robot) object;
-        return name.equals(robot.name);
-    }
-
-    @Override
-    public int hashCode() {
-        return name.hashCode();
-    }
-
     /** Converter from Robot to Thrift TRobot.*/
     public TRobot toTRobot() {
         TRobot tRobot = new TRobot();
@@ -134,5 +89,4 @@ public class Robot {
 
         return tRobot;
     }
-
 }

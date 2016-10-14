@@ -15,11 +15,10 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 
-/** Thrift server side service class for RobotDBService.*/
+/** Thrift server-side service class for RobotDBService.*/
 @Component
 @PropertySource("classpath:server.properties")
 public class RobotDbServer implements ApplicationContextAware {
-
     private static final Logger logger = LoggerFactory.getLogger(RobotDbServer.class);
 
     @Value("${port.db.robot}")
@@ -27,7 +26,7 @@ public class RobotDbServer implements ApplicationContextAware {
 
     private ApplicationContext context;
 
-    /** Function running TServer with chosen processor.*/
+    /** Function running TServer with a chosen processor.*/
     private static void runTServer(RobotDbService.Processor processor, int port) {
         logger.info("Starting Robots DB TServer on localhost on port {}", port);
         try {

@@ -1,7 +1,7 @@
 package com.qreal.wmp.editor.database.diagrams.model;
 
 import com.qreal.wmp.thrift.gen.TDefaultDiagramNode;
-import org.jetbrains.annotations.NotNull;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -9,8 +9,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /** Diagram's node.*/
+@Data
 public class DefaultDiagramNode implements Serializable {
-
     private String id;
 
     private String logicalId;
@@ -21,8 +21,7 @@ public class DefaultDiagramNode implements Serializable {
 
     private Set<Property> properties = new HashSet<>();
 
-    public DefaultDiagramNode() {
-    }
+    public DefaultDiagramNode() { }
 
     /** Constructor-converter from Thrift TDefaultDiagramNode to DefaultDiagramNode.*/
     public DefaultDiagramNode(TDefaultDiagramNode tDefaultDiagramNode) {
@@ -42,47 +41,6 @@ public class DefaultDiagramNode implements Serializable {
             properties = tDefaultDiagramNode.getProperties().stream().map(Property::new).
                     collect(Collectors.toSet());
         }
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getLogicalId() {
-        return logicalId;
-    }
-
-    public void setLogicalId(String logicalId) {
-        this.logicalId = logicalId;
-    }
-
-    public String getGraphicalId() {
-        return graphicalId;
-    }
-
-    public void setGraphicalId(String graphicalId) {
-        this.graphicalId = graphicalId;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    @NotNull
-    public Set<Property> getProperties() {
-        return properties;
-    }
-
-    public void setProperties(Set<Property> properties) {
-        this.properties = properties;
     }
 
     /** Converter from DefaultDiagramNode to Thrift TDefaultDiagramNode.*/
