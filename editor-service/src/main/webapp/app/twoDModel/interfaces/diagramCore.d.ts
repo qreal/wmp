@@ -1,20 +1,14 @@
-
-
 declare class UIDGenerator {
     static generate(): string;
 }
 
 declare class PropertiesPack {
-
     logical: Map<Property>;
     graphical: Map<Property>;
-
     constructor(logical: Map<Property>, graphical: Map<Property>);
-
 }
 
 declare class Link implements DiagramElement {
-
     constructor(jointObject: joint.dia.Link, properties: Map<Property>);
     getLogicalId(): string;
     getJointObject(): any;
@@ -23,11 +17,9 @@ declare class Link implements DiagramElement {
     getConstPropertiesPack(): PropertiesPack;
     getChangeableProperties(): Map<Property>;
     setProperty(key: string, property: Property): void;
-
 }
 
 declare interface DiagramElement {
-
     getLogicalId(): string;
     getJointObject();
     getName(): string;
@@ -35,51 +27,41 @@ declare interface DiagramElement {
     getConstPropertiesPack(): PropertiesPack;
     getChangeableProperties(): Map<Property>;
     setProperty(name: string, property: Property): void;
-
 }
 
 declare interface DiagramNode extends DiagramElement {
-
     getX(): number;
     getY(): number;
     getImagePath(): string;
     setPosition(x: number, y: number, zoom: number): void;
     getChangeableProperties(): Map<Property>;
     initPropertyEditElements(zoom: number): void;
-
 }
 
 declare class SubprogramDiagramNode {
-
     constructor(logicalId: string, name: string);
     getLogicalId(): string;
     getName(): string;
     getType(): string;
     getProperties(): Map<Property>;
-
 }
 
 declare class RobotsDiagramNode {
-
     constructor(logicalId: string, graphicalId: string, properties: Map<Property>);
     getLogicalId(): string;
     getGraphicalId(): string;
     getName(): string;
     getType(): string;
     getProperties(): Map<Property>;
-
 }
 
 declare class PropertyEditElement {
-
     constructor(logicalId: string, jointObjectId: string, propertyKey: string, property: Property);
     public getHtmlElement();
     public setPosition(x: number, y: number): void;
-
 }
 
 declare class DefaultDiagramNode implements DiagramNode {
-
     constructor(name: string, type: string, x: number, y: number, properties: Map<Property>, imagePath: string,
                 id?: string, notDefaultConstProperties?: PropertiesPack);
     getLogicalId(): string;
@@ -103,34 +85,27 @@ declare interface Map<T> {
 }
 
 declare class NodeType {
-
     constructor(name: string, propertiesMap: Map<Property>, image?: string);
     getName(): string;
     getPropertiesMap(): Map<Property>;
     getImage(): string;
-
 }
 
 declare class Property {
-
     name: string;
     type: string;
     value: string;
-
     constructor(name: string, type: string, value: string);
 }
 
 declare class SubprogramNode extends DefaultDiagramNode {
-
     constructor(name: string, type: string, x: number, y: number, properties: Map<Property>, imagePath: string,
                 subprogramDiagramId: string, id?: string, notDefaultConstProperties?: PropertiesPack);
     getSubprogramDiagramId(): string;
     getTextObject(): joint.shapes.basic.Text;
-
 }
 
 declare class DiagramScene {
-
     constructor(graph: joint.dia.Graph);
     public getGridSize(): number;
     public getZoom(): number;
@@ -149,7 +124,6 @@ declare class DiagramScene {
                              imagePath: string, id?: string): DiagramNode;
     public createSubprogramNode(name: string, type: string, x: number, y: number, properties: Map<Property>,
                                 imagePath: string, subprogramDiagramId: string, id?: string): SubprogramNode;
-
 }
 
 declare class PaletteTypes {
@@ -162,61 +136,47 @@ declare class ElementTypes {
 }
 
 declare class DiagramParts {
-
     nodesMap: Map<DiagramNode>;
     linksMap: Map<Link>;
     robotsDiagramNode: RobotsDiagramNode;
     subprogramDiagramNodes: SubprogramDiagramNode[];
-
     constructor(nodesMap?: Map<DiagramNode>, linksMap?: Map<Link>, robotsDiagramNode?: RobotsDiagramNode,
                 subprogramDiagramNodes?: SubprogramDiagramNode[]);
-
 }
 
 declare class DiagramEditor {
-
     constructor();
     public getGraph(): joint.dia.Graph;
     public getScene(): DiagramScene;
     public clear(): void;
-
 }
 
 declare interface Command {
-
     execute(): void;
     revert(): void;
     isRevertible(): boolean;
-
 }
 
 declare class UndoRedoController {
-
     public addCommand(command: Command);
     public undo(): void;
     public redo(): void;
     public clearStack(): void;
     public bindKeyboardHandler();
     public unbindKeyboardHandler();
-
 }
 
 declare class Gesture {
-
     name: string;
     key: string[];
     factor: number;
-
     constructor(name : string, key : string[], factor: number)
 
 }
 
 declare class HtmlView {
-
     protected content: string;
-
     public getContent(): string;
-
 }
 
 declare class SubprogramPaletteView extends HtmlView {
@@ -256,7 +216,6 @@ declare class SubprogramPaletteElementView extends HtmlView {
 }
 
 declare abstract class DiagramEditorController {
-
     protected scope: ng.IScope;
     protected diagramEditor: DiagramEditor;
     protected sceneController: SceneController;
@@ -265,9 +224,7 @@ declare abstract class DiagramEditorController {
     protected paletteController: PaletteController;
     protected nodeTypesMap: Map<NodeType>;
     protected undoRedoController: UndoRedoController;
-
     constructor($scope, $attrs);
-
     public getGraph(): joint.dia.Graph;
     public getNodesMap(): Map<DiagramNode>;
     public getLinksMap(): Map<Link>;
@@ -276,11 +233,9 @@ declare abstract class DiagramEditorController {
     public getNodeType(type: string): NodeType;
     public getNodeProperties(type: string): Map<Property>;
     public clearState(): void;
-
 }
 
 declare class SceneController {
-
     constructor(diagramEditorController: DiagramEditorController, scene: DiagramScene);
     public getCurrentElement(): DiagramElement;
     public clearState(): void;
@@ -293,43 +248,33 @@ declare class SceneController {
     public removeElement(element: DiagramElement): void;
     public addLink(link: Link): void;
     public changeCurrentElement(element: DiagramElement): void;
-
 }
 
 declare class PropertyEditorController {
-
     constructor(sceneController: SceneController, undoRedoController: UndoRedoController);
     public setNodeProperties(element: DiagramElement): void;
     public clearState(): void;
     public setProperty(key: string, value: string): void;
     public changeHtmlElementValue(id: string, value: string): void;
     public changeCheckboxHtml(id: string, value: string): void;
-
 }
 
 declare class PropertyViewFactory {
-
     public createView(typeName: string, propertyKey: string, property: Property): HtmlView;
-
 }
 
 declare class ElementsTypeLoader {
-
     load(callback: (elementTypes: ElementTypes) => void, kit?: string, task?: string): void;
-
 }
 
 declare class PaletteController {
-
     public initDraggable(): void;
     public appendSubprogramsPalette(subprogramDiagramNodes: SubprogramDiagramNode[],
                                     nodeTypesMap: Map<NodeType>): void;
     public appendBlocksPalette(paletteTypes: PaletteTypes): void;
-
 }
 
 declare class DiagramJsonParser {
-
     public parse(diagramJson: any, nodeTypesMap: Map<NodeType>): DiagramParts;
     protected findMinPosition(diagramJson: any, nodeTypesMap: Map<NodeType>): {x: number; y: number};
     protected parseNodes(diagramJson: any, nodeTypesMap: Map<NodeType>, offsetX: number, offsetY: number): DiagramParts;
@@ -344,55 +289,44 @@ declare class DiagramJsonParser {
     protected getTargetPosition(configuration: string);
     protected parsePosition(position: string): {x: number; y: number};
     protected parseId(idString: string): string;
-
 }
 
 declare class DiagramExporter {
-
     public exportDiagramStateToJSON(graph: joint.dia.Graph, diagramParts: DiagramParts);
     protected exportRobotsDiagramNode(diagramParts: DiagramParts);
     protected exportNodes(graph: joint.dia.Graph, diagramParts: DiagramParts);
     protected exportLinks(diagramParts: DiagramParts);
     protected exportProperties(properties: Map<Property>);
     protected exportVertices(vertices): string;
-
 }
 
 declare module GesturesUtils {
-
     export class Pair {
         first: number;
         second: number;
-
         constructor(first : number, second : number);
     }
 
     export class PairString {
         first: string;
         second: string;
-
         constructor(curString: string);
-
         public getString(): string;
     }
 
 }
 
 declare class GesturesController {
-
     constructor(sceneController: SceneController);
     public startDrawing(): void;
     public onMouseMove(event): void;
     public onMouseDown(event): void;
     public onMouseUp(event): void;
-
 }
 
 declare class GesturesMatcher {
-
     constructor(gestures: Gesture[])
     public getMatches(pointList: GesturesUtils.Pair[]): string[];
-
 }
 
 declare class DiagramElementListener {

@@ -34,37 +34,29 @@ declare interface CommonRobotModel extends RobotModelInterface {
 }
 
 declare class CommonRobotModelImpl implements CommonRobotModel {
-
     protected ports: PortInfo[];
     protected allowedConnections: {number?: DeviceInfo[]};
-
     getAvailablePorts(): PortInfo[];
     addAllowedConnection(port: PortInfo, devices: DeviceInfo[]);
     getConfigurablePorts(): PortInfo[];
     getAllowedDevices(port: PortInfo): DeviceInfo[];
-
 }
 
 declare class TwoDRobotModel extends CommonRobotModelImpl {
-
     constructor(realModel: RobotModelInterface, name: string);
-
     sensorImagePath(deviceType: DeviceInfo): string;
     getName(): string;
     getRobotImage(): string;
     getConfigurablePorts(): PortInfo[];
-
 }
 
 declare class TwoDPosition {
     x: number;
     y: number;
-
     constructor(x?: number, y?: number);
 }
 
 declare interface Device {
-
 }
 
 declare class DeviceImpl implements Device {
@@ -72,10 +64,8 @@ declare class DeviceImpl implements Device {
 }
 
 declare class Motor extends DeviceImpl {
-
     public getPower(): number;
     public setPower(power: number): void;
-
 }
 
 declare class DisplayWidget {
@@ -124,16 +114,12 @@ declare interface RobotModel {
 }
 
 declare class DevicesConfigurationProvider {
-
     deviceConfigurationChanged(robotModelName: string, portName: string, device: DeviceInfo): void;
     getCurrentConfiguration(robotModelName: string, portName: string): DeviceInfo;
-
 }
 
 declare class SensorsConfiguration extends DevicesConfigurationProvider {
-
     constructor(robotModel: RobotModel);
-
     addSensor(portName: string, sensorType: DeviceInfo, position?: TwoDPosition, direction?: number): void;
     removeSensor(portName: string): void;
     deserialize(xml): void;
@@ -178,28 +164,22 @@ declare interface Model {
 }
 
 declare interface TwoDModelEngineFacade {
-
     setDrawLineMode(): void;
     setDrawWallMode(): void;
     setDrawPencilMode(): void;
     setDrawEllipseMode(): void;
     setNoneMode(): void;
     followRobot(value: boolean): void;
-
 }
 
 declare class TwoDModelEngineFacadeImpl implements TwoDModelEngineFacade {
-
     protected robotModelName: string;
     protected model: Model;
-
     constructor($scope, $compile, $attrs);
-
     setDrawLineMode(): void;
     setDrawWallMode(): void;
     setDrawPencilMode(): void;
     setDrawEllipseMode(): void;
     setNoneMode(): void;
     followRobot(value: boolean): void;
-
 }
