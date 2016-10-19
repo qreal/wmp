@@ -1,29 +1,3 @@
-var RGBAColor = (function () {
-    function RGBAColor(alpha, rgb) {
-        this.alpha = alpha;
-        this.rgb = rgb;
-    }
-    return RGBAColor;
-})();
-var ColorUtils = (function () {
-    function ColorUtils() {
-    }
-    ColorUtils.getRBGAColor = function (color) {
-        if (color.length == 9) {
-            var rgb = "#" + color.substr(3, color.length - 3);
-            var alpha = this.alphaHexTo0To1(color.substr(1, 2));
-            return new RGBAColor(alpha, rgb);
-        }
-        else {
-            return new RGBAColor(1, color);
-        }
-    };
-    ColorUtils.alphaHexTo0To1 = function (alpha) {
-        var decAlpha = parseInt(alpha, 16);
-        return decAlpha / 255;
-    };
-    return ColorUtils;
-})();
 var MathUtils = (function () {
     function MathUtils() {
     }
@@ -85,29 +59,5 @@ var StringUtils = (function () {
         return width + minWidth;
     };
     return StringUtils;
-})();
-var XmlHttpFactory = (function () {
-    function XmlHttpFactory() {
-    }
-    XmlHttpFactory.createXMLHTTPObject = function () {
-        var xmlHttp = undefined;
-        for (var i = 0; i < this.XMLHttpFactories.length; i++) {
-            try {
-                xmlHttp = this.XMLHttpFactories[i]();
-            }
-            catch (e) {
-                continue;
-            }
-            break;
-        }
-        return xmlHttp;
-    };
-    XmlHttpFactory.XMLHttpFactories = [
-        function () { return new XMLHttpRequest(); },
-        function () { return new ActiveXObject("Msxml2.XMLHTTP"); },
-        function () { return new ActiveXObject("Msxml3.XMLHTTP"); },
-        function () { return new ActiveXObject("Microsoft.XMLHTTP"); }
-    ];
-    return XmlHttpFactory;
 })();
 //# sourceMappingURL=utils.js.map

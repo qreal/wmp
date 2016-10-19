@@ -32,7 +32,7 @@
             <!-- Used to move ts files to target with maven variables exporting  -->
             <resource>
                 <targetPath>../properties</targetPath>
-                <directory>src/main/webapp/app/editor/properties</directory>
+                <directory>src/main/webapp/app/robots/properties</directory>
                 <filtering>true</filtering>
             </resource>
         </resources>

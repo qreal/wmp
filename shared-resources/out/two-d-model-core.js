@@ -1621,7 +1621,7 @@ var ModelImpl = (function () {
     function ModelImpl(zoom) {
         this.robotModels = [];
         var interactiveAttr = $("#two-d-model-scene-area").attr("interactive");
-        this.isInteractive = (interactiveAttr === "false") ? false : true;
+        this.isInteractive = (interactiveAttr !== "false");
         var model = this;
         model.worldModel = new WorldModelImpl(zoom, this.isInteractive);
         this.minX = 3000;

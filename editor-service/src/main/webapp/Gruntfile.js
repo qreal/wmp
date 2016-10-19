@@ -3,15 +3,15 @@ module.exports = function (grunt) {
     grunt.initConfig({
         ts: {
             editor: {
-                src: ["app/editor/diagram/**/*.ts", "app/editor/*.ts"],
+                src: ["app/robots/diagram/**/*.ts", "app/robots/*.ts", "app/robots/gestures/*.ts"],
                 out: "resources/js/compiled/editor.js"
             },
             interpreter: {
-                src: ["app/editor/interpreter/**/*.ts"],
+                src: ["app/robots/interpreter/**/*.ts"],
                 out: "resources/js/compiled/interpreter.js"
             },
             twoDModelRobots: {
-                src: ["app/twoDModel/implementations/**/*.ts"],
+                src: ["app/robots/twoDModel/**/*.ts"],
                 out: "resources/js/compiled/two-d-model-robots.js"
             }
         }

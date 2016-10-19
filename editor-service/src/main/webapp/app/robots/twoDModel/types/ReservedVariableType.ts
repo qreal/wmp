@@ -1,0 +1,4 @@
+enum ReservedVariableType {
+    scalar,
+    vector
+}

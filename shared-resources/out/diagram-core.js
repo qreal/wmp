@@ -379,7 +379,6 @@ var DefaultDiagramNode = (function () {
         if (notDefaultConstProperties) {
             $.extend(this.constPropertiesPack.logical, notDefaultConstProperties.logical);
             $.extend(this.constPropertiesPack.graphical, notDefaultConstProperties.graphical);
-            ;
         }
         var jointObjectAttributes = {
             position: { x: x, y: y },
@@ -648,10 +647,8 @@ var SceneController = (function () {
                 _this.scene.getZoom();
             var topElementPos = (event.pageY - $(diagramPaper).offset().top + $(diagramPaper).scrollTop()) /
                 _this.scene.getZoom();
-            if ((mXBegin <= leftElementPos) && (mXEnd >= leftElementPos)
-                && (mYBegin <= topElementPos) && (mYEnd >= topElementPos) && (_this.rightClickFlag))
-                return true;
-            return false;
+            return ((mXBegin <= leftElementPos) && (mXEnd >= leftElementPos)
+                && (mYBegin <= topElementPos) && (mYEnd >= topElementPos) && (_this.rightClickFlag));
         });
         if (elementBelow) {
             this.createLink(this.currentElement.getJointObject().id, elementBelow.id);
@@ -1923,7 +1920,6 @@ var DiagramEditor = (function () {
 var DiagramEditorController = (function () {
     function DiagramEditorController($scope, $attrs) {
         var _this = this;
-        this.scope = $scope;
         this.undoRedoController = new UndoRedoController();
         this.nodeTypesMap = {};
         this.paletteController = new PaletteController();
@@ -2100,8 +2096,7 @@ var GesturesController = (function () {
         this.loadGestures();
     }
     GesturesController.prototype.startDrawing = function () {
-        var n = this.date.getTime();
-        this.currentTime = n;
+        this.currentTime = this.date.getTime();
         this.flagAdd = false;
         clearTimeout(this.timer);
         this.flagDraw = true;

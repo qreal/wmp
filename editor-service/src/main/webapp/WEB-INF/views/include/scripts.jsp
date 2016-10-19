@@ -13,9 +13,7 @@
     <script src="<c:url value='/resources/js/transform-to-element-fix.js' />"></script>
 
     <script src="<c:url value='/resources/js/compiled/utils.js' />"></script>
-    <script src="<c:url value='/resources/js/compiled/root.js' />"></script>
-    <script src="<c:url value='/resources/js/compiled/diagram-core.js' />"></script>
-    <script src="<c:url value='/resources/js/compiled/two-d-model-core.js' />"></script>
+    <script src="<c:url value='/resources/js/compiled/editor-core.js' />"></script>
     <script src="<c:url value='/resources/js/compiled/editor.js' />"></script>
     <script src="<c:url value='/resources/js/compiled/interpreter.js' />"></script>
     <script src="<c:url value='/resources/js/compiled/two-d-model-robots.js' />"></script>
