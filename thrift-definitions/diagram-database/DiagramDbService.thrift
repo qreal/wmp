@@ -18,6 +18,7 @@ service DiagramDbService {
     Diagram.TDiagram openDiagram(1: i64 diagramID) throws (1: DbExceptions.TNotFound e);
 
 
+
     /**
     * In case of exception delete operation will be safely aborted.
     *
@@ -43,6 +44,15 @@ service DiagramDbService {
     **/
     i64 createFolder(1: Diagram.TFolder folder) throws (1: DbExceptions.TIdAlreadyDefined alreadyDefined,
                                                         2: DbExceptions.TAborted aborted);
+
+    /**
+    * In case of exception updateFolder operation will be safely aborted.
+    *
+    * TAborted will be thrown in the following cases:
+    * 1. The folder to update doesn't exist
+    **/
+    void updateFolder(1: Diagram.TFolder folder)  throws (1: DbExceptions.TAborted aborted,
+                                                         2: DbExceptions.TIdNotDefined notDefined)
 
     /**
     * In case of exception deleteFolder operation will be safely aborted.

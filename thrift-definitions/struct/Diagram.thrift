@@ -39,7 +39,7 @@ struct TDiagram {
 struct TFolder {
     1 : optional i64 id,
     2 : string folderName,
-    3 : optional string userName,
+    3 : optional set<string> owners,
     4 : optional i64 folderParentId,
     5 : set<TFolder> childrenFolders,
     6 : set<TDiagram> diagrams

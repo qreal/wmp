@@ -49,8 +49,8 @@ public class DiagramDaoImpl implements DiagramDao {
     public Long saveDiagram(@NotNull Diagram diagram, Long folderId) throws AbortedException {
         logger.trace("saveDiagram() called with parameters: diagram = {}, folderID = {}", diagram.getName(), folderId);
         Session session = sessionFactory.getCurrentSession();
-        Folder folder = null;
-        Set<Diagram> diagrams = null;
+        Folder folder;
+        Set<Diagram> diagrams;
         try {
             folder = getFolder(folderId);
             diagrams = folder.getDiagrams();
@@ -149,6 +149,18 @@ public class DiagramDaoImpl implements DiagramDao {
         return folder != null;
     }
 
+    @Override
+    public void updateFolder(@NotNull Folder folder) throws AbortedException {
+        logger.trace("updateFolder() was called with parameters: folder = {}.", folder.getFolderName());
+        Session session = sessionFactory.getCurrentSession();
+        if (!isExistsFolder(folder.getId())) {
+            throw new AbortedException("Folder with specified Id doesn't exist.", "updateFolder() safely aborted.",
+                    DiagramDaoImpl.class.getName());
+        }
+        session.merge(folder);
+        logger.trace("updateFolder() successfully updated folder {}.", folder.getFolderName());
+    }
+
     /**
      * Deletes a folder from local DB using Hibernate ORM.
      * @param folderId id of folder to delete
@@ -173,11 +185,12 @@ public class DiagramDaoImpl implements DiagramDao {
     @Override
     @NotNull
     public Folder getFolderTree(String userName) throws NotFoundException {
-        logger.trace("getFolderTree() called with parameters: userName = {}", userName);
+        logger.trace("getFolderTree() called with parameters: owners = {}", userName);
         Session session = sessionFactory.getCurrentSession();
 
-        List<Folder> rootFolders = session.createQuery("from Folder where folderName=:folderName and " +
-                "userName=:userName").setParameter("folderName", "root").setParameter("userName", userName).list();
+        List<Folder> rootFolders = session.createQuery("select c from Folder c where" +
+                "(c.folderName = :folderName and :userName in elements(c.owners))").
+                setParameter("folderName", "root").setParameter("userName", userName).list();
         logger.trace("getFolderTree() extracted list of results from session with {} elements. First one will be" +
                 " returned.", rootFolders.size());
         if (rootFolders.isEmpty()) {

@@ -41,6 +41,9 @@ public interface DiagramDao {
     /** Checks whether a folder with specified Id exists. */
     boolean isExistsFolder(Long folderId);
 
+    /** Updates a folder with id equal to <code>folder.id</code>. */
+    void updateFolder(@NotNull Folder folder) throws AbortedException;
+
     /** Deletes a folder with specified Id. */
     void deleteFolder(Long folderId) throws AbortedException;
 

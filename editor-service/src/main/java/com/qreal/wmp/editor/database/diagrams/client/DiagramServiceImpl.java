@@ -22,6 +22,8 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.util.HashSet;
+import java.util.Set;
 
 /** Thrift client side of DiagramDbService.*/
 @Service("diagramService")
@@ -122,7 +124,11 @@ public class DiagramServiceImpl implements DiagramService {
     public Long createFolder(@NotNull Folder folder) throws AbortedException, ErrorConnectionException, TException {
         logger.trace("createFolder() was called with parameters: folder = {}.", folder.getFolderName());
         Long result = 0L;
-        folder.setUserName(AuthenticatedUser.getUserName());
+
+        Set<String> owner = new HashSet<>();
+        owner.add(AuthenticatedUser.getUserName());
+        folder.setOwners(owner);
+
         transport.open();
         try {
             TFolder newFolder = folder.toTFolder();
@@ -149,7 +155,7 @@ public class DiagramServiceImpl implements DiagramService {
     @Override
     @NotNull
     public Folder getFolderTree() throws NotFoundException, ErrorConnectionException, TException {
-        logger.trace("getFolderTree() was called with parameters: userName = {}.",
+        logger.trace("getFolderTree() was called with parameters: owners = {}.",
                 AuthenticatedUser.getUserName());
         TFolder folder = new TFolder();
         transport.open();

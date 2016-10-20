@@ -6,6 +6,7 @@ import com.qreal.wmp.db.diagram.exceptions.NotFoundException;
 import com.qreal.wmp.db.diagram.model.Diagram;
 import com.qreal.wmp.db.diagram.model.Folder;
 import com.qreal.wmp.thrift.gen.*;
+import org.apache.thrift.TException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -79,6 +80,18 @@ public class DiagramDbServiceHandler implements DiagramDbService.Iface {
             throw new TAborted(e.getTextCause(), e.getMessage(), e.getFullClassName());
         }
         return id;
+    }
+
+    @Override
+    public void updateFolder(TFolder folder) throws TAborted, TIdNotDefined {
+        if (!folder.isSetId()) {
+            throw new TIdNotDefined("Folder id is null. To update folder you should specify id.");
+        }
+        try {
+            diagramDao.updateFolder(new Folder(folder));
+        } catch (AbortedException e) {
+            throw new TAborted(e.getTextCause(), e.getMessage(), e.getFullClassName());
+        }
     }
 
     @Override

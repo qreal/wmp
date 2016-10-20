@@ -112,6 +112,38 @@ public class DaoFolderTest {
         assertThat(diagramDao.isExistsFolder(idFolderNotCorrect)).isFalse();
     }
 
+    /** Test updateFolder operation for folder. */
+    @Test
+    @Rollback
+    public void updateFolder_folderExists_updatesFolderInDb() throws Exception {
+        Folder testFolder = createAndSaveFolder("testFolder", "testUser");
+
+        Folder updateFolder = new Folder();
+        updateFolder.setFolderName("testFolderRewrite");
+        updateFolder.setId(testFolder.getId());
+        updateFolder.getOwners().add("testUser");
+        updateFolder.getOwners().add("testUser1");
+
+        diagramDao.updateFolder(updateFolder);
+
+        Folder gotFolder = diagramDao.getFolder(testFolder.getId());
+
+        assertThat(gotFolder).isEqualTo(updateFolder);
+    }
+
+    /** Test updateFolder operation for folder. */
+    @Test
+    @Rollback
+    public void updateFolder_folderNotExists_throwsAborted() throws Exception {
+        Long folderIdNotCorrect = 0L;
+
+        Folder updateFolder = new Folder();
+        updateFolder.setFolderName("testFolderRewrite");
+        updateFolder.setId(folderIdNotCorrect);
+
+        assertThatThrownBy(() -> diagramDao.updateFolder(updateFolder)).isInstanceOf(AbortedException.class);
+    }
+
     /** Test getFolderTree operation for one folder. */
     @Test
     @Rollback

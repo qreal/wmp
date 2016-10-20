@@ -5,10 +5,7 @@ import com.qreal.wmp.db.diagram.dao.DiagramDao;
 import com.qreal.wmp.db.diagram.exceptions.AbortedException;
 import com.qreal.wmp.db.diagram.exceptions.NotFoundException;
 import com.qreal.wmp.db.diagram.model.Folder;
-import com.qreal.wmp.thrift.gen.TAborted;
-import com.qreal.wmp.thrift.gen.TFolder;
-import com.qreal.wmp.thrift.gen.TIdAlreadyDefined;
-import com.qreal.wmp.thrift.gen.TNotFound;
+import com.qreal.wmp.thrift.gen.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,6 +17,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.HashSet;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -70,6 +69,42 @@ public class DbServiceHandlerFolderTest {
         TFolder tFolder = createFolder("testFolder", idFolder);
 
         assertThatThrownBy(() -> handler.createFolder(tFolder)).isInstanceOf(TIdAlreadyDefined.class);
+    }
+
+    /** Test updateFolder operation for folder. */
+    @Test
+    @Rollback
+    public void updateFolder_correctInput_diagramDaoCalled() throws Exception {
+        long idFolder = 0L;
+        TFolder tFolder = createFolder("testFolder", idFolder);
+        Folder folder = new Folder(tFolder);
+
+        handler.updateFolder(tFolder);
+
+        verify(diagramDaoMocked).updateFolder(folder);
+    }
+
+    /** Test updateFolder operation for folder. */
+    @Test
+    @Rollback
+    public void updateFolder_idNotSet_throwsTIdNotDefined() throws Exception {
+        TFolder tFolder = createFolder("testDiagram");
+
+        assertThatThrownBy((() -> handler.updateFolder(tFolder))).isInstanceOf(TIdNotDefined.class);
+    }
+
+    /** Test updateFolder operation for folder. */
+    @Test
+    @Rollback
+    public void updateFolder_daoThrowsAborted_throwsTAborted() throws Exception {
+        long idFolder = 0L;
+        TFolder tFolder = createFolder("testFolder", idFolder);
+        Folder folder = new Folder(tFolder);
+
+        doThrow(new AbortedException("0", "Exception", "Exception")).
+                when(diagramDaoMocked).updateFolder(folder);
+
+        assertThatThrownBy(() -> handler.updateFolder(tFolder)).isInstanceOf(TAborted.class);
     }
 
     @Test
@@ -135,7 +170,11 @@ public class DbServiceHandlerFolderTest {
         TFolder tFolder = new TFolder();
         tFolder.setFolderName(folderName);
         tFolder.setId(idFolder);
-        tFolder.setUserName(userName);
+
+        HashSet<String> names = new HashSet<>();
+        names.add(userName);
+        tFolder.setOwners(names);
+
         return tFolder;
     }
 }

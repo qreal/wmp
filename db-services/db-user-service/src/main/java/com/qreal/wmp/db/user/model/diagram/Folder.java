@@ -5,7 +5,9 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /** Folder with diagrams and other folders. */
@@ -15,7 +17,7 @@ public class Folder implements Serializable {
 
     private String folderName;
 
-    private String userName;
+    private Set<String> owners = new HashSet<>();
 
     private Long folderParentId;
 
@@ -26,9 +28,9 @@ public class Folder implements Serializable {
     public Folder() {
     }
 
-    public Folder(String folderName, String userName) {
+    public Folder(String folderName, String owner) {
         this.folderName = folderName;
-        this.userName = userName;
+        this.owners.add(owner);
     }
 
     /** Constructor-converter from Thrift TFolder to Folder.*/
@@ -42,8 +44,8 @@ public class Folder implements Serializable {
             folderName = tFolder.getFolderName();
         }
 
-        if (tFolder.isSetUserName()) {
-            userName = tFolder.getUserName();
+        if (tFolder.isSetOwners()) {
+            owners = tFolder.getOwners();
         }
 
         if (tFolder.isSetFolderParentId()) {
@@ -71,8 +73,8 @@ public class Folder implements Serializable {
             tFolder.setFolderName(folderName);
         }
 
-        if (userName != null) {
-            tFolder.setUserName(userName);
+        if (owners != null) {
+            tFolder.setOwners(owners);
         }
 
         if (folderParentId != null) {

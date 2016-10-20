@@ -23,7 +23,8 @@ public class Folder implements Serializable {
     private String folderName;
 
     @Column(name = "username")
-    private String userName;
+    @ElementCollection
+    private Set<String> owners = new HashSet<>();
 
     //FIXME
     //Do we really need this field?
@@ -41,9 +42,9 @@ public class Folder implements Serializable {
     public Folder() {
     }
 
-    public Folder(String folderName, String userName) {
+    public Folder(String folderName, String owners) {
         this.folderName = folderName;
-        this.userName = userName;
+        this.owners.add(owners);
     }
 
     /** Constructor-converter from Thrift TFolder to Folder.*/
@@ -57,8 +58,8 @@ public class Folder implements Serializable {
             folderName = tFolder.getFolderName();
         }
 
-        if (tFolder.isSetUserName()) {
-            userName = tFolder.getUserName();
+        if (tFolder.isSetOwners()) {
+            owners = tFolder.getOwners();
         }
 
         if (tFolder.isSetFolderParentId()) {
@@ -86,8 +87,8 @@ public class Folder implements Serializable {
             tFolder.setFolderName(folderName);
         }
 
-        if (userName != null) {
-            tFolder.setUserName(userName);
+        if (owners != null) {
+            tFolder.setOwners(owners);
         }
 
         if (folderParentId != null) {
