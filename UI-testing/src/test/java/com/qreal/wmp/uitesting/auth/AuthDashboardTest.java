@@ -6,11 +6,12 @@ import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
 
+import static com.codeborne.selenide.Condition.appear;
 import static com.codeborne.selenide.Condition.exist;
 import static com.codeborne.selenide.Selectors.byText;
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.close;
-import static com.codeborne.selenide.Selenide.open;
+import static com.codeborne.selenide.Selenide.*;
+
+
 
 public class AuthDashboardTest {
 
@@ -26,7 +27,7 @@ public class AuthDashboardTest {
         $(By.name("username")).setValue("123");
         $(By.name("password")).setValue("123");
         $("[type=\"submit\"]").click();
-        $(byText("Dashboard")).shouldBe(exist);
+        $(byText("Dashboard")).waitUntil(appear, 10000);
     }
 
     @Test
@@ -36,6 +37,8 @@ public class AuthDashboardTest {
         String wrongPassword = RandomStringUtils.random(20);
         $(By.name("username")).setValue(wrongLogin);
         $(By.name("password")).setValue(wrongPassword);
+        $("[type=\"submit\"]").click();
+        $(byText("Password or login wrong")).shouldBe(exist);
     }
 
     @After
