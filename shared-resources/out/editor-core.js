@@ -999,7 +999,6 @@ var PropertyViewFactory = (function () {
 })();
 var PropertyEditorController = (function () {
     function PropertyEditorController(sceneController, undoRedoController) {
-        console.log("propertycontroller");
         this.propertyViewFactory = new PropertyViewFactory();
         this.sceneController = sceneController;
         this.undoRedoController = undoRedoController;
@@ -1382,37 +1381,11 @@ var PaletteController = (function () {
     };
     return PaletteController;
 })();
-var RobotsDiagramNode = (function () {
-    function RobotsDiagramNode(logicalId, graphicalId, properties) {
-        this.name = "Robot`s Behaviour Diagram";
-        this.type = "RobotsDiagramNode";
-        this.logicalId = logicalId;
-        this.graphicalId = graphicalId;
-        this.properties = properties;
-    }
-    RobotsDiagramNode.prototype.getLogicalId = function () {
-        return this.logicalId;
-    };
-    RobotsDiagramNode.prototype.getGraphicalId = function () {
-        return this.graphicalId;
-    };
-    RobotsDiagramNode.prototype.getProperties = function () {
-        return this.properties;
-    };
-    RobotsDiagramNode.prototype.getName = function () {
-        return this.name;
-    };
-    RobotsDiagramNode.prototype.getType = function () {
-        return this.type;
-    };
-    return RobotsDiagramNode;
-})();
 var DiagramParts = (function () {
-    function DiagramParts(nodesMap, linksMap, robotsDiagramNode, subprogramDiagramNodes) {
+    function DiagramParts(nodesMap, linksMap, subprogramDiagramNodes) {
         this.subprogramDiagramNodes = [];
         this.nodesMap = nodesMap || {};
         this.linksMap = linksMap || {};
-        this.robotsDiagramNode = robotsDiagramNode;
         this.subprogramDiagramNodes = subprogramDiagramNodes || [];
     }
     return DiagramParts;
@@ -1490,10 +1463,7 @@ var DiagramJsonParser = (function () {
         for (var i = 0; i < diagramJson.nodes.length; i++) {
             var nodeObject = diagramJson.nodes[i];
             var type = nodeObject.type;
-            if (type === "RobotsDiagramNode") {
-                diagramParts.robotsDiagramNode = this.parseRobotsDiagramNode(nodeObject);
-            }
-            else if (type === "SubprogramDiagram") {
+            if (type === "SubprogramDiagram") {
                 diagramParts.subprogramDiagramNodes.push(this.parseSubprogramDiagram(nodeObject));
             }
             else {
@@ -1503,18 +1473,6 @@ var DiagramJsonParser = (function () {
             }
         }
         return diagramParts;
-    };
-    DiagramJsonParser.prototype.parseRobotsDiagramNode = function (nodeObject) {
-        var logicalProperties = {};
-        var logicalPropertiesObject = nodeObject.logicalProperties;
-        for (var i = 0; i < logicalPropertiesObject.length; i++) {
-            var propertyName = logicalPropertiesObject[i].name;
-            if (propertyName === "devicesConfiguration" || propertyName === "worldModel") {
-                var property = new Property(propertyName, logicalPropertiesObject[i].type, logicalPropertiesObject[i].value);
-                logicalProperties[propertyName] = property;
-            }
-        }
-        return new RobotsDiagramNode(nodeObject.logicalId, nodeObject.graphicalId, logicalProperties);
     };
     DiagramJsonParser.prototype.parseSubprogramDiagram = function (nodeObject) {
         var name = "";
@@ -1713,44 +1671,9 @@ var DiagramExporter = (function () {
             'nodes': [],
             'links': []
         };
-        json.nodes.push(this.exportRobotsDiagramNode(diagramParts));
         json.nodes = json.nodes.concat(this.exportNodes(graph, diagramParts));
         json.links = this.exportLinks(diagramParts);
         return json;
-    };
-    DiagramExporter.prototype.exportRobotsDiagramNode = function (diagramParts) {
-        var robotsDiagramNode = diagramParts.robotsDiagramNode;
-        var graphicalChildren = [];
-        for (var id in diagramParts.nodesMap) {
-            var childrenId = { 'id': diagramParts.nodesMap[id].getType() + "/{" + id + "}" };
-            graphicalChildren.push(childrenId);
-        }
-        for (var id in diagramParts.linksMap) {
-            var childrenId = { 'id': diagramParts.linksMap[id].getType() + "/{" + id + "}" };
-            graphicalChildren.push(childrenId);
-        }
-        var nodeJSON = {
-            'logicalId': robotsDiagramNode.getLogicalId(),
-            'graphicalId': robotsDiagramNode.getGraphicalId(),
-            'graphicalParent': "qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID",
-            'type': robotsDiagramNode.getType(),
-            'logicalChildren': [],
-            'graphicalChildren': graphicalChildren,
-            'logicalLinksIds': [],
-            'graphicalLinksIds': [],
-            'logicalProperties': [],
-            'graphicalProperties': [],
-            'incomingExplosions': []
-        };
-        nodeJSON.logicalProperties = this.exportProperties(robotsDiagramNode.getProperties());
-        var nameProperty = {
-            'name': "name",
-            'value': robotsDiagramNode.getName(),
-            'type': "string",
-        };
-        nodeJSON.logicalProperties.push(nameProperty);
-        nodeJSON.graphicalProperties.push(nameProperty);
-        return nodeJSON;
     };
     DiagramExporter.prototype.exportNodes = function (graph, diagramParts) {
         var nodes = [];
@@ -1759,8 +1682,6 @@ var DiagramExporter = (function () {
             var nodeJSON = {
                 'logicalId': node.getLogicalId(),
                 'graphicalId': node.getJointObject().id,
-                'graphicalParent': "qrm:/RobotsMetamodel/RobotsDiagram/RobotsDiagramNode/{" +
-                    diagramParts.robotsDiagramNode.getGraphicalId() + "}",
                 'type': node.getType(),
                 'logicalChildren': [],
                 'graphicalChildren': [],
@@ -1804,8 +1725,6 @@ var DiagramExporter = (function () {
             var linkJSON = {
                 'logicalId': link.getLogicalId(),
                 'graphicalId': jointObject.id,
-                'graphicalParent': "qrm:/RobotsMetamodel/RobotsDiagram/RobotsDiagramNode/{" +
-                    diagramParts.robotsDiagramNode.getGraphicalId() + "}",
                 'type': link.getType(),
                 'logicalChildren': [],
                 'graphicalChildren': [],

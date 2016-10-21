@@ -7,9 +7,7 @@ viewBox="0 0 15000 15000"
  <defs>
   <style type="text/css">
    <![CDATA[
-    .str2 {stroke:#1A1A1A;stroke-width:127}
-    .str1 {stroke:black;stroke-width:317.5}
-    .str0 {stroke:black;stroke-width:635}
+    .str0 {stroke:white;stroke-width:317.5}
     .fil48 {fill:none}
     .fil0 {fill:#5E4377}
     .fil2 {fill:#5E4378}
@@ -59,9 +57,9 @@ viewBox="0 0 15000 15000"
     .fil46 {fill:#775398}
     .fil47 {fill:#785499}
     .fil1 {fill:black;fill-opacity:0.000000}
-    .fil51 {fill:url(#id2)}
-    .fil50 {fill:url(#id3)}
-    .fil49 {fill:url(#id4)}
+    .fil49 {fill:url(#id2)}
+    .fil51 {fill:url(#id3)}
+    .fil50 {fill:url(#id4)}
    ]]>
   </style>
       <clipPath id="id0">
@@ -70,27 +68,20 @@ viewBox="0 0 15000 15000"
       <clipPath id="id1">
        <path d="M2377 14068l10257 0c790,0 1437,-647 1437,-1437l0 -10257c0,-790 -647,-1437 -1437,-1437l-10257 0c-790,0 -1437,647 -1437,1437l0 10257c0,790 647,1437 1437,1437z"/>
       </clipPath>
-  <linearGradient id="id2" gradientUnits="userSpaceOnUse" x1="4574.22" y1="10050.9" x2="4574.22" y2="4797.69">
-   <stop offset="0" style="stop-color:#1A1A1A"/>
-   <stop offset="0.501961" style="stop-color:#333333"/>
-   <stop offset="1" style="stop-color:#1A1A1A"/>
+  <linearGradient id="id2" gradientUnits="userSpaceOnUse" x1="7382.36" y1="5887.89" x2="7382.36" y2="1559.85">
+   <stop offset="0" style="stop-color:#B3B3B3"/>
+   <stop offset="1" style="stop-color:#E6E6E6"/>
   </linearGradient>
-  <linearGradient id="id3" gradientUnits="userSpaceOnUse" x1="9739.3" y1="9440.27" x2="9739.3" y2="5463.64">
-   <stop offset="0" style="stop-color:#1A1A1A"/>
-   <stop offset="0.25098" style="stop-color:#333333"/>
-   <stop offset="0.501961" style="stop-color:gray"/>
-   <stop offset="0.74902" style="stop-color:#333333"/>
-   <stop offset="1" style="stop-color:#1A1A1A"/>
+  <linearGradient id="id3" gradientUnits="userSpaceOnUse" x1="7960.72" y1="13304" x2="7960.72" y2="8073.73">
+   <stop offset="0" style="stop-color:#99CC33"/>
+   <stop offset="1" style="stop-color:#C4F562"/>
   </linearGradient>
-  <linearGradient id="id4" gradientUnits="userSpaceOnUse" x1="9015.86" y1="8425.61" x2="9015.86" y2="6512.8">
-   <stop offset="0" style="stop-color:#1A1A1A"/>
-   <stop offset="0.501961" style="stop-color:#4D4D4D"/>
-   <stop offset="1" style="stop-color:#1A1A1A"/>
+  <linearGradient id="id4" gradientUnits="userSpaceOnUse" xlink:href="#id3" x1="7464.63" y1="7321.19" x2="7464.63" y2="4333.77">
   </linearGradient>
  </defs>
  <g id="Layer_x0020_1">
   <metadata id="CorelCorpID_0Corel-Layer"/>
-  <g id="_130914504">
+  <g id="_136054384">
    <g id="_348901048">
     <path class="fil0" d="M2168 45l10675 0c1170,0 2119,949 2119,2119l0 10675c0,1170 -949,2119 -2119,2119l-10675 0c-1170,0 -2119,-949 -2119,-2119l0 -10675c0,-1170 949,-2119 2119,-2119z"/>
     <g>
@@ -405,12 +396,12 @@ viewBox="0 0 15000 15000"
     </g>
    </g>
   </g>
-  <line class="fil48 str0" x1="14073" y1="2942" x2="14073" y2= "12335" />
-  <line class="fil48 str1" x1="10912" y1="7572" x2="11393" y2= "7572" />
-  <line class="fil48 str1" x1="11874" y1="7572" x2="12355" y2= "7572" />
-  <line class="fil48 str1" x1="12851" y1="7572" x2="13332" y2= "7572" />
-  <rect class="fil49 str2" x="8283" y="5761" width="1466" height="3416"/>
-  <rect class="fil50 str2" x="9120" y="5464" width="1238" height="3977"/>
-  <rect class="fil51 str2" x="830" y="4798" width="7489" height="5253" rx="824" ry="278"/>
+ </g>
+ <g id="Слой_x0020_1">
+  <metadata id="CorelCorpID_1Corel-Layer"/>
+  <rect class="fil49" x="3903" y="1560" width="6960" height="4328" rx="500" ry="500"/>
+  <polyline class="fil48 str0" points="4050,1760 7422,3566 10705,1752 "/>
+  <path class="fil50" d="M7054 4091l789 0c70,0 127,57 127,127l0 2057 681 -6c69,0 113,114 55,168 -336,313 -683,615 -1008,940 -186,186 -223,188 -414,11 -344,-318 -700,-626 -1032,-958 -86,-86 34,-152 93,-152l582 0 0 -2060c0,-70 57,-127 127,-127z"/>
+  <path class="fil51" d="M6936 12896c-904,0 -1503,-170 -1947,-1005 -48,-91 -252,-562 -289,-849l-81 0c-230,0 -419,-184 -419,-409l0 0c0,-225 189,-409 419,-409l1306 0c65,-282 224,-646 266,-725 443,-835 1042,-1005 1945,-1005 -78,-396 -213,-778 167,-528 475,313 1275,739 1279,837 4,98 -734,535 -1267,840 -403,231 -267,-120 -184,-502 -220,42 -545,76 -774,142 -312,90 -528,580 -619,940l3511 0c-77,-359 -163,-664 186,-434 475,313 1275,739 1279,837 4,98 -734,535 -1267,840 -376,215 -283,-76 -201,-426l-4738 0c68,361 298,963 647,1064 249,72 613,106 831,154 1,0 1,0 2,1 -78,-391 -206,-763 169,-515 475,313 1275,739 1279,837 4,98 -734,535 -1267,840 -416,238 -258,-143 -177,-537 -18,7 -37,11 -58,10z"/>
  </g>
 </svg>

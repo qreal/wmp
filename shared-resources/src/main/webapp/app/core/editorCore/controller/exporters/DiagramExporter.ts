@@ -1,4 +1,3 @@
-/// <reference path="../../model/RobotsDiagramNode.ts" />
 /// <reference path="../../model/DiagramParts.ts" />
 /// <reference path="../../model/DiagramNode.ts" />
 /// <reference path="../../model/Map.ts" />
@@ -13,52 +12,10 @@ class DiagramExporter {
             'links': []
         };
 
-        json.nodes.push(this.exportRobotsDiagramNode(diagramParts));
         json.nodes = json.nodes.concat(this.exportNodes(graph, diagramParts));
         json.links = this.exportLinks(diagramParts);
 
         return json;
-    }
-
-    protected exportRobotsDiagramNode(diagramParts: DiagramParts) {
-        var robotsDiagramNode : RobotsDiagramNode = diagramParts.robotsDiagramNode;
-
-        var graphicalChildren = [];
-        for (var id in diagramParts.nodesMap) {
-            var childrenId = {'id': diagramParts.nodesMap[id].getType() + "/{" + id + "}"};
-            graphicalChildren.push(childrenId);
-        }
-
-        for (var id in diagramParts.linksMap) {
-            var childrenId = {'id': diagramParts.linksMap[id].getType() + "/{" + id + "}"};
-            graphicalChildren.push(childrenId);
-        }
-
-        var nodeJSON = {
-            'logicalId': robotsDiagramNode.getLogicalId(),
-            'graphicalId': robotsDiagramNode.getGraphicalId(),
-            'graphicalParent': "qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID",
-            'type': robotsDiagramNode.getType(),
-            'logicalChildren': [],
-            'graphicalChildren': graphicalChildren,
-            'logicalLinksIds': [],
-            'graphicalLinksIds': [],
-            'logicalProperties': [],
-            'graphicalProperties': [],
-            'incomingExplosions': []
-        };
-
-        nodeJSON.logicalProperties = this.exportProperties(robotsDiagramNode.getProperties());
-
-        var nameProperty = {
-            'name': "name",
-            'value': robotsDiagramNode.getName(),
-            'type': "string",
-        };
-        nodeJSON.logicalProperties.push(nameProperty);
-        nodeJSON.graphicalProperties.push(nameProperty);
-
-        return nodeJSON;
     }
 
     protected exportNodes(graph: joint.dia.Graph, diagramParts: DiagramParts) {
@@ -69,8 +26,6 @@ class DiagramExporter {
             var nodeJSON = {
                 'logicalId': node.getLogicalId(),
                 'graphicalId': node.getJointObject().id,
-                'graphicalParent': "qrm:/RobotsMetamodel/RobotsDiagram/RobotsDiagramNode/{" +
-                    diagramParts.robotsDiagramNode.getGraphicalId() + "}",
                 'type': node.getType(),
                 'logicalChildren': [],
                 'graphicalChildren': [],
@@ -127,8 +82,6 @@ class DiagramExporter {
             var linkJSON = {
                 'logicalId': link.getLogicalId(),
                 'graphicalId': jointObject.id,
-                'graphicalParent': "qrm:/RobotsMetamodel/RobotsDiagram/RobotsDiagramNode/{" +
-                    diagramParts.robotsDiagramNode.getGraphicalId() + "}",
                 'type': link.getType(),
                 'logicalChildren': [],
                 'graphicalChildren': [],

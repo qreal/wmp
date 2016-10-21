@@ -1,4 +1,3 @@
-/// <reference path="../../model/RobotsDiagramNode.ts" />
 /// <reference path="../../model/SubprogramDiagramNode.ts" />
 /// <reference path="../../model/DiagramNode.ts" />
 /// <reference path="../../model/Link.ts" />
@@ -58,9 +57,7 @@ class DiagramJsonParser {
             var nodeObject = diagramJson.nodes[i];
             var type = nodeObject.type;
 
-            if (type === "RobotsDiagramNode") {
-                diagramParts.robotsDiagramNode = this.parseRobotsDiagramNode(nodeObject);
-            } else if (type === "SubprogramDiagram") {
+            if (type === "SubprogramDiagram") {
                 diagramParts.subprogramDiagramNodes.push(this.parseSubprogramDiagram(nodeObject));
             } else {
                 if (nodeTypesMap[type]) {
@@ -71,21 +68,6 @@ class DiagramJsonParser {
         }
 
         return diagramParts;
-    }
-
-    protected parseRobotsDiagramNode(nodeObject: any): RobotsDiagramNode {
-        var logicalProperties: Map<Property> = {};
-        var logicalPropertiesObject = nodeObject.logicalProperties;
-        for (var i = 0; i < logicalPropertiesObject.length; i++) {
-            var propertyName = logicalPropertiesObject[i].name;
-            if (propertyName === "devicesConfiguration" || propertyName === "worldModel") {
-                var property:Property = new Property(propertyName, logicalPropertiesObject[i].type,
-                    logicalPropertiesObject[i].value);
-                logicalProperties[propertyName] = property;
-            }
-        }
-
-        return new RobotsDiagramNode(nodeObject.logicalId, nodeObject.graphicalId, logicalProperties);
     }
 
     protected parseSubprogramDiagram(nodeObject: any): SubprogramDiagramNode {

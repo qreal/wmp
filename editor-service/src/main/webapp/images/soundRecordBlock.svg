@@ -7,9 +7,7 @@ viewBox="0 0 15000 15000"
  <defs>
   <style type="text/css">
    <![CDATA[
-    .str2 {stroke:#1A1A1A;stroke-width:127}
-    .str1 {stroke:black;stroke-width:317.5}
-    .str0 {stroke:black;stroke-width:635}
+    .str0 {stroke:#8BB832;stroke-width:39.69}
     .fil48 {fill:none}
     .fil0 {fill:#5E4377}
     .fil2 {fill:#5E4378}
@@ -58,10 +56,15 @@ viewBox="0 0 15000 15000"
     .fil45 {fill:#775397}
     .fil46 {fill:#775398}
     .fil47 {fill:#785499}
+    .fil51 {fill:#999999}
+    .fil50 {fill:#B3B3B3}
     .fil1 {fill:black;fill-opacity:0.000000}
-    .fil51 {fill:url(#id2)}
-    .fil50 {fill:url(#id3)}
-    .fil49 {fill:url(#id4)}
+    .fil52 {fill:url(#id2)}
+    .fil56 {fill:url(#id3)}
+    .fil55 {fill:url(#id4)}
+    .fil49 {fill:url(#id5)}
+    .fil54 {fill:url(#id6)}
+    .fil53 {fill:url(#id7)}
    ]]>
   </style>
       <clipPath id="id0">
@@ -70,27 +73,35 @@ viewBox="0 0 15000 15000"
       <clipPath id="id1">
        <path d="M2377 14068l10257 0c790,0 1437,-647 1437,-1437l0 -10257c0,-790 -647,-1437 -1437,-1437l-10257 0c-790,0 -1437,647 -1437,1437l0 10257c0,790 647,1437 1437,1437z"/>
       </clipPath>
-  <linearGradient id="id2" gradientUnits="userSpaceOnUse" x1="4574.22" y1="10050.9" x2="4574.22" y2="4797.69">
-   <stop offset="0" style="stop-color:#1A1A1A"/>
-   <stop offset="0.501961" style="stop-color:#333333"/>
-   <stop offset="1" style="stop-color:#1A1A1A"/>
+  <linearGradient id="id2" gradientUnits="userSpaceOnUse" x1="2914.85" y1="11232.9" x2="6931.31" y2="11232.9">
+   <stop offset="0" style="stop-color:#666666"/>
+   <stop offset="0.490196" style="stop-color:#B3B3B3"/>
+   <stop offset="1" style="stop-color:#666666"/>
   </linearGradient>
-  <linearGradient id="id3" gradientUnits="userSpaceOnUse" x1="9739.3" y1="9440.27" x2="9739.3" y2="5463.64">
-   <stop offset="0" style="stop-color:#1A1A1A"/>
-   <stop offset="0.25098" style="stop-color:#333333"/>
-   <stop offset="0.501961" style="stop-color:gray"/>
-   <stop offset="0.74902" style="stop-color:#333333"/>
-   <stop offset="1" style="stop-color:#1A1A1A"/>
+  <linearGradient id="id3" gradientUnits="userSpaceOnUse" x1="8257.34" y1="13446.2" x2="8257.34" y2="1367.8">
+   <stop offset="0" style="stop-color:#99CC33"/>
+   <stop offset="1" style="stop-color:#CCFF66"/>
   </linearGradient>
-  <linearGradient id="id4" gradientUnits="userSpaceOnUse" x1="9015.86" y1="8425.61" x2="9015.86" y2="6512.8">
-   <stop offset="0" style="stop-color:#1A1A1A"/>
-   <stop offset="0.501961" style="stop-color:#4D4D4D"/>
-   <stop offset="1" style="stop-color:#1A1A1A"/>
+  <linearGradient id="id4" gradientUnits="userSpaceOnUse" x1="4916.05" y1="10144.8" x2="4916.05" y2="6013.43">
+   <stop offset="0" style="stop-color:#B3B3B3"/>
+   <stop offset="1" style="stop-color:#E6E6E6"/>
+  </linearGradient>
+  <linearGradient id="id5" gradientUnits="userSpaceOnUse" xlink:href="#id4" x1="4904.94" y1="8740.7" x2="4904.94" y2="3248.34">
+  </linearGradient>
+  <linearGradient id="id6" gradientUnits="userSpaceOnUse" x1="4904.93" y1="11195" x2="4904.93" y2="9838.05">
+   <stop offset="0" style="stop-color:#E6E6E6"/>
+   <stop offset="0.619608" style="stop-color:#B3B3B3"/>
+   <stop offset="1" style="stop-color:#B3B3B3"/>
+  </linearGradient>
+  <linearGradient id="id7" gradientUnits="userSpaceOnUse" x1="4923.08" y1="11538.7" x2="4923.08" y2="10685.1">
+   <stop offset="0" style="stop-color:#B3B3B3"/>
+   <stop offset="0.529412" style="stop-color:#E6E6E6"/>
+   <stop offset="1" style="stop-color:#B3B3B3"/>
   </linearGradient>
  </defs>
  <g id="Layer_x0020_1">
   <metadata id="CorelCorpID_0Corel-Layer"/>
-  <g id="_130914504">
+  <g id="_290801128">
    <g id="_348901048">
     <path class="fil0" d="M2168 45l10675 0c1170,0 2119,949 2119,2119l0 10675c0,1170 -949,2119 -2119,2119l-10675 0c-1170,0 -2119,-949 -2119,-2119l0 -10675c0,-1170 949,-2119 2119,-2119z"/>
     <g>
@@ -405,12 +416,28 @@ viewBox="0 0 15000 15000"
     </g>
    </g>
   </g>
-  <line class="fil48 str0" x1="14073" y1="2942" x2="14073" y2= "12335" />
-  <line class="fil48 str1" x1="10912" y1="7572" x2="11393" y2= "7572" />
-  <line class="fil48 str1" x1="11874" y1="7572" x2="12355" y2= "7572" />
-  <line class="fil48 str1" x1="12851" y1="7572" x2="13332" y2= "7572" />
-  <rect class="fil49 str2" x="8283" y="5761" width="1466" height="3416"/>
-  <rect class="fil50 str2" x="9120" y="5464" width="1238" height="3977"/>
-  <rect class="fil51 str2" x="830" y="4798" width="7489" height="5253" rx="824" ry="278"/>
+ </g>
+ <g id="Слой_x0020_1">
+  <metadata id="CorelCorpID_1Corel-Layer"/>
+  <g id="микрофон">
+   <rect class="fil49" x="2981" y="3248" width="3847" height="5492" rx="1839" ry="1839"/>
+   <circle class="fil50" cx="3550" cy="5244" r="327"/>
+   <circle class="fil50" cx="4451" cy="5244" r="327"/>
+   <circle class="fil50" cx="5371" cy="5244" r="327"/>
+   <circle class="fil50" cx="6248" cy="5244" r="327"/>
+   <circle class="fil50" cx="3550" cy="6122" r="327"/>
+   <circle class="fil50" cx="4433" cy="6122" r="327"/>
+   <circle class="fil50" cx="5353" cy="6122" r="327"/>
+   <circle class="fil50" cx="6284" cy="6122" r="327"/>
+   <circle class="fil51" cx="3550" cy="7005" r="327"/>
+   <circle class="fil51" cx="4445" cy="7005" r="327"/>
+   <circle class="fil51" cx="5353" cy="7005" r="327"/>
+   <circle class="fil51" cx="6272" cy="7005" r="327"/>
+  </g>
+  <path class="fil52" d="M4923 11826c420,0 2008,-26 2008,-714 0,-327 -899,-472 -2008,-472 -1109,0 -2008,129 -2008,457 0,720 1538,729 2008,729z"/>
+  <ellipse class="fil53" cx="4923" cy="11112" rx="2008" ry="593"/>
+  <path class="fil54" d="M4396 9600l1018 0c262,0 477,215 477,477l0 740c0,617 -1972,547 -1972,0l0 -740c0,-262 215,-477 477,-477z"/>
+  <path class="fil55" d="M4982 10114c880,-20 1702,-347 2376,-1279 288,-398 539,-798 572,-2425l0 0 0 -6c1,-74 2,-151 3,-230l-3 0 0 -157 -786 0 0 393 250 0c109,2229 -1350,3071 -2436,3076 -1566,7 -2670,-1515 -2528,-3091l299 0 0 -381 -792 0c0,589 -38,1274 90,1826 311,1337 1571,2305 2956,2274z"/>
+  <path class="fil56 str0" d="M9487 5229c-3,-527 -78,-486 449,-103 859,629 1718,1258 2577,1887 635,465 652,316 31,776 -871,645 -1733,1291 -2607,1936 -515,380 -420,335 -423,-180l-26 -4317z"/>
  </g>
 </svg>

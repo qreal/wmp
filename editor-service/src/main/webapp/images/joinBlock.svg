@@ -7,7 +7,8 @@ viewBox="0 0 15000 15000"
  <defs>
   <style type="text/css">
    <![CDATA[
-    .str0 {stroke:#CCCCCC;stroke-width:127}
+    .fil28 {fill:#4D4D4D}
+    .fil31 {fill:#668F29}
     .fil0 {fill:#D1C313}
     .fil1 {fill:#D2C413}
     .fil2 {fill:#D3C513}
@@ -36,35 +37,23 @@ viewBox="0 0 15000 15000"
     .fil25 {fill:#F6E509}
     .fil26 {fill:#F7E609}
     .fil27 {fill:#FAE908}
-    .fil32 {fill:url(#id1);fill-rule:nonzero}
-    .fil31 {fill:url(#id2);fill-rule:nonzero}
-    .fil30 {fill:url(#id3);fill-rule:nonzero}
-    .fil29 {fill:url(#id4);fill-rule:nonzero}
-    .fil28 {fill:url(#id5);fill-rule:nonzero}
-    .fil33 {fill:url(#id6);fill-rule:nonzero}
+    .fil29 {fill:url(#id1)}
+    .fil30 {fill:url(#id2)}
    ]]>
   </style>
      <clipPath id="id0">
       <path d="M2420 14065l10192 0c785,0 1428,-643 1428,-1428l0 -10192c0,-785 -643,-1428 -1428,-1428l-10192 0c-785,0 -1428,643 -1428,1428l0 10192c0,785 643,1428 1428,1428z"/>
      </clipPath>
-  <linearGradient id="id1" gradientUnits="userSpaceOnUse" x1="2233.14" y1="8536.86" x2="2233.14" y2="7551.2">
-   <stop offset="0" style="stop-color:#333333"/>
-   <stop offset="1" style="stop-color:#666666"/>
+  <linearGradient id="id1" gradientUnits="userSpaceOnUse" x1="6252.53" y1="9976.38" x2="5981.76" y2="8965.42">
+   <stop offset="0" style="stop-color:#7FB332"/>
+   <stop offset="1" style="stop-color:#668F29"/>
   </linearGradient>
-  <linearGradient id="id2" gradientUnits="userSpaceOnUse" xlink:href="#id1" x1="4818.73" y1="8520.79" x2="4818.73" y2="7565.68">
-  </linearGradient>
-  <linearGradient id="id3" gradientUnits="userSpaceOnUse" xlink:href="#id1" x1="7073.73" y1="8520.79" x2="7073.73" y2="7565.68">
-  </linearGradient>
-  <linearGradient id="id4" gradientUnits="userSpaceOnUse" xlink:href="#id1" x1="8623.85" y1="8520.79" x2="8623.85" y2="7565.68">
-  </linearGradient>
-  <linearGradient id="id5" gradientUnits="userSpaceOnUse" xlink:href="#id1" x1="10623.4" y1="8536.86" x2="10623.4" y2="7551.2">
-  </linearGradient>
-  <linearGradient id="id6" gradientUnits="userSpaceOnUse" xlink:href="#id1" x1="12877.7" y1="8520.79" x2="12877.7" y2="7565.68">
+  <linearGradient id="id2" gradientUnits="userSpaceOnUse" xlink:href="#id1" x1="4540.9" y1="5139.53" x2="4252.99" y2="6129.32">
   </linearGradient>
  </defs>
  <g id="Layer_x0020_1">
   <metadata id="CorelCorpID_0Corel-Layer"/>
-  <g id="_285119680">
+  <g id="_129170176">
    <rect class="fil0" x="106" y="131" width="14820" height="14820" rx="2106" ry="2106"/>
    <g>
     <g style="clip-path:url(#id0)">
@@ -221,13 +210,9 @@ viewBox="0 0 15000 15000"
     </g>
    </g>
   </g>
-  <g>
-   <path class="fil28 str0" d="M11566 7064l-365 843c-106,-45 -224,-67 -352,-67 -185,0 -277,61 -277,183 0,58 25,104 77,137 51,33 125,49 220,49 129,0 239,-28 332,-84l365 904c-103,75 -228,135 -373,180 -146,45 -285,67 -418,67 -334,0 -600,-117 -797,-351 -198,-234 -297,-523 -297,-865 0,-362 103,-661 309,-896 206,-236 467,-353 785,-353 137,0 279,22 425,68 146,45 268,107 366,184z"/>
-   <polygon class="fil29 str0" points="7751,7907 7751,6849 9497,6849 9497,7907 9059,7907 9059,9237 8189,9237 8189,7907 "/>
-   <polygon class="fil30 str0" points="6639,9237 6639,6849 7508,6849 7508,9237 "/>
-   <polygon class="fil31 str0" points="4535,9237 3895,9237 3202,6849 4050,6849 4277,7629 4517,6849 5121,6849 5372,7629 5587,6849 6436,6849 5774,9237 5133,9237 4823,8292 "/>
-   <path class="fil32 str0" d="M3121 6972l-217 752c-141,-233 -304,-349 -488,-349 -102,0 -153,47 -153,140 0,29 16,59 48,89 32,30 116,78 253,143 150,72 266,137 347,197 81,59 142,134 182,226 40,92 61,199 61,321 0,255 -80,450 -239,584 -160,134 -395,201 -704,201 -347,0 -647,-60 -898,-180l213 -798c62,117 138,210 230,279 91,69 179,103 263,103 41,0 76,-13 104,-39 28,-26 42,-58 42,-96 0,-35 -14,-69 -40,-101 -27,-33 -99,-77 -214,-135 -105,-51 -192,-101 -260,-150 -69,-49 -128,-117 -179,-207 -51,-90 -76,-203 -76,-340 0,-265 79,-465 238,-599 159,-135 393,-202 702,-202 283,0 546,53 787,160z"/>
-   <polygon class="fil33 str0" points="12656,9237 11786,9237 11786,6849 12656,6849 12656,7724 13099,7724 13099,6849 13969,6849 13969,9237 13099,9237 13099,8350 12656,8350 "/>
-  </g>
+  <rect class="fil28" x="12053" y="2971" width="494" height="8624" rx="173" ry="354"/>
+  <path class="fil29" d="M4334 11317c1522,0 2532,-294 3278,-1736 119,-229 792,-1851 343,-1851 -190,0 -1184,-109 -1184,69 0,482 -417,1944 -1124,2154 -419,124 -1033,184 -1399,266 -417,94 -346,1103 86,1098z"/>
+  <path class="fil30" d="M2586 3836c1546,0 2571,287 3329,1692 120,223 804,1803 349,1803 -193,0 -1203,106 -1203,-67 0,-470 -423,-1895 -1142,-2099 -426,-121 -1049,-179 -1420,-259 -423,-91 -352,-1075 87,-1070z"/>
+  <path class="fil31" d="M1994 6782l7833 0c-114,-571 -244,-1057 278,-690 708,497 1902,1176 1908,1332 6,157 -1095,852 -1889,1336 -561,343 -421,-121 -300,-678l-7830 0c-344,0 -625,-293 -625,-650l0 0c0,-358 281,-650 625,-650z"/>
  </g>
 </svg>
