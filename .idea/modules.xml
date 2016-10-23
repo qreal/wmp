@@ -15,7 +15,6 @@
       <module fileurl="file://$PROJECT_DIR$/parent.iml" filepath="$PROJECT_DIR$/parent.iml" />
       <module fileurl="file://$PROJECT_DIR$/shared-resources/shared-resources.iml" filepath="$PROJECT_DIR$/shared-resources/shared-resources.iml" />
       <module fileurl="file://$PROJECT_DIR$/3dparty/spring-security-oauth2-client/spring-security-oauth2-client.iml" filepath="$PROJECT_DIR$/3dparty/spring-security-oauth2-client/spring-security-oauth2-client.iml" />
-      <module fileurl="file://$PROJECT_DIR$/3dparty/spring-security-oauth2-client/spring-security-oauth2-client.iml" filepath="$PROJECT_DIR$/3dparty/spring-security-oauth2-client/spring-security-oauth2-client.iml" />
     </modules>
   </component>
 </project>
