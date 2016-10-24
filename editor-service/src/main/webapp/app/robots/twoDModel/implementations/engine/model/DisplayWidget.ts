@@ -1,6 +1,6 @@
 /// <reference path="LedWidget.ts" />
 /// <reference path="../../../utils/MathUtils.ts" />
-/// <reference path="../../../../GeneralConstants.ts" />
+/// <reference path="../../../../../common/constants/GeneralConstants.ts" />
 /// <reference path="../../../../../vendor.d.ts" />
 
 class DisplayWidget {

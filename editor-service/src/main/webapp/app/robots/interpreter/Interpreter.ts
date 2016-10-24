@@ -1,7 +1,7 @@
 /// <reference path="BlockFactory.ts" />
-/// <reference path="../interfaces/diagramCore.d.ts" />
-/// <reference path="../interfaces/two-d-model-core.d.ts" />
-/// <reference path="../interfaces/vendor.d.ts" />
+/// <reference path="../../common/interfaces/editorCore.d.ts" />
+/// <reference path="../../common/interfaces/two-d-model-core.d.ts" />
+/// <reference path="../../common/interfaces/vendor.d.ts" />
 
 class Interpreter {
 

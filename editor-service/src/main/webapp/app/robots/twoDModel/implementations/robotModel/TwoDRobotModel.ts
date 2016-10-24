@@ -5,7 +5,7 @@
 /// <reference path="TrikKit/parts/TrikLineSensor.ts" />
 /// <reference path="../../interfaces/robotModel/RobotModelInterface.ts" />
 /// <reference path="../../interfaces/robotModel/PortInfo.ts" />
-/// <reference path="../../../GeneralConstants.ts" />
+/// <reference path="../../../../common/constants/GeneralConstants.ts" />
 
 class TwoDRobotModel extends CommonRobotModelImpl {
     private name: string;

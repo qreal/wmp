@@ -79,7 +79,7 @@
     </profiles>
 
     <modules>
-        <module>shared-resources</module>
+        <module>editor-core</module>
         <module>auth-service</module>
         <module>dashboard-service</module>
         <module>editor-service</module>

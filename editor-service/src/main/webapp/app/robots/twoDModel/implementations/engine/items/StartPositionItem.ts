@@ -1,5 +1,5 @@
 /// <reference path="../../../interfaces/engine/model/WorldModel.ts" />
-/// <reference path="../../../../GeneralConstants.ts" />
+/// <reference path="../../../../../common/constants/GeneralConstants.ts" />
 /// <reference path="../../../../../vendor.d.ts" />
 
 class StartPositionItem {

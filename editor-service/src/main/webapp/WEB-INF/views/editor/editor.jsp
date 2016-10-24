@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="<c:url value='/resources/css/base.css' />"/>
 </head>
 
-<body ng-app>
+<body ng-app ng-controller="RootDiagramController">
     <%@ include file="diagramContent.jsp" %>
     <%@ include file="2dmodelContent.jsp" %>
 </body>

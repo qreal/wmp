@@ -11,7 +11,7 @@
 /// <reference path="../../../interfaces/engine/items/RobotItem.ts" />
 /// <reference path="../../../interfaces/robotModel/DeviceInfo.ts" />
 /// <reference path="../../../types/TwoDPosition.ts" />
-/// <reference path="../../../../GeneralConstants.ts" />
+/// <reference path="../../../../../common/constants/GeneralConstants.ts" />
 /// <reference path="../../../utils/MathUtils.ts" />
 /// <reference path="../../../../../vendor.d.ts" />
 

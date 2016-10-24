@@ -1,5 +1,5 @@
-/// <reference path="../../interfaces/diagramCore.d.ts" />
-/// <reference path="../../../robots/gestures/GesturesController.ts" />
+/// <reference path="../../../common/interfaces/editorCore.d.ts" />
+/// <reference path="../../../common/gestures/GesturesController.ts" />
 
 class RobotsSceneController extends SceneController {
     private gesturesController: GesturesController;

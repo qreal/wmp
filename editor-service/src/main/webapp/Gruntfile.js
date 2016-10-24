@@ -2,8 +2,12 @@ module.exports = function (grunt) {
 
     grunt.initConfig({
         ts: {
+            root: {
+                src: ["app/robots/*.ts"],
+                out: "resources/js/compiled/root.js"
+            },
             editor: {
-                src: ["app/robots/diagram/**/*.ts", "app/robots/*.ts", "app/robots/gestures/*.ts"],
+                src: ["app/robots/diagram/**/*.ts"],
                 out: "resources/js/compiled/editor.js"
             },
             interpreter: {
@@ -13,10 +17,18 @@ module.exports = function (grunt) {
             twoDModelRobots: {
                 src: ["app/robots/twoDModel/**/*.ts"],
                 out: "resources/js/compiled/two-d-model-robots.js"
+            },
+            gestures: {
+                src: ["app/common/gestures/*.ts"],
+                out: "resources/js/compiled/gestures.js"
+            },
+            menu: {
+                src: ["app/common/menu/**/*.ts"],
+                out: "resources/js/compiled/menu.js"
             }
         }
     });
 
     grunt.loadNpmTasks("grunt-ts");
-    grunt.registerTask("default", ["ts:editor", "ts:interpreter", "ts:twoDModelRobots"]);
+    grunt.registerTask("default", ["ts:root", "ts:interpreter", "ts:twoDModelRobots", "ts:gestures", "ts:menu", "ts:editor"]);
 }

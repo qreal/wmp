@@ -1,18 +1,15 @@
-/// <reference path="DiagramMenuController.ts" />
-/// <reference path="parsers/DiagramThriftParser.ts" />
+/// <reference path="../../../common/menu/controller/DiagramMenuController.ts" />
 /// <reference path="../../../robots/interpreter/Interpreter.ts" />
-/// <reference path="../../../robots/interfaces/diagramCore.d.ts" />
-/// <reference path="../../../robots/interfaces/vendor.d.ts" />
+/// <reference path="../../../common/interfaces/editorCore.d.ts" />
+/// <reference path="../../../common/interfaces/vendor.d.ts" />
 
 class RobotsDiagramEditorController extends DiagramEditorController {
 
-    private diagramParser: DiagramThriftParser;
     private menuController: DiagramMenuController;
     private diagramInterpreter: Interpreter;
 
     constructor($scope, $attrs) {
         super($scope, $attrs);
-        this.diagramParser = new DiagramThriftParser();
         this.menuController = new DiagramMenuController(this);
         this.diagramInterpreter = new Interpreter();
 
@@ -52,17 +49,6 @@ class RobotsDiagramEditorController extends DiagramEditorController {
 
         this.paletteController.appendBlocksPalette(elementTypes.paletteTypes);
         this.paletteController.initDraggable();
-    }
-
-    public handleLoadedDiagramJson(diagram: TDiagram): void {
-        var diagramParts: DiagramParts = this.diagramParser.parse(diagram, this.nodeTypesMap);
-        var scene = this.diagramEditor.getScene();
-        scene.addNodesFromMap(diagramParts.nodesMap);
-        scene.addLinksFromMap(diagramParts.linksMap);
-    }
-
-    public getDiagramParts(): DiagramParts {
-        return new DiagramParts(this.getNodesMap(), this.getLinksMap());
     }
 
     public openTwoDModel(): void {

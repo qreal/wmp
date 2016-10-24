@@ -16,4 +16,5 @@
     <script src="<c:url value='/resources/js/compiled/editor-core.js' />"></script>
     <script src="<c:url value='/resources/js/compiled/editor.js' />"></script>
     <script src="<c:url value='/resources/js/compiled/interpreter.js' />"></script>
+    <script src="<c:url value='/resources/js/compiled/root.js' />"></script>
     <script src="<c:url value='/resources/js/compiled/two-d-model-robots.js' />"></script>

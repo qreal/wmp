@@ -51,8 +51,8 @@
     <file type="web" url="file://$PROJECT_DIR$/db-services/robots-service" />
     <file type="web" url="file://$PROJECT_DIR$/db-services/user-service" />
     <file type="web" url="file://$PROJECT_DIR$/deployment/allintomcat" />
+    <file type="web" url="file://$PROJECT_DIR$/editor-core" />
     <file type="web" url="file://$PROJECT_DIR$/editor-service" />
-    <file type="web" url="file://$PROJECT_DIR$/shared-resources" />
   </component>
   <component name="JavadocGenerationManager">
     <option name="OUTPUT_DIRECTORY" value="$PROJECT_DIR$/javadoc" />
