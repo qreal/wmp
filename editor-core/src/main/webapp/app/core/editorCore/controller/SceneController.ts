@@ -15,7 +15,6 @@ class SceneController {
     private currentElement: DiagramElement;
     private clickFlag : boolean;
     protected rightClickFlag : boolean;
-    //private gesturesController: GesturesController;
     private undoRedoController: UndoRedoController;
     private lastCellMouseDownPosition: {x: number, y: number};
     private paperCommandFactory: SceneCommandFactory;
@@ -28,7 +27,6 @@ class SceneController {
         this.paperCommandFactory = new SceneCommandFactory(this);
         this.clickFlag = false;
         this.rightClickFlag = false;
-        //this.gesturesController = new GesturesController(this, paper);
         this.lastCellMouseDownPosition = { x: 0, y: 0 };
 
         this.scene.on('cell:pointerdown', (cellView, event, x, y): void => {
@@ -51,10 +49,6 @@ class SceneController {
             }
             cell.set('position', cell.previous('position'));
         });
-
-        //document.addEventListener('mousedown', (event) => { this.gesturesController.onMouseDown(event) } );
-        //document.addEventListener('mouseup', (event) => { this.gesturesController.onMouseUp(event) } );
-        //$("#" + this.scene.getId()).mousemove((event) => { this.gesturesController.onMouseMove(event) } );
 
         this.initDropPaletteElementListener();
 
@@ -247,10 +241,6 @@ class SceneController {
     }
 
     protected blankPoinerdownListener(event, x, y): void {
-        /*if (event.button == 2) {
-            this.gesturesController.startDrawing();
-        }*/
-
         this.changeCurrentElement(null);
     }
 
@@ -263,10 +253,6 @@ class SceneController {
         this.changeCurrentElement(element);
 
         if (this.scene.getNodeById(cellView.model.id)) {
-            /*if (event.button == 2) {
-                this.rightClickFlag = true;
-                this.gesturesController.startDrawing();
-            }*/
             if (event.button == 1) {
                 var node: DiagramNode = this.scene.getNodeById(cellView.model.id);
                 this.lastCellMouseDownPosition.x = node.getX();

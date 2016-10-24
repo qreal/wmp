@@ -2,6 +2,7 @@
 /// <reference path="../../../robots/interpreter/Interpreter.ts" />
 /// <reference path="../../../common/interfaces/editorCore.d.ts" />
 /// <reference path="../../../common/interfaces/vendor.d.ts" />
+/// <reference path="RobotsSceneController.ts" />
 
 class RobotsDiagramEditorController extends DiagramEditorController {
 
@@ -10,6 +11,7 @@ class RobotsDiagramEditorController extends DiagramEditorController {
 
     constructor($scope, $attrs) {
         super($scope, $attrs);
+        this.sceneController = new RobotsSceneController(this, this.diagramEditor.getScene());
         this.menuController = new DiagramMenuController(this);
         this.diagramInterpreter = new Interpreter();
 
