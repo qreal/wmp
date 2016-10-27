@@ -23,3 +23,5 @@ overlays
 !**/.idea/encodings.xml
 !**/.idea/vcs.xml
 !**/.idea/compiler.xml
+*.bak*
+*.vbak*

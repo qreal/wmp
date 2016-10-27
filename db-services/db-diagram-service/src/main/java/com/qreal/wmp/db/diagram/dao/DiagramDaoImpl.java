@@ -97,14 +97,14 @@ public class DiagramDaoImpl implements DiagramDao {
      */
     @Override
     public void rewriteDiagram(@NotNull Diagram diagram) throws AbortedException {
-        logger.trace("rewriteDiagram() was called with parameters: diagram = {}.", diagram.getName());
+        logger.trace("updateDiagram() was called with parameters: diagram = {}.", diagram.getName());
         Session session = sessionFactory.getCurrentSession();
         if (!isExistsDiagram(diagram.getId())) {
             throw new AbortedException("Diagram with specified Id doesn't exist. Use save instead.",
-                    "rewriteDiagram() safely aborted.", DiagramDaoImpl.class.getName());
+                    "updateDiagram() safely aborted.", DiagramDaoImpl.class.getName());
         }
         session.merge(diagram);
-        logger.trace("rewriteDiagram() successfully edited diagram {}.", diagram.getName());
+        logger.trace("updateDiagram() successfully edited diagram {}.", diagram.getName());
     }
 
     /**
@@ -157,7 +157,9 @@ public class DiagramDaoImpl implements DiagramDao {
             throw new AbortedException("Folder with specified Id doesn't exist.", "updateFolder() safely aborted.",
                     DiagramDaoImpl.class.getName());
         }
-        session.merge(folder);
+        Folder folderToSave = (Folder) session.merge(folder);
+        session.saveOrUpdate(folderToSave);
+        session.flush();
         logger.trace("updateFolder() successfully updated folder {}.", folder.getFolderName());
     }
 

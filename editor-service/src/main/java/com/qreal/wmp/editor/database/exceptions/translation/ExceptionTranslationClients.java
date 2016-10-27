@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
 @Aspect
 @Component
 @EnableAspectJAutoProxy(proxyTargetClass = true)
-public class ExceptionTranslation {
+public class ExceptionTranslationClients {
 
     private static final Logger loggerDiagrams = LoggerFactory.getLogger(DiagramServiceImpl.class);
 

@@ -20,10 +20,10 @@ public class RobotDbServiceHandler implements RobotDbService.Iface {
     }
 
     @Override
-    public long registerRobot(TRobot tRobot) throws TAborted, TIdAlreadyDefined {
+    public long saveRobot(TRobot tRobot) throws TAborted, TIdAlreadyDefined {
         long id;
         if (tRobot.isSetId()) {
-            throw new TIdAlreadyDefined("Robot id not null. To save a robot you should not assign it an Id.");
+            throw new TIdAlreadyDefined("Robot id not null. To saveUser a robot you should not assign it an Id.");
         }
         try {
             id = robotDao.saveRobot(new RobotSerial(tRobot));
@@ -34,7 +34,7 @@ public class RobotDbServiceHandler implements RobotDbService.Iface {
     }
 
     @Override
-    public TRobot findById(long robotId) throws TNotFound {
+    public TRobot getRobot(long robotId) throws TNotFound {
         RobotSerial robot;
         try {
             robot = robotDao.getRobot(robotId);

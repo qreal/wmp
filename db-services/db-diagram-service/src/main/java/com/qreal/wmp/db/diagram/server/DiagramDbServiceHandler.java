@@ -5,18 +5,21 @@ import com.qreal.wmp.db.diagram.exceptions.AbortedException;
 import com.qreal.wmp.db.diagram.exceptions.NotFoundException;
 import com.qreal.wmp.db.diagram.model.Diagram;
 import com.qreal.wmp.db.diagram.model.Folder;
+import com.qreal.wmp.db.diagram.model.FolderConverter;
 import com.qreal.wmp.thrift.gen.*;
 import org.apache.thrift.TException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.transaction.annotation.Transactional;
 
 /** Thrift server side handler for DiagramDBService.*/
-@Transactional
 public class DiagramDbServiceHandler implements DiagramDbService.Iface {
     private DiagramDao diagramDao;
 
+    private FolderConverter converter;
+
     public DiagramDbServiceHandler(ApplicationContext context) {
         diagramDao = (DiagramDao) context.getBean("diagramDao");
+        converter = (FolderConverter) context.getBean("folderConverter");
         assert diagramDao != null;
     }
 
@@ -35,7 +38,7 @@ public class DiagramDbServiceHandler implements DiagramDbService.Iface {
     }
 
     @Override
-    public TDiagram openDiagram(long diagramId) throws TNotFound {
+    public TDiagram getDiagram(long diagramId) throws TNotFound {
         Diagram diagram;
         try {
             diagram = diagramDao.getDiagram(diagramId);
@@ -56,7 +59,7 @@ public class DiagramDbServiceHandler implements DiagramDbService.Iface {
     }
 
     @Override
-    public void rewriteDiagram(TDiagram diagram) throws TAborted, TIdNotDefined {
+    public void updateDiagram(TDiagram diagram) throws TAborted, TIdNotDefined {
         if (!diagram.isSetId()) {
             throw new TIdNotDefined("Diagram id is null. To rewrite diagram you should specify id.");
         }
@@ -68,13 +71,13 @@ public class DiagramDbServiceHandler implements DiagramDbService.Iface {
     }
 
     @Override
-    public long createFolder(TFolder folder) throws TAborted, TIdAlreadyDefined {
+    public long saveFolder(TFolder tFolder) throws TAborted, TIdAlreadyDefined {
         long id;
-        if (folder.isSetId()) {
+        if (tFolder.isSetId()) {
             throw new TIdAlreadyDefined("Folder Id not null. To save a folder you should not assign Id to it.");
         }
         try {
-            id = diagramDao.saveFolder(new Folder(folder));
+            id = diagramDao.saveFolder(converter.toFolder(tFolder));
         } catch (AbortedException e) {
             //For now never happens
             throw new TAborted(e.getTextCause(), e.getMessage(), e.getFullClassName());
@@ -83,16 +86,29 @@ public class DiagramDbServiceHandler implements DiagramDbService.Iface {
     }
 
     @Override
-    public void updateFolder(TFolder folder) throws TAborted, TIdNotDefined {
-        if (!folder.isSetId()) {
+    public TFolder getFolder(long folderId) throws TNotFound {
+        Folder folder;
+        try {
+            folder = diagramDao.getFolder(folderId);
+        } catch (NotFoundException e) {
+            throw new TNotFound(String.valueOf(folderId), "Folder not found.");
+        }
+        return folder.toTFolder();
+    }
+
+    @Override
+    public void updateFolder(TFolder tFolder) throws TAborted, TIdNotDefined {
+        if (!tFolder.isSetId()) {
             throw new TIdNotDefined("Folder id is null. To update folder you should specify id.");
         }
         try {
-            diagramDao.updateFolder(new Folder(folder));
+            diagramDao.updateFolder(converter.toFolder(tFolder));
         } catch (AbortedException e) {
             throw new TAborted(e.getTextCause(), e.getMessage(), e.getFullClassName());
         }
     }
+
+
 
     @Override
     public void deleteFolder(long folderId) throws TAborted {

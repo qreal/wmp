@@ -11,25 +11,25 @@ import org.jetbrains.annotations.NotNull;
 public interface UserService {
     /**
      * Saves a user (and robots).
-     * @param user user to save (Id must not be set).
+     * @param user user to saveUser (Id must not be set).
      */
-    void save(@NotNull User user) throws AbortedException, ErrorConnectionException, TException;
+    void saveUser(@NotNull User user) throws AbortedException, ErrorConnectionException, TException;
 
     /**
      * Updates user state.
-     ** @param  user user to update (Id must be set).
+     ** @param  user user to updateUser (Id must be set).
      */
-    void update(@NotNull User user) throws AbortedException, ErrorConnectionException, TException;
+    void updateUser(@NotNull User user) throws AbortedException, ErrorConnectionException, TException;
 
     /**
      * Finds user by UserName.
      * @param username name of a user to find.
      */
-    @NotNull User findByUserName(String username) throws NotFoundException, ErrorConnectionException, TException;
+    @NotNull User getUser(String username) throws NotFoundException, ErrorConnectionException, TException;
 
     /**
      * Tests if a user with specified name exists.
      * @param username name of a user to find.
      */
-    boolean isUserExist(String username) throws ErrorConnectionException, TException;
+    boolean isUserExists(String username) throws ErrorConnectionException, TException;
 }

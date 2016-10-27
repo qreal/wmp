@@ -2,6 +2,7 @@ package com.qreal.wmp.editor.common.config.core;
 
 import com.qreal.wmp.editor.common.utils.PropertyLoader;
 import com.qreal.wmp.editor.controller.EditorServlet;
+import com.qreal.wmp.editor.database.diagrams.model.Folder;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
@@ -39,6 +40,9 @@ public class AppInit implements WebApplicationInitializer {
                 new EditorServlet(dispatcherContext));
         diagramService.setLoadOnStartup(1);
         diagramService.addMapping(PropertyLoader.load("service.properties", "path.editor.service"));
+
+        //Folder
+        Folder.setContext(dispatcherContext);
 
         DelegatingFilterProxy filter = new DelegatingFilterProxy("springSecurityFilterChain");
         filter.setContextAttribute("org.springframework.web.servlet.FrameworkServlet.CONTEXT.dispatcher");

@@ -86,8 +86,8 @@ public class UserDaoImpl implements UserDao {
      * @param username name of user to find
      */
     @Override
-    public TUser findByUserName(String username) throws NotFoundException, ErrorConnectionException {
-        logger.trace("findByUserName() was called with parameters: username = {}.", username);
+    public TUser getUser(String username) throws NotFoundException, ErrorConnectionException {
+        logger.trace("getUser() was called with parameters: username = {}.", username);
 
         Session session = sessionFactory.getCurrentSession();
         UserSerial userSerial = (UserSerial) session.get(UserSerial.class, username);
@@ -122,7 +122,7 @@ public class UserDaoImpl implements UserDao {
     private TRobot getRobot(long robotId) throws NotFoundException, ErrorConnectionException {
         TRobot robot = null;
         try {
-            robot = robotService.findById(robotId);
+            robot = robotService.getRobot(robotId);
         } catch (TException e) {
             logger.error("TException was not translated", e);
         }
@@ -180,7 +180,7 @@ public class UserDaoImpl implements UserDao {
     private long saveRobot(TRobot tRobot) throws AbortedException, ErrorConnectionException {
         long idRobot = -1;
         try {
-            idRobot = robotService.register(tRobot);
+            idRobot = robotService.saveRobot(tRobot);
         } catch (TException e) {
             logger.error("TException was not translated", e);
         }
@@ -189,7 +189,7 @@ public class UserDaoImpl implements UserDao {
 
     private long updateRobot(TRobot tRobot) throws AbortedException, ErrorConnectionException {
         try {
-            robotService.update(tRobot);
+            robotService.updateRobot(tRobot);
         } catch (TException e) {
             logger.error("TException was not translated", e);
         }

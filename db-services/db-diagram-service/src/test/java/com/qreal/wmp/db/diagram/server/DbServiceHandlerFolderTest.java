@@ -5,6 +5,7 @@ import com.qreal.wmp.db.diagram.dao.DiagramDao;
 import com.qreal.wmp.db.diagram.exceptions.AbortedException;
 import com.qreal.wmp.db.diagram.exceptions.NotFoundException;
 import com.qreal.wmp.db.diagram.model.Folder;
+import com.qreal.wmp.db.diagram.model.FolderConverter;
 import com.qreal.wmp.thrift.gen.*;
 import org.junit.After;
 import org.junit.Before;
@@ -29,6 +30,10 @@ import static org.mockito.Mockito.*;
 @ContextConfiguration(classes = {AppInit.class})
 @Transactional
 public class DbServiceHandlerFolderTest {
+
+    @Autowired
+    private FolderConverter converter;
+
     @Autowired
     private DiagramDao diagramDaoMocked;
 
@@ -49,26 +54,53 @@ public class DbServiceHandlerFolderTest {
         reset(diagramDaoMocked);
     }
 
-    /** Test createFolder operation for diagram. */
+    /** Test saveFolder operation for diagram. */
     @Test
     @Rollback
-    public void createFolder_correctInput_diagramDaoCalled() throws Exception {
+    public void saveFolder_correctInput_diagramDaoCalled() throws Exception {
         TFolder tFolder = createFolder("testFolder");
-        Folder folder = new Folder(tFolder);
+        Folder folder = converter.toFolder(tFolder);
 
-        handler.createFolder(tFolder);
+        handler.saveFolder(tFolder);
 
         verify(diagramDaoMocked).saveFolder(folder);
     }
 
-    /** Test createFolder operation for diagram. */
+    /** Test saveFolder operation for diagram. */
     @Test
     @Rollback
-    public void createFolder_idSet_throwsTIdAlreadyDefined() throws Exception {
+    public void saveFolder_idSet_throwsTIdAlreadyDefined() throws Exception {
         long idFolder = 0L;
         TFolder tFolder = createFolder("testFolder", idFolder);
 
-        assertThatThrownBy(() -> handler.createFolder(tFolder)).isInstanceOf(TIdAlreadyDefined.class);
+        assertThatThrownBy(() -> handler.saveFolder(tFolder)).isInstanceOf(TIdAlreadyDefined.class);
+    }
+
+    /** Test getFolder operation for folder. */
+    @Test
+    @Rollback
+    public void getFolder_folderExists_returnsTFolder() throws Exception {
+        long idFolder = 0L;
+        TFolder tFolder = createFolder("testFolder", idFolder);
+        Folder folder = converter.toFolder(tFolder);
+
+        when(diagramDaoMocked.getFolder(idFolder)).thenReturn(folder);
+
+        TFolder gotFolder = handler.getFolder(idFolder);
+
+        assertThat(gotFolder).isEqualTo(tFolder);
+    }
+
+    /** Test getFolder operation for folder. */
+    @Test
+    @Rollback
+    public void getFolder_folderNotExists_throwsTNotFound() throws Exception {
+        long idFolderNotCorrect = 0L;
+
+        when(diagramDaoMocked.getFolder(idFolderNotCorrect)).
+                thenThrow(new NotFoundException("0", "Exception"));
+
+        assertThatThrownBy(() -> handler.getFolder(idFolderNotCorrect)).isInstanceOf(TNotFound.class);
     }
 
     /** Test updateFolder operation for folder. */
@@ -77,7 +109,7 @@ public class DbServiceHandlerFolderTest {
     public void updateFolder_correctInput_diagramDaoCalled() throws Exception {
         long idFolder = 0L;
         TFolder tFolder = createFolder("testFolder", idFolder);
-        Folder folder = new Folder(tFolder);
+        Folder folder = converter.toFolder(tFolder);
 
         handler.updateFolder(tFolder);
 
@@ -99,7 +131,7 @@ public class DbServiceHandlerFolderTest {
     public void updateFolder_daoThrowsAborted_throwsTAborted() throws Exception {
         long idFolder = 0L;
         TFolder tFolder = createFolder("testFolder", idFolder);
-        Folder folder = new Folder(tFolder);
+        Folder folder = converter.toFolder(tFolder);
 
         doThrow(new AbortedException("0", "Exception", "Exception")).
                 when(diagramDaoMocked).updateFolder(folder);
@@ -107,6 +139,7 @@ public class DbServiceHandlerFolderTest {
         assertThatThrownBy(() -> handler.updateFolder(tFolder)).isInstanceOf(TAborted.class);
     }
 
+    /** Test deleteFolder operation for folder.*/
     @Test
     @Rollback
     public void deleteFolder_existsFolder_diagramDaoCalled() throws Exception {
@@ -117,6 +150,7 @@ public class DbServiceHandlerFolderTest {
         verify(diagramDaoMocked).deleteFolder(idFolder);
     }
 
+    /** Test deleteFolder operation for folder.*/
     @Test
     @Rollback
     public void deleteFolder_daoThrowsAborted_throwsTAborted() throws Exception {
@@ -128,13 +162,14 @@ public class DbServiceHandlerFolderTest {
         assertThatThrownBy(() -> handler.deleteFolder(idFolder)).isInstanceOf(TAborted.class);
     }
 
+    /** Test getFolderTree operation for folder.*/
     @Test
     @Rollback
     public void getFolderTree_existsFolder_returnsFolderTree() throws Exception {
         String username = "testUser";
         Long idFolder = 0L;
         TFolder tFolder = createFolder("root", idFolder, username);
-        Folder folder = new Folder(tFolder);
+        Folder folder = converter.toFolder(tFolder);
 
         when(diagramDaoMocked.getFolderTree(username)).thenReturn(folder);
 
@@ -143,6 +178,7 @@ public class DbServiceHandlerFolderTest {
         assertThat(gotFolder).isEqualTo(tFolder);
     }
 
+    /** Test getFolderTree operation for folder.*/
     @Test
     @Rollback
     public void getFolderTree_notExistsFolder_throwsTNotFound() throws Exception {

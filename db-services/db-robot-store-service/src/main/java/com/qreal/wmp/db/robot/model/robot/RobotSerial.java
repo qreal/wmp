@@ -62,15 +62,17 @@ public class RobotSerial {
             tRobot.setId(id);
         }
 
-        BiConsumer<String, Consumer<String>> setField = (value, func) -> {
-            if (value != null) {
-                func.accept(value);
-            }
-        };
+        if (name != null) {
+            tRobot.setName(name);
+        }
 
-        setField.accept(name, tRobot::setName);
-        setField.accept(ssid, tRobot::setSsid);
-        setField.accept(owner, tRobot::setUsername);
+        if (ssid != null) {
+            tRobot.setSsid(ssid);
+        }
+
+        if (owner != null) {
+            tRobot.setUsername(owner);
+        }
 
         return tRobot;
     }

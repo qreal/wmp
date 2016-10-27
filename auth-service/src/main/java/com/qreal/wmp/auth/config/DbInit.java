@@ -47,6 +47,8 @@ public class DbInit implements ApplicationListener {
 
             userService.add(createTestUser("123", "123"));
 
+            userService.add(createTestUser("1234", "1234"));
+
             clientService.add(createClient("dashboardService", "secret"));
 
             clientService.add(createClient("editorService", "secret"));

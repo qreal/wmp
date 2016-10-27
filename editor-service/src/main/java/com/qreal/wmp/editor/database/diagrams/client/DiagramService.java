@@ -14,8 +14,8 @@ public interface DiagramService {
     /**
      * Saves diagram in specified folder and creates for it Id.
      *
-     * @param diagram  diagram to save (Id must not be set)
-     * @param folderId id of folder to save diagram in
+     * @param diagram  diagram to saveUser (Id must not be set)
+     * @param folderId id of folder to saveUser diagram in
      * @return new id of diagram
      */
     Long saveDiagram(@NotNull Diagram diagram, Long folderId) throws AbortedException, ErrorConnectionException,
@@ -23,19 +23,41 @@ public interface DiagramService {
 
     /** Returns diagram with specified id.*/
     @NotNull
-    Diagram openDiagram(Long diagramId) throws NotFoundException, ErrorConnectionException, TException;
+    Diagram getDiagram(Long diagramId) throws NotFoundException, ErrorConnectionException, TException;
 
     /**
      * Rewrites diagram with id equal to diagram.id.
      *
      * @param diagram diagram to rewrite (diagram.id must be set correctly).
      */
-    void rewriteDiagram(@NotNull Diagram diagram) throws AbortedException, ErrorConnectionException, TException;
+    void updateDiagram(@NotNull Diagram diagram) throws AbortedException, ErrorConnectionException, TException;
 
     /**
      * Deletes diagram with specified id.
      */
     void deleteDiagram(Long diagramId) throws AbortedException, ErrorConnectionException, TException;
+
+
+    /**
+     * Creates folder and assign it id.
+     *
+     * @param folder folder to create (Id must not be set)
+     * @return new id of folder
+     */
+    Long saveFolder(@NotNull Folder folder) throws AbortedException, ErrorConnectionException, TException;
+
+    /** Returns folder with specified id.*/
+    Folder getFolder(Long folderId) throws NotFoundException, ErrorConnectionException, TException;
+
+    /**
+     * Updates folder with id equal to folder.id.
+     *
+     * @param folder folder to rewrite (folder.id must be set correctly)
+     */
+    void updateFolder(@NotNull Folder folder) throws AbortedException, ErrorConnectionException, TException;
+
+    /** Deletes folder with specified id.*/
+    void deleteFolder(Long folderId) throws AbortedException, ErrorConnectionException, TException;
 
     /**
      * Creates root folder for user with specified username.
@@ -44,18 +66,5 @@ public interface DiagramService {
      */
     void createRootFolder(String userName) throws AbortedException, ErrorConnectionException, TException;
 
-    /**
-     * Creates folder and assign it id.
-     *
-     * @param folder folder to create (Id must not be set)
-     * @return new id of folder
-     */
-    Long createFolder(@NotNull Folder folder) throws AbortedException, ErrorConnectionException, TException;
-
-    /** Deletes folder with specified id.*/
-    void deleteFolder(Long folderId) throws AbortedException, ErrorConnectionException, TException;
-
-    /** Returns root folder of user.*/
-    @NotNull
-    Folder getFolderTree() throws NotFoundException, ErrorConnectionException, TException;
+    @NotNull Folder getFolderTree(String username) throws NotFoundException, ErrorConnectionException, TException;
 }

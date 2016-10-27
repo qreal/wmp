@@ -31,13 +31,14 @@ class DiagramMenuController {
         this.canBeDeleted = false;
 
         var menuManager = this;
+        var folderTree;
         try {
-            var folderTree = menuManager.getClient().getFolderTree();
+            folderTree = menuManager.getClient().getFolderTree();
             menuManager.folderTree = Folder.createFromDAO(folderTree, null);
             menuManager.currentFolder = menuManager.folderTree;
         }
-        catch (ouch) {
-            console.log("Error: can't get folder tree");
+        catch (e) {
+            console.log("Error: can't get folder tree", e);
         }
 
         $(document).ready(function() {
@@ -339,6 +340,12 @@ class DiagramMenuController {
                         controller.deleteFolderFromDatabase(controller.selectedElement.getName());
                     }
                     break;
+                case "share":
+                    if (controller.selectedElement.getType() === 'folders') {
+                        console.log("Shared clicked")
+                        controller.shareFolder(controller.selectedElement.getName());
+                    }
+                    break;
             }
 
             $("#" + controller.contextMenuId).hide(100);
@@ -349,5 +356,18 @@ class DiagramMenuController {
         var transport = new Thrift.TXHRTransport(GeneralConstants.EDITOR_REST_SERVLET);
         var protocol = new Thrift.TJSONProtocol(transport);
         return new EditorServiceThriftClient(protocol);
+    }
+
+    public shareFolder(folderName: string) {
+        console.log("Shared entered")
+        var menuManager = this;
+        $('#user-name-to-share-folder').empty();
+        $('#enter-name-share-folder').modal('show');
+        $('#name-share-folder-entered').click(function () {
+            var name = $('.share-path input:text').val();
+            var id = menuManager.currentFolder.findChildByName(folderName).getId();
+            menuManager.getClient().addUserToOwners(id, name)
+            $('#enter-name-share-folder').modal('hide');
+        });
     }
 }
