@@ -174,7 +174,6 @@ var DiagramScene = (function (_super) {
         var htmlId = id;
         var gridSize = 25;
         var zoomAttr = parseFloat($("#" + htmlId).attr("zoom"));
-        var zoom = (zoomAttr) ? zoomAttr : 1;
         _super.call(this, {
             el: $('#' + htmlId),
             width: 2000,
@@ -194,13 +193,13 @@ var DiagramScene = (function (_super) {
             validateMagnet: function (cellView, magnet) {
                 return magnet.getAttribute('magnet') !== 'passive';
             },
-            diagramElementView: joint.dia.ElementView.extend(function () {
-                return jQuery.extend(joint.shapes.basic.PortsViewInterface, { pointerdown: DiagramElementListener.pointerdown });
-            })
+            diagramElementView: joint.dia.ElementView.extend(jQuery.extend(joint.shapes.basic.PortsViewInterface, {
+                pointerdown: DiagramElementListener.pointerdown
+            }))
         });
         this.htmlId = htmlId;
         this.gridSize = gridSize;
-        this.zoom = zoom;
+        this.zoom = (zoomAttr) ? zoomAttr : 1;
         this.graph = graph;
         this.nodesMap = {};
         this.linksMap = {};

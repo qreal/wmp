@@ -14,10 +14,9 @@ class DiagramScene extends joint.dia.Paper {
     private zoom: number;
 
     constructor(id: string, graph: joint.dia.Graph) {
-        let htmlId = id;
-        let gridSize = 25;
-        let zoomAttr: number = parseFloat($("#" + htmlId).attr("zoom"));
-        let zoom = (zoomAttr) ? zoomAttr : 1;
+        var htmlId = id;
+        var gridSize = 25;
+        var zoomAttr: number = parseFloat($("#" + htmlId).attr("zoom"));
 
         super({
             el: $('#' + htmlId),
@@ -38,14 +37,15 @@ class DiagramScene extends joint.dia.Paper {
             validateMagnet: function (cellView, magnet) {
                 return magnet.getAttribute('magnet') !== 'passive';
             },
-            diagramElementView: joint.dia.ElementView.extend(function () {
-                return jQuery.extend(joint.shapes.basic.PortsViewInterface, { pointerdown: DiagramElementListener.pointerdown});
-            })
+            diagramElementView: joint.dia.ElementView.extend(jQuery.extend(joint.shapes.basic.PortsViewInterface,
+                {
+                pointerdown: DiagramElementListener.pointerdown
+                }))
         });
 
         this.htmlId = htmlId;
         this.gridSize = gridSize;
-        this.zoom = zoom;
+        this.zoom = (zoomAttr) ? zoomAttr : 1;
         this.graph = graph;
         this.nodesMap = {};
         this.linksMap = {};
