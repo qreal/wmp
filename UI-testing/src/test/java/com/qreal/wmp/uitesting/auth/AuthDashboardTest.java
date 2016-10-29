@@ -18,19 +18,22 @@ import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 
-
 public class AuthDashboardTest {
 
     private static String dashboardUrl;
+
     private static WebDriver driver;
 
+    /**
+     * Setup ChromeDriverManager and load correct urls from .properties file.
+     */
     @BeforeClass
     public static void setUpClass() {
         ChromeDriverManager.getInstance().setup();
         final String resourceName = "services.properties";
         ClassLoader loader = Thread.currentThread().getContextClassLoader();
         Properties props = new Properties();
-        try(InputStream resourceStream = loader.getResourceAsStream(resourceName)) {
+        try (InputStream resourceStream = loader.getResourceAsStream(resourceName)) {
             props.load(resourceStream);
         } catch (IOException e) {
             e.printStackTrace();
@@ -38,6 +41,10 @@ public class AuthDashboardTest {
         dashboardUrl = props.getProperty("accessDashboardUri");
     }
 
+    /**
+     * Try to open dashboard page.
+     * Should be redirected to auth page.
+     */
     @Before
     public void openAuthPage() {
         driver = new ChromeDriver();
@@ -47,6 +54,10 @@ public class AuthDashboardTest {
         $(byText("Dashboard")).shouldNotBe(exist);
     }
 
+    /**
+     * Try to login with correct username and password.
+     * Should access and redirect to dashboard
+     */
     @Test
     public void userCanLoginByUsername() {
         $(By.name("username")).setValue("123");
@@ -55,6 +66,10 @@ public class AuthDashboardTest {
         $(byText("Dashboard")).waitUntil(appear, 50000);
     }
 
+    /**
+     * Try to login with random username and password.
+     * An error must be shown
+     */
     @Test
     public void  userWrongAuth() {
         $(byText("Password or login wrong")).shouldNotBe(exist);
@@ -69,7 +84,7 @@ public class AuthDashboardTest {
 
     @After
     public void logout() {
-       driver.close();
+        driver.close();
     }
 
 }
