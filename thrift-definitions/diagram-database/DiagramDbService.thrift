@@ -35,7 +35,7 @@ service DiagramDbService {
     * 1. The diagram to update doesn't exist
     **/
     void updateDiagram(1: Diagram.TDiagram diagram) throws (1: DbExceptions.TAborted aborted,
-                                                             2: DbExceptions.TIdNotDefined notDefined),
+                                                             2: DbExceptions.TIdNotDefined notDefined);
 
 //CRUD FOLDERS
 
@@ -48,8 +48,12 @@ service DiagramDbService {
     i64 saveFolder(1: Diagram.TFolder folder) throws (1: DbExceptions.TIdAlreadyDefined alreadyDefined,
                                                         2: DbExceptions.TAborted aborted);
 
-    /** TNotFound is thrown if the folder with specified id is not found.*/
-    Diagram.TFolder getFolder(1: i64 folderId) throws (1: DbExceptions.TNotFound e);
+    /**
+    * Username used to find right parent.
+    * TNotFound is thrown if the folder with specified id is not found.
+    **/
+
+    Diagram.TFolder getFolder(1: i64 folderId, 2: string username) throws (1: DbExceptions.TNotFound e);
 
     /**
     * In case of exception deleteFolder operation will be safely aborted.
@@ -72,5 +76,7 @@ service DiagramDbService {
 
     /** TNotFound is thrown if the folder tree with specified owner is not found.*/
     Diagram.TFolder getFolderTree(1: string username) throws (1: DbExceptions.TNotFound e);
+
+    void shareFolderTo(1: string username, 2: Diagram.TFolder folder);
 }
 

@@ -127,12 +127,13 @@ public class DiagramServiceImpl implements DiagramService {
     }
 
     @Override
-    public Folder getFolder(Long folderId) throws NotFoundException, ErrorConnectionException, TException {
+    public Folder getFolder(Long folderId, String username) throws NotFoundException, ErrorConnectionException,
+            TException {
         logger.trace("getFolder() was called with parameters: folderId = {}.", folderId);
         transport.open();
         TFolder tFolder;
         try {
-            tFolder = client.getFolder(folderId);
+            tFolder = client.getFolder(folderId, username);
         } finally {
             transport.close();
         }
@@ -192,5 +193,19 @@ public class DiagramServiceImpl implements DiagramService {
         }
         logger.trace("getFolderTree() successfully returned a folderTree.");
         return new Folder(folder);
+    }
+
+    @Override
+    @NotNull
+    public void shareFolderTo(String username, Folder folder) throws TException {
+        logger.trace("shareFolderTo() was called with parameters: username = {}.", username);
+        TFolder tFolder = folder.toTFolder();
+        transport.open();
+        try {
+            client.shareFolderTo(username, tFolder);
+        } finally {
+            transport.close();
+        }
+        logger.trace("shareFolderTo() successfully shared folder.");
     }
 }

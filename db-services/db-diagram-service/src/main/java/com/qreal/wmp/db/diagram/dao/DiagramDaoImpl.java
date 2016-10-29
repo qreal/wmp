@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Set;
 
 @Transactional
 public class DiagramDaoImpl implements DiagramDao {
@@ -50,18 +49,18 @@ public class DiagramDaoImpl implements DiagramDao {
         logger.trace("saveDiagram() called with parameters: diagram = {}, folderID = {}", diagram.getName(), folderId);
         Session session = sessionFactory.getCurrentSession();
         Folder folder;
-        Set<Diagram> diagrams;
         try {
+            session.save(diagram);
+
             folder = getFolder(folderId);
-            diagrams = folder.getDiagrams();
+            folder.getDiagrams().add(diagram);
+
+            updateFolder(folder);
         } catch (NotFoundException e) {
             logger.error("Got null folder object for folder id {}.", folderId);
             throw new AbortedException("Folder to save diagram into not found", "saveDiagram safely aborted",
                     DiagramDaoImpl.class.getName(), e);
         }
-        diagrams.add(diagram);
-        session.update(folder);
-        session.flush();
         logger.trace("saveDiagram() successfully saved diagram {}.", diagram.getName());
         return diagram.getId();
     }
@@ -131,11 +130,18 @@ public class DiagramDaoImpl implements DiagramDao {
      * @param folder folder to create (Id must not be set)
      */
     @Override
-    public Long saveFolder(@NotNull Folder folder) {
+    public Long saveFolder(@NotNull Folder folder) throws AbortedException {
         logger.trace("saveFolder() was called with parameters: folder = {}.", folder.getFolderName());
         Session session = sessionFactory.getCurrentSession();
+
         session.save(folder);
+
         Long folderId = folder.getId();
+
+        for (Folder dir : folder.getParentFolders()) {
+            dir.getChildrenFolders().add(folder);
+            updateFolder(dir);
+        }
         logger.trace("saveFolder() successfully created a folder with id {}", folderId);
         return folderId;
     }
@@ -157,9 +163,8 @@ public class DiagramDaoImpl implements DiagramDao {
             throw new AbortedException("Folder with specified Id doesn't exist.", "updateFolder() safely aborted.",
                     DiagramDaoImpl.class.getName());
         }
-        Folder folderToSave = (Folder) session.merge(folder);
-        session.saveOrUpdate(folderToSave);
-        session.flush();
+        session.merge(folder);
+
         logger.trace("updateFolder() successfully updated folder {}.", folder.getFolderName());
     }
 
@@ -177,6 +182,7 @@ public class DiagramDaoImpl implements DiagramDao {
         }
         Folder folder = (Folder) session.get(Folder.class, folderId);
         session.delete(folder);
+
         logger.trace("deleteFolder() successfully deleted a folder with id {}", folderId);
     }
 

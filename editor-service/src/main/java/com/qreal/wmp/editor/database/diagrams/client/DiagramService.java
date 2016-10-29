@@ -47,7 +47,7 @@ public interface DiagramService {
     Long saveFolder(@NotNull Folder folder) throws AbortedException, ErrorConnectionException, TException;
 
     /** Returns folder with specified id.*/
-    Folder getFolder(Long folderId) throws NotFoundException, ErrorConnectionException, TException;
+    Folder getFolder(Long folderId, String username) throws NotFoundException, ErrorConnectionException, TException;
 
     /**
      * Updates folder with id equal to folder.id.
@@ -67,4 +67,6 @@ public interface DiagramService {
     void createRootFolder(String userName) throws AbortedException, ErrorConnectionException, TException;
 
     @NotNull Folder getFolderTree(String username) throws NotFoundException, ErrorConnectionException, TException;
+
+    @NotNull void shareFolderTo(String username, Folder folder) throws TException;
 }

@@ -11,12 +11,9 @@ import com.qreal.wmp.thrift.gen.EditorServiceThrift;
 import com.qreal.wmp.thrift.gen.TDiagram;
 import com.qreal.wmp.thrift.gen.TFolder;
 import org.apache.thrift.TException;
-import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
-
-import java.util.Set;
 
 /**
  * Thrift EditorRest controller.
@@ -130,21 +127,10 @@ public class EditorServletHandler implements EditorServiceThrift.Iface {
         DiagramService diagramService = (DiagramService) context.getBean("diagramService");
         Folder newFolder = new Folder(folder);
 
-        Folder parentFolder = null;
-        if (folder.isSetFolderParentId()) {
-            parentFolder = new Folder(getFolder(folder.getFolderParentId()));
-        }
-
         long id = 0;
         try {
             id = diagramService.saveFolder(newFolder);
             newFolder.setId(id);
-
-            if (parentFolder != null) {
-                parentFolder.getChildrenFolders().add(newFolder);
-                newFolder.getParentFolders().add(parentFolder);
-                updateFolder(parentFolder.toTFolder());
-            }
         } catch (AbortedException e) {
             //TODO Here we should not return 0, but send exception to client side.
             logger.error("saveFolder method encountered exception Aborted. Instead of folderId will be returned 0.",
@@ -160,11 +146,11 @@ public class EditorServletHandler implements EditorServiceThrift.Iface {
     }
 
     @Override
-    public TFolder getFolder(long folderId) {
+    public TFolder getFolder(long folderId, String username) {
         DiagramService diagramService = (DiagramService) context.getBean("diagramService");
         TFolder tFolder = null;
         try {
-            tFolder = diagramService.getFolder(folderId).toTFolder();
+            tFolder = diagramService.getFolder(folderId, username).toTFolder();
         } catch (ErrorConnectionException e) {
             //TODO Here we should not return null, but send exception to client side.
             logger.error("getFolder method encountered exception ErrorConnection. Instead of folder will be " +
@@ -236,7 +222,7 @@ public class EditorServletHandler implements EditorServiceThrift.Iface {
     }
 
     @Override
-    public void addUserToOwners(long folderId, String username) throws TException {
+    public void addUserToOwners(long folderId, String username) {
         DiagramService diagramService = (DiagramService) context.getBean("diagramService");
 
         if (username.equals(AuthenticatedUser.getUserName())) {
@@ -245,94 +231,17 @@ public class EditorServletHandler implements EditorServiceThrift.Iface {
             return;
         }
 
-        TFolder tFolderToShare = getFolder(folderId);
+        TFolder tFolderToShare = getFolder(folderId, username);
         if (tFolderToShare == null || tFolderToShare.getOwners().contains(username)) {
             return;
         }
 
-        Folder rootFolder = getRootFolder(username, diagramService);
+        TFolder tFolder = getFolder(folderId, AuthenticatedUser.getUserName());
 
-        Folder folderToShare = new Folder(tFolderToShare);
-        folderToShare = addOwner(username, folderToShare);
-        updateFolder(folderToShare.toTFolder());
-
-        TFolder testFolder =  getFolder(folderToShare.getId());
-
-
-        if (rootFolder == null) {
-            return;
-        }
-
-        Folder sharedFolder = getSharedFolder(rootFolder);
-
-        if (sharedFolder == null) {
-
-            sharedFolder = new Folder("Shared", username);
-            long idShared = createFolder(sharedFolder.toTFolder());
-            sharedFolder.setId(idShared);
-
-            sharedFolder.getChildrenFolders().add(folderToShare);
-            folderToShare.getParentFolders().add(sharedFolder);
-
-            updateFolder(sharedFolder.toTFolder());
-            testFolder = getFolder(sharedFolder.getId());
-
-            rootFolder.getChildrenFolders().add(sharedFolder);
-            sharedFolder.getParentFolders().add(rootFolder);
-            updateFolder(rootFolder.toTFolder());
-            testFolder = getFolder(rootFolder.getId());
-
-            int i = 0;
-        }
-        else {
-            if (sharedFolder.getChildrenFolders().contains(folderToShare)) {
-                logger.error("addUserToOwners method was called with folder which already shared to user.");
-                return;
-            }
-            sharedFolder.getChildrenFolders().add(folderToShare);
-            updateFolder(sharedFolder.toTFolder());
-        }
-
-        rootFolder = getRootFolder(username, diagramService);
-
-        int i = 0;
-
-    }
-
-    @Nullable
-    private Folder getSharedFolder(Folder rootFolder) {
-        Folder sharedFolder = null;
-        for (Folder folderCur : rootFolder.getChildrenFolders()) {
-            if (folderCur.getFolderName().equals("Shared")) {
-                sharedFolder = folderCur;
-            }
-        }
-        return sharedFolder;
-    }
-
-    @Nullable
-    private Folder getRootFolder(String username, DiagramService diagramService) throws TException {
-        Folder rootFolder;
         try {
-            rootFolder = diagramService.getFolderTree(username);
-        } catch (NotFoundException e) {
-            //TODO Here we should not return null, but send exception to client side.
-            logger.error("addUserToOwners method encountered exception NotFound. Folder to share not exists. " +
-                    "Operation will aborted", e);
-            return null;
-        } catch (ErrorConnectionException e) {
-            //TODO Here we should not return null, but send exception to client side.
-            logger.error("addUserToOwners method encountered exception ErrorConnection. Operation will aborted", e);
-            return null;
+            diagramService.shareFolderTo(username, new Folder(tFolder));
+        } catch (TException e) {
+            logger.error("TException was not translated", e);
         }
-        return rootFolder;
     }
-
-    private Folder addOwner(String username, Folder folder) {
-        Set<String> owners = folder.getOwners();
-        owners.add(username);
-        folder.setOwners(owners);
-        return folder;
-    }
-
 }

@@ -44,8 +44,7 @@ struct TFolder {
     1 : optional i64 id,
     2 : string folderName,
     3 : optional set<string> owners,
-    4 : optional set<i64> parentFolders,
-    5 : set<TFolder> childrenFolders,
-    6 : set<TDiagram> diagrams,
-    7 : optional i64 folderParentId
+    4 : set<TFolder> childrenFolders,
+    5 : set<TDiagram> diagrams,
+    6 : optional i64 folderParentId
 }

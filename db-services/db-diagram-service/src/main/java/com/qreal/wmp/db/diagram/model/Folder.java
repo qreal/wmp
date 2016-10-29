@@ -1,15 +1,9 @@
 package com.qreal.wmp.db.diagram.model;
 
-import com.qreal.wmp.db.diagram.dao.DiagramDao;
-import com.qreal.wmp.db.diagram.exceptions.NotFoundException;
 import com.qreal.wmp.thrift.gen.TFolder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -33,16 +27,20 @@ public class Folder implements Serializable {
     @Column(name = "folder_name")
     private String folderName;
 
-    @Column(name = "username")
     @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "owners", joinColumns = @JoinColumn(name = "folder_id"))
+    @Column(name = "username")
     private Set<String> owners = new HashSet<>();
+
+    @Transient
+    private Long folderParentId;
 
     @ManyToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER, mappedBy = "childrenFolders")
     private Set<Folder> parentFolders = new HashSet<>();
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name="folders_folders", joinColumns={@JoinColumn(name="parent_id")},
-            inverseJoinColumns={@JoinColumn(name="child_id")})
+    @JoinTable(name = "folders_folders", joinColumns = {@JoinColumn(name = "parent_id")},
+            inverseJoinColumns = {@JoinColumn(name = "child_id")})
     private Set<Folder> childrenFolders = new HashSet<>();
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
@@ -51,45 +49,56 @@ public class Folder implements Serializable {
 
     public Folder() { }
 
+    public Folder(String folderName, String owners, Long id) {
+        this.folderName = folderName;
+        this.owners.add(owners);
+        this.id = id;
+    }
+
     public Folder(String folderName, String owners) {
         this.folderName = folderName;
         this.owners.add(owners);
     }
 
-    /** Converter from Folder to Thrift TFolder.*/
-    public TFolder toTFolder() {
-        TFolder tFolder = new TFolder();
+    /**
+     * Constructor-converter from Thrift TFolder to Folder.
+     * It will not fill parentsFolders except presented, which could be changed.
+     */
+    public Folder(TFolder tFolder) {
 
-        if (id != null) {
-            tFolder.setId(id);
+        if (tFolder.isSetId()) {
+            id = tFolder.getId();
         }
 
-        if (folderName != null) {
-            tFolder.setFolderName(folderName);
+        if (tFolder.isSetFolderName()) {
+            folderName = tFolder.getFolderName();
         }
 
-        if (owners != null && !owners.isEmpty()) {
-            tFolder.setOwners(owners);
+        if (tFolder.isSetOwners()) {
+            owners = tFolder.getOwners();
         }
 
-        if (childrenFolders != null && !childrenFolders.isEmpty()) {
-            tFolder.setChildrenFolders(childrenFolders.stream().map(Folder::toTFolderWithoutParents).collect(Collectors.toSet()));
+        if (tFolder.isSetFolderParentId()) {
+            folderParentId = tFolder.getFolderParentId();
         }
 
-        if (parentFolders != null && !parentFolders.isEmpty()) {
-            tFolder.setParentFolders(parentFolders.stream().map(Folder::getId).collect(Collectors.toSet()));
+        if (tFolder.isSetChildrenFolders()) {
+            childrenFolders = tFolder.getChildrenFolders().stream().map(Folder::new).collect(Collectors.toSet());
         }
 
-        if (diagrams != null && !diagrams.isEmpty()) {
-            tFolder.setDiagrams(diagrams.stream().map(Diagram::toTDiagram).collect(Collectors.toSet()));
+        for (Object child : childrenFolders.toArray()) {
+            childrenFolders.remove((Folder) child);
+            ((Folder) child).getParentFolders().add(this);
+            childrenFolders.add((Folder) child);
         }
 
-        return tFolder;
-
+        if (tFolder.isSetDiagrams()) {
+            diagrams = tFolder.getDiagrams().stream().map(Diagram::new).collect(Collectors.toSet());
+        }
     }
 
     /** Converter from Folder to Thrift TFolder.*/
-    public TFolder toTFolderWithoutParents() {
+    public TFolder toTFolder(final String username) {
         TFolder tFolder = new TFolder();
 
         if (id != null) {
@@ -100,21 +109,27 @@ public class Folder implements Serializable {
             tFolder.setFolderName(folderName);
         }
 
-        if (owners != null && !owners.isEmpty()) {
+        if (owners != null) {
             tFolder.setOwners(owners);
         }
 
-        if (childrenFolders != null && !childrenFolders.isEmpty()) {
-            tFolder.setChildrenFolders(childrenFolders.stream().map(Folder::toTFolderWithoutParents).collect(Collectors.toSet()));
+        parentFolders.stream().filter(dir -> dir.owners.contains(username)).
+                forEach(dir -> tFolder.setFolderParentId(dir.getId()));
+
+        if (!tFolder.isSetFolderParentId() && folderParentId != null) {
+            tFolder.setFolderParentId(folderParentId);
         }
 
-        //not pass parents for now
+        if (childrenFolders != null && !childrenFolders.isEmpty()) {
+            tFolder.setChildrenFolders(childrenFolders.stream().map((folder -> folder.toTFolder(username))).
+                    collect(Collectors.toSet()));
+        }
 
         if (diagrams != null && !diagrams.isEmpty()) {
             tFolder.setDiagrams(diagrams.stream().map(Diagram::toTDiagram).collect(Collectors.toSet()));
         }
 
         return tFolder;
-
     }
 }
+

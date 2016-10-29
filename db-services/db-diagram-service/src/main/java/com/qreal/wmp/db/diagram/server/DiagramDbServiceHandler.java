@@ -5,21 +5,27 @@ import com.qreal.wmp.db.diagram.exceptions.AbortedException;
 import com.qreal.wmp.db.diagram.exceptions.NotFoundException;
 import com.qreal.wmp.db.diagram.model.Diagram;
 import com.qreal.wmp.db.diagram.model.Folder;
-import com.qreal.wmp.db.diagram.model.FolderConverter;
 import com.qreal.wmp.thrift.gen.*;
 import org.apache.thrift.TException;
+import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
-import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Set;
 
 /** Thrift server side handler for DiagramDBService.*/
 public class DiagramDbServiceHandler implements DiagramDbService.Iface {
+
+    private static final Logger logger = LoggerFactory.getLogger(DiagramDbServiceHandler.class);
+
     private DiagramDao diagramDao;
 
-    private FolderConverter converter;
+    private RelationMapping mapper;
 
     public DiagramDbServiceHandler(ApplicationContext context) {
         diagramDao = (DiagramDao) context.getBean("diagramDao");
-        converter = (FolderConverter) context.getBean("folderConverter");
+        mapper = new RelationMapping(diagramDao);
         assert diagramDao != null;
     }
 
@@ -77,23 +83,22 @@ public class DiagramDbServiceHandler implements DiagramDbService.Iface {
             throw new TIdAlreadyDefined("Folder Id not null. To save a folder you should not assign Id to it.");
         }
         try {
-            id = diagramDao.saveFolder(converter.toFolder(tFolder));
+            id = diagramDao.saveFolder(mapper.convertTFolder(tFolder));
         } catch (AbortedException e) {
-            //For now never happens
             throw new TAborted(e.getTextCause(), e.getMessage(), e.getFullClassName());
         }
         return id;
     }
 
     @Override
-    public TFolder getFolder(long folderId) throws TNotFound {
+    public TFolder getFolder(long folderId, String username) throws TNotFound {
         Folder folder;
         try {
             folder = diagramDao.getFolder(folderId);
         } catch (NotFoundException e) {
             throw new TNotFound(String.valueOf(folderId), "Folder not found.");
         }
-        return folder.toTFolder();
+        return folder.toTFolder(username);
     }
 
     @Override
@@ -102,13 +107,11 @@ public class DiagramDbServiceHandler implements DiagramDbService.Iface {
             throw new TIdNotDefined("Folder id is null. To update folder you should specify id.");
         }
         try {
-            diagramDao.updateFolder(converter.toFolder(tFolder));
+            diagramDao.updateFolder(mapper.convertTFolder(tFolder));
         } catch (AbortedException e) {
             throw new TAborted(e.getTextCause(), e.getMessage(), e.getFullClassName());
         }
     }
-
-
 
     @Override
     public void deleteFolder(long folderId) throws TAborted {
@@ -127,6 +130,65 @@ public class DiagramDbServiceHandler implements DiagramDbService.Iface {
         } catch (NotFoundException e) {
             throw new TNotFound(username, "FolderTree for specified user not found.");
         }
-        return folder.toTFolder();
+        return folder.toTFolder(username);
+    }
+
+    @Override
+    public void shareFolderTo(String username, TFolder tFolderToShare) throws TException {
+
+
+        Folder rootFolder = mapper.convertTFolder(getFolderTree(username));
+
+        Folder folderToShare = mapper.convertTFolder(tFolderToShare);
+        folderToShare = addOwner(username, folderToShare);
+        updateFolder(folderToShare.toTFolder(username));
+
+        if (rootFolder == null) {
+            return;
+        }
+
+        Folder sharedFolder = getSharedFolder(rootFolder);
+
+        if (sharedFolder == null) {
+
+            sharedFolder = new Folder("Shared", username);
+            long idShared = saveFolder(sharedFolder.toTFolder(username));
+            sharedFolder.setId(idShared);
+
+            sharedFolder.getChildrenFolders().add(folderToShare);
+            folderToShare.getParentFolders().add(sharedFolder);
+
+            updateFolder(sharedFolder.toTFolder(username));
+
+            rootFolder.getChildrenFolders().add(sharedFolder);
+            sharedFolder.getParentFolders().add(rootFolder);
+            updateFolder(rootFolder.toTFolder(username));
+        }
+        else {
+            if (sharedFolder.getChildrenFolders().contains(folderToShare)) {
+                logger.error("addUserToOwners method was called with folder which already shared to user.");
+                return;
+            }
+            sharedFolder.getChildrenFolders().add(folderToShare);
+            updateFolder(sharedFolder.toTFolder(username));
+        }
+    }
+
+    private Folder addOwner(String username, Folder folder) {
+        Set<String> owners = folder.getOwners();
+        owners.add(username);
+        folder.setOwners(owners);
+        return folder;
+    }
+
+    @Nullable
+    private Folder getSharedFolder(Folder rootFolder) {
+        Folder sharedFolder = null;
+        for (Folder folderCur : rootFolder.getChildrenFolders()) {
+            if (folderCur.getFolderName().equals("Shared")) {
+                sharedFolder = folderCur;
+            }
+        }
+        return sharedFolder;
     }
 }
