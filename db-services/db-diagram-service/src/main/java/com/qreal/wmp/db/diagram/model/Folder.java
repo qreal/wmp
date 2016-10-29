@@ -113,12 +113,7 @@ public class Folder implements Serializable {
             tFolder.setOwners(owners);
         }
 
-        parentFolders.stream().filter(dir -> dir.owners.contains(username)).
-                forEach(dir -> tFolder.setFolderParentId(dir.getId()));
-
-        if (!tFolder.isSetFolderParentId() && folderParentId != null) {
-            tFolder.setFolderParentId(folderParentId);
-        }
+        setFolderParentId(username, tFolder);
 
         if (childrenFolders != null && !childrenFolders.isEmpty()) {
             tFolder.setChildrenFolders(childrenFolders.stream().map((folder -> folder.toTFolder(username))).
@@ -130,6 +125,15 @@ public class Folder implements Serializable {
         }
 
         return tFolder;
+    }
+
+    private void setFolderParentId(String username, TFolder tFolder) {
+        parentFolders.stream().filter(dir -> dir.owners.contains(username)).
+                forEach(dir -> tFolder.setFolderParentId(dir.getId()));
+
+        if (!tFolder.isSetFolderParentId() && folderParentId != null) {
+            tFolder.setFolderParentId(folderParentId);
+        }
     }
 }
 

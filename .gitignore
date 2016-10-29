@@ -25,3 +25,4 @@ overlays
 !**/.idea/compiler.xml
 *.bak*
 *.vbak*
+*.lck*

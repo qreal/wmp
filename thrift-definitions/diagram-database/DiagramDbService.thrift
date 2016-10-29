@@ -77,6 +77,7 @@ service DiagramDbService {
     /** TNotFound is thrown if the folder tree with specified owner is not found.*/
     Diagram.TFolder getFolderTree(1: string username) throws (1: DbExceptions.TNotFound e);
 
+    /** Create link to specified folder in Shared folder of username's root.*/
     void shareFolderTo(1: string username, 2: Diagram.TFolder folder);
 }
 

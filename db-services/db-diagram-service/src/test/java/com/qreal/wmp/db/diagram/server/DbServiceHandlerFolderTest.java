@@ -3,6 +3,7 @@ package com.qreal.wmp.db.diagram.server;
 import com.qreal.wmp.db.diagram.config.AppInit;
 import com.qreal.wmp.db.diagram.dao.DiagramDao;
 import com.qreal.wmp.db.diagram.exceptions.AbortedException;
+import com.qreal.wmp.db.diagram.mapping.RelationMapping;
 import com.qreal.wmp.db.diagram.model.Folder;
 import com.qreal.wmp.thrift.gen.TFolder;
 import org.apache.thrift.TException;

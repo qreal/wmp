@@ -3,6 +3,7 @@ package com.qreal.wmp.db.diagram.server;
 import com.qreal.wmp.db.diagram.dao.DiagramDao;
 import com.qreal.wmp.db.diagram.exceptions.AbortedException;
 import com.qreal.wmp.db.diagram.exceptions.NotFoundException;
+import com.qreal.wmp.db.diagram.mapping.RelationMapping;
 import com.qreal.wmp.db.diagram.model.Diagram;
 import com.qreal.wmp.db.diagram.model.Folder;
 import com.qreal.wmp.thrift.gen.*;
@@ -135,8 +136,6 @@ public class DiagramDbServiceHandler implements DiagramDbService.Iface {
 
     @Override
     public void shareFolderTo(String username, TFolder tFolderToShare) throws TException {
-
-
         Folder rootFolder = mapper.convertTFolder(getFolderTree(username));
 
         Folder folderToShare = mapper.convertTFolder(tFolderToShare);
