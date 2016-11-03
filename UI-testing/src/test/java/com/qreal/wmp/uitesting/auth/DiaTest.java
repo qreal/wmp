@@ -50,11 +50,13 @@ public class DiaTest {
     @Test
     public void dragAndDrop() {
         SelenideElement palleteElement = pallete.getElement("InitialNode");
-        scene.dragAndDrop(palleteElement);
+        SelenideElement sceneElement = scene.dragAndDrop(palleteElement);
+        assert (scene.exist(sceneElement));
     }
+
     /** Close the browser. */
     @After
     public void stopDriver() {
-        /* driver.close(); */
+        driver.close();
     }
 }
