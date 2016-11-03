@@ -35,8 +35,8 @@ public class Opener {
         if ($(byText("Sign in to continue to Auth")).exists()) {
             logger.info("Fail with open page {}. Try to login.", env.getProperty(page));
             auther.auth();
-            open(page);
         }
+        com.codeborne.selenide.Selenide.open(env.getProperty(page));
         logger.info("Open page {}", env.getProperty(page));
     }
 
