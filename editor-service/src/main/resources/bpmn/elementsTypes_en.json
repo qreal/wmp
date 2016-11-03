@@ -1,0 +1,181 @@
+{
+
+    "elements": {
+
+        "ControlFlow": {
+            "name": "Link",
+            "properties": [
+                {
+                    "key": "Guard",
+                    "name": "Guard",
+                    "type": "combobox",
+                    "value": "",
+                    "variants": [
+                        {
+                            "key": "false",
+                            "value": "false"
+                        },
+                        {
+                            "key": "iteration",
+                            "value": "iteration"
+                        },
+                        {
+                            "key": "true",
+                            "value": "true"
+                        }
+                    ]
+                }
+            ]
+        }
+
+    },
+
+    "categoriesNames": {
+        "Events": "Events",
+        "Gateways": "Gateways"
+    },
+
+    "blocks": {
+
+        "Message": {
+            "name": "Message",
+            "image": {
+                "src": "images/bpmn/message.png"
+            }
+        },
+
+        "Timer": {
+            "name": "Timer",
+            "image": {
+                "src": "images/bpmn/timer.png"
+            }
+        },
+
+        "Escalation": {
+            "name": "Escalation",
+            "image": {
+                "src": "images/bpmn/escalation.png"
+            }
+        },
+
+        "Conditional": {
+            "name": "Conditional",
+            "image": {
+                "src": "images/bpmn/conditional.png"
+            }
+        },
+
+        "Link": {
+            "name": "Link",
+            "image": {
+                "src": "images/bpmn/link.png"
+            }
+        },
+
+        "Error": {
+            "name": "Error",
+            "image": {
+                "src": "images/bpmn/error.png"
+            }
+        },
+
+        "Cancel": {
+            "name": "Cancel",
+            "image": {
+                "src": "images/bpmn/cancel.png"
+            }
+        },
+
+        "Compensation": {
+            "name": "Compensation",
+            "image": {
+                "src": "images/bpmn/compensation.png"
+            }
+        },
+
+        "Signal": {
+            "name": "Signal",
+            "image": {
+                "src": "images/bpmn/signal.png"
+            }
+        },
+
+        "Multiple": {
+            "name": "Multiple",
+            "image": {
+                "src": "images/bpmn/multiple.png"
+            }
+        },
+
+        "Parallel multiple": {
+            "name": "Parallel multiple",
+            "image": {
+                "src": "images/bpmn/parallel_multiple.png"
+            }
+        },
+
+        "Terminate": {
+            "name": "Terminate",
+            "image": {
+                "src": "images/bpmn/terminate.png"
+            }
+        },
+
+        "Exclusive": {
+            "name": "Exclusive",
+            "image": {
+                "src": "images/bpmn/exclusive.png"
+            }
+        },
+
+        "Event-based": {
+            "name": "Event-based",
+            "image": {
+                "src": "images/bpmn/event_based.png"
+            }
+        },
+
+        "Parallel": {
+            "name": "Parallel",
+            "image": {
+                "src": "images/bpmn/parallel.png"
+            }
+        },
+
+        "Inclusive": {
+            "name": "Inclusive",
+            "image": {
+                "src": "images/bpmn/inclusive.png"
+            }
+        },
+
+        "Exclusive event-based": {
+            "name": "Exclusive event-based",
+            "image": {
+                "src": "images/bpmn/exclusive_event_based.png"
+            }
+        },
+
+        "Complex": {
+            "name": "Complex",
+            "image": {
+                "src": "images/bpmn/complex.png"
+            }
+        },
+
+        "Parallel event-based": {
+            "name": "Parallel event-based",
+            "image": {
+                "src": "images/bpmn/parallel_event_based.png"
+            }
+        },
+
+        "Subprogram": {
+            "name": "Subprogram",
+            "image": {
+                "src": "images/subprogramRobotsBlock.svg"
+            }
+        }
+    }
+
+}

@@ -1,6 +1,6 @@
-<%@ include file="../include/properties.jsp" %>
+<%@ include file="../../include/properties.jsp" %>
 
-<div id="diagram-area" class="unselectable" ng-controller="BPMNDiagramEditorController">
+<div id="diagram-area" class="unselectable" ng-controller="RobotsDiagramEditorController">
     <!-- Context menu in File->'Open diagram' window -->
     <ul id="open-diagram-context-menu" class='custom-menu'>
         <li data-action="delete">Delete</li>
@@ -34,6 +34,11 @@
                             <li><a href="" role="menuitem" tabindex="-1" data-toggle="modal" data-target="#diagrams"
                                    ng-click="saveDiagramAs()">SaveAs</a></li>
                         </ul>
+                    </li>
+                    <li>
+                        <p id="two-d-model-toolbar-button" class="navbar-text" ng-click="openTwoDModel()">
+                            <img src="images/2dmodel/2d-model.svg" style="width: 18px; height: 18px; cursor: pointer"/>
+                        </p>
                     </li>
                     <li>
                         <p id="undo-toolbar-button" class="navbar-text" ng-click="undo()">

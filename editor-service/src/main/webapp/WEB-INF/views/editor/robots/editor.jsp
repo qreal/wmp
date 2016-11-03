@@ -1,10 +1,10 @@
-<%@ include file="../include/include.jsp" %>
+<%@ include file="../../include/include.jsp" %>
 
 <head>
-    <title>BPMN diagram editor</title>
+    <title>Robots diagram editor</title>
 
-    <jsp:include page="../include/scripts.jsp" flush="true"/>
-    <jsp:include page="../include/properties.jsp" flush="true"/>
+    <jsp:include page="../../include/scripts.jsp" flush="true"/>
+    <jsp:include page="../../include/properties.jsp" flush="true"/>
 
     <script src="<c:url value='/resources/thrift/struct/Diagram_types.js'/> "></script>
     <script src="<c:url value='/resources/thrift/editor/EditorService_types.js'/> "></script>
@@ -22,5 +22,6 @@
 
 <body ng-app ng-controller="RootDiagramController">
     <%@ include file="diagramContent.jsp" %>
+    <%@ include file="2dmodelContent.jsp" %>
 </body>
 </html>

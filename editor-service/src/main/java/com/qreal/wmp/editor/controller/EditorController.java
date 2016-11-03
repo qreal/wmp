@@ -39,7 +39,7 @@ public class EditorController {
 
     @ResponseBody
     @RequestMapping(value = "/getTypes", method = RequestMethod.POST)
-    public JsonNode getTypes(@RequestParam(value = "kit") String kit) throws IOException {
-        return typesLoader.getTypesJson();
+    public JsonNode getTypes(@RequestParam(value = "kit") String kit, @RequestParam(value = "task") String task) throws IOException {
+        return typesLoader.getTypesJson(task);
     }
 }

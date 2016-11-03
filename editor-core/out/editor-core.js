@@ -1221,10 +1221,11 @@ var ElementsTypeLoader = (function () {
         var typesParser = new TypesParser();
         $.ajax({
             type: 'POST',
-            url: 'getTypes/' + ((task) ? task : ""),
+            url: 'getTypes/',
             dataType: 'json',
             data: {
-                'kit': ((kit) ? kit : GeneralConstants.DEFAULT_KIT)
+                'kit': ((kit) ? kit : GeneralConstants.DEFAULT_KIT),
+                'task': task ? task : ""
             },
             success: function (response) {
                 callback(typesParser.parse(response));

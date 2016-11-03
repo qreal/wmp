@@ -21,12 +21,12 @@ public class TypesLoader {
     }
 
     /** Provides JSON types for client.*/
-    public JsonNode getTypesJson() throws IOException {
+    public JsonNode getTypesJson(String notation) throws IOException {
         ObjectNode resultTypes = mapper.createObjectNode();
 
         ClassLoader classLoader = getClass().getClassLoader();
-        JsonNode typesList = mapper.readTree(new File(classLoader.getResource("typesList.json").getFile()));
-        JsonNode allTypes = mapper.readTree(new File(classLoader.getResource("elementsTypes_en.json").getFile()));
+        JsonNode typesList = mapper.readTree(new File(classLoader.getResource(notation + "/typesList.json").getFile()));
+        JsonNode allTypes = mapper.readTree(new File(classLoader.getResource(notation + "/elementsTypes_en.json").getFile()));
 
         resultTypes.set("elements", getElementsTypes(typesList, allTypes));
         resultTypes.set("blocks", getBlocksTypes(typesList, allTypes));
