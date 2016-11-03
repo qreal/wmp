@@ -84,7 +84,7 @@ script:
 
   - cd ../UI-testing
   - mvn test -P travis &
-  - sleep 30
+  - sleep 60
 
 notifications:
   slack: qreal-web:sT5qgA4qZZ9eyLI0yy2Mp81E

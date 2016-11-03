@@ -6,6 +6,7 @@ import com.qreal.wmp.uitesting.config.AppInit;
 import com.qreal.wmp.uitesting.dia.Pallete;
 import com.qreal.wmp.uitesting.dia.Scene;
 import io.github.bonigarcia.wdm.ChromeDriverManager;
+import org.apache.commons.lang3.tuple.Pair;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -45,18 +46,38 @@ public class DiaTest {
         driver = new ChromeDriver();
         WebDriverRunner.setWebDriver(driver);
         opener.open("editor");
+        scene.updateWebdriver(driver);
     }
 
     @Test
     public void dragAndDrop() {
         SelenideElement palleteElement = pallete.getElement("InitialNode");
         SelenideElement sceneElement = scene.dragAndDrop(palleteElement);
-        assert (scene.exist(sceneElement));
+        assert scene.exist(sceneElement);
+    }
+
+    @Test
+    public void remove() {
+        SelenideElement sceneElement = scene.dragAndDrop(pallete.getElement("InitialNode"));
+        assert scene.exist(sceneElement);
+        scene.remove(sceneElement);
+        assert !scene.exist(sceneElement);
+    }
+
+    @Test
+    public void move() {
+        SelenideElement sceneElement = scene.dragAndDrop(pallete.getElement("InitialNode"));
+        Pair oldPosition = scene.getPosition(sceneElement);
+        scene.moveElement(sceneElement, 100, 100);
+        Pair newPosition = scene.getPosition(sceneElement);
+        assert  ((Integer) oldPosition.getLeft() + 100 == (Integer) newPosition.getLeft())
+                && ((Integer) oldPosition.getRight() + 100 == (Integer) newPosition.getRight());
     }
 
     /** Close the browser. */
     @After
     public void stopDriver() {
+        scene.clean();
         driver.close();
     }
 }
