@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import static com.codeborne.selenide.Selenide.$;
@@ -44,10 +45,8 @@ public class Scene {
      * @return element from scene
      */
     public SelenideElement dragAndDrop(SelenideElement element) {
-        List<SelenideElement> all = $$(By.cssSelector(selector + " #v_7 > *"));
         element.dragAndDropTo(selector);
-        SelenideElement newEl = all.stream().filter(x ->
-                !elements.stream().anyMatch(y -> x.attr("id").equals(y.attr("id")))).findFirst().orElse(element);
+        SelenideElement newEl = updateScene().get();
         elements.add(newEl);
         logger.info("Add element {} to scene", newEl);
         return newEl;
@@ -79,6 +78,7 @@ public class Scene {
 
     /** Remove element from the scene. */
     public void remove(SelenideElement selenideElement) {
+        assert selenideElement != null;
         logger.info("Remove element {} form scene", selenideElement);
         elements.remove(selenideElement);
         new Actions(driver).contextClick(selenideElement).build().perform();
@@ -87,12 +87,31 @@ public class Scene {
 
     /** Remove all elements from the scene. */
     public void clean() {
-        elements.forEach(x -> {
+        elements.stream().filter(x -> x != null).forEach(x -> {
             new Actions(driver).contextClick(x).build().perform();
             $(By.id("scene-context-menu")).click();
         });
         elements.clear();
         logger.info("Clean scene");
+    }
+
+    /** Add link between two elements. */
+    public SelenideElement addLink(SelenideElement source, SelenideElement target) {
+        SelenideElement begin = $(By.cssSelector(selector + " #" + source.attr("id") + " .outPorts"));
+        logger.info("Begin element {}", begin);
+        new Actions(driver).dragAndDrop(begin, target).build().perform();
+        SelenideElement newEl = updateScene().get();
+        logger.info("Add link {}", newEl);
+        elements.add(newEl);
+        return newEl;
+    }
+
+    /** Return new element of the scene. */
+    private Optional<SelenideElement> updateScene() {
+        List<SelenideElement> allElements = $$(By.cssSelector(selector + " #v_7 > *"));
+        return allElements.stream().filter(x ->
+                !elements.stream().anyMatch(y -> x.attr("id").equals(y.attr("id")))).findFirst();
+
     }
 
 }

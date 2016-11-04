@@ -49,6 +49,7 @@ public class DiaTest {
         scene.updateWebdriver(driver);
     }
 
+    /** Drag element from pallete and drop on the scene. */
     @Test
     public void dragAndDrop() {
         SelenideElement palleteElement = pallete.getElement("InitialNode");
@@ -56,6 +57,7 @@ public class DiaTest {
         assert scene.exist(sceneElement);
     }
 
+    /** Remove element from scene. */
     @Test
     public void remove() {
         SelenideElement sceneElement = scene.dragAndDrop(pallete.getElement("InitialNode"));
@@ -64,6 +66,7 @@ public class DiaTest {
         assert !scene.exist(sceneElement);
     }
 
+    /** Move element on the scene by offsets. */
     @Test
     public void move() {
         SelenideElement sceneElement = scene.dragAndDrop(pallete.getElement("InitialNode"));
@@ -72,6 +75,15 @@ public class DiaTest {
         Pair newPosition = scene.getPosition(sceneElement);
         assert  ((Integer) oldPosition.getLeft() + 100 == (Integer) newPosition.getLeft())
                 && ((Integer) oldPosition.getRight() + 100 == (Integer) newPosition.getRight());
+    }
+
+    /** Add two elements and link them. */
+    @Test
+    public void addLink() {
+        SelenideElement initNode = scene.dragAndDrop(pallete.getElement("InitialNode"));
+        scene.moveElement(initNode, 100, 100);
+        SelenideElement finalNode = scene.dragAndDrop(pallete.getElement("FinalNode"));
+        scene.addLink(initNode, finalNode);
     }
 
     /** Close the browser. */
