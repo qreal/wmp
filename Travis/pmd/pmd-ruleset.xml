@@ -3,7 +3,7 @@
 <ruleset name="PMD-Rules">
     <description>
         The rulesets we want to use in pmd. For a detailed description of pmd rulesets:
-        http://pmd.sourceforge.net/rules/index.html
+        http://pmd.github.io/pmd-5.5.1/pmd-java/rules/index.html
     </description>
 
     <!-- Main ruleset -->
