@@ -1,4 +1,4 @@
-<%@ include file="../include/properties.jsp" %>
+<%@ include file="../../include/properties.jsp" %>
 
 <div id="diagram-area" class="unselectable" ng-controller="BPMNDiagramEditorController">
     <!-- Context menu in File->'Open diagram' window -->

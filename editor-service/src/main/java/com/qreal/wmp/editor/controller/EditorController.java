@@ -31,10 +31,16 @@ public class EditorController {
         this.typesLoader = typesLoader;
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    public ModelAndView index() {
-        logger.info("User {} requested editor", AuthenticatedUser.getUserName());
-        return new ModelAndView("editor/editor");
+    @RequestMapping(value = "/robots", method = RequestMethod.GET)
+    public ModelAndView robotsIndex() {
+        logger.info("User {} requested robots editor", AuthenticatedUser.getUserName());
+        return new ModelAndView("editor/robots/editor");
+    }
+
+    @RequestMapping(value = "/bpmn", method = RequestMethod.GET)
+    public ModelAndView bpmnIndex() {
+        logger.info("User {} requested bpmn editor", AuthenticatedUser.getUserName());
+        return new ModelAndView("editor/bpmn/editor");
     }
 
     @ResponseBody
