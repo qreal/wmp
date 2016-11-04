@@ -37,7 +37,7 @@ public class EditorServletHandler implements EditorServiceThrift.Iface {
      * @return new id of diagram
      */
     @Override
-    public long saveDiagram(TDiagram tDiagram) throws org.apache.thrift.TException {
+    public long saveDiagram(TDiagram tDiagram) {
         DiagramService diagramService = (DiagramService) context.getBean("diagramService");
         Diagram diagram = new Diagram(tDiagram);
         long id = 0;
@@ -51,6 +51,8 @@ public class EditorServletHandler implements EditorServiceThrift.Iface {
             //TODO Here we should not return 0, but send exception to client side.
             logger.error("saveDiagram method encountered exception ErrorConnection. Instead of diagramId will be  " +
                     "returned 0.", e);
+        } catch (TException e) {
+            logger.error("TException was not translated", e);
         }
         return id;
     }
