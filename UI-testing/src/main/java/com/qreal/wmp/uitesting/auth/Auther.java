@@ -14,18 +14,18 @@ import static com.codeborne.selenide.Selenide.open;
 @Service
 public class Auther {
 
-    private static final Logger logger = LoggerFactory.getLogger(Auther.class);
-
     /** Use properties from pages.properies file. */
     @Autowired
     private Environment env;
+
+    private static final Logger logger = LoggerFactory.getLogger(Auther.class);
 
     /** Realizes authentication to the wmp.
      *
      * @param username login
      * @param password password
      * */
-    public void auth(String username, String password) {
+    public void auth(final String username, final String password) {
         open(env.getProperty("auth"));
         $(By.name("username")).setValue(username);
         $(By.name("password")).setValue(password);

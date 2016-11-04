@@ -53,7 +53,7 @@ public class AuthTest {
     @Test
     public void authTest() {
         opener.cleanOpen("auth");
-        $(byText("Sign in to continue to Auth")).shouldBe(exist);
+        assert inAuthPage();
         auther.auth();
         $(byText("OAuth Server")).waitUntil(appear, 5000);
     }
@@ -65,10 +65,10 @@ public class AuthTest {
     @Test
     public void authWrongTest() {
         opener.cleanOpen("auth");
-        $(byText("Sign in to continue to Auth")).shouldBe(exist);
-        char[] alphabet = "abcdefghijklmnopqrstuvwxyz0123456789".toCharArray();
-        String wrongLogin = RandomStringUtils.random(20, alphabet);
-        String wrongPassword = RandomStringUtils.random(20, alphabet);
+        assert inAuthPage();
+        final char[] alphabet = "abcdefghijklmnopqrstuvwxyz0123456789".toCharArray();
+        final String wrongLogin = RandomStringUtils.random(20, alphabet);
+        final String wrongPassword = RandomStringUtils.random(20, alphabet);
         auther.auth(wrongLogin, wrongPassword);
         $(byText("Password or login wrong")).waitUntil(appear, 5000);
     }
@@ -81,7 +81,7 @@ public class AuthTest {
     @Test
     public void dashboardTest() {
         opener.cleanOpen("dashboard");
-        $(byText("Sign in to continue to Auth")).shouldBe(exist);
+        assert inAuthPage();
         opener.open("dashboard");
         $(byText("Dashboard")).waitUntil(appear, 5000);
     }
@@ -94,7 +94,7 @@ public class AuthTest {
     @Test
     public void editorTest() {
         opener.cleanOpen("editor");
-        $(byText("Sign in to continue to Auth")).shouldBe(exist);
+        assert inAuthPage();
         opener.open("editor");
         $(byText("Property Editor")).waitUntil(appear, 5000);
     }
@@ -103,5 +103,10 @@ public class AuthTest {
     @After
     public void stopDriver() {
         driver.close();
+    }
+
+    /** Current page is Auth page */
+    private boolean inAuthPage() {
+        return  $(byText("Sign in to continue to Auth")).exists();
     }
 }

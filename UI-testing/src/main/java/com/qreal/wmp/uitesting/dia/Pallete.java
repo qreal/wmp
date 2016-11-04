@@ -15,7 +15,7 @@ import static com.codeborne.selenide.Selenide.$;
 @Service
 public class Pallete {
 
-    private final String selector = "#palette-tab-content";
+    private static final String selector = "#palette-tab-content";
 
     private static final Logger logger = LoggerFactory.getLogger(Pallete.class);
 
@@ -25,8 +25,8 @@ public class Pallete {
      * @param elementName name of block
      * @return block
      */
-    public SelenideElement getElement(String elementName) {
-        SelenideElement element = $(By.cssSelector(selector + " div[data-type=\"" + elementName + "\"]"));
+    public SelenideElement getElement(final String elementName) {
+        final SelenideElement element = $(By.cssSelector(selector + " div[data-type=\"" + elementName + "\"]"));
         logger.info("Get element {} from Palette", element);
         return element;
     }

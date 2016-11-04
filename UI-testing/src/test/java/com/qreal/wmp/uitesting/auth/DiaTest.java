@@ -52,15 +52,15 @@ public class DiaTest {
     /** Drag element from pallete and drop on the scene. */
     @Test
     public void dragAndDrop() {
-        SelenideElement palleteElement = pallete.getElement("InitialNode");
-        SelenideElement sceneElement = scene.dragAndDrop(palleteElement);
+        final SelenideElement palleteElement = pallete.getElement("InitialNode");
+        final SelenideElement sceneElement = scene.dragAndDrop(palleteElement);
         assert scene.exist(sceneElement);
     }
 
     /** Remove element from scene. */
     @Test
     public void remove() {
-        SelenideElement sceneElement = scene.dragAndDrop(pallete.getElement("InitialNode"));
+        final SelenideElement sceneElement = scene.dragAndDrop(pallete.getElement("InitialNode"));
         assert scene.exist(sceneElement);
         scene.remove(sceneElement);
         assert !scene.exist(sceneElement);
@@ -69,10 +69,10 @@ public class DiaTest {
     /** Move element on the scene by offsets. */
     @Test
     public void move() {
-        SelenideElement sceneElement = scene.dragAndDrop(pallete.getElement("InitialNode"));
-        Pair oldPosition = scene.getPosition(sceneElement);
+        final SelenideElement sceneElement = scene.dragAndDrop(pallete.getElement("InitialNode"));
+        final Pair oldPosition = scene.getPosition(sceneElement);
         scene.moveElement(sceneElement, 100, 100);
-        Pair newPosition = scene.getPosition(sceneElement);
+        final Pair newPosition = scene.getPosition(sceneElement);
         assert  ((Integer) oldPosition.getLeft() + 100 == (Integer) newPosition.getLeft())
                 && ((Integer) oldPosition.getRight() + 100 == (Integer) newPosition.getRight());
     }
@@ -80,10 +80,11 @@ public class DiaTest {
     /** Add two elements and link them. */
     @Test
     public void addLink() {
-        SelenideElement initNode = scene.dragAndDrop(pallete.getElement("InitialNode"));
+        final SelenideElement initNode = scene.dragAndDrop(pallete.getElement("InitialNode"));
         scene.moveElement(initNode, 100, 100);
-        SelenideElement finalNode = scene.dragAndDrop(pallete.getElement("FinalNode"));
-        scene.addLink(initNode, finalNode);
+        final SelenideElement finalNode = scene.dragAndDrop(pallete.getElement("FinalNode"));
+        SelenideElement link = scene.addLink(initNode, finalNode);
+        assert scene.exist(link);
     }
 
     /** Close the browser. */

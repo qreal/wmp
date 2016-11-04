@@ -7,8 +7,8 @@ import org.springframework.context.annotation.ComponentScan;
 public class AppInit {
 
     /** Main function creates context. */
-    public static void main(String[] args) {
-        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
+    public static void main(final String... args) {
+        final AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
         context.scan("com.qreal.wmp.uitesting");
         context.register(AppInit.class);
         context.refresh();

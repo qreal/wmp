@@ -25,16 +25,16 @@ import static com.codeborne.selenide.Selenide.$$;
 @Service
 public class Scene {
 
-    private final String selector = ".scene-wrapper";
-
-    private Set<SelenideElement> elements = new HashSet<>();
-
-    private WebDriver driver;
+    private static final String selector = ".scene-wrapper";
 
     private static final Logger logger = LoggerFactory.getLogger(Pallete.class);
 
+    private final Set<SelenideElement> elements = new HashSet<>();
+
+    private WebDriver driver;
+
     /** For actions such as mouse move we need driver of current page. */
-    public void updateWebdriver(WebDriver webDriver) {
+    public void updateWebdriver(final WebDriver webDriver) {
         driver = webDriver;
     }
 
@@ -44,9 +44,9 @@ public class Scene {
      * @param element chosen web element
      * @return element from scene
      */
-    public SelenideElement dragAndDrop(SelenideElement element) {
+    public SelenideElement dragAndDrop(final SelenideElement element) {
         element.dragAndDropTo(selector);
-        SelenideElement newEl = updateScene().get();
+        final SelenideElement newEl = updateScene().get();
         elements.add(newEl);
         logger.info("Add element {} to scene", newEl);
         return newEl;
@@ -59,7 +59,7 @@ public class Scene {
      * @param offset_x offset of x coordinate
      * @param offset_y offset of y coordinate
      */
-    public void moveElement(SelenideElement element, int offset_x, int offset_y) {
+    public void moveElement(final SelenideElement element, final int offset_x, final int offset_y) {
         assert exist(element);
         logger.info("Move element {} with offsets {} and {}", element, offset_x, offset_y);
         new Actions(driver).dragAndDropBy(element, offset_x, offset_y).build().perform();
@@ -67,17 +67,17 @@ public class Scene {
 
     /** Check if element exist on the scene. */
     public boolean exist(SelenideElement selenideElement) {
-        return elements.stream().anyMatch(x -> x.equals(selenideElement));
+        return elements.stream().anyMatch(element -> element.equals(selenideElement));
     }
 
-    public Pair getPosition(SelenideElement selenideElement) {
-        String position = selenideElement.attr("transform");
-        String[] pairStr = position.substring(position.indexOf('(') + 1, position.indexOf(')')).split(",");
+    public Pair getPosition(final SelenideElement selenideElement) {
+        final String position = selenideElement.attr("transform");
+        final String[] pairStr = position.substring(position.indexOf('(') + 1, position.indexOf(')')).split(",");
         return new ImmutablePair(Integer.valueOf(pairStr[0]), Integer.valueOf(pairStr[1]));
     }
 
     /** Remove element from the scene. */
-    public void remove(SelenideElement selenideElement) {
+    public void remove(final SelenideElement selenideElement) {
         assert selenideElement != null;
         logger.info("Remove element {} form scene", selenideElement);
         elements.remove(selenideElement);
@@ -87,17 +87,14 @@ public class Scene {
 
     /** Remove all elements from the scene. */
     public void clean() {
-        elements.stream().filter(x -> x != null).forEach(x -> {
-            new Actions(driver).contextClick(x).build().perform();
-            $(By.id("scene-context-menu")).click();
-        });
+        $$(By.cssSelector(selector + " #v_7 > *")).forEach(element -> remove(element));
         elements.clear();
         logger.info("Clean scene");
     }
 
     /** Add link between two elements. */
-    public SelenideElement addLink(SelenideElement source, SelenideElement target) {
-        SelenideElement begin = $(By.cssSelector(selector + " #" + source.attr("id") + " .outPorts"));
+    public SelenideElement addLink(final SelenideElement source, final SelenideElement target) {
+        final SelenideElement begin = $(By.cssSelector(selector + " #" + source.attr("id") + " .outPorts"));
         logger.info("Begin element {}", begin);
         new Actions(driver).dragAndDrop(begin, target).build().perform();
         SelenideElement newEl = updateScene().get();
@@ -108,9 +105,9 @@ public class Scene {
 
     /** Return new element of the scene. */
     private Optional<SelenideElement> updateScene() {
-        List<SelenideElement> allElements = $$(By.cssSelector(selector + " #v_7 > *"));
-        return allElements.stream().filter(x ->
-                !elements.stream().anyMatch(y -> x.attr("id").equals(y.attr("id")))).findFirst();
+        final List<SelenideElement> allElements = $$(By.cssSelector(selector + " #v_7 > *"));
+        return allElements.stream().filter(htmlElement -> !elements.stream().anyMatch(selenideElement ->
+                htmlElement.attr("id").equals(selenideElement.attr("id")))).findFirst();
 
     }
 

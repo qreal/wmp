@@ -16,8 +16,6 @@ import static com.codeborne.selenide.Selenide.$;
 @Service
 public class Opener {
 
-    private static final Logger logger = LoggerFactory.getLogger(Opener.class);
-
     /** Uses properties from pages.properies file. */
     @Autowired
     private Environment env;
@@ -25,12 +23,14 @@ public class Opener {
     @Autowired
     private Auther auther;
 
+    private static final Logger logger = LoggerFactory.getLogger(Opener.class);
+
     /**
      * Opens page from wmp with authentication.
      *
      * @param page must be one of the keys from pages.property.
      */
-    public void open(String page) {
+    public void open(final String page) {
         com.codeborne.selenide.Selenide.open(env.getProperty(page));
         if ($(byText("Sign in to continue to Auth")).exists()) {
             logger.info("Fail with open page {}. Try to login.", env.getProperty(page));
@@ -45,7 +45,7 @@ public class Opener {
      *
      * @param page must be one of the keys from pages.property.
      */
-    public void cleanOpen(String page) {
+    public void cleanOpen(final String page) {
         com.codeborne.selenide.Selenide.open(env.getProperty(page));
         logger.info("Open page {}", env.getProperty(page));
     }
