@@ -17,7 +17,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
 import static com.codeborne.selenide.Condition.appear;
-import static com.codeborne.selenide.Condition.exist;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 
@@ -105,7 +104,11 @@ public class AuthTest {
         driver.close();
     }
 
-    /** Current page is Auth page */
+    /**
+     * Check that current page is Auth page.
+     *
+     * @return true if it is
+     */
     private boolean inAuthPage() {
         return  $(byText("Sign in to continue to Auth")).exists();
     }

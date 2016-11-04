@@ -4,6 +4,7 @@ import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.WebDriverRunner;
 import com.qreal.wmp.uitesting.config.AppInit;
 import com.qreal.wmp.uitesting.dia.Pallete;
+import com.qreal.wmp.uitesting.dia.PropertyEditor;
 import com.qreal.wmp.uitesting.dia.Scene;
 import io.github.bonigarcia.wdm.ChromeDriverManager;
 import org.apache.commons.lang3.tuple.Pair;
@@ -31,6 +32,9 @@ public class DiaTest {
 
     @Autowired
     private Scene scene;
+
+    @Autowired
+    private PropertyEditor propertyEditor;
 
     private WebDriver driver;
 
@@ -85,6 +89,15 @@ public class DiaTest {
         final SelenideElement finalNode = scene.dragAndDrop(pallete.getElement("FinalNode"));
         SelenideElement link = scene.addLink(initNode, finalNode);
         assert scene.exist(link);
+    }
+
+    /** Set property 'Ports' of motor forward item to '123' and checks that all is correct. */
+    @Test
+    public void propertyEditor() {
+        final SelenideElement motor = scene.dragAndDrop(pallete.getElement("TrikV6EnginesForward"));
+        motor.click();
+        propertyEditor.setProperty("Ports", "123");
+        assert propertyEditor.getProperty("Ports").equals("123");
     }
 
     /** Close the browser. */
