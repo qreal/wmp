@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/UI-testing/UI-testing.iml" filepath="$PROJECT_DIR$/UI-testing/UI-testing.iml" />
       <module fileurl="file://$PROJECT_DIR$/deployment/allintomcat/allintomcat-deployment.iml" filepath="$PROJECT_DIR$/deployment/allintomcat/allintomcat-deployment.iml" />
       <module fileurl="file://$PROJECT_DIR$/dependencies/auth-deps/auth-deps.iml" filepath="$PROJECT_DIR$/dependencies/auth-deps/auth-deps.iml" />
       <module fileurl="file://$PROJECT_DIR$/auth-service/auth-service.iml" filepath="$PROJECT_DIR$/auth-service/auth-service.iml" />
@@ -15,6 +14,7 @@
       <module fileurl="file://$PROJECT_DIR$/parent.iml" filepath="$PROJECT_DIR$/parent.iml" />
       <module fileurl="file://$PROJECT_DIR$/shared-resources/shared-resources.iml" filepath="$PROJECT_DIR$/shared-resources/shared-resources.iml" />
       <module fileurl="file://$PROJECT_DIR$/3dparty/spring-security-oauth2-client/spring-security-oauth2-client.iml" filepath="$PROJECT_DIR$/3dparty/spring-security-oauth2-client/spring-security-oauth2-client.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ui-testing/ui-testing.iml" filepath="$PROJECT_DIR$/ui-testing/ui-testing.iml" />
     </modules>
   </component>
 </project>

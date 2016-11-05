@@ -6,9 +6,6 @@ os:
   - linux
 dist: trusty
 
-addons:
-  firefox: "50.0"
-
 before_install:
   #load all submodules
   - git submodule init

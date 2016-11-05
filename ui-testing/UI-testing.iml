@@ -11,11 +11,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Maven: io.github.bonigarcia:webdrivermanager:1.4.10" level="project" />
-    <orderEntry type="library" name="Maven: com.typesafe:config:1.2.1" level="project" />
-    <orderEntry type="library" name="Maven: org.rauschig:jarchivelib:0.7.1" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.commons:commons-compress:1.9" level="project" />
-    <orderEntry type="library" name="Maven: org.jsoup:jsoup:1.9.2" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.commons:commons-lang3:3.4" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: com.codeborne:selenide:4.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.seleniumhq.selenium:selenium-java:3.0.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.seleniumhq.selenium:selenium-chrome-driver:3.0.0" level="project" />
