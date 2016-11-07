@@ -31,12 +31,10 @@ public class DaoFolderBugsTest {
         Folder testFolder1 = new Folder("testFolder1", "testUser");
         testFolder.getChildrenFolders().add(testFolder1);
 
-
         long idFolderCreated = diagramDao.saveFolder(testFolder);
         testFolder.setId(idFolderCreated);
 
         Folder gotFolder = diagramDao.getFolder(idFolderCreated);
-
         assertThat(gotFolder).isEqualTo(testFolder);
     }
 
@@ -44,26 +42,19 @@ public class DaoFolderBugsTest {
     @Rollback
     public void updateTreeOfFolders_updateToTree_gotTree() throws Exception {
         Folder rootFolder = new Folder("root", "testUser");
-
         long idRoot = diagramDao.saveFolder(rootFolder);
         rootFolder.setId(idRoot);
-
         Folder testFolder = new Folder("testFolder", "testUser");
-
         long idFolderCreated = diagramDao.saveFolder(testFolder);
         testFolder.setId(idFolderCreated);
-
         rootFolder.getChildrenFolders().add(testFolder);
         testFolder.getParentFolders().add(rootFolder);
 
         diagramDao.updateFolder(rootFolder);
-
         testFolder.getOwners().add("testUser2");
-
         diagramDao.updateFolder(testFolder);
 
         Folder gotFolder = diagramDao.getFolder(idFolderCreated);
-
         assertThat(gotFolder).isEqualTo(testFolder);
     }
 
@@ -74,18 +65,15 @@ public class DaoFolderBugsTest {
         testFolder.setId(1L);
         Folder testFolder1 = new Folder("testFolder1", "testUser");
         testFolder1.setId(2L);
-
         testFolder.getChildrenFolders().add(testFolder1);
         testFolder1.getParentFolders().add(testFolder);
 
         TFolder tTestFolder = testFolder.toTFolder("testUser");
-
         Folder gotFolder = new Folder(tTestFolder);
 
         testFolder.getChildrenFolders().remove(testFolder1);
         testFolder1.setFolderParentId(1L);
         testFolder.getChildrenFolders().add(testFolder1);
-
         assertThat(testFolder).isEqualTo(gotFolder);
     }
 }

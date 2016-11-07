@@ -86,11 +86,10 @@ public class Folder implements Serializable {
             childrenFolders = tFolder.getChildrenFolders().stream().map(Folder::new).collect(Collectors.toSet());
         }
 
-        for (Object child : childrenFolders.toArray()) {
-            childrenFolders.remove((Folder) child);
-            ((Folder) child).getParentFolders().add(this);
-            childrenFolders.add((Folder) child);
-        }
+        childrenFolders = childrenFolders.stream().map(x -> {
+            x.getParentFolders().add(this);
+            return x;
+        }).collect(Collectors.toSet());
 
         if (tFolder.isSetDiagrams()) {
             diagrams = tFolder.getDiagrams().stream().map(Diagram::new).collect(Collectors.toSet());
@@ -116,7 +115,7 @@ public class Folder implements Serializable {
         setFolderParentId(username, tFolder);
 
         if (childrenFolders != null && !childrenFolders.isEmpty()) {
-            tFolder.setChildrenFolders(childrenFolders.stream().map((folder -> folder.toTFolder(username))).
+            tFolder.setChildrenFolders(childrenFolders.stream().map(folder -> folder.toTFolder(username)).
                     collect(Collectors.toSet()));
         }
 

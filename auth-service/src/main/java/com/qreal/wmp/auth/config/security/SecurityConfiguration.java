@@ -1,7 +1,7 @@
 package com.qreal.wmp.auth.config.security;
 
-import com.racquettrack.security.oauth.OAuth2AuthenticationProvider;
 import com.qreal.wmp.auth.database.users.UserDAOSec;
+import com.racquettrack.security.oauth.OAuth2AuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

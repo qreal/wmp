@@ -135,15 +135,13 @@ public class DiagramDaoImpl implements DiagramDao {
         Session session = sessionFactory.getCurrentSession();
 
         session.save(folder);
-
-        Long folderId = folder.getId();
-
         for (Folder dir : folder.getParentFolders()) {
             dir.getChildrenFolders().add(folder);
             updateFolder(dir);
         }
-        logger.trace("saveFolder() successfully created a folder with id {}", folderId);
-        return folderId;
+
+        logger.trace("saveFolder() successfully created a folder with id {}", folder.getId());
+        return folder.getId();
     }
 
     /** Checks whether a folder with specified Id exists.*/

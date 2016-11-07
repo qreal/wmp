@@ -2,8 +2,8 @@ package com.qreal.wmp.db.diagram.dao;
 
 import com.qreal.wmp.db.diagram.config.AppInit;
 import com.qreal.wmp.db.diagram.exceptions.AbortedException;
-import com.qreal.wmp.db.diagram.model.Folder;
 import com.qreal.wmp.db.diagram.mapping.RelationMapping;
+import com.qreal.wmp.db.diagram.model.Folder;
 import com.qreal.wmp.thrift.gen.TFolder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -87,7 +87,6 @@ public class DaoFolderRelationMappingTest {
         Folder gotFolder = mapper.convertTFolder(testTFolder1);
 
         assertThat(gotFolder).isEqualTo(testFolder1);
-        //assertThat(gotFolder.getParentFolders()).isEqualTo(testFolder1.getParentFolders());
     }
 
     @Test

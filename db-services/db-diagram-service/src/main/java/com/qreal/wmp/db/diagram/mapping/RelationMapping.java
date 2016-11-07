@@ -7,7 +7,7 @@ import com.qreal.wmp.thrift.gen.TFolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Objects;
+import java.util.stream.Collectors;
 
 /** Performs loading of folder's parent for folder converting.*/
 public class RelationMapping {
@@ -31,15 +31,13 @@ public class RelationMapping {
         if (folder.getId() != null) {
             folder = loadFolderSaved(folder);
         }
+
         if (folder.getFolderParentId() != null) {
             folder = loadFolderParent(folder);
         }
 
-        for (Object child : folder.getChildrenFolders().toArray()) {
-            folder.getChildrenFolders().remove((Folder) child);
-            child = loadParents((Folder) child);
-            folder.getChildrenFolders().add((Folder) child);
-        }
+        folder.setChildrenFolders(folder.getChildrenFolders().stream().map(this::loadParents).
+                collect(Collectors.toSet()));
 
         return folder;
     }
@@ -47,8 +45,9 @@ public class RelationMapping {
     private Folder loadFolderParent(Folder folder) {
         boolean contains = false;
         for (Folder presentedDir : folder.getParentFolders()) {
-            if (Objects.equals(presentedDir.getId(), folder.getFolderParentId())) {
+            if (presentedDir.getId().equals(folder.getFolderParentId())) {
                 contains = true;
+                break;
             }
         }
         if (!contains) {
@@ -56,7 +55,7 @@ public class RelationMapping {
             try {
                 loadedParent = diagramDao.getFolder(folder.getFolderParentId());
             } catch (NotFoundException e) {
-                logger.error("Consistency error: id was set, but folder doesn't exists", e);
+                logger.error("Consistency error: folderParentId was set, but folder doesn't exist", e);
             }
             if (loadedParent != null) {
                 folder.getParentFolders().add(loadedParent);
@@ -70,24 +69,24 @@ public class RelationMapping {
     }
 
     private Folder loadFolderSaved(Folder folder) {
-        Folder loadedFolder = null;
+        Folder loadedFolder;
         try {
             loadedFolder = diagramDao.getFolder(folder.getId());
         } catch (NotFoundException e) {
-            //logger.error("Consistency violation", e);
+            logger.error("Consistency error: id was set, but folder doesn't exist", e);
+            return folder;
         }
 
-        if (loadedFolder != null) {
-            for (Folder parentDir : loadedFolder.getParentFolders()) {
-                boolean contains = false;
-                for (Folder presentedDir : folder.getParentFolders()) {
-                    if (Objects.equals(presentedDir.getId(), parentDir.getId())) {
-                        contains = true;
-                    }
+        for (Folder parentDir : loadedFolder.getParentFolders()) {
+            boolean contains = false;
+            for (Folder presentedDir : folder.getParentFolders()) {
+                if (presentedDir.getId().equals(parentDir.getId())) {
+                    contains = true;
+                    break;
                 }
-                if (!contains) {
-                    folder.getParentFolders().add(parentDir);
-                }
+            }
+            if (!contains) {
+                folder.getParentFolders().add(parentDir);
             }
         }
         return folder;

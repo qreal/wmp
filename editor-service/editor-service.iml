@@ -39,6 +39,7 @@
       <excludeFolder url="file://$MODULE_DIR$/target/maven-status" />
       <excludeFolder url="file://$MODULE_DIR$/target/node" />
       <excludeFolder url="file://$MODULE_DIR$/target/properties" />
+      <excludeFolder url="file://$MODULE_DIR$/target/site" />
       <excludeFolder url="file://$MODULE_DIR$/target/src" />
       <excludeFolder url="file://$MODULE_DIR$/target/tomcat" />
       <excludeFolder url="file://$MODULE_DIR$/target/war" />
