@@ -36,7 +36,7 @@ before_install:
 install:
   #install and run tests
   - mvn install -P travis
-  - cd UI-testing
+  - cd ui-testing
   - mvn install -DskipTests
   - cd ..
 
@@ -48,7 +48,7 @@ script:
   - java -jar checkstyle-7.0-all.jar -c Travis/checkstyle/checkstyle.xml db-services/db-diagram-service/src
   - java -jar checkstyle-7.0-all.jar -c Travis/checkstyle/checkstyle.xml db-services/db-robot-store-service/src
   - java -jar checkstyle-7.0-all.jar -c Travis/checkstyle/checkstyle.xml db-services/db-user-service/src
-  - java -jar checkstyle-7.0-all.jar -c Travis/checkstyle/checkstyle.xml UI-testing/src
+  - java -jar checkstyle-7.0-all.jar -c Travis/checkstyle/checkstyle.xml ui-testing/src
 
   #run services
   - cd db-services
@@ -79,7 +79,7 @@ script:
 
   - ../Travis/callTomcat.sh
 
-  - cd ../UI-testing
+  - cd ../ui-testing
   - mvn test -P travis &
   - sleep 30
 

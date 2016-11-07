@@ -15,6 +15,10 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
+    <properties>
+        <scanner>true</scanner> <!-- default -->
+    </properties>
+
     <build>
 
         <resources>
@@ -44,6 +48,31 @@
                     <target>1.8</target>
                 </configuration>
             </plugin>
+
+            <plugin>
+                <artifactId>exec-maven-plugin</artifactId>
+                <groupId>org.codehaus.mojo</groupId>
+                <executions>
+                    <execution><!-- Run our version calculation script -->
+                        <id>Check services</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <skip>${scanner}</skip>
+                            <executable>${basedir}/../Travis/callTomcat.sh</executable>
+                            <arguments>
+                                <argument>8080</argument>
+                                <argument>8080</argument>
+                                <argument>8080</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+
         </plugins>
     </build>
     <dependencies>

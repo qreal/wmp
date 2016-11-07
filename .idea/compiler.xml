@@ -32,6 +32,7 @@
         <module name="shared-resources" />
         <module name="spring-security-oauth2-client" />
         <module name="UI-testing" />
+        <module name="ui-testing" />
         <module name="user-service" />
       </profile>
     </annotationProcessing>
@@ -49,6 +50,7 @@
       <module name="shared-resources" target="1.8" />
       <module name="spring-security-oauth2-client" target="1.7" />
       <module name="UI-testing" target="1.8" />
+      <module name="ui-testing" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
