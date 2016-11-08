@@ -31,15 +31,21 @@ public class EditorController {
         this.typesLoader = typesLoader;
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    public ModelAndView index() {
-        logger.info("User {} requested editor", AuthenticatedUser.getUserName());
-        return new ModelAndView("editor/editor");
+    @RequestMapping(value = "/robots", method = RequestMethod.GET)
+    public ModelAndView robotsIndex() {
+        logger.info("User {} requested robots editor", AuthenticatedUser.getUserName());
+        return new ModelAndView("robots/editor");
+    }
+
+    @RequestMapping(value = "/dsm", method = RequestMethod.GET)
+    public ModelAndView dsmIndex() {
+        logger.info("User {} requested robots editor", AuthenticatedUser.getUserName());
+        return new ModelAndView("dsm/editor");
     }
 
     @ResponseBody
     @RequestMapping(value = "/getTypes", method = RequestMethod.POST)
-    public JsonNode getTypes(@RequestParam(value = "kit") String kit) throws IOException {
-        return typesLoader.getTypesJson();
+    public JsonNode getTypes(@RequestParam(value = "task") String task) throws IOException {
+        return typesLoader.getTypesJson(task);
     }
 }

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+
+<svg enable-background="new 0 0 128 128" height="128px" id="Layer_1" version="1.1" viewBox="0 0 128 128" width="128px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<defs>
+ <radialGradient id="grad" gradientUnits="objectBoundingBox" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+   <stop offset="0" style="stop-color:white" />
+   <stop offset="1" style="stop-color:silver"/>
+ </radialGradient>
+</defs>
+<rect x="0" y="0" width="100%" height="100%" rx="1em" fill="url(#grad)"/>
+<circle cx="65" cy="30" r="22" fill="red"/>
+<rect x="60" y="60" height="50" width="50" fill="blue"/>
+<polygon points="30,45 5,90 55,90" fill="green"/>
+</svg>

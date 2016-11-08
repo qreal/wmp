@@ -32,7 +32,7 @@ class RobotsDiagramEditorController extends DiagramEditorController {
 
         this.elementsTypeLoader.load((elementTypes: ElementTypes): void => {
             this.handleLoadedTypes(elementTypes);
-        });
+        }, "robots");
     }
 
     public handleLoadedTypes(elementTypes: ElementTypes): void {

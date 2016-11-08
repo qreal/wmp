@@ -310,7 +310,7 @@ declare class PropertyViewFactory {
 
 declare class ElementsTypeLoader {
 
-    load(callback: (elementTypes: ElementTypes) => void, kit?: string, task?: string): void;
+    load(callback: (elementTypes: ElementTypes) => void, task?: string): void;
 
 }
 

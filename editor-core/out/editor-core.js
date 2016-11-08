@@ -1217,14 +1217,14 @@ var TypesParser = (function () {
 var ElementsTypeLoader = (function () {
     function ElementsTypeLoader() {
     }
-    ElementsTypeLoader.prototype.load = function (callback, kit, task) {
+    ElementsTypeLoader.prototype.load = function (callback, task) {
         var typesParser = new TypesParser();
         $.ajax({
             type: 'POST',
-            url: 'getTypes/' + ((task) ? task : ""),
+            url: 'getTypes/',
             dataType: 'json',
             data: {
-                'kit': ((kit) ? kit : GeneralConstants.DEFAULT_KIT)
+                'task': ((task) ? task : "")
             },
             success: function (response) {
                 callback(typesParser.parse(response));
