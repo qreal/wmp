@@ -32,7 +32,7 @@ public class User implements Serializable, UserDetails {
     public User(String username, String password, Collection<GrantedAuthority> authority) {
         this.username = username;
         this.password = password;
-        setAuthorities(authority);
+        this.authorities = (Collection<UserAuthority>) (Collection<?>) authority;
     }
 
     public String getUsername() {
