@@ -87,6 +87,7 @@
         <option value="$PROJECT_DIR$/dependencies/auth/pom.xml" />
         <option value="$PROJECT_DIR$/dependencies/logging-deps/pom.xml" />
         <option value="$PROJECT_DIR$/deployment/allintomcat/pom.xml" />
+        <option value="$PROJECT_DIR$/UI-testing/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">
