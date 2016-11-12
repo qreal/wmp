@@ -1,0 +1,4 @@
+enum Direction {
+    input,
+    output
+}
