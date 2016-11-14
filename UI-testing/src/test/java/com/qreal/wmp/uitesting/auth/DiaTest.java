@@ -6,6 +6,7 @@ import com.qreal.wmp.uitesting.config.AppInit;
 import com.qreal.wmp.uitesting.dia.Pallete;
 import com.qreal.wmp.uitesting.dia.PropertyEditor;
 import com.qreal.wmp.uitesting.dia.Scene;
+import com.qreal.wmp.uitesting.dia.SceneWindow;
 import io.github.bonigarcia.wdm.ChromeDriverManager;
 import org.apache.commons.lang3.tuple.Pair;
 import org.junit.After;
@@ -13,6 +14,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +38,9 @@ public class DiaTest {
 
     @Autowired
     private PropertyEditor propertyEditor;
+
+    @Autowired
+    private SceneWindow scw;
 
     private WebDriver driver;
 
@@ -74,11 +80,11 @@ public class DiaTest {
     @Test
     public void move() {
         final SelenideElement sceneElement = scene.dragAndDrop(pallete.getElement("InitialNode"));
-        final Pair oldPosition = scene.getPosition(sceneElement);
-        scene.moveElement(sceneElement, 100, 100);
-        final Pair newPosition = scene.getPosition(sceneElement);
-        assert  ((Integer) oldPosition.getLeft() + 100 == (Integer) newPosition.getLeft())
-                && ((Integer) oldPosition.getRight() + 100 == (Integer) newPosition.getRight());
+        final Dimension oldPosition = scene.getPosition(sceneElement);
+        scene.moveElement(sceneElement, 500, 100);
+        final Dimension newPosition = scene.getPosition(sceneElement);
+        assert  (oldPosition.getWidth() + 500 == newPosition.getWidth())
+                && (oldPosition.getHeight() + 100 == newPosition.getHeight());
     }
 
     /** Add two elements and link them. */
@@ -98,6 +104,17 @@ public class DiaTest {
         motor.click();
         propertyEditor.setProperty("Ports", "123");
         assert propertyEditor.getProperty("Ports").equals("123");
+    }
+
+    @Test
+    public void sceneWindow() {
+        final SelenideElement motor = scene.dragAndDrop(pallete.getElement("TrikV6EnginesForward"));
+        scw.move(motor, new Dimension(1000, 1000), driver);
+        assert scene.getPosition(motor).getWidth() == 1000 && scene.getPosition(motor).getHeight() == 1000;
+        scw.move(motor, new Dimension(1800, 1600), driver);
+        assert scene.getPosition(motor).getWidth() == 1800 && scene.getPosition(motor).getHeight() == 1600;
+        scw.move(motor, new Dimension(1000, 1000), driver);
+        assert scene.getPosition(motor).getWidth() == 1000 && scene.getPosition(motor).getHeight() == 1000;
     }
 
     /** Close the browser. */

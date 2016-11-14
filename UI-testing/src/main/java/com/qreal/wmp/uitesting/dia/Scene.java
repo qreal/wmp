@@ -1,9 +1,8 @@
 package com.qreal.wmp.uitesting.dia;
 
 import com.codeborne.selenide.SelenideElement;
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.commons.lang3.tuple.Pair;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.slf4j.Logger;
@@ -70,10 +69,10 @@ public class Scene {
         return elements.stream().anyMatch(element -> element.equals(selenideElement));
     }
 
-    public Pair getPosition(final SelenideElement selenideElement) {
+    public Dimension getPosition(final SelenideElement selenideElement) {
         final String position = selenideElement.attr("transform");
         final String[] pairStr = position.substring(position.indexOf('(') + 1, position.indexOf(')')).split(",");
-        return new ImmutablePair(Integer.valueOf(pairStr[0]), Integer.valueOf(pairStr[1]));
+        return new Dimension(Integer.valueOf(pairStr[0]), Integer.valueOf(pairStr[1]));
     }
 
     /** Remove element from the scene. */
