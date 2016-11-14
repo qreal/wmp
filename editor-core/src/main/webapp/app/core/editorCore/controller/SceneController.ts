@@ -240,11 +240,11 @@ class SceneController {
         this.scene.addLinkToPaper(link);
     }
 
-    protected blankPoinerdownListener(event, x, y): void {
+    private blankPoinerdownListener(event, x, y): void {
         this.changeCurrentElement(null);
     }
 
-    protected cellPointerdownListener(cellView, event, x, y): void {
+    private cellPointerdownListener(cellView, event, x, y): void {
         this.clickFlag = true;
         this.rightClickFlag = false;
 
@@ -252,18 +252,16 @@ class SceneController {
             this.scene.getLinkById(cellView.model.id);
         this.changeCurrentElement(element);
 
-        if (this.scene.getNodeById(cellView.model.id)) {
-            if (event.button == 1) {
-                var node: DiagramNode = this.scene.getNodeById(cellView.model.id);
-                this.lastCellMouseDownPosition.x = node.getX();
-                this.lastCellMouseDownPosition.y = node.getY();
-            }
+        if (this.scene.getNodeById(cellView.model.id) && event.button !== 2) {
+            var node:DiagramNode = this.scene.getNodeById(cellView.model.id);
+            this.lastCellMouseDownPosition.x = node.getX();
+            this.lastCellMouseDownPosition.y = node.getY();
         }
 
     }
 
     private cellPointerupListener(cellView, event, x, y): void {
-        if ((this.clickFlag) && (event.button == 2)) {
+        if (this.clickFlag && event.button == 2) {
             $("#" + this.contextMenuId).finish().toggle(100).
             css({
                 left: event.pageX - $(document).scrollLeft() + "px",

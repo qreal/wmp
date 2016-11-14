@@ -25,4 +25,7 @@ class RobotsSceneController extends SceneController {
             this.gesturesController.startDrawing();
         }
     }
+
+    private cellPointerupListener(cellView, event, x, y): void {
+    }
 }
