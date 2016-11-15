@@ -6,90 +6,99 @@ import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.Arrays;
-import java.util.function.IntPredicate;
-import java.util.function.Supplier;
-import java.util.stream.IntStream;
 
 import static com.codeborne.selenide.Selenide.$;
 
-@Service
+/**
+ * Describes part of the scene, which is shown on browser.
+ */
 public class SceneWindow {
 
-    @Autowired
-    private Scene scene;
+    /** Link to full scene. */
+    private final Scene scene;
 
-    private Dimension size;
+    private final int stepVert;
 
-    private static final String selector = ".scene-wrapper";
+    private final int stepHor;
 
-    private WebDriver driver;
+    private final WebDriver driver;
 
-    /** For actions such as mouse move we need driver of current page. */
-    public void updateWebdriver(final WebDriver webDriver) {
-        driver = webDriver;
+    /** Web element of the Scene. */
+    private final SelenideElement sceneWrapper;
+
+    /** Constructor takes links to current scene and current driver. */
+    public SceneWindow(final Scene scene, final WebDriver driver) {
+        this.scene = scene;
+        this.driver = driver;
+        sceneWrapper =  $(By.cssSelector(".scene-wrapper"));
+        stepVert = sceneWrapper.getSize().getHeight() / 12;
+        stepHor = sceneWrapper.getSize().getWidth() / 12;
     }
 
-    public void move(SelenideElement element, Dimension dist, WebDriver driver) {
+    /**
+     * Moves element to the requested position.
+     *
+     * @param element element to move
+     * @param dist position to move
+     */
+    public void move(final SelenideElement element, final Dimension dist) {
         Dimension src = scene.getPosition(element);
-        SelenideElement sceneWrapper =  $(By.cssSelector(".scene-wrapper"));
-        int step = sceneWrapper.getSize().getWidth() / 9;
-        size = sceneWrapper.getSize();
-        focus(src, driver);
+        focus(src);
 
-        if (src.getWidth() < dist.getWidth())
-            stepsWithActions(src.getWidth(), x -> x < dist.getWidth() + 0.75 * src.getWidth(), step,
-                () -> new Actions(driver).click(sceneWrapper).sendKeys(Keys.ARROW_RIGHT)
-                        .clickAndHold(element).moveByOffset(step, 0));
-        else
-            stepsWithActions(src.getWidth(), x -> x > dist.getWidth() + 0.27 * src.getWidth(), -step,
-                () -> new Actions(driver).click(sceneWrapper).sendKeys(Keys.ARROW_LEFT)
-                        .clickAndHold(element).moveByOffset(-step, 0));
+        if (src.getWidth() < dist.getWidth()) {
+            callDragAndDropByX(src.getWidth(), dist.getWidth(), stepHor,
+                    new Actions(driver), Keys.ARROW_RIGHT, element).perform();
+        } else {
+            callDragAndDropByX(src.getWidth(), dist.getWidth(), -stepHor,
+                    new Actions(driver), Keys.ARROW_LEFT, element).perform();
+        }
 
-        if (src.getHeight() < dist.getHeight())
-            stepsWithActions(src.getHeight(), x -> x < dist.getHeight() + 0.75 * src.getHeight(), step,
-                    () -> new Actions(driver).click(sceneWrapper).sendKeys(Keys.ARROW_DOWN)
-                            .clickAndHold(element).moveByOffset(step, 0));
-        else
-            stepsWithActions(src.getHeight(), x -> x > dist.getHeight() + 0.75 * src.getHeight(), -step,
-                    () -> new Actions(driver).click(sceneWrapper).sendKeys(Keys.ARROW_UP)
-                            .clickAndHold(element).moveByOffset(-step, 0));
-
+        if (src.getHeight() < dist.getHeight()) {
+            callDragAndDropByY(src.getHeight(), dist.getHeight(), stepVert,
+                    new Actions(driver), Keys.ARROW_DOWN, element).perform();
+        } else {
+            callDragAndDropByY(src.getHeight(), dist.getHeight(), -stepVert,
+                    new Actions(driver), Keys.ARROW_UP, element).perform();
+        }
 
         Dimension currentPosition = scene.getPosition(element);
         new Actions(driver).release().clickAndHold(element).moveByOffset(dist.getWidth() - currentPosition.getWidth(),
-                dist.getHeight() - currentPosition.getHeight()).release().build().perform();
-
-        System.out.println("Position: " + scene.getPosition(element));
+                dist.getHeight() - currentPosition.getHeight()).release().perform();
+        currentPosition = scene.getPosition(element);
+        if (!currentPosition.equals(dist)) {
+            move(element, dist);
+        }
     }
 
-    public void focus(Dimension position, WebDriver driver) {
-        SelenideElement sceneWrapper =  $(By.cssSelector(selector));
-        size = sceneWrapper.getSize();
-        int step = size.getWidth() / 9;
+    /**
+     * Move the screen to requested position.
+     *
+     * @param position position to move
+     */
+    public void focus(final Dimension position) {
+        final Dimension size = sceneWrapper.getSize();
+        callMovementAction(0, 2000, stepHor, new Actions(driver), Keys.ARROW_LEFT);
+        callMovementAction(0, 2000, stepVert, new Actions(driver), Keys.ARROW_UP);
 
-        stepsWithActions(0, constructPredicate(0, 2000, 0), step,
-                () -> new Actions(driver).click(sceneWrapper).sendKeys(Keys.ARROW_LEFT));
-        stepsWithActions(0, constructPredicate(0, 2000, 0), step,
-                () -> new Actions(driver).click(sceneWrapper).sendKeys(Keys.ARROW_UP));
-
-        stepsWithActions(size.getWidth(), x -> x < position.getWidth() + 0.75 * size.getWidth(), step,
-                () -> new Actions(driver).click(sceneWrapper).sendKeys(Keys.ARROW_RIGHT));
-        stepsWithActions(size.getHeight(), x -> x < position.getHeight() + 0.75 * size.getHeight(), step,
-                () -> new Actions(driver).click(sceneWrapper).sendKeys(Keys.ARROW_DOWN));
-        new Actions(driver).build().perform();
+        callMovementAction(size.getWidth(), position.getWidth(), stepHor,
+                new Actions(driver), Keys.ARROW_RIGHT).release().perform();
+        callMovementAction(size.getHeight(), position.getHeight(), stepVert,
+                new Actions(driver), Keys.ARROW_DOWN).release().perform();
     }
 
-    public IntPredicate constructPredicate(final int srcValue, final int distValue, final int half) {
-        return srcValue < distValue ? x -> x < distValue + 1.5 * half: x -> x > srcValue + 1.5 * half;
+    private Actions callMovementAction(int src, int dst, int step, Actions actions, Keys key) {
+        return src < dst ? callMovementAction(src + step, dst, step, actions.sendKeys(key), key) : actions;
     }
 
-    public void stepsWithActions(int begin, IntPredicate border, int step, Supplier<Actions>... actionses) {
-        IntStream.iterate(begin, i -> i + step).peek(newValue -> {
-            Arrays.stream(actionses).forEach(actions -> actions.get().perform());
-        }).allMatch(border);
+    private Actions callDragAndDropByX(int src, int dst, int step, Actions actions, Keys key, SelenideElement element) {
+        return Math.abs(src - dst) > Math.abs(step) ? callDragAndDropByX(src + step, dst, step,
+                actions.sendKeys(key).clickAndHold(element).moveByOffset(step * 2, 0), key, element)
+                : actions.sendKeys(key, key);
+    }
+
+    private Actions callDragAndDropByY(int src, int dst, int step, Actions actions, Keys key, SelenideElement element) {
+        return Math.abs(src - dst) > Math.abs(step) ? callDragAndDropByY(src + step, dst, step,
+                actions.sendKeys(key).clickAndHold(element).moveByOffset(0, step * 2), key, element)
+                : actions.sendKeys(key, key);
     }
 }

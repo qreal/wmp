@@ -6,16 +6,12 @@ import com.qreal.wmp.uitesting.config.AppInit;
 import com.qreal.wmp.uitesting.dia.Pallete;
 import com.qreal.wmp.uitesting.dia.PropertyEditor;
 import com.qreal.wmp.uitesting.dia.Scene;
-import com.qreal.wmp.uitesting.dia.SceneWindow;
 import io.github.bonigarcia.wdm.ChromeDriverManager;
-import org.apache.commons.lang3.tuple.Pair;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,9 +34,6 @@ public class DiaTest {
 
     @Autowired
     private PropertyEditor propertyEditor;
-
-    @Autowired
-    private SceneWindow scw;
 
     private WebDriver driver;
 
@@ -76,25 +69,17 @@ public class DiaTest {
         assert !scene.exist(sceneElement);
     }
 
-    /** Move element on the scene by offsets. */
-    @Test
-    public void move() {
-        final SelenideElement sceneElement = scene.dragAndDrop(pallete.getElement("InitialNode"));
-        final Dimension oldPosition = scene.getPosition(sceneElement);
-        scene.moveElement(sceneElement, 500, 100);
-        final Dimension newPosition = scene.getPosition(sceneElement);
-        assert  (oldPosition.getWidth() + 500 == newPosition.getWidth())
-                && (oldPosition.getHeight() + 100 == newPosition.getHeight());
-    }
-
     /** Add two elements and link them. */
     @Test
     public void addLink() {
-        final SelenideElement initNode = scene.dragAndDrop(pallete.getElement("InitialNode"));
-        scene.moveElement(initNode, 100, 100);
-        final SelenideElement finalNode = scene.dragAndDrop(pallete.getElement("FinalNode"));
-        SelenideElement link = scene.addLink(initNode, finalNode);
+        final SelenideElement initNode = scene.dragAndDrop(pallete.getElement("InitialNode"), 4, 4);
+        final SelenideElement finalNode = scene.dragAndDrop(pallete.getElement("FinalNode"), 4, 70);
+        final SelenideElement motor = scene.dragAndDrop(pallete.getElement("TrikV6EnginesForward"), 4, 7);
+        SelenideElement link = scene.addLink(initNode, motor);
+        SelenideElement link2 = scene.addLink(motor, finalNode);
+        scene.moveToCell(motor, 72, 64);
         assert scene.exist(link);
+        assert scene.exist(link2);
     }
 
     /** Set property 'Ports' of motor forward item to '123' and checks that all is correct. */
@@ -106,15 +91,16 @@ public class DiaTest {
         assert propertyEditor.getProperty("Ports").equals("123");
     }
 
+    /** Move element to cell. */
     @Test
-    public void sceneWindow() {
+    public void moveElement() {
         final SelenideElement motor = scene.dragAndDrop(pallete.getElement("TrikV6EnginesForward"));
-        scw.move(motor, new Dimension(1000, 1000), driver);
-        assert scene.getPosition(motor).getWidth() == 1000 && scene.getPosition(motor).getHeight() == 1000;
-        scw.move(motor, new Dimension(1800, 1600), driver);
-        assert scene.getPosition(motor).getWidth() == 1800 && scene.getPosition(motor).getHeight() == 1600;
-        scw.move(motor, new Dimension(1000, 1000), driver);
-        assert scene.getPosition(motor).getWidth() == 1000 && scene.getPosition(motor).getHeight() == 1000;
+        scene.moveToCell(motor, 40, 40);
+        assert scene.getCell(motor).getWidth() == 40 && scene.getCell(motor).getHeight() == 40;
+        scene.moveToCell(motor, 72, 64);
+        assert scene.getCell(motor).getWidth() == 72 && scene.getCell(motor).getHeight() == 64;
+        scene.moveToCell(motor, 0, 0);
+        assert scene.getCell(motor).getWidth() == 0 && scene.getCell(motor).getHeight() == 0;
     }
 
     /** Close the browser. */

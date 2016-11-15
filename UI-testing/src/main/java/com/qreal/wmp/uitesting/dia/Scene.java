@@ -52,16 +52,37 @@ public class Scene {
     }
 
     /**
-     * Move element on the Scene by offsets.
+     *  element from scene or pallete and put it in cell of the scene.
      *
      * @param element chosen web element
-     * @param offset_x offset of x coordinate
-     * @param offset_y offset of y coordinate
+     * @param cell_x x-coordinate of cell
+     * @param cell_y y-coordinate of cell
+     * @return element from scene
      */
-    public void moveElement(final SelenideElement element, final int offset_x, final int offset_y) {
-        assert exist(element);
-        logger.info("Move element {} with offsets {} and {}", element, offset_x, offset_y);
-        new Actions(driver).dragAndDropBy(element, offset_x, offset_y).build().perform();
+    public SelenideElement dragAndDrop(final SelenideElement element, int cell_x, int cell_y) {
+        SelenideElement newEl = dragAndDrop(element);
+        moveToCell(newEl, cell_x, cell_y);
+        return newEl;
+    }
+
+    /** Move element to cell. */
+    public void moveToCell(final SelenideElement element, final int cell_x, final int cell_y) {
+        SceneWindow sceneWindow = new SceneWindow(this, driver);
+        logger.info("Move element {} to cell ({}, {})", element, cell_x, cell_y);
+        sceneWindow.move(element, new Dimension(cell_x * 25, cell_y * 25));
+    }
+
+    /** Focus the element. */
+    public void focus(final SelenideElement element) {
+        SceneWindow sceneWindow = new SceneWindow(this, driver);
+        logger.info("Focus on the element {}", element);
+        sceneWindow.focus(getPosition(element));
+    }
+
+    /** Return the cell where element hold. */
+    public Dimension getCell(SelenideElement element) {
+        Dimension result = getPosition(element);
+        return new Dimension(result.getWidth() / 25, result.getHeight() / 25);
     }
 
     /** Check if element exist on the scene. */
@@ -69,6 +90,7 @@ public class Scene {
         return elements.stream().anyMatch(element -> element.equals(selenideElement));
     }
 
+    /** Return the position of element in coordinates. */
     public Dimension getPosition(final SelenideElement selenideElement) {
         final String position = selenideElement.attr("transform");
         final String[] pairStr = position.substring(position.indexOf('(') + 1, position.indexOf(')')).split(",");
