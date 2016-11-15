@@ -9,11 +9,12 @@
       <module fileurl="file://$PROJECT_DIR$/db-services/db-diagram-service/db-diagram-service.iml" filepath="$PROJECT_DIR$/db-services/db-diagram-service/db-diagram-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/db-services/db-robot-store-service/db-robot-store-service.iml" filepath="$PROJECT_DIR$/db-services/db-robot-store-service/db-robot-store-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/db-services/db-user-service/db-user-service.iml" filepath="$PROJECT_DIR$/db-services/db-user-service/db-user-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/editor-core/editor-core.iml" filepath="$PROJECT_DIR$/editor-core/editor-core.iml" />
       <module fileurl="file://$PROJECT_DIR$/editor-service/editor-service.iml" filepath="$PROJECT_DIR$/editor-service/editor-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/dependencies/logging-deps/logging-deps.iml" filepath="$PROJECT_DIR$/dependencies/logging-deps/logging-deps.iml" />
       <module fileurl="file://$PROJECT_DIR$/parent.iml" filepath="$PROJECT_DIR$/parent.iml" />
-      <module fileurl="file://$PROJECT_DIR$/shared-resources/shared-resources.iml" filepath="$PROJECT_DIR$/shared-resources/shared-resources.iml" />
       <module fileurl="file://$PROJECT_DIR$/3dparty/spring-security-oauth2-client/spring-security-oauth2-client.iml" filepath="$PROJECT_DIR$/3dparty/spring-security-oauth2-client/spring-security-oauth2-client.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ui-testing/ui-testing.iml" filepath="$PROJECT_DIR$/ui-testing/ui-testing.iml" />
     </modules>
   </component>
 </project>
