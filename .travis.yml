@@ -6,9 +6,6 @@ os:
   - linux
 dist: trusty
 
-addons:
-  firefox: "50.0"
-
 before_install:
   #load all submodules
   - git submodule init
@@ -23,8 +20,6 @@ before_install:
   - chmod 755 thrift
   - sudo cp thrift /usr/local/bin/thrift
   - sudo cp libthrift-0.9.3.jar /usr/local/lib
-  # get checkstyle
-  - wget http://downloads.sourceforge.net/project/checkstyle/checkstyle/7.0/checkstyle-7.0-all.jar
   #fake random with urandom (do not repeat it on your own computer)
   - sudo rm /dev/random
   - sudo mknod /dev/random c 1 9
@@ -37,22 +32,13 @@ before_install:
   - sudo dpkg -i google-chrome*.deb
 
 install:
-  #install and run tests
+  #install and run tests and run style checking
   - mvn install -P travis
-  - cd UI-testing
+  - cd ui-testing
   - mvn install -DskipTests
   - cd ..
 
 script:
-  #run checkstyle
-  - java -jar checkstyle-7.0-all.jar -c Travis/checkstyle/checkstyle.xml auth-service/src
-  - java -jar checkstyle-7.0-all.jar -c Travis/checkstyle/checkstyle.xml dashboard-service/src
-  - java -jar checkstyle-7.0-all.jar -c Travis/checkstyle/checkstyle.xml editor-service/src
-  - java -jar checkstyle-7.0-all.jar -c Travis/checkstyle/checkstyle.xml db-services/db-diagram-service/src
-  - java -jar checkstyle-7.0-all.jar -c Travis/checkstyle/checkstyle.xml db-services/db-robot-store-service/src
-  - java -jar checkstyle-7.0-all.jar -c Travis/checkstyle/checkstyle.xml db-services/db-user-service/src
-  - java -jar checkstyle-7.0-all.jar -c Travis/checkstyle/checkstyle.xml UI-testing/src
-
   #run services
   - cd db-services
 
@@ -82,7 +68,7 @@ script:
 
   - ../Travis/callTomcat.sh
 
-  - cd ../UI-testing
+  - cd ../ui-testing
   - mvn test -P travis &
   - sleep 90
 

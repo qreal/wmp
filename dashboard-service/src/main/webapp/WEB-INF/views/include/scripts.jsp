@@ -7,7 +7,6 @@
     <script src="<c:url value='/resources/js/angular.js' />"></script>
     <script src="<c:url value='/resources/js/context-menu.js' />"></script>
     <script src="<c:url value='/resources/bootstrap/js/bootstrap.min.js' />"></script>
-    <script src="<c:url value='/resources/js/raphael-min.js' />"></script>
     <script src="<c:url value='/resources/js/luaparse.js' />"></script>
     <script src="<c:url value='/resources/js/thrift.js' />"></script>
     <script src="<c:url value='/resources/js/transform-to-element-fix.js' />"></script>
