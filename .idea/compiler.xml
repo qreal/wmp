@@ -29,7 +29,6 @@
         <module name="db-robot-store-service" />
         <module name="db-user-service" />
         <module name="editor-service" />
-        <module name="shared-resources" />
         <module name="spring-security-oauth2-client" />
         <module name="UI-testing" />
         <module name="ui-testing" />

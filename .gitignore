@@ -27,3 +27,4 @@ overlays
 *.bak*
 *.vbak*
 *.lck*
+**/out/**
