@@ -139,7 +139,7 @@ public class DiagramDbServiceHandler implements DiagramDbService.Iface {
         Folder rootFolder = mapper.convertTFolder(getFolderTree(username));
 
         Folder folderToShare = mapper.convertTFolder(tFolderToShare);
-        folderToShare = addOwner(username, folderToShare);
+        addOwner(username, folderToShare);
         updateFolder(folderToShare.toTFolder(username));
 
         if (rootFolder == null) {
@@ -173,11 +173,10 @@ public class DiagramDbServiceHandler implements DiagramDbService.Iface {
         }
     }
 
-    private Folder addOwner(String username, Folder folder) {
+    private void addOwner(String username, Folder folder) {
         Set<String> owners = folder.getOwners();
         owners.add(username);
         folder.setOwners(owners);
-        return folder;
     }
 
     @Nullable
