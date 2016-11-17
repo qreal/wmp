@@ -27,10 +27,6 @@
         <property name="eachLine" value="true"/>
     </module>
 
-    <module name="SuppressionFilter">
-        <property name="file" value="Travis/checkstyle/supressions.xml" />
-    </module>
-
     <module name="TreeWalker">
 
       <module name="SeparatorWrap" />
