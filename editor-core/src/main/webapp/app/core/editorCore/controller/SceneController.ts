@@ -7,14 +7,15 @@
 /// <reference path="../model/commands/Command.ts"/>
 /// <reference path="../model/commands/SceneCommandFactory.ts" />
 /// <reference path="../../../vendor.d.ts" />
+/// <reference path="../../../common/constants/MouseButton.ts" />
 
 class SceneController {
 
     private diagramEditorController: DiagramEditorController;
-    protected scene: DiagramScene;
+    private scene: DiagramScene;
     private currentElement: DiagramElement;
     private clickFlag : boolean;
-    protected rightClickFlag : boolean;
+    private rightClickFlag : boolean;
     private undoRedoController: UndoRedoController;
     private lastCellMouseDownPosition: {x: number, y: number};
     private paperCommandFactory: SceneCommandFactory;
@@ -252,23 +253,26 @@ class SceneController {
             this.scene.getLinkById(cellView.model.id);
         this.changeCurrentElement(element);
 
-        if (this.scene.getNodeById(cellView.model.id) && event.button !== 2) {
+        if (this.scene.getNodeById(cellView.model.id) && event.button == MouseButton.left) {
             var node:DiagramNode = this.scene.getNodeById(cellView.model.id);
             this.lastCellMouseDownPosition.x = node.getX();
             this.lastCellMouseDownPosition.y = node.getY();
+        }
+        if (event.button == MouseButton.right) {
+            this.rightClickFlag = true;
         }
 
     }
 
     private cellPointerupListener(cellView, event, x, y): void {
-        if (this.clickFlag && event.button == 2) {
+        if (this.clickFlag && event.button == MouseButton.right) {
             $("#" + this.contextMenuId).finish().toggle(100).
             css({
                 left: event.pageX - $(document).scrollLeft() + "px",
                 top: event.pageY - $(document).scrollTop() + "px"
 
             });
-        } else if (event.button !== 2){
+        } else if (event.button == MouseButton.left){
             var node: DiagramNode = this.scene.getNodeById(cellView.model.id);
             if (node) {
                 var command: Command = this.paperCommandFactory.makeMoveCommand(node, this.lastCellMouseDownPosition.x,
