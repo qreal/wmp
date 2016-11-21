@@ -49,64 +49,64 @@ public class DbServiceHandlerRobotTest {
         reset(robotDaoMocked);
     }
 
-    /** Test registerRobot operation for robot. */
+    /** Test saveRobot operation for robot. */
     @Test
     @Rollback
-    public void registerRobot_correctInput_robotDaoCalled() throws Exception {
+    public void saveRobot_correctInput_robotDaoCalled() throws Exception {
         TRobot tRobot = createRobot("robot");
         RobotSerial robot = new RobotSerial(tRobot);
 
-        handler.registerRobot(tRobot);
+        handler.saveRobot(tRobot);
 
         verify(robotDaoMocked).saveRobot(robot);
     }
 
-    /** Test registerRobot operation for robot. */
+    /** Test saveRobot operation for robot. */
     @Test
     @Rollback
-    public void registerRobot_idSet_throwsTIdAlreadyDefined() throws Exception {
+    public void saveRobot_idSet_throwsTIdAlreadyDefined() throws Exception {
         Long idRobot = 0L;
         TRobot tRobot = createRobot("robot", idRobot);
 
-        assertThatThrownBy(() -> handler.registerRobot(tRobot)).isInstanceOf(TIdAlreadyDefined.class);
+        assertThatThrownBy(() -> handler.saveRobot(tRobot)).isInstanceOf(TIdAlreadyDefined.class);
     }
 
-    /** Test registerRobot operation for robot. */
+    /** Test saveRobot operation for robot. */
     @Test
     @Rollback
-    public void registerRobot_daoThrowsAborted_throwsTAborted() throws Exception {
+    public void saveRobot_daoThrowsAborted_throwsTAborted() throws Exception {
         TRobot tRobot = createRobot("robot");
         RobotSerial robot = new RobotSerial(tRobot);
 
         when(robotDaoMocked.saveRobot(robot)).thenThrow(new AbortedException("0", "Exception", "Exception"));
 
-        assertThatThrownBy(() -> handler.registerRobot(tRobot)).isInstanceOf(TAborted.class);
+        assertThatThrownBy(() -> handler.saveRobot(tRobot)).isInstanceOf(TAborted.class);
     }
 
-    /** Test findById operation for robot. */
+    /** Test getRobot operation for robot. */
     @Test
     @Rollback
-    public void findById_robotExists_returnsRobot() throws Exception {
+    public void getRobot_robotExists_returnsRobot() throws Exception {
         long idRobot = 0L;
         TRobot tRobot = createRobot("robot", idRobot);
         RobotSerial robot = new RobotSerial(tRobot);
 
         when(robotDaoMocked.getRobot(idRobot)).thenReturn(robot);
 
-        TRobot gotTRobot = handler.findById(idRobot);
+        TRobot gotTRobot = handler.getRobot(idRobot);
 
         assertThat(tRobot).isEqualTo(gotTRobot);
     }
 
-    /** Test findById operation for robot. */
+    /** Test getRobot operation for robot. */
     @Test
     @Rollback
-    public void findById_robotNotExists_throwsTNotFound() throws Exception {
+    public void getRobot_robotNotExists_throwsTNotFound() throws Exception {
         long idRobotNotCorrect = 0L;
 
         when(robotDaoMocked.getRobot(idRobotNotCorrect)).thenThrow(new NotFoundException("0", "Exception"));
 
-        assertThatThrownBy(() -> handler.findById(idRobotNotCorrect)).isInstanceOf(TNotFound.class);
+        assertThatThrownBy(() -> handler.getRobot(idRobotNotCorrect)).isInstanceOf(TNotFound.class);
     }
 
     /** Test deleteRobot operation for robot. */

@@ -4,6 +4,7 @@
     <!-- Context menu in File->'Open diagram' window -->
     <ul id="open-diagram-context-menu" class='custom-menu'>
         <li data-action="delete">Delete</li>
+        <li data-action="share" >Share</li>
     </ul>
 
     <!-- Scene's elements context menu -->
@@ -183,4 +184,27 @@
         </div>
     </div>
 
+    <!-- Window for sharing -->
+    <div id="enter-name-share-folder" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">
+                        Share
+                    </h4>
+                </div>
+                <div class="modal-body-nopadding">
+                    <div class="share-path">
+                        <b id="user-name-to-share-folder">Input name</b><input type:text>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" id="name-share-folder-entered">Yes</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

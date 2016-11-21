@@ -1,8 +1,8 @@
 package com.qreal.wmp.auth.controllers.roles.admin;
 
+import com.qreal.wmp.auth.database.client.Client;
 import com.qreal.wmp.auth.database.client.ClientDAO;
 import com.qreal.wmp.auth.security.utils.AuthenticatedUser;
-import com.qreal.wmp.auth.database.client.Client;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;

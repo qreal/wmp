@@ -1,8 +1,8 @@
 package com.qreal.wmp.auth.controllers.roles.user;
 
-import com.qreal.wmp.auth.security.utils.AuthenticatedUser;
 import com.qreal.wmp.auth.database.client.Client;
 import com.qreal.wmp.auth.database.client.ClientDAO;
+import com.qreal.wmp.auth.security.utils.AuthenticatedUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;

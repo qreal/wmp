@@ -57,18 +57,18 @@ public class RobotServiceImpl implements RobotService {
     }
 
     @Override
-    public long register(@NotNull Robot robot) throws AbortedException, ErrorConnectionException, TException {
-        logger.trace("register() was called with parameters: robot = {}", robot.getName());
+    public long saveRobot(@NotNull Robot robot) throws AbortedException, ErrorConnectionException, TException {
+        logger.trace("saveRobot() was called with parameters: robot = {}", robot.getName());
 
         long idRobot;
         transport.open();
         try {
-            idRobot = client.registerRobot(robot.toTRobot());
+            idRobot = client.saveRobot(robot.toTRobot());
         } finally {
             transport.close();
         }
 
-        logger.trace("register() successfully registered {} robot.", robot.getName());
+        logger.trace("saveRobot() successfully registered {} robot.", robot.getName());
         return idRobot;
     }
 
@@ -90,7 +90,7 @@ public class RobotServiceImpl implements RobotService {
     }
 
     private Robot registerRobot(Robot robot) throws TException, AbortedException, ErrorConnectionException {
-        long idRobot = register(robot);
+        long idRobot = saveRobot(robot);
         robot.setId(idRobot);
         logger.trace("A robot with id {} was successfully registered.", robot.getId());
         return robot;
@@ -99,19 +99,19 @@ public class RobotServiceImpl implements RobotService {
     private void updateUserWithRobot(User user, Robot robot) throws TException, AbortedException,
             ErrorConnectionException  {
         user.getRobots().add(robot);
-        userService.update(user);
+        userService.updateUser(user);
         logger.trace("user {} was updated.", user.getUsername());
     }
 
     @Override
-    public @NotNull Robot findById(long id) throws NotFoundException, ErrorConnectionException, AbortedException,
+    public @NotNull Robot getRobot(long id) throws NotFoundException, ErrorConnectionException, AbortedException,
             TException {
-        logger.trace("findById() was called with parameters: robotId = {}.", id);
+        logger.trace("getRobot() was called with parameters: robotId = {}.", id);
         transport.open();
 
         TRobot tRobot;
         try {
-            tRobot = client.findById(id);
+            tRobot = client.getRobot(id);
         } finally {
             transport.close();
         }
@@ -123,7 +123,7 @@ public class RobotServiceImpl implements RobotService {
     private User getUser(String username) throws TException, ErrorConnectionException, AbortedException {
         User user;
         try {
-            user = userService.findByUserName(username);
+            user = userService.getUser(username);
         } catch (NotFoundException notFound) {
             logger.error("Operation was called with username of not existing user.");
             throw new AbortedException("User not exist.", "operation aborted", RobotServiceImpl.class.getName());
@@ -143,26 +143,26 @@ public class RobotServiceImpl implements RobotService {
     }
 
     @Override
-    public void delete(long id) throws AbortedException, ErrorConnectionException, TException {
-        logger.trace("delete() called with parameters: name = {}.", id);
+    public void deleteRobot(long id) throws AbortedException, ErrorConnectionException, TException {
+        logger.trace("deleteRobot() called with parameters: name = {}.", id);
         transport.open();
         try {
             client.deleteRobot(id);
         } finally {
             transport.close();
         }
-        logger.trace("delete() successfully deleted {} robot.", id);
+        logger.trace("deleteRobot() successfully deleted {} robot.", id);
     }
 
     @Override
-    public void update(@NotNull TRobot tRobot) throws AbortedException, ErrorConnectionException, TException {
-        logger.trace("update() was called with parameters: tRobot = {}.", tRobot.getName());
+    public void updateRobot(@NotNull TRobot tRobot) throws AbortedException, ErrorConnectionException, TException {
+        logger.trace("updateRobot() was called with parameters: tRobot = {}.", tRobot.getName());
         transport.open();
         try {
             client.updateRobot(tRobot);
         } finally {
             transport.close();
         }
-        logger.trace("update() successfully updated {} robot", tRobot.getName());
+        logger.trace("updateRobot() successfully updated {} robot", tRobot.getName());
     }
 }

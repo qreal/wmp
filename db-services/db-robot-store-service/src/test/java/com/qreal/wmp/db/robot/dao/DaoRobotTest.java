@@ -98,7 +98,7 @@ public class DaoRobotTest {
 
         robotDao.deleteRobot(tRobot.getId());
 
-        verify(userServiceMocked).findByUserName("owner");
+        verify(userServiceMocked).getUser("owner");
     }
 
     /** Test deleteRobot operation for robot. */
@@ -126,7 +126,7 @@ public class DaoRobotTest {
 
         robotDao.deleteRobot(tRobot.getId());
 
-        verify(userServiceMocked).update(owner);
+        verify(userServiceMocked).updateUser(owner);
     }
 
     /** Test deleteRobot operation for robot. */
@@ -145,7 +145,7 @@ public class DaoRobotTest {
         String owner = "owner";
         RobotSerial testRobot = createAndSaveRobot("robot", "ssid", owner);
 
-        when(userServiceMocked.findByUserName(owner)).thenThrow(new NotFoundException(owner, "Exception"));
+        when(userServiceMocked.getUser(owner)).thenThrow(new NotFoundException(owner, "Exception"));
 
         assertThatThrownBy(() -> robotDao.deleteRobot(testRobot.getId())).isInstanceOf(AbortedException.class);
     }
@@ -168,7 +168,7 @@ public class DaoRobotTest {
         assertThat(robotDao.isExistsRobot(idRobotNotCorrect)).isFalse();
     }
 
-    /** Test update operation for robot. */
+    /** Test updateUser operation for robot. */
     @Test
     @Rollback
     public void updateRobot_robotExists_updatesRobot() throws Exception {
@@ -182,7 +182,7 @@ public class DaoRobotTest {
         assertThat(changedRobot).isEqualTo(testRobot);
     }
 
-    /** Test update operation for robot. */
+    /** Test updateUser operation for robot. */
     @Test
     @Rollback
     public void updateRobot_robotNotExists_throwsAborted() throws Exception {
@@ -219,7 +219,7 @@ public class DaoRobotTest {
             tUser.setRobots(new HashSet<>());
         }
         tUser.getRobots().add(tRobot);
-        when(userServiceMocked.findByUserName(tUser.getUsername())).thenReturn(tUser);
+        when(userServiceMocked.getUser(tUser.getUsername())).thenReturn(tUser);
     }
 
 }

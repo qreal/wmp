@@ -1,12 +1,8 @@
 package com.qreal.wmp.auth.config.database;
 
-import java.util.Properties;
-
-import javax.sql.DataSource;
-
-import com.qreal.wmp.auth.database.client.ClientDAOSec;
 import com.qreal.wmp.auth.database.client.Client;
 import com.qreal.wmp.auth.database.client.ClientDAO;
+import com.qreal.wmp.auth.database.client.ClientDAOSec;
 import com.qreal.wmp.auth.database.users.User;
 import com.qreal.wmp.auth.database.users.UserAuthority;
 import com.qreal.wmp.auth.database.users.UserDAO;
@@ -19,8 +15,11 @@ import org.springframework.context.annotation.DependsOn;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBuilder;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+
+import javax.sql.DataSource;
+import java.util.Properties;
 
 /**
  * Development configuration of Hibernate ORM.

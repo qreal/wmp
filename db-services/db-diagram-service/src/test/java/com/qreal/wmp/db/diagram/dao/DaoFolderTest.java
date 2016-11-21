@@ -112,6 +112,38 @@ public class DaoFolderTest {
         assertThat(diagramDao.isExistsFolder(idFolderNotCorrect)).isFalse();
     }
 
+    /** Test updateFolder operation for folder. */
+    @Test
+    @Rollback
+    public void updateFolder_folderExists_updatesFolderInDb() throws Exception {
+        Folder testFolder = createAndSaveFolder("testFolder", "testUser");
+
+        Folder updateFolder = new Folder();
+        updateFolder.setFolderName("testFolderRewrite");
+        updateFolder.setId(testFolder.getId());
+        updateFolder.getOwners().add("testUser");
+        updateFolder.getOwners().add("testUser1");
+
+        diagramDao.updateFolder(updateFolder);
+
+        Folder gotFolder = diagramDao.getFolder(testFolder.getId());
+
+        assertThat(gotFolder).isEqualTo(updateFolder);
+    }
+
+    /** Test updateFolder operation for folder. */
+    @Test
+    @Rollback
+    public void updateFolder_folderNotExists_throwsAborted() throws Exception {
+        Long folderIdNotCorrect = 0L;
+
+        Folder updateFolder = new Folder();
+        updateFolder.setFolderName("testFolderRewrite");
+        updateFolder.setId(folderIdNotCorrect);
+
+        assertThatThrownBy(() -> diagramDao.updateFolder(updateFolder)).isInstanceOf(AbortedException.class);
+    }
+
     /** Test getFolderTree operation for one folder. */
     @Test
     @Rollback
@@ -132,11 +164,45 @@ public class DaoFolderTest {
         assertThatThrownBy(() -> diagramDao.getFolderTree(notCorrectUsername)).isInstanceOf(NotFoundException.class);
     }
 
-    private Folder createAndSaveFolder(String nameOfFolder, String nameOfUser) throws AbortedException {
-        Folder testFolder = new Folder(nameOfFolder, nameOfUser);
-        long idFolderCreated = diagramDao.saveFolder(testFolder);
-        testFolder.setId(idFolderCreated);
-        return testFolder;
+    private Folder createFolder(String folderName, String username) {
+        return new Folder(folderName, username);
+    }
+
+    private Folder createFolder(String folderName, String username, long id) {
+        return new Folder(folderName, username, id);
+    }
+
+    private Folder createFolder(String folderName, String username, long id, Folder parent) {
+        Folder folder = createFolder(folderName, username, id);
+        parent.getChildrenFolders().add(folder);
+        folder.getParentFolders().add(parent);
+        return folder;
+    }
+
+    private Folder createAndSaveFolder(String folderName, String username) {
+        Folder folder = new Folder(folderName, username);
+        long idFolder = saveFolder(folder);
+        folder.setId(idFolder);
+        return folder;
+    }
+
+    private Folder createAndSaveFolder(String folderName, String username, Folder parent) {
+        Folder folder = new Folder(folderName, username);
+        parent.getChildrenFolders().add(folder);
+        folder.getParentFolders().add(parent);
+        long idFolder = saveFolder(folder);
+        folder.setId(idFolder);
+        return folder;
+    }
+
+    private long saveFolder(Folder folder) {
+        long id = 0;
+        try {
+            id = diagramDao.saveFolder(folder);
+        } catch (AbortedException e) {
+            //For now never happens
+        }
+        return id;
     }
 
 }

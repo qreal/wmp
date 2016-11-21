@@ -20,7 +20,7 @@ public class UserDbServiceHandler implements UserDbService.Iface {
     }
 
     @Override
-    public void save(TUser tUser) throws TIdNotDefined, TAborted, TErrorConnection {
+    public void saveUser(TUser tUser) throws TIdNotDefined, TAborted, TErrorConnection {
         if (!tUser.isSetUsername()) {
             throw new TIdNotDefined("User username is null. To saveUser user you should assign username to user.");
         }
@@ -34,7 +34,7 @@ public class UserDbServiceHandler implements UserDbService.Iface {
     }
 
     @Override
-    public void update(TUser user) throws TAborted, TIdNotDefined, TErrorConnection {
+    public void updateUser(TUser user) throws TAborted, TIdNotDefined, TErrorConnection {
         if (!user.isSetUsername()) {
             throw new TIdNotDefined("User username is null. To rewrite user you should specify username.");
         }
@@ -48,10 +48,10 @@ public class UserDbServiceHandler implements UserDbService.Iface {
     }
 
     @Override
-    public TUser findByUserName(String username) throws TNotFound, TErrorConnection {
+    public TUser getUser(String username) throws TNotFound, TErrorConnection {
         TUser tUser;
         try {
-            tUser = userDao.findByUserName(username);
+            tUser = userDao.getUser(username);
         } catch (ErrorConnectionException e) {
             throw new TErrorConnection(e.getClientName(), e.getMessage());
         } catch (NotFoundException e) {
@@ -61,7 +61,7 @@ public class UserDbServiceHandler implements UserDbService.Iface {
     }
 
     @Override
-    public boolean isUserExist(String username) {
+    public boolean isUserExists(String username) {
         return userDao.isExistsUser(username);
     }
 }
