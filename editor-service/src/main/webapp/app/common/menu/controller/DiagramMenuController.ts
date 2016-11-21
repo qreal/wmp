@@ -9,6 +9,7 @@
 /// <reference path="../../../../resources/thrift/editor/EditorServiceThrift.d.ts" />
 /// <reference path="../../../../resources/types/thrift/Thrift.d.ts" />
 /// <reference path="../../../common/constants/GeneralConstants.ts" />
+/// <reference path="../../../common/constants/MouseButton.ts" />
 
 class DiagramMenuController {
 
@@ -325,7 +326,7 @@ class DiagramMenuController {
         var controller = this;
 
         $('#diagrams li').mouseup(function (event) {
-            if (event.button == 2) {
+            if (event.button == MouseButton.right) {
                 $("#" + controller.contextMenuId).finish().toggle(100)
                     .css({
                         top: event.pageY + "px",
