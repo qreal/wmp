@@ -1,7 +1,10 @@
-package com.qreal.wmp.uitesting.auth;
+package com.qreal.wmp.uitesting.auth.innertests;
 
 import com.codeborne.selenide.WebDriverRunner;
+import com.qreal.wmp.uitesting.auth.Auther;
+import com.qreal.wmp.uitesting.auth.Opener;
 import com.qreal.wmp.uitesting.config.AppInit;
+import com.qreal.wmp.uitesting.exceptions.WrongAuthException;
 import io.github.bonigarcia.wdm.ChromeDriverManager;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.After;
@@ -51,10 +54,14 @@ public class AuthTest {
      */
     @Test
     public void authTest() {
-        opener.cleanOpen("auth");
-        assert inAuthPage();
-        auther.auth();
-        $(byText("OAuth Server")).waitUntil(appear, 5000);
+        try {
+            opener.cleanOpen("auth");
+            assert inAuthPage();
+            auther.auth();
+            assert $(byText("OAuth Server")).waitUntil(appear, 5000).exists();
+        } catch (WrongAuthException e) {
+            System.err.println(e.getMessage());
+        }
     }
 
     /**
@@ -68,7 +75,11 @@ public class AuthTest {
         final char[] alphabet = "abcdefghijklmnopqrstuvwxyz0123456789".toCharArray();
         final String wrongLogin = RandomStringUtils.random(20, alphabet);
         final String wrongPassword = RandomStringUtils.random(20, alphabet);
-        auther.auth(wrongLogin, wrongPassword);
+        try {
+            auther.auth(wrongLogin, wrongPassword);
+        } catch (WrongAuthException e) {
+            e.printStackTrace();
+        }
         $(byText("Password or login wrong")).waitUntil(appear, 5000);
     }
 

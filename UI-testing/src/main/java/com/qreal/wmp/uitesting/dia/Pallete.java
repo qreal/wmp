@@ -2,6 +2,7 @@ package com.qreal.wmp.uitesting.dia;
 
 import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -25,7 +26,7 @@ public class Pallete {
      * @param elementName name of block
      * @return block
      */
-    public SelenideElement getElement(final String elementName) {
+    public SelenideElement getElement(final String elementName) throws NoSuchElementException {
         final SelenideElement element = $(By.cssSelector(selector + " div[data-type=\"" + elementName + "\"]"));
         logger.info("Get element {} from Palette", element);
         return element;

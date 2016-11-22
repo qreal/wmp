@@ -1,7 +1,8 @@
-package com.qreal.wmp.uitesting.auth;
+package com.qreal.wmp.uitesting.auth.innertests;
 
 import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.WebDriverRunner;
+import com.qreal.wmp.uitesting.auth.Opener;
 import com.qreal.wmp.uitesting.config.AppInit;
 import com.qreal.wmp.uitesting.dia.Pallete;
 import com.qreal.wmp.uitesting.dia.PropertyEditor;
@@ -12,12 +13,16 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
+
+import static com.codeborne.selenide.Selenide.$;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = AppInit.class, loader = AnnotationConfigContextLoader.class)
@@ -55,9 +60,8 @@ public class DiaTest {
     /** Drag element from pallete and drop on the scene. */
     @Test
     public void dragAndDrop() {
-        final SelenideElement palleteElement = pallete.getElement("InitialNode");
-        final SelenideElement sceneElement = scene.dragAndDrop(palleteElement);
-        assert scene.exist(sceneElement);
+        final SelenideElement initialNode = scene.dragAndDrop(pallete.getElement("InitialNode"));
+        assert scene.exist(initialNode);
     }
 
     /** Remove element from scene. */

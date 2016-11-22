@@ -1,5 +1,6 @@
 package com.qreal.wmp.uitesting.auth;
 
+import com.qreal.wmp.uitesting.exceptions.WrongAuthException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,12 +32,17 @@ public class Opener {
      * @param page must be one of the keys from pages.property.
      */
     public void open(final String page) {
-        com.codeborne.selenide.Selenide.open(env.getProperty(page));
-        if ($(byText("Sign in to continue to Auth")).exists()) {
-            logger.info("Fail with open page {}. Try to login.", env.getProperty(page));
-            auther.auth();
+        try {
+            cleanOpen(page);
+            if ($(byText("Sign in to continue to Auth")).exists()) {
+                logger.info("Fail with open page {}. Try to login.", env.getProperty(page));
+                auther.auth();
+            }
+            cleanOpen(page);
+        } catch (WrongAuthException e) {
+            logger.error("Opener fails: " +  e.getMessage());
+            throw new RuntimeException(e.getMessage());
         }
-        com.codeborne.selenide.Selenide.open(env.getProperty(page));
         logger.info("Open page {}", env.getProperty(page));
     }
 
@@ -46,7 +52,11 @@ public class Opener {
      * @param page must be one of the keys from pages.property.
      */
     public void cleanOpen(final String page) {
-        com.codeborne.selenide.Selenide.open(env.getProperty(page));
+        try {
+            com.codeborne.selenide.Selenide.open(env.getProperty(page));
+        } catch (NullPointerException e) {
+            throw new NullPointerException(page + " is not linked with a url");
+        }
         logger.info("Open page {}", env.getProperty(page));
     }
 }
