@@ -7,6 +7,8 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
 
+import java.util.List;
+
 import static com.codeborne.selenide.Selenide.$;
 
 /**
@@ -91,14 +93,25 @@ public class SceneWindow {
     }
 
     private Actions callDragAndDropByX(int src, int dst, int step, Actions actions, Keys key, SelenideElement element) {
+        final List<SelenideElement> elements = scene.getAllBlocks();
         return Math.abs(src - dst) > Math.abs(step) ? callDragAndDropByX(src + step, dst, step,
-                actions.sendKeys(key).clickAndHold(element).moveByOffset(step * 2, 0), key, element)
+                actions.sendKeys(key).clickAndHold(element).moveByOffset(jump(elements, step, src), 0), key, element)
                 : actions.sendKeys(key, key);
     }
 
     private Actions callDragAndDropByY(int src, int dst, int step, Actions actions, Keys key, SelenideElement element) {
+        final List<SelenideElement> elements = scene.getAllBlocks();
         return Math.abs(src - dst) > Math.abs(step) ? callDragAndDropByY(src + step, dst, step,
-                actions.sendKeys(key).clickAndHold(element).moveByOffset(0, step * 2), key, element)
+                actions.sendKeys(key).clickAndHold(element).moveByOffset(0, jump(elements, step, src)), key, element)
                 : actions.sendKeys(key, key);
+    }
+
+    private int jump(final List<SelenideElement> elements, int step, int current) {
+        if (elements.stream().filter(x -> Math.abs(current - scene.getPosition(x).getWidth())
+                        < Math.abs(2 * step)).findFirst().isPresent()) {
+            return step + jump(elements, step, step + current);
+        } else  {
+            return step;
+        }
     }
 }

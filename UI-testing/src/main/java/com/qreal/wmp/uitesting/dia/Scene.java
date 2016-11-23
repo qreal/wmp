@@ -9,10 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
@@ -28,7 +25,7 @@ public class Scene {
 
     private static final Logger logger = LoggerFactory.getLogger(Pallete.class);
 
-    private final Set<SelenideElement> elements = new HashSet<>();
+    private Set<SelenideElement> elements = new HashSet<>();
 
     private WebDriver driver;
 
@@ -104,24 +101,38 @@ public class Scene {
         elements.remove(selenideElement);
         new Actions(driver).contextClick(selenideElement).build().perform();
         $(By.id("scene-context-menu")).click();
+        Set<SelenideElement> newSet = new HashSet<>();
+        $$(By.cssSelector(selector + " #v_7 > *")).stream().filter(x -> x != null).forEach(newSet::add);
+        elements = newSet;
+
     }
 
     /** Remove all elements from the scene. */
     public void clean() {
-        $$(By.cssSelector(selector + " #v_7 > *")).forEach(element -> remove(element));
-        elements.clear();
-        logger.info("Clean scene");
+        if (!elements.isEmpty()) {
+            remove(elements.stream().findFirst().get());
+            clean();
+        } else {
+            logger.info("Clean scene");
+        }
     }
 
     /** Add link between two elements. */
     public SelenideElement addLink(final SelenideElement source, final SelenideElement target) {
         final SelenideElement begin = $(By.cssSelector(selector + " #" + source.attr("id") + " .outPorts"));
-        logger.info("Begin element {}", begin);
+        logger.info("Begin element {}, end element {} ", begin, target);
         new Actions(driver).dragAndDrop(begin, target).build().perform();
         SelenideElement newEl = updateScene().get();
         logger.info("Add link {}", newEl);
         elements.add(newEl);
         return newEl;
+    }
+
+    /** Return all blocks. */
+    public List<SelenideElement> getAllBlocks() {
+        List<SelenideElement> result = new ArrayList<>();
+        elements.stream().filter(x -> !x.attr("class").equals("link")).forEach(result::add);
+        return result;
     }
 
     /** Return new element of the scene. */

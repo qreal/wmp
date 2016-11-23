@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
-import static com.sun.tools.doclint.Entity.exist;
 
 /** Used for authentication in current browser session. */
 @Service
