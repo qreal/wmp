@@ -5,7 +5,6 @@ import com.codeborne.selenide.WebDriverRunner;
 import com.qreal.wmp.uitesting.auth.Opener;
 import com.qreal.wmp.uitesting.config.AppInit;
 import com.qreal.wmp.uitesting.dia.Pallete;
-import com.qreal.wmp.uitesting.dia.PropertyEditor;
 import com.qreal.wmp.uitesting.dia.Scene;
 import io.github.bonigarcia.wdm.ChromeDriverManager;
 import org.junit.After;
@@ -20,6 +19,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
+import java.util.ArrayList;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = AppInit.class, loader = AnnotationConfigContextLoader.class)
 public class DiagramConstructingTest {
@@ -33,10 +34,10 @@ public class DiagramConstructingTest {
     @Autowired
     private Scene scene;
 
-    @Autowired
-    private PropertyEditor propertyEditor;
-
     private WebDriver driver;
+
+    private ArrayList<SelenideElement> elements;
+    private ArrayList<SelenideElement> links;
 
     /** Setup ChromeDriverManager. */
     @BeforeClass
@@ -50,21 +51,42 @@ public class DiagramConstructingTest {
         WebDriverRunner.setWebDriver(driver);
         opener.open("editor");
         scene.updateWebdriver(driver);
+
+        elements = new ArrayList<>();
+        links = new ArrayList<>();
+
+        elements.add(scene.dragAndDrop(pallete.getElement("Initial Node"), 4, 4));
+        elements.add(scene.dragAndDrop(pallete.getElement("Motors Forward"), 10, 4));
+        links.add(scene.addLink(elements.get(0), elements.get(1)));
+        elements.add(scene.dragAndDrop(pallete.getElement("Painter Color"), 16, 4));
+        links.add(scene.addLink(elements.get(1), elements.get(2)));
+        elements.add(scene.dragAndDrop(pallete.getElement("Timer"), 22, 4));
+        links.add(scene.addLink(elements.get(2), elements.get(3)));
+        elements.add(scene.dragAndDrop(pallete.getElement("Final Node"), 28, 4));
+        links.add(scene.addLink(elements.get(3), elements.get(4)));
     }
 
     @Test
-    public void diagramThreeNodesTwoLinks() {
-        final SelenideElement node1 = scene.dragAndDrop(pallete.getElement("InitialNode"), 4, 4);
-        final SelenideElement node2 = scene.dragAndDrop(pallete.getElement("InitialNode"), 10, 4);
-        final SelenideElement node3 = scene.dragAndDrop(pallete.getElement("InitialNode"), 16, 4);
-        scene.addLink(node1, node2);
-        scene.addLink(node2, node3);
+    public void digramFiveNodes() {
+        assert allExist();
+    }
+
+    @Test
+    public void moveSomeNodes() {
+        scene.moveToCell(elements.get(1), 20, 20);
+        scene.moveToCell(elements.get(0), 20, 10);
+        scene.moveToCell(elements.get(1), 0, 20);
+        assert allExist();
     }
 
     @After
     public void stopDriver() {
         scene.clean();
         driver.close();
+    }
+
+    private boolean allExist() {
+        return elements.stream().allMatch(scene::exist) && links.stream().anyMatch(scene::exist);
     }
 
 }

@@ -78,7 +78,7 @@ public class AuthTest {
         try {
             auther.auth(wrongLogin, wrongPassword);
         } catch (WrongAuthException e) {
-            e.printStackTrace();
+            System.err.println(e.getMessage());
         }
         $(byText("Password or login wrong")).waitUntil(appear, 5000);
     }

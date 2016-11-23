@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import static com.codeborne.selenide.Selectors.byText;
@@ -41,7 +42,7 @@ public class Opener {
             cleanOpen(page);
         } catch (WrongAuthException e) {
             logger.error("Opener fails: " +  e.getMessage());
-            throw new RuntimeException(e.getMessage());
+            throw new AccessDeniedException(e.getMessage());
         }
         logger.info("Open page {}", env.getProperty(page));
     }
@@ -55,7 +56,7 @@ public class Opener {
         try {
             com.codeborne.selenide.Selenide.open(env.getProperty(page));
         } catch (NullPointerException e) {
-            throw new NullPointerException(page + " is not linked with a url");
+            throw new IllegalArgumentException(page + " is not linked with a url");
         }
         logger.info("Open page {}", env.getProperty(page));
     }

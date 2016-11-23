@@ -35,7 +35,7 @@ install:
   #install and run tests and run style checking
   - mvn install -P travis
   - cd ui-testing
-  - mvn install -DskipTests
+  - mvn clean install -DskipTests
   - cd ..
 
 script:
