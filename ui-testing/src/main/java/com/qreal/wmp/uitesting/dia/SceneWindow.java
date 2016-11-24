@@ -95,15 +95,15 @@ public class SceneWindow {
     private Actions callDragAndDropByX(int src, int dst, int step, Actions actions, Keys key, SelenideElement element) {
         final List<SelenideElement> elements = scene.getAllBlocks();
         return Math.abs(src - dst) > Math.abs(step) ? callDragAndDropByX(src + step, dst, step,
-                actions.sendKeys(key).clickAndHold(element).moveByOffset(jump(elements, step, src), 0), key, element)
-                : actions.sendKeys(key, key);
+                actions.sendKeys(key).clickAndHold(element).moveByOffset(jump(elements, 2 * step, src), 0),
+                key, element) : actions.sendKeys(key, key);
     }
 
     private Actions callDragAndDropByY(int src, int dst, int step, Actions actions, Keys key, SelenideElement element) {
         final List<SelenideElement> elements = scene.getAllBlocks();
         return Math.abs(src - dst) > Math.abs(step) ? callDragAndDropByY(src + step, dst, step,
-                actions.sendKeys(key).clickAndHold(element).moveByOffset(0, jump(elements, step, src)), key, element)
-                : actions.sendKeys(key, key);
+                actions.sendKeys(key).clickAndHold(element).moveByOffset(0, jump(elements, 2 * step, src)),
+                key, element) : actions.sendKeys(key, key);
     }
 
     private int jump(final List<SelenideElement> elements, int step, int current) {

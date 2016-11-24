@@ -1,10 +1,11 @@
-package com.qreal.wmp.uitesting.auth.testspace;
+package com.qreal.wmp.uitesting.testspace;
 
 import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.WebDriverRunner;
-import com.qreal.wmp.uitesting.auth.Opener;
+import com.qreal.wmp.uitesting.Opener;
 import com.qreal.wmp.uitesting.config.AppInit;
 import com.qreal.wmp.uitesting.dia.Pallete;
+import com.qreal.wmp.uitesting.dia.PropertyEditor;
 import com.qreal.wmp.uitesting.dia.Scene;
 import io.github.bonigarcia.wdm.ChromeDriverManager;
 import org.junit.After;
@@ -33,6 +34,9 @@ public class DiagramConstructingTest {
 
     @Autowired
     private Scene scene;
+
+    @Autowired
+    private PropertyEditor propertyEditor;
 
     private WebDriver driver;
 
@@ -77,6 +81,16 @@ public class DiagramConstructingTest {
         scene.moveToCell(elements.get(0), 20, 10);
         scene.moveToCell(elements.get(1), 0, 20);
         assert allExist();
+    }
+
+    @Test
+    public void fillProperties() {
+        propertyEditor.setProperty(elements.get(1), "Power", "80");
+        assert propertyEditor.getProperty(elements.get(1), "Power").equals("80");
+        propertyEditor.setProperty(elements.get(2), "Color", "green");
+        assert propertyEditor.getProperty(elements.get(2), "Color").equals("green");
+        propertyEditor.setProperty(elements.get(3), "Delay", "200");
+        assert propertyEditor.getProperty(elements.get(3), "Delay").equals("200");
     }
 
     @After

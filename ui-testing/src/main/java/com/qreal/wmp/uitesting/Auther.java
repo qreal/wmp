@@ -1,4 +1,4 @@
-package com.qreal.wmp.uitesting.auth;
+package com.qreal.wmp.uitesting;
 
 import com.qreal.wmp.uitesting.exceptions.WrongAuthException;
 import org.openqa.selenium.By;

@@ -1,4 +1,4 @@
-package com.qreal.wmp.uitesting.auth;
+package com.qreal.wmp.uitesting;
 
 import com.qreal.wmp.uitesting.exceptions.WrongAuthException;
 import org.slf4j.Logger;
@@ -53,11 +53,7 @@ public class Opener {
      * @param page must be one of the keys from pages.property.
      */
     public void cleanOpen(final String page) {
-        try {
-            com.codeborne.selenide.Selenide.open(env.getProperty(page));
-        } catch (NullPointerException e) {
-            throw new IllegalArgumentException(page + " is not linked with a url");
-        }
+        com.codeborne.selenide.Selenide.open(env.getProperty(page));
         logger.info("Open page {}", env.getProperty(page));
     }
 }

@@ -1,8 +1,8 @@
-package com.qreal.wmp.uitesting.auth.innertests;
+package com.qreal.wmp.uitesting.innertests;
 
 import com.codeborne.selenide.WebDriverRunner;
-import com.qreal.wmp.uitesting.auth.Auther;
-import com.qreal.wmp.uitesting.auth.Opener;
+import com.qreal.wmp.uitesting.Auther;
+import com.qreal.wmp.uitesting.Opener;
 import com.qreal.wmp.uitesting.config.AppInit;
 import com.qreal.wmp.uitesting.exceptions.WrongAuthException;
 import io.github.bonigarcia.wdm.ChromeDriverManager;

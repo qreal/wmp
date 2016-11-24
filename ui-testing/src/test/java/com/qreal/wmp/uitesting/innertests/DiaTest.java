@@ -1,8 +1,8 @@
-package com.qreal.wmp.uitesting.auth.innertests;
+package com.qreal.wmp.uitesting.innertests;
 
 import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.WebDriverRunner;
-import com.qreal.wmp.uitesting.auth.Opener;
+import com.qreal.wmp.uitesting.Opener;
 import com.qreal.wmp.uitesting.config.AppInit;
 import com.qreal.wmp.uitesting.dia.Pallete;
 import com.qreal.wmp.uitesting.dia.PropertyEditor;
@@ -86,9 +86,8 @@ public class DiaTest {
     @Test
     public void propertyEditor() {
         final SelenideElement motor = scene.dragAndDrop(pallete.getElement("Motors Forward"));
-        motor.click();
-        propertyEditor.setProperty("Ports", "123");
-        assert propertyEditor.getProperty("Ports").equals("123");
+        propertyEditor.setProperty(motor, "Ports", "123");
+        assert propertyEditor.getProperty(motor, "Ports").equals("123");
     }
 
     /** Move element to cell. */
@@ -107,6 +106,6 @@ public class DiaTest {
     @After
     public void stopDriver() {
         scene.clean();
-        driver.close();
+        driver.quit();
     }
 }

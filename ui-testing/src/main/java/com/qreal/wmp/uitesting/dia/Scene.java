@@ -21,7 +21,7 @@ import static com.codeborne.selenide.Selenide.$$;
 @Service
 public class Scene {
 
-    private static final String selector = ".scene-wrapper";
+    public static final String selector = ".scene-wrapper";
 
     private static final Logger logger = LoggerFactory.getLogger(Pallete.class);
 
