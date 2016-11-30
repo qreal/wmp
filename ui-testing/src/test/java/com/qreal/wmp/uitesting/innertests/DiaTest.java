@@ -57,16 +57,16 @@ public class DiaTest {
     @Test
     public void dragAndDrop() {
         final SelenideElement initialNode = scene.dragAndDrop(pallete.getElement("Initial Node"));
-        assert scene.exist(initialNode);
+        assert scene.isExist(initialNode);
     }
 
     /** Remove element from scene. */
     @Test
     public void remove() {
         final SelenideElement sceneElement = scene.dragAndDrop(pallete.getElement("Initial Node"));
-        assert scene.exist(sceneElement);
+        assert scene.isExist(sceneElement);
         scene.remove(sceneElement);
-        assert !scene.exist(sceneElement);
+        assert !scene.isExist(sceneElement);
     }
 
     /** Add two elements and link them. */
@@ -78,8 +78,8 @@ public class DiaTest {
         SelenideElement link = scene.addLink(initNode, motor);
         SelenideElement link2 = scene.addLink(motor, finalNode);
         scene.moveToCell(motor, 72, 64);
-        assert scene.exist(link);
-        assert scene.exist(link2);
+        assert scene.isExist(link);
+        assert scene.isExist(link2);
     }
 
     /** Set property 'Ports' of motor forward item to '123' and checks that all is correct. */

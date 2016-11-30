@@ -42,7 +42,7 @@ public class Scene {
      */
     public SelenideElement dragAndDrop(final SelenideElement element) {
         element.dragAndDropTo(selector);
-        final SelenideElement newEl = updateScene().get();
+        final SelenideElement newEl = getNewElement().get();
         elements.add(newEl);
         logger.info("Add element {} to scene", newEl);
         return newEl;
@@ -83,7 +83,7 @@ public class Scene {
     }
 
     /** Check if element exist on the scene. */
-    public boolean exist(SelenideElement selenideElement) {
+    public boolean isExist(SelenideElement selenideElement) {
         return elements.stream().anyMatch(element -> element.equals(selenideElement));
     }
 
@@ -101,16 +101,17 @@ public class Scene {
         elements.remove(selenideElement);
         new Actions(driver).contextClick(selenideElement).build().perform();
         $(By.id("scene-context-menu")).click();
-        Set<SelenideElement> newSet = new HashSet<>();
-        $$(By.cssSelector(selector + " #v_7 > *")).stream().filter(x -> x != null).forEach(newSet::add);
-        elements = newSet;
-
+        updateScene();
     }
 
     /** Remove all elements from the scene. */
     public void clean() {
+        updateScene();
         if (!elements.isEmpty()) {
-            remove(elements.stream().findFirst().get());
+            List<SelenideElement> blocks = getAllBlocks();
+            if (!blocks.isEmpty()) {
+                remove(blocks.get(0));
+            }
             clean();
         } else {
             logger.info("Clean scene");
@@ -122,7 +123,7 @@ public class Scene {
         final SelenideElement begin = $(By.cssSelector(selector + " #" + source.attr("id") + " .outPorts"));
         logger.info("Begin element {}, end element {} ", begin, target);
         new Actions(driver).dragAndDrop(begin, target).build().perform();
-        SelenideElement newEl = updateScene().get();
+        SelenideElement newEl = getNewElement().get();
         logger.info("Add link {}", newEl);
         elements.add(newEl);
         return newEl;
@@ -136,11 +137,17 @@ public class Scene {
     }
 
     /** Return new element of the scene. */
-    private Optional<SelenideElement> updateScene() {
+    private Optional<SelenideElement> getNewElement() {
         final List<SelenideElement> allElements = $$(By.cssSelector(selector + " #v_7 > *"));
         return allElements.stream().filter(htmlElement -> !elements.stream().anyMatch(selenideElement ->
                 htmlElement.attr("id").equals(selenideElement.attr("id")))).findFirst();
 
+    }
+
+    private void updateScene() {
+        Set<SelenideElement> newSet = new HashSet<>();
+        $$(By.cssSelector(selector + " #v_7 > *")).stream().filter(x -> x != null).forEach(newSet::add);
+        elements = newSet;
     }
 
 }

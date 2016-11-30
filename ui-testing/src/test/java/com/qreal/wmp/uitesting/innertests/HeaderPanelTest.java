@@ -1,12 +1,12 @@
-package com.qreal.wmp.uitesting.testspace;
+package com.qreal.wmp.uitesting.innertests;
 
 import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.WebDriverRunner;
 import com.qreal.wmp.uitesting.Opener;
 import com.qreal.wmp.uitesting.config.AppInit;
 import com.qreal.wmp.uitesting.dia.Pallete;
-import com.qreal.wmp.uitesting.dia.PropertyEditor;
 import com.qreal.wmp.uitesting.dia.Scene;
+import com.qreal.wmp.uitesting.headerpanel.HeaderPanel;
 import io.github.bonigarcia.wdm.ChromeDriverManager;
 import org.junit.After;
 import org.junit.Before;
@@ -21,10 +21,15 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import static com.codeborne.selenide.Condition.appear;
+import static com.codeborne.selenide.Selectors.byText;
+import static com.codeborne.selenide.Selenide.$;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = AppInit.class, loader = AnnotationConfigContextLoader.class)
-public class DiagramConstructingTest {
+public class HeaderPanelTest {
 
     @Autowired
     private Opener opener;
@@ -36,71 +41,49 @@ public class DiagramConstructingTest {
     private Scene scene;
 
     @Autowired
-    private PropertyEditor propertyEditor;
+    private HeaderPanel headerPanel;
 
     private WebDriver driver;
 
-    private ArrayList<SelenideElement> elements;
-    private ArrayList<SelenideElement> links;
-
-    /** Setup ChromeDriverManager. */
     @BeforeClass
     public static void init() {
         ChromeDriverManager.getInstance().setup();
     }
 
+    /** Setup browser. */
     @Before
     public void runDriver() {
         driver = new ChromeDriver();
         WebDriverRunner.setWebDriver(driver);
         opener.open("editor");
         scene.updateWebdriver(driver);
+    }
 
-        elements = new ArrayList<>();
-        links = new ArrayList<>();
+    @Test
+    public void newDiagramTest() {
+
+        List<SelenideElement> elements = new ArrayList<>();
+        List<SelenideElement> links = new ArrayList<>();
 
         elements.add(scene.dragAndDrop(pallete.getElement("Initial Node"), 4, 4));
         elements.add(scene.dragAndDrop(pallete.getElement("Motors Forward"), 10, 4));
         links.add(scene.addLink(elements.get(0), elements.get(1)));
         elements.add(scene.dragAndDrop(pallete.getElement("Painter Color"), 16, 4));
         links.add(scene.addLink(elements.get(1), elements.get(2)));
-        elements.add(scene.dragAndDrop(pallete.getElement("Timer"), 22, 4));
-        links.add(scene.addLink(elements.get(2), elements.get(3)));
-        elements.add(scene.dragAndDrop(pallete.getElement("Final Node"), 28, 4));
-        links.add(scene.addLink(elements.get(3), elements.get(4)));
+
+        headerPanel.fileItem().newDiagram();
     }
 
     @Test
-    public void digramFiveNodes() {
-        assert allExist();
+    public void clickDashboardTest() {
+        headerPanel.clickDashboard();
+        $(byText("Dashboard")).waitUntil(appear, 5000);
     }
 
-    @Test
-    public void moveSomeNodes() {
-        scene.moveToCell(elements.get(1), 20, 20);
-        scene.moveToCell(elements.get(0), 20, 10);
-        scene.moveToCell(elements.get(1), 0, 20);
-        assert allExist();
-    }
-
-    @Test
-    public void fillProperties() {
-        propertyEditor.setProperty(elements.get(1), "Power", "80");
-        assert propertyEditor.getProperty(elements.get(1), "Power").equals("80");
-        propertyEditor.setProperty(elements.get(2), "Color", "green");
-        assert propertyEditor.getProperty(elements.get(2), "Color").equals("green");
-        propertyEditor.setProperty(elements.get(3), "Delay", "200");
-        assert propertyEditor.getProperty(elements.get(3), "Delay").equals("200");
-    }
-
+    /** Close the browser. */
     @After
     public void stopDriver() {
         scene.clean();
-        driver.close();
+        driver.quit();
     }
-
-    private boolean allExist() {
-        return elements.stream().allMatch(scene::isExist) && links.stream().anyMatch(scene::isExist);
-    }
-
 }
