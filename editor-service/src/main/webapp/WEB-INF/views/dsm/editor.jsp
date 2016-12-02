@@ -3,9 +3,15 @@
 <head>
   <title>DSM platform</title>
 
+  <%@ include file="../include/properties.jsp" %>
+
   <jsp:include page="../include/scripts.jsp" flush="true"/>
   <jsp:include page="../include/properties.jsp" flush="true"/>
 
+  <script src="<c:url value='/resources/thrift/struct/Diagram_types.js'/> "></script>
+  <script src="<c:url value='/resources/thrift/struct/Palette_types.js'/> "></script>
+  <script src="<c:url value='/resources/thrift/editor/EditorService_types.js'/> "></script>
+  <script src="<c:url value='/resources/thrift/editor/EditorServiceThrift.js'/> "></script>
   <script src="<c:url value='/resources/treeview/jquery.treeview.js' />"></script>
 
   <link rel="stylesheet" href="<c:url value='/resources/bootstrap/css/bootstrap.min.css' />"/>
@@ -42,6 +48,7 @@
       </div>
       <div class="navbar-collapse collapse">
         <ul id="tool-buttons-left-area" class="nav navbar-nav">
+          <li><a href="" ng-click="createPalette()">Create</a></li>
           <li id="file-menu" class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">File<b class="caret"></b></a>
             <ul class="dropdown-menu">

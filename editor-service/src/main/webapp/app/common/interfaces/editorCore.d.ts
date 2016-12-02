@@ -320,6 +320,7 @@ declare class PaletteController {
     public appendSubprogramsPalette(subprogramDiagramNodes: SubprogramDiagramNode[],
                                     nodeTypesMap: Map<NodeType>): void;
     public appendBlocksPalette(paletteTypes: PaletteTypes): void;
+    public clearBlocksPalette(): void;
 
 }
 

@@ -130,6 +130,18 @@
                         </configuration>
                     </execution>
                     <execution>
+                        <id>java-generation-palette-db</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                        <configuration>
+                            <generator>java</generator>
+                            <thriftSourceRoot>${thrift.src.base}/palette-database</thriftSourceRoot>
+                            <outputDirectory>${thrift.output.dir}/palette-database</outputDirectory>
+                        </configuration>
+                    </execution>
+                    <execution>
                         <id>java-generation-struct</id>
                         <phase>generate-sources</phase>
                         <goals>

@@ -37,6 +37,10 @@ class PaletteController {
         this.appendPaletteContent("#blocks-navigation", paletteView.getContent());
     }
 
+    public clearBlocksPalette(): void {
+        $("#blocks-navigation").empty();
+    }
+
     private appendPaletteContent(selector: string, content: string): void {
         $(selector).append(content);
 

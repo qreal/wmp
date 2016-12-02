@@ -6,9 +6,12 @@ import com.qreal.wmp.editor.database.diagrams.model.Folder;
 import com.qreal.wmp.editor.database.exceptions.AbortedException;
 import com.qreal.wmp.editor.database.exceptions.ErrorConnectionException;
 import com.qreal.wmp.editor.database.exceptions.NotFoundException;
+import com.qreal.wmp.editor.database.palettes.client.PaletteService;
+import com.qreal.wmp.editor.database.palettes.model.Palette;
 import com.qreal.wmp.thrift.gen.EditorServiceThrift;
 import com.qreal.wmp.thrift.gen.TDiagram;
 import com.qreal.wmp.thrift.gen.TFolder;
+import com.qreal.wmp.thrift.gen.TPalette;
 import org.apache.thrift.TException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,7 +36,7 @@ public class EditorServletHandler implements EditorServiceThrift.Iface {
     /**
      * Saves diagram in specified folder and creates for it Id.
      *
-     * @param tDiagram  diagram to save (Id must not be set)
+     * @param tDiagram diagram to save (Id must not be set)
      * @return new id of diagram
      */
     @Override
@@ -79,7 +82,9 @@ public class EditorServletHandler implements EditorServiceThrift.Iface {
         }
     }
 
-    /** Deletes diagram with specified id.*/
+    /**
+     * Deletes diagram with specified id.
+     */
     @Override
     public void deleteDiagram(long diagramId) {
         DiagramService diagramService = (DiagramService) context.getBean("diagramService");
@@ -96,7 +101,9 @@ public class EditorServletHandler implements EditorServiceThrift.Iface {
         }
     }
 
-    /** Returns diagram with specified id.*/
+    /**
+     * Returns diagram with specified id.
+     */
     @Override
     public TDiagram openDiagram(long diagramId) {
         DiagramService diagramService = (DiagramService) context.getBean("diagramService");
@@ -138,14 +145,16 @@ public class EditorServletHandler implements EditorServiceThrift.Iface {
         } catch (ErrorConnectionException e) {
             //TODO Here we should not return 0, but send exception to client side.
             logger.error("createFolder method encountered exception ErrorConnection. Instead of folderId will be " +
-                            "returned 0.", e);
+                    "returned 0.", e);
         } catch (TException e) {
             logger.error("TException was not translated", e);
         }
         return id;
     }
 
-    /** Deletes folder with specified id.*/
+    /**
+     * Deletes folder with specified id.
+     */
     @Override
     public void deleteFolder(long folderId) {
         DiagramService diagramService = (DiagramService) context.getBean("diagramService");
@@ -162,7 +171,9 @@ public class EditorServletHandler implements EditorServiceThrift.Iface {
         }
     }
 
-    /** Returns root folder of user.*/
+    /**
+     * Returns root folder of user.
+     */
     @Override
     public TFolder getFolderTree() {
         DiagramService diagramService = (DiagramService) context.getBean("diagramService");
@@ -184,4 +195,24 @@ public class EditorServletHandler implements EditorServiceThrift.Iface {
         return result;
     }
 
+    @Override
+    public long createPalette(TPalette palette) {
+        PaletteService paletteService = (PaletteService) context.getBean("paletteService");
+        long id = 0;
+        Palette newPalette = new Palette(palette);
+        try {
+            id = paletteService.createPalette(newPalette);
+        } catch (AbortedException e) {
+            //TODO Here we should not return 0, but send exception to client side.
+            logger.error("createPalette method encountered exception Aborted. Instead of paletteId will be returned 0.",
+                    e);
+        } catch (ErrorConnectionException e) {
+            //TODO Here we should not return 0, but send exception to client side.
+            logger.error("createPalette method encountered exception ErrorConnection. Instead of paletteId will be " +
+                    "returned 0.", e);
+        } catch (TException e) {
+            logger.error("TException was not translated", e);
+        }
+        return id;
+    }
 }

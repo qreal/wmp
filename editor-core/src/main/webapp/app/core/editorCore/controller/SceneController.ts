@@ -253,7 +253,7 @@ class SceneController {
         this.changeCurrentElement(element);
 
         if (this.scene.getNodeById(cellView.model.id)) {
-            if (event.button == 1) {
+            if (event.button !== 2) {
                 var node: DiagramNode = this.scene.getNodeById(cellView.model.id);
                 this.lastCellMouseDownPosition.x = node.getX();
                 this.lastCellMouseDownPosition.y = node.getY();

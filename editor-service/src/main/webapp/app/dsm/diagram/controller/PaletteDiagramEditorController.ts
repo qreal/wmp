@@ -1,10 +1,24 @@
 /// <reference path="../../../common/interfaces/editorCore.d.ts" />
 /// <reference path="../../../common/interfaces/vendor.d.ts" />
+/// <reference path="../../../../resources/thrift/editor/EditorService_types.d.ts" />
+/// <reference path="../../../../resources/thrift/editor/EditorServiceThrift.d.ts" />
+/// <reference path="../../../../resources/thrift/struct/Diagram_types.d.ts" />
+/// <reference path="../../../../resources/thrift/struct/Palette_types.d.ts" />
+/// <reference path="../../../../resources/types/thrift/Thrift.d.ts" />
+/// <reference path="../../../common/constants/GeneralConstants.ts" />
+/// <reference path="../exporters/PaletteExporter.ts" />
+/// <reference path="../parsers/PaletteParser.ts" />
 
 class PaletteDiagramEditorController extends DiagramEditorController {
 
+    private exporter: PaletteExporter;
+    private parser: PaletteParser;
+
     constructor($scope, $attrs) {
         super($scope, $attrs);
+        this.exporter = new PaletteExporter();
+        this.parser = new PaletteParser(this);
+        $scope.createPalette = () => { this.createPalette(); };
         this.elementsTypeLoader.load((elementTypes: ElementTypes): void => {
             this.handleLoadedTypes(elementTypes);
         }, "dsm");
@@ -27,7 +41,55 @@ class PaletteDiagramEditorController extends DiagramEditorController {
         this.paletteController.appendBlocksPalette(elementTypes.paletteTypes);
         this.paletteController.initDraggable();
     }
-/*
+
+    public createPalette() {
+        var name: string = prompt("input diagram name");
+        if (name !== "") {
+            var controller = this;
+            var palette = this.exporter.exportPalette(controller.getNodesMap(), controller.getLinksMap(), name);
+            try {
+                controller.getClient().createPalette(palette);
+                controller.clearState();
+                controller.paletteController.clearBlocksPalette();
+                this.paletteController.appendBlocksPalette(controller.parser.parse(palette));
+                this.paletteController.initDraggable();
+                controller.addLinks();
+            }
+            catch (ouch) {
+                console.log("Error: can't create diagram", ouch);
+            }
+            /*$.ajax({
+                type: 'POST',
+                url: 'createPalette',
+                contentType: 'application/json',
+                data: JSON.stringify(paletteJson),
+                success: function ():any {
+                    console.log('ok');
+                },
+                error: function (response, status, error):any {
+                    console.log("error: " + status + " " + error);
+                }
+            });*/
+        }
+    }
+
+    public setNodeTypesMap(nodeTypes) {
+        this.nodeTypesMap = nodeTypes;
+    }
+
+    private addLinks() {
+        var properties: Map<Property> = {};
+        properties["Guard"] = new Property("Guard", "combobox", "");
+        var node: NodeType = new NodeType("Link", properties);
+        this.nodeTypesMap["ControlFlow"] = node;
+    }
+
+    private getClient(): EditorServiceThriftClient {
+        var transport = new Thrift.TXHRTransport(GeneralConstants.EDITOR_REST_SERVLET);
+        var protocol = new Thrift.TJSONProtocol(transport);
+        return new EditorServiceThriftClient(protocol);
+    }
+    /*
     public loadMetaEditor() {
         this.elementsTypeLoader.load((elementTypes: ElementTypes): void => {
             this.handleLoadedTypes(elementTypes);
@@ -57,10 +119,10 @@ class PaletteDiagramEditorController extends DiagramEditorController {
     }
 
     public createPalette() {
-        var name: string = prompt("input palette name");
+        var name: string = prompt("input diagram name");
         if (name !== null && name !== "") {
             var controller = this;
-            var paletteJson = this.exporter.exportPaletteToJson(controller.getNodesMap(), controller.getLinksMap(), name);
+            var paletteJson = this.exporter.exportPalette(controller.getNodesMap(), controller.getLinksMap(), name);
             $.ajax({
                 type: 'POST',
                 url: 'createPalette',
@@ -112,8 +174,8 @@ class PaletteDiagramEditorController extends DiagramEditorController {
     }
 
     private addLinks() {
-        var properties: Map<Property> = {};
-        properties["Guard"] = new Property("Guard", "combobox", "");
+        var properties: Map<NodeProperty> = {};
+        properties["Guard"] = new NodeProperty("Guard", "combobox", "");
         var node: NodeType = new NodeType("Link", properties);
         this.nodeTypesMap["ControlFlow"] = node;
     }

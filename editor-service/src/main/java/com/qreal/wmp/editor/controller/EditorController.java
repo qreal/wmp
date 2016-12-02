@@ -33,7 +33,7 @@ public class EditorController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ModelAndView index(@RequestParam("path") String path) {
-        logger.info("User {} requested" + path + "editor", AuthenticatedUser.getUserName());
+        logger.info("User {} requested " + path + " editor", AuthenticatedUser.getUserName());
         return new ModelAndView(path + "/editor");
     }
 

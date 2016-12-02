@@ -1,6 +1,6 @@
 package com.qreal.wmp.editor.database.exceptions.translation;
 
-import com.qreal.wmp.editor.database.diagrams.client.DiagramServiceImpl;
+import com.qreal.wmp.editor.database.palettes.client.PaletteServiceImpl;
 import com.qreal.wmp.editor.database.exceptions.AbortedException;
 import com.qreal.wmp.editor.database.exceptions.ErrorConnectionException;
 import com.qreal.wmp.editor.database.exceptions.NotFoundException;
@@ -22,7 +22,7 @@ import org.springframework.stereotype.Component;
 @EnableAspectJAutoProxy(proxyTargetClass = true)
 public class ExceptionTranslation {
 
-    private static final Logger loggerDiagrams = LoggerFactory.getLogger(DiagramServiceImpl.class);
+    private static final Logger loggerDiagrams = LoggerFactory.getLogger(PaletteServiceImpl.class);
 
     private static final Logger loggerUsers = LoggerFactory.getLogger(UserServiceImpl.class);
 

@@ -26,7 +26,8 @@ public class TypesLoader {
 
         ClassLoader classLoader = getClass().getClassLoader();
         JsonNode typesList = mapper.readTree(new File(classLoader.getResource(notation + "/typesList.json").getFile()));
-        JsonNode allTypes = mapper.readTree(new File(classLoader.getResource(notation + "/elementsTypes_en.json").getFile()));
+        JsonNode allTypes = mapper.readTree(new File(classLoader.getResource(notation +
+                "/elementsTypes_en.json").getFile()));
 
         resultTypes.set("elements", getElementsTypes(typesList, allTypes));
         resultTypes.set("blocks", getBlocksTypes(typesList, allTypes));
