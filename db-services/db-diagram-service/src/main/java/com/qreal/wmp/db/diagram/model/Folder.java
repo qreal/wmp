@@ -2,6 +2,8 @@ package com.qreal.wmp.db.diagram.model;
 
 import com.qreal.wmp.thrift.gen.TFolder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -13,7 +15,10 @@ import java.util.stream.Collectors;
 @Entity
 @Table(name = "folders")
 @Data
+@EqualsAndHashCode(exclude = "parentFolders")
+@ToString(exclude = "parentFolders")
 public class Folder implements Serializable {
+
     @Id
     @Column(name = "folder_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,31 +27,43 @@ public class Folder implements Serializable {
     @Column(name = "folder_name")
     private String folderName;
 
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "owners", joinColumns = @JoinColumn(name = "folder_id"))
     @Column(name = "username")
-    private String userName;
+    private Set<String> owners = new HashSet<>();
 
-    //FIXME
-    //Do we really need this field?
-    @Column(name = "folder_parent_id")
+    @Transient
     private Long folderParentId;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-    @JoinColumn(name = "folder_parent_id", insertable = false, updatable = false)
+    @ManyToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER, mappedBy = "childrenFolders")
+    private Set<Folder> parentFolders = new HashSet<>();
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "folders_folders", joinColumns = {@JoinColumn(name = "parent_id")},
+            inverseJoinColumns = {@JoinColumn(name = "child_id")})
     private Set<Folder> childrenFolders = new HashSet<>();
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinColumn(name = "folder_id", referencedColumnName = "folder_id")
     private Set<Diagram> diagrams = new HashSet<>();
 
-    public Folder() {
-    }
+    public Folder() { }
 
-    public Folder(String folderName, String userName) {
+    public Folder(String folderName, String owners, Long id) {
         this.folderName = folderName;
-        this.userName = userName;
+        this.owners.add(owners);
+        this.id = id;
     }
 
-    /** Constructor-converter from Thrift TFolder to Folder.*/
+    public Folder(String folderName, String owners) {
+        this.folderName = folderName;
+        this.owners.add(owners);
+    }
+
+    /**
+     * Constructor-converter from Thrift TFolder to Folder.
+     * It will not fill parentsFolders except presented, which could be changed.
+     */
     public Folder(TFolder tFolder) {
 
         if (tFolder.isSetId()) {
@@ -57,8 +74,8 @@ public class Folder implements Serializable {
             folderName = tFolder.getFolderName();
         }
 
-        if (tFolder.isSetUserName()) {
-            userName = tFolder.getUserName();
+        if (tFolder.isSetOwners()) {
+            owners = tFolder.getOwners();
         }
 
         if (tFolder.isSetFolderParentId()) {
@@ -69,13 +86,18 @@ public class Folder implements Serializable {
             childrenFolders = tFolder.getChildrenFolders().stream().map(Folder::new).collect(Collectors.toSet());
         }
 
+        childrenFolders = childrenFolders.stream().map(x -> {
+            x.getParentFolders().add(this);
+            return x;
+        }).collect(Collectors.toSet());
+
         if (tFolder.isSetDiagrams()) {
             diagrams = tFolder.getDiagrams().stream().map(Diagram::new).collect(Collectors.toSet());
         }
     }
 
     /** Converter from Folder to Thrift TFolder.*/
-    public TFolder toTFolder() {
+    public TFolder toTFolder(final String username) {
         TFolder tFolder = new TFolder();
 
         if (id != null) {
@@ -86,16 +108,15 @@ public class Folder implements Serializable {
             tFolder.setFolderName(folderName);
         }
 
-        if (userName != null) {
-            tFolder.setUserName(userName);
+        if (owners != null) {
+            tFolder.setOwners(owners);
         }
 
-        if (folderParentId != null) {
-            tFolder.setFolderParentId(folderParentId);
-        }
+        setFolderParentId(username, tFolder);
 
         if (childrenFolders != null && !childrenFolders.isEmpty()) {
-            tFolder.setChildrenFolders(childrenFolders.stream().map(Folder::toTFolder).collect(Collectors.toSet()));
+            tFolder.setChildrenFolders(childrenFolders.stream().map(folder -> folder.toTFolder(username)).
+                    collect(Collectors.toSet()));
         }
 
         if (diagrams != null && !diagrams.isEmpty()) {
@@ -104,4 +125,14 @@ public class Folder implements Serializable {
 
         return tFolder;
     }
+
+    private void setFolderParentId(String username, TFolder tFolder) {
+        parentFolders.stream().filter(dir -> dir.owners.contains(username)).
+                forEach(dir -> tFolder.setFolderParentId(dir.getId()));
+
+        if (!tFolder.isSetFolderParentId() && folderParentId != null) {
+            tFolder.setFolderParentId(folderParentId);
+        }
+    }
 }
+

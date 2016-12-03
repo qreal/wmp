@@ -12,32 +12,32 @@ import org.jetbrains.annotations.Nullable;
 public interface RobotService {
     /**
      * Saves a robot.
-     * @param robot robot to save (Id must not be set).
+     * @param robot robot to saveUser (Id must not be set).
      */
-    long register(@NotNull TRobot robot) throws AbortedException, ErrorConnectionException, TException;
+    long saveRobot(@NotNull TRobot robot) throws AbortedException, ErrorConnectionException, TException;
 
     /**
      * Finds a robot with specified Id.
      * @param id id of a robot to find.
      */
-    @Nullable TRobot findById(long id) throws NotFoundException, ErrorConnectionException, TException;
+    @Nullable TRobot getRobot(long id) throws NotFoundException, ErrorConnectionException, TException;
+
+    /**
+     * Updates a robot (Id must be set).
+     * @param robot robot to updateUser (Id must be set correctly)
+     */
+    void updateRobot(@NotNull TRobot robot) throws AbortedException, ErrorConnectionException, TException;
+
+    /**
+     * Deletes a robot.
+     * @param id id of a robot to deleteRobot.
+     */
+    void deleteRobot(long id) throws AbortedException, ErrorConnectionException, TException;
 
     /**
      * Tests if a robot with specified Id exists.
      * @param id of robot to test if exists
      */
     boolean isRobotExists(long id) throws ErrorConnectionException, TException;
-
-    /**
-     * Deletes a robot.
-     * @param id id of a robot to delete.
-     */
-    void delete(long id) throws AbortedException, ErrorConnectionException, TException;
-
-    /**
-     * Updates a robot (Id must be set).
-     * @param robot robot to update (Id must be set correctly)
-     */
-    void update(@NotNull TRobot robot) throws AbortedException, ErrorConnectionException, TException;
 }
 

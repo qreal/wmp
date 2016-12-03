@@ -37,7 +37,7 @@ public class MainController {
 
         User user = null;
         try {
-            user = userService.findByUserName(AuthenticatedUser.getUserName());
+            user = userService.getUser(AuthenticatedUser.getUserName());
         } catch (NotFoundException notFound) {
             logger.error("Authentication error: authenticated user not in database.");
         } catch (ErrorConnectionException errorConnection) {

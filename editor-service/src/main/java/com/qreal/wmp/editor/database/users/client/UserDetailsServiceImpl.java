@@ -40,7 +40,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         com.qreal.wmp.editor.database.users.model.User user;
 
         try {
-            user = userService.findByUserName(username);
+            user = userService.getUser(username);
         } catch (NotFoundException notFound) {
             throw new UsernameNotFoundException("User not found");
         } catch (ErrorConnectionException e) {

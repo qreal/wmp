@@ -2,7 +2,7 @@
 /// <reference path="../../model/NodeType.ts" />
 /// <reference path="../../model/PaletteTypes.ts" />
 /// <reference path="../../model/ElementTypes.ts" />
-/// <reference path="../../../../constants/GeneralConstants.d.ts" />
+/// <reference path="../../../../common/constants/GeneralConstants.d.ts" />
 /// <reference path="../../../../vendor.d.ts" />
 
 class TypesParser {

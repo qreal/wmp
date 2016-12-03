@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Set;
 
 @Transactional
 public class DiagramDaoImpl implements DiagramDao {
@@ -49,19 +48,19 @@ public class DiagramDaoImpl implements DiagramDao {
     public Long saveDiagram(@NotNull Diagram diagram, Long folderId) throws AbortedException {
         logger.trace("saveDiagram() called with parameters: diagram = {}, folderID = {}", diagram.getName(), folderId);
         Session session = sessionFactory.getCurrentSession();
-        Folder folder = null;
-        Set<Diagram> diagrams = null;
+        Folder folder;
         try {
+            session.save(diagram);
+
             folder = getFolder(folderId);
-            diagrams = folder.getDiagrams();
+            folder.getDiagrams().add(diagram);
+
+            updateFolder(folder);
         } catch (NotFoundException e) {
             logger.error("Got null folder object for folder id {}.", folderId);
             throw new AbortedException("Folder to save diagram into not found", "saveDiagram safely aborted",
                     DiagramDaoImpl.class.getName(), e);
         }
-        diagrams.add(diagram);
-        session.update(folder);
-        session.flush();
         logger.trace("saveDiagram() successfully saved diagram {}.", diagram.getName());
         return diagram.getId();
     }
@@ -97,14 +96,14 @@ public class DiagramDaoImpl implements DiagramDao {
      */
     @Override
     public void rewriteDiagram(@NotNull Diagram diagram) throws AbortedException {
-        logger.trace("rewriteDiagram() was called with parameters: diagram = {}.", diagram.getName());
+        logger.trace("updateDiagram() was called with parameters: diagram = {}.", diagram.getName());
         Session session = sessionFactory.getCurrentSession();
         if (!isExistsDiagram(diagram.getId())) {
             throw new AbortedException("Diagram with specified Id doesn't exist. Use save instead.",
-                    "rewriteDiagram() safely aborted.", DiagramDaoImpl.class.getName());
+                    "updateDiagram() safely aborted.", DiagramDaoImpl.class.getName());
         }
         session.merge(diagram);
-        logger.trace("rewriteDiagram() successfully edited diagram {}.", diagram.getName());
+        logger.trace("updateDiagram() successfully edited diagram {}.", diagram.getName());
     }
 
     /**
@@ -131,13 +130,18 @@ public class DiagramDaoImpl implements DiagramDao {
      * @param folder folder to create (Id must not be set)
      */
     @Override
-    public Long saveFolder(@NotNull Folder folder) {
+    public Long saveFolder(@NotNull Folder folder) throws AbortedException {
         logger.trace("saveFolder() was called with parameters: folder = {}.", folder.getFolderName());
         Session session = sessionFactory.getCurrentSession();
+
         session.save(folder);
-        Long folderId = folder.getId();
-        logger.trace("saveFolder() successfully created a folder with id {}", folderId);
-        return folderId;
+        for (Folder dir : folder.getParentFolders()) {
+            dir.getChildrenFolders().add(folder);
+            updateFolder(dir);
+        }
+
+        logger.trace("saveFolder() successfully created a folder with id {}", folder.getId());
+        return folder.getId();
     }
 
     /** Checks whether a folder with specified Id exists.*/
@@ -147,6 +151,19 @@ public class DiagramDaoImpl implements DiagramDao {
         Session session = sessionFactory.getCurrentSession();
         Folder folder = (Folder) session.get(Folder.class, folderId);
         return folder != null;
+    }
+
+    @Override
+    public void updateFolder(@NotNull Folder folder) throws AbortedException {
+        logger.trace("updateFolder() was called with parameters: folder = {}.", folder.getFolderName());
+        Session session = sessionFactory.getCurrentSession();
+        if (!isExistsFolder(folder.getId())) {
+            throw new AbortedException("Folder with specified Id doesn't exist.", "updateFolder() safely aborted.",
+                    DiagramDaoImpl.class.getName());
+        }
+        session.merge(folder);
+
+        logger.trace("updateFolder() successfully updated folder {}.", folder.getFolderName());
     }
 
     /**
@@ -163,6 +180,7 @@ public class DiagramDaoImpl implements DiagramDao {
         }
         Folder folder = (Folder) session.get(Folder.class, folderId);
         session.delete(folder);
+
         logger.trace("deleteFolder() successfully deleted a folder with id {}", folderId);
     }
 
@@ -173,11 +191,12 @@ public class DiagramDaoImpl implements DiagramDao {
     @Override
     @NotNull
     public Folder getFolderTree(String userName) throws NotFoundException {
-        logger.trace("getFolderTree() called with parameters: userName = {}", userName);
+        logger.trace("getFolderTree() called with parameters: owners = {}", userName);
         Session session = sessionFactory.getCurrentSession();
 
-        List<Folder> rootFolders = session.createQuery("from Folder where folderName=:folderName and " +
-                "userName=:userName").setParameter("folderName", "root").setParameter("userName", userName).list();
+        List<Folder> rootFolders = session.createQuery("select c from Folder c where" +
+                "(c.folderName = :folderName and :userName in elements(c.owners))").
+                setParameter("folderName", "root").setParameter("userName", userName).list();
         logger.trace("getFolderTree() extracted list of results from session with {} elements. First one will be" +
                 " returned.", rootFolders.size());
         if (rootFolders.isEmpty()) {

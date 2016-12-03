@@ -10,15 +10,9 @@ import org.jetbrains.annotations.NotNull;
 public interface RobotDao {
     /**
      * Saves a robot.
-     * @param robot robot to save (Id must not be set).
+     * @param robot robot to saveUser (Id must not be set).
      */
     long saveRobot(@NotNull RobotSerial robot) throws AbortedException;
-
-    /**
-     * Deletes a robot.
-     * @param robotId robot to delete (Id must be set correctly).
-     */
-    void deleteRobot(long robotId) throws AbortedException, ErrorConnectionException;
 
     /**
      * Finds a robot with specified id.
@@ -28,14 +22,20 @@ public interface RobotDao {
     RobotSerial getRobot(long robotId) throws NotFoundException;
 
     /**
+     * Update a robot.
+     * @param robot robot to updateUser (Id must be set correctly)
+     */
+    void updateRobot(@NotNull RobotSerial robot) throws AbortedException;
+
+    /**
+     * Deletes a robot.
+     * @param robotId robot to delete (Id must be set correctly).
+     */
+    void deleteRobot(long robotId) throws AbortedException, ErrorConnectionException;
+
+    /**
      * Tells if a robot with specified name exists.
      * @param id id of a robot to test if exists.
      */
     boolean isExistsRobot(long id);
-
-    /**
-     * Update a robot.
-     * @param robot robot to update (Id must be set correctly)
-     */
-    void updateRobot(@NotNull RobotSerial robot) throws AbortedException;
 }

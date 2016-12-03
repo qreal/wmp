@@ -46,31 +46,56 @@ public class RobotServiceImpl implements RobotService {
     }
 
     @Override
-    public long register(@NotNull TRobot robot) throws AbortedException, ErrorConnectionException, TException {
-        logger.trace("register() was called with parameters: robot = {}.", robot.getName());
+    public long saveRobot(@NotNull TRobot robot) throws AbortedException, ErrorConnectionException, TException {
+        logger.trace("saveRobot() was called with parameters: robot = {}.", robot.getName());
         long idRobot = -1;
         transport.open();
         try {
-            idRobot = client.registerRobot(robot);
+            idRobot = client.saveRobot(robot);
         } finally {
             transport.close();
         }
-        logger.trace("register() successfully registered robot {}", robot.getName());
+        logger.trace("saveRobot() successfully registered robot {}", robot.getName());
         return idRobot;
     }
 
     @Override
-    public TRobot findById(long id) throws NotFoundException, ErrorConnectionException, TException {
-        logger.trace("findById() called with parameters: robotId = {}.", id);
+    public TRobot getRobot(long id) throws NotFoundException, ErrorConnectionException, TException {
+        logger.trace("getRobot() called with parameters: robotId = {}.", id);
         TRobot tRobot = null;
         transport.open();
         try {
-            tRobot = client.findById(id);
+            tRobot = client.getRobot(id);
         } finally {
             transport.close();
         }
-        logger.trace("findById() got result successfully.");
+        logger.trace("getRobot() got result successfully.");
         return tRobot;
+    }
+
+    @Override
+    public void updateRobot(@NotNull TRobot tRobot) throws AbortedException, ErrorConnectionException, TException {
+        logger.trace("updateUser() was called with parameters: tRobot = {}.", tRobot.getName());
+        transport.open();
+        try {
+            client.updateRobot(tRobot);
+        } finally {
+            transport.close();
+        }
+        logger.trace("updateUser() successfully updated robot {}", tRobot.getName());
+
+    }
+
+    @Override
+    public void deleteRobot(long id) throws AbortedException, ErrorConnectionException, TException {
+        logger.trace("deleteRobot() was called with parameters: id = {}", id);
+        transport.open();
+        try {
+            client.deleteRobot(id);
+        } finally {
+            transport.close();
+        }
+        logger.trace("deleteRobot() successfully deleted robot {}", id);
     }
 
     @Override
@@ -85,30 +110,5 @@ public class RobotServiceImpl implements RobotService {
         }
         logger.trace("isRobotExists() got result successfully.");
         return isRobotExists;
-    }
-
-    @Override
-    public void delete(long id) throws AbortedException, ErrorConnectionException, TException {
-        logger.trace("delete() was called with parameters: id = {}", id);
-        transport.open();
-        try {
-            client.deleteRobot(id);
-        } finally {
-            transport.close();
-        }
-        logger.trace("delete() successfully deleted robot {}", id);
-    }
-
-    @Override
-    public void update(@NotNull TRobot tRobot) throws AbortedException, ErrorConnectionException, TException {
-        logger.trace("update() was called with parameters: tRobot = {}.", tRobot.getName());
-        transport.open();
-        try {
-            client.updateRobot(tRobot);
-        } finally {
-            transport.close();
-        }
-        logger.trace("update() successfully updated robot {}", tRobot.getName());
-
     }
 }

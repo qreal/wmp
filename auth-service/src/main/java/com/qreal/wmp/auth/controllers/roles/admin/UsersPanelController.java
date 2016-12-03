@@ -2,8 +2,8 @@ package com.qreal.wmp.auth.controllers.roles.admin;
 
 import com.qreal.wmp.auth.database.users.User;
 import com.qreal.wmp.auth.database.users.UserAuthority;
-import com.qreal.wmp.auth.security.utils.AuthenticatedUser;
 import com.qreal.wmp.auth.database.users.UserDAO;
+import com.qreal.wmp.auth.security.utils.AuthenticatedUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.GrantedAuthority;
