@@ -1,8 +1,7 @@
 /// <reference path="../../../common/interfaces/editorCore.d.ts" />
 /// <reference path="../../../common/interfaces/vendor.d.ts" />
-/// <reference path="../../../../resources/thrift/editor/EditorService_types.d.ts" />
-/// <reference path="../../../../resources/thrift/editor/EditorServiceThrift.d.ts" />
-/// <reference path="../../../../resources/thrift/struct/Diagram_types.d.ts" />
+/// <reference path="../../../../resources/thrift/editor/PaletteService_types.d.ts" />
+/// <reference path="../../../../resources/thrift/editor/PaletteServiceThrift.d.ts" />
 /// <reference path="../../../../resources/thrift/struct/Palette_types.d.ts" />
 /// <reference path="../../../../resources/types/thrift/Thrift.d.ts" />
 /// <reference path="../../../common/constants/GeneralConstants.ts" />
@@ -43,7 +42,7 @@ class PaletteDiagramEditorController extends DiagramEditorController {
     }
 
     public createPalette() {
-        var name: string = prompt("input diagram name");
+        var name: string = prompt("input palette name");
         if (name !== "") {
             var controller = this;
             var palette = this.exporter.exportPalette(controller.getNodesMap(), controller.getLinksMap(), name);
@@ -56,7 +55,7 @@ class PaletteDiagramEditorController extends DiagramEditorController {
                 controller.addLinks();
             }
             catch (ouch) {
-                console.log("Error: can't create diagram", ouch);
+                console.log("Error: can't create palette", ouch);
             }
             /*$.ajax({
                 type: 'POST',
@@ -84,10 +83,10 @@ class PaletteDiagramEditorController extends DiagramEditorController {
         this.nodeTypesMap["ControlFlow"] = node;
     }
 
-    private getClient(): EditorServiceThriftClient {
-        var transport = new Thrift.TXHRTransport(GeneralConstants.EDITOR_REST_SERVLET);
+    private getClient(): PaletteServiceThriftClient {
+        var transport = new Thrift.TXHRTransport(GeneralConstants.PALETTE_REST_SERVLET);
         var protocol = new Thrift.TJSONProtocol(transport);
-        return new EditorServiceThriftClient(protocol);
+        return new PaletteServiceThriftClient(protocol);
     }
     /*
     public loadMetaEditor() {

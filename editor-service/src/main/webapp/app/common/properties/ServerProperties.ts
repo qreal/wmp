@@ -5,4 +5,5 @@ class ServerProperties {
     static portDashboard: string = "${port.dashboard}";
     static pathEditorService: string = "${path.editor.service}";
     static pathDashboardService: string = "${path.dashboard.service}";
+    static pathPaletteService: string = "${path.editor.palette.service}"
 }

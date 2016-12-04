@@ -7,6 +7,7 @@
       <module fileurl="file://$PROJECT_DIR$/auth-service/auth-service.iml" filepath="$PROJECT_DIR$/auth-service/auth-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/dashboard-service/dashboard-service.iml" filepath="$PROJECT_DIR$/dashboard-service/dashboard-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/db-services/db-diagram-service/db-diagram-service.iml" filepath="$PROJECT_DIR$/db-services/db-diagram-service/db-diagram-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/db-services/db-palette-service/db-palette-service.iml" filepath="$PROJECT_DIR$/db-services/db-palette-service/db-palette-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/db-services/db-robot-store-service/db-robot-store-service.iml" filepath="$PROJECT_DIR$/db-services/db-robot-store-service/db-robot-store-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/db-services/db-user-service/db-user-service.iml" filepath="$PROJECT_DIR$/db-services/db-user-service/db-user-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/editor-core/editor-core.iml" filepath="$PROJECT_DIR$/editor-core/editor-core.iml" />

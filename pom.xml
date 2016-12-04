@@ -45,6 +45,7 @@
                 <path.dashboard>/dashboard</path.dashboard>
                 <path.editor.service>/editorRest</path.editor.service>
                 <path.dashboard.service>/dashboardRest</path.dashboard.service>
+                <path.editor.palette.service>/paletteRest</path.editor.palette.service>
             </properties>
         </profile>
         <profile>
@@ -59,6 +60,7 @@
                 <path.dashboard>/dashboard</path.dashboard>
                 <path.editor.service>/editorRest</path.editor.service>
                 <path.dashboard.service>/dashboardRest</path.dashboard.service>
+                <path.editor.palette.service>/paletteRest</path.editor.palette.service>
             </properties>
             <activation>
                 <activeByDefault>true</activeByDefault>
@@ -76,6 +78,7 @@
                 <path.dashboard>/dashboard</path.dashboard>
                 <path.editor.service>/editorRest</path.editor.service>
                 <path.dashboard.service>/dashboardRest</path.dashboard.service>
+                <path.editor.palette.service>/paletteRest</path.editor.palette.service>
             </properties>
         </profile>
     </profiles>

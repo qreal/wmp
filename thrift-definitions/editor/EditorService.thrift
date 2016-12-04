@@ -1,7 +1,6 @@
 namespace java com.qreal.wmp.thrift.gen
 
 include "../struct/Diagram.thrift"
-include "../struct/Palette.thrift"
 
 //This service works in environment of user session, so it have no
 //access to real DB structures. Only view of user.
@@ -21,7 +20,4 @@ service EditorServiceThrift {
 //Specific
     Diagram.TFolder getFolderTree(),
     void addUserToOwners(1: i64 folderId, 2: string username)
-
-//CRUD Palletes
-    i64 createPalette(1: Palette.TPalette palette)
 }

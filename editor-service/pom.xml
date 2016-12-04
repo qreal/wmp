@@ -215,6 +215,7 @@
                                 <source>${thrift.output.dir}/struct</source>
                                 <source>${thrift.output.dir}/editor</source>
                                 <source>${thrift.output.dir}/diagram-database</source>
+                                <source>${thrift.output.dir}/palette-database</source>
                                 <source>${thrift.output.dir}/user-database</source>
                             </sources>
                         </configuration>

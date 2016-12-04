@@ -33,7 +33,7 @@ class PaletteExporter {
             var jointObject = link.getJointObject();
             if (nodesMap[jointObject.get('target').id] === node) {
                 var property = nodesMap[jointObject.get('source').id];
-                var newProperty = new TProperty();
+                var newProperty = new TNodeProperty();
                 newProperty.name = property.getChangeableProperties()['name'].value;
                 newProperty.value = property.getChangeableProperties()['value'].value;
                 newProperty.type = property.getChangeableProperties()['type'].value

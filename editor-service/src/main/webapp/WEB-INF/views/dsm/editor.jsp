@@ -12,6 +12,8 @@
   <script src="<c:url value='/resources/thrift/struct/Palette_types.js'/> "></script>
   <script src="<c:url value='/resources/thrift/editor/EditorService_types.js'/> "></script>
   <script src="<c:url value='/resources/thrift/editor/EditorServiceThrift.js'/> "></script>
+  <script src="<c:url value='/resources/thrift/editor/PaletteService_types.js'/> "></script>
+  <script src="<c:url value='/resources/thrift/editor/PaletteServiceThrift.js'/> "></script>
   <script src="<c:url value='/resources/treeview/jquery.treeview.js' />"></script>
 
   <link rel="stylesheet" href="<c:url value='/resources/bootstrap/css/bootstrap.min.css' />"/>

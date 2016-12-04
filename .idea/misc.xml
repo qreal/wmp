@@ -46,6 +46,7 @@
     <file type="web" url="file://$PROJECT_DIR$/auth-service" />
     <file type="web" url="file://$PROJECT_DIR$/dashboard-service" />
     <file type="web" url="file://$PROJECT_DIR$/db-services/db-diagram-service" />
+    <file type="web" url="file://$PROJECT_DIR$/db-services/db-palette-service" />
     <file type="web" url="file://$PROJECT_DIR$/db-services/db-robot-store-service" />
     <file type="web" url="file://$PROJECT_DIR$/db-services/db-user-service" />
     <file type="web" url="file://$PROJECT_DIR$/db-services/diagram-service" />
@@ -96,7 +97,7 @@
       </set>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" assert-keyword="true" jdk-15="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
 </project>

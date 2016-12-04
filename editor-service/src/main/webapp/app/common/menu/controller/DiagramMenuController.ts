@@ -6,7 +6,6 @@
 /// <reference path="../../../vendor.d.ts" />
 /// <reference path="../../../../resources/thrift/editor/EditorService_types.d.ts" />
 /// <reference path="../../../../resources/thrift/struct/Diagram_types.d.ts" />
-/// <reference path="../../../../resources/thrift/struct/Palette_types.d.ts" />
 /// <reference path="../../../../resources/thrift/editor/EditorServiceThrift.d.ts" />
 /// <reference path="../../../../resources/types/thrift/Thrift.d.ts" />
 /// <reference path="../../../common/constants/GeneralConstants.ts" />
