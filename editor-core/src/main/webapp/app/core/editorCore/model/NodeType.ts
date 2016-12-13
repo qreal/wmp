@@ -5,13 +5,14 @@
 class NodeType {
 
     private name: string;
+    private id: string;
     private propertiesMap: Map<Property>;
     private image: string;
 
-    constructor(name: string, propertiesMap: Map<Property>, image?: string) {
+    constructor(name: string, propertiesMap: Map<Property>, image: string) {
         this.name = name;
         this.propertiesMap = propertiesMap;
-        this.image = (image) ? image : null;
+        this.image = (image) ? StringUtils.format(image, this.name) : null;
     }
 
     public getName(): string {
@@ -25,5 +26,4 @@ class NodeType {
     public getImage(): string {
         return this.image;
     }
-
 }

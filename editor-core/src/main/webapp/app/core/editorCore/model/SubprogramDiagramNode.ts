@@ -31,7 +31,7 @@ class SubprogramDiagramNode {
     }
 
     private initProperties(name: string): void {
-        this.properties = {};
+        this.properties = new Map<Property>();
         this.properties["name"] = new Property("name", "QString", name);
         this.properties["from"] = new Property("from", "qReal::Id", "qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID");
         this.properties["linkShape"] = new Property("linkShape", "int", "0");

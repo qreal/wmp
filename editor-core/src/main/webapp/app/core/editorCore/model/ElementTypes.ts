@@ -7,7 +7,7 @@ class ElementTypes {
     paletteTypes: PaletteTypes;
 
     constructor() {
-        this.uncategorisedTypes = {};
+        this.uncategorisedTypes = new Map<NodeType>();
         this.paletteTypes = new PaletteTypes();
     }
 }

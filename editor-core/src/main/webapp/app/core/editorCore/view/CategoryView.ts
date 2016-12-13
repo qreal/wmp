@@ -17,8 +17,7 @@ class CategoryView extends HtmlView {
         var elementsContent: string = '';
         for (var typeName in category) {
             var nodeType: NodeType = category[typeName];
-            var nodeName: string = nodeType.getName();
-            var paletteElementView: PaletteElementView = new PaletteElementView(typeName, nodeName, nodeType.getImage());
+            var paletteElementView: PaletteElementView = new PaletteElementView(typeName, nodeType.getName(), nodeType.getImage());
             elementsContent += paletteElementView.getContent();
         }
         this.content = StringUtils.format(this.template, categoryName, elementsContent);

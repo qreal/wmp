@@ -12,8 +12,8 @@ class DiagramParts {
 
     constructor(nodesMap?: Map<DiagramNode>, linksMap?: Map<Link>,
                 subprogramDiagramNodes?: SubprogramDiagramNode[]) {
-        this.nodesMap = nodesMap || {};
-        this.linksMap = linksMap || {};
+        this.nodesMap = nodesMap || new Map<DiagramNode>();
+        this.linksMap = linksMap || new Map<Link>();
         this.subprogramDiagramNodes = subprogramDiagramNodes || [];
     }
 }

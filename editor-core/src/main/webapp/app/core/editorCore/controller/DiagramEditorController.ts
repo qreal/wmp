@@ -20,7 +20,7 @@ class DiagramEditorController {
 
     constructor($scope, $attrs) {
         this.undoRedoController = new UndoRedoController();
-        this.nodeTypesMap = {};
+        this.nodeTypesMap = new Map<NodeType>();
         this.paletteController = new PaletteController();
         DiagramElementListener.getNodeProperties = (type: string): Map<Property> => {
             return this.getNodeProperties(type);

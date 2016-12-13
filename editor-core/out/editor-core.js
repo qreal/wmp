@@ -3,6 +3,15 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
+var Map = (function () {
+    function Map() {
+    }
+    Map.unite = function (toMap, fromMap) {
+        for (var key in fromMap)
+            toMap[key] = fromMap[key];
+    };
+    return Map;
+}());
 var Property = (function () {
     function Property(name, type, value) {
         this.name = name;
@@ -21,7 +30,7 @@ var PropertiesPack = (function () {
 var Link = (function () {
     function Link(jointObject, properties) {
         var _this = this;
-        this.changeableProperties = {};
+        this.changeableProperties = new Map();
         this.name = "Link";
         this.type = "ControlFlow";
         this.logicalId = UIDGenerator.generate();
@@ -85,14 +94,14 @@ var Link = (function () {
         return new PropertiesPack(logical, graphical);
     };
     Link.prototype.initConstLogicalProperties = function () {
-        var logical = {};
+        var logical = new Map();
         logical["name"] = new Property("name", "QString", this.name);
         logical["linkShape"] = new Property("linkShape", "int", "-1");
         logical["outgoingExplosion"] = new Property("outgoingExplosion", "qReal::Id", "qrm:/");
         return logical;
     };
     Link.prototype.initConstGraphicalProperties = function () {
-        var graphical = {};
+        var graphical = new Map();
         graphical["name"] = new Property("name", "QString", this.name);
         graphical["configuration"] = new Property("configuration", "QPolygon", "0, 0 : 0, 0 : ");
         graphical["fromPort"] = new Property("fromPort", "double", "0");
@@ -143,7 +152,7 @@ var DiagramElementListener = (function () {
                 });
             }
             var typeProperties = DiagramElementListener.getNodeProperties("ControlFlow");
-            var nodeProperties = {};
+            var nodeProperties = new Map();
             for (var property in typeProperties) {
                 nodeProperties[property] = new Property(typeProperties[property].name, typeProperties[property].type, typeProperties[property].value);
             }
@@ -201,8 +210,8 @@ var DiagramScene = (function (_super) {
         this.gridSize = gridSize;
         this.zoom = (zoomAttr) ? zoomAttr : 1;
         this.graph = graph;
-        this.nodesMap = {};
-        this.linksMap = {};
+        this.nodesMap = new Map();
+        this.linksMap = new Map();
         this.scale(this.zoom, this.zoom);
     }
     DiagramScene.prototype.getId = function () {
@@ -281,7 +290,7 @@ var DiagramScene = (function (_super) {
         for (var node in this.nodesMap) {
             this.removeNode(node);
         }
-        this.linksMap = {};
+        this.linksMap = new Map();
     };
     DiagramScene.prototype.addSubprogramNode = function (node) {
         var textObject = node.getTextObject();
@@ -306,7 +315,7 @@ var NodeType = (function () {
     function NodeType(name, propertiesMap, image) {
         this.name = name;
         this.propertiesMap = propertiesMap;
-        this.image = (image) ? image : null;
+        this.image = (image) ? StringUtils.format(image, this.name) : null;
     }
     NodeType.prototype.getName = function () {
         return this.name;
@@ -321,7 +330,7 @@ var NodeType = (function () {
 }());
 var PaletteTypes = (function () {
     function PaletteTypes() {
-        this.categories = {};
+        this.categories = new Map();
     }
     return PaletteTypes;
 }());
@@ -458,7 +467,7 @@ var DefaultDiagramNode = (function () {
         return new PropertiesPack(logical, graphical);
     };
     DefaultDiagramNode.prototype.initConstLogicalProperties = function (name) {
-        var logical = {};
+        var logical = new Map();
         logical["name"] = new Property("name", "QString", name);
         logical["from"] = new Property("from", "qReal::Id", "qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID");
         logical["linkShape"] = new Property("linkShape", "int", "0");
@@ -467,7 +476,7 @@ var DefaultDiagramNode = (function () {
         return logical;
     };
     DefaultDiagramNode.prototype.initConstGraphicalProperties = function (name) {
-        var graphical = {};
+        var graphical = new Map();
         graphical["name"] = new Property("name", "QString", name);
         graphical["to"] = new Property("to", "qreal::Id", "qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID");
         graphical["configuration"] = new Property("configuration", "QPolygon", "0, 0 : 50, 0 : 50, 50 : 0, 50 : ");
@@ -564,7 +573,7 @@ var SceneController = (function () {
             target: { id: targetId },
         });
         var typeProperties = this.diagramEditorController.getNodeProperties("ControlFlow");
-        var linkProperties = {};
+        var linkProperties = new Map();
         for (var property in typeProperties) {
             linkProperties[property] = new Property(typeProperties[property].name, typeProperties[property].type, typeProperties[property].value);
         }
@@ -575,7 +584,7 @@ var SceneController = (function () {
         var image = this.diagramEditorController.getNodeType(type).getImage();
         var name = this.diagramEditorController.getNodeType(type).getName();
         var typeProperties = this.diagramEditorController.getNodeType(type).getPropertiesMap();
-        var nodeProperties = {};
+        var nodeProperties = new Map();
         for (var property in typeProperties) {
             nodeProperties[property] = new Property(typeProperties[property].name, typeProperties[property].type, typeProperties[property].value);
         }
@@ -1122,7 +1131,7 @@ var PropertyEditorController = (function () {
 }());
 var ElementTypes = (function () {
     function ElementTypes() {
-        this.uncategorisedTypes = {};
+        this.uncategorisedTypes = new Map();
         this.paletteTypes = new PaletteTypes();
     }
     return ElementTypes;
@@ -1139,51 +1148,58 @@ var TypesParser = (function () {
         return diagramElementTypes;
     };
     TypesParser.prototype.parseElementsTypes = function (elementsTypes) {
-        var elementsTypesMap = {};
+        var elementsTypesMap = new Map();
         for (var i in elementsTypes) {
             var typeObject = elementsTypes[i];
-            var typeName = typeObject.type;
-            elementsTypesMap[typeName] = this.createNodeType(typeObject);
+            Map.unite(elementsTypesMap, this.createNodeTypes(typeObject));
         }
         return elementsTypesMap;
     };
     TypesParser.prototype.parseGeneralTypes = function (generalTypes) {
-        var generalTypesMap = {};
+        var generalTypesMap = new Map();
         for (var i in generalTypes) {
             var typeObject = generalTypes[i];
-            var typeName = typeObject.type;
-            generalTypesMap[typeName] = this.createNodeType(typeObject);
+            Map.unite(generalTypesMap, this.createNodeTypes(typeObject));
         }
         return generalTypesMap;
     };
     TypesParser.prototype.parsePaletteTypes = function (paletteTypes) {
         var paletteTypesObject = new PaletteTypes();
         for (var category in paletteTypes) {
-            var categoryTypesMap = {};
+            var categoryTypesMap = new Map();
             for (var i in paletteTypes[category]) {
                 var typeObject = paletteTypes[category][i];
-                var typeName = typeObject.type;
-                categoryTypesMap[typeName] = this.createNodeType(typeObject);
+                Map.unite(categoryTypesMap, this.createNodeTypes(typeObject));
             }
             paletteTypesObject.categories[category] = categoryTypesMap;
         }
         return paletteTypesObject;
     };
-    TypesParser.prototype.createNodeType = function (typeObject) {
+    TypesParser.prototype.createNodeTypes = function (typeObject) {
+        var nodes = new Map();
         var name = typeObject.name;
         var typeName = typeObject.type;
         var elementTypeProperties = this.parseTypeProperties(typeName, typeObject.properties);
-        var imageElement = typeObject.image;
-        if (imageElement) {
-            var image = GeneralConstants.APP_ROOT_PATH + imageElement.src;
-            return new NodeType(name, elementTypeProperties, image);
+        var image = "";
+        if (typeObject.image)
+            image = GeneralConstants.APP_ROOT_PATH + typeObject.image.src;
+        var categories = typeObject.subtypes;
+        if (!categories) {
+            var node = new NodeType(typeName, elementTypeProperties, image);
+            nodes[node.getName()] = node;
         }
-        else {
-            return new NodeType(name, elementTypeProperties);
-        }
+        for (var category in categories)
+            for (var i in categories[category]) {
+                var subtype = categories[category][i];
+                var node = null;
+                node = new NodeType(category.toLowerCase() + '-' + subtype.toLowerCase()
+                    + '-' + name.toLowerCase(), elementTypeProperties, image);
+                nodes[node.getName()] = node;
+            }
+        return nodes;
     };
     TypesParser.prototype.parseTypeProperties = function (typeName, propertiesArrayNode) {
-        var properties = {};
+        var properties = new Map();
         for (var i in propertiesArrayNode) {
             var propertyObject = propertiesArrayNode[i];
             var propertyKey = propertyObject.key;
@@ -1257,7 +1273,7 @@ var SubprogramDiagramNode = (function () {
         return this.properties;
     };
     SubprogramDiagramNode.prototype.initProperties = function (name) {
-        this.properties = {};
+        this.properties = new Map();
         this.properties["name"] = new Property("name", "QString", name);
         this.properties["from"] = new Property("from", "qReal::Id", "qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID");
         this.properties["linkShape"] = new Property("linkShape", "int", "0");
@@ -1325,8 +1341,7 @@ var CategoryView = (function (_super) {
         var elementsContent = '';
         for (var typeName in category) {
             var nodeType = category[typeName];
-            var nodeName = nodeType.getName();
-            var paletteElementView = new PaletteElementView(typeName, nodeName, nodeType.getImage());
+            var paletteElementView = new PaletteElementView(typeName, nodeType.getName(), nodeType.getImage());
             elementsContent += paletteElementView.getContent();
         }
         this.content = StringUtils.format(this.template, categoryName, elementsContent);
@@ -1384,8 +1399,8 @@ var PaletteController = (function () {
 var DiagramParts = (function () {
     function DiagramParts(nodesMap, linksMap, subprogramDiagramNodes) {
         this.subprogramDiagramNodes = [];
-        this.nodesMap = nodesMap || {};
-        this.linksMap = linksMap || {};
+        this.nodesMap = nodesMap || new Map();
+        this.linksMap = linksMap || new Map();
         this.subprogramDiagramNodes = subprogramDiagramNodes || [];
     }
     return DiagramParts;
@@ -1486,8 +1501,8 @@ var DiagramJsonParser = (function () {
         return new SubprogramDiagramNode(nodeObject.logicalId, name);
     };
     DiagramJsonParser.prototype.parseDiagramNodeObject = function (nodeObject, nodeTypesMap, offsetX, offsetY) {
-        var changeableLogicalProperties = {};
-        var constLogicalProperties = {};
+        var changeableLogicalProperties = new Map();
+        var constLogicalProperties = new Map();
         var subprogramDiagramId = "";
         var name = "";
         var type = nodeObject.type;
@@ -1520,7 +1535,7 @@ var DiagramJsonParser = (function () {
                 constLogicalProperties[propertyName] = property;
             }
         }
-        var constGraphicalProperties = {};
+        var constGraphicalProperties = new Map();
         var graphicalPropertiesObject = nodeObject.graphicalProperties;
         var x = 0;
         var y = 0;
@@ -1547,7 +1562,7 @@ var DiagramJsonParser = (function () {
         return node;
     };
     DiagramJsonParser.prototype.parseLinks = function (diagramJson, offsetX, offsetY) {
-        var linksMap = {};
+        var linksMap = new Map();
         for (var i = 0; i < diagramJson.links.length; i++) {
             linksMap[diagramJson.links[i].graphicalId] = this.parseLinkObject(diagramJson.links[i], offsetX, offsetY);
         }
@@ -1556,7 +1571,7 @@ var DiagramJsonParser = (function () {
     DiagramJsonParser.prototype.parseLinkObject = function (linkObject, offsetX, offsetY) {
         var sourceId = "";
         var targetId = "";
-        var properties = {};
+        var properties = new Map();
         var logicalPropertiesObject = linkObject.logicalProperties;
         for (var j = 0; j < logicalPropertiesObject.length; j++) {
             switch (logicalPropertiesObject[j].name) {
@@ -1830,7 +1845,7 @@ var DiagramEditorController = (function () {
     function DiagramEditorController($scope, $attrs) {
         var _this = this;
         this.undoRedoController = new UndoRedoController();
-        this.nodeTypesMap = {};
+        this.nodeTypesMap = new Map();
         this.paletteController = new PaletteController();
         DiagramElementListener.getNodeProperties = function (type) {
             return _this.getNodeProperties(type);
@@ -2004,6 +2019,18 @@ var SubprogramNode = (function (_super) {
     };
     return SubprogramNode;
 }(DefaultDiagramNode));
+var Subtype = (function () {
+    function Subtype(category, subtype, imageTemplate) {
+        this.category = category;
+        this.subtype = subtype;
+        this.imageTemplate = imageTemplate;
+    }
+    Subtype.prototype.getImageSrc = function () {
+        return StringUtils.format(this.imageTemplate, this.category.toLowerCase() + "-"
+            + this.subtype.toLowerCase() + "-");
+    };
+    return Subtype;
+}());
 var ChangeCurrentElementCommand = (function () {
     function ChangeCurrentElementCommand(element, oldElement, executionFunction) {
         this.element = element;

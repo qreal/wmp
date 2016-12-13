@@ -12,28 +12,7 @@
         "palette": {
 
             "Events": [
-                "Message",
-                "Timer",
-                "Escalation",
-                "Conditional",
-                "Link",
-                "Error",
-                "Cancel",
-                "Compensation",
-                "Signal",
-                "Multiple",
-                "Parallel multiple",
-                "Terminate"
-            ],
-            
-            "Gateways": [
-                "Exclusive",
-                "Event-based",
-                "Parallel",
-                "Inclusive",
-                "Exclusive event-based",
-                "Complex",
-                "Parallel event-based"
+                "Message"
             ]
         }
         

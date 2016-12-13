@@ -33,7 +33,7 @@ class DiagramElementListener {
 
             var typeProperties = DiagramElementListener.getNodeProperties("ControlFlow");
 
-            var nodeProperties: Map<Property> = {};
+            var nodeProperties: Map<Property> = new Map<Property>();
             for (var property in typeProperties) {
                 nodeProperties[property] = new Property(typeProperties[property].name,
                     typeProperties[property].type, typeProperties[property].value);
