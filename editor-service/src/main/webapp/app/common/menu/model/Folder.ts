@@ -8,13 +8,19 @@ class Folder {
 
     public static createFromDAO(folder: TFolder, parent: Folder): Folder {
         var diagrams: Diagram[] = [];
-        for (var i = 0; i < folder.diagrams.length; i++) {
-            diagrams.push(Diagram.createFromDAO(folder.diagrams[i]));
+
+        if (folder.diagrams != null) {
+            for (var i = 0; i < folder.diagrams.length; i++) {
+                diagrams.push(Diagram.createFromDAO(folder.diagrams[i]));
+            }
         }
+
         var resultFolder: Folder = new Folder(folder.id, folder.folderName, parent, diagrams);
 
-        for (var i = 0; i < folder.childrenFolders.length; i++) {
-            resultFolder.addChild(Folder.createFromDAO(folder.childrenFolders[i], resultFolder));
+        if (folder.childrenFolders != null) {
+            for (var i = 0; i < folder.childrenFolders.length; i++) {
+                resultFolder.addChild(Folder.createFromDAO(folder.childrenFolders[i], resultFolder));
+            }
         }
 
         return resultFolder;

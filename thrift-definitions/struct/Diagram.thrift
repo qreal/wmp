@@ -9,22 +9,24 @@ struct TProperty {
 }
 
 struct TDefaultDiagramNode {
-    1 : string logicalId,
-    2 : string graphicalId,
-    3 : string jointObject,
-    4 : string type,
-    5 : double x,
-    6 : double y,
-    7 : set<TProperty> properties
+    1 : string id,
+    2 : string logicalId,
+    3 : string graphicalId,
+    4 : string jointObject,
+    5 : string type,
+    6 : double x,
+    7 : double y,
+    8 : set<TProperty> properties
 }
 
 struct TLink {
-    1 : string logicalId,
-    2 : string graphicalId,
-    3 : string jointObjectId,
-    4 : string type,
-    5 : string vertices,
-    6 : set<TProperty> properties
+    1: string id,
+    2 : string logicalId,
+    3 : string graphicalId,
+    4 : string jointObjectId,
+    5 : string type,
+    6 : string vertices,
+    7 : set<TProperty> properties
 }
 
 struct TDiagram {
@@ -36,11 +38,13 @@ struct TDiagram {
     6 : optional i64 folderId
 }
 
+//parent folders should be set only for root
+//all others will be reconstructed from children folders
 struct TFolder {
     1 : optional i64 id,
     2 : string folderName,
-    3 : optional string userName,
-    4 : optional i64 folderParentId,
-    5 : set<TFolder> childrenFolders,
-    6 : set<TDiagram> diagrams
+    3 : optional set<string> owners,
+    4 : set<TFolder> childrenFolders,
+    5 : set<TDiagram> diagrams,
+    6 : optional i64 folderParentId
 }

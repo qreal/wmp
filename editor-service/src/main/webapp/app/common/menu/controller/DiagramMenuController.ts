@@ -9,6 +9,7 @@
 /// <reference path="../../../../resources/thrift/editor/EditorServiceThrift.d.ts" />
 /// <reference path="../../../../resources/types/thrift/Thrift.d.ts" />
 /// <reference path="../../../common/constants/GeneralConstants.ts" />
+/// <reference path="../../../common/constants/MouseButton.ts" />
 
 class DiagramMenuController {
 
@@ -32,13 +33,14 @@ class DiagramMenuController {
         this.canBeDeleted = false;
 
         var menuManager = this;
+        var folderTree;
         try {
-            var folderTree = menuManager.getClient().getFolderTree();
+            folderTree = menuManager.getClient().getFolderTree();
             menuManager.folderTree = Folder.createFromDAO(folderTree, null);
             menuManager.currentFolder = menuManager.folderTree;
         }
-        catch (ouch) {
-            console.log("Error: can't get folder tree");
+        catch (e) {
+            console.log("Error: can't get folder tree", e);
         }
 
         $(document).ready(function() {
@@ -324,7 +326,7 @@ class DiagramMenuController {
         var controller = this;
 
         $('#diagrams li').mouseup(function (event) {
-            if (event.button == 2) {
+            if (event.button == MouseButton.right) {
                 $("#" + controller.contextMenuId).finish().toggle(100)
                     .css({
                         top: event.pageY + "px",
@@ -343,6 +345,12 @@ class DiagramMenuController {
                         controller.deleteFolderFromDatabase(controller.selectedElement.getName());
                     }
                     break;
+                case "share":
+                    if (controller.selectedElement.getType() === 'folders') {
+                        console.log("Shared clicked")
+                        controller.shareFolder(controller.selectedElement.getName());
+                    }
+                    break;
             }
 
             $("#" + controller.contextMenuId).hide(100);
@@ -353,5 +361,18 @@ class DiagramMenuController {
         var transport = new Thrift.TXHRTransport(GeneralConstants.EDITOR_REST_SERVLET);
         var protocol = new Thrift.TJSONProtocol(transport);
         return new EditorServiceThriftClient(protocol);
+    }
+
+    public shareFolder(folderName: string) {
+        console.log("Shared entered")
+        var menuManager = this;
+        $('#user-name-to-share-folder').empty();
+        $('#enter-name-share-folder').modal('show');
+        $('#name-share-folder-entered').click(function () {
+            var name = $('.share-path input:text').val();
+            var id = menuManager.currentFolder.findChildByName(folderName).getId();
+            menuManager.getClient().addUserToOwners(id, name)
+            $('#enter-name-share-folder').modal('hide');
+        });
     }
 }

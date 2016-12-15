@@ -20,25 +20,25 @@ before_install:
   - chmod 755 thrift
   - sudo cp thrift /usr/local/bin/thrift
   - sudo cp libthrift-0.9.3.jar /usr/local/lib
-  # get checkstyle
-  - wget http://downloads.sourceforge.net/project/checkstyle/checkstyle/7.0/checkstyle-7.0-all.jar
   #fake random with urandom (do not repeat it on your own computer)
   - sudo rm /dev/random
   - sudo mknod /dev/random c 1 9
+  # for gui tests
+  - export CHROME_BIN=/usr/bin/google-chrome
+  - export DISPLAY=:99.0
+  - sh -e /etc/init.d/xvfb start
+  - sudo apt-get install -y libappindicator1 fonts-liberation
+  - wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+  - sudo dpkg -i google-chrome*.deb
 
 install:
-  #install and run tests
+  #install and run tests and run style checking
   - mvn install -P travis
+  - cd ui-testing
+  - mvn install -DskipTests
+  - cd ..
 
 script:
-  #run checkstyle
-  - java -jar checkstyle-7.0-all.jar -c Travis/checkstyle/checkstyle.xml auth-service/src
-  - java -jar checkstyle-7.0-all.jar -c Travis/checkstyle/checkstyle.xml dashboard-service/src
-  - java -jar checkstyle-7.0-all.jar -c Travis/checkstyle/checkstyle.xml editor-service/src
-  - java -jar checkstyle-7.0-all.jar -c Travis/checkstyle/checkstyle.xml db-services/db-diagram-service/src
-  - java -jar checkstyle-7.0-all.jar -c Travis/checkstyle/checkstyle.xml db-services/db-robot-store-service/src
-  - java -jar checkstyle-7.0-all.jar -c Travis/checkstyle/checkstyle.xml db-services/db-user-service/src
-
   #run services
   - cd db-services
 
@@ -66,7 +66,9 @@ script:
   - mvn tomcat7:run-war-only -P travis &
   - sleep 30
 
-  - ../Travis/callTomcat.sh
+  - cd ../ui-testing
+  - mvn test -P travis &
+  - sleep 30
 
 notifications:
   slack: qreal-web:sT5qgA4qZZ9eyLI0yy2Mp81E

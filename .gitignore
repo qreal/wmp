@@ -16,6 +16,7 @@ overlays
 **/webapp/resources/thrift/*
 *~*
 *.jar
+**/build
 !**/3dparty/*.jar
 **/.idea/**
 !**/.idea/misc.xml
@@ -23,3 +24,7 @@ overlays
 !**/.idea/encodings.xml
 !**/.idea/vcs.xml
 !**/.idea/compiler.xml
+*.bak*
+*.vbak*
+*.lck*
+**/out/**

@@ -36,6 +36,11 @@ public class Link implements Serializable {
 
     /** Constructor-converter from Thrift TLink to Link.*/
     public Link(TLink tLink) {
+
+        if (tLink.isSetId()) {
+            id = tLink.getId();
+        }
+
         if (tLink.isSetGraphicalId()) {
             graphicalId = tLink.getGraphicalId();
         }
@@ -52,6 +57,10 @@ public class Link implements Serializable {
     /** Converter from Link to Thrift TLink.*/
     public TLink toTLink() {
         TLink tLink = new TLink();
+
+        if (id != null) {
+            tLink.setId(id);
+        }
 
         if (logicalId != null) {
             tLink.setLogicalId(logicalId);

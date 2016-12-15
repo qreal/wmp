@@ -25,6 +25,10 @@ public class DefaultDiagramNode implements Serializable {
 
     /** Constructor-converter from Thrift TDefaultDiagramNode to DefaultDiagramNode.*/
     public DefaultDiagramNode(TDefaultDiagramNode tDefaultDiagramNode) {
+        if (tDefaultDiagramNode.isSetId()) {
+            id = tDefaultDiagramNode.getId();
+        }
+
         if (tDefaultDiagramNode.isSetLogicalId()) {
             logicalId = tDefaultDiagramNode.getLogicalId();
         }
@@ -46,6 +50,10 @@ public class DefaultDiagramNode implements Serializable {
     /** Converter from DefaultDiagramNode to Thrift TDefaultDiagramNode.*/
     public TDefaultDiagramNode toTDefaultDiagramNode() {
         TDefaultDiagramNode tDefaultDiagramNode = new TDefaultDiagramNode();
+
+        if (id != null) {
+            tDefaultDiagramNode.setId(id);
+        }
 
         if (logicalId != null) {
             tDefaultDiagramNode.setLogicalId(logicalId);

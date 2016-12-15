@@ -13,7 +13,6 @@ import static org.mockito.Mockito.mock;
 /** DAO beans configuration.*/
 @Configuration
 public class Dao {
-
     @Configuration
     @Profile("default")
     public static class ProdConfig {

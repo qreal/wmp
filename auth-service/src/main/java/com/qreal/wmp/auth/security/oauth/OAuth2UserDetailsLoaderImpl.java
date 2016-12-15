@@ -1,10 +1,10 @@
 package com.qreal.wmp.auth.security.oauth;
 
-import com.qreal.wmp.auth.database.users.UserAuthority;
-import com.racquettrack.security.oauth.OAuth2UserDetailsLoader;
 import com.qreal.wmp.auth.database.users.User;
+import com.qreal.wmp.auth.database.users.UserAuthority;
 import com.qreal.wmp.auth.database.users.UserDAO;
 import com.qreal.wmp.auth.security.utils.RandomStringGenerator;
+import com.racquettrack.security.oauth.OAuth2UserDetailsLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.GrantedAuthority;

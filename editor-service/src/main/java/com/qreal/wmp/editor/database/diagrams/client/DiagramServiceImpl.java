@@ -22,6 +22,8 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.util.HashSet;
+import java.util.Set;
 
 /** Thrift client side of DiagramDbService.*/
 @Service("diagramService")
@@ -67,29 +69,29 @@ public class DiagramServiceImpl implements DiagramService {
     }
 
     @Override
-    public @NotNull Diagram openDiagram(Long diagramId) throws NotFoundException, ErrorConnectionException, TException {
-        logger.trace("openDiagram() was called with parameters: diagramId = {}.", diagramId);
+    public @NotNull Diagram getDiagram(Long diagramId) throws NotFoundException, ErrorConnectionException, TException {
+        logger.trace("getDiagram() was called with parameters: diagramId = {}.", diagramId);
         TDiagram tDiagram = null;
         transport.open();
         try {
-            tDiagram = client.openDiagram(diagramId);
+            tDiagram = client.getDiagram(diagramId);
         } finally {
             transport.close();
         }
-        logger.trace("openDiagram() successfully returned a diagram.");
+        logger.trace("getDiagram() successfully returned a diagram.");
         return new Diagram(tDiagram);
     }
 
     @Override
-    public void rewriteDiagram(@NotNull Diagram diagram) throws AbortedException, ErrorConnectionException, TException {
-        logger.trace("rewriteDiagram() was called with parameters: diagram = {}", diagram.getName());
+    public void updateDiagram(@NotNull Diagram diagram) throws AbortedException, ErrorConnectionException, TException {
+        logger.trace("updateDiagram() was called with parameters: diagram = {}", diagram.getName());
         transport.open();
         try {
-            client.rewriteDiagram(diagram.toTDiagram());
+            client.updateDiagram(diagram.toTDiagram());
         } finally {
             transport.close();
         }
-        logger.trace("rewriteDiagram() successfully edited a diagram.");
+        logger.trace("updateDiagram() successfully edited a diagram.");
     }
 
     @Override
@@ -105,33 +107,50 @@ public class DiagramServiceImpl implements DiagramService {
     }
 
     @Override
-    public void createRootFolder(String userName) throws AbortedException, ErrorConnectionException, TException {
-        logger.trace("createRootFolder() was called with parameters: username = {}.", userName);
-        Folder rootFolder = new Folder("root", userName);
-        transport.open();
-        try {
-            TFolder newFolder = rootFolder.toTFolder();
-            client.createFolder(newFolder);
-        } finally {
-            transport.close();
-        }
-        logger.trace("createRootFolder() successfully created root folder for {}.", userName);
-    }
-
-    @Override
-    public Long createFolder(@NotNull Folder folder) throws AbortedException, ErrorConnectionException, TException {
-        logger.trace("createFolder() was called with parameters: folder = {}.", folder.getFolderName());
+    public Long saveFolder(@NotNull Folder folder) throws AbortedException, ErrorConnectionException, TException {
+        logger.trace("saveFolder() was called with parameters: folder = {}.", folder.getFolderName());
         Long result = 0L;
-        folder.setUserName(AuthenticatedUser.getUserName());
+
+        Set<String> owner = new HashSet<>();
+        owner.add(AuthenticatedUser.getUserName());
+        folder.setOwners(owner);
+
         transport.open();
         try {
             TFolder newFolder = folder.toTFolder();
-            result = client.createFolder(newFolder);
+            result = client.saveFolder(newFolder);
         } finally {
             transport.close();
         }
-        logger.trace("createFolder() successfully created folder {}", folder.getFolderName());
+        logger.trace("saveFolder() successfully created folder {}", folder.getFolderName());
         return result;
+    }
+
+    @Override
+    public Folder getFolder(Long folderId, String username) throws NotFoundException, ErrorConnectionException,
+            TException {
+        logger.trace("getFolder() was called with parameters: folderId = {}.", folderId);
+        transport.open();
+        TFolder tFolder;
+        try {
+            tFolder = client.getFolder(folderId, username);
+        } finally {
+            transport.close();
+        }
+        logger.trace("getFolder() successfully returned folder with id {}.", folderId);
+        return new Folder(tFolder);
+    }
+
+    @Override
+    public void updateFolder(@NotNull Folder folder) throws AbortedException, ErrorConnectionException, TException {
+        logger.trace("updateFolder() was called with parameters: folder = {}", folder.getFolderName());
+        transport.open();
+        try {
+            client.updateFolder(folder.toTFolder());
+        } finally {
+            transport.close();
+        }
+        logger.trace("updateFolder() successfully updated a folder.");
     }
 
     @Override
@@ -147,18 +166,46 @@ public class DiagramServiceImpl implements DiagramService {
     }
 
     @Override
+    public void createRootFolder(String userName) throws AbortedException, ErrorConnectionException, TException {
+        logger.trace("createRootFolder() was called with parameters: username = {}.", userName);
+        Folder rootFolder = new Folder("root", userName);
+        transport.open();
+        try {
+            TFolder newFolder = rootFolder.toTFolder();
+            client.saveFolder(newFolder);
+        } finally {
+            transport.close();
+        }
+        logger.trace("createRootFolder() successfully created root folder for {}.", userName);
+    }
+
+    @Override
     @NotNull
-    public Folder getFolderTree() throws NotFoundException, ErrorConnectionException, TException {
-        logger.trace("getFolderTree() was called with parameters: userName = {}.",
+    public Folder getFolderTree(String username) throws NotFoundException, ErrorConnectionException, TException {
+        logger.trace("getFolderTree() was called with parameters: owners = {}.",
                 AuthenticatedUser.getUserName());
         TFolder folder = new TFolder();
         transport.open();
         try {
-            folder = client.getFolderTree(AuthenticatedUser.getUserName());
+            folder = client.getFolderTree(username);
         } finally {
             transport.close();
         }
         logger.trace("getFolderTree() successfully returned a folderTree.");
         return new Folder(folder);
+    }
+
+    @Override
+    @NotNull
+    public void shareFolderTo(String username, Folder folder) throws TException {
+        logger.trace("shareFolderTo() was called with parameters: username = {}.", username);
+        TFolder tFolder = folder.toTFolder();
+        transport.open();
+        try {
+            client.shareFolderTo(username, tFolder);
+        } finally {
+            transport.close();
+        }
+        logger.trace("shareFolderTo() successfully shared folder.");
     }
 }

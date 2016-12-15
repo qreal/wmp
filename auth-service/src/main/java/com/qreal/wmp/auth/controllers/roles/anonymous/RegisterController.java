@@ -1,9 +1,5 @@
 package com.qreal.wmp.auth.controllers.roles.anonymous;
 
-import javax.servlet.http.HttpServletRequest;
-import  javax.annotation.*;
-import java.io.*;
-
 import com.qreal.wmp.auth.database.users.User;
 import com.qreal.wmp.auth.database.users.UserAuthority;
 import com.qreal.wmp.auth.database.users.UserDAO;
@@ -16,6 +12,9 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 

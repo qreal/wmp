@@ -14,14 +14,14 @@ public interface RobotService {
     /**
      * Saves a robot.
      *
-     * @param robot robot to save (Id must not be set)
+     * @param robot robot to saveRobot (Id must not be set)
      */
-    long register(@NotNull Robot robot) throws AbortedException, ErrorConnectionException, TException;
+    long saveRobot(@NotNull Robot robot) throws AbortedException, ErrorConnectionException, TException;
 
     /**
      * Registers a robot with specified owner.
      *
-     * @param robot    robot to register (Id must not be set)
+     * @param robot    robot to saveRobot (Id must not be set)
      * @param username owner of robot
      */
     void registerByUsername(@NotNull Robot robot, String username) throws AbortedException, ErrorConnectionException,
@@ -33,7 +33,7 @@ public interface RobotService {
      * @param id id of robot to find
      */
     @NotNull
-    Robot findById(long id) throws NotFoundException, ErrorConnectionException, AbortedException, TException;
+    Robot getRobot(long id) throws NotFoundException, ErrorConnectionException, AbortedException, TException;
 
     /**
      * Tests if the robot with specified Id exists.
@@ -45,14 +45,14 @@ public interface RobotService {
     /**
      * Deletes a robot.
      *
-     * @param id id of robot to delete
+     * @param id id of robot to deleteRobot
      */
-    void delete(long id) throws AbortedException, ErrorConnectionException, TException;
+    void deleteRobot(long id) throws AbortedException, ErrorConnectionException, TException;
 
     /**
      * Updates a robot.
      *
-     * @param robot robot to update (Id must be set correctly)
+     * @param robot robot to updateRobot (Id must be set correctly)
      */
-    void update(@NotNull TRobot robot) throws AbortedException, ErrorConnectionException, TException;
+    void updateRobot(@NotNull TRobot robot) throws AbortedException, ErrorConnectionException, TException;
 }

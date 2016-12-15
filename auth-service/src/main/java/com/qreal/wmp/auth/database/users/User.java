@@ -3,10 +3,10 @@ package com.qreal.wmp.auth.database.users;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.io.Serializable;
-import java.util.*;
-
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /** User in auth service. It can be admin or plain user.*/
 @Entity
@@ -32,7 +32,7 @@ public class User implements Serializable, UserDetails {
     public User(String username, String password, Collection<GrantedAuthority> authority) {
         this.username = username;
         this.password = password;
-        setAuthorities(authority);
+        this.authorities = (Collection<UserAuthority>) (Collection<?>) authority;
     }
 
     public String getUsername() {

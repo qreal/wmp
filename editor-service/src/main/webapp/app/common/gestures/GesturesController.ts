@@ -5,6 +5,8 @@
 /// <reference path="../../../resources/types/jqueryline/jqueryline.d.ts" />
 /// <reference path="../interfaces/editorCore.d.ts" />
 /// <reference path="../constants/GeneralConstants.ts" />
+/// <reference path="../constants/MouseButton.ts" />
+
 
 class GesturesController {
 
@@ -66,7 +68,7 @@ class GesturesController {
     }
 
     public onMouseDown(event): void {
-        if (event.button === 2) {
+        if (event.button == MouseButton.right) {
             this.rightButtonDown = true;
         }
     }

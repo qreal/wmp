@@ -115,7 +115,7 @@ public class DaoDiagramTest {
         assertThat(diagramDao.isExistsDiagram(idDiagramNotCorrect)).isFalse();
     }
 
-    /** Test rewriteDiagram operation for diagram. */
+    /** Test updateDiagram operation for diagram. */
     @Test
     @Rollback
     public void rewriteDiagram_diagramExists_rewritesDiagramInDb() throws Exception {
@@ -133,7 +133,7 @@ public class DaoDiagramTest {
         assertThat(gotDiagram).isEqualTo(rewriteDiagram);
     }
 
-    /** Test rewriteDiagram operation for diagram. */
+    /** Test updateDiagram operation for diagram. */
     @Test
     @Rollback
     public void rewriteDiagram_diagramNotExists_throwsAborted() throws Exception {

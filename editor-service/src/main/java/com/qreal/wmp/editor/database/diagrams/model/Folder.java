@@ -2,32 +2,40 @@ package com.qreal.wmp.editor.database.diagrams.model;
 
 import com.qreal.wmp.thrift.gen.TFolder;
 import lombok.Data;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationContext;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /** Folder with diagrams and other folders.*/
 @Data
 public class Folder implements Serializable {
+
+    private static final Logger logger = LoggerFactory.getLogger(Folder.class);
+
+    private static ApplicationContext context;
+
     private Long id;
 
     private String folderName;
 
-    private String userName;
+    private Set<String> owners = new HashSet<>();
 
     private Long folderParentId;
 
-    private List<Folder> childrenFolders = new ArrayList<>();
+    private Set<Folder> childrenFolders = new HashSet<>();
 
-    private List<Diagram> diagrams = new ArrayList<>();
+    private Set<Diagram> diagrams = new HashSet<>();
 
     public Folder() { }
 
-    public Folder(String folderName, String userName) {
+    public Folder(String folderName, String owner) {
         this.folderName = folderName;
-        this.userName = userName;
+        this.owners.add(owner);
     }
 
     /** Constructor-converter from Thrift TFolder to Folder.*/
@@ -41,8 +49,8 @@ public class Folder implements Serializable {
             folderName = tFolder.getFolderName();
         }
 
-        if (tFolder.isSetUserName()) {
-            userName = tFolder.getUserName();
+        if (tFolder.isSetOwners()) {
+            owners = tFolder.getOwners();
         }
 
         if (tFolder.isSetFolderParentId()) {
@@ -50,11 +58,11 @@ public class Folder implements Serializable {
         }
 
         if (tFolder.isSetChildrenFolders()) {
-            childrenFolders = tFolder.getChildrenFolders().stream().map(Folder::new).collect(Collectors.toList());
+            childrenFolders = tFolder.getChildrenFolders().stream().map(Folder::new).collect(Collectors.toSet());
         }
 
         if (tFolder.isSetDiagrams()) {
-            diagrams = tFolder.getDiagrams().stream().map(Diagram::new).collect(Collectors.toList());
+            diagrams = tFolder.getDiagrams().stream().map(Diagram::new).collect(Collectors.toSet());
         }
 
     }
@@ -71,8 +79,8 @@ public class Folder implements Serializable {
             tFolder.setFolderName(folderName);
         }
 
-        if (userName != null) {
-            tFolder.setUserName(userName);
+        if (owners != null) {
+            tFolder.setOwners(owners);
         }
 
         if (folderParentId != null) {
@@ -90,3 +98,4 @@ public class Folder implements Serializable {
         return tFolder;
     }
 }
+

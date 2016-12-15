@@ -2,7 +2,6 @@ package com.qreal.wmp.db.user.client.diagrams;
 
 import com.qreal.wmp.db.user.exceptions.AbortedException;
 import com.qreal.wmp.db.user.exceptions.ErrorConnectionException;
-import com.qreal.wmp.db.user.model.diagram.Folder;
 import com.qreal.wmp.thrift.gen.DiagramDbService;
 import com.qreal.wmp.thrift.gen.TFolder;
 import org.apache.thrift.TException;
@@ -17,6 +16,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.util.HashSet;
 
 /** Thrift client side of DiagramDbService.*/
 @Service("diagramService")
@@ -47,11 +47,16 @@ public class DiagramServiceImpl implements DiagramService {
     @Override
     public void createRootFolder(String userName)  throws AbortedException, ErrorConnectionException, TException {
         logger.trace("createRootFolder() was called with parameters: username = {}.", userName);
-        Folder rootFolder = new Folder("root", userName);
+        TFolder tFolder = new TFolder();
+        tFolder.setFolderName("root");
+
+        HashSet<String> owners = new HashSet<>();
+        owners.add(userName);
+
+        tFolder.setOwners(owners);
         transport.open();
         try {
-            TFolder newFolder = rootFolder.toTFolder();
-            client.createFolder(newFolder);
+            client.saveFolder(tFolder);
         } finally {
             transport.close();
         }
