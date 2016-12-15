@@ -33,7 +33,7 @@ class DiagramThriftParser extends DiagramJsonParser {
             var propertyName = propertiesObject[j].name;
 
             if (propertyName === "name") {
-                name  = propertiesObject[j].value;
+                name = propertiesObject[j].value;
             }
 
             if (typeProperties.hasOwnProperty(propertyName)) {
@@ -41,7 +41,7 @@ class DiagramThriftParser extends DiagramJsonParser {
                     typeProperties[propertyName].type, propertiesObject[j].value);
                 changeableLogicalProperties[propertyName] = property;
             } else if (propertyName === "position") {
-                var position:string = propertiesObject[j].value;
+                var position: string = propertiesObject[j].value;
                 var positionNums = this.parsePosition(position);
                 x = positionNums.x + offsetX;
                 y = positionNums.y + offsetY;

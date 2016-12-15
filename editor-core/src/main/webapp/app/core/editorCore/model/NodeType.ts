@@ -5,18 +5,26 @@
 class NodeType {
 
     private name: string;
-    private id: string;
+    private shownName: string;
     private propertiesMap: Map<Property>;
     private image: string;
 
-    constructor(name: string, propertiesMap: Map<Property>, image: string) {
+    constructor(name: string, propertiesMap: Map<Property>, image: string, shownName?: string) {
         this.name = name;
+        if (shownName)
+            this.shownName = shownName;
+        else
+            this.shownName = name;
         this.propertiesMap = propertiesMap;
         this.image = (image) ? StringUtils.format(image, this.name) : null;
     }
 
     public getName(): string {
         return this.name;
+    }
+
+    public getShownName(): string {
+        return this.shownName;
     }
 
     public getPropertiesMap(): Map<Property> {

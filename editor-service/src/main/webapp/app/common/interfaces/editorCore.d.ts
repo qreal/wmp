@@ -97,8 +97,9 @@ declare class DefaultDiagramNode implements DiagramNode {
     getPropertyEditElement(): PropertyEditElement
 }
 
-declare interface Map<T> {
+declare class Map<T> {
     [key: string]: T;
+    static unite<T>(toMap: Map<T>, fromMap: Map<T>): void;
 }
 
 declare class NodeType {
@@ -153,7 +154,12 @@ declare class DiagramScene {
 }
 
 declare class PaletteTypes {
-    categories: Map<Map<NodeType>>;
+    categories: Map<Map<PaletteSubtypes>>;
+    convertToMap(): Map<NodeType>;
+}
+
+declare class PaletteSubtypes {
+
 }
 
 declare class ElementTypes {
