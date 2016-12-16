@@ -17,17 +17,18 @@ class CategoryView extends HtmlView {
         var elementsContent: string = '';
         if (category instanceof PaletteSubtypes)
             category = category.categories;
-        if (category instanceof Map) {
-            for (var subcategory in category) {
-                var subcategoryView: CategoryView = new CategoryView(subcategory, category[subcategory]);
-                elementsContent += subcategoryView.getContent();
-            }
-        } else {
+        if (category instanceof Array) {
             for (var i in category) {
                 var nodeType: NodeType = category[i];
                 var paletteElementView: PaletteElementView = new PaletteElementView(nodeType.getName(),
                     nodeType.getShownName(), nodeType.getImage());
                 elementsContent += paletteElementView.getContent();
+            }
+
+        } else {
+            for (var subcategory in category) {
+                var subcategoryView: CategoryView = new CategoryView(subcategory, category[subcategory]);
+                elementsContent += subcategoryView.getContent();
             }
         }
         this.content = StringUtils.format(this.template, categoryName, elementsContent);

@@ -9,7 +9,7 @@ class Link implements DiagramElement {
     private logicalId: string;
     private jointObject: joint.dia.Link;
     private constPropertiesPack: PropertiesPack;
-    private changeableProperties: Map<Property> = new Map<Property>();
+    private changeableProperties: Map<Property> = {};
     private name = "Link";
     private type = "ControlFlow";
 
@@ -90,7 +90,7 @@ class Link implements DiagramElement {
     }
 
     private initConstLogicalProperties(): Map<Property> {
-        var logical: Map<Property> = new Map<Property>();
+        var logical: Map<Property> = {};
         logical["name"] = new Property("name", "QString", this.name);
         logical["linkShape"] = new Property("linkShape", "int", "-1");
         logical["outgoingExplosion"] = new Property("outgoingExplosion", "qReal::Id", "qrm:/");
@@ -98,7 +98,7 @@ class Link implements DiagramElement {
     }
 
     private initConstGraphicalProperties(): Map<Property> {
-        var graphical: Map<Property> = new Map<Property>();
+        var graphical: Map<Property> = {};
         graphical["name"] = new Property("name", "QString", this.name);
         graphical["configuration"] = new Property("configuration", "QPolygon", "0, 0 : 0, 0 : ");
         graphical["fromPort"] = new Property("fromPort", "double", "0");

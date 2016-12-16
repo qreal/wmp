@@ -47,8 +47,8 @@ class DiagramScene extends joint.dia.Paper {
         this.gridSize = gridSize;
         this.zoom = (zoomAttr) ? zoomAttr : 1;
         this.graph = graph;
-        this.nodesMap = new Map<DiagramNode>();
-        this.linksMap = new Map<Link>();
+        this.nodesMap = {};
+        this.linksMap = {};
         this.scale(this.zoom, this.zoom);
     }
     
@@ -143,7 +143,7 @@ class DiagramScene extends joint.dia.Paper {
         for (var node in this.nodesMap) {
             this.removeNode(node);
         }
-        this.linksMap = new Map<Link>();
+        this.linksMap = {};
     }
 
     public addSubprogramNode(node: SubprogramNode): void {

@@ -57,7 +57,7 @@ class RobotsDiagramEditorController extends DiagramEditorController {
             this.nodeTypesMap[typeName] = elementTypes.uncategorisedTypes[typeName];
         }
 
-        Map.unite(this.nodeTypesMap, elementTypes.paletteTypes.convertToMap());
+        $.extend(this.nodeTypesMap, elementTypes.paletteTypes.convertToMap());
 
         this.paletteController.appendBlocksPalette(elementTypes.paletteTypes);
         this.paletteController.initDraggable();

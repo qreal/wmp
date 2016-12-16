@@ -6,11 +6,11 @@ class PaletteSubtypes {
     categories: Map<NodeType[]>;
 
     constructor() {
-        this.categories = new Map<NodeType[]>();
+        this.categories = {};
     }
 
     convertToMap(): Map<NodeType> {
-        var nodesMap: Map<NodeType> = new Map<NodeType>();
+        var nodesMap: Map<NodeType> = {};
         for (var category in this.categories) {
             for (var i in this.categories[category]) {
                 var nodeType = this.categories[category][i];

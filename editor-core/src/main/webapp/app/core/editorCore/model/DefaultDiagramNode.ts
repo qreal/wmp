@@ -123,7 +123,7 @@ class DefaultDiagramNode implements DiagramNode {
     }
 
     private initConstLogicalProperties(name: string): Map<Property> {
-        var logical: Map<Property> = new Map<Property>();
+        var logical: Map<Property> = {};
         logical["name"] = new Property("name", "QString", name);
         logical["from"] = new Property("from", "qReal::Id", "qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID");
         logical["linkShape"] = new Property("linkShape", "int", "0");
@@ -133,7 +133,7 @@ class DefaultDiagramNode implements DiagramNode {
     }
 
     private initConstGraphicalProperties(name: string): Map<Property> {
-        var graphical: Map<Property> = new Map<Property>();
+        var graphical: Map<Property> = {};
         graphical["name"] = new Property("name", "QString", name);
         graphical["to"] = new Property("to", "qreal::Id", "qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID");
         graphical["configuration"] = new Property("configuration", "QPolygon", "0, 0 : 50, 0 : 50, 50 : 0, 50 : ");

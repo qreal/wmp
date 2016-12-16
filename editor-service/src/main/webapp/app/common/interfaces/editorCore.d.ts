@@ -97,9 +97,8 @@ declare class DefaultDiagramNode implements DiagramNode {
     getPropertyEditElement(): PropertyEditElement
 }
 
-declare class Map<T> {
+declare interface Map<T> {
     [key: string]: T;
-    static unite<T>(toMap: Map<T>, fromMap: Map<T>): void;
 }
 
 declare class NodeType {

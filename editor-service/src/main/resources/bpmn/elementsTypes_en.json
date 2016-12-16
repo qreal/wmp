@@ -44,7 +44,7 @@
             },
             "subtypes": {
                 "Start" : [
-                    "Normal",
+                    "Regular",
                     "Non-interrupting"
                 ],
                 "Intermediate": [
@@ -53,7 +53,7 @@
                     "Throw"
                 ],
                 "End": [
-                    "Normal"
+                    "Regular"
                 ]
             }
         },

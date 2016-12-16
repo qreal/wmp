@@ -17,21 +17,21 @@ class TypesParser {
     }
 
     private parseElementsTypes(elementsTypes: any): Map<NodeType> {
-        var elementsTypesMap: Map<NodeType> = new Map<NodeType>();
+        var elementsTypesMap: Map<NodeType> = {};
 
         for (var i in elementsTypes) {
             var typeObject = elementsTypes[i];
-            Map.unite(elementsTypesMap, this.createNodeTypes(typeObject).convertToMap());
+            $.extend(elementsTypesMap, this.createNodeTypes(typeObject).convertToMap());
         }
         return elementsTypesMap;
     }
 
     private parseGeneralTypes(generalTypes: any): Map<NodeType> {
-        var generalTypesMap: Map<NodeType> = new Map<NodeType>();
+        var generalTypesMap: Map<NodeType> = {};
 
         for (var i in generalTypes) {
             var typeObject = generalTypes[i];
-            Map.unite(generalTypesMap, this.createNodeTypes(typeObject).convertToMap());
+            $.extend(generalTypesMap, this.createNodeTypes(typeObject).convertToMap());
         }
 
         return generalTypesMap;
@@ -41,7 +41,7 @@ class TypesParser {
         var paletteTypesObject: PaletteTypes = new PaletteTypes();
 
         for (var category in paletteTypes) {
-            var categoryTypesMap: Map<PaletteSubtypes> = new Map<PaletteSubtypes>();
+            var categoryTypesMap: Map<PaletteSubtypes> = {};
             for (var i in paletteTypes[category]) {
                 var typeObject = paletteTypes[category][i];
                 var subtypes: PaletteSubtypes = this.createNodeTypes(typeObject);
@@ -84,7 +84,7 @@ class TypesParser {
     }
 
     private parseTypeProperties(typeName: string, propertiesArrayNode: any): Map<Property> {
-        var properties: Map<Property> = new Map<Property>();
+        var properties: Map<Property> = {};
         for (var i in propertiesArrayNode) {
             var propertyObject = propertiesArrayNode[i];
             var propertyKey: string = propertyObject.key;

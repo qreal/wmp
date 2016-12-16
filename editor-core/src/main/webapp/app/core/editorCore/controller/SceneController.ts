@@ -85,7 +85,7 @@ class SceneController {
 
         var typeProperties = this.diagramEditorController.getNodeProperties("ControlFlow");
 
-        var linkProperties: Map<Property> = new Map<Property>();
+        var linkProperties: Map<Property> = {};
         for (var property in typeProperties) {
             linkProperties[property] = new Property(typeProperties[property].name,
                 typeProperties[property].type, typeProperties[property].value);
@@ -102,7 +102,7 @@ class SceneController {
 
         var typeProperties: Map<Property> = this.diagramEditorController.getNodeType(type).getPropertiesMap();
 
-        var nodeProperties: Map<Property> = new Map<Property>();
+        var nodeProperties: Map<Property> = {};
         for (var property in typeProperties) {
             nodeProperties[property] = new Property(typeProperties[property].name, typeProperties[property].type,
                 typeProperties[property].value);

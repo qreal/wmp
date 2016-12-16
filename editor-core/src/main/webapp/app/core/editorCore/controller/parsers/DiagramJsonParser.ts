@@ -85,8 +85,8 @@ class DiagramJsonParser {
 
     protected parseDiagramNodeObject(nodeObject: any, nodeTypesMap: Map<NodeType>,
                                    offsetX: number, offsetY: number): DiagramNode {
-        var changeableLogicalProperties: Map<Property> = new Map<Property>();
-        var constLogicalProperties: Map<Property> = new Map<Property>();
+        var changeableLogicalProperties: Map<Property> = {};
+        var constLogicalProperties: Map<Property> = {};
         var subprogramDiagramId: string = "";
         var name = "";
         var type = nodeObject.type;
@@ -125,7 +125,7 @@ class DiagramJsonParser {
             }
         }
 
-        var constGraphicalProperties: Map<Property> = new Map<Property>();
+        var constGraphicalProperties: Map<Property> = {};
         var graphicalPropertiesObject = nodeObject.graphicalProperties;
 
         var x: number = 0;
@@ -160,7 +160,7 @@ class DiagramJsonParser {
     }
 
     protected parseLinks(diagramJson: any, offsetX: number, offsetY: number): Map<Link> {
-        var linksMap: Map<Link> = new Map<Link>();
+        var linksMap: Map<Link> = {};
 
         for (var i = 0; i < diagramJson.links.length; i++) {
             linksMap[diagramJson.links[i].graphicalId] = this.parseLinkObject(diagramJson.links[i], offsetX, offsetY);
@@ -173,7 +173,7 @@ class DiagramJsonParser {
         var sourceId: string = "";
         var targetId: string = "";
 
-        var properties: Map<Property> = new Map<Property>();
+        var properties: Map<Property> = {};
         var logicalPropertiesObject = linkObject.logicalProperties;
 
         for (var j = 0; j < logicalPropertiesObject.length; j++) {
