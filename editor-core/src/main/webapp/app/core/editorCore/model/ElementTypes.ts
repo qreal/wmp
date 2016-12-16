@@ -1,13 +1,12 @@
 /// <reference path="NodeType.ts" />
-/// <reference path="PaletteTypes.ts" />
 
 class ElementTypes {
 
     uncategorisedTypes: Map<NodeType>;
-    paletteTypes: PaletteTypes;
+    paletteTypes: PaletteTree;
 
     constructor() {
         this.uncategorisedTypes = {};
-        this.paletteTypes = new PaletteTypes();
+        this.paletteTypes = new PaletteTree();
     }
 }

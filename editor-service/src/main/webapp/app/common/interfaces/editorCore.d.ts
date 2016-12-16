@@ -152,18 +152,17 @@ declare class DiagramScene {
 
 }
 
-declare class PaletteTypes {
-    categories: Map<Map<PaletteSubtypes>>;
+declare class PaletteTree {
+
+    categories: Map<PaletteTree>;
+    nodes: NodeType[];
+
     convertToMap(): Map<NodeType>;
-}
-
-declare class PaletteSubtypes {
-
 }
 
 declare class ElementTypes {
     uncategorisedTypes: Map<NodeType>;
-    paletteTypes: PaletteTypes;
+    paletteTypes: PaletteTree;
 }
 
 declare class DiagramParts {
@@ -219,7 +218,7 @@ declare class SubprogramPaletteView extends HtmlView {
 }
 
 declare class BlocksPaletteView extends HtmlView {
-    constructor(paletteTypes: PaletteTypes);
+    constructor(paletteTypes: PaletteTree);
 }
 
 declare class CategoryView extends HtmlView {
@@ -324,7 +323,7 @@ declare class PaletteController {
     public initDraggable(): void;
     public appendSubprogramsPalette(subprogramDiagramNodes: SubprogramDiagramNode[],
                                     nodeTypesMap: Map<NodeType>): void;
-    public appendBlocksPalette(paletteTypes: PaletteTypes): void;
+    public appendBlocksPalette(paletteTypes: PaletteTree): void;
 
 }
 

@@ -1,7 +1,6 @@
 /// <reference path="DiagramEditorController.ts" />
 /// <reference path="../model/DiagramScene.ts" />
 /// <reference path="../model/DiagramElement.ts" />
-/// <reference path="../model/PaletteTypes.ts" />
 /// <reference path="../model/DiagramNode.ts" />
 /// <reference path="../model/DefaultDiagramNode.ts" />
 /// <reference path="../model/commands/Command.ts"/>

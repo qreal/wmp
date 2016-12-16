@@ -12,26 +12,23 @@ class CategoryView extends HtmlView {
         '   <ul>{1}</ul>' +
         '</li>';
 
-    constructor(categoryName: string, category: any) {
+    constructor(categoryName: string, category: PaletteTree) {
         super();
         var elementsContent: string = '';
-        if (category instanceof PaletteSubtypes)
-            category = category.categories;
-        if (category instanceof Array) {
-            for (var i in category) {
-                var nodeType: NodeType = category[i];
-                var paletteElementView: PaletteElementView = new PaletteElementView(nodeType.getName(),
-                    nodeType.getShownName(), nodeType.getImage());
-                elementsContent += paletteElementView.getContent();
-            }
-
-        } else {
-            for (var subcategory in category) {
-                var subcategoryView: CategoryView = new CategoryView(subcategory, category[subcategory]);
-                elementsContent += subcategoryView.getContent();
-            }
+        for (var subcategory in category.categories) {
+            var subcategoryView: CategoryView = new CategoryView(subcategory, category.categories[subcategory]);
+            elementsContent += subcategoryView.getContent();
         }
-        this.content = StringUtils.format(this.template, categoryName, elementsContent);
+        for (var i in category.nodes) {
+            var nodeType: NodeType = category.nodes[i];
+            var paletteElementView: PaletteElementView = new PaletteElementView(nodeType.getName(),
+                nodeType.getShownName(), nodeType.getImage());
+            elementsContent += paletteElementView.getContent();
+        }
+        if (Object.keys(category.categories).length === 0)
+            this.content = elementsContent
+        else
+            this.content = StringUtils.format(this.template, categoryName, elementsContent);
     }
 
 }

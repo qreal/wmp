@@ -1,7 +1,6 @@
 /// <reference path="../model/SubprogramDiagramNode.ts" />
 /// <reference path="../model/NodeType.ts" />
 /// <reference path="../model/Map.ts" />
-/// <reference path="../model/PaletteTypes.ts" />
 /// <reference path="../view/SubprogramPaletteView.ts" />
 /// <reference path="../view/BlocksPaletteView.ts" />
 /// <reference path="../../../vendor.d.ts" />
@@ -32,7 +31,7 @@ class PaletteController {
         this.appendPaletteContent("#subprograms-navigation", paletteView.getContent());
     }
 
-    public appendBlocksPalette(paletteTypes: PaletteTypes): void {
+    public appendBlocksPalette(paletteTypes: PaletteTree): void {
         var paletteView: BlocksPaletteView = new BlocksPaletteView(paletteTypes);
         this.appendPaletteContent("#blocks-navigation", paletteView.getContent());
     }

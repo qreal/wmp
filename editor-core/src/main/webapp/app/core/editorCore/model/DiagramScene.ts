@@ -8,6 +8,7 @@ class DiagramScene extends joint.dia.Paper {
 
     private htmlId: string;
     private graph: joint.dia.Graph;
+    private currentLink: joint.dia.Link;
     private nodesMap: Map<DiagramNode>;
     private linksMap: Map<Link>;
     private gridSize: number;
