@@ -7,20 +7,38 @@
 /// <reference path="../../../common/constants/GeneralConstants.ts" />
 /// <reference path="../exporters/PaletteExporter.ts" />
 /// <reference path="../parsers/PaletteParser.ts" />
+/// <reference path="../model/PaletteView.ts" />
 
 class PaletteDiagramEditorController extends DiagramEditorController {
 
     private exporter: PaletteExporter;
     private parser: PaletteParser;
+    private palettes: PaletteView[] = [];
+    private meta: boolean = true;
 
     constructor($scope, $attrs) {
         super($scope, $attrs);
+
         this.exporter = new PaletteExporter();
         this.parser = new PaletteParser(this);
+
         $scope.createPalette = () => { this.createPalette(); };
+        $scope.openPalettesMenu = () => { this.openPalettesMenu(); };
+        $scope.loadMetaEditor = () => { this.loadMetaEditor(); };
         this.elementsTypeLoader.load((elementTypes: ElementTypes): void => {
             this.handleLoadedTypes(elementTypes);
         }, "dsm");
+
+        var controller = this;
+        try {
+            var tPalettes: TPaletteView[] = controller.getClient().getPalettes();
+            for (var i = 0; i < tPalettes.length; i++) {
+                controller.palettes.push(PaletteView.createFromDAO(tPalettes[i]));
+            }
+        }
+        catch (e) {
+            console.log("Error: can't get folder tree", e);
+        }
     }
 
     public handleLoadedTypes(elementTypes: ElementTypes): void {
@@ -42,38 +60,76 @@ class PaletteDiagramEditorController extends DiagramEditorController {
     }
 
     public createPalette() {
-        var name: string = prompt("input palette name");
-        if (name !== "") {
-            var controller = this;
-            var palette = this.exporter.exportPalette(controller.getNodesMap(), controller.getLinksMap(), name);
-            try {
-                controller.getClient().createPalette(palette);
-                controller.clearState();
-                controller.paletteController.clearBlocksPalette();
-                this.paletteController.appendBlocksPalette(controller.parser.parse(palette));
-                this.paletteController.initDraggable();
-                controller.addLinks();
-            }
-            catch (ouch) {
-                console.log("Error: can't create palette", ouch);
-            }
-            /*$.ajax({
-                type: 'POST',
-                url: 'createPalette',
-                contentType: 'application/json',
-                data: JSON.stringify(paletteJson),
-                success: function ():any {
-                    console.log('ok');
-                },
-                error: function (response, status, error):any {
-                    console.log("error: " + status + " " + error);
+        if (this.meta) {
+            var name: string = prompt("input palette name");
+            if (name !== "" && name !== null) {
+                var controller = this;
+                var palette = this.exporter.exportPalette(controller.getNodesMap(), controller.getLinksMap(), name);
+                try {
+                    var id = controller.getClient().createPalette(palette);
+                    controller.changePalette(controller.parser.parse(palette));
+                    controller.palettes.push(new PaletteView(id, name));
+                    this.meta = false;
                 }
-            });*/
+                catch (e) {
+                    console.log("Error: can't create palette", e);
+                }
+            }
         }
+    }
+
+    public openPalettesMenu() {
+        var controller = this;
+        var paletteNames: string[] = [];
+        $('#palettesMenu').modal('show');
+        for (var i = 0; i < this.palettes.length; i++) {
+            paletteNames.push(this.palettes[i].getName());
+        }
+        $('.palette-table li').remove();
+
+        $.each(paletteNames, function (i) {
+            $('.palette-view ul').prepend("<li class='palettes'>" +
+                "<span class='glyphicon glyphicon-file' aria-hidden='true'></span>" +
+                "<span class='glyphicon-class'>" + paletteNames[i] + "</span></li>");
+        });
+
+        $('.palette-table .palettes').click(function () {
+            controller.loadPalette(($(this).text()));
+            $('#palettesMenu').modal('hide');
+        });
     }
 
     public setNodeTypesMap(nodeTypes) {
         this.nodeTypesMap = nodeTypes;
+    }
+
+    public loadPalette(paletteName: string) {
+        var controller = this;
+        try {
+            var palette = controller.getClient().loadPalette(controller.getPaletteIdByName(paletteName));
+            controller.changePalette(controller.parser.parse(palette))
+            controller.meta = false;
+        }
+        catch (e) {
+            console.log("Error: can't load palette", e);
+        }
+    }
+
+    public loadMetaEditor() {
+        this.meta = true;
+        this.clearState();
+        this.paletteController.clearBlocksPalette();
+        this.elementsTypeLoader.load((elementTypes: ElementTypes): void => {
+            this.handleLoadedTypes(elementTypes);
+        }, "dsm");
+    }
+
+    private getPaletteIdByName(paletteName: string) {
+        for (var i = 0; i < this.palettes.length; i++) {
+            if ( this.palettes[i].getName() === paletteName) {
+                return  this.palettes[i].getId();
+            }
+        }
     }
 
     private addLinks() {
@@ -88,102 +144,13 @@ class PaletteDiagramEditorController extends DiagramEditorController {
         var protocol = new Thrift.TJSONProtocol(transport);
         return new PaletteServiceThriftClient(protocol);
     }
-    /*
-    public loadMetaEditor() {
-        this.elementsTypeLoader.load((elementTypes: ElementTypes): void => {
-            this.handleLoadedTypes(elementTypes);
-        });
-    }
-
-    public setNodeTypesMap(nodeTypes) {
-        this.nodeTypesMap = nodeTypes;
-    }
-
-    public choosePalette(paletteName: string) {
-        var controller = this;
-        $.ajax({
-            type: 'POST',
-            url: 'getPalette',
-            dataType: 'json',
-            contentType: 'application/json',
-            data: JSON.stringify({name: paletteName}),
-            success: function (response): any {
-                controller.changePalette(controller.parser.parse(response));
-                controller.addLinks();
-            },
-            error: function (response, status, error): any {
-                console.log("error: " + status + " " + error);
-            }
-        })
-    }
-
-    public createPalette() {
-        var name: string = prompt("input diagram name");
-        if (name !== null && name !== "") {
-            var controller = this;
-            var paletteJson = this.exporter.exportPalette(controller.getNodesMap(), controller.getLinksMap(), name);
-            $.ajax({
-                type: 'POST',
-                url: 'createPalette',
-                contentType: 'application/json',
-                data: JSON.stringify(paletteJson),
-                success: function ():any {
-                    controller.changePalette(controller.parser.parse(paletteJson));
-                    controller.addLinks();
-                    console.log('ok');
-                },
-                error: function (response, status, error):any {
-                    console.log("error: " + status + " " + error);
-                }
-            });
-        }
-    }
-
-    public showPaletteNames($compile, $scope): void {
-        $("#palettes").empty();
-        var meta = '<li><a href="" role="menuitem" tabindex="-1" ng-click="loadMetaEditor()">Meta Editor</a></li>';
-        $("#palettes").append($compile(meta)($scope));
-        $.ajax({
-            type: 'POST',
-            url: 'showPaletteNames',
-            success: function (response):any {
-                for (var i in response) {
-                    var newPalette = '<li><a href="" role="menuitem" tabindex="-1" ng-click="choosePalette(' + "'" + response[i] + "'" + ')">' + response[i] + '</a></li>';
-                    $("#palettes").append($compile(newPalette)($scope));
-                }
-            },
-            error: function (response, status, error):any {
-                console.log("error: " + status + " " + error);
-            }
-        });
-    }
-
-    private handleLoadedTypes(elementTypes: ElementTypes): void {
-        this.propertyEditorController = new PropertyEditorController(this.paperController, this.undoRedoController);
-
-        var categories: Map<Map<NodeType>> = elementTypes.paletteTypes.categories;
-        for (var category in categories) {
-            for (var typeName in categories[category]) {
-                this.nodeTypesMap[typeName] = categories[category][typeName];
-            }
-        }
-
-        this.addLinks();
-        this.changePalette(elementTypes.paletteTypes);
-    }
-
-    private addLinks() {
-        var properties: Map<NodeProperty> = {};
-        properties["Guard"] = new NodeProperty("Guard", "combobox", "");
-        var node: NodeType = new NodeType("Link", properties);
-        this.nodeTypesMap["ControlFlow"] = node;
-    }
 
     private changePalette(newPalette: PaletteTypes) {
         this.clearState();
         this.paletteController.clearBlocksPalette();
         this.paletteController.appendBlocksPalette(newPalette);
         this.paletteController.initDraggable();
-    }*/
+        this.addLinks();
+    }
 
 }

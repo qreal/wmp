@@ -14,11 +14,13 @@ class PaletteParser {
             var nodeName = nodes[i].name;
             var nodeImage = nodes[i].image;
             var nodeProperties: Map<Property> = {};
-            var properties = nodes[i].properties;
-            for (var j = 0; j < properties.length; j++) {
-                var propertyName = properties[j].name;
-                var property: Property = new Property(propertyName, properties[j].type, properties[j].value);
-                nodeProperties[propertyName] = property;
+            if (nodes[i].properties) {
+                var properties = nodes[i].properties;
+                for (var j = 0; j < properties.length; j++) {
+                    var propertyName = properties[j].name;
+                    var property: Property = new Property(propertyName, properties[j].type, properties[j].value);
+                    nodeProperties[propertyName] = property;
+                }
             }
             var node = new NodeType(nodeName, nodeProperties, nodeImage);
             basePalette[nodeName] = node;

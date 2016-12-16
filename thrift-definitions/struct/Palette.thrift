@@ -20,3 +20,8 @@ struct TNodeProperty {
     3 : string value,
     4 : string type
 }
+
+struct TPaletteView {
+    1 : i64 id,
+    2 : string name
+}

@@ -16,6 +16,8 @@ public class Palette implements Serializable {
 
     private String name;
 
+    private String userName;
+
     private Set<Node> nodes = new HashSet<>();
 
     public Palette() {
@@ -29,6 +31,10 @@ public class Palette implements Serializable {
 
         if (tPalette.isSetName()) {
             name = tPalette.getName();
+        }
+
+        if (tPalette.isSetUser()) {
+            userName = tPalette.getUser();
         }
 
         if (tPalette.isSetNodes()) {
@@ -46,6 +52,10 @@ public class Palette implements Serializable {
 
         if (name != null) {
             tPalette.setName(name);
+        }
+
+        if (userName != null) {
+            tPalette.setUser(userName);
         }
 
         if (nodes != null && !nodes.isEmpty()) {

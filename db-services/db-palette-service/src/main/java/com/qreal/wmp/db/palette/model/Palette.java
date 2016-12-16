@@ -11,9 +11,9 @@ import java.util.stream.Collectors;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
-/** Palette (now only graphs). */
+/** Palette. */
 @Entity
-@Table(name = "diagrams")
+@Table(name = "palettes")
 @Data
 public class Palette implements Serializable {
     @Id
@@ -22,13 +22,21 @@ public class Palette implements Serializable {
     private Long id;
 
     @Column(name = "name")
-    private String name;
+    private String paletteName;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinColumn(name = "palette_id", referencedColumnName = "palette_id")
     private Set<Node> nodes = new HashSet<>();
 
+    @Column(name = "username")
+    private String userName;
+
     public Palette() {
+    }
+
+    public Palette(String paletteName, String userName) {
+        this.paletteName = paletteName;
+        this.userName = userName;
     }
 
     /** Constructor-converter from Thrift TPalette to Palette.*/
@@ -38,7 +46,11 @@ public class Palette implements Serializable {
         }
 
         if (tPalette.isSetName()) {
-            name = tPalette.getName();
+            paletteName = tPalette.getName();
+        }
+
+        if (tPalette.isSetUser()) {
+            userName = tPalette.getUser();
         }
 
         if (tPalette.isSetNodes()) {
@@ -54,8 +66,12 @@ public class Palette implements Serializable {
             tPalette.setId(id);
         }
 
-        if (name != null) {
-            tPalette.setName(name);
+        if (paletteName != null) {
+            tPalette.setName(paletteName);
+        }
+
+        if (userName != null) {
+            tPalette.setUser(userName);
         }
 
         if (nodes != null && !nodes.isEmpty()) {

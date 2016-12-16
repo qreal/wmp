@@ -51,6 +51,14 @@
       <div class="navbar-collapse collapse">
         <ul id="tool-buttons-left-area" class="nav navbar-nav">
           <li><a href="" ng-click="createPalette()">Create</a></li>
+          <li class="dropdown">
+            <a href="" class="dropdown-toggle" data-toggle="dropdown" tabindex="-1">Palette</a>
+            <ul class="dropdown-menu">
+              <li><a href="" role="menuitem" tabindex="-1" ng-click="loadMetaEditor()">Meta Editor</a></li>
+              <li><a href="" role="menuitem" tabindex="-1" data-toggle="modal" data-target="#palettesMenu"
+                     ng-click="openPalettesMenu()">Palettes menu</a></li>
+            </ul>
+          </li>
           <li id="file-menu" class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">File<b class="caret"></b></a>
             <ul class="dropdown-menu">
@@ -179,6 +187,29 @@
       </div>
     </div>
   </div>
+
+  <div id="palettesMenu" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title">
+            Palettes
+          </h4>
+        </div>
+        <div class="modal-body-nopadding">
+          <div class="palette-view">
+            <ul class="palette-table">
+            </ul>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 
   <!-- Save confirmation window on creating new diagram -->
   <div id="confirm-save-diagram" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
