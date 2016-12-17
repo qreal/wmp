@@ -8,9 +8,10 @@ class DiagramScene extends joint.dia.Paper {
 
     private htmlId: string;
     private graph: joint.dia.Graph;
-    private currentLink: joint.dia.Link;
+    private currentLinkAtts: any;
     private nodesMap: Map<DiagramNode>;
     private linksMap: Map<Link>;
+    private linksAttsMap: Map<any>;
     private gridSize: number;
     private zoom: number;
 
@@ -43,6 +44,22 @@ class DiagramScene extends joint.dia.Paper {
                 pointerdown: DiagramElementListener.pointerdown
                 }))
         });
+
+        this.linksAttsMap = {};
+        this.linksAttsMap["ControlFlow"] = {
+            attrs: {
+                '.connection': { stroke: 'black' },
+                '.marker-target': { fill: 'black', d: 'M 10 0 L 0 5 L 10 10 z' }
+            }
+        }
+        this.linksAttsMap["ConditionalFlow"] = {
+            attrs: {
+                '.connection': { stroke: 'black' },
+                '.marker-source': { fill: 'white', d: 'M 10 0 L 0 5 L 10 10 L 20 5 z' },
+                '.marker-target': { fill: 'black', d: 'M 10 0 L 0 5 L 10 10 z' }
+            }
+        }
+        this.currentLinkAtts = this.linksAttsMap["ControlFlow"];
 
         this.htmlId = htmlId;
         this.gridSize = gridSize;
@@ -163,8 +180,15 @@ class DiagramScene extends joint.dia.Paper {
         }
     }
 
+    public setCurrentLinkType(linkType: string): void {
+        this.currentLinkAtts = this.linksAttsMap[linkType];
+    }
+
+    public getCurrentLinkType(): joint.dia.Link {
+        return new joint.dia.Link(this.currentLinkAtts);
+    }
+
     private addLink(link: Link): void {
         this.graph.addCell(link.getJointObject());
     }
-
 }

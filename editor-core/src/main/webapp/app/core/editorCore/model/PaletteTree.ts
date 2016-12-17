@@ -5,12 +5,10 @@ class PaletteTree {
 
     categories: Map<PaletteTree>;
     nodes: NodeType[];
-    isShown: boolean;
 
     constructor() {
         this.categories = {};
         this.nodes = [];
-        this.isShown = true;
     }
 
     convertToMap(): Map<NodeType> {

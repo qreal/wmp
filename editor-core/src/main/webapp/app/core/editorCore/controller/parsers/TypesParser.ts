@@ -6,23 +6,27 @@
 
 class TypesParser {
 
+    private currentProperties: Map<Property>;
+    private currentImage: string;
+
     public parse(typesJson: any): ElementTypes {
         var diagramElementTypes: ElementTypes = new ElementTypes();
-        var elementsTypesMap: Map<NodeType> = this.parseElementsTypes(typesJson.elements);
-        var generalTypesMap: Map<NodeType> = this.parseGeneralTypes(typesJson.blocks.general);
-        diagramElementTypes.uncategorisedTypes = $.extend(elementsTypesMap, generalTypesMap);
-        diagramElementTypes.paletteTypes = this.parsePaletteTypes(typesJson.blocks.palette);
+        diagramElementTypes.uncategorisedTypes = this.parseGeneralTypes(typesJson.blocks.general);;
+        diagramElementTypes.blockTypes = this.parsePaletteTypes(typesJson.blocks.palette);
+        diagramElementTypes.flowTypes = this.parseElementsTypes(typesJson.elements);
         return diagramElementTypes;
     }
 
-    private parseElementsTypes(elementsTypes: any): Map<NodeType> {
-        var elementsTypesMap: Map<NodeType> = {};
+    private parseElementsTypes(elementsTypes: any): PaletteTree {
+        var elementsTree: PaletteTree = new PaletteTree();
+        var elements: PaletteTree = new PaletteTree();
+        elementsTree.categories["Elements"] = elements;
 
         for (var i in elementsTypes) {
             var typeObject = elementsTypes[i];
-            $.extend(elementsTypesMap, this.createNodeTypes(typeObject).convertToMap());
+            elements.nodes = elements.nodes.concat(this.createNodeTypes(typeObject).nodes);
         }
-        return elementsTypesMap;
+        return elementsTree;
     }
 
     private parseGeneralTypes(generalTypes: any): Map<NodeType> {
@@ -43,8 +47,11 @@ class TypesParser {
             var categoryTree: PaletteTree = new PaletteTree();
             for (var i in paletteTypes[category]) {
                 var typeObject = paletteTypes[category][i];
-                var subtypes: PaletteTree = this.createNodeTypes(typeObject);
-                categoryTree.categories[typeObject.type] = subtypes;
+                var typeTree: PaletteTree = this.createNodeTypes(typeObject);
+                if (!typeObject.subtypes)
+                    categoryTree.nodes = categoryTree.nodes.concat(typeTree.nodes);
+                else
+                    categoryTree.categories[typeObject.type] = typeTree;
             }
             paletteTypesObject.categories[category] = categoryTree;
         }
@@ -53,32 +60,44 @@ class TypesParser {
     }
 
     private createNodeTypes(typeObject: any): PaletteTree {
-        var nodesTree: PaletteTree = new PaletteTree();
+        var nodesTree: PaletteTree;
         var name: string = typeObject.name;
         var typeName: string = typeObject.type;
 
-        var elementTypeProperties: Map<Property> = this.parseTypeProperties(typeName, typeObject.properties);
+        this.currentProperties = this.parseTypeProperties(typeName, typeObject.properties);
 
-        var image: string = "";
+        this.currentImage = "";
         if (typeObject.image)
-            image = GeneralConstants.APP_ROOT_PATH + typeObject.image.src;
+            this.currentImage = GeneralConstants.APP_ROOT_PATH + typeObject.image.src;
 
         var categories: any = typeObject.subtypes;
         if (!categories) {
-            var node: NodeType = new NodeType(typeName, elementTypeProperties, image);
-            nodesTree.nodes[node.getName()] = node;
-        }
-        for (var category in categories) {
-            var categoryTree: PaletteTree = new PaletteTree();
-            for (var i in categories[category]) {
-                var subtype: string = categories[category][i];
-                var node: NodeType = null;
-                node = new NodeType(category.toLowerCase() + '-' + subtype.toLowerCase() + '-' +
-                    name.toLowerCase(), elementTypeProperties, image, subtype);
-                categoryTree.nodes[i] = node;
+            var node: NodeType = new NodeType(typeName, this.currentProperties, this.currentImage);
+            nodesTree = new PaletteTree();
+            nodesTree.nodes.push(node);
+        } else
+            nodesTree = this.parseSubtypes(categories, [name.toLowerCase()]);
+
+        return nodesTree;
+    }
+
+    private parseSubtypes(categories: any, path: string[]): PaletteTree {
+        var nodesTree: PaletteTree = new PaletteTree();
+        if (categories instanceof Array) {
+            for (var i in categories) {
+                var subtype: string = categories[i];
+                path.push(subtype.toLowerCase());
+                nodesTree.nodes.push(new NodeType(subtype, this.currentProperties, this.currentImage, path));
+                path.pop();
             }
-            nodesTree.categories[category] = categoryTree;
+        } else {
+            for (var category in categories) {
+                path.push(category.toLowerCase());
+                nodesTree.categories[category] = this.parseSubtypes(categories[category], path);
+                path.pop();
+            }
         }
+
         return nodesTree;
     }
 

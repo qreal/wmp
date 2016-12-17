@@ -161,10 +161,12 @@ declare class PaletteTree {
 }
 
 declare class ElementTypes {
-    uncategorisedTypes: Map<NodeType>;
-    paletteTypes: PaletteTree;
-}
 
+    uncategorisedTypes: Map<NodeType>;
+    blockTypes: PaletteTree;
+    flowTypes: PaletteTree;
+
+}
 declare class DiagramParts {
 
     nodesMap: Map<DiagramNode>;
@@ -321,9 +323,11 @@ declare class ElementsTypeLoader {
 declare class PaletteController {
 
     public initDraggable(): void;
+    public initClick(paper: DiagramScene): void;
     public appendSubprogramsPalette(subprogramDiagramNodes: SubprogramDiagramNode[],
                                     nodeTypesMap: Map<NodeType>): void;
     public appendBlocksPalette(paletteTypes: PaletteTree): void;
+    public appendFlowsPalette(paletteTypes: PaletteTree): void;
 
 }
 

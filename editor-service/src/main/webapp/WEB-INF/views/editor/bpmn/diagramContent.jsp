@@ -111,6 +111,11 @@
                             </a>
                         </li>
                         <li role="presentation">
+                            <a href="#flows" aria-controls="flows" role="tab" data-toggle="tab">
+                                Flows
+                            </a>
+                        </li>
+                        <li role="presentation">
                             <a href="#subprograms" aria-controls="subprograms" role="tab" data-toggle="tab">
                                 Subprograms
                             </a>
@@ -119,6 +124,9 @@
                     <div id="palette-tab-content" class="tab-content">
                         <div role="tabpanel" class="tab-pane active" id="blocks">
                             <ul id="blocks-navigation"></ul>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="flows">
+                            <ul id="flows-navigation"></ul>
                         </div>
                         <div role="tabpanel" class="tab-pane" id="subprograms">
                             <ul id="subprograms-navigation"></ul>

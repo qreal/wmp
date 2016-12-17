@@ -23,6 +23,12 @@ class PaletteController {
         });
     }
 
+    public initClick(paper: DiagramScene): void {
+        $(".flow-element").click(function () {
+            paper.setCurrentLinkType($(this).attr("data-type"));
+        });
+    }
+
     public appendSubprogramsPalette(subprogramDiagramNodes: SubprogramDiagramNode[],
                                     nodeTypesMap: Map<NodeType>): void {
         var typeName: string = "Subprogram";
@@ -32,8 +38,13 @@ class PaletteController {
     }
 
     public appendBlocksPalette(paletteTypes: PaletteTree): void {
-        var paletteView: BlocksPaletteView = new BlocksPaletteView(paletteTypes);
+        var paletteView: BlocksPaletteView = new BlocksPaletteView(paletteTypes, "tree-element");
         this.appendPaletteContent("#blocks-navigation", paletteView.getContent());
+    }
+
+    public appendFlowsPalette(paletteTypes: PaletteTree): void {
+        var paletteView: BlocksPaletteView = new BlocksPaletteView(paletteTypes, "flow-element");
+        this.appendPaletteContent("#flows-navigation", paletteView.getContent());
     }
 
     private appendPaletteContent(selector: string, content: string): void {

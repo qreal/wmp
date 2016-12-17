@@ -1,6 +1,7 @@
 {
     "elements": [
-        "ControlFlow"
+        "ControlFlow",
+        "ConditionalFlow"
     ],
 
     "blocks": {

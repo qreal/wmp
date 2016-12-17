@@ -12,7 +12,7 @@ class DiagramElementListener {
         ) {
             this.model.trigger('batch:start');
 
-            var link = this.paper.getDefaultLink(this, evt.target);
+            var link = this.paper.getCurrentLinkType();
             if (evt.target.tagName === "circle") {
                 link.set({
                     source: {

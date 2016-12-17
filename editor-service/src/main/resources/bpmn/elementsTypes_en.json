@@ -4,6 +4,38 @@
 
         "ControlFlow": {
             "name": "Link",
+            "image": {
+                "src": "images/bpmn/regular-sequence-flow.svg"
+            },
+            "properties": [
+                {
+                    "key": "Guard",
+                    "name": "Guard",
+                    "type": "combobox",
+                    "value": "",
+                    "variants": [
+                        {
+                            "key": "false",
+                            "value": "false"
+                        },
+                        {
+                            "key": "iteration",
+                            "value": "iteration"
+                        },
+                        {
+                            "key": "true",
+                            "value": "true"
+                        }
+                    ]
+                }
+            ]
+        },
+
+        "ConditionalFlow": {
+            "name": "Conditional Flow",
+            "image": {
+                "src": "images/bpmn/conditional-sequence-flow.svg"
+            },
             "properties": [
                 {
                     "key": "Guard",

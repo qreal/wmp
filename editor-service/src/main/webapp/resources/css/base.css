@@ -117,7 +117,12 @@ body{
 }
 
 .tree-element {
-    cursor:pointer;
+    cursor: pointer;
+    display: inline-block
+}
+
+.flow-element {
+    cursor: pointer;
     display: inline-block
 }
 

@@ -9,12 +9,13 @@ class NodeType {
     private propertiesMap: Map<Property>;
     private image: string;
 
-    constructor(name: string, propertiesMap: Map<Property>, image: string, shownName?: string) {
-        this.name = name;
-        if (shownName)
-            this.shownName = shownName;
-        else
-            this.shownName = name;
+    constructor(name: string, propertiesMap: Map<Property>, image: string, path?: string[]) {
+        if (path) {
+            this.name = path.reverse().join('-');
+            path.reverse();
+        } else
+            this.name = name;
+        this.shownName = name;
         this.propertiesMap = propertiesMap;
         this.image = (image) ? StringUtils.format(image, this.name) : null;
     }

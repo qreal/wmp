@@ -33,10 +33,12 @@ class BPMNDiagramEditorController extends DiagramEditorController {
             this.nodeTypesMap[typeName] = elementTypes.uncategorisedTypes[typeName];
         }
 
-        $.extend(this.nodeTypesMap, elementTypes.paletteTypes.convertToMap());
+        $.extend(this.nodeTypesMap, elementTypes.blockTypes.convertToMap(), elementTypes.flowTypes.convertToMap());
 
-        this.paletteController.appendBlocksPalette(elementTypes.paletteTypes);
+        this.paletteController.appendBlocksPalette(elementTypes.blockTypes);
+        this.paletteController.appendFlowsPalette(elementTypes.flowTypes);
         this.paletteController.initDraggable();
+        this.paletteController.initClick(this.diagramEditor.getScene());
     }
 
     public clearAll(): void {
