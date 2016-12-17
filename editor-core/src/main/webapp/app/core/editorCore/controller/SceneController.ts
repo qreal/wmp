@@ -73,7 +73,13 @@ class SceneController {
     }
 
     public createLink(sourceId: string, targetId: string): void {
+
+
         var link: joint.dia.Link = this.scene.getCurrentLinkType();
+        link.set({
+            source: { id: sourceId },
+            target: { id: targetId }
+        });
 
         var typeProperties = this.diagramEditorController.getNodeProperties("ControlFlow");
 

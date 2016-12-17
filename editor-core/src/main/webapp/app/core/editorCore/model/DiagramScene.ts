@@ -8,10 +8,10 @@ class DiagramScene extends joint.dia.Paper {
 
     private htmlId: string;
     private graph: joint.dia.Graph;
-    private currentLinkAtts: any;
+    private currentLinkType: joint.dia.Link;
     private nodesMap: Map<DiagramNode>;
     private linksMap: Map<Link>;
-    private linksAttsMap: Map<any>;
+    private linksTypesMap: Map<joint.dia.Link>;
     private gridSize: number;
     private zoom: number;
 
@@ -45,21 +45,21 @@ class DiagramScene extends joint.dia.Paper {
                 }))
         });
 
-        this.linksAttsMap = {};
-        this.linksAttsMap["ControlFlow"] = {
+        this.linksTypesMap = {};
+        this.linksTypesMap["ControlFlow"] = new joint.dia.Link({
             attrs: {
                 '.connection': { stroke: 'black' },
                 '.marker-target': { fill: 'black', d: 'M 10 0 L 0 5 L 10 10 z' }
             }
-        }
-        this.linksAttsMap["ConditionalFlow"] = {
+        });
+        this.linksTypesMap["ConditionalFlow"] = new joint.dia.Link({
             attrs: {
                 '.connection': { stroke: 'black' },
                 '.marker-source': { fill: 'white', d: 'M 10 0 L 0 5 L 10 10 L 20 5 z' },
                 '.marker-target': { fill: 'black', d: 'M 10 0 L 0 5 L 10 10 z' }
             }
-        }
-        this.currentLinkAtts = this.linksAttsMap["ControlFlow"];
+        });
+        this.currentLinkType = this.linksTypesMap["ControlFlow"];
 
         this.htmlId = htmlId;
         this.gridSize = gridSize;
@@ -181,11 +181,11 @@ class DiagramScene extends joint.dia.Paper {
     }
 
     public setCurrentLinkType(linkType: string): void {
-        this.currentLinkAtts = this.linksAttsMap[linkType];
+        this.currentLinkType = this.linksTypesMap[linkType];
     }
 
     public getCurrentLinkType(): joint.dia.Link {
-        return new joint.dia.Link(this.currentLinkAtts);
+        return <joint.dia.Link> this.currentLinkType.clone();
     }
 
     private addLink(link: Link): void {
