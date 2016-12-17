@@ -2,18 +2,32 @@
 /// <reference path="../../../robots/interpreter/Interpreter.ts" />
 /// <reference path="../../../common/interfaces/editorCore.d.ts" />
 /// <reference path="../../../common/interfaces/vendor.d.ts" />
-/// <reference path="BPMNSceneController.ts" />
+/// <reference path="../../../common/gestures/GesturesController.ts" />
 
 class BPMNDiagramEditorController extends DiagramEditorController {
 
     private menuController: DiagramMenuController;
+    private gesturesController: GesturesController;
     private diagramInterpreter: Interpreter;
 
     constructor($scope, $attrs) {
         super($scope, $attrs);
-        this.sceneController = new BPMNSceneController(this, this.diagramEditor.getScene());
+
+        var scene: DiagramScene = this.diagramEditor.getScene();
         this.menuController = new DiagramMenuController(this);
+        this.gesturesController = new GesturesController(this.sceneController, this.diagramEditor.getScene());
         this.diagramInterpreter = new Interpreter();
+
+        document.addEventListener('mousedown', (event) => { this.gesturesController.onMouseDown(event) } );
+        document.addEventListener('mouseup', (event) => { this.gesturesController.onMouseUp(event) } );
+        $("#" + scene.getId()).mousemove((event) => { this.gesturesController.onMouseMove(event) } );
+
+        (scene as any).on('cell:pointerdown', (cellView, event, x, y): void => {
+            this.cellPointerdownListener(cellView, event, x, y);
+        });
+        (scene as any).on('blank:pointerdown', (event, x, y): void => {
+            this.blankPoinerdownListener(event, x, y);
+        });
 
         $scope.createNewDiagram = () => { this.menuController.createNewDiagram(); };
         $scope.openFolderWindow = () => { this.menuController.openFolderWindow(); };
@@ -46,4 +60,15 @@ class BPMNDiagramEditorController extends DiagramEditorController {
         this.menuController.clearState();
     }
 
+    private blankPoinerdownListener(event, x, y): void {
+        if (event.button == MouseButton.right) {
+            this.gesturesController.startDrawing();
+        }
+    }
+
+    private cellPointerdownListener(cellView, event, x, y): void {
+        if (event.button == MouseButton.right) {
+            this.gesturesController.startDrawing();
+        }
+    }
 }
