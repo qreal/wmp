@@ -113,7 +113,8 @@ class DiagramThriftParser extends DiagramJsonParser {
             vertices: vertices
         });
 
-        return new Link(jointObject, nodeTypesMap[linkObject.type]);
+        var nodeType: NodeType = nodeTypesMap[linkObject.type];
+        return new Link(jointObject, nodeType.getShownName(), nodeType.getName(), properties);
     }
 
 }

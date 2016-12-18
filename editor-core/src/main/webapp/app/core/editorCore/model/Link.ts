@@ -13,14 +13,14 @@ class Link implements DiagramElement {
     private name: string;
     private type: string;
 
-    constructor(jointObject: joint.dia.Link, nodeType: NodeType) {
+    constructor(jointObject: joint.dia.Link, name: string, type: string, properties: Map<Property>) {
         this.logicalId = UIDGenerator.generate();
         this.constPropertiesPack = this.getDefaultConstPropertiesPack();
-        this.name = nodeType.getShownName();
-        this.type = nodeType.getName();
+        this.name = name;
+        this.type = type;
 
         this.jointObject = jointObject;
-        var properties: Map<Property> = nodeType.getPropertiesMap();
+        var properties: Map<Property> = properties;
         this.changeableProperties = properties;
         this.changeLabel(properties["Guard"].value);
         this.updateHighlight();

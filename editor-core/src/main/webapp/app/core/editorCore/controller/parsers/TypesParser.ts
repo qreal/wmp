@@ -75,7 +75,7 @@ class TypesParser {
     private createNodeTypes(typeObject: any): PaletteTree {
         var nodesTree: PaletteTree;
         var name: string = typeObject.name;
-        var typeName: string = typeObject.type;
+        var typeName: string = typeObject.type.toLowerCase();
 
         this.currentProperties = this.parseTypeProperties(typeName, typeObject.properties);
 
@@ -88,11 +88,11 @@ class TypesParser {
 
         var categories: any = typeObject.subtypes;
         if (!categories) {
-            var node: NodeType = new NodeType(name, this.currentProperties, this.currentImage, [typeName.toLowerCase()]);
+            var node: NodeType = new NodeType(name, this.currentProperties, this.currentImage, [typeName]);
             nodesTree = new PaletteTree();
             nodesTree.nodes.push(node);
         } else
-            nodesTree = this.parseSubtypes(categories, [typeName.toLowerCase()]);
+            nodesTree = this.parseSubtypes(categories, [typeName]);
 
         return nodesTree;
     }

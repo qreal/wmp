@@ -31,8 +31,8 @@ class DiagramElementListener {
                 });
             }
 
-            var nodeType = DiagramElementListener.getNodeType(this.paper.getCurrentLinkTypeName());
-            var typeProperties = nodeType.getPropertiesMap;
+            var nodeType: NodeType = DiagramElementListener.getNodeType(this.paper.getCurrentLinkTypeName());
+            var typeProperties: Map<Property> = nodeType.getPropertiesMap();
 
             var nodeProperties: Map<Property> = {};
             for (var property in typeProperties) {
@@ -40,7 +40,7 @@ class DiagramElementListener {
                     typeProperties[property].type, typeProperties[property].value);
             }
 
-            var linkObject: Link = new Link(link, nodeType);
+            var linkObject: Link = new Link(link, nodeType.getShownName(), nodeType.getName(), nodeProperties);
             DiagramElementListener.makeAndExecuteCreateLinkCommand(linkObject);
 
             this.paper.model.addCell(link);

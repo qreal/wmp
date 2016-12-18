@@ -89,7 +89,7 @@ class SceneController {
                 typeProperties[property].type, typeProperties[property].value);
         }
 
-        var linkObject: Link = new Link(link, nodeType);
+        var linkObject: Link = new Link(link, nodeType.getShownName(), nodeType.getName(), linkProperties);
 
         this.makeAndExecuteCreateLinkCommand(linkObject);
     }

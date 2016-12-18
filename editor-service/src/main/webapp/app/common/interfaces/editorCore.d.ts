@@ -14,7 +14,7 @@ declare class PropertiesPack {
 
 declare class Link implements DiagramElement {
 
-    constructor(jointObject: joint.dia.Link, nodeType: NodeType);
+    constructor(jointObject: joint.dia.Link, name: string, type: string, properties: Map<Property>);
     getLogicalId(): string;
     getJointObject(): any;
     getName(): string;
@@ -107,6 +107,7 @@ declare class NodeType {
     getName(): string;
     getPropertiesMap(): Map<Property>;
     getImage(): string;
+    public getShownName(): string;
 
 }
 
