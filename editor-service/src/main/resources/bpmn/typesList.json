@@ -1,7 +1,11 @@
 {
     "elements": [
         "ControlFlow",
-        "ConditionalFlow"
+        "ConditionalFlow",
+        "DefaultFlow",
+        "MessageFlow",
+        "AssociationFlow",
+        "DataAssociationFlow"
     ],
 
     "blocks": {

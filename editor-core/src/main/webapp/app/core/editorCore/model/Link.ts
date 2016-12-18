@@ -114,13 +114,15 @@ class Link implements DiagramElement {
         if (!this.jointObject.get('target').id || !this.jointObject.get('source').id) {
             this.jointObject.attr({
                     '.connection': {stroke: 'red'},
-                    '.marker-target': {fill: 'red', d: 'M 10 0 L 0 5 L 10 10 z'}
+                    '.marker-source': {stroke: 'red'},
+                    '.marker-target': {stroke: 'red'}
                 }
             );
         } else {
             this.jointObject.attr({
                     '.connection': {stroke: 'black'},
-                    '.marker-target': {fill: 'black', d: 'M 10 0 L 0 5 L 10 10 z'}
+                    '.marker-source': {stroke: 'black'},
+                    '.marker-target': {stroke: 'black'}
                 }
             );
         }
