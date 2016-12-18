@@ -11,12 +11,20 @@ public class FileItem {
 
     private SaveDiagramConfirm saveDiagramConfirm;
 
+    private SaveItem saveItem;
+
     public FileItem() {
         saveDiagramConfirm = new SaveDiagramConfirm();
+        saveItem = new SaveItem();
     }
 
     public void newDiagram() {
         $(selector).find(withText("New")).click();
         saveDiagramConfirm.notSave();
+    }
+
+    public SaveItem getSaveItem() {
+        $(selector).find(withText("Save")).click();
+        return saveItem;
     }
 }

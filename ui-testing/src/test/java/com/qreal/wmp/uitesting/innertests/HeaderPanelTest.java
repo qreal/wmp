@@ -71,13 +71,18 @@ public class HeaderPanelTest {
         elements.add(scene.dragAndDrop(pallete.getElement("Painter Color"), 16, 4));
         links.add(scene.addLink(elements.get(1), elements.get(2)));
 
-        headerPanel.fileItem().newDiagram();
+        headerPanel.getFileItem().newDiagram();
     }
 
     @Test
     public void clickDashboardTest() {
         headerPanel.clickDashboard();
         $(byText("Dashboard")).waitUntil(appear, 5000);
+    }
+
+    @Test
+    public void createFolderTest() {
+        headerPanel.getFileItem().getSaveItem().createFolder("myFolder");
     }
 
     /** Close the browser. */

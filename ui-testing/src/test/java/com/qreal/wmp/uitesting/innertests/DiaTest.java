@@ -13,6 +13,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -102,6 +103,21 @@ public class DiaTest {
         assert scene.getCell(motor).getWidth() == 0 && scene.getCell(motor).getHeight() == 0;
     }
 
+    /*
+    @Test
+    public void test() {
+        final SelenideElement motor = scene.dragAndDrop(pallete.getElement("Motors Forward"));
+        scene.moveToCell(motor, 30, 40);
+
+        if (driver instanceof JavascriptExecutor) {
+            ((JavascriptExecutor) driver)
+                    .executeScript("var canvas = document.getElementsByClassName(\"scene-wrapper\")[0]; " +
+                            "var BB=canvas.getBoundingClientRect();" +
+                            "alert(canvas.scrollLeft)");
+            // driver.switchTo().alert().accept();
+        }
+    }
+*/
     /** Close the browser. */
     @After
     public void stopDriver() {

@@ -21,7 +21,7 @@ public class HeaderPanel {
         $(selector).find(withText("Dashboard")).click();
     }
 
-    public FileItem fileItem() {
+    public FileItem getFileItem() {
         $(FileItem.selector).click();
         return fileItem;
     }
