@@ -3,7 +3,7 @@
     "elements": {
 
         "ControlFlow": {
-            "name": "Link",
+            "name": "Control Flow",
             "image": {
                 "src": "images/bpmn/regular-sequence-flow.svg"
             },

@@ -332,7 +332,7 @@ declare class PaletteController {
                                     nodeTypesMap: Map<NodeType>): void;
     public appendBlocksPalette(paletteTypes: PaletteTree): void;
     public appendFlowsPalette(paletteTypes: PaletteTree): void;
-
+    public searchPaletteReload(event: Event, elementTypes: ElementTypes, nodesTypesMap: Map<NodeType>): void;
 }
 
 declare class DiagramJsonParser {

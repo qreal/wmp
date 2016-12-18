@@ -21,11 +21,14 @@ class CategoryView extends HtmlView {
         }
         for (var i in category.nodes) {
             var nodeType: NodeType = category.nodes[i];
+            if (!nodeType.getVisibility())
+                continue;
             var paletteElementView: PaletteElementView = new PaletteElementView(nodeType.getName(),
                 nodeType.getShownName(), nodeType.getImage(), elementClass);
             elementsContent += paletteElementView.getContent();
         }
-        this.content = StringUtils.format(this.template, categoryName, elementsContent);
+        if (elementsContent)
+            this.content = StringUtils.format(this.template, categoryName, elementsContent);
     }
 
 }

@@ -84,15 +84,15 @@ class TypesParser {
             this.currentImage = GeneralConstants.APP_ROOT_PATH + typeObject.image.src;
 
         if (typeObject.attrs)
-            this.linkPatterns[typeName] = new joint.dia.Link({attrs: typeObject.attrs});
+            this.linkPatterns[typeName.toLowerCase()] = new joint.dia.Link({attrs: typeObject.attrs});
 
         var categories: any = typeObject.subtypes;
         if (!categories) {
-            var node: NodeType = new NodeType(typeName, this.currentProperties, this.currentImage);
+            var node: NodeType = new NodeType(name, this.currentProperties, this.currentImage, [typeName.toLowerCase()]);
             nodesTree = new PaletteTree();
             nodesTree.nodes.push(node);
         } else
-            nodesTree = this.parseSubtypes(categories, [name.toLowerCase()]);
+            nodesTree = this.parseSubtypes(categories, [typeName.toLowerCase()]);
 
         return nodesTree;
     }

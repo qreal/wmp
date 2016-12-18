@@ -103,6 +103,9 @@
         <div id="palette-editor-area" class="col-md-2 content-col">
             <div id="editor-palette">
                 <legend style="height: 40px; padding: 10px">Palette</legend>
+                <div class = "search-input">
+                    <b>Search</b><input id="elements-search" type="text">
+                </div>
                 <div id="elements-tree">
                     <ul id="palette-tabs" class="nav nav-tabs">
                         <li role="presentation" class="active">

@@ -8,6 +8,7 @@ class NodeType {
     private shownName: string;
     private propertiesMap: Map<Property>;
     private image: string;
+    private isVisible: Boolean;
 
     constructor(name: string, propertiesMap: Map<Property>, image: string, path?: string[]) {
         if (path) {
@@ -18,6 +19,7 @@ class NodeType {
         this.shownName = name;
         this.propertiesMap = propertiesMap;
         this.image = (image) ? StringUtils.format(image, this.name) : null;
+        this.isVisible = true;
     }
 
     public getName(): string {
@@ -34,5 +36,13 @@ class NodeType {
 
     public getImage(): string {
         return this.image;
+    }
+
+    public getVisibility(): Boolean {
+        return this.isVisible;
+    }
+
+    public setVisibility(isVisible: Boolean) {
+        this.isVisible = isVisible;
     }
 }

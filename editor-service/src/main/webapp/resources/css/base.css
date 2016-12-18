@@ -280,3 +280,14 @@ body{
     width: 70%;
     margin-left: 10px;
 }
+
+.search-input {
+    height: 30px;
+    text-align: left;
+    margin-left: 10px;
+}
+
+.search-input > input {
+    width: 70%;
+    margin-left: 10px;
+}

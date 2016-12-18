@@ -9,6 +9,7 @@ class BPMNDiagramEditorController extends DiagramEditorController {
     private menuController: DiagramMenuController;
     private gesturesController: GesturesController;
     private diagramInterpreter: Interpreter;
+    private elementTypes: ElementTypes;
 
     constructor($scope, $attrs) {
         super($scope, $attrs);
@@ -21,6 +22,8 @@ class BPMNDiagramEditorController extends DiagramEditorController {
         document.addEventListener('mousedown', (event) => { this.gesturesController.onMouseDown(event) } );
         document.addEventListener('mouseup', (event) => { this.gesturesController.onMouseUp(event) } );
         $("#" + scene.getId()).mousemove((event) => { this.gesturesController.onMouseMove(event) } );
+        $("#elements-search").on('input', (event) => { this.paletteController.searchPaletteReload(event,
+            this.elementTypes, this.nodeTypesMap) } );
 
         (scene as any).on('cell:pointerdown', (cellView, event, x, y): void => {
             this.cellPointerdownListener(cellView, event, x, y);
@@ -42,6 +45,8 @@ class BPMNDiagramEditorController extends DiagramEditorController {
 
     public handleLoadedTypes(elementTypes: ElementTypes): void {
         this.propertyEditorController = new PropertyEditorController(this.sceneController, this.undoRedoController);
+
+        this.elementTypes = elementTypes;
 
         $.extend(this.linkPatternsMap, elementTypes.linkPatterns);
         $.extend(this.nodeTypesMap, elementTypes.blockTypes.convertToMap(), elementTypes.flowTypes.convertToMap(),

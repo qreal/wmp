@@ -47,12 +47,35 @@ class PaletteController {
         this.appendPaletteContent("#flows-navigation", paletteView.getContent());
     }
 
+    public searchPaletteReload(event: Event, elementTypes: ElementTypes, nodesTypesMap: Map<NodeType>) {
+        var searchPatterns: string[] = (<any> event.target).value.split(" ").map((str) => str.toLowerCase());
+
+        for (var name in nodesTypesMap) {
+            var notFound: Boolean = false;
+            for (var i in searchPatterns) {
+                notFound = name.indexOf(searchPatterns[i]) == -1;
+                if (notFound)
+                    break;
+            }
+            nodesTypesMap[name].setVisibility(!notFound);
+        }
+        this.clearPaletteContent("#blocks-navigation");
+        this.clearPaletteContent("#flows-navigation");
+
+        this.appendBlocksPalette(elementTypes.blockTypes);
+        this.appendFlowsPalette(elementTypes.flowTypes);
+    }
+
     private appendPaletteContent(selector: string, content: string): void {
         $(selector).append(content);
 
         $(selector).treeview({
             persist: "location"
         });
+    }
+
+    private clearPaletteContent(selector: string): void {
+        $(selector).empty();
     }
 
 }
