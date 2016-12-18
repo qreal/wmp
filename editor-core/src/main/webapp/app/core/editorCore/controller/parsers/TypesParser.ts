@@ -7,13 +7,26 @@
 class TypesParser {
 
     private currentProperties: Map<Property>;
+    private linkPatterns: Map<joint.dia.Link>;
     private currentImage: string;
 
     public parse(typesJson: any): ElementTypes {
         var diagramElementTypes: ElementTypes = new ElementTypes();
+        this.linkPatterns = {};
         diagramElementTypes.uncategorisedTypes = this.parseGeneralTypes(typesJson.blocks.general);;
         diagramElementTypes.blockTypes = this.parsePaletteTypes(typesJson.blocks.palette);
         diagramElementTypes.flowTypes = this.parseElementsTypes(typesJson.elements);
+        var flowsMap: Map<NodeType> = diagramElementTypes.flowTypes.convertToMap();
+        for (var flow in flowsMap) {
+            if (!this.linkPatterns[flow])
+                this.linkPatterns[flow] = new joint.dia.Link({
+                    attrs: {
+                        '.connection': { stroke: 'black' },
+                        '.marker-target': { fill: 'black', d: 'M 10 0 L 0 5 L 10 10 z' }
+                    }
+                });
+        }
+        diagramElementTypes.linkPatterns = this.linkPatterns;
         return diagramElementTypes;
     }
 
@@ -69,6 +82,9 @@ class TypesParser {
         this.currentImage = "";
         if (typeObject.image)
             this.currentImage = GeneralConstants.APP_ROOT_PATH + typeObject.image.src;
+
+        if (typeObject.attrs)
+            this.linkPatterns[typeName] = new joint.dia.Link({attrs: typeObject.attrs});
 
         var categories: any = typeObject.subtypes;
         if (!categories) {

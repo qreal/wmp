@@ -74,14 +74,14 @@ class SceneController {
 
     public createLink(sourceId: string, targetId: string): void {
 
-
         var link: joint.dia.Link = this.scene.getCurrentLinkType();
         link.set({
             source: { id: sourceId },
             target: { id: targetId }
         });
 
-        var typeProperties = this.diagramEditorController.getNodeProperties("ControlFlow");
+        var nodeType: NodeType = this.diagramEditorController.getNodeType(this.scene.getCurrentLinkTypeName());
+        var typeProperties: Map<Property> = nodeType.getPropertiesMap();
 
         var linkProperties: Map<Property> = {};
         for (var property in typeProperties) {
@@ -89,7 +89,7 @@ class SceneController {
                 typeProperties[property].type, typeProperties[property].value);
         }
 
-        var linkObject: Link = new Link(link, linkProperties);
+        var linkObject: Link = new Link(link, nodeType);
 
         this.makeAndExecuteCreateLinkCommand(linkObject);
     }

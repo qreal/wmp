@@ -8,10 +8,10 @@ class DiagramScene extends joint.dia.Paper {
 
     private htmlId: string;
     private graph: joint.dia.Graph;
-    private currentLinkType: joint.dia.Link;
+    private currentLinkType: string;
     private nodesMap: Map<DiagramNode>;
     private linksMap: Map<Link>;
-    private linksTypesMap: Map<joint.dia.Link>;
+    private linkPatternsMap: Map<joint.dia.Link>;
     private gridSize: number;
     private zoom: number;
 
@@ -45,21 +45,7 @@ class DiagramScene extends joint.dia.Paper {
                 }))
         });
 
-        this.linksTypesMap = {};
-        this.linksTypesMap["ControlFlow"] = new joint.dia.Link({
-            attrs: {
-                '.connection': { stroke: 'black' },
-                '.marker-target': { fill: 'black', d: 'M 10 0 L 0 5 L 10 10 z' }
-            }
-        });
-        this.linksTypesMap["ConditionalFlow"] = new joint.dia.Link({
-            attrs: {
-                '.connection': { stroke: 'black' },
-                '.marker-source': { fill: 'white', d: 'M 10 0 L 0 5 L 10 10 L 20 5 z' },
-                '.marker-target': { fill: 'black', d: 'M 10 0 L 0 5 L 10 10 z' }
-            }
-        });
-        this.currentLinkType = this.linksTypesMap["ControlFlow"];
+        this.linkPatternsMap = {};
 
         this.htmlId = htmlId;
         this.gridSize = gridSize;
@@ -181,11 +167,20 @@ class DiagramScene extends joint.dia.Paper {
     }
 
     public setCurrentLinkType(linkType: string): void {
-        this.currentLinkType = this.linksTypesMap[linkType];
+        this.currentLinkType = linkType;
     }
 
     public getCurrentLinkType(): joint.dia.Link {
-        return <joint.dia.Link> this.currentLinkType.clone();
+        return <joint.dia.Link> this.linkPatternsMap[this.currentLinkType].clone();
+    }
+
+    public getCurrentLinkTypeName(): string {
+        return this.currentLinkType;
+    }
+
+    public setLinkPatterns(linkPatterns: Map<joint.dia.Link>): void {
+        this.linkPatternsMap = linkPatterns;
+        this.currentLinkType = Object.keys(this.linkPatternsMap)[0];
     }
 
     private addLink(link: Link): void {

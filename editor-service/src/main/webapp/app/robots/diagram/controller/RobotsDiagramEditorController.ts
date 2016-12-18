@@ -53,15 +53,15 @@ class RobotsDiagramEditorController extends DiagramEditorController {
     public handleLoadedTypes(elementTypes: ElementTypes): void {
         this.propertyEditorController = new PropertyEditorController(this.sceneController, this.undoRedoController);
 
-        for (var typeName in elementTypes.uncategorisedTypes) {
-            this.nodeTypesMap[typeName] = elementTypes.uncategorisedTypes[typeName];
-        }
-
-        $.extend(this.nodeTypesMap, elementTypes.blockTypes.convertToMap(), elementTypes.flowTypes.convertToMap());
+        $.extend(this.linkPatternsMap, elementTypes.linkPatterns);
+        $.extend(this.nodeTypesMap, elementTypes.blockTypes.convertToMap(), elementTypes.flowTypes.convertToMap(),
+            elementTypes.uncategorisedTypes);
 
         this.paletteController.appendBlocksPalette(elementTypes.blockTypes);
         this.paletteController.appendFlowsPalette(elementTypes.flowTypes);
         this.paletteController.initDraggable();
+        this.paletteController.initClick(this.diagramEditor.getScene());
+        this.diagramEditor.getScene().setLinkPatterns(this.linkPatternsMap);
     }
 
     public openTwoDModel(): void {

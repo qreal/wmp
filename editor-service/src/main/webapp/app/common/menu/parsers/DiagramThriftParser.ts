@@ -4,9 +4,9 @@
 
 class DiagramThriftParser extends DiagramJsonParser {
 
-    public parse(diagram: TDiagram, nodeTypesMap: Map<NodeType>): DiagramParts {
+    public parse(diagram: TDiagram, nodeTypesMap: Map<NodeType>, linkPatterns: Map<joint.dia.Link>): DiagramParts {
         var diagramParts: DiagramParts = this.parseNodes(diagram, nodeTypesMap, 0, 0);
-        diagramParts.linksMap = this.parseLinks(diagram, 0, 0);
+        diagramParts.linksMap = this.parseLinks(diagram, nodeTypesMap, linkPatterns, 0, 0);
         return diagramParts;
     }
 
@@ -55,7 +55,8 @@ class DiagramThriftParser extends DiagramJsonParser {
     }
 
 
-    protected parseLinkObject(linkObject: TLink, offsetX: number, offsetY: number): Link {
+    protected parseLinkObject(linkObject: TLink, nodeTypesMap: Map<NodeType>, linkPatterns: Map<joint.dia.Link>,
+                              offsetX: number, offsetY: number): Link {
         var sourceId: string = "";
         var targetId: string = "";
 
@@ -104,18 +105,15 @@ class DiagramThriftParser extends DiagramJsonParser {
             targetObject = this.getTargetPosition(configuration);;
         }
 
-        var jointObject: joint.dia.Link = new joint.dia.Link({
+        var jointObject: joint.dia.Link = <joint.dia.Link> linkPatterns[linkObject.type].clone();
+        jointObject.set({
             id: jointObjectId,
-            attrs: {
-                '.connection': { stroke: 'black' },
-                '.marker-target': { fill: 'black', d: 'M 10 0 L 0 5 L 10 10 z' }
-            },
             source: sourceObject,
             target: targetObject,
             vertices: vertices
         });
 
-        return new Link(jointObject, properties);
+        return new Link(jointObject, nodeTypesMap[linkObject.type]);
     }
 
 }

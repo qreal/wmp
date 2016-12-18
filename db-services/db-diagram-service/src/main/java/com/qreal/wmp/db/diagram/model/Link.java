@@ -27,6 +27,9 @@ public class Link implements Serializable {
     @Column(name = "graphical_id")
     private String graphicalId;
 
+    @Column(name = "type")
+    private String type;
+
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinColumn(name = "link_id", referencedColumnName = "id")
     private Set<Property> properties = new HashSet<>();
@@ -49,6 +52,10 @@ public class Link implements Serializable {
             logicalId = tLink.getLogicalId();
         }
 
+        if (tLink.isSetType()) {
+            type = tLink.getType();
+        }
+
         if (tLink.isSetProperties()) {
             properties = tLink.getProperties().stream().map(Property::new).collect(Collectors.toSet());
         }
@@ -68,6 +75,10 @@ public class Link implements Serializable {
 
         if (graphicalId != null) {
             tLink.setGraphicalId(graphicalId);
+        }
+
+        if (type != null) {
+            tLink.setType(type);
         }
 
         if (properties != null && !properties.isEmpty()) {

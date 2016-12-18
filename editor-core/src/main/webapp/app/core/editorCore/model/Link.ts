@@ -10,14 +10,17 @@ class Link implements DiagramElement {
     private jointObject: joint.dia.Link;
     private constPropertiesPack: PropertiesPack;
     private changeableProperties: Map<Property> = {};
-    private name = "Link";
-    private type = "ControlFlow";
+    private name: string;
+    private type: string;
 
-    constructor(jointObject: joint.dia.Link, properties: Map<Property>) {
+    constructor(jointObject: joint.dia.Link, nodeType: NodeType) {
         this.logicalId = UIDGenerator.generate();
         this.constPropertiesPack = this.getDefaultConstPropertiesPack();
+        this.name = nodeType.getShownName();
+        this.type = nodeType.getName();
 
         this.jointObject = jointObject;
+        var properties: Map<Property> = nodeType.getPropertiesMap();
         this.changeableProperties = properties;
         this.changeLabel(properties["Guard"].value);
         this.updateHighlight();

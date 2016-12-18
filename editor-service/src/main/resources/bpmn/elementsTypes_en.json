@@ -36,6 +36,11 @@
             "image": {
                 "src": "images/bpmn/conditional-sequence-flow.svg"
             },
+            "attrs": {
+                ".connection": { "stroke": "black" },
+                ".marker-source": { "fill": "white", "d": "M 10 0 L 0 5 L 10 10 L 20 5 z" },
+                ".marker-target": { "fill": "black", "d": "M 10 0 L 0 5 L 10 10 z" }
+            },
             "properties": [
                 {
                     "key": "Guard",

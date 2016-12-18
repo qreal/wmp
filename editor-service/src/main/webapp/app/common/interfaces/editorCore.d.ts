@@ -14,7 +14,7 @@ declare class PropertiesPack {
 
 declare class Link implements DiagramElement {
 
-    constructor(jointObject: joint.dia.Link, properties: Map<Property>);
+    constructor(jointObject: joint.dia.Link, nodeType: NodeType);
     getLogicalId(): string;
     getJointObject(): any;
     getName(): string;
@@ -149,6 +149,7 @@ declare class DiagramScene {
                              imagePath: string, id?: string): DiagramNode;
     public createSubprogramNode(name: string, type: string, x: number, y: number, properties: Map<Property>,
                                 imagePath: string, subprogramDiagramId: string, id?: string): SubprogramNode;
+    public setLinkPatterns(linkPatterns: Map<joint.dia.Link>): void;
 
 }
 
@@ -165,6 +166,7 @@ declare class ElementTypes {
     uncategorisedTypes: Map<NodeType>;
     blockTypes: PaletteTree;
     flowTypes: PaletteTree;
+    linkPatterns: Map<joint.dia.Link>;
 
 }
 declare class DiagramParts {
@@ -260,6 +262,7 @@ declare abstract class DiagramEditorController {
     protected elementsTypeLoader: ElementsTypeLoader;
     protected paletteController: PaletteController;
     protected nodeTypesMap: Map<NodeType>;
+    protected linkPatternsMap: Map<joint.dia.Link>;
     protected undoRedoController: UndoRedoController;
 
     constructor($scope, $attrs);
@@ -274,6 +277,7 @@ declare abstract class DiagramEditorController {
     public clearState(): void;
     public getDiagramParts(): DiagramParts;
     public getNodeTypes(): Map<NodeType>;
+    public getLinkPatterns(): Map<joint.dia.Link>;
     public addFromMap(diagramParts: DiagramParts): void;
 
 }
@@ -333,15 +337,16 @@ declare class PaletteController {
 
 declare class DiagramJsonParser {
 
-    public parse(diagramJson: any, nodeTypesMap: Map<NodeType>): DiagramParts;
+    public parse(diagramJson: any, nodeTypesMap: Map<NodeType>, linkPatterns: Map<joint.dia.Link>): DiagramParts;
     protected findMinPosition(diagramJson: any, nodeTypesMap: Map<NodeType>): {x: number; y: number};
     protected parseNodes(diagramJson: any, nodeTypesMap: Map<NodeType>, offsetX: number, offsetY: number): DiagramParts;
     protected parseRobotsDiagramNode(nodeObject: any): RobotsDiagramNode;
     protected parseSubprogramDiagram(nodeObject: any): SubprogramDiagramNode;
-    protected parseDiagramNodeObject(nodeObject: any, nodeTypesMap: Map<NodeType>,
-                                     offsetX: number, offsetY: number): DiagramNode;
-    protected parseLinks(diagramJson: any, offsetX: number, offsetY: number): Map<Link>;
-    protected parseLinkObject(linkObject: any, offsetX: number, offsetY: number): Link;
+    protected parseDiagramNodeObject(nodeObject: any, nodeTypesMap: Map<NodeType>, offsetX: number, offsetY: number): DiagramNode;
+    protected parseLinks(diagramJson: any, nodeTypesMap: Map<NodeType>, linkPatterns: Map<joint.dia.Link>,
+                         offsetX: number, offsetY: number): Map<Link>;
+    protected parseLinkObject(linkObject: any, nodeTypesMap: Map<NodeType>, linkPatterns: Map<joint.dia.Link>,
+                              offsetX: number, offsetY: number): Link;
     protected parseVertices(configuration: string);
     protected getSourcePosition(configuration: string);
     protected getTargetPosition(configuration: string);

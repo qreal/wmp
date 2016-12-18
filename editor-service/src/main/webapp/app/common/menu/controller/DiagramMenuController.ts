@@ -212,7 +212,8 @@ class DiagramMenuController {
         try {
             var diagram = menuManager.getClient().openDiagram(menuManager.currentDiagramFolder.getDiagramIdByName(diagramName));
             menuManager.diagramEditorController.clearState();
-            var diagramParts: DiagramParts = this.diagramThriftParser.parse(diagram, menuManager.diagramEditorController.getNodeTypes());
+            var diagramParts: DiagramParts = this.diagramThriftParser.parse(diagram, menuManager.diagramEditorController.getNodeTypes(),
+                menuManager.diagramEditorController.getLinkPatterns());
             menuManager.diagramEditorController.addFromMap(diagramParts);
         }
         catch (ouch) {

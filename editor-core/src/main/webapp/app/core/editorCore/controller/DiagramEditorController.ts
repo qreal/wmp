@@ -2,7 +2,6 @@
 /// <reference path="PropertyEditorController.ts" />
 /// <reference path="loaders/ElementsTypeLoader.ts" />
 /// <reference path="PaletteController.ts" />
-/// <reference path="parsers/DiagramJsonParser.ts" />
 /// <reference path="exporters/DiagramExporter.ts" />
 /// <reference path="../model/DiagramEditor.ts" />
 /// <reference path="../model/Map.ts"/>
@@ -16,14 +15,16 @@ class DiagramEditorController {
     protected elementsTypeLoader: ElementsTypeLoader;
     protected paletteController: PaletteController;
     protected nodeTypesMap: Map<NodeType>;
+    protected linkPatternsMap: Map<joint.dia.Link>;
     protected undoRedoController: UndoRedoController;
 
     constructor($scope, $attrs) {
         this.undoRedoController = new UndoRedoController();
         this.nodeTypesMap = {};
+        this.linkPatternsMap = {};
         this.paletteController = new PaletteController();
-        DiagramElementListener.getNodeProperties = (type: string): Map<Property> => {
-            return this.getNodeProperties(type);
+        DiagramElementListener.getNodeType = (type: string): NodeType => {
+            return this.getNodeType(type);
         };
         this.diagramEditor = new DiagramEditor();
         this.sceneController = new SceneController(this, this.diagramEditor.getScene());
@@ -91,6 +92,10 @@ class DiagramEditorController {
 
     public getNodeTypes(): Map<NodeType> {
         return this.nodeTypesMap;
+    }
+
+    public getLinkPatterns(): Map<joint.dia.Link> {
+        return this.linkPatternsMap;
     }
 
     public addFromMap(diagramParts: DiagramParts): void {
