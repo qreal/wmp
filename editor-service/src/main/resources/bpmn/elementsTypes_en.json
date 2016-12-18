@@ -231,6 +231,23 @@
             }
         },
 
+        "Timer": {
+            "name": "Timer",
+            "image": {
+                "src": "images/bpmn/{0}.svg"
+            },
+            "subtypes": {
+                "Start" : [
+                    "Regular",
+                    "Non-interrupting"
+                ],
+                "Intermediate": [
+                    "Catch",
+                    "Catch-non-interrupting"
+                ]
+            }
+        },
+
         "Subprogram": {
             "name": "Subprogram",
             "image": {

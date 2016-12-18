@@ -17,7 +17,8 @@
         "palette": {
 
             "Events": [
-                "Message"
+                "Message",
+                "Timer"
             ]
         }
         
