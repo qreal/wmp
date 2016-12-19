@@ -19704,7 +19704,7 @@ joint.dia.Element = joint.dia.Cell.extend({
         var size = this.get('size');
 
         return g.rect(position.x, position.y, size.width, size.height);
-    }
+    },
 });
 
 // joint.dia.Element base view and controller.
