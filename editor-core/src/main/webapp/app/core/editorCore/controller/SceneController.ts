@@ -258,7 +258,6 @@ class SceneController {
             this.lastCellMouseDownPosition.x = node.getX();
             this.lastCellMouseDownPosition.y = node.getY();
             cellView.highlight(cellView.model.id);
-            console.log("SC: pointer down");
             node.setResizingFields(cellView.getBBox(), x, y, 20);
         }
         if (event.button == MouseButton.right) {
@@ -278,7 +277,6 @@ class SceneController {
             var node: DiagramNode = this.scene.getNodeById(cellView.model.id);
             if (node) {
 
-                console.log("SC: pointer up");
                 node.clearResizingFlags();
                 cellView.unhighlight(cellView.model.id);
             }

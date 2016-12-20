@@ -70,7 +70,6 @@ class DefaultDiagramNode implements DiagramNode {
         var bbox = cellView.getBBox();
         var new_x = bbox.x + (<number> (bbox.width - 50)/2);
         var new_y = bbox.y + bbox.height - 50;
-        console.log("initPropertyEditElements resize: x = ", new_x, ", y = ", new_y);
         this.propertyEditElement.setPosition(new_x, new_y);
 
         if (this.isBottomResizing || this.isRightResizing)
@@ -212,14 +211,12 @@ class DefaultDiagramNode implements DiagramNode {
         this.isLeftResizing = isLeftBorderClicked(bbox, x, y, paddingPercent);
         this.lastMousePositionX = x;
         this.lastMousePositionY = y;
-        console.log("DDN: ",  this.isTopResizing, this.isBottomResizing, this.isRightResizing, this.isLeftResizing);
     }
     clearResizingFlags() : void {
         this.isTopResizing = false;
         this.isBottomResizing = false;
         this.isRightResizing = false;
         this.isLeftResizing = false;
-        console.log("DDN: ",  this.isTopResizing, this.isBottomResizing, this.isRightResizing, this.isLeftResizing);
     }
 
 }
