@@ -178,7 +178,7 @@ class SceneController {
                 this.scene.getZoom();
 
             return ((mXBegin <= leftElementPos) && (mXEnd >= leftElementPos)
-                && (mYBegin <= topElementPos) && (mYEnd >= topElementPos) && (this.rightClickFlag))
+            && (mYBegin <= topElementPos) && (mYEnd >= topElementPos) && (this.rightClickFlag))
         });
 
         if (elementBelow) {
@@ -257,11 +257,12 @@ class SceneController {
             var node:DiagramNode = this.scene.getNodeById(cellView.model.id);
             this.lastCellMouseDownPosition.x = node.getX();
             this.lastCellMouseDownPosition.y = node.getY();
+            cellView.highlight(cellView.model.id);
+            node.setResizingFields(cellView.getBBox(), x, y, 20);
         }
         if (event.button == MouseButton.right) {
             this.rightClickFlag = true;
         }
-
     }
 
     private cellPointerupListener(cellView, event, x, y): void {
@@ -275,15 +276,19 @@ class SceneController {
         } else if (event.button == MouseButton.left){
             var node: DiagramNode = this.scene.getNodeById(cellView.model.id);
             if (node) {
-                var command: Command = this.paperCommandFactory.makeMoveCommand(node, this.lastCellMouseDownPosition.x,
-                    this.lastCellMouseDownPosition.y, node.getX(), node.getY(), this.scene.getZoom());
-                this.undoRedoController.addCommand(command);
+
+                node.clearResizingFlags();
+                cellView.unhighlight(cellView.model.id);
             }
         }
     }
 
     private cellPointermoveListener(cellView, event, x, y): void {
         this.clickFlag = false;
+        var node: DiagramNode = this.scene.getNodeById(cellView.model.id);
+        if (node) {
+            node.pointermove(cellView, event, x, y);
+        }
     }
 
     private initDropPaletteElementListener(): void {
