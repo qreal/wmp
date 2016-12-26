@@ -24,7 +24,6 @@ class DefaultDiagramNode implements DiagramNode {
     private lastMousePositionX;
     private lastMousePositionY;
 
-
     constructor(name: string, type: string, x: number, y: number, properties: Map<Property>, imagePath: string,
                 id?: string, notDefaultConstProperties?: PropertiesPack) {
         this.logicalId = UIDGenerator.generate();
@@ -35,7 +34,6 @@ class DefaultDiagramNode implements DiagramNode {
         this.isBottomResizing = false;
         this.isRightResizing = false;
         this.isLeftResizing = false;
-
 
         this.constPropertiesPack = this.getDefaultConstPropertiesPack(name);
         if (notDefaultConstProperties) {
@@ -66,7 +64,6 @@ class DefaultDiagramNode implements DiagramNode {
     pointermove(cellView, evt, x, y) : void {
 
         cellView.options.interactive = true;
-
         var bbox = cellView.getBBox();
         var new_x = bbox.x + (<number> (bbox.width - 50)/2);
         var new_y = bbox.y + bbox.height - 50;
@@ -80,8 +77,6 @@ class DefaultDiagramNode implements DiagramNode {
             var diffY = y - this.lastMousePositionY;
             this.lastMousePositionX = x;
             this.lastMousePositionY = y;
-
-
 
             var resize_direction = '';
             if (this.isBottomResizing) {
@@ -100,10 +95,7 @@ class DefaultDiagramNode implements DiagramNode {
                 return;
             }
         }
-
-
     };
-
 
     initPropertyEditElements(zoom: number): void {
         var parentPosition = this.getJointObjectPagePosition(zoom);
@@ -218,7 +210,6 @@ class DefaultDiagramNode implements DiagramNode {
         this.isRightResizing = false;
         this.isLeftResizing = false;
     }
-
 }
 
 function isLeftBorderClicked(bbox, x, y, paddingPercent): boolean {
