@@ -265,6 +265,7 @@ declare abstract class DiagramEditorController {
     protected nodeTypesMap: Map<NodeType>;
     protected linkPatternsMap: Map<joint.dia.Link>;
     protected undoRedoController: UndoRedoController;
+    protected elementTypes: ElementTypes;
 
     constructor($scope, $attrs);
 
@@ -280,6 +281,7 @@ declare abstract class DiagramEditorController {
     public getNodeTypes(): Map<NodeType>;
     public getLinkPatterns(): Map<joint.dia.Link>;
     public addFromMap(diagramParts: DiagramParts): void;
+    protected handleLoadedTypes(elementTypes: ElementTypes): void;
 
 }
 

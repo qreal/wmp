@@ -21,7 +21,12 @@
 </head>
 
 <body ng-app ng-controller="RootDiagramController">
-    <%@ include file="diagramContent.jsp" %>
+    <%@ include file="../../include/properties.jsp" %>
+
+    <div id="diagram-area" class="unselectable" ng-controller="RobotsDiagramEditorController">
+        <%@ include file="../diagramContent.jsp" %>
+    </div>
+
     <%@ include file="2dmodelContent.jsp" %>
 </body>
 </html>

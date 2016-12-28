@@ -17,6 +17,7 @@ class DiagramEditorController {
     protected nodeTypesMap: Map<NodeType>;
     protected linkPatternsMap: Map<joint.dia.Link>;
     protected undoRedoController: UndoRedoController;
+    protected elementTypes: ElementTypes;
 
     constructor($scope, $attrs) {
         this.undoRedoController = new UndoRedoController();
@@ -102,5 +103,21 @@ class DiagramEditorController {
         var scene = this.diagramEditor.getScene();
         scene.addNodesFromMap(diagramParts.nodesMap);
         scene.addLinksFromMap(diagramParts.linksMap);
+    }
+
+    protected handleLoadedTypes(elementTypes: ElementTypes): void {
+        this.propertyEditorController = new PropertyEditorController(this.sceneController, this.undoRedoController);
+
+        this.elementTypes = elementTypes;
+
+        $.extend(this.linkPatternsMap, elementTypes.linkPatterns);
+        $.extend(this.nodeTypesMap, elementTypes.blockTypes.convertToMap(), elementTypes.flowTypes.convertToMap(),
+            elementTypes.uncategorisedTypes);
+
+        this.paletteController.appendBlocksPalette(elementTypes.blockTypes);
+        this.paletteController.appendFlowsPalette(elementTypes.flowTypes);
+        this.paletteController.initDraggable();
+        this.paletteController.initClick(this.diagramEditor.getScene());
+        this.diagramEditor.getScene().setLinkPatterns(this.linkPatternsMap);
     }
 }

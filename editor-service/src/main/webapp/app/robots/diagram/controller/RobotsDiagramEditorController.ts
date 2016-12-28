@@ -22,6 +22,11 @@ class RobotsDiagramEditorController extends DiagramEditorController {
         document.addEventListener('mousedown', (event) => { this.gesturesController.onMouseDown(event) } );
         document.addEventListener('mouseup', (event) => { this.gesturesController.onMouseUp(event) } );
         $("#" + scene.getId()).mousemove((event) => { this.gesturesController.onMouseMove(event) } );
+        $("#elements-search").on('input', (event) => {
+            this.paletteController.searchPaletteReload(event, this.elementTypes, this.nodeTypesMap);
+            this.paletteController.initDraggable();
+            this.paletteController.initClick(this.diagramEditor.getScene());
+        } );
 
         (scene as any).on('cell:pointerdown', (cellView, event, x, y): void => {
             this.cellPointerdownListener(cellView, event, x, y);
@@ -48,20 +53,6 @@ class RobotsDiagramEditorController extends DiagramEditorController {
         this.elementsTypeLoader.load((elementTypes: ElementTypes): void => {
             this.handleLoadedTypes(elementTypes);
         }, "", "robots");
-    }
-
-    public handleLoadedTypes(elementTypes: ElementTypes): void {
-        this.propertyEditorController = new PropertyEditorController(this.sceneController, this.undoRedoController);
-
-        $.extend(this.linkPatternsMap, elementTypes.linkPatterns);
-        $.extend(this.nodeTypesMap, elementTypes.blockTypes.convertToMap(), elementTypes.flowTypes.convertToMap(),
-            elementTypes.uncategorisedTypes);
-
-        this.paletteController.appendBlocksPalette(elementTypes.blockTypes);
-        this.paletteController.appendFlowsPalette(elementTypes.flowTypes);
-        this.paletteController.initDraggable();
-        this.paletteController.initClick(this.diagramEditor.getScene());
-        this.diagramEditor.getScene().setLinkPatterns(this.linkPatternsMap);
     }
 
     public openTwoDModel(): void {
