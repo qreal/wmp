@@ -79,7 +79,8 @@ declare class PropertyEditElement {
 
 declare class DefaultDiagramNode implements DiagramNode {
 
-    constructor(name: string, type: string, x: number, y: number, properties: Map<Property>, imagePath: string,
+    constructor(name: string, type: string, x: number, y: number, width: number, height: number,
+                properties: Map<Property>, imagePath: string,
                 id?: string, notDefaultConstProperties?: PropertiesPack);
     getLogicalId(): string;
     getJointObject(): any;
@@ -121,7 +122,8 @@ declare class Property {
 
 declare class SubprogramNode extends DefaultDiagramNode {
 
-    constructor(name: string, type: string, x: number, y: number, properties: Map<Property>, imagePath: string,
+    constructor(name: string, type: string, x: number, y: number, width: number, height: number,
+                properties: Map<Property>, imagePath: string,
                 subprogramDiagramId: string, id?: string, notDefaultConstProperties?: PropertiesPack);
     getSubprogramDiagramId(): string;
     getTextObject(): joint.shapes.basic.Text;
@@ -338,6 +340,7 @@ declare class DiagramJsonParser {
     protected getSourcePosition(configuration: string);
     protected getTargetPosition(configuration: string);
     protected parsePosition(position: string): {x: number; y: number};
+    protected parseSize(size: string): {width: number; height: number};
     protected parseId(idString: string): string;
 
 }

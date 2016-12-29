@@ -84,7 +84,7 @@ class DiagramJsonParser {
     }
 
     protected parseDiagramNodeObject(nodeObject: any, nodeTypesMap: Map<NodeType>,
-                                   offsetX: number, offsetY: number): DiagramNode {
+                                     offsetX: number, offsetY: number): DiagramNode {
         var changeableLogicalProperties: Map<Property> = {};
         var constLogicalProperties: Map<Property> = {};
         var subprogramDiagramId: string = "";
@@ -146,12 +146,12 @@ class DiagramJsonParser {
 
         var node: DiagramNode;
         if (subprogramDiagramId) {
-            node = new SubprogramNode(name, type, x, y, changeableLogicalProperties,
+            node = new SubprogramNode(name, type, x, y, 50, 50, changeableLogicalProperties,
                 nodeTypesMap[nodeObject.type].getImage(),
                 subprogramDiagramId, nodeObject.graphicalId,
                 new PropertiesPack(constLogicalProperties, constGraphicalProperties));
         } else {
-            node = new DefaultDiagramNode(name, type, x, y, changeableLogicalProperties,
+            node = new DefaultDiagramNode(name, type, x, y, 50, 50, changeableLogicalProperties,
                 nodeTypesMap[nodeObject.type].getImage(), nodeObject.graphicalId,
                 new PropertiesPack(constLogicalProperties, constGraphicalProperties));
         }
@@ -284,6 +284,11 @@ class DiagramJsonParser {
     protected parsePosition(position: string): {x: number; y: number} {
         var parts = position.split(", ");
         return {x: parseFloat(parts[0]), y: parseFloat(parts[1])};
+    }
+
+    protected parseSize(size: string): {width: number; height: number} {
+        var parts = size.split(", ");
+        return {width: parseFloat(parts[0]), height: parseFloat(parts[1])};
     }
 
     protected parseId(idString: string): string {

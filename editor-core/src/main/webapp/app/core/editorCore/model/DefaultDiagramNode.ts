@@ -23,8 +23,12 @@ class DefaultDiagramNode implements DiagramNode {
     private isLeftResizing: boolean = false;
     private lastMousePositionX;
     private lastMousePositionY;
+    private BBoxWidth : number;
+    private BBoxHeight : number;
 
-    constructor(name: string, type: string, x: number, y: number, properties: Map<Property>, imagePath: string,
+
+    constructor(name: string, type: string, x: number, y: number, width: number, height: number,
+                properties: Map<Property>, imagePath: string,
                 id?: string, notDefaultConstProperties?: PropertiesPack) {
         this.logicalId = UIDGenerator.generate();
         this.name = name;
@@ -35,15 +39,20 @@ class DefaultDiagramNode implements DiagramNode {
         this.isRightResizing = false;
         this.isLeftResizing = false;
 
+        this.BBoxWidth = width;
+        this.BBoxHeight = height;
+
         this.constPropertiesPack = this.getDefaultConstPropertiesPack(name);
         if (notDefaultConstProperties) {
             $.extend(this.constPropertiesPack.logical, notDefaultConstProperties.logical);
             $.extend(this.constPropertiesPack.graphical, notDefaultConstProperties.graphical);
         }
 
+        console.log(this.BBoxWidth, this.BBoxHeight);
+
         var jointObjectAttributes = {
             position: { x: x, y: y },
-            size: { width: 50, height: 50 },
+            size: { width: this.BBoxWidth, height: this.BBoxHeight },
             outPorts: [''],
             attrs: {
                 image: {
@@ -82,15 +91,21 @@ class DefaultDiagramNode implements DiagramNode {
             if (this.isBottomResizing) {
                 if (this.isRightResizing) {
                     resize_direction = 'bottom-right';
+                    this.BBoxWidth = bbox.width + diffX;
+                    this.BBoxHeight = bbox.height + diffY;
                     model.resize(bbox.width - 2 + diffX, bbox.height + diffY);
                     return;
                 }
                 resize_direction = 'bottom';
+                this.BBoxWidth = bbox.width;
+                this.BBoxHeight = bbox.height + diffY;
                 model.resize(bbox.width - 2, bbox.height + diffY);
                 return;
             }
             if (this.isRightResizing) {
                 resize_direction = 'right';
+                this.BBoxWidth = bbox.width + diffX;
+                this.BBoxHeight = bbox.height;
                 model.resize(bbox.width - 2 + diffX, bbox.height);
                 return;
             }
@@ -126,6 +141,10 @@ class DefaultDiagramNode implements DiagramNode {
 
     getY(): number {
         return (this.jointObject.get("position"))['y'];
+    }
+
+    getSize() : string {
+        return "" +this.BBoxWidth + ", " + this.BBoxHeight;
     }
 
     setPosition(x: number, y: number, zoom: number): void {

@@ -110,9 +110,9 @@ class SceneController {
 
         var node: DiagramNode;
         if (subprogramId) {
-            node = new SubprogramNode(subprogramName, type, x, y, nodeProperties, image, subprogramId);
+            node = new SubprogramNode(subprogramName, type, x, y, 50, 50, nodeProperties, image, subprogramId);
         } else {
-            node = new DefaultDiagramNode(name, type, x, y, nodeProperties, image);
+            node = new DefaultDiagramNode(name, type, x, y, 50, 50, nodeProperties, image);
         }
 
         var command: Command = new MultiCommand([this.paperCommandFactory.makeCreateNodeCommand(node),
