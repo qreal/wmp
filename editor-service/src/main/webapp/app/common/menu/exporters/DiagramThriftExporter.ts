@@ -56,8 +56,8 @@ class DiagramThriftExporter extends DiagramExporter {
 
             var sizeProperty = new TProperty();
             sizeProperty.name = "size";
-            sizeProperty.value = "" + node.getX() + ", " + node.getY();
-            sizeProperty.type = "QPointF";
+            sizeProperty.value = node.getSize();
+            sizeProperty.type = "string";
             newNode.properties.push(sizeProperty);
 
             nodes.push(newNode);

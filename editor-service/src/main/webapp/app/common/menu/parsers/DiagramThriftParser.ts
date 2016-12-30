@@ -1,3 +1,4 @@
+
 /// <reference path="../../interfaces/editorCore.d.ts" />
 /// <reference path="../../interfaces/vendor.d.ts" />
 
@@ -49,9 +50,9 @@ class DiagramThriftParser extends DiagramJsonParser {
                 y = positionNums.y + offsetY;
             } else if (propertyName === "size") {
                 var size:string = propertiesObject[j].value;
-                var BBoxSizes = this.parseSize(size);
-                width = BBoxSizes.width;
-                height = BBoxSizes.height;
+                var bboxDimensions = this.parseSize(size);
+                width = bboxDimensions.width;
+                height = bboxDimensions.height;
             }
         }
 

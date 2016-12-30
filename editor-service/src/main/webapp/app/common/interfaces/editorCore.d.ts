@@ -42,9 +42,13 @@ declare interface DiagramNode extends DiagramElement {
     getX(): number;
     getY(): number;
     getImagePath(): string;
+    getSize() : string;
     setPosition(x: number, y: number, zoom: number): void;
-    getChangeableProperties(): Map<Property>;
+    getPropertyEditElement(): PropertyEditElement;
     initPropertyEditElements(zoom: number): void;
+    setResizingFields(bbox, x: number, y: number, paddingPercent) : void;
+    clearResizingFlags() : void;
+    pointermove(cellView, evt, x, y) : void;
 
 }
 
@@ -90,12 +94,16 @@ declare class DefaultDiagramNode implements DiagramNode {
     getChangeableProperties(): Map<Property>;
     setProperty(key: string, property: Property): void;
     getImagePath(): string;
+    getSize() : string;
     getX(): number;
     getY(): number;
     setPosition(x: number, y: number): void;
     getChangeableProperties(): Map<Property>;
     initPropertyEditElements(zoom: number): void;
     getPropertyEditElement(): PropertyEditElement
+    setResizingFields(bbox, x: number, y: number, paddingPercent) : void;
+    clearResizingFlags() : void;
+    pointermove(cellView, evt, x, y) : void;
 }
 
 declare interface Map<T> {

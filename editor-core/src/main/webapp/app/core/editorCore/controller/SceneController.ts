@@ -21,6 +21,9 @@ class SceneController {
     private paperCommandFactory: SceneCommandFactory;
     private contextMenuId = "scene-context-menu";
 
+    private static defaultNodeWidth = 50;
+    private static defaultNodeHeight = 50;
+
     constructor(diagramEditorController: DiagramEditorController, paper: DiagramScene) {
         this.diagramEditorController = diagramEditorController;
         this.undoRedoController = diagramEditorController.getUndoRedoController();
@@ -110,9 +113,13 @@ class SceneController {
 
         var node: DiagramNode;
         if (subprogramId) {
-            node = new SubprogramNode(subprogramName, type, x, y, 50, 50, nodeProperties, image, subprogramId);
+            node = new SubprogramNode(subprogramName, type, x, y,
+                SceneController.defaultNodeWidth, SceneController.defaultNodeHeight,
+                nodeProperties, image, subprogramId);
         } else {
-            node = new DefaultDiagramNode(name, type, x, y, 50, 50, nodeProperties, image);
+            node = new DefaultDiagramNode(name, type, x, y,
+                SceneController.defaultNodeWidth, SceneController.defaultNodeHeight,
+                nodeProperties, image);
         }
 
         var command: Command = new MultiCommand([this.paperCommandFactory.makeCreateNodeCommand(node),
@@ -276,7 +283,14 @@ class SceneController {
         } else if (event.button == MouseButton.left){
             var node: DiagramNode = this.scene.getNodeById(cellView.model.id);
             if (node) {
-
+                var command: Command = this.paperCommandFactory.makeMoveCommand(
+                    node,
+                    this.lastCellMouseDownPosition.x,
+                    this.lastCellMouseDownPosition.y,
+                    node.getX(),
+                    node.getY(),
+                    this.scene.getZoom());
+                this.undoRedoController.addCommand(command);
                 node.clearResizingFlags();
                 cellView.unhighlight(cellView.model.id);
             }

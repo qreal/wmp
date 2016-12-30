@@ -16,15 +16,14 @@ class DefaultDiagramNode implements DiagramNode {
     private imagePath: string;
     private propertyEditElement: PropertyEditElement;
 
-    static paddingPercent = 5;
     private isTopResizing: boolean = false;
     private isBottomResizing: boolean = false;
     private isRightResizing: boolean = false;
     private isLeftResizing: boolean = false;
     private lastMousePositionX;
     private lastMousePositionY;
-    private BBoxWidth : number;
-    private BBoxHeight : number;
+    private bboxWidth : number;
+    private bboxHeight : number;
 
 
     constructor(name: string, type: string, x: number, y: number, width: number, height: number,
@@ -39,8 +38,8 @@ class DefaultDiagramNode implements DiagramNode {
         this.isRightResizing = false;
         this.isLeftResizing = false;
 
-        this.BBoxWidth = width;
-        this.BBoxHeight = height;
+        this.bboxWidth = width;
+        this.bboxHeight = height;
 
         this.constPropertiesPack = this.getDefaultConstPropertiesPack(name);
         if (notDefaultConstProperties) {
@@ -48,11 +47,9 @@ class DefaultDiagramNode implements DiagramNode {
             $.extend(this.constPropertiesPack.graphical, notDefaultConstProperties.graphical);
         }
 
-        console.log(this.BBoxWidth, this.BBoxHeight);
-
         var jointObjectAttributes = {
             position: { x: x, y: y },
-            size: { width: this.BBoxWidth, height: this.BBoxHeight },
+            size: { width: this.bboxWidth, height: this.bboxHeight },
             outPorts: [''],
             attrs: {
                 image: {
@@ -74,9 +71,9 @@ class DefaultDiagramNode implements DiagramNode {
 
         cellView.options.interactive = true;
         var bbox = cellView.getBBox();
-        var new_x = bbox.x + (<number> (bbox.width - 50)/2);
-        var new_y = bbox.y + bbox.height - 50;
-        this.propertyEditElement.setPosition(new_x, new_y);
+        var newX = bbox.x + (<number> (bbox.width - 50)/2);
+        var newY = bbox.y + bbox.height - 50;
+        this.propertyEditElement.setPosition(newX, newY);
 
         if (this.isBottomResizing || this.isRightResizing)
         {
@@ -87,25 +84,19 @@ class DefaultDiagramNode implements DiagramNode {
             this.lastMousePositionX = x;
             this.lastMousePositionY = y;
 
-            var resize_direction = '';
             if (this.isBottomResizing) {
                 if (this.isRightResizing) {
-                    resize_direction = 'bottom-right';
-                    this.BBoxWidth = bbox.width + diffX;
-                    this.BBoxHeight = bbox.height + diffY;
+                    this.bboxWidth = bbox.width + diffX;
+                    this.bboxHeight = bbox.height + diffY;
                     model.resize(bbox.width - 2 + diffX, bbox.height + diffY);
-                    return;
+                } else {
+                    this.bboxWidth = bbox.width;
+                    this.bboxHeight = bbox.height + diffY;
+                    model.resize(bbox.width - 2, bbox.height + diffY);
                 }
-                resize_direction = 'bottom';
-                this.BBoxWidth = bbox.width;
-                this.BBoxHeight = bbox.height + diffY;
-                model.resize(bbox.width - 2, bbox.height + diffY);
-                return;
-            }
-            if (this.isRightResizing) {
-                resize_direction = 'right';
-                this.BBoxWidth = bbox.width + diffX;
-                this.BBoxHeight = bbox.height;
+            } else if (this.isRightResizing) {
+                this.bboxWidth = bbox.width + diffX;
+                this.bboxHeight = bbox.height;
                 model.resize(bbox.width - 2 + diffX, bbox.height);
                 return;
             }
@@ -116,7 +107,9 @@ class DefaultDiagramNode implements DiagramNode {
         var parentPosition = this.getJointObjectPagePosition(zoom);
         this.propertyEditElement = new PropertyEditElement(this.logicalId, this.jointObject.id,
             this.changeableProperties);
-        this.propertyEditElement.setPosition(parentPosition.x, parentPosition.y);
+        var propertyEditElementX = parentPosition.x + (<number> (this.bboxWidth - 50)/2);
+        var propertyEditElementY = parentPosition.y + this.bboxHeight - 50;
+        this.propertyEditElement.setPosition(propertyEditElementX, propertyEditElementY);
     }
 
     getPropertyEditElement(): PropertyEditElement {
@@ -144,7 +137,7 @@ class DefaultDiagramNode implements DiagramNode {
     }
 
     getSize() : string {
-        return "" +this.BBoxWidth + ", " + this.BBoxHeight;
+        return String(this.bboxWidth) + ", " + String(this.bboxHeight);
     }
 
     setPosition(x: number, y: number, zoom: number): void {
@@ -216,10 +209,10 @@ class DefaultDiagramNode implements DiagramNode {
     }
 
     setResizingFields(bbox, x: number, y: number, paddingPercent) : void {
-        this.isTopResizing = isTopBorderClicked(bbox, x, y, paddingPercent);
-        this.isBottomResizing = isBottomBorderClicked(bbox, x, y, paddingPercent);
-        this.isRightResizing = isRightBorderClicked(bbox, x, y, paddingPercent);
-        this.isLeftResizing = isLeftBorderClicked(bbox, x, y, paddingPercent);
+        this.isTopResizing = DefaultDiagramNode.isTopBorderClicked(bbox, x, y, paddingPercent);
+        this.isBottomResizing = DefaultDiagramNode.isBottomBorderClicked(bbox, x, y, paddingPercent);
+        this.isRightResizing = DefaultDiagramNode.isRightBorderClicked(bbox, x, y, paddingPercent);
+        this.isLeftResizing = DefaultDiagramNode.isLeftBorderClicked(bbox, x, y, paddingPercent);
         this.lastMousePositionX = x;
         this.lastMousePositionY = y;
     }
@@ -229,21 +222,21 @@ class DefaultDiagramNode implements DiagramNode {
         this.isRightResizing = false;
         this.isLeftResizing = false;
     }
-}
 
-function isLeftBorderClicked(bbox, x, y, paddingPercent): boolean {
-    return (x <= bbox.x + paddingPercent && x >= bbox.x - paddingPercent &&
-    y <= bbox.y + bbox.height + paddingPercent && y >= bbox.y - paddingPercent);
-}
-function isRightBorderClicked(bbox, x, y, paddingPercent): boolean {
-    return (x <= bbox.x + bbox.width + paddingPercent && x >= bbox.x + bbox.width - paddingPercent &&
-    y <= bbox.y + bbox.height + paddingPercent && y >= bbox.y - paddingPercent);
-}
-function isTopBorderClicked(bbox, x, y, paddingPercent): boolean {
-    return (x <= bbox.x + bbox.width + paddingPercent && x >= bbox.x - paddingPercent &&
-    y <= bbox.y + paddingPercent && y >= bbox.y - paddingPercent);
-}
-function isBottomBorderClicked(bbox, x, y, paddingPercent): boolean {
-    return (x <= bbox.x + bbox.width + paddingPercent && x >= bbox.x - paddingPercent &&
-    y <= bbox.y + bbox.height + paddingPercent && y >= bbox.y + bbox.height - paddingPercent);
+    private static isLeftBorderClicked(bbox, x, y, paddingPercent): boolean {
+        return (x <= bbox.x + paddingPercent && x >= bbox.x - paddingPercent &&
+        y <= bbox.y + bbox.height + paddingPercent && y >= bbox.y - paddingPercent);
+    }
+    private static isRightBorderClicked(bbox, x, y, paddingPercent): boolean {
+        return (x <= bbox.x + bbox.width + paddingPercent && x >= bbox.x + bbox.width - paddingPercent &&
+        y <= bbox.y + bbox.height + paddingPercent && y >= bbox.y - paddingPercent);
+    }
+    private static isTopBorderClicked(bbox, x, y, paddingPercent): boolean {
+        return (x <= bbox.x + bbox.width + paddingPercent && x >= bbox.x - paddingPercent &&
+        y <= bbox.y + paddingPercent && y >= bbox.y - paddingPercent);
+    }
+    private static isBottomBorderClicked(bbox, x, y, paddingPercent): boolean {
+        return (x <= bbox.x + bbox.width + paddingPercent && x >= bbox.x - paddingPercent &&
+        y <= bbox.y + bbox.height + paddingPercent && y >= bbox.y + bbox.height - paddingPercent);
+    }
 }
