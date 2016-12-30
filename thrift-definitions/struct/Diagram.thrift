@@ -20,7 +20,7 @@ struct TDefaultDiagramNode {
 }
 
 struct TLink {
-    1: string id,
+    1 : string id,
     2 : string logicalId,
     3 : string graphicalId,
     4 : string jointObjectId,

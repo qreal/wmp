@@ -1,0 +1,27 @@
+{
+    "elements": [
+        "ControlFlow",
+        "ConditionalFlow",
+        "DefaultFlow",
+        "MessageFlow",
+        "AssociationFlow",
+        "DataAssociationFlow"
+    ],
+
+    "blocks": {
+
+        "general": [
+            "Subprogram"
+        ],
+        
+        "palette": {
+
+            "Events": [
+                "Message",
+                "Timer"
+            ]
+        }
+        
+    }
+
+}

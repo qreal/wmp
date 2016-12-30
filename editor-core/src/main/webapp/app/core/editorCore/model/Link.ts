@@ -10,14 +10,17 @@ class Link implements DiagramElement {
     private jointObject: joint.dia.Link;
     private constPropertiesPack: PropertiesPack;
     private changeableProperties: Map<Property> = {};
-    private name = "Link";
-    private type = "ControlFlow";
+    private name: string;
+    private type: string;
 
-    constructor(jointObject: joint.dia.Link, properties: Map<Property>) {
+    constructor(jointObject: joint.dia.Link, name: string, type: string, properties: Map<Property>) {
         this.logicalId = UIDGenerator.generate();
         this.constPropertiesPack = this.getDefaultConstPropertiesPack();
+        this.name = name;
+        this.type = type;
 
         this.jointObject = jointObject;
+        var properties: Map<Property> = properties;
         this.changeableProperties = properties;
         this.changeLabel(properties["Guard"].value);
         this.updateHighlight();
@@ -111,13 +114,15 @@ class Link implements DiagramElement {
         if (!this.jointObject.get('target').id || !this.jointObject.get('source').id) {
             this.jointObject.attr({
                     '.connection': {stroke: 'red'},
-                    '.marker-target': {fill: 'red', d: 'M 10 0 L 0 5 L 10 10 z'}
+                    '.marker-source': {stroke: 'red'},
+                    '.marker-target': {stroke: 'red'}
                 }
             );
         } else {
             this.jointObject.attr({
                     '.connection': {stroke: 'black'},
-                    '.marker-target': {fill: 'black', d: 'M 10 0 L 0 5 L 10 10 z'}
+                    '.marker-source': {stroke: 'black'},
+                    '.marker-target': {stroke: 'black'}
                 }
             );
         }
