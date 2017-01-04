@@ -17,6 +17,8 @@ public class Link implements Serializable {
 
     private String graphicalId;
 
+    private String type;
+
     private Set<Property> properties = new HashSet<>();
 
     public Link() { }
@@ -34,6 +36,10 @@ public class Link implements Serializable {
 
         if (tLink.isSetLogicalId()) {
             logicalId = tLink.getLogicalId();
+        }
+
+        if (tLink.isSetType()) {
+            type = tLink.getType();
         }
 
         if (tLink.isSetProperties()) {
@@ -55,6 +61,10 @@ public class Link implements Serializable {
 
         if (graphicalId != null) {
             tLink.setGraphicalId(graphicalId);
+        }
+
+        if (type != null) {
+            tLink.setType(type);
         }
 
         if (properties != null) {

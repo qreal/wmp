@@ -3,9 +3,8 @@
 /// <reference path="../../../common/interfaces/editorCore.d.ts" />
 /// <reference path="../../../common/interfaces/vendor.d.ts" />
 /// <reference path="../../../common/gestures/GesturesController.ts" />
-/// <reference path="../../../common/constants/MouseButton.ts" />
 
-class RobotsDiagramEditorController extends DiagramEditorController {
+class BpmnDiagramEditorController extends DiagramEditorController {
 
     private menuController: DiagramMenuController;
     private gesturesController: GesturesController;
@@ -35,29 +34,15 @@ class RobotsDiagramEditorController extends DiagramEditorController {
             this.blankPoinerdownListener(event, x, y);
         });
 
-        $scope.openTwoDModel = () => { this.openTwoDModel(); };
         $scope.createNewDiagram = () => { this.menuController.createNewDiagram(); };
         $scope.openFolderWindow = () => { this.menuController.openFolderWindow(); };
         $scope.saveCurrentDiagram = () => { this.menuController.saveCurrentDiagram(); };
         $scope.saveDiagramAs = () => { this.menuController.saveDiagramAs(); };
         $scope.clearAll = () => { this.clearAll(); };
 
-        $scope.$on("interpret", (event, timeline) => {
-            this.diagramInterpreter.interpret(this.getGraph(), this.getNodesMap(), this.getLinksMap(), timeline);
-        });
-
-        $scope.$on("stop", (event) => {
-            this.diagramInterpreter.stop();
-        });
-
         this.elementsTypeLoader.load((elementTypes: ElementTypes): void => {
             this.handleLoadedTypes(elementTypes);
-        }, "", "robots");
-    }
-
-    public openTwoDModel(): void {
-        $("#diagram-area").hide();
-        $("#two-d-model-area").show();
+        }, "", "bpmn");
     }
 
     public clearAll(): void {

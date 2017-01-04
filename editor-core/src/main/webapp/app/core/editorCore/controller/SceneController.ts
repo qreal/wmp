@@ -1,7 +1,6 @@
 /// <reference path="DiagramEditorController.ts" />
 /// <reference path="../model/DiagramScene.ts" />
 /// <reference path="../model/DiagramElement.ts" />
-/// <reference path="../model/PaletteTypes.ts" />
 /// <reference path="../model/DiagramNode.ts" />
 /// <reference path="../model/DefaultDiagramNode.ts" />
 /// <reference path="../model/commands/Command.ts"/>
@@ -74,16 +73,15 @@ class SceneController {
     }
 
     public createLink(sourceId: string, targetId: string): void {
-        var link: joint.dia.Link = new joint.dia.Link({
-            attrs: {
-                '.connection': { stroke: 'black' },
-                '.marker-target': { fill: 'black', d: 'M 10 0 L 0 5 L 10 10 z' }
-            },
+
+        var link: joint.dia.Link = this.scene.getCurrentLinkType();
+        link.set({
             source: { id: sourceId },
-            target: { id: targetId },
+            target: { id: targetId }
         });
 
-        var typeProperties = this.diagramEditorController.getNodeProperties("ControlFlow");
+        var nodeType: NodeType = this.diagramEditorController.getNodeType(this.scene.getCurrentLinkTypeName());
+        var typeProperties: Map<Property> = nodeType.getPropertiesMap();
 
         var linkProperties: Map<Property> = {};
         for (var property in typeProperties) {
@@ -91,7 +89,7 @@ class SceneController {
                 typeProperties[property].type, typeProperties[property].value);
         }
 
-        var linkObject: Link = new Link(link, linkProperties);
+        var linkObject: Link = new Link(link, nodeType.getShownName(), nodeType.getName(), linkProperties);
 
         this.makeAndExecuteCreateLinkCommand(linkObject);
     }

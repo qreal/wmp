@@ -8,8 +8,10 @@ class DiagramScene extends joint.dia.Paper {
 
     private htmlId: string;
     private graph: joint.dia.Graph;
+    private currentLinkType: string;
     private nodesMap: Map<DiagramNode>;
     private linksMap: Map<Link>;
+    private linkPatternsMap: Map<joint.dia.Link>;
     private gridSize: number;
     private zoom: number;
 
@@ -42,6 +44,8 @@ class DiagramScene extends joint.dia.Paper {
                     pointerdown: DiagramElementListener.pointerdown
                 }))
         });
+
+        this.linkPatternsMap = {};
 
         this.htmlId = htmlId;
         this.gridSize = gridSize;
@@ -162,8 +166,24 @@ class DiagramScene extends joint.dia.Paper {
         }
     }
 
+    public setCurrentLinkType(linkType: string): void {
+        this.currentLinkType = linkType;
+    }
+
+    public getCurrentLinkType(): joint.dia.Link {
+        return <joint.dia.Link> this.linkPatternsMap[this.currentLinkType].clone();
+    }
+
+    public getCurrentLinkTypeName(): string {
+        return this.currentLinkType;
+    }
+
+    public setLinkPatterns(linkPatterns: Map<joint.dia.Link>): void {
+        this.linkPatternsMap = linkPatterns;
+        this.currentLinkType = Object.keys(this.linkPatternsMap)[0];
+    }
+
     private addLink(link: Link): void {
         this.graph.addCell(link.getJointObject());
     }
-
 }

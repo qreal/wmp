@@ -10,10 +10,11 @@ class ElementsTypeLoader {
 
         $.ajax({
             type: 'POST',
-            url: 'getTypes/' + ((task) ? task : ""),
+            url: 'getTypes/',
             dataType: 'json',
             data: {
-                'kit': ((kit) ? kit : GeneralConstants.DEFAULT_KIT)
+                'kit': ((kit) ? kit : GeneralConstants.DEFAULT_KIT),
+                'task': task ? task : ""
             },
             success: (response) => {
                 callback(typesParser.parse(response));

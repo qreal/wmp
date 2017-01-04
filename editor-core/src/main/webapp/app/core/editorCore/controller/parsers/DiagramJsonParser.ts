@@ -10,13 +10,13 @@
 
 class DiagramJsonParser {
 
-    public parse(diagramJson: any, nodeTypesMap: Map<NodeType>): DiagramParts {
+    public parse(diagramJson: any, nodeTypesMap: Map<NodeType>, linkPatterns: Map<joint.dia.Link>): DiagramParts {
         var minPos: {x: number; y: number} = this.findMinPosition(diagramJson, nodeTypesMap);
         var minOffset: number = 25;
         var offsetX = (minPos.x < 0) ? (-minPos.x + minOffset) : minOffset;
         var offsetY = (minPos.y < 0) ? (-minPos.y + minOffset) : minOffset;
         var diagramParts: DiagramParts = this.parseNodes(diagramJson, nodeTypesMap, offsetX, offsetY);
-        diagramParts.linksMap = this.parseLinks(diagramJson, offsetX, offsetY);
+        diagramParts.linksMap = this.parseLinks(diagramJson, nodeTypesMap, linkPatterns, offsetX, offsetY);
         return diagramParts;
     }
 
@@ -160,17 +160,20 @@ class DiagramJsonParser {
         return node;
     }
 
-    protected parseLinks(diagramJson: any, offsetX: number, offsetY: number): Map<Link> {
+    protected parseLinks(diagramJson: any, nodeTypesMap: Map<NodeType>, linkPatterns: Map<joint.dia.Link>,
+                         offsetX: number, offsetY: number): Map<Link> {
         var linksMap: Map<Link> = {};
 
         for (var i = 0; i < diagramJson.links.length; i++) {
-            linksMap[diagramJson.links[i].graphicalId] = this.parseLinkObject(diagramJson.links[i], offsetX, offsetY);
+            linksMap[diagramJson.links[i].graphicalId] = this.parseLinkObject(diagramJson.links[i], nodeTypesMap,
+                linkPatterns, offsetX, offsetY);
         }
 
         return linksMap;
     }
 
-    protected parseLinkObject(linkObject: any, offsetX: number, offsetY: number): Link {
+    protected parseLinkObject(linkObject: any, nodeTypesMap: Map<NodeType>, linkPatterns: Map<joint.dia.Link>,
+                              offsetX: number, offsetY: number): Link {
         var sourceId: string = "";
         var targetId: string = "";
 
@@ -238,18 +241,16 @@ class DiagramJsonParser {
             targetObject = targetPosition;
         }
 
-        var jointObject: joint.dia.Link = new joint.dia.Link({
+        var jointObject: joint.dia.Link = <joint.dia.Link> linkPatterns[linkObject.type].clone();
+        jointObject.set({
             id: jointObjectId,
-            attrs: {
-                '.connection': { stroke: 'black' },
-                '.marker-target': { fill: 'black', d: 'M 10 0 L 0 5 L 10 10 z' }
-            },
             source: sourceObject,
             target: targetObject,
             vertices: vertices
         });
 
-        return new Link(jointObject, properties);
+        var nodeType: NodeType = nodeTypesMap[linkObject.type];
+        return new Link(jointObject, nodeType.getShownName(), nodeType.getName(), properties);
     }
 
     protected parseVertices(configuration: string) {

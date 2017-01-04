@@ -5,9 +5,9 @@
 
 class DiagramThriftParser extends DiagramJsonParser {
 
-    public parse(diagram: TDiagram, nodeTypesMap: Map<NodeType>): DiagramParts {
+    public parse(diagram: TDiagram, nodeTypesMap: Map<NodeType>, linkPatterns: Map<joint.dia.Link>): DiagramParts {
         var diagramParts: DiagramParts = this.parseNodes(diagram, nodeTypesMap, 0, 0);
-        diagramParts.linksMap = this.parseLinks(diagram, 0, 0);
+        diagramParts.linksMap = this.parseLinks(diagram, nodeTypesMap, linkPatterns, 0, 0);
         return diagramParts;
     }
 
@@ -36,7 +36,7 @@ class DiagramThriftParser extends DiagramJsonParser {
             var propertyName = propertiesObject[j].name;
 
             if (propertyName === "name") {
-                name  = propertiesObject[j].value;
+                name = propertiesObject[j].value;
             }
 
             if (typeProperties.hasOwnProperty(propertyName)) {
@@ -44,7 +44,7 @@ class DiagramThriftParser extends DiagramJsonParser {
                     typeProperties[propertyName].type, propertiesObject[j].value);
                 changeableLogicalProperties[propertyName] = property;
             } else if (propertyName === "position") {
-                var position:string = propertiesObject[j].value;
+                var position: string = propertiesObject[j].value;
                 var positionNums = this.parsePosition(position);
                 x = positionNums.x + offsetX;
                 y = positionNums.y + offsetY;
@@ -64,7 +64,8 @@ class DiagramThriftParser extends DiagramJsonParser {
     }
 
 
-    protected parseLinkObject(linkObject: TLink, offsetX: number, offsetY: number): Link {
+    protected parseLinkObject(linkObject: TLink, nodeTypesMap: Map<NodeType>, linkPatterns: Map<joint.dia.Link>,
+                              offsetX: number, offsetY: number): Link {
         var sourceId: string = "";
         var targetId: string = "";
 
@@ -113,18 +114,16 @@ class DiagramThriftParser extends DiagramJsonParser {
             targetObject = this.getTargetPosition(configuration);;
         }
 
-        var jointObject: joint.dia.Link = new joint.dia.Link({
+        var jointObject: joint.dia.Link = <joint.dia.Link> linkPatterns[linkObject.type].clone();
+        jointObject.set({
             id: jointObjectId,
-            attrs: {
-                '.connection': { stroke: 'black' },
-                '.marker-target': { fill: 'black', d: 'M 10 0 L 0 5 L 10 10 z' }
-            },
             source: sourceObject,
             target: targetObject,
             vertices: vertices
         });
 
-        return new Link(jointObject, properties);
+        var nodeType: NodeType = nodeTypesMap[linkObject.type];
+        return new Link(jointObject, nodeType.getShownName(), nodeType.getName(), properties);
     }
 
 }
