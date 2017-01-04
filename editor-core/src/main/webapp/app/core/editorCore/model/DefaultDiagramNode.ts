@@ -16,21 +16,21 @@ class DefaultDiagramNode implements DiagramNode {
     private imagePath: string;
     private propertyEditElement: PropertyEditElement;
 
-    private resizeParameters: {
-        isTopResizing: boolean,
-        isBottomResizing: boolean,
-        isRightResizing: boolean,
-        isLeftResizing: boolean,
+    private resizeParameters = {
+        isTopResizing: false,
+        isBottomResizing: false,
+        isRightResizing: false,
+        isLeftResizing: false,
     };
 
-    private lastMousePosition: {
-        x: number,
-        y: number,
+    private lastMousePosition = {
+        x: 0,
+        y: 0,
     };
 
-    private boundingBox: {
-        width: number,
-        height: number,
+    private boundingBox = {
+        width: 0,
+        height: 0,
     };
 
     constructor(name: string, type: string, x: number, y: number, width: number, height: number,
@@ -42,13 +42,6 @@ class DefaultDiagramNode implements DiagramNode {
 
         this.boundingBox.width = width;
         this.boundingBox.height = height;
-
-        this.resizeParameters = {
-            isTopResizing: false,
-            isBottomResizing: false,
-            isRightResizing: false,
-            isLeftResizing: false,
-        };
 
         this.constPropertiesPack = DefaultDiagramNode.getDefaultConstPropertiesPack(name);
         if (notDefaultConstProperties) {
@@ -187,7 +180,7 @@ class DefaultDiagramNode implements DiagramNode {
     }
 
     private static initConstLogicalProperties(name: string): Map<Property> {
-        var logical: Map<Property>;
+        var logical: Map<Property> = {};
         logical["name"] = new Property("name", "QString", name);
         logical["from"] = new Property("from", "qReal::Id", "qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID");
         logical["linkShape"] = new Property("linkShape", "int", "0");
@@ -197,7 +190,7 @@ class DefaultDiagramNode implements DiagramNode {
     }
 
     private static initConstGraphicalProperties(name: string): Map<Property> {
-        var graphical: Map<Property>;
+        var graphical: Map<Property> = {};
         graphical["name"] = new Property("name", "QString", name);
         graphical["to"] = new Property("to", "qreal::Id", "qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID");
         graphical["configuration"] = new Property("configuration", "QPolygon", "0, 0 : 50, 0 : 50, 50 : 0, 50 : ");
