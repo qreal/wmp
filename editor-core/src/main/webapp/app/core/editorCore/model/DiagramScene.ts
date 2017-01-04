@@ -32,7 +32,7 @@ class DiagramScene extends joint.dia.Paper {
             }),
             validateConnection: function (cellViewS, magnetS, cellViewT, magnetT, end, linkView) {
                 return (!(magnetT && magnetT.getAttribute('type') === 'output')
-                && !(cellViewT && cellViewT.model.get('type') === 'link'));
+                    && !(cellViewT && cellViewT.model.get('type') === 'link'));
             },
             validateMagnet: function (cellView, magnet) {
                 return magnet.getAttribute('magnet') !== 'passive';

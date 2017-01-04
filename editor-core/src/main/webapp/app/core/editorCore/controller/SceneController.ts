@@ -21,9 +21,6 @@ class SceneController {
     private paperCommandFactory: SceneCommandFactory;
     private contextMenuId = "scene-context-menu";
 
-    private static defaultNodeWidth = 50;
-    private static defaultNodeHeight = 50;
-
     constructor(diagramEditorController: DiagramEditorController, paper: DiagramScene) {
         this.diagramEditorController = diagramEditorController;
         this.undoRedoController = diagramEditorController.getUndoRedoController();
@@ -113,12 +110,10 @@ class SceneController {
 
         var node: DiagramNode;
         if (subprogramId) {
-            node = new SubprogramNode(subprogramName, type, x, y,
-                SceneController.defaultNodeWidth, SceneController.defaultNodeHeight,
+            node = new SubprogramNode(subprogramName, type, x, y, defaultNodeWidth, defaultNodeHeight,
                 nodeProperties, image, subprogramId);
         } else {
-            node = new DefaultDiagramNode(name, type, x, y,
-                SceneController.defaultNodeWidth, SceneController.defaultNodeHeight,
+            node = new DefaultDiagramNode(name, type, x, y, defaultNodeWidth, defaultNodeHeight,
                 nodeProperties, image);
         }
 
@@ -185,7 +180,7 @@ class SceneController {
                 this.scene.getZoom();
 
             return ((mXBegin <= leftElementPos) && (mXEnd >= leftElementPos)
-            && (mYBegin <= topElementPos) && (mYEnd >= topElementPos) && (this.rightClickFlag))
+                && (mYBegin <= topElementPos) && (mYEnd >= topElementPos) && (this.rightClickFlag))
         });
 
         if (elementBelow) {
@@ -265,7 +260,7 @@ class SceneController {
             this.lastCellMouseDownPosition.x = node.getX();
             this.lastCellMouseDownPosition.y = node.getY();
             cellView.highlight(cellView.model.id);
-            node.setResizingFields(cellView.getBBox(), x, y, 20);
+            node.initResize(cellView.getBBox(), x, y, 20);
         }
         if (event.button == MouseButton.right) {
             this.rightClickFlag = true;
@@ -291,7 +286,8 @@ class SceneController {
                     node.getY(),
                     this.scene.getZoom());
                 this.undoRedoController.addCommand(command);
-                node.clearResizingFlags();
+
+                node.completeResize();
                 cellView.unhighlight(cellView.model.id);
             }
         }
@@ -380,7 +376,7 @@ class SceneController {
         } else if (this.currentElement instanceof Link) {
             removeCommands.push(this.paperCommandFactory.makeRemoveLinkCommand(<Link> this.currentElement));
         }
-        var multiCommand: Command = new MultiCommand(removeCommands);
+        var multiCommand : Command = new MultiCommand(removeCommands);
         this.undoRedoController.addCommand(multiCommand);
         multiCommand.execute();
     }

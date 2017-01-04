@@ -8,7 +8,7 @@ interface DiagramNode extends DiagramElement {
     setPosition(x: number, y: number, zoom: number): void;
     getPropertyEditElement(): PropertyEditElement;
     initPropertyEditElements(zoom: number): void;
-    setResizingFields(bbox, x: number, y: number, paddingPercent) : void;
-    clearResizingFlags() : void;
+    initResize(bbox, x: number, y: number, paddingPercent) : void;
+    completeResize() : void;
     pointermove(cellView, evt, x, y) : void;
 }

@@ -146,12 +146,13 @@ class DiagramJsonParser {
 
         var node: DiagramNode;
         if (subprogramDiagramId) {
-            node = new SubprogramNode(name, type, x, y, 50, 50, changeableLogicalProperties,
-                nodeTypesMap[nodeObject.type].getImage(),
+            node = new SubprogramNode(name, type, x, y, defaultNodeWidth, defaultNodeHeight,
+                changeableLogicalProperties, nodeTypesMap[nodeObject.type].getImage(),
                 subprogramDiagramId, nodeObject.graphicalId,
                 new PropertiesPack(constLogicalProperties, constGraphicalProperties));
         } else {
-            node = new DefaultDiagramNode(name, type, x, y, 50, 50, changeableLogicalProperties,
+            node = new DefaultDiagramNode(name, type, x, y, defaultNodeWidth, defaultNodeHeight,
+                changeableLogicalProperties,
                 nodeTypesMap[nodeObject.type].getImage(), nodeObject.graphicalId,
                 new PropertiesPack(constLogicalProperties, constGraphicalProperties));
         }

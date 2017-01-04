@@ -16,32 +16,41 @@ class DefaultDiagramNode implements DiagramNode {
     private imagePath: string;
     private propertyEditElement: PropertyEditElement;
 
-    private isTopResizing: boolean = false;
-    private isBottomResizing: boolean = false;
-    private isRightResizing: boolean = false;
-    private isLeftResizing: boolean = false;
-    private lastMousePositionX;
-    private lastMousePositionY;
-    private bboxWidth : number;
-    private bboxHeight : number;
+    private resizeParameters: {
+        isTopResizing: boolean,
+        isBottomResizing: boolean,
+        isRightResizing: boolean,
+        isLeftResizing: boolean,
+    };
 
+    private lastMousePosition: {
+        x: number,
+        y: number,
+    };
+
+    private boundingBox: {
+        width: number,
+        height: number,
+    };
 
     constructor(name: string, type: string, x: number, y: number, width: number, height: number,
-                properties: Map<Property>, imagePath: string,
-                id?: string, notDefaultConstProperties?: PropertiesPack) {
+                properties: Map<Property>, imagePath: string, id?: string,
+                notDefaultConstProperties?: PropertiesPack) {
         this.logicalId = UIDGenerator.generate();
         this.name = name;
         this.type = type;
 
-        this.isTopResizing = false;
-        this.isBottomResizing = false;
-        this.isRightResizing = false;
-        this.isLeftResizing = false;
+        this.boundingBox.width = width;
+        this.boundingBox.height = height;
 
-        this.bboxWidth = width;
-        this.bboxHeight = height;
+        this.resizeParameters = {
+            isTopResizing: false,
+            isBottomResizing: false,
+            isRightResizing: false,
+            isLeftResizing: false,
+        };
 
-        this.constPropertiesPack = this.getDefaultConstPropertiesPack(name);
+        this.constPropertiesPack = DefaultDiagramNode.getDefaultConstPropertiesPack(name);
         if (notDefaultConstProperties) {
             $.extend(this.constPropertiesPack.logical, notDefaultConstProperties.logical);
             $.extend(this.constPropertiesPack.graphical, notDefaultConstProperties.graphical);
@@ -49,7 +58,7 @@ class DefaultDiagramNode implements DiagramNode {
 
         var jointObjectAttributes = {
             position: { x: x, y: y },
-            size: { width: this.bboxWidth, height: this.bboxHeight },
+            size: { width: this.boundingBox.width, height: this.boundingBox.height },
             outPorts: [''],
             attrs: {
                 image: {
@@ -67,7 +76,7 @@ class DefaultDiagramNode implements DiagramNode {
         this.imagePath = imagePath;
     }
 
-    pointermove(cellView, evt, x, y) : void {
+    pointermove(cellView, evt, x, y): void {
 
         cellView.options.interactive = true;
         var bbox = cellView.getBBox();
@@ -75,40 +84,37 @@ class DefaultDiagramNode implements DiagramNode {
         var newY = bbox.y + bbox.height - 50;
         this.propertyEditElement.setPosition(newX, newY);
 
-        if (this.isBottomResizing || this.isRightResizing)
+        if (this.resizeParameters.isBottomResizing || this.resizeParameters.isRightResizing)
         {
             cellView.options.interactive = false;
             var model = <joint.dia.Element> cellView.model;
-            var diffX = x - this.lastMousePositionX;
-            var diffY = y - this.lastMousePositionY;
-            this.lastMousePositionX = x;
-            this.lastMousePositionY = y;
+            var diffX = x - this.lastMousePosition.x;
+            var diffY = y - this.lastMousePosition.y;
+            this.lastMousePosition.x = x;
+            this.lastMousePosition.y = y;
 
-            if (this.isBottomResizing) {
-                if (this.isRightResizing) {
-                    this.bboxWidth = bbox.width + diffX;
-                    this.bboxHeight = bbox.height + diffY;
-                    model.resize(bbox.width - 2 + diffX, bbox.height + diffY);
+            if (this.resizeParameters.isBottomResizing) {
+                if (this.resizeParameters.isRightResizing) {
+                    this.boundingBox.width = bbox.width + diffX;
+                    this.boundingBox.height = bbox.height + diffY;
                 } else {
-                    this.bboxWidth = bbox.width;
-                    this.bboxHeight = bbox.height + diffY;
-                    model.resize(bbox.width - 2, bbox.height + diffY);
+                    this.boundingBox.width = bbox.width;
+                    this.boundingBox.height = bbox.height + diffY;
                 }
-            } else if (this.isRightResizing) {
-                this.bboxWidth = bbox.width + diffX;
-                this.bboxHeight = bbox.height;
-                model.resize(bbox.width - 2 + diffX, bbox.height);
-                return;
+            } else if (this.resizeParameters.isRightResizing) {
+                this.boundingBox.width = bbox.width + diffX;
+                this.boundingBox.height = bbox.height;
             }
+            model.resize(this.boundingBox.width - 2, this.boundingBox.height);
         }
-    };
+    }
 
     initPropertyEditElements(zoom: number): void {
         var parentPosition = this.getJointObjectPagePosition(zoom);
         this.propertyEditElement = new PropertyEditElement(this.logicalId, this.jointObject.id,
             this.changeableProperties);
-        var propertyEditElementX = parentPosition.x + (<number> (this.bboxWidth - 50)/2);
-        var propertyEditElementY = parentPosition.y + this.bboxHeight - 50;
+        var propertyEditElementX = parentPosition.x + (<number> (this.boundingBox.width - 50)/2);
+        var propertyEditElementY = parentPosition.y + this.boundingBox.height - 50;
         this.propertyEditElement.setPosition(propertyEditElementX, propertyEditElementY);
     }
 
@@ -136,8 +142,8 @@ class DefaultDiagramNode implements DiagramNode {
         return (this.jointObject.get("position"))['y'];
     }
 
-    getSize() : string {
-        return String(this.bboxWidth) + ", " + String(this.bboxHeight);
+    getSize(): string {
+        return String(this.boundingBox.width) + ", " + String(this.boundingBox.height);
     }
 
     setPosition(x: number, y: number, zoom: number): void {
@@ -174,14 +180,14 @@ class DefaultDiagramNode implements DiagramNode {
         return this.changeableProperties;
     }
 
-    private getDefaultConstPropertiesPack(name: string): PropertiesPack {
-        var logical: Map<Property> = this.initConstLogicalProperties(name);
-        var graphical: Map<Property> = this.initConstGraphicalProperties(name);
+    private static getDefaultConstPropertiesPack(name: string): PropertiesPack {
+        var logical: Map<Property> = DefaultDiagramNode.initConstLogicalProperties(name);
+        var graphical: Map<Property> = DefaultDiagramNode.initConstGraphicalProperties(name);
         return new PropertiesPack(logical, graphical);
     }
 
-    private initConstLogicalProperties(name: string): Map<Property> {
-        var logical: Map<Property> = {};
+    private static initConstLogicalProperties(name: string): Map<Property> {
+        var logical: Map<Property>;
         logical["name"] = new Property("name", "QString", name);
         logical["from"] = new Property("from", "qReal::Id", "qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID");
         logical["linkShape"] = new Property("linkShape", "int", "0");
@@ -190,8 +196,8 @@ class DefaultDiagramNode implements DiagramNode {
         return logical;
     }
 
-    private initConstGraphicalProperties(name: string): Map<Property> {
-        var graphical: Map<Property> = {};
+    private static initConstGraphicalProperties(name: string): Map<Property> {
+        var graphical: Map<Property>;
         graphical["name"] = new Property("name", "QString", name);
         graphical["to"] = new Property("to", "qreal::Id", "qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID");
         graphical["configuration"] = new Property("configuration", "QPolygon", "0, 0 : 50, 0 : 50, 50 : 0, 50 : ");
@@ -208,35 +214,39 @@ class DefaultDiagramNode implements DiagramNode {
         };
     }
 
-    setResizingFields(bbox, x: number, y: number, paddingPercent) : void {
-        this.isTopResizing = DefaultDiagramNode.isTopBorderClicked(bbox, x, y, paddingPercent);
-        this.isBottomResizing = DefaultDiagramNode.isBottomBorderClicked(bbox, x, y, paddingPercent);
-        this.isRightResizing = DefaultDiagramNode.isRightBorderClicked(bbox, x, y, paddingPercent);
-        this.isLeftResizing = DefaultDiagramNode.isLeftBorderClicked(bbox, x, y, paddingPercent);
-        this.lastMousePositionX = x;
-        this.lastMousePositionY = y;
+    initResize(bbox, x: number, y: number, paddingPercent): void {
+        this.resizeParameters = {
+            isTopResizing: DefaultDiagramNode.isTopBorderClicked(bbox, x, y, paddingPercent),
+            isBottomResizing: DefaultDiagramNode.isBottomBorderClicked(bbox, x, y, paddingPercent),
+            isRightResizing: DefaultDiagramNode.isRightBorderClicked(bbox, x, y, paddingPercent),
+            isLeftResizing: DefaultDiagramNode.isLeftBorderClicked(bbox, x, y, paddingPercent),
+        };
+        this.lastMousePosition.x = x;
+        this.lastMousePosition.y = y;
     }
-    clearResizingFlags() : void {
-        this.isTopResizing = false;
-        this.isBottomResizing = false;
-        this.isRightResizing = false;
-        this.isLeftResizing = false;
+    completeResize(): void {
+        this.resizeParameters = {
+            isTopResizing: false,
+            isBottomResizing: false,
+            isRightResizing: false,
+            isLeftResizing: false,
+        };
     }
 
     private static isLeftBorderClicked(bbox, x, y, paddingPercent): boolean {
         return (x <= bbox.x + paddingPercent && x >= bbox.x - paddingPercent &&
-        y <= bbox.y + bbox.height + paddingPercent && y >= bbox.y - paddingPercent);
+            y <= bbox.y + bbox.height + paddingPercent && y >= bbox.y - paddingPercent);
     }
     private static isRightBorderClicked(bbox, x, y, paddingPercent): boolean {
         return (x <= bbox.x + bbox.width + paddingPercent && x >= bbox.x + bbox.width - paddingPercent &&
-        y <= bbox.y + bbox.height + paddingPercent && y >= bbox.y - paddingPercent);
+            y <= bbox.y + bbox.height + paddingPercent && y >= bbox.y - paddingPercent);
     }
     private static isTopBorderClicked(bbox, x, y, paddingPercent): boolean {
         return (x <= bbox.x + bbox.width + paddingPercent && x >= bbox.x - paddingPercent &&
-        y <= bbox.y + paddingPercent && y >= bbox.y - paddingPercent);
+            y <= bbox.y + paddingPercent && y >= bbox.y - paddingPercent);
     }
     private static isBottomBorderClicked(bbox, x, y, paddingPercent): boolean {
         return (x <= bbox.x + bbox.width + paddingPercent && x >= bbox.x - paddingPercent &&
-        y <= bbox.y + bbox.height + paddingPercent && y >= bbox.y + bbox.height - paddingPercent);
+            y <= bbox.y + bbox.height + paddingPercent && y >= bbox.y + bbox.height - paddingPercent);
     }
 }

@@ -10,8 +10,8 @@ class SubprogramNode extends DefaultDiagramNode {
     private textObject: joint.shapes.basic.Text;
 
     constructor(name: string, type: string, x: number, y: number, width: number, height: number,
-                properties: Map<Property>, imagePath: string,
-                subprogramDiagramId: string, id?: string, notDefaultConstProperties?: PropertiesPack) {
+                properties: Map<Property>, imagePath: string, subprogramDiagramId: string, id?: string,
+                notDefaultConstProperties?: PropertiesPack) {
         super(name, type, x, y, width, height, properties, imagePath, id, notDefaultConstProperties);
         this.subprogramDiagramId = subprogramDiagramId;
 

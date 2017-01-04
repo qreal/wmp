@@ -2,6 +2,9 @@
 /// <reference path="Property.ts" />
 /// <reference path="../../../vendor.d.ts" />
 
+const defaultNodeWidth = 50;
+const defaultNodeHeight = 50;
+
 class NodeType {
 
     private name: string;
