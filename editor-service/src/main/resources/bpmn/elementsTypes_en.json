@@ -1,0 +1,259 @@
+{
+
+    "elements": {
+
+        "ControlFlow": {
+            "name": "Control flow",
+            "image": {
+                "src": "images/bpmn/regular-sequence-flow.svg"
+            },
+            "attrs": {
+                ".connection": { "stroke": "black" },
+                ".marker-target": { "fill": "black", "d": "M 10 0 L 0 5 L 10 10 z" }
+            },
+            "properties": [
+                {
+                    "key": "Guard",
+                    "name": "Guard",
+                    "type": "combobox",
+                    "value": "",
+                    "variants": [
+                        {
+                            "key": "false",
+                            "value": "false"
+                        },
+                        {
+                            "key": "iteration",
+                            "value": "iteration"
+                        },
+                        {
+                            "key": "true",
+                            "value": "true"
+                        }
+                    ]
+                }
+            ]
+        },
+
+        "ConditionalFlow": {
+            "name": "Conditional flow",
+            "image": {
+                "src": "images/bpmn/conditional-sequence-flow.svg"
+            },
+            "attrs": {
+                ".connection": { "stroke": "black" },
+                ".marker-source": { "fill": "white", "d": "M 10 0 L 0 5 L 10 10 L 20 5 z" },
+                ".marker-target": { "fill": "black", "d": "M 10 0 L 0 5 L 10 10 z" }
+            },
+            "properties": [
+                {
+                    "key": "Guard",
+                    "name": "Guard",
+                    "type": "combobox",
+                    "value": "",
+                    "variants": [
+                        {
+                            "key": "false",
+                            "value": "false"
+                        },
+                        {
+                            "key": "iteration",
+                            "value": "iteration"
+                        },
+                        {
+                            "key": "true",
+                            "value": "true"
+                        }
+                    ]
+                }
+            ]
+        },
+
+        "DefaultFlow": {
+            "name": "Default flow",
+            "image": {
+                "src": "images/bpmn/default-sequence-flow.svg"
+            },
+            "attrs": {
+                ".connection": { "stroke": "black" },
+                ".marker-source": { "fill": "black", "d": "M 5 0 L 15 15 L 10 7.5 L 0 7.5 L 15 7.5 L 10 7.5 z" },
+                ".marker-target": { "fill": "black", "d": "M 10 0 L 0 5 L 10 10 z" }
+            },
+            "properties": [
+                {
+                    "key": "Guard",
+                    "name": "Guard",
+                    "type": "combobox",
+                    "value": "",
+                    "variants": [
+                        {
+                            "key": "false",
+                            "value": "false"
+                        },
+                        {
+                            "key": "iteration",
+                            "value": "iteration"
+                        },
+                        {
+                            "key": "true",
+                            "value": "true"
+                        }
+                    ]
+                }
+            ]
+        },
+
+        "MessageFlow": {
+            "name": "Message flow",
+            "image": {
+                "src": "images/bpmn/message-flow.svg"
+            },
+            "attrs": {
+                ".connection": { "stroke": "black", "stroke-dasharray": "9 6" },
+                ".marker-source": { "fill": "white", "d": "M0,5a5,5 0 1,0 10,0a5,5 0 1,0 -10,0" },
+                ".marker-target": { "fill": "white", "d": "M 10 0 L 0 5 L 10 10 z" }
+            },
+            "properties": [
+                {
+                    "key": "Guard",
+                    "name": "Guard",
+                    "type": "combobox",
+                    "value": "",
+                    "variants": [
+                        {
+                            "key": "false",
+                            "value": "false"
+                        },
+                        {
+                            "key": "iteration",
+                            "value": "iteration"
+                        },
+                        {
+                            "key": "true",
+                            "value": "true"
+                        }
+                    ]
+                }
+            ]
+        },
+
+        "AssociationFlow": {
+            "name": "Association flow",
+            "image": {
+                "src": "images/bpmn/association-flow.svg"
+            },
+            "attrs": {
+                ".connection": { "stroke": "black", "stroke-dasharray": "9 6" }
+            },
+            "properties": [
+                {
+                    "key": "Guard",
+                    "name": "Guard",
+                    "type": "combobox",
+                    "value": "",
+                    "variants": [
+                        {
+                            "key": "false",
+                            "value": "false"
+                        },
+                        {
+                            "key": "iteration",
+                            "value": "iteration"
+                        },
+                        {
+                            "key": "true",
+                            "value": "true"
+                        }
+                    ]
+                }
+            ]
+        },
+
+        "DataAssociationFlow": {
+            "name": "Data association flow",
+            "image": {
+                "src": "images/bpmn/data-association-flow.svg"
+            },
+            "attrs": {
+                ".connection": { "stroke": "black", "stroke-dasharray": "9 6" },
+                ".marker-target": { "fill": "black", "d": "M 10 0 L 0 5 L 10 10 L 0 5 L 10 5 L 0 5 z" }
+            },
+            "properties": [
+                {
+                    "key": "Guard",
+                    "name": "Guard",
+                    "type": "combobox",
+                    "value": "",
+                    "variants": [
+                        {
+                            "key": "false",
+                            "value": "false"
+                        },
+                        {
+                            "key": "iteration",
+                            "value": "iteration"
+                        },
+                        {
+                            "key": "true",
+                            "value": "true"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+
+    "categoriesNames": {
+        "Events": "Events",
+        "Gateways": "Gateways"
+    },
+
+    "blocks": {
+
+        "Message": {
+            "name": "Message",
+            "image": {
+                "src": "images/bpmn/{0}.svg"
+            },
+            "subtypes": {
+                "Start" : [
+                    "Regular",
+                    "Non-interrupting"
+                ],
+                "Intermediate": [
+                    "Catch",
+                    "Non-interrupting",
+                    "Throw"
+                ],
+                "End": [
+                    "Regular"
+                ]
+            }
+        },
+
+        "Timer": {
+            "name": "Timer",
+            "image": {
+                "src": "images/bpmn/{0}.svg"
+            },
+            "subtypes": {
+                "Start" : [
+                    "Regular",
+                    "Non-interrupting"
+                ],
+                "Intermediate": [
+                    "Catch",
+                    "Catch-non-interrupting"
+                ]
+            }
+        },
+
+        "Subprogram": {
+            "name": "Subprogram",
+            "image": {
+                "src": "images/subprogramRobotsBlock.svg"
+            }
+        }
+    }
+
+}

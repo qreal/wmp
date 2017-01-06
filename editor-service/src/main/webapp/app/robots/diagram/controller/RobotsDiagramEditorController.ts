@@ -22,6 +22,11 @@ class RobotsDiagramEditorController extends DiagramEditorController {
         document.addEventListener('mousedown', (event) => { this.gesturesController.onMouseDown(event) } );
         document.addEventListener('mouseup', (event) => { this.gesturesController.onMouseUp(event) } );
         $("#" + scene.getId()).mousemove((event) => { this.gesturesController.onMouseMove(event) } );
+        $("#elements-search").on('input', (event) => {
+            this.paletteController.searchPaletteReload(event, this.elementTypes, this.nodeTypesMap);
+            this.paletteController.initDraggable();
+            this.paletteController.initClick(this.diagramEditor.getScene());
+        } );
 
         (scene as any).on('cell:pointerdown', (cellView, event, x, y): void => {
             this.cellPointerdownListener(cellView, event, x, y);
@@ -47,25 +52,7 @@ class RobotsDiagramEditorController extends DiagramEditorController {
 
         this.elementsTypeLoader.load((elementTypes: ElementTypes): void => {
             this.handleLoadedTypes(elementTypes);
-        }, "robots");
-    }
-
-    public handleLoadedTypes(elementTypes: ElementTypes): void {
-        this.propertyEditorController = new PropertyEditorController(this.sceneController, this.undoRedoController);
-
-        for (var typeName in elementTypes.uncategorisedTypes) {
-            this.nodeTypesMap[typeName] = elementTypes.uncategorisedTypes[typeName];
-        }
-
-        var categories: Map<Map<NodeType>> = elementTypes.paletteTypes.categories;
-        for (var category in categories) {
-            for (var typeName in categories[category]) {
-                this.nodeTypesMap[typeName] = categories[category][typeName];
-            }
-        }
-
-        this.paletteController.appendBlocksPalette(elementTypes.paletteTypes);
-        this.paletteController.initDraggable();
+        }, "", "robots");
     }
 
     public openTwoDModel(): void {

@@ -1,4 +1,4 @@
-<%@ include file="../include/properties.jsp" %>
+<%@ include file="../../include/properties.jsp" %>
 
 <div id="two-d-model-area" class="unselectable" ng-controller="TwoDModelEngineFacadeImpl" style="display: none">
     <ul id="two-d-model-scene-context-menu" class='custom-menu'>

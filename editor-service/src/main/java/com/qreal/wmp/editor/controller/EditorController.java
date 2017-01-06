@@ -34,12 +34,13 @@ public class EditorController {
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ModelAndView index(@RequestParam("path") String path) {
         logger.info("User {} requested " + path + " editor", AuthenticatedUser.getUserName());
-        return new ModelAndView(path + "/editor");
+        return new ModelAndView("editor/" + path + "/editor");
     }
 
     @ResponseBody
     @RequestMapping(value = "/getTypes", method = RequestMethod.POST)
-    public JsonNode getTypes(@RequestParam(value = "task") String task) throws IOException {
+    public JsonNode getTypes(@RequestParam(value = "kit") String kit,
+                             @RequestParam(value = "task") String task) throws IOException {
         return typesLoader.getTypesJson(task);
     }
 }

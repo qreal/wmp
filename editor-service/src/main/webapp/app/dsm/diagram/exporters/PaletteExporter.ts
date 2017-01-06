@@ -14,7 +14,7 @@ class PaletteExporter {
         var nodes = [];
         for (var id in nodesMap) {
             var node: DiagramNode = nodesMap[id];
-            if (node.getName() === "Entity") {
+            if (node.getName() === "entity") {
                 var newNode = new TNode();
                 newNode.name = node.getChangeableProperties()['name'].value;
                 newNode.image = GeneralConstants.APP_ROOT_PATH + "images/" + node.getChangeableProperties()['image'].value + ".svg";

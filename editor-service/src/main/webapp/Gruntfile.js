@@ -14,6 +14,10 @@ module.exports = function (grunt) {
                 src: ["app/dsm/diagram/**/*.ts"],
                 out: "resources/js/compiled/dsm.js"
             },
+            bpmnEditor: {
+                src: ["app/bpmn/diagram/**/*.ts"],
+                out: "resources/js/compiled/bpmnEditor.js"
+            },
             interpreter: {
                 src: ["app/robots/interpreter/**/*.ts"],
                 out: "resources/js/compiled/interpreter.js"
@@ -29,10 +33,11 @@ module.exports = function (grunt) {
             menu: {
                 src: ["app/common/menu/**/*.ts"],
                 out: "resources/js/compiled/menu.js"
-            }
+            },
         }
     });
 
     grunt.loadNpmTasks("grunt-ts");
-    grunt.registerTask("default", ["ts:root", "ts:interpreter", "ts:twoDModelRobots", "ts:gestures", "ts:menu", "ts:robotsEditor", "ts:dsm"]);
+    grunt.registerTask("default", ["ts:root", "ts:interpreter", "ts:twoDModelRobots", "ts:gestures", "ts:menu",
+        "ts:robotsEditor", "ts:dsm", "ts:bpmnEditor"]);
 }

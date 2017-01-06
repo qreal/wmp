@@ -27,7 +27,13 @@ class PaletteDiagramEditorController extends DiagramEditorController {
         $scope.loadMetaEditor = () => { this.loadMetaEditor(); };
         this.elementsTypeLoader.load((elementTypes: ElementTypes): void => {
             this.handleLoadedTypes(elementTypes);
-        }, "dsm");
+        }, "", "dsm");
+
+        $("#elements-search").on('input', (event) => {
+            this.paletteController.searchPaletteReload(event, this.elementTypes, this.nodeTypesMap);
+            this.paletteController.initDraggable();
+            this.paletteController.initClick(this.diagramEditor.getScene());
+        } );
 
         var controller = this;
         try {
@@ -39,24 +45,6 @@ class PaletteDiagramEditorController extends DiagramEditorController {
         catch (e) {
             console.log("Error: can't get folder tree", e);
         }
-    }
-
-    public handleLoadedTypes(elementTypes: ElementTypes): void {
-        this.propertyEditorController = new PropertyEditorController(this.sceneController, this.undoRedoController);
-
-        for (var typeName in elementTypes.uncategorisedTypes) {
-            this.nodeTypesMap[typeName] = elementTypes.uncategorisedTypes[typeName];
-        }
-
-        var categories: Map<Map<NodeType>> = elementTypes.paletteTypes.categories;
-        for (var category in categories) {
-            for (var typeName in categories[category]) {
-                this.nodeTypesMap[typeName] = categories[category][typeName];
-            }
-        }
-
-        this.paletteController.appendBlocksPalette(elementTypes.paletteTypes);
-        this.paletteController.initDraggable();
     }
 
     public createPalette() {
@@ -107,7 +95,7 @@ class PaletteDiagramEditorController extends DiagramEditorController {
         var controller = this;
         try {
             var palette = controller.getClient().loadPalette(controller.getPaletteIdByName(paletteName));
-            controller.changePalette(controller.parser.parse(palette))
+            controller.changePalette(controller.parser.parse(palette));
             controller.meta = false;
         }
         catch (e) {
@@ -121,7 +109,7 @@ class PaletteDiagramEditorController extends DiagramEditorController {
         this.paletteController.clearBlocksPalette();
         this.elementsTypeLoader.load((elementTypes: ElementTypes): void => {
             this.handleLoadedTypes(elementTypes);
-        }, "dsm");
+        }, "", "dsm");
     }
 
     private getPaletteIdByName(paletteName: string) {
@@ -135,7 +123,7 @@ class PaletteDiagramEditorController extends DiagramEditorController {
     private addLinks() {
         var properties: Map<Property> = {};
         properties["Guard"] = new Property("Guard", "combobox", "");
-        var node: NodeType = new NodeType("Link", properties);
+        var node: NodeType = new NodeType("Link", properties, "");
         this.nodeTypesMap["ControlFlow"] = node;
     }
 
@@ -145,7 +133,7 @@ class PaletteDiagramEditorController extends DiagramEditorController {
         return new PaletteServiceThriftClient(protocol);
     }
 
-    private changePalette(newPalette: PaletteTypes) {
+    private changePalette(newPalette: PaletteTree) {
         this.clearState();
         this.paletteController.clearBlocksPalette();
         this.paletteController.appendBlocksPalette(newPalette);

@@ -5,9 +5,9 @@ class PaletteParser {
         this.controller = controller;
     }
 
-    public parse(json: any): PaletteTypes {
-        var newPalette = new PaletteTypes();
-        var basePalette: Map<NodeType> = {};
+    public parse(json: any): PaletteTree {
+        var newPalette = new PaletteTree();
+        var basePalette = new PaletteTree();
         var nodes = json.nodes;
         var nodeTypesMap = {};
         for (var i = 0; i < nodes.length; i++) {
@@ -23,11 +23,11 @@ class PaletteParser {
                 }
             }
             var node = new NodeType(nodeName, nodeProperties, nodeImage);
-            basePalette[nodeName] = node;
+            basePalette.nodes.push(node);
             nodeTypesMap[nodeName] = node;
         }
         this.controller.setNodeTypesMap(nodeTypesMap);
-        newPalette.categories[name] = basePalette;
+        newPalette.categories[json.name] = basePalette;
         return(newPalette);
     }
 }

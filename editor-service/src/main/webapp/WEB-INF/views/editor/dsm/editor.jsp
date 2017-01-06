@@ -1,12 +1,12 @@
-<%@ include file="../include/include.jsp" %>
+<%@ include file="../../include/include.jsp" %>
 
 <head>
   <title>DSM platform</title>
 
-  <%@ include file="../include/properties.jsp" %>
+  <%@ include file="../../include/properties.jsp" %>
 
-  <jsp:include page="../include/scripts.jsp" flush="true"/>
-  <jsp:include page="../include/properties.jsp" flush="true"/>
+  <jsp:include page="../../include/scripts.jsp" flush="true"/>
+  <jsp:include page="../../include/properties.jsp" flush="true"/>
 
   <script src="<c:url value='/resources/thrift/struct/Diagram_types.js'/> "></script>
   <script src="<c:url value='/resources/thrift/struct/Palette_types.js'/> "></script>
