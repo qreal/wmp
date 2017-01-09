@@ -101,9 +101,7 @@ public class EditorServletHandler implements EditorServiceThrift.Iface {
         }
     }
 
-    /**
-     * Deletes diagram with specified id.
-     */
+    /** Deletes diagram with specified id.*/
     @Override
     public void deleteDiagram(long diagramId) {
         DiagramService diagramService = (DiagramService) context.getBean("diagramService");
@@ -202,9 +200,7 @@ public class EditorServletHandler implements EditorServiceThrift.Iface {
         }
     }
 
-    /**
-     * Returns root folder of user.
-     */
+    /** Returns root folder of user.*/
     @Override
     public TFolder getFolderTree() {
         DiagramService diagramService = (DiagramService) context.getBean("diagramService");
@@ -227,9 +223,7 @@ public class EditorServletHandler implements EditorServiceThrift.Iface {
         return result;
     }
 
-    /**
-     * Add user to owners.
-     */
+    @Override
     public void addUserToOwners(long folderId, String username) {
         DiagramService diagramService = (DiagramService) context.getBean("diagramService");
 

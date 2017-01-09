@@ -6,5 +6,5 @@ service PaletteServiceThrift {
 //CRUD Palettes
     i64 createPalette(1: Palette.TPalette palette),
     Palette.TPalette loadPalette(1: i64 paletteId),
-    set<Palette.TPaletteView> getPalettes()
+    set<Palette.TPaletteView> getPaletteViews()
 }

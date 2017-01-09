@@ -8,5 +8,5 @@ service PaletteDbService {
                                                            2: DbExceptions.TAborted aborted);
 
     Palette.TPalette loadPalette(1: i64 paletteId) throws (1: DbExceptions.TNotFound e);
-    set<Palette.TPaletteView> getPalettes(1: string username) throws (1: DbExceptions.TNotFound e)
+    set<Palette.TPaletteView> getPaletteViewsByUserName(1: string username) throws (1: DbExceptions.TNotFound e)
 }

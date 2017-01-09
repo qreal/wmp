@@ -1,9 +1,10 @@
 package com.qreal.wmp.editor.database.exceptions.translation;
 
-import com.qreal.wmp.editor.database.palettes.client.PaletteServiceImpl;
+import com.qreal.wmp.editor.database.diagrams.client.DiagramServiceImpl;
 import com.qreal.wmp.editor.database.exceptions.AbortedException;
 import com.qreal.wmp.editor.database.exceptions.ErrorConnectionException;
 import com.qreal.wmp.editor.database.exceptions.NotFoundException;
+import com.qreal.wmp.editor.database.palettes.client.PaletteServiceImpl;
 import com.qreal.wmp.editor.database.users.client.UserServiceImpl;
 import com.qreal.wmp.thrift.gen.*;
 import org.apache.thrift.TException;
@@ -22,9 +23,11 @@ import org.springframework.stereotype.Component;
 @EnableAspectJAutoProxy(proxyTargetClass = true)
 public class ExceptionTranslationClients {
 
-    private static final Logger loggerDiagrams = LoggerFactory.getLogger(PaletteServiceImpl.class);
+    private static final Logger loggerDiagrams = LoggerFactory.getLogger(DiagramServiceImpl.class);
 
     private static final Logger loggerUsers = LoggerFactory.getLogger(UserServiceImpl.class);
+
+    private static final Logger LoggerPalettes = LoggerFactory.getLogger(PaletteServiceImpl.class);
 
     /**
      * Advice will be weaved to UserService class and will provide translation from
@@ -81,6 +84,37 @@ public class ExceptionTranslationClients {
         } catch (TException e) {
             loggerDiagrams.error("Client DiagramService encountered a problem with connection");
             throw new ErrorConnectionException(UserServiceImpl.class.getName(), "Client DiagramService encountered" +
+                    " a problem while sending request");
+        }
+        return null;
+    }
+
+    /**
+     * Advice will be weaved to PaletteService class and will provide translation from
+     * Thrift exceptions to application specific. Weaving performed by Spring at application
+     * initialization step.
+     */
+    @Around("execution(* com.qreal.wmp.editor.database.palettes.client.*.*(..))")
+    public Object catchExceptionPalettes(ProceedingJoinPoint joinPoint) throws Throwable {
+        try {
+            return joinPoint.proceed();
+        } catch (TIdNotDefined e) {
+            LoggerPalettes.error("Client PaletteService encountered an IdNotDefined exception.", e);
+        } catch (TIdAlreadyDefined e) {
+            LoggerPalettes.error("Client PaletteService encountered an IdAlreadyDefined exception.", e);
+        } catch (TAborted e) {
+            throw new AbortedException(e.getTextCause(), e.getMessage(), e.getFullClassName());
+        } catch (TErrorConnection e) {
+            throw new ErrorConnectionException(e.getClientName(), e.getMessage());
+        } catch (TNotFound e) {
+            throw new NotFoundException(e.getId(), e.getMessage());
+        } catch (TTransportException e) {
+            LoggerPalettes.error("Client PaletteService encountered a problem while opening transport.", e);
+            throw new ErrorConnectionException(UserServiceImpl.class.getName(), "Client PaletteService encountered " +
+                    "a problem  while opening transport.");
+        } catch (TException e) {
+            LoggerPalettes.error("Client PaletteService encountered a problem with connection");
+            throw new ErrorConnectionException(UserServiceImpl.class.getName(), "Client PaletteService encountered" +
                     " a problem while sending request");
         }
         return null;

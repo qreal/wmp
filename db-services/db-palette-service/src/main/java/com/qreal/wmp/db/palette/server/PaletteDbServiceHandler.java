@@ -49,11 +49,11 @@ public class PaletteDbServiceHandler implements PaletteDbService.Iface {
     }
 
     @Override
-    public Set<TPaletteView> getPalettes(String username) throws TNotFound {
+    public Set<TPaletteView> getPaletteViewsByUserName(String username) throws TNotFound {
         Set<PaletteView> palettes;
         Set<TPaletteView> result = new HashSet<>();
         try {
-            palettes = paletteDao.getPalettes(username);
+            palettes = paletteDao.getPaletteViewsByUserName(username);
         } catch (NotFoundException e) {
             throw new TNotFound(username, "Palettes for specified user not found.");
         }

@@ -20,7 +20,7 @@ import java.util.Set;
 
 /**
  * Thrift PaletteRest controller.
- * RPC functions for palette: createPalette
+ * RPC functions for palette: createPalette, loadPalette, getPaletteViews
  */
 public class PaletteServletHandler implements PaletteServiceThrift.Iface {
 
@@ -33,7 +33,7 @@ public class PaletteServletHandler implements PaletteServiceThrift.Iface {
     }
 
     /**
-     * Creates palette and assign it id.
+     * Creates palette and assigns it id.
      *
      * @param palette palette to create (Id must not be set)
      * @return new id of a palette
@@ -80,26 +80,24 @@ public class PaletteServletHandler implements PaletteServiceThrift.Iface {
         return result;
     }
 
-    /**
-     * Returns created palettes of user.
-     */
+    /** Returns created palettes of user.*/
     @Override
-    public Set<TPaletteView> getPalettes() {
+    public Set<TPaletteView> getPaletteViews() {
         PaletteService paletteService = (PaletteService) context.getBean("paletteService");
         Set<TPaletteView> result = new HashSet<>();
         try {
             String userName = AuthenticatedUser.getUserName();
-            Set<PaletteView> palettes = paletteService.getPalettes(userName);
+            Set<PaletteView> palettes = paletteService.getPaletteViewsByUserName(userName);
             for (PaletteView palette: palettes) {
                 result.add(palette.toTPalette());
             }
         } catch (NotFoundException e) {
             //TODO Here we should not return null, but send exception to client side.
-            logger.error("getPalette method encountered exception NotFound. Instead of palettes will be " +
+            logger.error("getPaletteViews method encountered exception NotFound. Instead of palettes will be " +
                     "returned null.", e);
         } catch (ErrorConnectionException e) {
             //TODO Here we should not return null, but send exception to client side.
-            logger.error("getPalettes method encountered exception ErrorConnection. Instead of palettes will be " +
+            logger.error("getPaletteViews method encountered exception ErrorConnection. Instead of palettes will be " +
                     "returned null.", e);
         } catch (TException e) {
             logger.error("TException was not translated", e);

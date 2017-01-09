@@ -1,5 +1,6 @@
 package com.qreal.wmp.db.palette.dao;
 
+import com.qreal.wmp.db.palette.exceptions.AbortedException;
 import com.qreal.wmp.db.palette.exceptions.NotFoundException;
 import com.qreal.wmp.db.palette.model.Palette;
 import com.qreal.wmp.db.palette.model.PaletteView;
@@ -10,9 +11,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Transactional
 public class PaletteDaoImpl implements PaletteDao {
@@ -24,13 +25,8 @@ public class PaletteDaoImpl implements PaletteDao {
         this.sessionFactory = sessionFactory;
     }
 
-    /**
-     * Saves a palette at local DB using Hibernate ORM.
-     *
-     * @param palette palette to create (Id must not be set)
-     */
     @Override
-    public Long createPalette(@NotNull Palette palette) {
+    public Long createPalette(@NotNull Palette palette) throws AbortedException {
         logger.trace("createPalette() was called with parameters: name = {}.", palette.getPaletteName());
         Session session = sessionFactory.getCurrentSession();
         session.save(palette);
@@ -52,24 +48,17 @@ public class PaletteDaoImpl implements PaletteDao {
         return palette;
     }
 
-    /**
-     * Returns user's palettes.
-     * @param userName name of a user
-     */
     @Override
     @NotNull
-    public Set<PaletteView> getPalettes(String userName) throws NotFoundException {
-        logger.trace("getPalettes() called with parameters: user = {}", userName);
+    public Set<PaletteView> getPaletteViewsByUserName(String userName) {
+        logger.trace("getPaletteViewsByUserName() called with parameters: user = {}", userName);
         Session session = sessionFactory.getCurrentSession();
 
-        Set<PaletteView> result = new HashSet<>();
         List<Palette> palettes = session.createQuery("from Palette where userName=:userName").
                 setParameter("userName", userName).list();
-        logger.trace("getPalettes() extracted list of results from session with {} elements.", palettes.size());
-        for (int i = 0; i < palettes.size(); i++) {
-            Palette palette = palettes.get(i);
-            result.add(new PaletteView(palette.getId(), palette.getPaletteName()));
-        }
-        return result;
+        logger.trace("getPaletteViewsByUserName() extracted list of results from session with {} elements.",
+                palettes.size());
+
+        return palettes.stream().map(p -> new PaletteView(p.getId(), p.getPaletteName())).collect(Collectors.toSet());
     }
 }

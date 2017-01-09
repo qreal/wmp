@@ -11,19 +11,23 @@ import java.util.Set;
 /** DAO for palette DB. */
 public interface PaletteDao {
     /**
-     * Saves a palette and creates Id for it.
+     * Saves a palette at local DB using Hibernate ORM and creates Id for it.
      * @param palette  palette to save (Id must not be set)
-     * @return new id of a palette
+     * @return id of a palette
      */
     Long createPalette(@NotNull Palette palette) throws AbortedException;
-
 
     /** Returns a palette.
      *  @param paletteId id of a palette
      *  @return palette
+     *  @throws NotFoundException if the palette with the paletteId was not found in DB
      */
     @NotNull Palette getPalette(Long paletteId) throws NotFoundException;
 
-    /** Returns user's created palettes.*/
-    @NotNull Set<PaletteView> getPalettes(String userName) throws NotFoundException;
+    /**
+     *  Returns user's created palettes (name and id of palettes).
+     *  @param userName name of a user
+     *  @return palette views for user having the userName
+     */
+    @NotNull Set<PaletteView> getPaletteViewsByUserName(String userName) throws NotFoundException;
 }

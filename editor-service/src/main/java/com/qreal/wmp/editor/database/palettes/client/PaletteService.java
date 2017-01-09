@@ -17,13 +17,14 @@ public interface PaletteService {
      * @param palette  palette to save
      * @return new id of palette
      */
+    @NotNull
     Long createPalette(@NotNull Palette palette) throws AbortedException, ErrorConnectionException, TException;
 
     /** Returns palette.*/
     @NotNull
-    Palette loadPalette(long paletteId) throws NotFoundException, ErrorConnectionException, TException;
+    Palette loadPalette(@NotNull long paletteId) throws NotFoundException, ErrorConnectionException, TException;
 
     /** Returns palettes of user.*/
-    @NotNull
-    Set<PaletteView> getPalettes(String username) throws NotFoundException, ErrorConnectionException, TException;
+    Set<PaletteView> getPaletteViewsByUserName(String username) throws NotFoundException, ErrorConnectionException,
+            TException;
 }

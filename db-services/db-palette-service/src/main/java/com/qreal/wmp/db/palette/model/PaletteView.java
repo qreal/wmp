@@ -3,7 +3,7 @@ package com.qreal.wmp.db.palette.model;
 import com.qreal.wmp.thrift.gen.TPaletteView;
 import lombok.Data;
 
-/* View of palette for client side.*/
+/* View of palette for client side (only id and name).*/
 @Data
 public class PaletteView
 {

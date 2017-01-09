@@ -11,7 +11,6 @@ import java.util.stream.Collectors;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
-/** Palette. */
 @Entity
 @Table(name = "palettes")
 @Data

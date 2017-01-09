@@ -14,7 +14,7 @@ class PaletteDiagramEditorController extends DiagramEditorController {
     private exporter: PaletteExporter;
     private parser: PaletteParser;
     private palettes: PaletteView[] = [];
-    private meta: boolean = true;
+    private availableCreate: boolean = true;
 
     constructor($scope, $attrs) {
         super($scope, $attrs);
@@ -37,7 +37,7 @@ class PaletteDiagramEditorController extends DiagramEditorController {
 
         var controller = this;
         try {
-            var tPalettes: TPaletteView[] = controller.getClient().getPalettes();
+            var tPalettes: TPaletteView[] = controller.getClient().getPaletteViews();
             for (var i = 0; i < tPalettes.length; i++) {
                 controller.palettes.push(PaletteView.createFromDAO(tPalettes[i]));
             }
@@ -48,16 +48,16 @@ class PaletteDiagramEditorController extends DiagramEditorController {
     }
 
     public createPalette() {
-        if (this.meta) {
+        if (this.availableCreate) {
             var name: string = prompt("input palette name");
-            if (name !== "" && name !== null) {
+            if (name !== null && name !== "") {
                 var controller = this;
                 var palette = this.exporter.exportPalette(controller.getNodesMap(), controller.getLinksMap(), name);
                 try {
                     var id = controller.getClient().createPalette(palette);
                     controller.changePalette(controller.parser.parse(palette));
                     controller.palettes.push(new PaletteView(id, name));
-                    this.meta = false;
+                    this.availableCreate = false;
                 }
                 catch (e) {
                     console.log("Error: can't create palette", e);
@@ -96,7 +96,7 @@ class PaletteDiagramEditorController extends DiagramEditorController {
         try {
             var palette = controller.getClient().loadPalette(controller.getPaletteIdByName(paletteName));
             controller.changePalette(controller.parser.parse(palette));
-            controller.meta = false;
+            controller.availableCreate = false;
         }
         catch (e) {
             console.log("Error: can't load palette", e);
@@ -104,7 +104,7 @@ class PaletteDiagramEditorController extends DiagramEditorController {
     }
 
     public loadMetaEditor() {
-        this.meta = true;
+        this.availableCreate = true;
         this.clearState();
         this.paletteController.clearBlocksPalette();
         this.elementsTypeLoader.load((elementTypes: ElementTypes): void => {
@@ -114,9 +114,8 @@ class PaletteDiagramEditorController extends DiagramEditorController {
 
     private getPaletteIdByName(paletteName: string) {
         for (var i = 0; i < this.palettes.length; i++) {
-            if ( this.palettes[i].getName() === paletteName) {
+            if ( this.palettes[i].getName() === paletteName)
                 return  this.palettes[i].getId();
-            }
         }
     }
 

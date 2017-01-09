@@ -22,8 +22,8 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /** Thrift client side of PaletteDbService.*/
 @Service("paletteService")
@@ -53,12 +53,13 @@ public class PaletteServiceImpl implements PaletteService {
     }
 
     @Override
-    public Long createPalette(@NotNull Palette palette) throws AbortedException, ErrorConnectionException, TException {
+    public @NotNull Long createPalette(@NotNull Palette palette) throws AbortedException, ErrorConnectionException,
+            TException {
         logger.trace("createPalette() was called with parameters: name = {}.", palette.getName());
         transport.open();
-        Long result;
         String user = AuthenticatedUser.getUserName();
         palette.setUserName(user);
+        Long result;
         try {
             TPalette newPalette = palette.toTPalette();
             result = client.createPalette(newPalette);
@@ -70,7 +71,7 @@ public class PaletteServiceImpl implements PaletteService {
     }
 
     @Override
-    public @NotNull Palette loadPalette(long paletteId) throws NotFoundException, ErrorConnectionException,
+    public @NotNull Palette loadPalette(@NotNull long paletteId) throws NotFoundException, ErrorConnectionException,
             TException {
         logger.trace("loadPalette() was called with parameters: paletteId = {}.", paletteId);
         TPalette tPalette;
@@ -85,22 +86,17 @@ public class PaletteServiceImpl implements PaletteService {
     }
 
     @Override
-    @NotNull
-    public Set<PaletteView> getPalettes(String userName) throws NotFoundException, ErrorConnectionException,
-            TException {
-        logger.trace("getPalettes() was called with parameters: owners = {}.", userName);
+    public Set<PaletteView> getPaletteViewsByUserName(String userName) throws NotFoundException,
+            ErrorConnectionException, TException {
+        logger.trace("getPaletteViews() was called with parameters: owners = {}.", userName);
         Set<TPaletteView> palettes;
         transport.open();
         try {
-            palettes = client.getPalettes(userName);
+            palettes = client.getPaletteViewsByUserName(userName);
         } finally {
             transport.close();
         }
-        logger.trace("getPalettes() successfully returned a palettes.");
-        Set<PaletteView> result = new HashSet<>();
-        for (TPaletteView tPalette: palettes) {
-            result.add(new PaletteView(tPalette));
-        }
-        return result;
+        logger.trace("getPaletteViews() successfully returned a palettes.");
+        return palettes.stream().map(tPalette -> new PaletteView(tPalette)).collect(Collectors.toSet());
     }
 }
