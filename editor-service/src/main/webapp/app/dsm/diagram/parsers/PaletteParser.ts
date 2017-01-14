@@ -5,17 +5,21 @@ class PaletteParser {
         this.controller = controller;
     }
 
-    public parse(json: any): PaletteTree {
+    public parse(typesJson: any): ElementTypes {
+        var diagramElementTypes: ElementTypes = new ElementTypes();
+        diagramElementTypes.blockTypes = this.parsePaletteTypes(typesJson.nodes);
+        return diagramElementTypes;
+    }
+
+    private parsePaletteTypes(json: any): PaletteTree {
         var newPalette = new PaletteTree();
         var basePalette = new PaletteTree();
-        var nodes = json.nodes;
-        var nodeTypesMap = {};
-        for (var i = 0; i < nodes.length; i++) {
-            var nodeName = nodes[i].name;
-            var nodeImage = nodes[i].image;
+        for (var i = 0; i < json.length; i++) {
+            var nodeName = json[i].name;
+            var nodeImage = json[i].image;
             var nodeProperties: Map<Property> = {};
-            if (nodes[i].properties) {
-                var properties = nodes[i].properties;
+            if (json[i].properties) {
+                var properties = json[i].properties;
                 for (var j = 0; j < properties.length; j++) {
                     var propertyName = properties[j].name;
                     var property: Property = new Property(propertyName, properties[j].type, properties[j].value);
@@ -24,10 +28,8 @@ class PaletteParser {
             }
             var node = new NodeType(nodeName, nodeProperties, nodeImage);
             basePalette.nodes.push(node);
-            nodeTypesMap[nodeName] = node;
         }
-        this.controller.setNodeTypesMap(nodeTypesMap);
-        newPalette.categories[json.name] = basePalette;
-        return(newPalette);
+        newPalette.categories["nodes"] = basePalette;
+        return newPalette;
     }
 }

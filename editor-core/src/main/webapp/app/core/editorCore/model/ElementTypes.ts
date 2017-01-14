@@ -5,7 +5,7 @@ class ElementTypes {
     uncategorisedTypes: Map<NodeType>;
     blockTypes: PaletteTree;
     flowTypes: PaletteTree;
-    linkPatterns: Map<joint.dia.Link>
+    linkPatterns: Map<joint.dia.Link>;
 
     constructor() {
         this.uncategorisedTypes = {};

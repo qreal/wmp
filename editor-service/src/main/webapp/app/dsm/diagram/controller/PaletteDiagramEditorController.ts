@@ -55,7 +55,9 @@ class PaletteDiagramEditorController extends DiagramEditorController {
                 var palette = this.exporter.exportPalette(controller.getNodesMap(), controller.getLinksMap(), name);
                 try {
                     var id = controller.getClient().createPalette(palette);
-                    controller.changePalette(controller.parser.parse(palette));
+                    controller.clearState();
+                    controller.paletteController.clearBlocksPalette();
+                    controller.handleLoadedTypes(controller.parser.parse(palette));
                     controller.palettes.push(new PaletteView(id, name));
                     this.availableCreate = false;
                 }
@@ -95,7 +97,9 @@ class PaletteDiagramEditorController extends DiagramEditorController {
         var controller = this;
         try {
             var palette = controller.getClient().loadPalette(controller.getPaletteIdByName(paletteName));
-            controller.changePalette(controller.parser.parse(palette));
+            controller.clearState();
+            controller.paletteController.clearBlocksPalette();
+            controller.handleLoadedTypes(controller.parser.parse(palette));
             controller.availableCreate = false;
         }
         catch (e) {
@@ -119,25 +123,9 @@ class PaletteDiagramEditorController extends DiagramEditorController {
         }
     }
 
-    private addLinks() {
-        var properties: Map<Property> = {};
-        properties["Guard"] = new Property("Guard", "combobox", "");
-        var node: NodeType = new NodeType("Link", properties, "");
-        this.nodeTypesMap["ControlFlow"] = node;
-    }
-
     private getClient(): PaletteServiceThriftClient {
         var transport = new Thrift.TXHRTransport(GeneralConstants.PALETTE_REST_SERVLET);
         var protocol = new Thrift.TJSONProtocol(transport);
         return new PaletteServiceThriftClient(protocol);
     }
-
-    private changePalette(newPalette: PaletteTree) {
-        this.clearState();
-        this.paletteController.clearBlocksPalette();
-        this.paletteController.appendBlocksPalette(newPalette);
-        this.paletteController.initDraggable();
-        this.addLinks();
-    }
-
 }

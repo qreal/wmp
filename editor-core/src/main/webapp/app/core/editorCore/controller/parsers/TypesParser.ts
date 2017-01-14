@@ -13,7 +13,7 @@ class TypesParser {
     public parse(typesJson: any): ElementTypes {
         var diagramElementTypes: ElementTypes = new ElementTypes();
         this.linkPatterns = {};
-        diagramElementTypes.uncategorisedTypes = this.parseGeneralTypes(typesJson.blocks.general);;
+        diagramElementTypes.uncategorisedTypes = this.parseGeneralTypes(typesJson.blocks.general);
         diagramElementTypes.blockTypes = this.parsePaletteTypes(typesJson.blocks.palette);
         diagramElementTypes.flowTypes = this.parseElementsTypes(typesJson.elements);
         var flowsMap: Map<NodeType> = diagramElementTypes.flowTypes.convertToMap();
