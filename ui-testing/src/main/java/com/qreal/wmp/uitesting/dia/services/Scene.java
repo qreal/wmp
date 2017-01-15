@@ -1,6 +1,7 @@
-package com.qreal.wmp.uitesting.dia;
+package com.qreal.wmp.uitesting.dia.services;
 
 import com.codeborne.selenide.SelenideElement;
+import com.qreal.wmp.uitesting.dia.model.SceneWindow;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;

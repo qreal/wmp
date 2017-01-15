@@ -1,4 +1,4 @@
-package com.qreal.wmp.uitesting.dia;
+package com.qreal.wmp.uitesting.dia.services;
 
 import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.By;

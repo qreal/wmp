@@ -4,9 +4,9 @@ import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.WebDriverRunner;
 import com.qreal.wmp.uitesting.Opener;
 import com.qreal.wmp.uitesting.config.AppInit;
-import com.qreal.wmp.uitesting.dia.Pallete;
-import com.qreal.wmp.uitesting.dia.PropertyEditor;
-import com.qreal.wmp.uitesting.dia.Scene;
+import com.qreal.wmp.uitesting.dia.services.Pallete;
+import com.qreal.wmp.uitesting.dia.services.PropertyEditor;
+import com.qreal.wmp.uitesting.dia.services.Scene;
 import io.github.bonigarcia.wdm.ChromeDriverManager;
 import org.junit.After;
 import org.junit.Before;
@@ -101,6 +101,22 @@ public class DiaTest {
         scene.moveToCell(motor, 0, 0);
         assert scene.getCell(motor).getWidth() == 0 && scene.getCell(motor).getHeight() == 0;
     }
+    
+     /*
+    @Test
+    public void test() {
+        final SelenideElement motor = scene.dragAndDrop(pallete.getElement("Motors Forward"));
+        scene.moveToCell(motor, 30, 40);
+
+        if (driver instanceof JavascriptExecutor) {
+            ((JavascriptExecutor) driver)
+                    .executeScript("var canvas = document.getElementsByClassName(\"scene-wrapper\")[0]; " +
+                            "var BB=canvas.getBoundingClientRect();" +
+                            "alert(canvas.scrollLeft)");
+            // driver.switchTo().alert().accept();
+        }
+    }
+*/
 
     /** Close the browser. */
     @After
