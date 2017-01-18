@@ -1,37 +1,31 @@
 package com.qreal.wmp.uitesting.dia.model;
 
 import com.codeborne.selenide.SelenideElement;
-import com.qreal.wmp.uitesting.exceptions.ElementNotInTheSceneException;
+import org.openqa.selenium.By;
 
-public class Block {
+import static com.codeborne.selenide.Selenide.$;
 
-	private final String name;
-	private final SelenideElement innerSeleniumObject;
-	private final String type;
-	
-	private final Coordinate coordinateOnScene;
-	
-	public Block(SelenideElement innerSeleniumObject, String name, String type) throws ElementNotInTheSceneException {
-		this.name = name;
-		this.innerSeleniumObject = innerSeleniumObject;
-		coordinateOnScene = Coordinate.getCoordinateFromSeleniumObject(innerSeleniumObject)
-				.orElseThrow(ElementNotInTheSceneException::new);
-		this.type = type;
-	}
-	
-	public SelenideElement getInnerSeleniumObject() {
-		return innerSeleniumObject;
-	}
-	
-	public String getName() {
-		return name;
-	}
-	
-	public String getType() {
-		return type;
-	}
-	
-	public Coordinate getCoordinateOnScene() {
-		return coordinateOnScene;
-	}
+public class Block extends SceneElement {
+    
+    public static final String className = "element devs ImageWithPorts";
+    
+    private final static String portClassName = "port0";
+    
+    private final String name;
+    
+    private final SceneElement port;
+    
+    public Block(String name, SelenideElement innerSeleniumObject) {
+        super(innerSeleniumObject);
+        this.name = name;
+        this.port = new SceneElement($(innerSeleniumObject.find(By.className(portClassName))));
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public SceneElement getPort() {
+        return port;
+    }
 }

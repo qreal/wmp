@@ -2,6 +2,7 @@ package com.qreal.wmp.uitesting.dia.model;
 
 import com.codeborne.selenide.SelenideElement;
 import com.qreal.wmp.uitesting.dia.services.Scene;
+import com.qreal.wmp.uitesting.exceptions.ElementNotOnTheSceneException;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Keys;
@@ -44,31 +45,27 @@ public class SceneWindow {
      * @param element element to move
      * @param dist position to move
      */
-    public void move(final SelenideElement element, final Dimension dist) {
-        Dimension src = scene.getPosition(element);
-        focus(src);
+    public void move(final Block element, final Coordinate dist) throws ElementNotOnTheSceneException {
+        Coordinate src = element.getCoordinateOnScene();
+        //focus(src);
 
-        if (src.getWidth() < dist.getWidth()) {
-            callDragAndDropByX(src.getWidth(), dist.getWidth(), stepHor,
-                    new Actions(driver), Keys.ARROW_RIGHT, element).perform();
+        if (src.getXAbsolute() < dist.getXAbsolute()) {
+            callDragAndDropByX(src.getXAbsolute(), dist.getXAbsolute(), stepHor,
+                    new Actions(driver), Keys.ARROW_RIGHT, element.getInnerSeleniumElement()).perform();
         } else {
-            callDragAndDropByX(src.getWidth(), dist.getWidth(), -stepHor,
-                    new Actions(driver), Keys.ARROW_LEFT, element).perform();
+            callDragAndDropByX(src.getXAbsolute(), dist.getXAbsolute(), -stepHor,
+                    new Actions(driver), Keys.ARROW_LEFT, element.getInnerSeleniumElement()).perform();
         }
 
-        if (src.getHeight() < dist.getHeight()) {
-            callDragAndDropByY(src.getHeight(), dist.getHeight(), stepVert,
-                    new Actions(driver), Keys.ARROW_DOWN, element).perform();
+        if (src.getYAbsolute() < dist.getYAbsolute()) {
+            callDragAndDropByY(src.getYAbsolute(), dist.getYAbsolute(), stepVert,
+                    new Actions(driver), Keys.ARROW_DOWN, element.getInnerSeleniumElement()).perform();
         } else {
-            callDragAndDropByY(src.getHeight(), dist.getHeight(), -stepVert,
-                    new Actions(driver), Keys.ARROW_UP, element).perform();
+            callDragAndDropByY(src.getYAbsolute(), dist.getYAbsolute(), -stepVert,
+                    new Actions(driver), Keys.ARROW_UP, element.getInnerSeleniumElement()).perform();
         }
 
-        Dimension currentPosition = scene.getPosition(element);
-        new Actions(driver).release().clickAndHold(element).moveByOffset(dist.getWidth() - currentPosition.getWidth(),
-                dist.getHeight() - currentPosition.getHeight()).release().perform();
-        currentPosition = scene.getPosition(element);
-        if (!currentPosition.equals(dist)) {
+        if (!finalJump(element, dist).equals(dist)) {
             move(element, dist);
         }
     }
@@ -94,25 +91,43 @@ public class SceneWindow {
     }
 
     private Actions callDragAndDropByX(int src, int dst, int step, Actions actions, Keys key, SelenideElement element) {
-        final List<SelenideElement> elements = scene.getAllBlocks();
+        final List<Block> elements = scene.getBlocks();
         return Math.abs(src - dst) > Math.abs(step) ? callDragAndDropByX(src + step, dst, step,
                 actions.sendKeys(key).clickAndHold(element).moveByOffset(jump(elements, 2 * step, src), 0),
                 key, element) : actions.sendKeys(key, key);
     }
 
     private Actions callDragAndDropByY(int src, int dst, int step, Actions actions, Keys key, SelenideElement element) {
-        final List<SelenideElement> elements = scene.getAllBlocks();
+        final List<Block> elements = scene.getBlocks();
         return Math.abs(src - dst) > Math.abs(step) ? callDragAndDropByY(src + step, dst, step,
                 actions.sendKeys(key).clickAndHold(element).moveByOffset(0, jump(elements, 2 * step, src)),
                 key, element) : actions.sendKeys(key, key);
     }
 
-    private int jump(final List<SelenideElement> elements, int step, int current) {
-        if (elements.stream().filter(x -> Math.abs(current - scene.getPosition(x).getWidth())
-                        < Math.abs(2 * step)).findFirst().isPresent()) {
+    private int jump(final List<Block> elements, int step, int current) {
+        if (elements.stream().filter(x -> {
+            try {
+                return Math.abs(current - x.getCoordinateOnScene().getXAbsolute())
+                        < Math.abs(2 * step);
+            } catch (ElementNotOnTheSceneException e) {
+                e.printStackTrace();
+            }
+            return false;
+        }).findFirst().isPresent()) {
             return step + jump(elements, step, step + current);
         } else  {
             return step;
         }
+    }
+    
+    private Coordinate finalJump(Block block, Coordinate dist) throws ElementNotOnTheSceneException {
+        
+        Coordinate currentPosition = block.getCoordinateOnScene();
+    
+        new Actions(driver).release().clickAndHold(block.getInnerSeleniumElement()).moveByOffset(
+                dist.getXAbsolute() - currentPosition.getXAbsolute(),
+                dist.getYAbsolute() - currentPosition.getYAbsolute()).release().perform();
+        
+        return  block.getCoordinateOnScene();
     }
 }

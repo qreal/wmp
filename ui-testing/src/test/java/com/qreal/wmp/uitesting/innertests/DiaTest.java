@@ -4,9 +4,12 @@ import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.WebDriverRunner;
 import com.qreal.wmp.uitesting.Opener;
 import com.qreal.wmp.uitesting.config.AppInit;
+import com.qreal.wmp.uitesting.dia.model.Block;
+import com.qreal.wmp.uitesting.dia.model.Link;
 import com.qreal.wmp.uitesting.dia.services.Pallete;
 import com.qreal.wmp.uitesting.dia.services.PropertyEditor;
 import com.qreal.wmp.uitesting.dia.services.Scene;
+import com.qreal.wmp.uitesting.exceptions.ElementNotOnTheSceneException;
 import io.github.bonigarcia.wdm.ChromeDriverManager;
 import org.junit.After;
 import org.junit.Before;
@@ -16,6 +19,7 @@ import org.junit.runner.RunWith;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
@@ -56,14 +60,14 @@ public class DiaTest {
     /** Drag element from pallete and drop on the scene. */
     @Test
     public void dragAndDrop() {
-        final SelenideElement initialNode = scene.dragAndDrop(pallete.getElement("Initial Node"));
+        final Block initialNode = scene.dragAndDrop(pallete.getElement("Initial Node"));
         assert scene.exist(initialNode);
     }
 
     /** Remove element from scene. */
     @Test
     public void remove() {
-        final SelenideElement sceneElement = scene.dragAndDrop(pallete.getElement("Initial Node"));
+        final Block sceneElement = scene.dragAndDrop(pallete.getElement("Initial Node"));
         assert scene.exist(sceneElement);
         scene.remove(sceneElement);
         assert !scene.exist(sceneElement);
@@ -72,11 +76,11 @@ public class DiaTest {
     /** Add two elements and link them. */
     @Test
     public void addLink() {
-        final SelenideElement initNode = scene.dragAndDrop(pallete.getElement("Initial Node"), 4, 4);
-        final SelenideElement finalNode = scene.dragAndDrop(pallete.getElement("Final Node"), 4, 70);
-        final SelenideElement motor = scene.dragAndDrop(pallete.getElement("Motors Forward"), 4, 7);
-        SelenideElement link = scene.addLink(initNode, motor);
-        SelenideElement link2 = scene.addLink(motor, finalNode);
+        final Block initNode = scene.dragAndDrop(pallete.getElement("Initial Node"), 4, 4);
+        final Block finalNode = scene.dragAndDrop(pallete.getElement("Final Node"), 4, 70);
+        final Block motor = scene.dragAndDrop(pallete.getElement("Motors Forward"), 4, 7);
+        Link link = scene.addLink(initNode, motor);
+        Link link2 = scene.addLink(motor, finalNode);
         scene.moveToCell(motor, 72, 64);
         assert scene.exist(link);
         assert scene.exist(link2);
@@ -85,21 +89,25 @@ public class DiaTest {
     /** Set property 'Ports' of motor forward item to '123' and checks that all is correct. */
     @Test
     public void propertyEditor() {
-        final SelenideElement motor = scene.dragAndDrop(pallete.getElement("Motors Forward"));
-        propertyEditor.setProperty(motor, "Ports", "123");
-        assert propertyEditor.getProperty(motor, "Ports").equals("123");
+        final Block motor = scene.dragAndDrop(pallete.getElement("Motors Forward"));
+        propertyEditor.setProperty(motor.getInnerSeleniumElement(), "Ports", "123");
+        assert propertyEditor.getProperty(motor.getInnerSeleniumElement(), "Ports").equals("123");
     }
 
     /** Move element to cell. */
     @Test
     public void moveElement() {
-        final SelenideElement motor = scene.dragAndDrop(pallete.getElement("Motors Forward"));
-        scene.moveToCell(motor, 40, 40);
-        assert scene.getCell(motor).getWidth() == 40 && scene.getCell(motor).getHeight() == 40;
-        scene.moveToCell(motor, 72, 64);
-        assert scene.getCell(motor).getWidth() == 72 && scene.getCell(motor).getHeight() == 64;
-        scene.moveToCell(motor, 0, 0);
-        assert scene.getCell(motor).getWidth() == 0 && scene.getCell(motor).getHeight() == 0;
+        final Block motor = scene.dragAndDrop(pallete.getElement("Motors Forward"));
+        try {
+            scene.moveToCell(motor, 40, 40);
+            assert motor.getCoordinateOnScene().getXCell() == 40 && motor.getCoordinateOnScene().getYCell() == 40;
+            scene.moveToCell(motor, 72, 64);
+            assert motor.getCoordinateOnScene().getXCell() == 72 && motor.getCoordinateOnScene().getYCell() == 64;
+            scene.moveToCell(motor, 0, 0);
+            assert motor.getCoordinateOnScene().getXCell() == 0 && motor.getCoordinateOnScene().getYCell() == 0;
+        } catch (ElementNotOnTheSceneException e) {
+            e.printStackTrace();
+        }
     }
     
      /*

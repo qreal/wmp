@@ -1,9 +1,10 @@
 package com.qreal.wmp.uitesting.dia.services;
 
 import com.codeborne.selenide.SelenideElement;
-import com.qreal.wmp.uitesting.dia.model.SceneWindow;
+import com.qreal.wmp.uitesting.dia.model.*;
+import com.qreal.wmp.uitesting.exceptions.ElementNotOnTheSceneException;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
+import org.openqa.selenium.NotFoundException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.slf4j.Logger;
@@ -11,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
@@ -26,7 +28,9 @@ public class Scene {
 
     private static final Logger logger = LoggerFactory.getLogger(Pallete.class);
 
-    private Set<SelenideElement> elements = new HashSet<>();
+    private Set<Block> blocks = new HashSet<>();
+    
+    private Set<Link> links = new HashSet<>();
 
     private WebDriver driver;
 
@@ -41,12 +45,13 @@ public class Scene {
      * @param element chosen web element
      * @return element from scene
      */
-    public SelenideElement dragAndDrop(final SelenideElement element) {
+    public Block dragAndDrop(final SelenideElement element) {
         element.dragAndDropTo(selector);
-        final SelenideElement newEl = updateScene().get();
-        elements.add(newEl);
+        final SelenideElement newEl = updateBlocks().orElseThrow(NotFoundException::new);
+        Block newBlock = new Block("name", newEl);
+        blocks.add(newBlock);
         logger.info("Add element {} to scene", newEl);
-        return newEl;
+        return newBlock;
     }
 
     /**
@@ -57,91 +62,98 @@ public class Scene {
      * @param cell_y y-coordinate of cell
      * @return element from scene
      */
-    public SelenideElement dragAndDrop(final SelenideElement element, int cell_x, int cell_y) {
-        SelenideElement newEl = dragAndDrop(element);
-        moveToCell(newEl, cell_x, cell_y);
-        return newEl;
+    public Block dragAndDrop(final SelenideElement element, int cell_x, int cell_y) {
+        Block newBlock = dragAndDrop(element);
+        moveToCell(newBlock, cell_x, cell_y);
+        return newBlock;
     }
 
     /** Move element to cell. */
-    public void moveToCell(final SelenideElement element, final int cell_x, final int cell_y) {
+    public void moveToCell(final Block block, final int cell_x, final int cell_y) {
         SceneWindow sceneWindow = new SceneWindow(this, driver);
-        logger.info("Move element {} to cell ({}, {})", element, cell_x, cell_y);
-        sceneWindow.move(element, new Dimension(cell_x * 25, cell_y * 25));
+        logger.info("Move element {} to cell ({}, {})", block, cell_x, cell_y);
+        try {
+            sceneWindow.move(block, new Coordinate(cell_x * 25, cell_y * 25));
+        } catch (ElementNotOnTheSceneException e) {
+            e.printStackTrace();
+        }
     }
 
-    /** Focus the element. */
-    public void focus(final SelenideElement element) {
+    /** Focus the element.
+    public void focus(final SceneElement element) {
         SceneWindow sceneWindow = new SceneWindow(this, driver);
         logger.info("Focus on the element {}", element);
-        sceneWindow.focus(getPosition(element));
-    }
-
-    /** Return the cell where element hold. */
-    public Dimension getCell(SelenideElement element) {
-        Dimension result = getPosition(element);
-        return new Dimension(result.getWidth() / 25, result.getHeight() / 25);
-    }
+        sceneWindow.focus(new Dimension(element.getCoordinateOnScene().getXAbsolute(),
+                element.getCoordinateOnScene().getYAbsolute()));
+    }*/
 
     /** Check if element exist on the scene. */
-    public boolean exist(SelenideElement selenideElement) {
-        return elements.stream().anyMatch(element -> element.equals(selenideElement));
+    public boolean exist(SceneElement element) {
+        return blocks.stream().anyMatch(element::equals) || links.stream().anyMatch(element::equals);
     }
-
-    /** Return the position of element in coordinates. */
-    public Dimension getPosition(final SelenideElement selenideElement) {
-        final String position = selenideElement.attr("transform");
-        final String[] pairStr = position.substring(position.indexOf('(') + 1, position.indexOf(')')).split(",");
-        return new Dimension(Integer.valueOf(pairStr[0]), Integer.valueOf(pairStr[1]));
-    }
-
+    
     /** Remove element from the scene. */
-    public void remove(final SelenideElement selenideElement) {
-        assert selenideElement != null;
-        logger.info("Remove element {} form scene", selenideElement);
-        elements.remove(selenideElement);
-        new Actions(driver).contextClick(selenideElement).build().perform();
+    public void remove(final SceneElement sceneElement) {
+        assert sceneElement != null;
+        logger.info("Remove element {} form scene", sceneElement);
+        //elements.remove(selenideElement);
+        new Actions(driver).contextClick(sceneElement.getInnerSeleniumElement()).build().perform();
         $(By.id("scene-context-menu")).click();
-        Set<SelenideElement> newSet = new HashSet<>();
-        $$(By.cssSelector(selector + " #v_7 > *")).stream().filter(x -> x != null).forEach(newSet::add);
-        elements = newSet;
-
+        blocks = $$(By.cssSelector(selector + " #v_7 > *")).stream().filter(Block.className::equals).map(x ->
+                new Block("name", x)).collect(Collectors.toSet());
+        links = $$(By.cssSelector(selector + " #v_7 > *")).stream().filter(Block.className::equals).map(x ->
+                new Link("name", x)).collect(Collectors.toSet());
+    
     }
 
     /** Remove all elements from the scene. */
     public void clean() {
-        if (!elements.isEmpty()) {
-            remove(elements.stream().findFirst().get());
+        if (!links.isEmpty()) {
+            remove(links.stream().findFirst().get());
             clean();
         } else {
-            logger.info("Clean scene");
+            if (!blocks.isEmpty()) {
+                remove(blocks.stream().findFirst().get());
+                clean();
+            } else {
+                logger.info("Clean scene");
+            }
         }
     }
 
     /** Add link between two elements. */
-    public SelenideElement addLink(final SelenideElement source, final SelenideElement target) {
-        final SelenideElement begin = $(By.cssSelector(selector + " #" + source.attr("id") + " .outPorts"));
+    public Link addLink(final Block source, final Block target) {
+        final SelenideElement begin = $(By.cssSelector(selector + " #" +
+                source.getInnerSeleniumElement().attr("id") + " .outPorts"));
         logger.info("Begin element {}, end element {} ", begin, target);
-        new Actions(driver).dragAndDrop(begin, target).build().perform();
-        SelenideElement newEl = updateScene().get();
+        new Actions(driver).dragAndDrop(source.getPort().getInnerSeleniumElement(),
+                target.getInnerSeleniumElement()).build().perform();
+        SelenideElement newEl = updateLinks().get();
         logger.info("Add link {}", newEl);
-        elements.add(newEl);
-        return newEl;
+        Link res = new Link("link", newEl);
+        links.add(res);
+        return res;
     }
 
     /** Return all blocks. */
-    public List<SelenideElement> getAllBlocks() {
-        List<SelenideElement> result = new ArrayList<>();
-        elements.stream().filter(x -> !x.attr("class").equals("link")).forEach(result::add);
-        return result;
+    public List<Block> getBlocks() {
+        return blocks.stream().collect(Collectors.toList());
     }
-
+    
     /** Return new element of the scene. */
-    private Optional<SelenideElement> updateScene() {
+    private Optional<SelenideElement> updateBlocks() {
         final List<SelenideElement> allElements = $$(By.cssSelector(selector + " #v_7 > *"));
-        return allElements.stream().filter(htmlElement -> !elements.stream().anyMatch(selenideElement ->
-                htmlElement.attr("id").equals(selenideElement.attr("id")))).findFirst();
-
+        return allElements.stream().filter(htmlElement ->
+                htmlElement.attr("class").contains("element devs ImageWithPorts") &&
+                        !blocks.stream().anyMatch(block ->
+                                block.getInnerSeleniumElement().attr("id").equals(htmlElement.attr("id")))).findFirst();
+    }
+    
+    private Optional<SelenideElement> updateLinks() {
+        final List<SelenideElement> allElements = $$(By.cssSelector(selector + " #v_7 > *"));
+        return allElements.stream().filter(htmlElement -> htmlElement.attr("class").contains("link") &&
+                !links.stream().anyMatch(link ->
+                    htmlElement.attr("id").equals(link.getInnerSeleniumElement().attr("id")))).findFirst();
     }
 
 }

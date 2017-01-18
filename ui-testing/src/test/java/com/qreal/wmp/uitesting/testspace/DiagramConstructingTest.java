@@ -4,6 +4,8 @@ import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.WebDriverRunner;
 import com.qreal.wmp.uitesting.Opener;
 import com.qreal.wmp.uitesting.config.AppInit;
+import com.qreal.wmp.uitesting.dia.model.Block;
+import com.qreal.wmp.uitesting.dia.model.Link;
 import com.qreal.wmp.uitesting.dia.services.Pallete;
 import com.qreal.wmp.uitesting.dia.services.PropertyEditor;
 import com.qreal.wmp.uitesting.dia.services.Scene;
@@ -40,8 +42,8 @@ public class DiagramConstructingTest {
 
     private WebDriver driver;
 
-    private ArrayList<SelenideElement> elements;
-    private ArrayList<SelenideElement> links;
+    private ArrayList<Block> elements;
+    private ArrayList<Link> links;
 
     /** Setup ChromeDriverManager. */
     @BeforeClass
@@ -85,12 +87,12 @@ public class DiagramConstructingTest {
 
     @Test
     public void fillProperties() {
-        propertyEditor.setProperty(elements.get(1), "Power", "80");
-        assert propertyEditor.getProperty(elements.get(1), "Power").equals("80");
-        propertyEditor.setProperty(elements.get(2), "Color", "green");
-        assert propertyEditor.getProperty(elements.get(2), "Color").equals("green");
-        propertyEditor.setProperty(elements.get(3), "Delay", "200");
-        assert propertyEditor.getProperty(elements.get(3), "Delay").equals("200");
+        propertyEditor.setProperty(elements.get(1).getInnerSeleniumElement(), "Power", "80");
+        assert propertyEditor.getProperty(elements.get(1).getInnerSeleniumElement(), "Power").equals("80");
+        propertyEditor.setProperty(elements.get(2).getInnerSeleniumElement(), "Color", "green");
+        assert propertyEditor.getProperty(elements.get(2).getInnerSeleniumElement(), "Color").equals("green");
+        propertyEditor.setProperty(elements.get(3).getInnerSeleniumElement(), "Delay", "200");
+        assert propertyEditor.getProperty(elements.get(3).getInnerSeleniumElement(), "Delay").equals("200");
     }
 
     @After
