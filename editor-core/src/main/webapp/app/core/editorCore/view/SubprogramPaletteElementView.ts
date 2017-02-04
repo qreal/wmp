@@ -1,7 +1,6 @@
-/// <reference path="HtmlView.ts" />
-/// <reference path="../../../utils/StringUtils.ts" />
-
-class SubprogramPaletteElementView extends HtmlView {
+import {StringUtils} from "../../../utils/StringUtils";
+import {HtmlView} from "./HtmlView";
+export class SubprogramPaletteElementView extends HtmlView {
 
     private imageWidth: number = 30;
     private imageHeight: number = 30;

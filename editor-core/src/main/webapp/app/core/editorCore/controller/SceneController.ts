@@ -1,14 +1,20 @@
-/// <reference path="DiagramEditorController.ts" />
-/// <reference path="../model/DiagramScene.ts" />
-/// <reference path="../model/DiagramElement.ts" />
-/// <reference path="../model/DiagramNode.ts" />
-/// <reference path="../model/DefaultDiagramNode.ts" />
-/// <reference path="../model/commands/Command.ts"/>
-/// <reference path="../model/commands/SceneCommandFactory.ts" />
-/// <reference path="../../../vendor.d.ts" />
-/// <reference path="../../../common/constants/MouseButton.ts" />
-
-class SceneController {
+import {MultiCommand} from "../model/commands/MultiCommand";
+import {Command} from "../model/commands/Command";
+import {Link} from "../model/Link";
+import {DiagramNode} from "../model/DiagramNode";
+import {DefaultDiagramNode} from "../model/DefaultDiagramNode";
+import {DiagramScene} from "../model/DiagramScene";
+import {MouseButton} from "../../../common/constants/MouseButton";
+import {DiagramElement} from "../model/DiagramElement";
+import {SubprogramNode} from "../model/SubprogramNode";
+import {Property} from "../model/Property";
+import {Map} from "../model/Map";
+import {NodeType} from "../model/NodeType";
+import {DiagramElementListener} from "./DiagramElementListener";
+import {SceneCommandFactory} from "../model/commands/SceneCommandFactory";
+import {DiagramEditorController} from "./DiagramEditorController";
+import {UndoRedoController} from "./UndoRedoController";
+export class SceneController {
 
     private diagramEditorController: DiagramEditorController;
     private scene: DiagramScene;

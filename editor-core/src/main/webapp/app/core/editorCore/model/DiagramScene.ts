@@ -1,10 +1,9 @@
-/// <reference path="Map.ts" />
-/// <reference path="DiagramNode.ts" />
-/// <reference path="Link.ts" />
-/// <reference path="../../../core/editorCore/controller/DiagramElementListener.ts" />
-/// <reference path="../../../vendor.d.ts" />
-
-class DiagramScene extends joint.dia.Paper {
+import {Link} from "./Link";
+import {Map} from "./Map";
+import {DiagramNode} from "./DiagramNode";
+import {SubprogramNode} from "./SubprogramNode";
+import {DiagramElementListener} from "../controller/DiagramElementListener";
+export class DiagramScene extends joint.dia.Paper {
 
     private htmlId: string;
     private graph: joint.dia.Graph;

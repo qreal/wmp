@@ -1,4 +1,4 @@
-class TwoDPosition {
+export class TwoDPosition {
     x: number;
     y: number;
 

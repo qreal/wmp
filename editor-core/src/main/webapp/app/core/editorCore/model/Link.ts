@@ -1,10 +1,9 @@
-/// <reference path="DiagramElement.ts" />
-/// <reference path="PropertiesPack.ts" />
-/// <reference path="Map.ts" />
-/// <reference path="Property.ts" />
-/// <reference path="../../../vendor.d.ts" />
-
-class Link implements DiagramElement {
+import {Property} from "./Property";
+import {Map} from "./Map";
+import {PropertiesPack} from "./PropertiesPack";
+import {UIDGenerator} from "../controller/UIDGenerator";
+import {DiagramElement} from "./DiagramElement";
+export class Link implements DiagramElement {
 
     private logicalId: string;
     private jointObject: joint.dia.Link;

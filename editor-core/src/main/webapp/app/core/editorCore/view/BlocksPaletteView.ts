@@ -1,9 +1,8 @@
-/// <reference path="HtmlView.ts" />
-/// <reference path="CategoryView.ts" />
-/// <reference path="../../../core/editorCore/model/Map.ts" />
-/// <reference path="../../../core/editorCore/model/NodeType.ts" />
-
-class BlocksPaletteView extends HtmlView {
+import {CategoryView} from "./CategoryView";
+import {PaletteTree} from "../model/PaletteTree";
+import {HtmlView} from "./HtmlView";
+import {Map} from "../model/Map";
+export class BlocksPaletteView extends HtmlView {
 
     constructor(paletteTypes: PaletteTree, elementClass: string) {
         super();

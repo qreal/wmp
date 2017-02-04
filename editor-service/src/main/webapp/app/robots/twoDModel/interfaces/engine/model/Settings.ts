@@ -1,3 +1,3 @@
-interface Settings {
+export interface Settings {
 
 }

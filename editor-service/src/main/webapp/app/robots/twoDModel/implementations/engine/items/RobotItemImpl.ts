@@ -1,16 +1,13 @@
-/// <reference path="SensorItem.ts" />
-/// <reference path="SonarSensorItem.ts" />
-/// <reference path="../StageScroller.ts" />
-/// <reference path="../model/Marker.ts" />
-/// <reference path="../../robotModel/robotParts/RangeSensor.ts" />
-/// <reference path="../../../interfaces/engine/items/RobotItem.ts" />
-/// <reference path="../../../interfaces/engine/model/WorldModel.ts" />
-/// <reference path="../../../interfaces/engine/model/RobotModel.ts" />
-/// <reference path="../../../interfaces/robotModel/DeviceInfo.ts" />
-/// <reference path="../../../types/TwoDPosition.ts" />
-/// <reference path="../../../../../vendor.d.ts" />
-
-class RobotItemImpl implements RobotItem {
+import {Marker} from "../model/Marker";
+import {SensorItem} from "./SensorItem";
+import {SonarSensorItem} from "./SonarSensorItem";
+import {RangeSensor} from "../../robotModel/robotParts/RangeSensor";
+import {StageScroller} from "../StageScroller";
+import {RobotItem} from "../../../interfaces/engine/items/RobotItem";
+import {TwoDPosition} from "../../../types/TwoDPosition";
+import {WorldModel} from "../../../interfaces/engine/model/WorldModel";
+import {DeviceInfo} from "../../../interfaces/robotModel/DeviceInfo";
+export class RobotItemImpl implements RobotItem {
 
     private worldModel: WorldModel;
     private marker: Marker;

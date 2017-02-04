@@ -1,10 +1,12 @@
-/// <reference path="../../model/Map.ts" />
-/// <reference path="../../model/NodeType.ts" />
-/// <reference path="../../model/ElementTypes.ts" />
-/// <reference path="../../../../common/constants/GeneralConstants.d.ts" />
-/// <reference path="../../../../vendor.d.ts" />
-
-class TypesParser {
+import {VariantListMapper} from "../VariantListMapper";
+import {Variant} from "../../model/Variant";
+import {Property} from "../../model/Property";
+import {Map} from "../../model/Map";
+import {NodeType} from "../../model/NodeType";
+import {PaletteTree} from "../../model/PaletteTree";
+import {GeneralConstants} from "../../../../common/constants/GeneralConstants";
+import {ElementTypes} from "../../model/ElementTypes";
+export class TypesParser {
 
     private currentProperties: Map<Property>;
     private linkPatterns: Map<joint.dia.Link>;

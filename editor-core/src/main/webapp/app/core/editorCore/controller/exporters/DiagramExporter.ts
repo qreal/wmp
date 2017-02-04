@@ -1,10 +1,10 @@
-/// <reference path="../../model/DiagramParts.ts" />
-/// <reference path="../../model/DiagramNode.ts" />
-/// <reference path="../../model/Map.ts" />
-/// <reference path="../../model/Property.ts" />
-/// <reference path="../../../../vendor.d.ts" />
-
-class DiagramExporter {
+import {Property} from "../../model/Property";
+import {Map} from "../../model/Map";
+import {Link} from "../../model/Link";
+import {DiagramParts} from "../../model/DiagramParts";
+import {SubprogramNode} from "../../model/SubprogramNode";
+import {DiagramNode} from "../../model/DiagramNode";
+export class DiagramExporter {
 
     public exportDiagramStateToJSON(graph: joint.dia.Graph, diagramParts: DiagramParts) {
         var json = {

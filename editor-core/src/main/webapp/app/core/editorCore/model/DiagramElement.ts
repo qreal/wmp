@@ -1,8 +1,7 @@
-/// <reference path="PropertiesPack.ts" />
-/// <reference path="Map.ts" />
-/// <reference path="Property.ts" />
-
-interface DiagramElement {
+import {Property} from "./Property";
+import {Map} from "./Map";
+import {PropertiesPack} from "./PropertiesPack";
+export interface DiagramElement {
     getLogicalId(): string;
     getJointObject();
     getName(): string;

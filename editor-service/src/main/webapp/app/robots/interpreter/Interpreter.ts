@@ -1,9 +1,10 @@
-/// <reference path="BlockFactory.ts" />
-/// <reference path="../../common/interfaces/editorCore.d.ts" />
-/// <reference path="../../common/interfaces/two-d-model-core.d.ts" />
-/// <reference path="../../common/interfaces/vendor.d.ts" />
-
-class Interpreter {
+import {AbstractBlock} from "./Blocks/AbstractBlock";
+import {BlockFactory} from "./BlockFactory";
+import {DiagramNode} from "core/editorCore/model/DiagramNode";
+import {Map} from "core/editorCore/model/Map";
+import {Link} from "core/editorCore/model/Link";
+import {Timeline} from "../twoDModel/interfaces/engine/model/Timeline";
+export class Interpreter {
 
     private userVariablesMap: Map<any>;
     private environmentVariablesMap: Map<any>;

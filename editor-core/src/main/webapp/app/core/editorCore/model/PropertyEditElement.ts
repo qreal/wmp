@@ -1,8 +1,7 @@
-/// <reference path="Map.ts" />
-/// <reference path="Property.ts" />
-/// <reference path="../../../vendor.d.ts" />
-
-class PropertyEditElement {
+import {StringUtils} from "../../../utils/StringUtils";
+import {Property} from "./Property";
+import {Map} from "./Map";
+export class PropertyEditElement {
 
     private static propertyTemplate = "" +
         "<span>{3}:</span> " +

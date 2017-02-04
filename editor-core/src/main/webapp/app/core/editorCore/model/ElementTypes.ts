@@ -1,6 +1,7 @@
-/// <reference path="NodeType.ts" />
-
-class ElementTypes {
+import {PaletteTree} from "./PaletteTree";
+import {Map} from "./Map";
+import {NodeType} from "./NodeType";
+export class ElementTypes {
 
     uncategorisedTypes: Map<NodeType>;
     blockTypes: PaletteTree;

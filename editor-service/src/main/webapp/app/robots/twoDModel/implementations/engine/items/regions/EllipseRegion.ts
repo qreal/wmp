@@ -1,8 +1,7 @@
-/// <reference path="RegionItem.ts" />
-/// <reference path="../../../../interfaces/engine/model/WorldModel.ts" />
-/// <reference path="../../../../types/TwoDPosition.ts" />
-
-class EllipseRegion extends RegionItem {
+import {RegionItem} from "./RegionItem";
+import {TwoDPosition} from "../../../../types/TwoDPosition";
+import {WorldModel} from "../../../../interfaces/engine/model/WorldModel";
+export class EllipseRegion extends RegionItem {
 
     constructor(worldModel: WorldModel) {
         super(worldModel);

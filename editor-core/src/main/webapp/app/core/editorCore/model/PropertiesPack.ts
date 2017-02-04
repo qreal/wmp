@@ -1,7 +1,6 @@
-/// <reference path="Map.ts" />
-/// <reference path="Property.ts" />
-
-class PropertiesPack {
+import {Property} from "./Property";
+import {Map} from "./Map";
+export class PropertiesPack {
 
     logical: Map<Property>;
     graphical: Map<Property>;

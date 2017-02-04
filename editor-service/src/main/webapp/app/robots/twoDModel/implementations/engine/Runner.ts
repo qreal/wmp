@@ -1,7 +1,6 @@
-/// <reference path="model/DisplayWidget.ts" />
-/// <reference path="../../interfaces/engine/items/RobotItem.ts" />
-
-class Runner {
+import {RobotItem} from "../../interfaces/engine/items/RobotItem";
+import {DisplayWidget} from "./model/DisplayWidget";
+export class Runner {
 
     private timeoutId: number;
     private boost: number = 2;

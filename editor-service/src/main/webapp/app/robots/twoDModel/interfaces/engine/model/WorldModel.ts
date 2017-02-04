@@ -1,6 +1,4 @@
-/// <reference path="../../../../../vendor.d.ts"/>
-
-interface WorldModel {
+export interface WorldModel {
     setDrawLineMode(): void;
     setDrawWallMode(): void;
     setDrawPencilMode(): void;

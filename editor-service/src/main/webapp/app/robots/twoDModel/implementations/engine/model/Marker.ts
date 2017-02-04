@@ -1,8 +1,6 @@
-/// <reference path="../../../types/TwoDPosition.ts" />
-/// <reference path="../../../utils/MathUtils.ts" />
-/// <reference path="../../../../../vendor.d.ts" />
-
-class Marker {
+import {MathUtils} from "../../../utils/MathUtils";
+import {TwoDPosition} from "../../../types/TwoDPosition";
+export class Marker {
 
     private paper: RaphaelPaper;
     private down: boolean;

@@ -1,9 +1,10 @@
-/// <reference path="../../robotModel/DeviceInfo.ts" />
-/// <reference path="../../../types/TwoDPosition.ts" />
-/// <reference path="../../../implementations/robotModel/TwoDRobotModel.ts" />
-/// <reference path="../../../implementations/engine/model/SensorsConfiguration.ts" />
-
-interface RobotModel {
+import {DisplayWidget} from "../../../implementations/engine/model/DisplayWidget";
+import {Device} from "../../robotModel/robotParts/Device";
+import {SensorsConfiguration} from "../../../implementations/engine/model/SensorsConfiguration";
+import {TwoDPosition} from "../../../types/TwoDPosition";
+import {DeviceInfo} from "../../robotModel/DeviceInfo";
+import {TwoDRobotModel} from "../../../implementations/robotModel/TwoDRobotModel";
+export interface RobotModel {
     info(): TwoDRobotModel;
     removeSensorItem(portName: string): void;
     addSensorItem(portName: string, deviceType: DeviceInfo, isInteractive: boolean, position?: TwoDPosition,

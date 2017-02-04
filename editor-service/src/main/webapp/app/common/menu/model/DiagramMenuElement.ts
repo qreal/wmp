@@ -1,4 +1,4 @@
-class DiagramMenuElement {
+export class DiagramMenuElement {
 
     private name: string;
     private type: string;

@@ -1,10 +1,8 @@
-/// <reference path="DefaultDiagramNode.ts" />
-/// <reference path="Map.ts" />
-/// <reference path="Property.ts" />
-/// <reference path="PropertiesPack.ts" />
-/// <reference path="../../../vendor.d.ts" />
-
-class SubprogramNode extends DefaultDiagramNode {
+import {PropertiesPack} from "./PropertiesPack";
+import {Property} from "./Property";
+import {Map} from "./Map";
+import {DefaultDiagramNode} from "./DefaultDiagramNode";
+export class SubprogramNode extends DefaultDiagramNode {
 
     private subprogramDiagramId: string;
     private textObject: joint.shapes.basic.Text;

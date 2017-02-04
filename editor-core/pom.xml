@@ -22,12 +22,25 @@
         <finalName>editor-core</finalName>
         <plugins>
 
+            <!-- Configure maven clean-->
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <version>2.2</version>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>3.0.0</version>
                 <configuration>
-                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                    <filesets>
+                        <fileset>
+                            <directory>target</directory>
+                        </fileset>
+                        <fileset>
+                            <directory>src/main/webapp/resources/js/compiled</directory>
+                        </fileset>
+                        <fileset>
+                            <directory>src/main/webapp/node_modules</directory>
+                        </fileset>
+                        <fileset>
+                            <directory>src/main/webapp/.tscache</directory>
+                        </fileset>
+                    </filesets>
                 </configuration>
             </plugin>
 
@@ -117,13 +130,5 @@
             </plugin>
         </plugins>
     </reporting>
-
-    <dependencies>
-        <dependency>
-            <groupId>com.github.eirslett</groupId>
-            <artifactId>frontend-maven-plugin</artifactId>
-            <version>1.0</version>
-        </dependency>
-    </dependencies>
 
 </project>

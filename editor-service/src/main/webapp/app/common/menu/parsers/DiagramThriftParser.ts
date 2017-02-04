@@ -1,8 +1,16 @@
-/// <reference path="../../interfaces/editorCore.d.ts" />
-/// <reference path="../../interfaces/vendor.d.ts" />
-
-
-class DiagramThriftParser extends DiagramJsonParser {
+/// <reference path="../../../../resources/thrift/editor/EditorService_types.d.ts" />
+/// <reference path="../../../../resources/thrift/struct/Diagram_types.d.ts" />
+/// <reference path="../../../../resources/thrift/editor/EditorServiceThrift.d.ts" />
+/// <reference path="../../../../resources/types/thrift/Thrift.d.ts" />
+import {Property} from "core/editorCore/model/Property";
+import {Map} from "core/editorCore/model/Map";
+import {Link} from "core/editorCore/model/Link";
+import {NodeType} from "core/editorCore/model/NodeType";
+import {DefaultDiagramNode} from "core/editorCore/model/DefaultDiagramNode";
+import {DiagramNode} from "core/editorCore/model/DiagramNode";
+import {DiagramParts} from "core/editorCore/model/DiagramParts";
+import {DiagramJsonParser} from "core/editorCore/controller/parsers/DiagramJsonParser";
+export class DiagramThriftParser extends DiagramJsonParser {
 
     public parse(diagram: TDiagram, nodeTypesMap: Map<NodeType>, linkPatterns: Map<joint.dia.Link>): DiagramParts {
         var diagramParts: DiagramParts = this.parseNodes(diagram, nodeTypesMap, 0, 0);

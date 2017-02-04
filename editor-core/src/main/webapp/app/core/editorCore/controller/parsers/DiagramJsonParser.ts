@@ -1,14 +1,15 @@
-/// <reference path="../../model/SubprogramDiagramNode.ts" />
-/// <reference path="../../model/DiagramNode.ts" />
-/// <reference path="../../model/Link.ts" />
-/// <reference path="../../model/DiagramParts.ts" />
-/// <reference path="../../model/NodeType.ts" />
-/// <reference path="../../model/Map.ts" />
-/// <reference path="../../model/Property.ts" />
-/// <reference path="../../../../utils/MathUtils.ts" />
-/// <reference path="../../../../vendor.d.ts" />
-
-class DiagramJsonParser {
+import {Link} from "../../model/Link";
+import {NodeType} from "../../model/NodeType";
+import {Property} from "../../model/Property";
+import {Map} from "../../model/Map";
+import {PropertiesPack} from "../../model/PropertiesPack";
+import {DefaultDiagramNode} from "../../model/DefaultDiagramNode";
+import {SubprogramNode} from "../../model/SubprogramNode";
+import {DiagramNode} from "../../model/DiagramNode";
+import {SubprogramDiagramNode} from "../../model/SubprogramDiagramNode";
+import {DiagramParts} from "../../model/DiagramParts";
+import {MathUtils} from "../../../../utils/MathUtils";
+export class DiagramJsonParser {
 
     public parse(diagramJson: any, nodeTypesMap: Map<NodeType>, linkPatterns: Map<joint.dia.Link>): DiagramParts {
         var minPos: {x: number; y: number} = this.findMinPosition(diagramJson, nodeTypesMap);

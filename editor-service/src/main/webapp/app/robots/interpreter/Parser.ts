@@ -1,6 +1,7 @@
-/// <reference path="InterpreterUtils.ts" />
-
-class Parser {
+import {InterpreterUtils} from "./InterpreterUtils";
+import {Interpreter} from "./Interpreter";
+import {Map} from "core/editorCore/model/Map";
+export class Parser {
 
     public parseExpression(expression: string, interpreter: Interpreter): any {
         // Here we kinda adapt to normal lua grammar

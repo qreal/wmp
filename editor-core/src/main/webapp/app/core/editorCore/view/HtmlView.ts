@@ -1,4 +1,4 @@
-class HtmlView {
+export class HtmlView {
 
     protected content: string = "";
 

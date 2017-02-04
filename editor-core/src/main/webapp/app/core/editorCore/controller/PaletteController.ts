@@ -1,11 +1,12 @@
-/// <reference path="../model/SubprogramDiagramNode.ts" />
-/// <reference path="../model/NodeType.ts" />
-/// <reference path="../model/Map.ts" />
-/// <reference path="../view/SubprogramPaletteView.ts" />
-/// <reference path="../view/BlocksPaletteView.ts" />
-/// <reference path="../../../vendor.d.ts" />
-
-class PaletteController {
+import {NodeType} from "../model/NodeType";
+import {Map} from "../model/Map";
+import {ElementTypes} from "../model/ElementTypes";
+import {BlocksPaletteView} from "../view/BlocksPaletteView";
+import {PaletteTree} from "../model/PaletteTree";
+import {SubprogramPaletteView} from "../view/SubprogramPaletteView";
+import {SubprogramDiagramNode} from "../model/SubprogramDiagramNode";
+import {DiagramScene} from "../model/DiagramScene";
+export class PaletteController {
 
     public initDraggable(): void {
         $(".tree-element").draggable({

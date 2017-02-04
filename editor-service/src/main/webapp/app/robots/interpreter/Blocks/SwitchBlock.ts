@@ -1,4 +1,9 @@
-class SwitchBlock extends ConditionBlock {
+import {Parser} from "../Parser";
+import {Interpreter} from "../Interpreter";
+import {ConditionBlock} from "./ConditionBlock";
+import {Link} from "core/editorCore/model/Link";
+import {DiagramNode} from "core/editorCore/model/DiagramNode";
+export class SwitchBlock extends ConditionBlock {
 
     private interpreter: Interpreter;
     private parsedResult: string;

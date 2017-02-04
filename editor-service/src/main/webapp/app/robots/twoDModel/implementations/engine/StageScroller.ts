@@ -1,4 +1,4 @@
-class StageScroller {
+export class StageScroller {
 
     private stage;
     private zoom: number;

@@ -1,7 +1,6 @@
-/// <reference path="Map.ts" />
-/// <reference path="Property.ts" />
-
-class SubprogramDiagramNode {
+import {Property} from "./Property";
+import {Map} from "./Map";
+export class SubprogramDiagramNode {
 
     private logicalId: string;
     private properties: Map<Property>;

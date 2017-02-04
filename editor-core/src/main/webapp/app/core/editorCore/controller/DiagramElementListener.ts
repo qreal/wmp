@@ -1,9 +1,8 @@
-/// <reference path="../model/Map.ts" />
-/// <reference path="../model/Link.ts" />
-/// <reference path="../model/Property.ts" />
-/// <reference path="../../../vendor.d.ts" />
-
-class DiagramElementListener {
+import {Link} from "../model/Link";
+import {NodeType} from "../model/NodeType";
+import {Property} from "../model/Property";
+import {Map} from "../model/Map";
+export class DiagramElementListener {
 
     static pointerdown: (evt, x , y) => void = function (evt, x, y) {
         if (

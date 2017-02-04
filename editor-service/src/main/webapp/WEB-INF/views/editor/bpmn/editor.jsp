@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="<c:url value='/resources/css/base.css' />"/>
 </head>
 
-<body ng-app ng-controller="RootDiagramController">
+<body ng-controller="RootDiagramController">
     <%@ include file="../../include/properties.jsp" %>
     <div id="diagram-area" class="unselectable" ng-controller="BpmnDiagramEditorController">
         <%@ include file="../diagramContent.jsp" %>

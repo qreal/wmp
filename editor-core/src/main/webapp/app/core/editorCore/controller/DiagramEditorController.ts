@@ -1,13 +1,20 @@
-/// <reference path="SceneController.ts" />
-/// <reference path="PropertyEditorController.ts" />
-/// <reference path="loaders/ElementsTypeLoader.ts" />
-/// <reference path="PaletteController.ts" />
-/// <reference path="exporters/DiagramExporter.ts" />
-/// <reference path="../model/DiagramEditor.ts" />
-/// <reference path="../model/Map.ts"/>
 /// <reference path="../../../vendor.d.ts" />
-
-class DiagramEditorController {
+import {PropertyEditorController} from "./PropertyEditorController";
+import {ElementTypes} from "../model/ElementTypes";
+import {DiagramParts} from "../model/DiagramParts";
+import {Map} from "../model/Map";
+import {NodeType} from "../model/NodeType";
+import {UndoRedoController} from "./UndoRedoController";
+import {Property} from "../model/Property";
+import {DiagramElement} from "../model/DiagramElement";
+import {Link} from "../model/Link";
+import {DiagramNode} from "../model/DiagramNode";
+import {ElementsTypeLoader} from "./loaders/ElementsTypeLoader";
+import {SceneController} from "./SceneController";
+import {DiagramEditor} from "../model/DiagramEditor";
+import {DiagramElementListener} from "./DiagramElementListener";
+import {PaletteController} from "./PaletteController";
+export class DiagramEditorController {
 
     protected diagramEditor: DiagramEditor;
     protected sceneController: SceneController;

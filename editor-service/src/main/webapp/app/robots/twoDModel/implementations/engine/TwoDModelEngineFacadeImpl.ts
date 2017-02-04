@@ -1,10 +1,11 @@
-/// <reference path="model/ModelImpl.ts" />
-/// <reference path="../robotModel/TwoDRobotModel.ts" />
-/// <reference path="../robotModel/DeviceInfoImpl.ts" />
-/// <reference path="../../interfaces/engine/model/Model.ts" />
-/// <reference path="../../interfaces/engine/TwoDModelEngineFacade.ts" />
-
-class TwoDModelEngineFacadeImpl implements TwoDModelEngineFacade {
+import {DeviceInfoImpl} from "../robotModel/DeviceInfoImpl";
+import {ModelImpl} from "./model/ModelImpl";
+import {TrikRobotModelBase} from "../robotModel/TrikKit/TrikRobotModelBase";
+import app = require("../../../../require/app");
+import {TwoDRobotModel} from "../robotModel/TwoDRobotModel";
+import {Model} from "../../interfaces/engine/model/Model";
+import {TwoDModelEngineFacade} from "../../interfaces/engine/TwoDModelEngineFacade";
+export class TwoDModelEngineFacadeImpl implements TwoDModelEngineFacade {
 
     protected robotModelName: string;
     protected model: Model;
@@ -147,3 +148,6 @@ class TwoDModelEngineFacadeImpl implements TwoDModelEngineFacade {
     }
 
 }
+
+app.controller("TwoDModelEngineFacadeImpl", ['$scope', '$compile', '$attrs', TwoDModelEngineFacadeImpl]);
+console.log("Adding controller TwoDModelEngineFacadeImpl");

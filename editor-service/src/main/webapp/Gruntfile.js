@@ -2,37 +2,17 @@ module.exports = function (grunt) {
 
     grunt.initConfig({
         ts: {
-            root: {
-                src: ["app/robots/*.ts"],
-                out: "resources/js/compiled/root.js"
-            },
-            robotsEditor: {
-                src: ["app/robots/diagram/**/*.ts"],
-                out: "resources/js/compiled/robotsEditor.js"
-            },
-            bpmnEditor: {
-                src: ["app/bpmn/diagram/**/*.ts"],
-                out: "resources/js/compiled/bpmnEditor.js"
-            },
-            interpreter: {
-                src: ["app/robots/interpreter/**/*.ts"],
-                out: "resources/js/compiled/interpreter.js"
-            },
-            twoDModelRobots: {
-                src: ["app/robots/twoDModel/**/*.ts"],
-                out: "resources/js/compiled/two-d-model-robots.js"
-            },
-            gestures: {
-                src: ["app/common/gestures/*.ts"],
-                out: "resources/js/compiled/gestures.js"
-            },
-            menu: {
-                src: ["app/common/menu/**/*.ts"],
-                out: "resources/js/compiled/menu.js"
-            },
+            all: {
+                src: ["app/**"],
+                outDir: "resources/js/compiled",
+                options: {
+                    module: 'amd'
+                }
+            }
+
         }
     });
 
     grunt.loadNpmTasks("grunt-ts");
-    grunt.registerTask("default", ["ts:root", "ts:interpreter", "ts:twoDModelRobots", "ts:gestures", "ts:menu", "ts:robotsEditor", "ts:bpmnEditor"]);
+    grunt.registerTask("default", ["ts:all"]);
 }

@@ -1,11 +1,15 @@
-/// <reference path="../../interfaces/editorCore.d.ts" />
-/// <reference path="../model/Diagram.ts" />
-/// <reference path="../model/Folder.ts" />
-/// <reference path="../../../../resources/thrift/struct/Diagram_types.d.ts" />
 /// <reference path="../../../../resources/thrift/editor/EditorService_types.d.ts" />
+/// <reference path="../../../../resources/thrift/struct/Diagram_types.d.ts" />
 /// <reference path="../../../../resources/thrift/editor/EditorServiceThrift.d.ts" />
-
-class DiagramThriftExporter extends DiagramExporter {
+/// <reference path="../../../../resources/types/thrift/Thrift.d.ts" />
+import {Folder} from "../model/Folder";
+import {Property} from "core/editorCore/model/Property";
+import {Map} from "core/editorCore/model/Map";
+import {Link} from "core/editorCore/model/Link";
+import {DiagramParts} from "core/editorCore/model/DiagramParts";
+import {DiagramNode} from "core/editorCore/model/DiagramNode";
+import {DiagramExporter} from "core/editorCore/controller/exporters/DiagramExporter";
+export class DiagramThriftExporter extends DiagramExporter {
     public exportSavingDiagramState(graph: joint.dia.Graph, diagramParts: DiagramParts,
                                           name: string, folderId: number) {
         var newDiagram = new TDiagram();

@@ -1,10 +1,8 @@
-/// <reference path="Map.ts" />
-/// <reference path="DiagramNode.ts" />
-/// <reference path="Link.ts" />
-/// <reference path="SubprogramDiagramNode.ts" />
-/// <reference path="../../../vendor.d.ts" />
-
-class DiagramParts {
+import {SubprogramDiagramNode} from "./SubprogramDiagramNode";
+import {Link} from "./Link";
+import {Map} from "./Map";
+import {DiagramNode} from "./DiagramNode";
+export class DiagramParts {
 
     nodesMap: Map<DiagramNode>;
     linksMap: Map<Link>;

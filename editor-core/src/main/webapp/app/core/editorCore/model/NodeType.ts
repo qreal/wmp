@@ -1,8 +1,7 @@
-/// <reference path="Map.ts" />
-/// <reference path="Property.ts" />
-/// <reference path="../../../vendor.d.ts" />
-
-class NodeType {
+import {Property} from "./Property";
+import {Map} from "./Map";
+import {StringUtils} from "../../../utils/StringUtils";
+export class NodeType {
 
     private name: string;
     private shownName: string;

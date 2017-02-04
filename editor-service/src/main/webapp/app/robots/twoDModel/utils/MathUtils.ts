@@ -1,4 +1,4 @@
-class MathUtils {
+export class MathUtils {
 
     public static toDeg(radians: number): number {
         return radians * (180 / Math.PI);

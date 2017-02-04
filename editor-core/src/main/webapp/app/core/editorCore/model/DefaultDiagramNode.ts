@@ -1,11 +1,10 @@
-/// <reference path="DiagramNode.ts" />
-/// <reference path="PropertiesPack.ts" />
-/// <reference path="Map.ts" />
-/// <reference path="Property.ts" />
-/// <reference path="PropertyEditElement.ts" />
-/// <reference path="../../../vendor.d.ts" />
-
-class DefaultDiagramNode implements DiagramNode {
+import {Property} from "./Property";
+import {Map} from "./Map";
+import {PropertiesPack} from "./PropertiesPack";
+import {PropertyEditElement} from "./PropertyEditElement";
+import {UIDGenerator} from "../controller/UIDGenerator";
+import {DiagramNode} from "./DiagramNode";
+export class DefaultDiagramNode implements DiagramNode {
 
     private logicalId: string;
     private jointObject: joint.shapes.devs.ImageWithPorts;

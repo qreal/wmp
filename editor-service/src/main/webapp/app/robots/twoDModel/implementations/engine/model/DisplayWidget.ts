@@ -1,9 +1,7 @@
-/// <reference path="LedWidget.ts" />
-/// <reference path="../../../utils/MathUtils.ts" />
-/// <reference path="../../../../../common/constants/GeneralConstants.ts" />
-/// <reference path="../../../../../vendor.d.ts" />
-
-class DisplayWidget {
+import {MathUtils} from "../../../utils/MathUtils";
+import {LedWidget} from "./LedWidget";
+import {GeneralConstants} from "../../../../../common/constants/GeneralConstants";
+export class DisplayWidget {
 
     private width: number = 218;
     private height: number = 274;

@@ -1,7 +1,6 @@
-/// <reference path="../../robotParts/DeviceImpl.ts" />
-
-class TrikLed extends DeviceImpl {
+import {DeviceImpl} from "../../robotParts/DeviceImpl";
+export class TrikLed extends DeviceImpl {
     static parentType = DeviceImpl;
-    static name = "led";
+    static deviceName = "led";
     static friendlyName = "Led";
 }
