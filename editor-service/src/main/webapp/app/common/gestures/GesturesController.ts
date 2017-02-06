@@ -1,5 +1,4 @@
-/// <reference path="../../../resources/types/jqueryline/jqueryline.d.ts" />
-
+/// <reference path="../../types/jqueryline/jqueryline.d.ts" />
 import {Pair} from "./utils/Pair";
 import {Gesture} from "./Gesture";
 import {GesturesMatcher} from "./GesturesMatcher";

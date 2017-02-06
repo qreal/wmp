@@ -20,6 +20,13 @@
 
     <build>
         <finalName>editor-core</finalName>
+
+        <resources>
+            <resource>
+                <directory>src/main/webapp/resources</directory>
+            </resource>
+        </resources>
+
         <plugins>
 
             <!-- Configure maven clean-->

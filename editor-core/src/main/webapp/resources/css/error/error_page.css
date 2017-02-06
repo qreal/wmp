@@ -1,0 +1,10 @@
+body {
+    background-image: url(../../images/error/trees.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-color: gray;
+    height: 100%;
+}
+.error-template {padding: 40px 15px;text-align: center;}
+.error-actions {margin-top:15px;margin-bottom:15px;}
+.error-actions .btn { margin-right:10px; }

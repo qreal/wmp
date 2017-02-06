@@ -2,7 +2,7 @@
 <%@ include file="properties.jsp" %>
 
 
-<link rel="stylesheet" href="<c:url value='/resources/bootstrap/css/bootstrap.min.css' />"/>
+<link rel="stylesheet" href="<c:url value='/resources/css/bootstrap/bootstrap.min.css' />"/>
 
 <c:url value="/j_spring_security_logout" var="logout"/>
 

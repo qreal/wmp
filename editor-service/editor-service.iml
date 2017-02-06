@@ -8,6 +8,17 @@
           <root url="file://$MODULE_DIR$/src/main/webapp/resources/js/compiled/common/properties" relative="resources/js/compiled/common/properties" />
           <root url="file://$MODULE_DIR$/src/main/webapp" relative="/" />
         </webroots>
+        <sourceRoots>
+          <root url="file://$MODULE_DIR$/src/main/java" />
+          <root url="file://$MODULE_DIR$/src/main/resources" />
+          <root url="file://$MODULE_DIR$/target/generated-sources/thrift/editor" />
+          <root url="file://$MODULE_DIR$/target/generated-sources/thrift/struct" />
+          <root url="file://$MODULE_DIR$/target/generated-sources/thrift/diagram-database" />
+          <root url="file://$MODULE_DIR$/target/generated-sources/thrift/user-database" />
+          <root url="file://$MODULE_DIR$/target/editor-service/resources/js/compiled" />
+          <root url="file://$MODULE_DIR$/src/main/webapp/app/common/properties" />
+          <root url="file://$MODULE_DIR$/target/generated-sources/thrift/exception" />
+        </sourceRoots>
       </configuration>
     </facet>
     <facet type="Spring" name="Spring">
@@ -34,6 +45,7 @@
       <sourceFolder url="file://$MODULE_DIR$/target/editor-service/resources/js/compiled" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/webapp/app/common/properties" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/target/generated-sources/thrift/exception" isTestSource="false" generated="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/main/webapp/resources" type="java-resource" />
       <excludeFolder url="file://$MODULE_DIR$/target/editor-service" />
       <excludeFolder url="file://$MODULE_DIR$/target/etc" />
       <excludeFolder url="file://$MODULE_DIR$/target/maven-archiver" />
