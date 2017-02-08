@@ -10,8 +10,8 @@ module.exports = function (grunt) {
                 outDir: "resources/js/compiled/",
                 options: {
                     // declaration: true,
-                    module: 'amd',
-                    target: 'es6'
+                    module: "amd",
+                    target: "es6"
                 }
             }
         }
