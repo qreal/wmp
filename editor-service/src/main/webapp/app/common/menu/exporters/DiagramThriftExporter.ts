@@ -4,7 +4,6 @@
 /// <reference path="../../../types/thrift/Thrift.d.ts" />
 import {Folder} from "../model/Folder";
 import {Property} from "core/editorCore/model/Property";
-import {Map} from "core/editorCore/model/Map";
 import {Link} from "core/editorCore/model/Link";
 import {DiagramParts} from "core/editorCore/model/DiagramParts";
 import {DiagramNode} from "core/editorCore/model/DiagramNode";
@@ -118,7 +117,7 @@ export class DiagramThriftExporter extends DiagramExporter {
         return links;
     }
 
-    protected exportProperties(properties: Map<Property>) {
+    protected exportProperties(properties: Map<String, Property>) {
         var newProperties = [];
         for (var propertyName in properties) {
             var type: string = properties[propertyName].type;

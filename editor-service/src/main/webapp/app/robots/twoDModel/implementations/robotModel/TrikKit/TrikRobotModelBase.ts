@@ -1,6 +1,5 @@
 import {TrikGamepadConnectionIndicator} from "./parts/TrikGamepadConnectionIndicator";
 import {DeviceInfoImpl} from "../DeviceInfoImpl";
-
 import {TrikGamepadWheel} from "./parts/TrikGamepadWheel";
 import {TrikGamepadPadPressSensor} from "./parts/TrikGamepadPadPressSensor";
 import {TrikGamepadPad} from "./parts/TrikGamepadPad";

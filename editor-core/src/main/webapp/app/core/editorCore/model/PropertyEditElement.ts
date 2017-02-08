@@ -1,6 +1,6 @@
 import {StringUtils} from "../../../utils/StringUtils";
 import {Property} from "./Property";
-import {Map} from "./Map";
+//import {Map} from "./Map";
 export class PropertyEditElement {
 
     private static propertyTemplate = "" +
@@ -16,7 +16,7 @@ export class PropertyEditElement {
 
     private htmlElement;
 
-    constructor(logicalId: string, jointObjectId: string, properties: Map<Property>) {
+    constructor(logicalId: string, jointObjectId: string, properties: Map<String, Property>) {
         var propertiesHtml: string = "";
 
         for (var propertyKey in properties) {

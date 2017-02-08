@@ -6,16 +6,13 @@ import {DiagramScene} from "core/editorCore/model/DiagramScene";
 import {DiagramEditorController} from "core/editorCore/controller/DiagramEditorController";
 import app = require("../../../require/app");
 import {Interpreter} from "../../../robots/interpreter/Interpreter";
-import {PaletteController} from "core/editorCore/controller/PaletteController";
-import {SceneController} from "core/editorCore/controller/SceneController";
-import {ElementsTypeLoader} from "core/editorCore/controller/loaders/ElementsTypeLoader";
-import {UndoRedoController} from "core/editorCore/controller/UndoRedoController";
-import {PropertyEditorController} from "core/editorCore/controller/PropertyEditorController";
 export class BpmnDiagramEditorController extends DiagramEditorController {
 
     private menuController: DiagramMenuController;
     private gesturesController: GesturesController;
     private diagramInterpreter: Interpreter;
+    //Hack for firefox
+    static $$ngIsClass: boolean;
 
     constructor($scope, $attrs) {
         super($scope, $attrs);
@@ -70,5 +67,7 @@ export class BpmnDiagramEditorController extends DiagramEditorController {
     }
 }
 
-app.controller("BpmnDiagramEditorController", ['$scope', '$attrs', BpmnDiagramEditorController]);
+BpmnDiagramEditorController.$$ngIsClass = true;
+
+app.controller("BpmnDiagramEditorController", BpmnDiagramEditorController);
 console.log("Adding controller BpmnDiagramEditorController");

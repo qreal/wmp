@@ -9,6 +9,8 @@ export class TwoDModelEngineFacadeImpl implements TwoDModelEngineFacade {
 
     protected robotModelName: string;
     protected model: Model;
+    //Hack for firefox
+    static $$ngIsClass: boolean;
 
     constructor($scope, $compile, $attrs) {
         var facade = this;
@@ -148,6 +150,6 @@ export class TwoDModelEngineFacadeImpl implements TwoDModelEngineFacade {
     }
 
 }
-
-app.controller("TwoDModelEngineFacadeImpl", ['$scope', '$compile', '$attrs', TwoDModelEngineFacadeImpl]);
+TwoDModelEngineFacadeImpl.$$ngIsClass = true;
+app.controller("TwoDModelEngineFacadeImpl", TwoDModelEngineFacadeImpl);
 console.log("Adding controller TwoDModelEngineFacadeImpl");

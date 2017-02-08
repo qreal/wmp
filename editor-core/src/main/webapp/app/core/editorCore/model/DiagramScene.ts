@@ -1,5 +1,4 @@
 import {Link} from "./Link";
-import {Map} from "./Map";
 import {DiagramNode} from "./DiagramNode";
 import {SubprogramNode} from "./SubprogramNode";
 import {DiagramElementListener} from "../controller/DiagramElementListener";
@@ -8,9 +7,9 @@ export class DiagramScene extends joint.dia.Paper {
     private htmlId: string;
     private graph: joint.dia.Graph;
     private currentLinkType: string;
-    private nodesMap: Map<DiagramNode>;
-    private linksMap: Map<Link>;
-    private linkPatternsMap: Map<joint.dia.Link>;
+    private nodesMap: Map<String, DiagramNode>;
+    private linksMap: Map<String, Link>;
+    private linkPatternsMap: Map<String, joint.dia.Link>;
     private gridSize: number;
     private zoom: number;
 
@@ -44,14 +43,14 @@ export class DiagramScene extends joint.dia.Paper {
                 }))
         });
 
-        this.linkPatternsMap = {};
+        this.linkPatternsMap = new Map<String, joint.dia.Link>();
 
         this.htmlId = htmlId;
         this.gridSize = gridSize;
         this.zoom = (zoomAttr) ? zoomAttr : 1;
         this.graph = graph;
-        this.nodesMap = {};
-        this.linksMap = {};
+        this.nodesMap = new Map<String, DiagramNode>();
+        this.linksMap = new Map<String, Link>();
         this.scale(this.zoom, this.zoom);
     }
     
@@ -67,11 +66,11 @@ export class DiagramScene extends joint.dia.Paper {
         return this.zoom;
     }
 
-    public getNodesMap(): Map<DiagramNode> {
+    public getNodesMap(): Map<String, DiagramNode> {
         return this.nodesMap;
     }
 
-    public getLinksMap(): Map<Link> {
+    public getLinksMap(): Map<String, Link> {
         return this.linksMap;
     }
 
@@ -83,7 +82,7 @@ export class DiagramScene extends joint.dia.Paper {
         return this.linksMap[id];
     }
 
-    public addNodesFromMap(nodesMap: Map<DiagramNode>): void {
+    public addNodesFromMap(nodesMap: Map<String, DiagramNode>): void {
         $.extend(this.nodesMap, nodesMap);
         for (var nodeId in nodesMap) {
             var node: DiagramNode = nodesMap[nodeId];
@@ -95,7 +94,7 @@ export class DiagramScene extends joint.dia.Paper {
         }
     }
 
-    public addLinksFromMap(linksMap: Map<Link>): void {
+    public addLinksFromMap(linksMap: Map<String, Link>): void {
         $.extend(this.linksMap, linksMap);
         for (var linkId in linksMap) {
             var link: Link = linksMap[linkId];
@@ -146,7 +145,7 @@ export class DiagramScene extends joint.dia.Paper {
         for (var node in this.nodesMap) {
             this.removeNode(node);
         }
-        this.linksMap = {};
+        this.linksMap = new Map<String, Link>();
     }
 
     public addSubprogramNode(node: SubprogramNode): void {
@@ -177,7 +176,7 @@ export class DiagramScene extends joint.dia.Paper {
         return this.currentLinkType;
     }
 
-    public setLinkPatterns(linkPatterns: Map<joint.dia.Link>): void {
+    public setLinkPatterns(linkPatterns: Map<String, joint.dia.Link>): void {
         this.linkPatternsMap = linkPatterns;
         this.currentLinkType = Object.keys(this.linkPatternsMap)[0];
     }

@@ -8,17 +8,6 @@
           <root url="file://$MODULE_DIR$/src/main/webapp/resources/js/compiled/common/properties" relative="resources/js/compiled/common/properties" />
           <root url="file://$MODULE_DIR$/src/main/webapp" relative="/" />
         </webroots>
-        <sourceRoots>
-          <root url="file://$MODULE_DIR$/src/main/java" />
-          <root url="file://$MODULE_DIR$/src/main/resources" />
-          <root url="file://$MODULE_DIR$/target/generated-sources/thrift/editor" />
-          <root url="file://$MODULE_DIR$/target/generated-sources/thrift/struct" />
-          <root url="file://$MODULE_DIR$/target/generated-sources/thrift/diagram-database" />
-          <root url="file://$MODULE_DIR$/target/generated-sources/thrift/user-database" />
-          <root url="file://$MODULE_DIR$/target/editor-service/resources/js/compiled" />
-          <root url="file://$MODULE_DIR$/src/main/webapp/app/common/properties" />
-          <root url="file://$MODULE_DIR$/target/generated-sources/thrift/exception" />
-        </sourceRoots>
       </configuration>
     </facet>
     <facet type="Spring" name="Spring">

@@ -1,5 +1,5 @@
 import {Property} from "./Property";
-import {Map} from "./Map";
+//import {Map} from "./Map";
 import {PropertiesPack} from "./PropertiesPack";
 import {UIDGenerator} from "../controller/UIDGenerator";
 import {DiagramElement} from "./DiagramElement";
@@ -8,18 +8,18 @@ export class Link implements DiagramElement {
     private logicalId: string;
     private jointObject: joint.dia.Link;
     private constPropertiesPack: PropertiesPack;
-    private changeableProperties: Map<Property> = {};
+    private changeableProperties: Map<String, Property> = new Map<String, Property>();
     private name: string;
     private type: string;
 
-    constructor(jointObject: joint.dia.Link, name: string, type: string, properties: Map<Property>) {
+    constructor(jointObject: joint.dia.Link, name: string, type: string, properties: Map<String, Property>) {
         this.logicalId = UIDGenerator.generate();
         this.constPropertiesPack = this.getDefaultConstPropertiesPack();
         this.name = name;
         this.type = type;
 
         this.jointObject = jointObject;
-        var properties: Map<Property> = properties;
+        var properties: Map<String, Property> = properties;
         this.changeableProperties = properties;
         this.changeLabel(properties["Guard"].value);
         this.updateHighlight();
@@ -55,7 +55,7 @@ export class Link implements DiagramElement {
         return this.constPropertiesPack;
     }
 
-    getChangeableProperties(): Map<Property> {
+    getChangeableProperties(): Map<String, Property> {
         return this.changeableProperties;
     }
 
@@ -86,21 +86,21 @@ export class Link implements DiagramElement {
     }
 
     private getDefaultConstPropertiesPack(): PropertiesPack {
-        var logical: Map<Property> = this.initConstLogicalProperties();
-        var graphical: Map<Property> = this.initConstGraphicalProperties();
+        var logical: Map<String, Property> = this.initConstLogicalProperties();
+        var graphical: Map<String, Property> = this.initConstGraphicalProperties();
         return new PropertiesPack(logical, graphical);
     }
 
-    private initConstLogicalProperties(): Map<Property> {
-        var logical: Map<Property> = {};
+    private initConstLogicalProperties(): Map<String, Property> {
+        var logical: Map<String, Property> = new Map<String, Property>();
         logical["name"] = new Property("name", "QString", this.name);
         logical["linkShape"] = new Property("linkShape", "int", "-1");
         logical["outgoingExplosion"] = new Property("outgoingExplosion", "qReal::Id", "qrm:/");
         return logical;
     }
 
-    private initConstGraphicalProperties(): Map<Property> {
-        var graphical: Map<Property> = {};
+    private initConstGraphicalProperties(): Map<String, Property> {
+        var graphical: Map<String, Property> = new Map<String, Property>();
         graphical["name"] = new Property("name", "QString", this.name);
         graphical["configuration"] = new Property("configuration", "QPolygon", "0, 0 : 0, 0 : ");
         graphical["fromPort"] = new Property("fromPort", "double", "0");

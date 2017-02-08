@@ -3,7 +3,6 @@ import {RangeSensor} from "../../robotModel/robotParts/RangeSensor";
 import {LightSensor} from "../../robotModel/robotParts/LightSensor";
 import {ColorSensor} from "../../robotModel/robotParts/ColorSensor";
 import {TouchSensor} from "../../robotModel/robotParts/TouchSensor";
-
 import {DeviceInfoImpl} from "../../robotModel/DeviceInfoImpl";
 import {DeviceInfo} from "../../../interfaces/robotModel/DeviceInfo";
 import {TwoDPosition} from "../../../types/TwoDPosition";

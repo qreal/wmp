@@ -2,7 +2,7 @@
 import {PropertyEditorController} from "./PropertyEditorController";
 import {ElementTypes} from "../model/ElementTypes";
 import {DiagramParts} from "../model/DiagramParts";
-import {Map} from "../model/Map";
+//import {Map} from "../model/Map";
 import {NodeType} from "../model/NodeType";
 import {UndoRedoController} from "./UndoRedoController";
 import {Property} from "../model/Property";
@@ -21,15 +21,15 @@ export class DiagramEditorController {
     protected propertyEditorController: PropertyEditorController;
     protected elementsTypeLoader: ElementsTypeLoader;
     protected paletteController: PaletteController;
-    protected nodeTypesMap: Map<NodeType>;
-    protected linkPatternsMap: Map<joint.dia.Link>;
+    protected nodeTypesMap: Map<String, NodeType>;
+    protected linkPatternsMap: Map<String, joint.dia.Link>;
     protected undoRedoController: UndoRedoController;
     protected elementTypes: ElementTypes;
 
     constructor($scope, $attrs) {
         this.undoRedoController = new UndoRedoController();
-        this.nodeTypesMap = {};
-        this.linkPatternsMap = {};
+        this.nodeTypesMap = new Map<String, NodeType>();
+        this.linkPatternsMap = new Map<String, joint.dia.Link>();
         this.paletteController = new PaletteController();
         DiagramElementListener.getNodeType = (type: string): NodeType => {
             return this.getNodeType(type);
@@ -57,12 +57,12 @@ export class DiagramEditorController {
         return this.diagramEditor.getGraph();
     }
 
-    public getNodesMap(): Map<DiagramNode> {
+    public getNodesMap(): Map<String, DiagramNode> {
         var paper = this.diagramEditor.getScene();
         return paper.getNodesMap();
     }
 
-    public getLinksMap(): Map<Link> {
+    public getLinksMap(): Map<String, Link> {
         var paper = this.diagramEditor.getScene();
         return paper.getLinksMap();
     }
@@ -79,7 +79,7 @@ export class DiagramEditorController {
         return this.nodeTypesMap[type];
     }
 
-    public getNodeProperties(type: string): Map<Property> {
+    public getNodeProperties(type: string): Map<String, Property> {
         return this.nodeTypesMap[type].getPropertiesMap();
     }
 
@@ -98,11 +98,11 @@ export class DiagramEditorController {
         return new DiagramParts(this.getNodesMap(), this.getLinksMap());
     }
 
-    public getNodeTypes(): Map<NodeType> {
+    public getNodeTypes(): Map<String, NodeType> {
         return this.nodeTypesMap;
     }
 
-    public getLinkPatterns(): Map<joint.dia.Link> {
+    public getLinkPatterns(): Map<String, joint.dia.Link> {
         return this.linkPatternsMap;
     }
 

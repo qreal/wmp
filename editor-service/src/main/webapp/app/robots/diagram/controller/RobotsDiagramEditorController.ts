@@ -16,6 +16,9 @@ export class RobotsDiagramEditorController extends DiagramEditorController {
     private menuController: DiagramMenuController;
     private gesturesController: GesturesController;
     private diagramInterpreter: Interpreter;
+    //Hack for firefox
+    static $$ngIsClass: boolean;
+
 
     constructor($scope, $attrs) {
         super($scope, $attrs);
@@ -83,5 +86,6 @@ export class RobotsDiagramEditorController extends DiagramEditorController {
         }
     }
 }
-app.controller("RobotsDiagramEditorController", ['$scope', '$attrs', RobotsDiagramEditorController]);
+RobotsDiagramEditorController.$$ngIsClass = true;
+app.controller("RobotsDiagramEditorController", RobotsDiagramEditorController);
 console.log("Adding controller RobotsDiagramEditorController");

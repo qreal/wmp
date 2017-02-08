@@ -6,7 +6,8 @@ module.exports = function (grunt) {
                 src: ["app/**"],
                 outDir: "resources/js/compiled",
                 options: {
-                    module: 'amd'
+                    module: 'amd',
+                    target: 'es6'
                 }
             }
 

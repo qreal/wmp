@@ -8,7 +8,7 @@ import {MouseButton} from "../../../common/constants/MouseButton";
 import {DiagramElement} from "../model/DiagramElement";
 import {SubprogramNode} from "../model/SubprogramNode";
 import {Property} from "../model/Property";
-import {Map} from "../model/Map";
+//import {Map} from "../model/Map";
 import {NodeType} from "../model/NodeType";
 import {DiagramElementListener} from "./DiagramElementListener";
 import {SceneCommandFactory} from "../model/commands/SceneCommandFactory";
@@ -87,9 +87,9 @@ export class SceneController {
         });
 
         var nodeType: NodeType = this.diagramEditorController.getNodeType(this.scene.getCurrentLinkTypeName());
-        var typeProperties: Map<Property> = nodeType.getPropertiesMap();
+        var typeProperties: Map<String, Property> = nodeType.getPropertiesMap();
 
-        var linkProperties: Map<Property> = {};
+        var linkProperties: Map<String, Property> = new Map<String, Property>();
         for (var property in typeProperties) {
             linkProperties[property] = new Property(typeProperties[property].name,
                 typeProperties[property].type, typeProperties[property].value);
@@ -104,9 +104,9 @@ export class SceneController {
         var image: string = this.diagramEditorController.getNodeType(type).getImage();
         var name: string = this.diagramEditorController.getNodeType(type).getName();
 
-        var typeProperties: Map<Property> = this.diagramEditorController.getNodeType(type).getPropertiesMap();
+        var typeProperties: Map<String, Property> = this.diagramEditorController.getNodeType(type).getPropertiesMap();
 
-        var nodeProperties: Map<Property> = {};
+        var nodeProperties: Map<String, Property> = new Map<String, Property>();
         for (var property in typeProperties) {
             nodeProperties[property] = new Property(typeProperties[property].name, typeProperties[property].type,
                 typeProperties[property].value);

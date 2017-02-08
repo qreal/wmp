@@ -4,7 +4,7 @@ import {VariantListMapper} from "./VariantListMapper";
 import {ChangePropertyCommand} from "../model/commands/ChangePropertyCommand";
 import {Command} from "../model/commands/Command";
 import {HtmlView} from "../view/HtmlView";
-import {Map} from "../model/Map";
+// import {Map} from "../model/Map";
 import {PropertyViewFactory} from "./PropertyViewFactory";
 import {UndoRedoController} from "./UndoRedoController";
 import {SceneController} from "./SceneController";
@@ -35,7 +35,7 @@ export class PropertyEditorController {
 
     public setNodeProperties(element: DiagramElement): void {
         $('#property_table tbody').empty();
-        var properties: Map<Property> = element.getChangeableProperties();
+        var properties: Map<String, Property> = element.getChangeableProperties();
         for (var property in properties) {
             var propertyView: HtmlView = this.propertyViewFactory.createView(element.getLogicalId(), element.getType(),
                 property, properties[property]);

@@ -1,5 +1,4 @@
 import {Property} from "../../model/Property";
-import {Map} from "../../model/Map";
 import {Link} from "../../model/Link";
 import {DiagramParts} from "../../model/DiagramParts";
 import {SubprogramNode} from "../../model/SubprogramNode";
@@ -36,7 +35,7 @@ export class DiagramExporter {
                 'incomingExplosions': []
             };
 
-            var constLogicalProperties: Map<Property> = node.getConstPropertiesPack().logical;
+            var constLogicalProperties: Map<String, Property> = node.getConstPropertiesPack().logical;
             if (node.getType() === "Subprogram") {
                 constLogicalProperties["outgoingExplosion"] = new Property("outgoingExplosion", "qReal::Id",
                     "qrm:/RobotsMetamodel/RobotsDiagram/SubprogramDiagram/{" +
@@ -153,7 +152,7 @@ export class DiagramExporter {
         return links;
     }
 
-    protected exportProperties(properties: Map<Property>) {
+    protected exportProperties(properties: Map<String, Property>) {
         var propertiesJSON = [];
         for (var propertyName in properties) {
             var type: string = properties[propertyName].type;

@@ -1,7 +1,7 @@
 import {Link} from "../../model/Link";
 import {NodeType} from "../../model/NodeType";
 import {Property} from "../../model/Property";
-import {Map} from "../../model/Map";
+//import {Map} from "../../model/Map";
 import {PropertiesPack} from "../../model/PropertiesPack";
 import {DefaultDiagramNode} from "../../model/DefaultDiagramNode";
 import {SubprogramNode} from "../../model/SubprogramNode";
@@ -11,7 +11,7 @@ import {DiagramParts} from "../../model/DiagramParts";
 import {MathUtils} from "../../../../utils/MathUtils";
 export class DiagramJsonParser {
 
-    public parse(diagramJson: any, nodeTypesMap: Map<NodeType>, linkPatterns: Map<joint.dia.Link>): DiagramParts {
+    public parse(diagramJson: any, nodeTypesMap: Map<String, NodeType>, linkPatterns: Map<String, joint.dia.Link>): DiagramParts {
         var minPos: {x: number; y: number} = this.findMinPosition(diagramJson, nodeTypesMap);
         var minOffset: number = 25;
         var offsetX = (minPos.x < 0) ? (-minPos.x + minOffset) : minOffset;
@@ -21,7 +21,7 @@ export class DiagramJsonParser {
         return diagramParts;
     }
 
-    protected findMinPosition(diagramJson: any, nodeTypesMap: Map<NodeType>): {x: number; y: number} {
+    protected findMinPosition(diagramJson: any, nodeTypesMap: Map<String, NodeType>): {x: number; y: number} {
         var minX = Infinity;
         var minY = Infinity;
 
@@ -51,7 +51,7 @@ export class DiagramJsonParser {
         return {x: minX, y: minY};
     }
 
-    protected parseNodes(diagramJson: any, nodeTypesMap: Map<NodeType>, offsetX: number, offsetY: number): DiagramParts {
+    protected parseNodes(diagramJson: any, nodeTypesMap: Map<String, NodeType>, offsetX: number, offsetY: number): DiagramParts {
         var diagramParts: DiagramParts = new DiagramParts();
 
         for (var i = 0; i < diagramJson.nodes.length; i++) {
@@ -84,10 +84,10 @@ export class DiagramJsonParser {
         return new SubprogramDiagramNode(nodeObject.logicalId, name);
     }
 
-    protected parseDiagramNodeObject(nodeObject: any, nodeTypesMap: Map<NodeType>,
+    protected parseDiagramNodeObject(nodeObject: any, nodeTypesMap: Map<String, NodeType>,
                                    offsetX: number, offsetY: number): DiagramNode {
-        var changeableLogicalProperties: Map<Property> = {};
-        var constLogicalProperties: Map<Property> = {};
+        var changeableLogicalProperties: Map<String, Property> = new Map<String, Property>();
+        var constLogicalProperties: Map<String, Property> = new Map<String, Property>();
         var subprogramDiagramId: string = "";
         var name = "";
         var type = nodeObject.type;
@@ -126,7 +126,7 @@ export class DiagramJsonParser {
             }
         }
 
-        var constGraphicalProperties: Map<Property> = {};
+        var constGraphicalProperties: Map<String, Property> = new Map<String, Property>();
         var graphicalPropertiesObject = nodeObject.graphicalProperties;
 
         var x: number = 0;
@@ -160,9 +160,9 @@ export class DiagramJsonParser {
         return node;
     }
 
-    protected parseLinks(diagramJson: any, nodeTypesMap: Map<NodeType>, linkPatterns: Map<joint.dia.Link>,
-                         offsetX: number, offsetY: number): Map<Link> {
-        var linksMap: Map<Link> = {};
+    protected parseLinks(diagramJson: any, nodeTypesMap: Map<String, NodeType>, linkPatterns: Map<String, joint.dia.Link>,
+                         offsetX: number, offsetY: number): Map<String, Link> {
+        var linksMap: Map<String, Link> = new Map<String, Link>();
 
         for (var i = 0; i < diagramJson.links.length; i++) {
             linksMap[diagramJson.links[i].graphicalId] = this.parseLinkObject(diagramJson.links[i], nodeTypesMap,
@@ -172,12 +172,12 @@ export class DiagramJsonParser {
         return linksMap;
     }
 
-    protected parseLinkObject(linkObject: any, nodeTypesMap: Map<NodeType>, linkPatterns: Map<joint.dia.Link>,
+    protected parseLinkObject(linkObject: any, nodeTypesMap: Map<String, NodeType>, linkPatterns: Map<String, joint.dia.Link>,
                               offsetX: number, offsetY: number): Link {
         var sourceId: string = "";
         var targetId: string = "";
 
-        var properties: Map<Property> = {};
+        var properties: Map<String, Property> = new Map<String, Property>();
         var logicalPropertiesObject = linkObject.logicalProperties;
 
         for (var j = 0; j < logicalPropertiesObject.length; j++) {

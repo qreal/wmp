@@ -1,5 +1,5 @@
 import {Property} from "./Property";
-import {Map} from "./Map";
+//import {Map} from "./Map";
 import {PropertiesPack} from "./PropertiesPack";
 export interface DiagramElement {
     getLogicalId(): string;
@@ -7,6 +7,6 @@ export interface DiagramElement {
     getName(): string;
     getType(): string;
     getConstPropertiesPack(): PropertiesPack;
-    getChangeableProperties(): Map<Property>;
+    getChangeableProperties(): Map<String, Property>;
     setProperty(name: string, property: Property): void;
 }

@@ -1,5 +1,5 @@
 import {NodeType} from "../model/NodeType";
-import {Map} from "../model/Map";
+//import {Map} from "../model/Map";
 import {ElementTypes} from "../model/ElementTypes";
 import {BlocksPaletteView} from "../view/BlocksPaletteView";
 import {PaletteTree} from "../model/PaletteTree";
@@ -31,7 +31,7 @@ export class PaletteController {
     }
 
     public appendSubprogramsPalette(subprogramDiagramNodes: SubprogramDiagramNode[],
-                                    nodeTypesMap: Map<NodeType>): void {
+                                    nodeTypesMap: Map<String, NodeType>): void {
         var typeName: string = "Subprogram";
         var paletteView: SubprogramPaletteView = new SubprogramPaletteView(subprogramDiagramNodes,
             nodeTypesMap[typeName].getImage());
@@ -48,7 +48,7 @@ export class PaletteController {
         this.appendPaletteContent("#flows-navigation", paletteView.getContent());
     }
 
-    public searchPaletteReload(event: Event, elementTypes: ElementTypes, nodesTypesMap: Map<NodeType>) {
+    public searchPaletteReload(event: Event, elementTypes: ElementTypes, nodesTypesMap: Map<String, NodeType>) {
         var searchPatterns: string[] = (<any> event.target).value.split(" ").map((str) => str.toLowerCase());
 
         for (var name in nodesTypesMap) {
