@@ -11,7 +11,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.codeborne.selenide.Selenide.$;
@@ -109,11 +112,11 @@ public class Scene {
     /** Remove all elements from the scene. */
     public void clean() {
         if (!links.isEmpty()) {
-            remove(links.stream().findFirst().get());
+            remove(links.stream().collect(Collectors.toList()).get(0));
             clean();
         } else {
             if (!blocks.isEmpty()) {
-                remove(blocks.stream().findFirst().get());
+                remove(blocks.stream().collect(Collectors.toList()).get(0));
                 clean();
             } else {
                 logger.info("Clean scene");
@@ -145,14 +148,14 @@ public class Scene {
         final List<SelenideElement> allElements = $$(By.cssSelector(selector + " #v_7 > *"));
         return allElements.stream().filter(htmlElement ->
                 htmlElement.attr("class").contains("element devs ImageWithPorts") &&
-                        !blocks.stream().anyMatch(block ->
+                        blocks.stream().noneMatch(block ->
                                 block.getInnerSeleniumElement().attr("id").equals(htmlElement.attr("id")))).findFirst();
     }
     
     private Optional<SelenideElement> updateLinks() {
         final List<SelenideElement> allElements = $$(By.cssSelector(selector + " #v_7 > *"));
         return allElements.stream().filter(htmlElement -> htmlElement.attr("class").contains("link") &&
-                !links.stream().anyMatch(link ->
+                links.stream().noneMatch(link ->
                     htmlElement.attr("id").equals(link.getInnerSeleniumElement().attr("id")))).findFirst();
     }
 

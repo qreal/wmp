@@ -105,7 +105,7 @@ public class SceneWindow {
     }
 
     private int jump(final List<Block> elements, int step, int current) {
-        if (elements.stream().filter(x -> {
+        if (elements.stream().anyMatch(x -> {
             try {
                 return Math.abs(current - x.getCoordinateOnScene().getXAbsolute())
                         < Math.abs(2 * step);
@@ -113,7 +113,7 @@ public class SceneWindow {
                 e.printStackTrace();
             }
             return false;
-        }).findFirst().isPresent()) {
+        })) {
             return step + jump(elements, step, step + current);
         } else  {
             return step;
