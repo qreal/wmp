@@ -3,9 +3,7 @@ package com.qreal.wmp.uitesting.dia.services;
 import com.codeborne.selenide.SelenideElement;
 import com.qreal.wmp.uitesting.dia.model.*;
 import com.qreal.wmp.uitesting.exceptions.ElementNotOnTheSceneException;
-import org.openqa.selenium.By;
-import org.openqa.selenium.NotFoundException;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,10 +34,16 @@ public class Scene {
     private Set<Link> links = new HashSet<>();
 
     private WebDriver driver;
-
+    
     /** For actions such as mouse move we need driver of current page. */
     public void updateWebdriver(final WebDriver webDriver) {
         driver = webDriver;
+        if (driver instanceof JavascriptExecutor) {
+            ((JavascriptExecutor) driver).executeScript(
+                    createDiv("SceneWindowLeft") + createDiv("SceneWindowTop") +
+                            createDiv("SceneWindowHorSize") + createDiv("SceneWindowVerSize")
+            );
+        }
     }
 
     /**
@@ -158,5 +162,8 @@ public class Scene {
                 links.stream().noneMatch(link ->
                     htmlElement.attr("id").equals(link.getInnerSeleniumElement().attr("id")))).findFirst();
     }
-
+    
+    private static String createDiv(String divName) {
+        return "$('body').append('<div id=\"" + divName + "\" style=\"position:absolute;visibility:hidden;\"></div>');";
+    }
 }

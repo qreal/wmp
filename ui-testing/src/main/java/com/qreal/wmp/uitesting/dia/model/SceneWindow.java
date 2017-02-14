@@ -3,11 +3,11 @@ package com.qreal.wmp.uitesting.dia.model;
 import com.codeborne.selenide.SelenideElement;
 import com.qreal.wmp.uitesting.dia.services.Scene;
 import com.qreal.wmp.uitesting.exceptions.ElementNotOnTheSceneException;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import sun.jvm.hotspot.runtime.Threads;
 
 import java.util.List;
 
@@ -21,22 +21,26 @@ public class SceneWindow {
     /** Link to full scene. */
     private final Scene scene;
 
-    private final int stepVert;
+    private int stepVert;
 
-    private final int stepHor;
+    private int stepHor;
 
     private final WebDriver driver;
 
     /** Web element of the Scene. */
     private final SelenideElement sceneWrapper;
-
+    
+    private static final Logger logger = LoggerFactory.getLogger(SceneWindow.class);
+    
+    
     /** Constructor takes links to current scene and current driver. */
     public SceneWindow(final Scene scene, final WebDriver driver) {
         this.scene = scene;
         this.driver = driver;
         sceneWrapper =  $(By.cssSelector(".scene-wrapper"));
-        stepVert = sceneWrapper.getSize().getHeight() / 12;
-        stepHor = sceneWrapper.getSize().getWidth() / 12;
+        stepHor = 40;
+        stepVert = 40;
+        updateCanvasInfo(driver);
     }
 
     /**
@@ -73,17 +77,54 @@ public class SceneWindow {
     /**
      * Move the screen to requested position.
      *
-     * @param position position to move
+     * @param coordinate coordinate to move
      */
-    public void focus(final Dimension position) {
-        final Dimension size = sceneWrapper.getSize();
-        callMovementAction(0, 2000, stepHor, new Actions(driver), Keys.ARROW_LEFT);
-        callMovementAction(0, 2000, stepVert, new Actions(driver), Keys.ARROW_UP);
-
-        callMovementAction(size.getWidth(), position.getWidth(), stepHor,
-                new Actions(driver), Keys.ARROW_RIGHT).release().perform();
-        callMovementAction(size.getHeight(), position.getHeight(), stepVert,
-                new Actions(driver), Keys.ARROW_DOWN).release().perform();
+    public void focus(final Coordinate coordinate) {
+        logger.info("Focus to " + coordinate.getXAbsolute() + " " + coordinate.getYAbsolute());
+        horizontalWindowMovement(coordinate.getXAbsolute());
+        verticalWindowMovement(coordinate.getYAbsolute());
+    }
+    
+    private void horizontalWindowMovement(int horizontal) {
+        int sizeHor = Double.valueOf($(By.id("SceneWindowHorSize")).innerHtml()).intValue();
+        int left = Double.valueOf($(By.id("SceneWindowLeft")).innerHtml()).intValue();
+        logger.info("focus horizontal " + left + " " + sizeHor);
+        
+        if (left + sizeHor * 3 / 4 < horizontal) {
+            new Actions(driver).sendKeys(Keys.RIGHT).perform();
+            updateCanvasInfo(driver);
+            if (Double.valueOf($(By.id("SceneWindowLeft")).innerHtml()).intValue() != left) {
+                horizontalWindowMovement(horizontal);
+            }
+        }
+        if (left + sizeHor / 4 > horizontal) {
+            new Actions(driver).sendKeys(Keys.LEFT).perform();
+            updateCanvasInfo(driver);
+            if (Double.valueOf($(By.id("SceneWindowLeft")).innerHtml()).intValue() != left) {
+                horizontalWindowMovement(horizontal);
+            }
+        }
+    }
+    
+    private void verticalWindowMovement(int vertical) {
+        int sizeVer = Double.valueOf($(By.id("SceneWindowVerSize")).innerHtml()).intValue();
+        int top = Double.valueOf($(By.id("SceneWindowTop")).innerHtml()).intValue();
+        logger.info("focus vertical " + top + " " + sizeVer);
+    
+        if (top + sizeVer * 3 / 4 < vertical) {
+            new Actions(driver).sendKeys(Keys.DOWN).perform();
+            updateCanvasInfo(driver);
+            if (Double.valueOf($(By.id("SceneWindowTop")).innerHtml()).intValue() != top) {
+                verticalWindowMovement(vertical);
+            }
+        }
+        if (top + sizeVer / 4 > vertical) {
+            new Actions(driver).sendKeys(Keys.UP).perform();
+            updateCanvasInfo(driver);
+            if (Double.valueOf($(By.id("SceneWindowTop")).innerHtml()).intValue() != top) {
+                verticalWindowMovement(vertical);
+            }
+        }
     }
 
     private Actions callMovementAction(int src, int dst, int step, Actions actions, Keys key) {
@@ -129,5 +170,23 @@ public class SceneWindow {
                 dist.getYAbsolute() - currentPosition.getYAbsolute()).release().perform();
         
         return  block.getCoordinateOnScene();
+    }
+    
+    private void updateCanvasInfo(WebDriver driver) {
+        try {
+            Thread.sleep(50);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        if (driver instanceof JavascriptExecutor) {
+            ((JavascriptExecutor) driver).executeScript("var canvas = " +
+                    "document.getElementsByClassName(\"scene-wrapper\")[0]; " +
+                    "var BB=canvas.getBoundingClientRect();" +
+                    "$('#SceneWindowLeft').html(canvas.scrollLeft);" +
+                    "$('#SceneWindowTop').html(canvas.scrollTop);" +
+                    "$('#SceneWindowHorSize').html(BB.right - BB.left);" +
+                    "$('#SceneWindowVerSize').html(BB.bottom - BB.top);"
+            );
+        }
     }
 }

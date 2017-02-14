@@ -1,6 +1,5 @@
 package com.qreal.wmp.uitesting.innertests;
 
-import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.WebDriverRunner;
 import com.qreal.wmp.uitesting.Opener;
 import com.qreal.wmp.uitesting.config.AppInit;
@@ -19,7 +18,6 @@ import org.junit.runner.RunWith;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
@@ -109,22 +107,6 @@ public class DiaTest {
             e.printStackTrace();
         }
     }
-    
-     /*
-    @Test
-    public void test() {
-        final SelenideElement motor = scene.dragAndDrop(pallete.getElement("Motors Forward"));
-        scene.moveToCell(motor, 30, 40);
-
-        if (driver instanceof JavascriptExecutor) {
-            ((JavascriptExecutor) driver)
-                    .executeScript("var canvas = document.getElementsByClassName(\"scene-wrapper\")[0]; " +
-                            "var BB=canvas.getBoundingClientRect();" +
-                            "alert(canvas.scrollLeft)");
-            // driver.switchTo().alert().accept();
-        }
-    }
-*/
 
     /** Close the browser. */
     @After
