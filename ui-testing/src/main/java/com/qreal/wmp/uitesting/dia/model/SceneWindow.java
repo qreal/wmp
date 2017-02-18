@@ -33,11 +33,9 @@ public class SceneWindow {
     public SceneWindow(final Scene scene, final WebDriver driver) {
         this.scene = scene;
         this.driver = driver;
-        stepHor = 40;
-        stepVert = 40;
-        updateCanvasInfo(driver);
+        updateSteps();
     }
-
+    
     /**
      * Moves element to the requested position.
      *
@@ -87,14 +85,14 @@ public class SceneWindow {
         
         if (left + sizeHor * 2 / 3 < horizontal) {
             sendKey(Keys.RIGHT);
-            updateCanvasInfo(driver);
+            updateCanvasInfo();
             if (Double.valueOf($(By.id("SceneWindowLeft")).innerHtml()).intValue() != left) {
                 horizontalWindowMovement(horizontal);
             }
         }
         if (left + sizeHor / 3 > horizontal) {
             sendKey(Keys.LEFT);
-            updateCanvasInfo(driver);
+            updateCanvasInfo();
             if (Double.valueOf($(By.id("SceneWindowLeft")).innerHtml()).intValue() != left) {
                 horizontalWindowMovement(horizontal);
             }
@@ -108,14 +106,14 @@ public class SceneWindow {
     
         if (top + sizeVer * 2 / 3 < vertical) {
             sendKey(Keys.DOWN);
-            updateCanvasInfo(driver);
+            updateCanvasInfo();
             if (Double.valueOf($(By.id("SceneWindowTop")).innerHtml()).intValue() != top) {
                 verticalWindowMovement(vertical);
             }
         }
         if (top + sizeVer / 3 > vertical) {
             sendKey(Keys.UP);
-            updateCanvasInfo(driver);
+            updateCanvasInfo();
             if (Double.valueOf($(By.id("SceneWindowTop")).innerHtml()).intValue() != top) {
                 verticalWindowMovement(vertical);
             }
@@ -163,7 +161,7 @@ public class SceneWindow {
         return  block.getCoordinateOnScene();
     }
     
-    private void updateCanvasInfo(WebDriver driver) {
+    private void updateCanvasInfo() {
         if (driver instanceof JavascriptExecutor) {
             ((JavascriptExecutor) driver).executeScript("var canvas = " +
                     "document.getElementsByClassName(\"scene-wrapper\")[0]; " +
@@ -183,5 +181,17 @@ public class SceneWindow {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+    
+    private void updateSteps() {
+        updateCanvasInfo();
+        $(Scene.selector).click();
+        focus(new Coordinate(0, 0));
+        updateCanvasInfo();
+        sendKey(Keys.DOWN);
+        sendKey(Keys.RIGHT);
+        updateCanvasInfo();
+        stepHor = Double.valueOf($(By.id("SceneWindowLeft")).innerHtml()).intValue();
+        stepVert = Double.valueOf($(By.id("SceneWindowTop")).innerHtml()).intValue();
     }
 }
