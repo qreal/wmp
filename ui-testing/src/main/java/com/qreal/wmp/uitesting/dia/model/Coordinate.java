@@ -9,7 +9,7 @@ public class Coordinate {
     public static Optional<Coordinate> getCoordinateFromSeleniumObject(SelenideElement element) {
         final String position = element.attr("transform");
         final String[] pairStr = position.substring(position.indexOf('(') + 1, position.indexOf(')')).split(",");
-        return Optional.of(new Coordinate(Integer.valueOf(pairStr[0]), Integer.valueOf(pairStr[1])));
+        return Optional.of(new Coordinate(Double.valueOf(pairStr[0]).intValue(), Double.valueOf(pairStr[1]).intValue()));
     }
     
     private final int xAbsolute;

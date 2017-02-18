@@ -15,6 +15,7 @@ import org.junit.runner.RunWith;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
@@ -25,6 +26,7 @@ import static com.codeborne.selenide.Selenide.$;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = AppInit.class, loader = AnnotationConfigContextLoader.class)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class AuthTest {
 
     @Autowired
@@ -33,6 +35,7 @@ public class AuthTest {
     @Autowired
     private Opener opener;
 
+    @Autowired
     private WebDriver driver;
 
     /** Setup ChromeDriverManager. */
@@ -44,7 +47,6 @@ public class AuthTest {
     /** Setup browser. */
     @Before
     public void runDriver() {
-        driver = new ChromeDriver();
         WebDriverRunner.setWebDriver(driver);
     }
 

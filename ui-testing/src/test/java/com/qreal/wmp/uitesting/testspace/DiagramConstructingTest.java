@@ -55,7 +55,7 @@ public class DiagramConstructingTest {
         driver = new ChromeDriver();
         WebDriverRunner.setWebDriver(driver);
         opener.open("editor");
-        scene.updateWebdriver(driver);
+      //  scene.updateWebdriver(driver);
 
         elements = new ArrayList<>();
         links = new ArrayList<>();

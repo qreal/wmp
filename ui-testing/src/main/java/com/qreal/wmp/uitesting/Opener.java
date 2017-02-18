@@ -1,5 +1,6 @@
 package com.qreal.wmp.uitesting;
 
+import com.qreal.wmp.uitesting.dia.services.Scene;
 import com.qreal.wmp.uitesting.exceptions.WrongAuthException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,9 +25,14 @@ public class Opener {
 
     @Autowired
     private Auther auther;
-
+    
+    @Autowired
+    private Scene scene;
+    
     private static final Logger logger = LoggerFactory.getLogger(Opener.class);
-
+    
+    private boolean inited = false;
+    
     /**
      * Opens page from wmp with authentication.
      *
@@ -34,17 +40,20 @@ public class Opener {
      */
     public void open(final String page) {
         try {
-            cleanOpen(page);
+            com.codeborne.selenide.Selenide.open(env.getProperty(page));
+            logger.info("Open page {}", env.getProperty(page));
             if ($(byText("Sign in to continue to Auth")).exists()) {
                 logger.info("Fail with open page {}. Try to login.", env.getProperty(page));
                 auther.auth();
             }
-            cleanOpen(page);
+            com.codeborne.selenide.Selenide.open(env.getProperty(page));
+            logger.info("Open page {}", env.getProperty(page));
         } catch (WrongAuthException e) {
             logger.error("Opener fails: " +  e.getMessage());
             throw new AccessDeniedException(e.getMessage());
         }
         logger.info("Open page {}", env.getProperty(page));
+        scene.init();
     }
 
     /**
@@ -55,5 +64,6 @@ public class Opener {
     public void cleanOpen(final String page) {
         com.codeborne.selenide.Selenide.open(env.getProperty(page));
         logger.info("Open page {}", env.getProperty(page));
+        scene.init();
     }
 }

@@ -1,11 +1,14 @@
 package com.qreal.wmp.uitesting.dia.model;
 
 import com.codeborne.selenide.SelenideElement;
+import com.qreal.wmp.uitesting.exceptions.ElementNotOnTheSceneException;
 import org.openqa.selenium.By;
 
 import static com.codeborne.selenide.Selenide.$;
 
 public class Link extends SceneElement {
+    
+    public static final String className = "link";
     
     private static final String sourcePointClassName = "marker-source";
     
@@ -34,5 +37,13 @@ public class Link extends SceneElement {
     
     public SceneElement getTarget() {
         return target;
+    }
+    
+    @Override
+    public Coordinate getCoordinateOnScene() throws ElementNotOnTheSceneException {
+        return new Coordinate(
+                (source.getCoordinateOnScene().getXAbsolute() + target.getCoordinateOnScene().getXAbsolute()) / 2,
+                (source.getCoordinateOnScene().getYAbsolute() + target.getCoordinateOnScene().getYAbsolute()) / 2
+        );
     }
 }

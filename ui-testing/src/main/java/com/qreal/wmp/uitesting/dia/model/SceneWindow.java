@@ -7,7 +7,6 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import sun.jvm.hotspot.runtime.Threads;
 
 import java.util.List;
 
@@ -26,9 +25,6 @@ public class SceneWindow {
     private int stepHor;
 
     private final WebDriver driver;
-
-    /** Web element of the Scene. */
-    private final SelenideElement sceneWrapper;
     
     private static final Logger logger = LoggerFactory.getLogger(SceneWindow.class);
     
@@ -37,7 +33,6 @@ public class SceneWindow {
     public SceneWindow(final Scene scene, final WebDriver driver) {
         this.scene = scene;
         this.driver = driver;
-        sceneWrapper =  $(By.cssSelector(".scene-wrapper"));
         stepHor = 40;
         stepVert = 40;
         updateCanvasInfo(driver);
@@ -51,7 +46,7 @@ public class SceneWindow {
      */
     public void move(final Block element, final Coordinate dist) throws ElementNotOnTheSceneException {
         Coordinate src = element.getCoordinateOnScene();
-        //focus(src);
+        focus(src);
 
         if (src.getXAbsolute() < dist.getXAbsolute()) {
             callDragAndDropByX(src.getXAbsolute(), dist.getXAbsolute(), stepHor,
@@ -90,15 +85,15 @@ public class SceneWindow {
         int left = Double.valueOf($(By.id("SceneWindowLeft")).innerHtml()).intValue();
         logger.info("focus horizontal " + left + " " + sizeHor);
         
-        if (left + sizeHor * 3 / 4 < horizontal) {
-            new Actions(driver).sendKeys(Keys.RIGHT).perform();
+        if (left + sizeHor * 2 / 3 < horizontal) {
+            sendKey(Keys.RIGHT);
             updateCanvasInfo(driver);
             if (Double.valueOf($(By.id("SceneWindowLeft")).innerHtml()).intValue() != left) {
                 horizontalWindowMovement(horizontal);
             }
         }
-        if (left + sizeHor / 4 > horizontal) {
-            new Actions(driver).sendKeys(Keys.LEFT).perform();
+        if (left + sizeHor / 3 > horizontal) {
+            sendKey(Keys.LEFT);
             updateCanvasInfo(driver);
             if (Double.valueOf($(By.id("SceneWindowLeft")).innerHtml()).intValue() != left) {
                 horizontalWindowMovement(horizontal);
@@ -111,24 +106,20 @@ public class SceneWindow {
         int top = Double.valueOf($(By.id("SceneWindowTop")).innerHtml()).intValue();
         logger.info("focus vertical " + top + " " + sizeVer);
     
-        if (top + sizeVer * 3 / 4 < vertical) {
-            new Actions(driver).sendKeys(Keys.DOWN).perform();
+        if (top + sizeVer * 2 / 3 < vertical) {
+            sendKey(Keys.DOWN);
             updateCanvasInfo(driver);
             if (Double.valueOf($(By.id("SceneWindowTop")).innerHtml()).intValue() != top) {
                 verticalWindowMovement(vertical);
             }
         }
-        if (top + sizeVer / 4 > vertical) {
-            new Actions(driver).sendKeys(Keys.UP).perform();
+        if (top + sizeVer / 3 > vertical) {
+            sendKey(Keys.UP);
             updateCanvasInfo(driver);
             if (Double.valueOf($(By.id("SceneWindowTop")).innerHtml()).intValue() != top) {
                 verticalWindowMovement(vertical);
             }
         }
-    }
-
-    private Actions callMovementAction(int src, int dst, int step, Actions actions, Keys key) {
-        return src < dst ? callMovementAction(src + step, dst, step, actions.sendKeys(key), key) : actions;
     }
 
     private Actions callDragAndDropByX(int src, int dst, int step, Actions actions, Keys key, SelenideElement element) {
@@ -173,11 +164,6 @@ public class SceneWindow {
     }
     
     private void updateCanvasInfo(WebDriver driver) {
-        try {
-            Thread.sleep(50);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         if (driver instanceof JavascriptExecutor) {
             ((JavascriptExecutor) driver).executeScript("var canvas = " +
                     "document.getElementsByClassName(\"scene-wrapper\")[0]; " +
@@ -187,6 +173,15 @@ public class SceneWindow {
                     "$('#SceneWindowHorSize').html(BB.right - BB.left);" +
                     "$('#SceneWindowVerSize').html(BB.bottom - BB.top);"
             );
+        }
+    }
+    
+    private void sendKey(Keys key) {
+        new Actions(driver).sendKeys(key).perform();
+        try {
+            Thread.sleep(50);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 }
