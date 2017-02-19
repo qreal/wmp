@@ -11,10 +11,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.codeborne.selenide.Selenide.$;
@@ -26,7 +23,7 @@ import static com.codeborne.selenide.Selenide.$$;
  */
 public class Scene {
 
-    public static final String selector = ".scene-wrapper";
+    public static final String SELECTOR = ".scene-wrapper";
 
     private static final Logger logger = LoggerFactory.getLogger(Pallete.class);
 
@@ -58,7 +55,7 @@ public class Scene {
      * @return element from scene
      */
     public Block dragAndDrop(final SelenideElement element) {
-        element.dragAndDropTo(selector);
+        element.dragAndDropTo(SELECTOR);
         final SelenideElement newEl = updateBlocks().orElseThrow(NotFoundException::new);
         Block newBlock = new Block("name", newEl);
         blocks.add(newBlock);
@@ -133,12 +130,13 @@ public class Scene {
 
     /** Add link between two elements. */
     public Link addLink(final Block source, final Block target) {
-        final SelenideElement begin = $(By.cssSelector(selector + " #" +
+        final SelenideElement begin = $(By.cssSelector(SELECTOR + " #" +
                 source.getInnerSeleniumElement().attr("id") + " .outPorts"));
         logger.info("Begin element {}, end element {} ", begin, target);
-        new Actions(webDriver).dragAndDrop(source.getPort().getInnerSeleniumElement(),
-                target.getInnerSeleniumElement()).build().perform();
-        SelenideElement newEl = updateLinks().get();
+        new Actions(webDriver)
+                .dragAndDrop(source.getPort().getInnerSeleniumElement(), target.getInnerSeleniumElement())
+                .build().perform();
+        SelenideElement newEl = updateLinks().orElseThrow(() -> new NoSuchElementException("Link was not created"));
         logger.info("Add link {}", newEl);
         Link res = new Link("link", newEl);
         links.add(res);
@@ -152,18 +150,23 @@ public class Scene {
     
     /** Return new element of the scene. */
     private Optional<SelenideElement> updateBlocks() {
-        final List<SelenideElement> allElements = $$(By.cssSelector(selector + " #v_7 > *"));
-        return allElements.stream().filter(htmlElement ->
-                htmlElement.attr("class").contains("element devs ImageWithPorts") &&
-                        blocks.stream().noneMatch(block ->
-                                block.getInnerSeleniumElement().attr("id").equals(htmlElement.attr("id")))).findFirst();
+        final List<SelenideElement> allElements = $$(By.cssSelector(SELECTOR + " #v_7 > *"));
+        return allElements.stream()
+                .filter(htmlElement ->
+                        htmlElement.attr("class").contains("element devs ImageWithPorts") &&
+                                blocks.stream().noneMatch(block -> block.getInnerSeleniumElement()
+                                        .attr("id").equals(htmlElement.attr("id")))
+                ).findFirst();
     }
     
     private Optional<SelenideElement> updateLinks() {
-        final List<SelenideElement> allElements = $$(By.cssSelector(selector + " #v_7 > *"));
-        return allElements.stream().filter(htmlElement -> htmlElement.attr("class").contains("link") &&
-                links.stream().noneMatch(link ->
-                    htmlElement.attr("id").equals(link.getInnerSeleniumElement().attr("id")))).findFirst();
+        final List<SelenideElement> allElements = $$(By.cssSelector(SELECTOR + " #v_7 > *"));
+        return allElements.stream()
+                .filter(htmlElement ->
+                        htmlElement.attr("class").contains("link") &&
+                                links.stream().noneMatch(link -> htmlElement.attr("id")
+                                        .equals(link.getInnerSeleniumElement().attr("id")))
+                ).findFirst();
     }
     
     private static String createDiv(String divName) {
@@ -181,13 +184,13 @@ public class Scene {
             e.printStackTrace();
         }
         $(By.id("scene-context-menu")).click();
-        blocks = $$(By.cssSelector(selector + " #v_7 > *")).stream()
-                .filter(x -> x.attr("class").equals(Block.className))
+        blocks = $$(By.cssSelector(SELECTOR + " #v_7 > *")).stream()
+                .filter(x -> x.attr("class").contains(Block.CLASS_NAME))
                 .map(x -> new Block("name", x))
                 .collect(Collectors.toSet());
         
-        links = $$(By.cssSelector(selector + " #v_7 > *")).stream()
-                .filter(x -> x.attr("class").equals(Link.className))
+        links = $$(By.cssSelector(SELECTOR + " #v_7 > *")).stream()
+                .filter(x -> x.attr("class").contains(Link.CLASS_NAME))
                 .map(x -> new Link("name", x))
                 .collect(Collectors.toSet());
     }

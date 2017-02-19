@@ -8,11 +8,11 @@ import static com.codeborne.selenide.Selenide.$;
 
 public class Link extends SceneElement {
     
-    public static final String className = "link";
+    public static final String CLASS_NAME = "link";
     
-    private static final String sourcePointClassName = "marker-source";
+    private static final String SOURCE_POINT_CLASSNAME = "marker-source";
     
-    private static final String targetPointClassName = "marker-target";
+    private static final String TARGET_POINT_CLASSNAME = "marker-target";
     
     private final String name;
     
@@ -23,8 +23,8 @@ public class Link extends SceneElement {
     public Link(String name, SelenideElement innerSeleniumObject) {
         super(innerSeleniumObject);
         this.name = name;
-        this.source = new SceneElement($(innerSeleniumObject.find(By.className(sourcePointClassName))));
-        this.target = new SceneElement($(innerSeleniumObject.find(By.className(targetPointClassName))));
+        this.source = new SceneElement($(innerSeleniumObject.find(By.className(SOURCE_POINT_CLASSNAME))));
+        this.target = new SceneElement($(innerSeleniumObject.find(By.className(TARGET_POINT_CLASSNAME))));
     }
     
     public String getName() {

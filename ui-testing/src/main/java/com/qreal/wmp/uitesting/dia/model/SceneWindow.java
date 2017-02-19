@@ -49,7 +49,8 @@ public class SceneWindow {
         focus(src);
 
         if (src.getXAbsolute() < dist.getXAbsolute()) {
-            callDragAndDropByX(src.getXAbsolute(), dist.getXAbsolute(), stepHor,
+            callDragAndDropByX(
+                    src.getXAbsolute(), dist.getXAbsolute(), stepHor,
                     new Actions(driver), Keys.ARROW_RIGHT, element.getInnerSeleniumElement()).perform();
         } else {
             callDragAndDropByX(src.getXAbsolute(), dist.getXAbsolute(), -stepHor,
@@ -124,23 +125,28 @@ public class SceneWindow {
 
     private Actions callDragAndDropByX(int src, int dst, int step, Actions actions, Keys key, SelenideElement element) {
         final List<Block> elements = scene.getBlocks();
-        return Math.abs(src - dst) > Math.abs(step) ? callDragAndDropByX(src + step, dst, step,
-                actions.sendKeys(key).clickAndHold(element).moveByOffset(jump(elements, 2 * step, src), 0),
-                key, element) : actions.sendKeys(key, key);
+        return Math.abs(src - dst) > Math.abs(step) ?
+                callDragAndDropByX(src + step, dst, step,
+                        actions.sendKeys(key)
+                                .clickAndHold(element)
+                                .moveByOffset(jump(elements, 2 * step, src), 0), key, element
+                ) : actions.sendKeys(key, key);
     }
 
     private Actions callDragAndDropByY(int src, int dst, int step, Actions actions, Keys key, SelenideElement element) {
         final List<Block> elements = scene.getBlocks();
-        return Math.abs(src - dst) > Math.abs(step) ? callDragAndDropByY(src + step, dst, step,
-                actions.sendKeys(key).clickAndHold(element).moveByOffset(0, jump(elements, 2 * step, src)),
-                key, element) : actions.sendKeys(key, key);
+        return Math.abs(src - dst) > Math.abs(step) ?
+                callDragAndDropByY(src + step, dst, step,
+                        actions.sendKeys(key)
+                                .clickAndHold(element)
+                                .moveByOffset(0, jump(elements, 2 * step, src)), key, element
+                ) : actions.sendKeys(key, key);
     }
 
     private int jump(final List<Block> elements, int step, int current) {
         if (elements.stream().anyMatch(x -> {
             try {
-                return Math.abs(current - x.getCoordinateOnScene().getXAbsolute())
-                        < Math.abs(2 * step);
+                return Math.abs(current - x.getCoordinateOnScene().getXAbsolute()) < Math.abs(2 * step);
             } catch (ElementNotOnTheSceneException e) {
                 e.printStackTrace();
             }
@@ -155,9 +161,12 @@ public class SceneWindow {
     private Coordinate finalJump(Block block, Coordinate dist) throws ElementNotOnTheSceneException {
         Coordinate currentPosition = block.getCoordinateOnScene();
     
-        new Actions(driver).release().clickAndHold(block.getInnerSeleniumElement()).moveByOffset(
-                dist.getXAbsolute() - currentPosition.getXAbsolute(),
-                dist.getYAbsolute() - currentPosition.getYAbsolute()).release().perform();
+        new Actions(driver).release()
+                .clickAndHold(block.getInnerSeleniumElement())
+                .moveByOffset(
+                        dist.getXAbsolute() - currentPosition.getXAbsolute(),
+                        dist.getYAbsolute() - currentPosition.getYAbsolute()
+                ).release().perform();
         
         return  block.getCoordinateOnScene();
     }

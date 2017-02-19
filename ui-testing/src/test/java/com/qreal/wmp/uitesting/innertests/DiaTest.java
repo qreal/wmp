@@ -102,6 +102,5 @@ public class DiaTest {
     @After
     public void stopDriver() {
         scene.clean();
-        driver.quit();
     }
 }

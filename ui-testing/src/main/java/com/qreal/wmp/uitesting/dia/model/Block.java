@@ -7,9 +7,9 @@ import static com.codeborne.selenide.Selenide.$;
 
 public class Block extends SceneElement {
     
-    public static final String className = "element devs ImageWithPorts";
+    public static final String CLASS_NAME = "element devs ImageWithPorts";
     
-    private final static String portClassName = "port0";
+    private static final String PORT_CLASS_NAME = "port0";
     
     private final String name;
     
@@ -18,7 +18,7 @@ public class Block extends SceneElement {
     public Block(String name, SelenideElement innerSeleniumObject) {
         super(innerSeleniumObject);
         this.name = name;
-        this.port = new SceneElement($(innerSeleniumObject.find(By.className(portClassName))));
+        this.port = new SceneElement($(innerSeleniumObject.find(By.className(PORT_CLASS_NAME))));
     }
     
     public String getName() {

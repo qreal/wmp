@@ -22,8 +22,8 @@ public class SceneElement {
     }
     
     public Coordinate getCoordinateOnScene() throws ElementNotOnTheSceneException {
-        return Coordinate.getCoordinateFromSeleniumObject(
-                innerSeleniumElement).orElseThrow(ElementNotOnTheSceneException::new);
+        return Coordinate.getCoordinateFromSeleniumObject(innerSeleniumElement)
+                .orElseThrow(ElementNotOnTheSceneException::new);
     }
     
     public String getType() {

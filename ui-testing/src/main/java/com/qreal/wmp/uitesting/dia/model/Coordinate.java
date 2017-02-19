@@ -7,6 +7,8 @@ import java.util.Optional;
 
 public class Coordinate {
     
+    private static final int POINT_IN_CELL = 25;
+    
     /** Returns coordinate of object on scene. */
     @NotNull
     public static Optional<Coordinate> getCoordinateFromSeleniumObject(SelenideElement element) {
@@ -30,11 +32,11 @@ public class Coordinate {
     }
     
     public int getXCell() {
-        return xAbsolute / 25;
+        return xAbsolute / POINT_IN_CELL;
     }
     
     public int getYCell() {
-        return yAbsolute / 25;
+        return yAbsolute / POINT_IN_CELL;
     }
     
     public int getXAbsolute() {
