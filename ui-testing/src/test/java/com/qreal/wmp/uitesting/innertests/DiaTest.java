@@ -12,6 +12,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
@@ -22,7 +24,9 @@ import org.springframework.test.context.support.AnnotationConfigContextLoader;
 @ContextConfiguration(classes = AppInit.class, loader = AnnotationConfigContextLoader.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class DiaTest {
-
+    
+    private static final Logger logger = LoggerFactory.getLogger(DiaTest.class);
+    
     @Autowired
     private Opener opener;
 
@@ -35,7 +39,7 @@ public class DiaTest {
     @Autowired
     private PropertyEditor propertyEditor;
     
-    /** Setup browser. */
+    /** Open editor page. */
     @Before
     public void openEditor() {
         opener.open("editor");
@@ -90,11 +94,11 @@ public class DiaTest {
             scene.moveToCell(motor, 0, 0);
             assert motor.getCoordinateOnScene().getXCell() == 0 && motor.getCoordinateOnScene().getYCell() == 0;
         } catch (ElementNotOnTheSceneException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
     }
 
-    /** Close the browser. */
+    /** Clean scene. */
     @After
     public void cleanScene() {
         scene.clean();

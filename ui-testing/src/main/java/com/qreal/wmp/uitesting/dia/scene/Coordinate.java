@@ -9,6 +9,10 @@ public class Coordinate {
     
     private static final int POINT_IN_CELL = 25;
     
+    private final int xAbsolute;
+    
+    private final int yAbsolute;
+    
     /** Returns coordinate of object on scene. */
     @NotNull
     public static Optional<Coordinate> getCoordinateFromSeleniumObject(SelenideElement element) {
@@ -21,10 +25,6 @@ public class Coordinate {
                 )
         );
     }
-    
-    private final int xAbsolute;
-    
-    private final int yAbsolute;
     
     public Coordinate(int xAbsolute, int yAbsolute) {
         this.xAbsolute = xAbsolute;

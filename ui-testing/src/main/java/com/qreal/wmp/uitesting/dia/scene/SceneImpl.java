@@ -59,7 +59,7 @@ public class SceneImpl implements Scene, InitializedComponent {
     
     @Override
     public boolean name(String name) {
-        return name.equals("editor");
+        return "editor".equals(name);
     }
     
     @Override
@@ -91,7 +91,7 @@ public class SceneImpl implements Scene, InitializedComponent {
         try {
             sceneWindow.move(block, new Coordinate(cell_x * 25, cell_y * 25));
         } catch (ElementNotOnTheSceneException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
     }
     
@@ -102,7 +102,7 @@ public class SceneImpl implements Scene, InitializedComponent {
         try {
             sceneWindow.focus(element.getCoordinateOnScene());
         } catch (ElementNotOnTheSceneException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
     }
     
@@ -189,7 +189,7 @@ public class SceneImpl implements Scene, InitializedComponent {
         try {
             Thread.sleep(100);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
         $(By.id("scene-context-menu")).click();
         blocks = $$(By.cssSelector(SELECTOR + " #v_7 > *")).stream()

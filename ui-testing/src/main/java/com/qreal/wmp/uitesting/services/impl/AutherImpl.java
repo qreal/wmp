@@ -35,6 +35,6 @@ public class AutherImpl implements Auther {
     }
 
     public void auth() throws WrongAuthException {
-        auth("123", "123");
+        auth("Admin", "Admin");
     }
 }

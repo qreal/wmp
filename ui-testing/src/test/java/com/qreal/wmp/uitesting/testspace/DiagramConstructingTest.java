@@ -37,8 +37,10 @@ public class DiagramConstructingTest {
     private PropertyEditor propertyEditor;
 
     private ArrayList<Block> elements;
+    
     private ArrayList<Link> links;
-
+    
+    /** Open editor page. */
     @Before
     public void openEditor() {
         opener.open("editor");
@@ -80,6 +82,7 @@ public class DiagramConstructingTest {
         assert propertyEditor.getProperty(elements.get(3).getInnerSeleniumElement(), "Delay").equals("200");
     }
 
+    /** Clean scene. */
     @After
     public void cleanScene() {
         scene.clean();

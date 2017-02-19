@@ -44,31 +44,31 @@ script:
 
   - cd db-diagram-service
   - mvn exec:java -P travis &
-  - sleep 15
+  - sleep 30
 
   - cd ../db-user-service
   - mvn exec:java -P travis &
-  - sleep 15
+  - sleep 30
 
   - cd ../db-robot-store-service
   - mvn exec:java -P travis &
-  - sleep 15
+  - sleep 30
 
   - cd ../../auth-service
   - mvn tomcat7:run-war-only -P travis &
-  - sleep 30
+  - sleep 60
 
   - cd  ../dashboard-service
   - mvn tomcat7:run-war-only -P travis &
-  - sleep 30
+  - sleep 60
 
   - cd ../editor-service
   - mvn tomcat7:run-war-only -P travis &
-  - sleep 30
+  - sleep 60
 
   - cd ../ui-testing
   - mvn test -P travis &
-  - sleep 180
+  - sleep 600
 
 notifications:
   slack: qreal-web:sT5qgA4qZZ9eyLI0yy2Mp81E

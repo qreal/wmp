@@ -147,7 +147,7 @@ public class SceneWindowImpl implements SceneWindow {
             try {
                 return Math.abs(current - x.getCoordinateOnScene().getXAbsolute()) < Math.abs(2 * step);
             } catch (ElementNotOnTheSceneException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage());
             }
             return false;
         })) {
@@ -190,7 +190,7 @@ public class SceneWindowImpl implements SceneWindow {
             // wait hard coded time until action is completed
             Thread.sleep(50);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
     }
     
