@@ -32,7 +32,7 @@ public class RobotRestServletHandler implements RobotServiceThrift.Iface {
      */
     @Override
     public boolean registerRobot(String robotName, String ssid) throws org.apache.thrift.TException {
-        logger.trace("RobotRestServlet got register request with parameters: robotName = {}, ssid = {}", robotName,
+        logger.trace("RobotRestServlet got saveRobot request with parameters: robotName = {}, ssid = {}", robotName,
                 ssid);
         RobotService robotService = (RobotService) context.getBean("robotService");
         try {
@@ -56,10 +56,10 @@ public class RobotRestServletHandler implements RobotServiceThrift.Iface {
      */
     @Override
     public boolean deleteRobot(long robotId) throws org.apache.thrift.TException {
-        logger.trace("RobotRestServlet got delete request with parameters: robotId = {}", robotId);
+        logger.trace("RobotRestServlet got deleteRobot request with parameters: robotId = {}", robotId);
         RobotService robotService = (RobotService) context.getBean("robotService");
         try {
-            robotService.delete(robotId);
+            robotService.deleteRobot(robotId);
         } catch (AbortedException e) {
             //TODO Here we should send exception to client side.
             logger.error("deleteRobot method encountered exception Aborted. Robot was not deleted", e);

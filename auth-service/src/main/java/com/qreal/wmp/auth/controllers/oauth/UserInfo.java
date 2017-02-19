@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.Collection;
 
 /**
  * Controller returning user info of authenticated user. Used for authentication with OpenID Basic.

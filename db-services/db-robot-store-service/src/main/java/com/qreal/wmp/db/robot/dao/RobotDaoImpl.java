@@ -45,6 +45,40 @@ public class RobotDaoImpl implements RobotDao {
     }
 
     /**
+     * Finds a robot by Id at local DB using Hibernate ORM.
+     * @param robotId id of a robot to find
+     */
+    @Override
+    public @NotNull RobotSerial getRobot(long robotId) throws NotFoundException {
+        logger.trace("getRobot() was called with parameters: robotId = {}.", robotId);
+        Session session = sessionFactory.getCurrentSession();
+
+        RobotSerial robot = (RobotSerial) session.get(RobotSerial.class, robotId);
+        if (robot == null) {
+            throw new NotFoundException(String.valueOf(robotId), "Robot with specified id was not found.");
+        }
+        return robot;
+    }
+
+    /**
+     * Updates a robot at local DB using Hibernate ORM.
+     * @param robot robot to updateUser (Id must be set correctly)
+     */
+    @Override
+    public void updateRobot(@NotNull RobotSerial robot) throws AbortedException {
+        logger.trace("updateRobot() was called with parameters: robot = {}.", robot.getName());
+        Session session = sessionFactory.getCurrentSession();
+        if (!isExistsRobot(robot.getId())) {
+            logger.error("Robot with specified Id doesn't exists.");
+            throw new AbortedException("Robot with specified Id doesn't exists. Use saveRobot instead.",
+                    "updateRobot() safely aborted.", RobotDaoImpl.class.getName());
+        }
+        session.merge(robot);
+
+        logger.trace("updateRobot() successfully updated a robot");
+    }
+
+    /**
      * Deletes a robot from local DB using Hibernate ORM.
      * Loads User associated with this robot using UserService and deletes the robot from its list of robots.
      * Consistency kept using RPC calls to UserService.
@@ -92,7 +126,7 @@ public class RobotDaoImpl implements RobotDao {
     private TUser loadOwner(String owner) throws ErrorConnectionException, AbortedException {
         TUser tUser = null;
         try {
-            tUser = userService.findByUserName(owner);
+            tUser = userService.getUser(owner);
         } catch (NotFoundException e) {
             logger.error("Inconsistent state: Robot contains user with id {}, but this user doesn't exist.", owner, e);
             throw new AbortedException("Inconsistent state: Robot contains user with id {}, but this user doesn't " +
@@ -105,26 +139,10 @@ public class RobotDaoImpl implements RobotDao {
 
     private void updateOwner(TUser tUser) throws AbortedException, ErrorConnectionException {
         try {
-            userService.update(tUser);
+            userService.updateUser(tUser);
         } catch (TException e) {
             logger.error("TException was not translated", e);
         }
-    }
-
-    /**
-     * Finds a robot by Id at local DB using Hibernate ORM.
-     * @param robotId id of a robot to find
-     */
-    @Override
-    public @NotNull RobotSerial getRobot(long robotId) throws NotFoundException {
-        logger.trace("getRobot() was called with parameters: robotId = {}.", robotId);
-        Session session = sessionFactory.getCurrentSession();
-
-        RobotSerial robot = (RobotSerial) session.get(RobotSerial.class, robotId);
-        if (robot == null) {
-            throw new NotFoundException(String.valueOf(robotId), "Robot with specified id was not found.");
-        }
-        return robot;
     }
 
     /**
@@ -137,23 +155,5 @@ public class RobotDaoImpl implements RobotDao {
         Session session = sessionFactory.getCurrentSession();
         RobotSerial robot = (RobotSerial) session.get(RobotSerial.class, id);
         return robot != null;
-    }
-
-    /**
-     * Updates a robot at local DB using Hibernate ORM.
-     * @param robot robot to update (Id must be set correctly)
-     */
-    @Override
-    public void updateRobot(@NotNull RobotSerial robot) throws AbortedException {
-        logger.trace("updateRobot() was called with parameters: robot = {}.", robot.getName());
-        Session session = sessionFactory.getCurrentSession();
-        if (!isExistsRobot(robot.getId())) {
-            logger.error("Robot with specified Id doesn't exists.");
-            throw new AbortedException("Robot with specified Id doesn't exists. Use saveRobot instead.",
-                    "updateRobot() safely aborted.", RobotDaoImpl.class.getName());
-        }
-        session.merge(robot);
-
-        logger.trace("updateRobot() successfully updated a robot");
     }
 }

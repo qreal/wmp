@@ -47,58 +47,58 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void save(@NotNull TUser tUser) throws AbortedException, ErrorConnectionException, TException {
-        logger.trace("save() was called with parameters: user = {}.", tUser.getUsername());
+    public void saveUser(@NotNull TUser tUser) throws AbortedException, ErrorConnectionException, TException {
+        logger.trace("saveUser() was called with parameters: user = {}.", tUser.getUsername());
         transport.open();
         try {
-            client.save(tUser);
+            client.saveUser(tUser);
         } finally {
             transport.close();
         }
-        logger.trace("save() successfully saved user {}.", tUser.getUsername());
+        logger.trace("saveUser() successfully saved user {}.", tUser.getUsername());
     }
 
     @Override
     @Transactional
-    public void update(@NotNull TUser tUser) throws AbortedException, ErrorConnectionException, TException {
-        logger.trace("update() was called with parameters: user = {}.", tUser.getUsername());
+    public void updateUser(@NotNull TUser tUser) throws AbortedException, ErrorConnectionException, TException {
+        logger.trace("updateUser() was called with parameters: user = {}.", tUser.getUsername());
         transport.open();
         try {
-            client.update(tUser);
+            client.updateUser(tUser);
         } finally {
             transport.close();
         }
-        logger.trace("update() successfully updated user {}", tUser.getUsername());
+        logger.trace("updateUser() successfully updated user {}", tUser.getUsername());
     }
 
     @Override
     @Transactional
     @NotNull
-    public TUser findByUserName(String username) throws NotFoundException, ErrorConnectionException, TException {
-        logger.trace("findByUserName() was called with parameters: username = {}.", username);
+    public TUser getUser(String username) throws NotFoundException, ErrorConnectionException, TException {
+        logger.trace("getUser() was called with parameters: username = {}.", username);
         TUser tUser = null;
         transport.open();
         try {
-            tUser = client.findByUserName(username);
+            tUser = client.getUser(username);
         } finally {
             transport.close();
         }
-        logger.trace("findByUserName() successfully returned an answer.");
+        logger.trace("getUser() successfully returned an answer.");
         return tUser;
     }
 
     @Override
     @Transactional
-    public boolean isUserExist(String username) throws ErrorConnectionException, TException {
-        logger.trace("isUserExist() was called with parameters: username = {}", username);
+    public boolean isUserExists(String username) throws ErrorConnectionException, TException {
+        logger.trace("isUserExists() was called with parameters: username = {}", username);
         boolean isUserExist = false;
         transport.open();
         try {
-            isUserExist = client.isUserExist(username);
+            isUserExist = client.isUserExists(username);
         } finally {
             transport.close();
         }
-        logger.trace("isUserExist() succesfully returned an answer.");
+        logger.trace("isUserExists() succesfully returned an answer.");
         return isUserExist;
     }
 }

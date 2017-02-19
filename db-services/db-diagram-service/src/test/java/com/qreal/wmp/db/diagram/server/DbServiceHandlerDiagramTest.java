@@ -70,10 +70,10 @@ public class DbServiceHandlerDiagramTest {
         assertThatThrownBy(() -> handler.saveDiagram(testDiagram)).isInstanceOf(TIdAlreadyDefined.class);
     }
 
-    /** Test openDiagram operation for diagram. */
+    /** Test getDiagram operation for diagram. */
     @Test
     @Rollback
-    public void openDiagram_diagramExists_returnsTDiagram() throws Exception {
+    public void getDiagram_diagramExists_returnsTDiagram() throws Exception {
         long idFolder = 0L;
         long idDiagram = 0L;
         TDiagram tDiagram = createDiagram("testDiagram", idFolder, idDiagram);
@@ -81,22 +81,22 @@ public class DbServiceHandlerDiagramTest {
 
         when(diagramDaoMocked.getDiagram(idDiagram)).thenReturn(diagram);
 
-        TDiagram gotDiagram = handler.openDiagram(idDiagram);
+        TDiagram gotDiagram = handler.getDiagram(idDiagram);
         gotDiagram.setFolderId(idFolder);
 
         assertThat(gotDiagram).isEqualTo(tDiagram);
     }
 
-    /** Test openDiagram operation for diagram. */
+    /** Test getDiagram operation for diagram. */
     @Test
     @Rollback
-    public void openDiagram_diagramNotExists_throwsTNotFound() throws Exception {
+    public void getDiagram_diagramNotExists_throwsTNotFound() throws Exception {
         long idDiagramNotCorrect = 0L;
 
         when(diagramDaoMocked.getDiagram(idDiagramNotCorrect)).
                 thenThrow(new NotFoundException("0", "Exception"));
 
-        assertThatThrownBy(() -> handler.openDiagram(idDiagramNotCorrect)).isInstanceOf(TNotFound.class);
+        assertThatThrownBy(() -> handler.getDiagram(idDiagramNotCorrect)).isInstanceOf(TNotFound.class);
     }
 
     /** Test deleteDiagram operation for diagram. */
@@ -122,34 +122,34 @@ public class DbServiceHandlerDiagramTest {
         assertThatThrownBy(() -> handler.deleteDiagram(idDiagram)).isInstanceOf(TAborted.class);
     }
 
-    /** Test rewriteDiagram operation for diagram. */
+    /** Test updateDiagram operation for diagram. */
     @Test
     @Rollback
-    public void rewriteDiagram_correctInput_diagramDaoCalled() throws Exception {
+    public void updateDiagram_correctInput_diagramDaoCalled() throws Exception {
         long idFolder = 0L;
         long idDiagram = 0L;
         TDiagram tDiagram = createDiagram("testDiagram", idFolder, idDiagram);
         Diagram diagram = new Diagram(tDiagram);
 
-        handler.rewriteDiagram(tDiagram);
+        handler.updateDiagram(tDiagram);
 
         verify(diagramDaoMocked).rewriteDiagram(diagram);
     }
 
-    /** Test rewriteDiagram operation for diagram. */
+    /** Test updateDiagram operation for diagram. */
     @Test
     @Rollback
-    public void rewriteDiagram_idNotSet_throwsTIdNotDefined() throws Exception {
+    public void updateDiagram_idNotSet_throwsTIdNotDefined() throws Exception {
         long idFolder = 0L;
         TDiagram tDiagram = createDiagram("testDiagram", idFolder);
 
-        assertThatThrownBy((() -> handler.rewriteDiagram(tDiagram))).isInstanceOf(TIdNotDefined.class);
+        assertThatThrownBy((() -> handler.updateDiagram(tDiagram))).isInstanceOf(TIdNotDefined.class);
     }
 
-    /** Test rewriteDiagram operation for diagram. */
+    /** Test updateDiagram operation for diagram. */
     @Test
     @Rollback
-    public void rewriteDiagram_daoThrowsAborted_throwsTAborted() throws Exception {
+    public void updateDiagram_daoThrowsAborted_throwsTAborted() throws Exception {
         long idFolder = 0L;
         long idDiagram = 0L;
         TDiagram tDiagram = createDiagram("testDiagram", idFolder, idDiagram);
@@ -158,7 +158,7 @@ public class DbServiceHandlerDiagramTest {
         doThrow(new AbortedException("0", "Exception", "Exception")).
                 when(diagramDaoMocked).rewriteDiagram(diagram);
 
-        assertThatThrownBy(() -> handler.rewriteDiagram(tDiagram)).isInstanceOf(TAborted.class);
+        assertThatThrownBy(() -> handler.updateDiagram(tDiagram)).isInstanceOf(TAborted.class);
     }
 
     private TDiagram createDiagram(String nameDiagram, Long idFolder) {

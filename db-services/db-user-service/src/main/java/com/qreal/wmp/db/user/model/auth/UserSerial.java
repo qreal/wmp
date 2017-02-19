@@ -32,13 +32,13 @@ public class UserSerial {
     private Set<UserRoleSerial> roles = new HashSet<>();
 
     /** User's robots.*/
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     private Set<Long> robots = new HashSet<>();
 
     public UserSerial() {
     }
 
-    /** Constructor-converter from Thrift TUser to UserSerial (without robot).*/
+    /** Constructor-converter from Thrift TUser to UserSerial (without robots).*/
     public UserSerial(TUser user) {
 
         if (user.isSetUsername()) {
@@ -53,7 +53,7 @@ public class UserSerial {
             enabled = user.isEnabled();
         }
 
-        if (user.getRoles() != null) {
+        if (user.isSetRoles()) {
             roles = user.getRoles().stream().map(UserRoleSerial::new).collect(Collectors.toSet());
         }
     }
@@ -72,7 +72,7 @@ public class UserSerial {
 
         tUser.setEnabled(enabled);
 
-        if (roles != null) {
+        if (roles != null && !roles.isEmpty()) {
             tUser.setRoles(roles.stream().map(UserRoleSerial::toTUserRole).collect(Collectors.toSet()));
         }
 

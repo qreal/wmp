@@ -35,7 +35,7 @@ public class DaoDiagramComplexTest {
         node = addPropertyToNode(propertyNode, node);
         diagram = addNodeToDiagram(node, diagram);
 
-        Link link = createLink("graphicalId", "logicalId");
+        Link link = createLink("graphicalId", "logicalId", "type");
         Property propertyLink = createProperty("namePropertyLink", "valuePropertyLink", "typePropertyLink");
         link = addPropertyToLink(propertyLink, link);
         diagram = addLinkToDiagram(link, diagram);
@@ -94,10 +94,11 @@ public class DaoDiagramComplexTest {
         return diagram;
     }
 
-    private Link createLink(String graphicalId, String logicalId) {
+    private Link createLink(String graphicalId, String logicalId, String type) {
         Link link = new Link();
         link.setGraphicalId(graphicalId);
         link.setLogicalId(logicalId);
+        link.setType(type);
         return link;
     }
 }

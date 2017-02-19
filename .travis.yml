@@ -66,8 +66,6 @@ script:
   - mvn tomcat7:run-war-only -P travis &
   - sleep 30
 
-  - ../Travis/callTomcat.sh
-
   - cd ../ui-testing
   - mvn test -P travis &
   - sleep 180

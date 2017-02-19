@@ -1,6 +1,6 @@
 /// <reference path="../../model/ElementTypes.ts" />
 /// <reference path="../parsers/TypesParser.ts" />
-/// <reference path="../../../../constants/GeneralConstants.d.ts" />
+/// <reference path="../../../../common/constants/GeneralConstants.d.ts" />
 /// <reference path="../../../../vendor.d.ts" />
 
 class ElementsTypeLoader {
@@ -10,10 +10,11 @@ class ElementsTypeLoader {
 
         $.ajax({
             type: 'POST',
-            url: 'getTypes/' + ((task) ? task : ""),
+            url: 'getTypes/',
             dataType: 'json',
             data: {
-                'kit': ((kit) ? kit : GeneralConstants.DEFAULT_KIT)
+                'kit': ((kit) ? kit : GeneralConstants.DEFAULT_KIT),
+                'task': task ? task : ""
             },
             success: (response) => {
                 callback(typesParser.parse(response));

@@ -1,20 +1,20 @@
 /// <reference path="DiagramEditorController.ts" />
 /// <reference path="../model/DiagramScene.ts" />
 /// <reference path="../model/DiagramElement.ts" />
-/// <reference path="../model/PaletteTypes.ts" />
 /// <reference path="../model/DiagramNode.ts" />
 /// <reference path="../model/DefaultDiagramNode.ts" />
 /// <reference path="../model/commands/Command.ts"/>
 /// <reference path="../model/commands/SceneCommandFactory.ts" />
 /// <reference path="../../../vendor.d.ts" />
+/// <reference path="../../../common/constants/MouseButton.ts" />
 
 class SceneController {
 
     private diagramEditorController: DiagramEditorController;
-    protected scene: DiagramScene;
+    private scene: DiagramScene;
     private currentElement: DiagramElement;
     private clickFlag : boolean;
-    protected rightClickFlag : boolean;
+    private rightClickFlag : boolean;
     private undoRedoController: UndoRedoController;
     private lastCellMouseDownPosition: {x: number, y: number};
     private paperCommandFactory: SceneCommandFactory;
@@ -73,16 +73,15 @@ class SceneController {
     }
 
     public createLink(sourceId: string, targetId: string): void {
-        var link: joint.dia.Link = new joint.dia.Link({
-            attrs: {
-                '.connection': { stroke: 'black' },
-                '.marker-target': { fill: 'black', d: 'M 10 0 L 0 5 L 10 10 z' }
-            },
+
+        var link: joint.dia.Link = this.scene.getCurrentLinkType();
+        link.set({
             source: { id: sourceId },
-            target: { id: targetId },
+            target: { id: targetId }
         });
 
-        var typeProperties = this.diagramEditorController.getNodeProperties("ControlFlow");
+        var nodeType: NodeType = this.diagramEditorController.getNodeType(this.scene.getCurrentLinkTypeName());
+        var typeProperties: Map<Property> = nodeType.getPropertiesMap();
 
         var linkProperties: Map<Property> = {};
         for (var property in typeProperties) {
@@ -90,7 +89,7 @@ class SceneController {
                 typeProperties[property].type, typeProperties[property].value);
         }
 
-        var linkObject: Link = new Link(link, linkProperties);
+        var linkObject: Link = new Link(link, nodeType.getShownName(), nodeType.getName(), linkProperties);
 
         this.makeAndExecuteCreateLinkCommand(linkObject);
     }
@@ -240,11 +239,11 @@ class SceneController {
         this.scene.addLinkToPaper(link);
     }
 
-    protected blankPoinerdownListener(event, x, y): void {
+    private blankPoinerdownListener(event, x, y): void {
         this.changeCurrentElement(null);
     }
 
-    protected cellPointerdownListener(cellView, event, x, y): void {
+    private cellPointerdownListener(cellView, event, x, y): void {
         this.clickFlag = true;
         this.rightClickFlag = false;
 
@@ -252,25 +251,26 @@ class SceneController {
             this.scene.getLinkById(cellView.model.id);
         this.changeCurrentElement(element);
 
-        if (this.scene.getNodeById(cellView.model.id)) {
-            if (event.button == 1) {
-                var node: DiagramNode = this.scene.getNodeById(cellView.model.id);
-                this.lastCellMouseDownPosition.x = node.getX();
-                this.lastCellMouseDownPosition.y = node.getY();
-            }
+        if (this.scene.getNodeById(cellView.model.id) && event.button == MouseButton.left) {
+            var node:DiagramNode = this.scene.getNodeById(cellView.model.id);
+            this.lastCellMouseDownPosition.x = node.getX();
+            this.lastCellMouseDownPosition.y = node.getY();
+        }
+        if (event.button == MouseButton.right) {
+            this.rightClickFlag = true;
         }
 
     }
 
     private cellPointerupListener(cellView, event, x, y): void {
-        if ((this.clickFlag) && (event.button == 2)) {
+        if (this.clickFlag && event.button == MouseButton.right) {
             $("#" + this.contextMenuId).finish().toggle(100).
             css({
                 left: event.pageX - $(document).scrollLeft() + "px",
                 top: event.pageY - $(document).scrollTop() + "px"
 
             });
-        } else if (event.button !== 2){
+        } else if (event.button == MouseButton.left){
             var node: DiagramNode = this.scene.getNodeById(cellView.model.id);
             if (node) {
                 var command: Command = this.paperCommandFactory.makeMoveCommand(node, this.lastCellMouseDownPosition.x,

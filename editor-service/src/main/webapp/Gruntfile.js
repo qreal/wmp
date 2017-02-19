@@ -6,9 +6,13 @@ module.exports = function (grunt) {
                 src: ["app/robots/*.ts"],
                 out: "resources/js/compiled/root.js"
             },
-            editor: {
+            robotsEditor: {
                 src: ["app/robots/diagram/**/*.ts"],
-                out: "resources/js/compiled/editor.js"
+                out: "resources/js/compiled/robotsEditor.js"
+            },
+            bpmnEditor: {
+                src: ["app/bpmn/diagram/**/*.ts"],
+                out: "resources/js/compiled/bpmnEditor.js"
             },
             interpreter: {
                 src: ["app/robots/interpreter/**/*.ts"],
@@ -25,10 +29,10 @@ module.exports = function (grunt) {
             menu: {
                 src: ["app/common/menu/**/*.ts"],
                 out: "resources/js/compiled/menu.js"
-            }
+            },
         }
     });
 
     grunt.loadNpmTasks("grunt-ts");
-    grunt.registerTask("default", ["ts:root", "ts:interpreter", "ts:twoDModelRobots", "ts:gestures", "ts:menu", "ts:editor"]);
+    grunt.registerTask("default", ["ts:root", "ts:interpreter", "ts:twoDModelRobots", "ts:gestures", "ts:menu", "ts:robotsEditor", "ts:bpmnEditor"]);
 }

@@ -10,6 +10,7 @@
 /// <reference path="../../../interfaces/engine/items/WallItem.ts" />
 /// <reference path="../../../utils/ColorUtils.ts" />
 /// <reference path="../../../../../vendor.d.ts" />
+/// <reference path="../../../../../common/constants/MouseButton.ts" />
 
 class WorldModelImpl implements WorldModel {
 
@@ -420,7 +421,7 @@ class WorldModelImpl implements WorldModel {
                 if (event.target.nodeName !== "svg" && !(worldModel.currentElement instanceof RobotItemImpl
                     || worldModel.currentElement instanceof SensorItem)) {
                     if (worldModel.drawMode === 0) {
-                        if (event.button === 2) {
+                        if (event.button == MouseButton.right) {
                             $("#" + worldModel.contextMenuId).finish().toggle(100).
                             css({
                                 left: event.pageX - $(document).scrollLeft() + "px",
