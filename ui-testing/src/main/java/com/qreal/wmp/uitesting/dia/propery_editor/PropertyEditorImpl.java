@@ -1,6 +1,7 @@
-package com.qreal.wmp.uitesting.dia.services;
+package com.qreal.wmp.uitesting.dia.propery_editor;
 
 import com.codeborne.selenide.SelenideElement;
+import com.qreal.wmp.uitesting.dia.scene.Scene;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.slf4j.Logger;
@@ -13,14 +14,18 @@ import java.util.stream.IntStream;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 
-/** Describe Property Editor. */
-public class PropertyEditor {
+public class PropertyEditorImpl implements PropertyEditor {
 
     private static final String SELECTOR = "#property_table";
 
-    private static final Logger logger = LoggerFactory.getLogger(PropertyEditor.class);
+    private static final Logger logger = LoggerFactory.getLogger(PropertyEditorImpl.class);
 
-    /** Set property of element which on the focus. */
+    private final Scene scene;
+    
+    public PropertyEditorImpl(Scene scene) {
+        this.scene = scene;
+    }
+    
     public void setProperty(final SelenideElement element, final String propertyName, final String propertyValue)
             throws NoSuchElementException
     {
@@ -34,9 +39,8 @@ public class PropertyEditor {
         logger.info("Set property {} to {}", propertyName, propertyValue);
     }
 
-    /** Return the value of property by name. */
     public String getProperty(final SelenideElement element, final String propertyName) throws NoSuchElementException {
-        $(By.cssSelector(Scene.SELECTOR)).click();
+        $(By.cssSelector(scene.getSelector())).click();
         element.click();
         SelenideElement property = getInputOfElement(propertyName);
         logger.info("Get value of preperty {}", propertyName);

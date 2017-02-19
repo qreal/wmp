@@ -1,6 +1,7 @@
-package com.qreal.wmp.uitesting;
+package com.qreal.wmp.uitesting.services.impl;
 
 import com.qreal.wmp.uitesting.exceptions.WrongAuthException;
+import com.qreal.wmp.uitesting.services.Auther;
 import org.openqa.selenium.By;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,22 +11,17 @@ import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 
-/** Used for authentication in current browser session. */
-public class Auther {
+public class AutherImpl implements Auther {
 
     /** Use properties from pages.properies file. */
     private Environment env;
 
-    private static final Logger logger = LoggerFactory.getLogger(Auther.class);
+    private static final Logger logger = LoggerFactory.getLogger(AutherImpl.class);
     
-    public Auther(Environment env) {
+    public AutherImpl(Environment env) {
         this.env = env;
     }
-    /** Realizes authentication to the wmp.
-     *
-     * @param username login
-     * @param password password
-     * */
+    
     public void auth(final String username, final String password) throws WrongAuthException {
         open(env.getProperty("auth"));
         $(By.name("username")).setValue(username);

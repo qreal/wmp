@@ -1,11 +1,11 @@
-package com.qreal.wmp.uitesting.dia.model;
+package com.qreal.wmp.uitesting.dia.scene.elements;
 
 import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.By;
 
 import static com.codeborne.selenide.Selenide.$;
 
-public class Block extends SceneElement {
+public class Block extends SceneElementImpl {
     
     public static final String CLASS_NAME = "element devs ImageWithPorts";
     
@@ -18,7 +18,7 @@ public class Block extends SceneElement {
     public Block(String name, SelenideElement innerSeleniumObject) {
         super(innerSeleniumObject);
         this.name = name;
-        this.port = new SceneElement($(innerSeleniumObject.find(By.className(PORT_CLASS_NAME))));
+        this.port = new SceneElementImpl($(innerSeleniumObject.find(By.className(PORT_CLASS_NAME))));
     }
     
     public String getName() {

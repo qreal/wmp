@@ -1,12 +1,16 @@
 package com.qreal.wmp.uitesting.config;
 
 import com.codeborne.selenide.WebDriverRunner;
-import com.qreal.wmp.uitesting.Auther;
-import com.qreal.wmp.uitesting.Opener;
-import com.qreal.wmp.uitesting.dia.model.SceneWindow;
-import com.qreal.wmp.uitesting.dia.services.Pallete;
-import com.qreal.wmp.uitesting.dia.services.PropertyEditor;
-import com.qreal.wmp.uitesting.dia.services.Scene;
+import com.qreal.wmp.uitesting.dia.pallete.Pallete;
+import com.qreal.wmp.uitesting.dia.pallete.PalleteImpl;
+import com.qreal.wmp.uitesting.dia.propery_editor.PropertyEditor;
+import com.qreal.wmp.uitesting.dia.propery_editor.PropertyEditorImpl;
+import com.qreal.wmp.uitesting.dia.scene.Scene;
+import com.qreal.wmp.uitesting.dia.scene.SceneImpl;
+import com.qreal.wmp.uitesting.services.Auther;
+import com.qreal.wmp.uitesting.services.Opener;
+import com.qreal.wmp.uitesting.services.impl.AutherImpl;
+import com.qreal.wmp.uitesting.services.impl.OpenerImpl;
 import io.github.bonigarcia.wdm.ChromeDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -41,26 +45,26 @@ public class DevConfig {
 
     @Bean
     public Scene scene() {
-        return new Scene(webDriver());
+        return new SceneImpl(webDriver());
     }
     
     @Bean
     public Auther auther() {
-        return new Auther(environment);
+        return new AutherImpl(environment);
     }
     
     @Bean
     public Opener opener() {
-        return new Opener(environment, auther(), scene());
+        return new OpenerImpl(environment, auther(), scene());
     }
     
     @Bean
     public PropertyEditor propertyEditor() {
-        return new PropertyEditor();
+        return new PropertyEditorImpl(scene());
     }
     
     @Bean
     public Pallete pallete() {
-        return new Pallete();
+        return new PalleteImpl();
     }
 }

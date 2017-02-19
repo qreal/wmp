@@ -1,7 +1,14 @@
-package com.qreal.wmp.uitesting.dia.services;
+package com.qreal.wmp.uitesting.dia.scene;
 
 import com.codeborne.selenide.SelenideElement;
-import com.qreal.wmp.uitesting.dia.model.*;
+import com.qreal.wmp.uitesting.dia.pallete.PalleteElement;
+import com.qreal.wmp.uitesting.dia.pallete.PalleteImpl;
+import com.qreal.wmp.uitesting.dia.scene.SceneWindow.SceneWindow;
+import com.qreal.wmp.uitesting.dia.scene.SceneWindow.SceneWindowImpl;
+import com.qreal.wmp.uitesting.dia.scene.elements.Block;
+import com.qreal.wmp.uitesting.dia.scene.elements.Link;
+import com.qreal.wmp.uitesting.dia.scene.elements.SceneElement;
+import com.qreal.wmp.uitesting.dia.utils.Coordinate;
 import com.qreal.wmp.uitesting.exceptions.ElementNotOnTheSceneException;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -21,11 +28,11 @@ import static com.codeborne.selenide.Selenide.$$;
  * Describes Scene of Editor.
  * Can add rm and manipulate with objects on that area.
  */
-public class Scene {
+public class SceneImpl implements Scene {
 
-    public static final String SELECTOR = ".scene-wrapper";
+    private static final String SELECTOR = ".scene-wrapper";
 
-    private static final Logger logger = LoggerFactory.getLogger(Pallete.class);
+    private static final Logger logger = LoggerFactory.getLogger(PalleteImpl.class);
 
     private Set<Block> blocks = new HashSet<>();
     
@@ -34,11 +41,12 @@ public class Scene {
     private WebDriver webDriver;
     
     /** For actions such as mouse move we need driver of current page. */
-    public Scene(WebDriver webDriver) {
+    public SceneImpl(WebDriver webDriver) {
         this.webDriver = webDriver;
     }
     
     /** Creates divs for SceneWindow. */
+    @Override
     public void init() {
         if (webDriver instanceof JavascriptExecutor) {
             ((JavascriptExecutor) webDriver).executeScript(
@@ -47,13 +55,13 @@ public class Scene {
             );
         }
     }
-
-    /**
-     * Drag element from scene or pallete and put it on the center of scene.
-     *
-     * @param element chosen web element
-     * @return element from scene
-     */
+    
+    @Override
+    public String getSelector() {
+        return SELECTOR;
+    }
+    
+    @Override
     public Block dragAndDrop(final PalleteElement element) {
         element.getInner().dragAndDropTo(SELECTOR);
         final SelenideElement newEl = updateBlocks().orElseThrow(NotFoundException::new);
@@ -62,24 +70,17 @@ public class Scene {
         logger.info("Add element {} to scene", newEl);
         return newBlock;
     }
-
-    /**
-     *  element from scene or pallete and put it in cell of the scene.
-     *
-     * @param element chosen web element
-     * @param cell_x x-coordinate of cell
-     * @param cell_y y-coordinate of cell
-     * @return element from scene
-     */
+    
+    @Override
     public Block dragAndDrop(final PalleteElement element, int cell_x, int cell_y) {
         Block newBlock = dragAndDrop(element);
         moveToCell(newBlock, cell_x, cell_y);
         return newBlock;
     }
-
-    /** Move element to cell. */
+    
+    @Override
     public void moveToCell(final Block block, final int cell_x, final int cell_y) {
-        SceneWindow sceneWindow = new SceneWindow(this, webDriver);
+        SceneWindow sceneWindow = new SceneWindowImpl(this, webDriver);
         logger.info("Move element {} to cell ({}, {})", block, cell_x, cell_y);
         try {
             sceneWindow.move(block, new Coordinate(cell_x * 25, cell_y * 25));
@@ -87,10 +88,10 @@ public class Scene {
             e.printStackTrace();
         }
     }
-
-    /** Focus the element. */
+    
+    @Override
     public void focus(final SceneElement element) {
-        SceneWindow sceneWindow = new SceneWindow(this, webDriver);
+        SceneWindow sceneWindow = new SceneWindowImpl(this, webDriver);
         logger.info("Focus on the element {}", element);
         try {
             sceneWindow.focus(element.getCoordinateOnScene());
@@ -98,22 +99,23 @@ public class Scene {
             e.printStackTrace();
         }
     }
-
-    /** Check if element exist on the scene. */
+    
+    @Override
     public boolean exist(SceneElement element) {
         return blocks.stream().anyMatch(element::equals) || links.stream().anyMatch(element::equals);
     }
     
-    /** Remove element from the scene. */
+    @Override
     public void remove(Block block) {
         removeSceneElement(block);
     }
     
+    @Override
     public void remove(Link link) {
         removeSceneElement(link.getSource());
     }
-
-    /** Remove all elements from the scene. */
+    
+    @Override
     public void clean() {
         if (!links.isEmpty()) {
             remove(links.stream().collect(Collectors.toList()).get(0));
@@ -127,8 +129,8 @@ public class Scene {
             }
         }
     }
-
-    /** Add link between two elements. */
+    
+    @Override
     public Link addLink(final Block source, final Block target) {
         final SelenideElement begin = $(By.cssSelector(SELECTOR + " #" +
                 source.getInnerSeleniumElement().attr("id") + " .outPorts"));
@@ -142,8 +144,8 @@ public class Scene {
         links.add(res);
         return res;
     }
-
-    /** Return all blocks. */
+    
+    @Override
     public List<Block> getBlocks() {
         return blocks.stream().collect(Collectors.toList());
     }

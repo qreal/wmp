@@ -1,12 +1,13 @@
-package com.qreal.wmp.uitesting.dia.model;
+package com.qreal.wmp.uitesting.dia.scene.elements;
 
 import com.codeborne.selenide.SelenideElement;
+import com.qreal.wmp.uitesting.dia.utils.Coordinate;
 import com.qreal.wmp.uitesting.exceptions.ElementNotOnTheSceneException;
 import org.openqa.selenium.By;
 
 import static com.codeborne.selenide.Selenide.$;
 
-public class Link extends SceneElement {
+public class Link extends SceneElementImpl {
     
     public static final String CLASS_NAME = "link";
     
@@ -23,8 +24,8 @@ public class Link extends SceneElement {
     public Link(String name, SelenideElement innerSeleniumObject) {
         super(innerSeleniumObject);
         this.name = name;
-        this.source = new SceneElement($(innerSeleniumObject.find(By.className(SOURCE_POINT_CLASSNAME))));
-        this.target = new SceneElement($(innerSeleniumObject.find(By.className(TARGET_POINT_CLASSNAME))));
+        this.source = new SceneElementImpl($(innerSeleniumObject.find(By.className(SOURCE_POINT_CLASSNAME))));
+        this.target = new SceneElementImpl($(innerSeleniumObject.find(By.className(TARGET_POINT_CLASSNAME))));
     }
     
     public String getName() {

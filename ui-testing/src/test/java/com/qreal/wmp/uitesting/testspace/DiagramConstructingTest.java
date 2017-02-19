@@ -1,12 +1,12 @@
 package com.qreal.wmp.uitesting.testspace;
 
-import com.qreal.wmp.uitesting.Opener;
 import com.qreal.wmp.uitesting.config.AppInit;
-import com.qreal.wmp.uitesting.dia.model.Block;
-import com.qreal.wmp.uitesting.dia.model.Link;
-import com.qreal.wmp.uitesting.dia.services.Pallete;
-import com.qreal.wmp.uitesting.dia.services.PropertyEditor;
-import com.qreal.wmp.uitesting.dia.services.Scene;
+import com.qreal.wmp.uitesting.dia.pallete.Pallete;
+import com.qreal.wmp.uitesting.dia.propery_editor.PropertyEditor;
+import com.qreal.wmp.uitesting.dia.scene.Scene;
+import com.qreal.wmp.uitesting.dia.scene.elements.Block;
+import com.qreal.wmp.uitesting.dia.scene.elements.Link;
+import com.qreal.wmp.uitesting.services.Opener;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

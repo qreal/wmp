@@ -1,7 +1,9 @@
-package com.qreal.wmp.uitesting.dia.model;
+package com.qreal.wmp.uitesting.dia.scene.SceneWindow;
 
 import com.codeborne.selenide.SelenideElement;
-import com.qreal.wmp.uitesting.dia.services.Scene;
+import com.qreal.wmp.uitesting.dia.scene.Scene;
+import com.qreal.wmp.uitesting.dia.scene.elements.Block;
+import com.qreal.wmp.uitesting.dia.utils.Coordinate;
 import com.qreal.wmp.uitesting.exceptions.ElementNotOnTheSceneException;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -18,7 +20,7 @@ import static com.codeborne.selenide.Selenide.$;
 /**
  * Describes part of the scene, which is shown on browser.
  */
-public class SceneWindow {
+public class SceneWindowImpl implements SceneWindow {
 
     /** Link to full scene. */
     private final Scene scene;
@@ -29,10 +31,10 @@ public class SceneWindow {
 
     private final WebDriver driver;
     
-    private static final Logger logger = LoggerFactory.getLogger(SceneWindow.class);
+    private static final Logger logger = LoggerFactory.getLogger(SceneWindowImpl.class);
     
     /** Constructor takes links to current scene and current driver. */
-    public SceneWindow(final Scene scene, final WebDriver driver) {
+    public SceneWindowImpl(final Scene scene, final WebDriver driver) {
         this.scene = scene;
         this.driver = driver;
         updateSteps();
@@ -44,6 +46,7 @@ public class SceneWindow {
      * @param element element to move
      * @param dist position to move
      */
+    @Override
     public void move(final Block element, final Coordinate dist) throws ElementNotOnTheSceneException {
         Coordinate src = element.getCoordinateOnScene();
         focus(src);
@@ -70,11 +73,7 @@ public class SceneWindow {
         }
     }
 
-    /**
-     * Move the screen to requested position.
-     *
-     * @param coordinate coordinate to move
-     */
+    @Override
     public void focus(final Coordinate coordinate) {
         logger.debug("Focus to " + coordinate.getXAbsolute() + " " + coordinate.getYAbsolute());
         horizontalWindowMovement(coordinate.getXAbsolute());
@@ -197,7 +196,7 @@ public class SceneWindow {
     
     private void updateSteps() {
         updateCanvasInfo();
-        $(Scene.SELECTOR).click();
+        $(scene.getSelector()).click();
         focus(new Coordinate(0, 0));
         updateCanvasInfo();
         sendKey(Keys.DOWN);

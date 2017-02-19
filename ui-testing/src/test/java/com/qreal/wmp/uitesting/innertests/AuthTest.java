@@ -1,19 +1,12 @@
 package com.qreal.wmp.uitesting.innertests;
 
-import com.codeborne.selenide.WebDriverRunner;
-import com.qreal.wmp.uitesting.Auther;
-import com.qreal.wmp.uitesting.Opener;
 import com.qreal.wmp.uitesting.config.AppInit;
 import com.qreal.wmp.uitesting.exceptions.WrongAuthException;
-import io.github.bonigarcia.wdm.ChromeDriverManager;
+import com.qreal.wmp.uitesting.services.Auther;
+import com.qreal.wmp.uitesting.services.Opener;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
