@@ -5,17 +5,17 @@ package com.qreal.wmp.uitesting.services;
  * Allows you to access as an authorized user and not.
  */
 public interface Opener {
-	/**
-	 * Opens page from wmp with authentication.
-	 *
-	 * @param page must be one of the keys from pages.property.
-	 */
-	void open(final String page);
-	
-	/**
-	 * Opens page from wmp without authentication.
-	 *
-	 * @param page must be one of the keys from pages.property.
-	 */
-	void cleanOpen(final String page);
+    /**
+     * Opens page from wmp with authentication.
+     *
+     * @param page must be one of the keys from pages.property.
+     */
+    void open(final String page);
+    
+    /**
+     * Opens page from wmp without authentication.
+     *
+     * @param page must be one of the keys from pages.property.
+     */
+    void cleanOpen(final String page);
 }

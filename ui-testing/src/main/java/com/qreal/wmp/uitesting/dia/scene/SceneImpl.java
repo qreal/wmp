@@ -1,14 +1,14 @@
 package com.qreal.wmp.uitesting.dia.scene;
 
 import com.codeborne.selenide.SelenideElement;
+import com.qreal.wmp.uitesting.InitializedComponent;
 import com.qreal.wmp.uitesting.dia.pallete.PalleteElement;
 import com.qreal.wmp.uitesting.dia.pallete.PalleteImpl;
-import com.qreal.wmp.uitesting.dia.scene.SceneWindow.SceneWindow;
-import com.qreal.wmp.uitesting.dia.scene.SceneWindow.SceneWindowImpl;
+import com.qreal.wmp.uitesting.dia.scene.window.SceneWindow;
+import com.qreal.wmp.uitesting.dia.scene.window.SceneWindowImpl;
 import com.qreal.wmp.uitesting.dia.scene.elements.Block;
 import com.qreal.wmp.uitesting.dia.scene.elements.Link;
 import com.qreal.wmp.uitesting.dia.scene.elements.SceneElement;
-import com.qreal.wmp.uitesting.dia.utils.Coordinate;
 import com.qreal.wmp.uitesting.exceptions.ElementNotOnTheSceneException;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -28,7 +28,7 @@ import static com.codeborne.selenide.Selenide.$$;
  * Describes Scene of Editor.
  * Can add rm and manipulate with objects on that area.
  */
-public class SceneImpl implements Scene {
+public class SceneImpl implements Scene, InitializedComponent {
 
     private static final String SELECTOR = ".scene-wrapper";
 
@@ -45,15 +45,21 @@ public class SceneImpl implements Scene {
         this.webDriver = webDriver;
     }
     
-    /** Creates divs for SceneWindow. */
+    /** Creates divs for window. */
     @Override
     public void init() {
+        clean();
         if (webDriver instanceof JavascriptExecutor) {
             ((JavascriptExecutor) webDriver).executeScript(
                     createDiv("SceneWindowLeft") + createDiv("SceneWindowTop") +
                             createDiv("SceneWindowHorSize") + createDiv("SceneWindowVerSize")
             );
         }
+    }
+    
+    @Override
+    public boolean name(String name) {
+        return name.equals("editor");
     }
     
     @Override

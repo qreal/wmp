@@ -1,4 +1,4 @@
-package com.qreal.wmp.uitesting.dia.utils;
+package com.qreal.wmp.uitesting.dia.scene;
 
 import com.codeborne.selenide.SelenideElement;
 import org.jetbrains.annotations.NotNull;

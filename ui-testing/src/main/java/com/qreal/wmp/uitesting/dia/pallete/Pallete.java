@@ -7,12 +7,12 @@ import org.openqa.selenium.NoSuchElementException;
  * For any manipulating with it.
  */
 public interface Pallete {
-	
-	/**
-	 * Chose element from Pallete.
-	 *
-	 * @param elementName name of block
-	 * @return block
-	 */
-	PalleteElement getElement(String elementName) throws NoSuchElementException;
+    
+    /**
+     * Chose element from Pallete.
+     *
+     * @param elementName name of block
+     * @return block
+     */
+    PalleteElement getElement(String elementName) throws NoSuchElementException;
 }

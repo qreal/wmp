@@ -1,4 +1,4 @@
-package com.qreal.wmp.uitesting.dia.propery_editor;
+package com.qreal.wmp.uitesting.dia.property;
 
 import com.codeborne.selenide.SelenideElement;
 import com.qreal.wmp.uitesting.dia.scene.Scene;
@@ -26,6 +26,7 @@ public class PropertyEditorImpl implements PropertyEditor {
         this.scene = scene;
     }
     
+    /** {@inheritDoc} */
     public void setProperty(final SelenideElement element, final String propertyName, final String propertyValue)
             throws NoSuchElementException
     {
@@ -38,7 +39,8 @@ public class PropertyEditorImpl implements PropertyEditor {
         }
         logger.info("Set property {} to {}", propertyName, propertyValue);
     }
-
+    
+    /** {@inheritDoc} */
     public String getProperty(final SelenideElement element, final String propertyName) throws NoSuchElementException {
         $(By.cssSelector(scene.getSelector())).click();
         element.click();

@@ -22,6 +22,7 @@ public class AutherImpl implements Auther {
         this.env = env;
     }
     
+    /** {@inheritDoc} */
     public void auth(final String username, final String password) throws WrongAuthException {
         open(env.getProperty("auth"));
         $(By.name("username")).setValue(username);

@@ -2,7 +2,7 @@ package com.qreal.wmp.uitesting.testspace;
 
 import com.qreal.wmp.uitesting.config.AppInit;
 import com.qreal.wmp.uitesting.dia.pallete.Pallete;
-import com.qreal.wmp.uitesting.dia.propery_editor.PropertyEditor;
+import com.qreal.wmp.uitesting.dia.property.PropertyEditor;
 import com.qreal.wmp.uitesting.dia.scene.Scene;
 import com.qreal.wmp.uitesting.dia.scene.elements.Block;
 import com.qreal.wmp.uitesting.dia.scene.elements.Link;

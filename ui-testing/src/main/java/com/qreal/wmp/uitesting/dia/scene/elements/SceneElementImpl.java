@@ -1,7 +1,7 @@
 package com.qreal.wmp.uitesting.dia.scene.elements;
 
 import com.codeborne.selenide.SelenideElement;
-import com.qreal.wmp.uitesting.dia.utils.Coordinate;
+import com.qreal.wmp.uitesting.dia.scene.Coordinate;
 import com.qreal.wmp.uitesting.exceptions.ElementNotOnTheSceneException;
 
 public class SceneElementImpl implements SceneElement {
@@ -10,6 +10,7 @@ public class SceneElementImpl implements SceneElement {
     
     private String type;
     
+    /** Based on the Selenium element. */
     public SceneElementImpl(SelenideElement innerSeleniumObject) {
         this.innerSeleniumElement = innerSeleniumObject;
         this.type = innerSeleniumObject.attr("class");

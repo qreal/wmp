@@ -1,9 +1,9 @@
-package com.qreal.wmp.uitesting.dia.scene.SceneWindow;
+package com.qreal.wmp.uitesting.dia.scene.window;
 
 import com.codeborne.selenide.SelenideElement;
+import com.qreal.wmp.uitesting.dia.scene.Coordinate;
 import com.qreal.wmp.uitesting.dia.scene.Scene;
 import com.qreal.wmp.uitesting.dia.scene.elements.Block;
-import com.qreal.wmp.uitesting.dia.utils.Coordinate;
 import com.qreal.wmp.uitesting.exceptions.ElementNotOnTheSceneException;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -188,7 +188,7 @@ public class SceneWindowImpl implements SceneWindow {
         new Actions(driver).sendKeys(key).perform();
         try {
             // wait hard coded time until action is completed
-            Thread.sleep(30);
+            Thread.sleep(50);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
