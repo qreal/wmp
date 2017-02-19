@@ -1,6 +1,5 @@
 package com.qreal.wmp.uitesting.testspace;
 
-import com.codeborne.selenide.WebDriverRunner;
 import com.qreal.wmp.uitesting.Opener;
 import com.qreal.wmp.uitesting.config.AppInit;
 import com.qreal.wmp.uitesting.dia.model.Block;
@@ -8,14 +7,10 @@ import com.qreal.wmp.uitesting.dia.model.Link;
 import com.qreal.wmp.uitesting.dia.services.Pallete;
 import com.qreal.wmp.uitesting.dia.services.PropertyEditor;
 import com.qreal.wmp.uitesting.dia.services.Scene;
-import io.github.bonigarcia.wdm.ChromeDriverManager;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
@@ -45,7 +40,7 @@ public class DiagramConstructingTest {
     private ArrayList<Link> links;
 
     @Before
-    public void runDriver() {
+    public void openEditor() {
         opener.open("editor");
      
         elements = new ArrayList<>();
@@ -86,7 +81,7 @@ public class DiagramConstructingTest {
     }
 
     @After
-    public void stopDriver() {
+    public void cleanScene() {
         scene.clean();
     }
 

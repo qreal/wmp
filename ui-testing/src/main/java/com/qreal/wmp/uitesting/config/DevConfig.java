@@ -3,6 +3,7 @@ package com.qreal.wmp.uitesting.config;
 import com.codeborne.selenide.WebDriverRunner;
 import com.qreal.wmp.uitesting.Auther;
 import com.qreal.wmp.uitesting.Opener;
+import com.qreal.wmp.uitesting.dia.model.SceneWindow;
 import com.qreal.wmp.uitesting.dia.services.Pallete;
 import com.qreal.wmp.uitesting.dia.services.PropertyEditor;
 import com.qreal.wmp.uitesting.dia.services.Scene;

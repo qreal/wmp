@@ -184,11 +184,12 @@ public class SceneWindow {
         }
     }
     
+    // todo: make it waits real time until action is completed
     private void sendKey(Keys key) {
         new Actions(driver).sendKeys(key).perform();
         try {
-            // wait until action is completed
-            Thread.sleep(50);
+            // wait hard coded time until action is completed
+            Thread.sleep(30);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -196,7 +197,7 @@ public class SceneWindow {
     
     private void updateSteps() {
         updateCanvasInfo();
-        $(Scene.selector).click();
+        $(Scene.SELECTOR).click();
         focus(new Coordinate(0, 0));
         updateCanvasInfo();
         sendKey(Keys.DOWN);

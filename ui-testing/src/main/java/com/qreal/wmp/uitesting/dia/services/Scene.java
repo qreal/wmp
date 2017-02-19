@@ -54,8 +54,8 @@ public class Scene {
      * @param element chosen web element
      * @return element from scene
      */
-    public Block dragAndDrop(final SelenideElement element) {
-        element.dragAndDropTo(SELECTOR);
+    public Block dragAndDrop(final PalleteElement element) {
+        element.getInner().dragAndDropTo(SELECTOR);
         final SelenideElement newEl = updateBlocks().orElseThrow(NotFoundException::new);
         Block newBlock = new Block("name", newEl);
         blocks.add(newBlock);
@@ -71,7 +71,7 @@ public class Scene {
      * @param cell_y y-coordinate of cell
      * @return element from scene
      */
-    public Block dragAndDrop(final SelenideElement element, int cell_x, int cell_y) {
+    public Block dragAndDrop(final PalleteElement element, int cell_x, int cell_y) {
         Block newBlock = dragAndDrop(element);
         moveToCell(newBlock, cell_x, cell_y);
         return newBlock;

@@ -1,6 +1,7 @@
 package com.qreal.wmp.uitesting.dia.services;
 
 import com.codeborne.selenide.SelenideElement;
+import com.qreal.wmp.uitesting.dia.model.PalleteElement;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.slf4j.Logger;
@@ -25,10 +26,10 @@ public class Pallete {
      * @param elementName name of block
      * @return block
      */
-    public SelenideElement getElement(final String elementName) throws NoSuchElementException {
+    public PalleteElement getElement(final String elementName) throws NoSuchElementException {
         final SelenideElement element =  $(By.cssSelector(SELECTOR)).find(withText(elementName));
         logger.info("Get element {} from Palette", element);
-        return element;
+        return new PalleteElement(element);
     }
 
 }

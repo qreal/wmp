@@ -35,21 +35,6 @@ public class AuthTest {
     @Autowired
     private Opener opener;
 
-    @Autowired
-    private WebDriver driver;
-
-    /** Setup ChromeDriverManager. */
-    @BeforeClass
-    public static void init() {
-        ChromeDriverManager.getInstance().setup();
-    }
-
-    /** Setup browser. */
-    @Before
-    public void runDriver() {
-        WebDriverRunner.setWebDriver(driver);
-    }
-
     /**
      * Try to login with correct username and password.
      * Should redirect to OAuth page.
@@ -110,13 +95,7 @@ public class AuthTest {
         opener.open("editor");
         $(byText("Property Editor")).waitUntil(appear, 5000);
     }
-
-    /** Close the browser. */
-    @After
-    public void stopDriver() {
-        driver.close();
-    }
-
+    
     /**
      * Check that current page is Auth page.
      *

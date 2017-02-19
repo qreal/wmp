@@ -36,7 +36,7 @@ public class PropertyEditor {
 
     /** Return the value of property by name. */
     public String getProperty(final SelenideElement element, final String propertyName) throws NoSuchElementException {
-        $(By.cssSelector(Scene.selector)).click();
+        $(By.cssSelector(Scene.SELECTOR)).click();
         element.click();
         SelenideElement property = getInputOfElement(propertyName);
         logger.info("Get value of preperty {}", propertyName);

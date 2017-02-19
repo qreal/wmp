@@ -35,13 +35,10 @@ public class DiaTest {
 
     @Autowired
     private PropertyEditor propertyEditor;
-
-    @Autowired
-    private WebDriver driver;
     
     /** Setup browser. */
     @Before
-    public void runDriver() {
+    public void openEditor() {
         opener.open("editor");
     }
 
@@ -100,7 +97,7 @@ public class DiaTest {
 
     /** Close the browser. */
     @After
-    public void stopDriver() {
+    public void cleanScene() {
         scene.clean();
     }
 }
