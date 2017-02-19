@@ -17,6 +17,7 @@ import org.junit.runner.RunWith;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
@@ -25,6 +26,7 @@ import java.util.ArrayList;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = AppInit.class, loader = AnnotationConfigContextLoader.class)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class DiagramConstructingTest {
 
     @Autowired
@@ -39,24 +41,13 @@ public class DiagramConstructingTest {
     @Autowired
     private PropertyEditor propertyEditor;
 
-    private WebDriver driver;
-
     private ArrayList<Block> elements;
     private ArrayList<Link> links;
 
-    /** Setup ChromeDriverManager. */
-    @BeforeClass
-    public static void init() {
-        ChromeDriverManager.getInstance().setup();
-    }
-
     @Before
     public void runDriver() {
-        driver = new ChromeDriver();
-        WebDriverRunner.setWebDriver(driver);
         opener.open("editor");
-      //  scene.updateWebdriver(driver);
-
+     
         elements = new ArrayList<>();
         links = new ArrayList<>();
 
@@ -97,7 +88,6 @@ public class DiagramConstructingTest {
     @After
     public void stopDriver() {
         scene.clean();
-        driver.close();
     }
 
     private boolean allExist() {

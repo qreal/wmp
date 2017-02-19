@@ -1,15 +1,23 @@
 package com.qreal.wmp.uitesting.dia.model;
 
 import com.codeborne.selenide.SelenideElement;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
 public class Coordinate {
     
+    /** Returns coordinate of object on scene. */
+    @NotNull
     public static Optional<Coordinate> getCoordinateFromSeleniumObject(SelenideElement element) {
         final String position = element.attr("transform");
         final String[] pairStr = position.substring(position.indexOf('(') + 1, position.indexOf(')')).split(",");
-        return Optional.of(new Coordinate(Double.valueOf(pairStr[0]).intValue(), Double.valueOf(pairStr[1]).intValue()));
+        return Optional.of(
+                new Coordinate(
+                    Double.valueOf(pairStr[0]).intValue(),
+                    Double.valueOf(pairStr[1]).intValue()
+                )
+        );
     }
     
     private final int xAbsolute;

@@ -1,6 +1,5 @@
 package com.qreal.wmp.uitesting.innertests;
 
-import com.codeborne.selenide.WebDriverRunner;
 import com.qreal.wmp.uitesting.Opener;
 import com.qreal.wmp.uitesting.config.AppInit;
 import com.qreal.wmp.uitesting.dia.model.Block;
@@ -9,14 +8,11 @@ import com.qreal.wmp.uitesting.dia.services.Pallete;
 import com.qreal.wmp.uitesting.dia.services.PropertyEditor;
 import com.qreal.wmp.uitesting.dia.services.Scene;
 import com.qreal.wmp.uitesting.exceptions.ElementNotOnTheSceneException;
-import io.github.bonigarcia.wdm.ChromeDriverManager;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
@@ -42,18 +38,10 @@ public class DiaTest {
 
     @Autowired
     private WebDriver driver;
-
-    /** Setup ChromeDriverManager. */
- //   @BeforeClass
-  //  public static void init() {
-  //      ChromeDriverManager.getInstance().setup();
-  //  }
-
+    
     /** Setup browser. */
     @Before
     public void runDriver() {
-  //      WebDriverRunner.setWebDriver(driver);
-       // updateWebdriver(driver);
         opener.open("editor");
     }
 

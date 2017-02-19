@@ -3,7 +3,10 @@ package com.qreal.wmp.uitesting.dia.model;
 import com.codeborne.selenide.SelenideElement;
 import com.qreal.wmp.uitesting.dia.services.Scene;
 import com.qreal.wmp.uitesting.exceptions.ElementNotOnTheSceneException;
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +30,6 @@ public class SceneWindow {
     private final WebDriver driver;
     
     private static final Logger logger = LoggerFactory.getLogger(SceneWindow.class);
-    
     
     /** Constructor takes links to current scene and current driver. */
     public SceneWindow(final Scene scene, final WebDriver driver) {
@@ -73,7 +75,7 @@ public class SceneWindow {
      * @param coordinate coordinate to move
      */
     public void focus(final Coordinate coordinate) {
-        logger.info("Focus to " + coordinate.getXAbsolute() + " " + coordinate.getYAbsolute());
+        logger.debug("Focus to " + coordinate.getXAbsolute() + " " + coordinate.getYAbsolute());
         horizontalWindowMovement(coordinate.getXAbsolute());
         verticalWindowMovement(coordinate.getYAbsolute());
     }
@@ -81,7 +83,7 @@ public class SceneWindow {
     private void horizontalWindowMovement(int horizontal) {
         int sizeHor = Double.valueOf($(By.id("SceneWindowHorSize")).innerHtml()).intValue();
         int left = Double.valueOf($(By.id("SceneWindowLeft")).innerHtml()).intValue();
-        logger.info("focus horizontal " + left + " " + sizeHor);
+        logger.debug("focus horizontal " + left + " " + sizeHor);
         
         if (left + sizeHor * 2 / 3 < horizontal) {
             sendKey(Keys.RIGHT);
@@ -151,7 +153,6 @@ public class SceneWindow {
     }
     
     private Coordinate finalJump(Block block, Coordinate dist) throws ElementNotOnTheSceneException {
-        
         Coordinate currentPosition = block.getCoordinateOnScene();
     
         new Actions(driver).release().clickAndHold(block.getInnerSeleniumElement()).moveByOffset(
@@ -177,6 +178,7 @@ public class SceneWindow {
     private void sendKey(Keys key) {
         new Actions(driver).sendKeys(key).perform();
         try {
+            // wait until action is completed
             Thread.sleep(50);
         } catch (InterruptedException e) {
             e.printStackTrace();

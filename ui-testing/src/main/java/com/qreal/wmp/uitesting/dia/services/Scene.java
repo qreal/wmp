@@ -1,17 +1,15 @@
 package com.qreal.wmp.uitesting.dia.services;
 
 import com.codeborne.selenide.SelenideElement;
-import com.codeborne.selenide.WebDriverRunner;
 import com.qreal.wmp.uitesting.dia.model.*;
 import com.qreal.wmp.uitesting.exceptions.ElementNotOnTheSceneException;
-import org.openqa.selenium.*;
-import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.NotFoundException;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.List;
@@ -43,6 +41,7 @@ public class Scene {
         this.webDriver = webDriver;
     }
     
+    /** Creates divs for SceneWindow. */
     public void init() {
         if (webDriver instanceof JavascriptExecutor) {
             ((JavascriptExecutor) webDriver).executeScript(
@@ -182,10 +181,14 @@ public class Scene {
             e.printStackTrace();
         }
         $(By.id("scene-context-menu")).click();
-        $$(By.cssSelector(selector + " #v_7 > *")).stream().forEach(System.out::println);
-        blocks = $$(By.cssSelector(selector + " #v_7 > *")).stream().filter(x -> x.attr("class").equals(Block.className)).map(x ->
-                new Block("name", x)).collect(Collectors.toSet());
-        links = $$(By.cssSelector(selector + " #v_7 > *")).stream().filter(x -> x.attr("class").equals(Link.className)).map(x ->
-                new Link("name", x)).collect(Collectors.toSet());
+        blocks = $$(By.cssSelector(selector + " #v_7 > *")).stream()
+                .filter(x -> x.attr("class").equals(Block.className))
+                .map(x -> new Block("name", x))
+                .collect(Collectors.toSet());
+        
+        links = $$(By.cssSelector(selector + " #v_7 > *")).stream()
+                .filter(x -> x.attr("class").equals(Link.className))
+                .map(x -> new Link("name", x))
+                .collect(Collectors.toSet());
     }
 }

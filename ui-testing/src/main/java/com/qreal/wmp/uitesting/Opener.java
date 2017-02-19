@@ -31,8 +31,6 @@ public class Opener {
     
     private static final Logger logger = LoggerFactory.getLogger(Opener.class);
     
-    private boolean inited = false;
-    
     /**
      * Opens page from wmp with authentication.
      *
