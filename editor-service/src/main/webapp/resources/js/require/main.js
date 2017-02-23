@@ -2,11 +2,20 @@ requirejs.config({
     baseUrl: 'resources/js/compiled',
     paths: {
         //angular
-        angular: '../libs/angular/angular'
+        angular: '../libs/angular/angular',
+        jquery: './jquery',
+        lodash: './lodash',
+        backbone: './backbone',
     },
     shim: {
         angular: {
             exports: 'angular',
+        }
+    },
+    map: {
+        '*': {
+            // Backbone requires underscore. This forces requireJS to load lodash instead:
+            'underscore': 'lodash'
         }
     }
 });
