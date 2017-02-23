@@ -26,10 +26,7 @@ public interface Scene {
     boolean exist(SceneElement element);
     
     /** Remove block from the scene. */
-    void remove(Block block);
-    
-    /** Remove link from the scene. */
-    void remove(Link link);
+    void remove(SceneElement element);
     
     /** Add link between two elements. */
     Link addLink(Block source, Block target);

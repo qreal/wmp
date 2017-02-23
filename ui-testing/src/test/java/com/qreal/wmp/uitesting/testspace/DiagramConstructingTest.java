@@ -43,7 +43,7 @@ public class DiagramConstructingTest {
     /** Open editor page. */
     @Before
     public void openEditor() {
-        opener.open("editor");
+        opener.open("robotsEditor");
      
         elements = new ArrayList<>();
         links = new ArrayList<>();

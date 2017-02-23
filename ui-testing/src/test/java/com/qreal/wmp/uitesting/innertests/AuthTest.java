@@ -77,15 +77,28 @@ public class AuthTest {
     }
 
     /**
-     * Try to open editor page without authentication.
+     * Try to open robots-editor page without authentication.
      * Should be redirected to auth page.
-     * Try to open editor page with correct login and password.
+     * Try to open robots-editor page with correct login and password.
      */
     @Test
-    public void editorTest() {
-        opener.cleanOpen("editor");
+    public void robotsEditorTest() {
+        opener.cleanOpen("robotsEditor");
         assert inAuthPage();
-        opener.open("editor");
+        opener.open("robotsEditor");
+        $(byText("Property Editor")).waitUntil(appear, 5000);
+    }
+    
+    /**
+     * Try to open bpmn-editor page without authentication.
+     * Should be redirected to auth page.
+     * Try to open bpmn-editor page with correct login and password.
+     */
+    @Test
+    public void bpmnEditorTest() {
+        opener.cleanOpen("bpmnEditor");
+        assert inAuthPage();
+        opener.open("bpmnEditor");
         $(byText("Property Editor")).waitUntil(appear, 5000);
     }
     

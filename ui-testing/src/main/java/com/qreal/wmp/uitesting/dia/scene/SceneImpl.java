@@ -112,13 +112,12 @@ public class SceneImpl implements Scene, InitializedComponent {
     }
     
     @Override
-    public void remove(Block block) {
-        removeSceneElement(block);
-    }
-    
-    @Override
-    public void remove(Link link) {
-        removeSceneElement(link.getSource());
+    public void remove(SceneElement element) {
+        if (element instanceof Link) {
+            removeSceneElement(((Link) element).getSource());
+        } else {
+            removeSceneElement(element);
+        }
     }
     
     @Override

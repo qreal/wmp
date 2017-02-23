@@ -44,27 +44,27 @@ script:
 
   - cd db-diagram-service
   - mvn exec:java -P travis &
-  - sleep 30
+  - sleep 15
 
   - cd ../db-user-service
   - mvn exec:java -P travis &
-  - sleep 30
+  - sleep 15
 
   - cd ../db-robot-store-service
   - mvn exec:java -P travis &
-  - sleep 30
+  - sleep 15
 
   - cd ../../auth-service
   - mvn tomcat7:run-war-only -P travis &
-  - sleep 60
+  - sleep 30
 
   - cd  ../dashboard-service
   - mvn tomcat7:run-war-only -P travis &
-  - sleep 60
+  - sleep 30
 
   - cd ../editor-service
   - mvn tomcat7:run-war-only -P travis &
-  - sleep 60
+  - sleep 30
 
   - cd ../ui-testing
   - mvn test -P travis &

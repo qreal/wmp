@@ -42,7 +42,7 @@ public class DiaTest {
     /** Open editor page. */
     @Before
     public void openEditor() {
-        opener.open("editor");
+        opener.open("robotsEditor");
     }
 
     /** Drag element from pallete and drop on the scene. */
