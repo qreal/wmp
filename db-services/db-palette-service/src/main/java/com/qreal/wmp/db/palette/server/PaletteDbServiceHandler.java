@@ -54,7 +54,8 @@ public class PaletteDbServiceHandler implements PaletteDbService.Iface {
         Set<TPaletteView> result = new HashSet<>();
         try {
             palettes = paletteDao.getPaletteViewsByUserName(username);
-        } catch (NotFoundException e) {
+        }
+        catch (NotFoundException e) {
             throw new TNotFound(username, "Palettes for specified user not found.");
         }
         for (PaletteView palette: palettes) {

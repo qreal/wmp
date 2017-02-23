@@ -33,7 +33,7 @@ public class PaletteServletHandler implements PaletteServiceThrift.Iface {
     }
 
     /**
-     * Creates palette and assigns it id.
+     * Creates palette and assigns it an Id.
      *
      * @param palette palette to create (Id must not be set)
      * @return new id of a palette
