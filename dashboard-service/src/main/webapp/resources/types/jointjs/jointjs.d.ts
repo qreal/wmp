@@ -4,7 +4,7 @@
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 // typings: https://github.com/CaselIT/typings-jointjs
 
-/// <reference types="backbone" />
+/// <reference path="../backbone/backbone.d.ts" />
 
 
 declare namespace joint {
