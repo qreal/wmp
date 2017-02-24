@@ -32,15 +32,17 @@ public class SceneImpl implements Scene {
     private static final String SELECTOR = ".scene-wrapper";
 
     private static final Logger logger = LoggerFactory.getLogger(PalleteImpl.class);
-
+    
+    private final WebDriver webDriver;
+    
+    private final SceneWindow sceneWindow;
+    
     private Set<Block> blocks = new HashSet<>();
     
     private Set<Link> links = new HashSet<>();
-
-    private WebDriver webDriver;
     
     /** For actions such as mouse move we need driver of current page. */
-    public SceneImpl(WebDriver webDriver) {
+    private SceneImpl(WebDriver webDriver) {
         this.webDriver = webDriver;
         /** For actions such as mouse move we need driver of current page. */
         if (webDriver instanceof JavascriptExecutor) {
@@ -54,6 +56,7 @@ public class SceneImpl implements Scene {
         } catch (InterruptedException e) {
             logger.error(e.getMessage());
         }
+        sceneWindow = SceneWindowImpl.getSceneWindow(this, webDriver);
     }
     
     @Override
@@ -80,7 +83,6 @@ public class SceneImpl implements Scene {
     
     @Override
     public void moveToCell(final Block block, final int cell_x, final int cell_y) {
-        SceneWindow sceneWindow = new SceneWindowImpl(this, webDriver);
         logger.info("Move element {} to cell ({}, {})", block, cell_x, cell_y);
         try {
             sceneWindow.move(block, new Coordinate(cell_x * 25, cell_y * 25));
@@ -91,7 +93,6 @@ public class SceneImpl implements Scene {
     
     @Override
     public void focus(final SceneElement element) {
-        SceneWindow sceneWindow = new SceneWindowImpl(this, webDriver);
         logger.info("Focus on the element {}", element);
         try {
             sceneWindow.focus(element.getCoordinateOnScene());

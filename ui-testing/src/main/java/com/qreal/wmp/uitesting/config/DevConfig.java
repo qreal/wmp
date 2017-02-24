@@ -55,7 +55,7 @@ public class DevConfig {
     }
     
     @Bean
-    PageLoader pageLoader() {
+    public PageLoader pageLoader() {
         return new PageLoader(pageFactory(), opener(), auther());
     }
 }

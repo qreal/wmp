@@ -21,20 +21,20 @@ import static com.codeborne.selenide.Selenide.$;
  * Describes part of the scene, which is shown on browser.
  */
 public class SceneWindowImpl implements SceneWindow {
-
+    
+    private static final Logger logger = LoggerFactory.getLogger(SceneWindowImpl.class);
+    
+    private final WebDriver driver;
+    
     /** Link to full scene. */
     private final Scene scene;
 
     private int stepVert;
 
     private int stepHor;
-
-    private final WebDriver driver;
-    
-    private static final Logger logger = LoggerFactory.getLogger(SceneWindowImpl.class);
     
     /** Constructor takes links to current scene and current driver. */
-    public SceneWindowImpl(final Scene scene, final WebDriver driver) {
+    private SceneWindowImpl(final Scene scene, final WebDriver driver) {
         this.scene = scene;
         this.driver = driver;
         updateSteps();
@@ -78,6 +78,10 @@ public class SceneWindowImpl implements SceneWindow {
         logger.debug("Focus to " + coordinate.getXAbsolute() + " " + coordinate.getYAbsolute());
         horizontalWindowMovement(coordinate.getXAbsolute());
         verticalWindowMovement(coordinate.getYAbsolute());
+    }
+    
+    public static SceneWindow getSceneWindow(Scene scene, WebDriver webDriver) {
+        return new SceneWindowImpl(scene, webDriver);
     }
     
     private void horizontalWindowMovement(int horizontal) {

@@ -17,6 +17,7 @@ public interface Scene {
     /** Drag element from scene or pallete and put it in cell of the scene. */
     Block dragAndDrop(PalleteElement element, int cell_x, int cell_y);
     
+    /** Move element from scene to the cell. */
     void moveToCell(Block block, int cell_x, int cell_y);
     
     /** Focus the element. */
