@@ -60,6 +60,7 @@ export class DiagramMenuController {
     }
 
     public openFolderWindow(): void {
+        $('#diagrams').modal('show');
         this.showFolderMenu();
         this.showFolderTable(this.currentFolder);
         this.clearSavingMenu();
