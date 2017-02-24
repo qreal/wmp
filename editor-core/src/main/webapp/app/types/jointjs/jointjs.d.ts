@@ -172,7 +172,7 @@ declare namespace joint {
 
         interface TextAttrs extends SVGAttributes {
             text?: {
-                [key: string]: string | number | { first: string, second: string};
+                [key: string]: string | number;
                 text?: string;
             };
         }
@@ -487,7 +487,6 @@ declare namespace joint {
                 constructor(attributes?: GenericAttributes<RectAttrs>, options?: Object);
             }
             class Text extends Generic {
-                constructor(attributes?: GenericAttributes<dia.TextAttrs>, options?: Object);
             }
             interface CircleAttrs extends dia.TextAttrs {
                 circle?: ShapeAttrs;
