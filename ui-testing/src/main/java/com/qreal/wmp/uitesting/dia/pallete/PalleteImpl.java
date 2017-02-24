@@ -21,4 +21,7 @@ public class PalleteImpl implements Pallete {
         return new PalleteElement(element);
     }
 
+    public static Pallete getPallete() {
+        return new PalleteImpl();
+    }
 }

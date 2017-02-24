@@ -3,12 +3,6 @@ package com.qreal.wmp.uitesting.config;
 import com.codeborne.selenide.WebDriverRunner;
 import com.qreal.wmp.uitesting.PageFactory;
 import com.qreal.wmp.uitesting.PageLoader;
-import com.qreal.wmp.uitesting.dia.pallete.Pallete;
-import com.qreal.wmp.uitesting.dia.pallete.PalleteImpl;
-import com.qreal.wmp.uitesting.dia.property.PropertyEditor;
-import com.qreal.wmp.uitesting.dia.property.PropertyEditorImpl;
-import com.qreal.wmp.uitesting.dia.scene.Scene;
-import com.qreal.wmp.uitesting.dia.scene.SceneImpl;
 import com.qreal.wmp.uitesting.services.Auther;
 import com.qreal.wmp.uitesting.services.Opener;
 import com.qreal.wmp.uitesting.services.impl.AutherImpl;
@@ -44,11 +38,6 @@ public class DevConfig {
         WebDriverRunner.setWebDriver(driver);
         return driver;
     }
-
-    @Bean
-    public Scene scene() {
-        return new SceneImpl(webDriver());
-    }
     
     @Bean
     public Auther auther() {
@@ -61,18 +50,8 @@ public class DevConfig {
     }
     
     @Bean
-    public PropertyEditor propertyEditor() {
-        return new PropertyEditorImpl(scene());
-    }
-    
-    @Bean
-    public Pallete pallete() {
-        return new PalleteImpl();
-    }
-    
-    @Bean
     public PageFactory pageFactory() {
-        return new PageFactory(scene(), propertyEditor(), pallete());
+        return new PageFactory(webDriver());
     }
     
     @Bean

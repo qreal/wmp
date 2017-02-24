@@ -1,7 +1,6 @@
 package com.qreal.wmp.uitesting.dia.property;
 
 import com.codeborne.selenide.SelenideElement;
-import com.qreal.wmp.uitesting.dia.scene.Scene;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.slf4j.Logger;
@@ -19,12 +18,6 @@ public class PropertyEditorImpl implements PropertyEditor {
     private static final String SELECTOR = "#property_table";
 
     private static final Logger logger = LoggerFactory.getLogger(PropertyEditorImpl.class);
-
-    private final Scene scene;
-    
-    public PropertyEditorImpl(Scene scene) {
-        this.scene = scene;
-    }
     
     /** {@inheritDoc} */
     public void setProperty(final SelenideElement element, final String propertyName, final String propertyValue)
@@ -42,7 +35,7 @@ public class PropertyEditorImpl implements PropertyEditor {
     
     /** {@inheritDoc} */
     public String getProperty(final SelenideElement element, final String propertyName) throws NoSuchElementException {
-        $(By.cssSelector(scene.getSelector())).click();
+        $(By.cssSelector(SELECTOR)).click();
         element.click();
         SelenideElement property = getInputOfElement(propertyName);
         logger.info("Get value of preperty {}", propertyName);
@@ -53,6 +46,10 @@ public class PropertyEditorImpl implements PropertyEditor {
         }
     }
 
+    public static PropertyEditor getPropertyEditor() {
+        return new PropertyEditorImpl();
+    }
+    
     /** To set/get property we need to take web element which describes needed field. */
     private SelenideElement getInputOfElement(final String propertyName) {
         final List<SelenideElement> allChilds = $$(By.cssSelector(SELECTOR + " tbody > * > *"));

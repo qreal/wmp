@@ -29,8 +29,6 @@ public class DiagramConstructingTest {
     @Autowired
     private PageLoader pageLoader;
     
-    private Pallete pallete;
-
     private Scene scene;
 
     private PropertyEditor propertyEditor;
@@ -44,7 +42,7 @@ public class DiagramConstructingTest {
     public void openEditor() {
         EditorPage editorPage = pageLoader.load(Page.EditorRobots);
         scene = editorPage.getScene();
-        pallete = editorPage.getPallete();
+        Pallete pallete = editorPage.getPallete();
         propertyEditor = editorPage.getPropertyEditor();
         
         elements = new ArrayList<>();

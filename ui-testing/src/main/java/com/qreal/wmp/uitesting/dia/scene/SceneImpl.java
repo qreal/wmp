@@ -1,7 +1,6 @@
 package com.qreal.wmp.uitesting.dia.scene;
 
 import com.codeborne.selenide.SelenideElement;
-import com.qreal.wmp.uitesting.InitializedComponent;
 import com.qreal.wmp.uitesting.dia.pallete.PalleteElement;
 import com.qreal.wmp.uitesting.dia.pallete.PalleteImpl;
 import com.qreal.wmp.uitesting.dia.scene.elements.Block;
@@ -28,7 +27,7 @@ import static com.codeborne.selenide.Selenide.$$;
  * Describes Scene of Editor.
  * Can add rm and manipulate with objects on that area.
  */
-public class SceneImpl implements Scene, InitializedComponent {
+public class SceneImpl implements Scene {
 
     private static final String SELECTOR = ".scene-wrapper";
 
@@ -43,12 +42,7 @@ public class SceneImpl implements Scene, InitializedComponent {
     /** For actions such as mouse move we need driver of current page. */
     public SceneImpl(WebDriver webDriver) {
         this.webDriver = webDriver;
-    }
-    
-    /** Creates divs for window. */
-    @Override
-    public void init() {
-        clean();
+        /** For actions such as mouse move we need driver of current page. */
         if (webDriver instanceof JavascriptExecutor) {
             ((JavascriptExecutor) webDriver).executeScript(
                     createDiv("SceneWindowLeft") + createDiv("SceneWindowTop") +
@@ -153,6 +147,10 @@ public class SceneImpl implements Scene, InitializedComponent {
     @Override
     public List<Block> getBlocks() {
         return blocks.stream().collect(Collectors.toList());
+    }
+    
+    public static Scene getScene(WebDriver webDriver) {
+        return new SceneImpl(webDriver);
     }
     
     /** Return new element of the scene. */
