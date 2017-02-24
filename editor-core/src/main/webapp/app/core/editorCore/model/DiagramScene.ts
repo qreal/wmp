@@ -37,7 +37,7 @@ export class DiagramScene extends joint.dia.Paper {
             validateMagnet: function (cellView, magnet) {
                 return magnet.getAttribute('magnet') !== 'passive';
             },
-            diagramElementView: joint.dia.ElementView.extend(jQuery.extend(joint.shapes.basic.PortsViewInterface,
+            elementView: joint.dia.ElementView.extend(jQuery.extend(joint.shapes.basic.PortsViewInterface,
                 {
                 pointerdown: DiagramElementListener.pointerdown
                 }))
