@@ -33,7 +33,7 @@ before_install:
 
 install:
   #install and run tests and run style checking
-  - mvn install -P travis
+  - mvn clean install -P travis
   - cd ui-testing
   - mvn clean install -DskipTests
   - cd ..
@@ -68,7 +68,7 @@ script:
 
   - cd ../ui-testing
   - mvn test -P travis &
-  - sleep 600
+  - sleep 900
 
 notifications:
   slack: qreal-web:sT5qgA4qZZ9eyLI0yy2Mp81E

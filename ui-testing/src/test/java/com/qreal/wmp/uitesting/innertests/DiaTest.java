@@ -59,7 +59,11 @@ public class DiaTest {
     public void remove() {
         final Block sceneElement = scene.dragAndDrop(pallete.getElement("Initial Node"));
         assert scene.exist(sceneElement);
-        scene.remove(sceneElement);
+        try {
+            scene.remove(sceneElement);
+        } catch (ElementNotOnTheSceneException e) {
+            logger.error(e.getMessage());
+        }
         assert !scene.exist(sceneElement);
     }
 
