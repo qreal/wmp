@@ -3,9 +3,9 @@ requirejs.config({
     paths: {
         //angular
         angular: '../libs/angular/angular',
-        jquery: './jquery',
-        lodash: './lodash',
-        backbone: './backbone',
+        jquery: '../libs/jquery/jquery',
+        lodash: '../libs/lodash/lodash',
+        backbone: '../libs/backbone/backbone',
     },
     shim: {
         angular: {
