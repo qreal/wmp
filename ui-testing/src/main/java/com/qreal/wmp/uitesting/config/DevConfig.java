@@ -1,7 +1,8 @@
 package com.qreal.wmp.uitesting.config;
 
 import com.codeborne.selenide.WebDriverRunner;
-import com.qreal.wmp.uitesting.InitializedComponent;
+import com.qreal.wmp.uitesting.PageFactory;
+import com.qreal.wmp.uitesting.PageLoader;
 import com.qreal.wmp.uitesting.dia.pallete.Pallete;
 import com.qreal.wmp.uitesting.dia.pallete.PalleteImpl;
 import com.qreal.wmp.uitesting.dia.property.PropertyEditor;
@@ -56,7 +57,7 @@ public class DevConfig {
     
     @Bean
     public Opener opener() {
-        return new OpenerImpl(environment, auther(), (InitializedComponent) scene());
+        return new OpenerImpl(environment, auther());
     }
     
     @Bean
@@ -67,5 +68,15 @@ public class DevConfig {
     @Bean
     public Pallete pallete() {
         return new PalleteImpl();
+    }
+    
+    @Bean
+    public PageFactory pageFactory() {
+        return new PageFactory(scene(), propertyEditor(), pallete());
+    }
+    
+    @Bean
+    PageLoader pageLoader() {
+        return new PageLoader(pageFactory(), opener(), auther());
     }
 }

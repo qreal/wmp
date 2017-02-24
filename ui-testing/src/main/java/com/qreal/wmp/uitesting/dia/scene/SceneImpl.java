@@ -4,11 +4,11 @@ import com.codeborne.selenide.SelenideElement;
 import com.qreal.wmp.uitesting.InitializedComponent;
 import com.qreal.wmp.uitesting.dia.pallete.PalleteElement;
 import com.qreal.wmp.uitesting.dia.pallete.PalleteImpl;
-import com.qreal.wmp.uitesting.dia.scene.window.SceneWindow;
-import com.qreal.wmp.uitesting.dia.scene.window.SceneWindowImpl;
 import com.qreal.wmp.uitesting.dia.scene.elements.Block;
 import com.qreal.wmp.uitesting.dia.scene.elements.Link;
 import com.qreal.wmp.uitesting.dia.scene.elements.SceneElement;
+import com.qreal.wmp.uitesting.dia.scene.window.SceneWindow;
+import com.qreal.wmp.uitesting.dia.scene.window.SceneWindowImpl;
 import com.qreal.wmp.uitesting.exceptions.ElementNotOnTheSceneException;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -55,11 +55,11 @@ public class SceneImpl implements Scene, InitializedComponent {
                             createDiv("SceneWindowHorSize") + createDiv("SceneWindowVerSize")
             );
         }
-    }
-    
-    @Override
-    public boolean name(String name) {
-        return "editor".equals(name);
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            logger.error(e.getMessage());
+        }
     }
     
     @Override

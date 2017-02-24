@@ -1,5 +1,7 @@
 package com.qreal.wmp.uitesting.innertests;
 
+import com.qreal.wmp.uitesting.Page;
+import com.qreal.wmp.uitesting.PageLoader;
 import com.qreal.wmp.uitesting.config.AppInit;
 import com.qreal.wmp.uitesting.dia.pallete.Pallete;
 import com.qreal.wmp.uitesting.dia.property.PropertyEditor;
@@ -7,7 +9,7 @@ import com.qreal.wmp.uitesting.dia.scene.Scene;
 import com.qreal.wmp.uitesting.dia.scene.elements.Block;
 import com.qreal.wmp.uitesting.dia.scene.elements.Link;
 import com.qreal.wmp.uitesting.exceptions.ElementNotOnTheSceneException;
-import com.qreal.wmp.uitesting.services.Opener;
+import com.qreal.wmp.uitesting.pages.EditorPage;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,21 +30,21 @@ public class DiaTest {
     private static final Logger logger = LoggerFactory.getLogger(DiaTest.class);
     
     @Autowired
-    private Opener opener;
-
-    @Autowired
+    private PageLoader pageLoader;
+    
     private Pallete pallete;
 
-    @Autowired
     private Scene scene;
 
-    @Autowired
     private PropertyEditor propertyEditor;
     
     /** Open editor page. */
     @Before
     public void openEditor() {
-        opener.open("robotsEditor");
+        EditorPage editorPage = pageLoader.load(Page.EditorRobots);
+        scene = editorPage.getScene();
+        pallete = editorPage.getPallete();
+        propertyEditor = editorPage.getPropertyEditor();
     }
 
     /** Drag element from pallete and drop on the scene. */
