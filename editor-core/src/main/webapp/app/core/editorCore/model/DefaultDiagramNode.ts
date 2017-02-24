@@ -4,10 +4,36 @@ import {PropertiesPack} from "./PropertiesPack";
 import {PropertyEditElement} from "./PropertyEditElement";
 import {UIDGenerator} from "../controller/UIDGenerator";
 import {DiagramNode} from "./DiagramNode";
+
+class ImageWithPorts extends joint.shapes.basic.Generic {
+
+    constructor(portsModelInterface: joint.shapes.basic.PortsModelInterface) {
+        super(portsModelInterface);
+    }
+
+    getPortAttrs(portName: string, index: number, total: number, selector: string, type: string): {} {
+
+        var attrs = {};
+
+        var portClass = 'port' + index;
+        var portSelector = selector + '>.' + portClass;
+        var portTextSelector = portSelector + '>text';
+        var portCircleSelector = portSelector + '>circle';
+
+        attrs[portTextSelector] = { text: portName };
+        attrs[portCircleSelector] = { port: { id: portName || _.uniqueId
+        (type), type: type } };
+        attrs[portSelector] = { ref: 'rect', 'ref-x': (index + 0.5) * (1 /
+        total) };
+
+        return attrs;
+    }
+};
+
 export class DefaultDiagramNode implements DiagramNode {
 
     private logicalId: string;
-    private jointObject: joint.shapes.devs.ImageWithPorts;
+    private jointObject: ImageWithPorts;
     private name: string;
     private type: string;
     private constPropertiesPack: PropertiesPack;
@@ -41,7 +67,7 @@ export class DefaultDiagramNode implements DiagramNode {
             jQuery.extend(jointObjectAttributes, {id: id});
         }
 
-        this.jointObject = new joint.shapes.devs.ImageWithPorts(jointObjectAttributes);
+        this.jointObject = new ImageWithPorts(jointObjectAttributes);
         this.changeableProperties = properties;
         this.imagePath = imagePath;
     }
