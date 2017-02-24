@@ -172,7 +172,7 @@ declare namespace joint {
 
         interface TextAttrs extends SVGAttributes {
             text?: {
-                [key: string]: string | number;
+                [key: string]: string | number | { first: string, second: string};
                 text?: string;
             };
         }
@@ -511,6 +511,10 @@ declare namespace joint {
                 polyline?: ShapeAttrs;
             }
             class Polyline extends Generic {
+            }
+            class PortsViewInterface {
+            }
+            class PortsModelInterface {
             }
             class Image extends Generic {
                 constructor(attributes?: GenericAttributes<dia.TextAttrs>, options?: Object);
