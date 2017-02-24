@@ -30,7 +30,7 @@ export class DefaultDiagramNode implements DiagramNode {
             position: { x: x, y: y },
             size: { width: 50, height: 50 },
             outPorts: [''],
-            attrs: {
+            attrs: <{ [selector: string]: { [key: string]: string} }> {
                 image: {
                     'xlink:href': imagePath
                 },
