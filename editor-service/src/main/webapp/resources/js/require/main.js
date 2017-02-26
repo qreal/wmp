@@ -3,14 +3,16 @@ requirejs.config({
     paths: {
         //angular
         angular: '../libs/angular/angular',
-        jquery: '../libs/jquery/jquery',
         lodash: '../libs/lodash/lodash',
         backbone: '../libs/backbone/backbone',
     },
     shim: {
         angular: {
             exports: 'angular',
-        }
+        },
+        jquery: {
+            exports: '$'
+        },
     },
     map: {
         '*': {
@@ -21,7 +23,7 @@ requirejs.config({
 });
 
 requirejs(
-    ['angular',
+    ['angular','jquery', 'lodash', 'backbone','joint',
     'require/app',
     'robots/RootDiagramController',
     'robots/diagram/controller/RobotsDiagramEditorController',
