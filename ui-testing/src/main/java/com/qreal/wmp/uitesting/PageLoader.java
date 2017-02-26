@@ -3,12 +3,8 @@ package com.qreal.wmp.uitesting;
 import com.qreal.wmp.uitesting.exceptions.WrongAuthException;
 import com.qreal.wmp.uitesting.services.Auther;
 import com.qreal.wmp.uitesting.services.Opener;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class PageLoader {
-    
-    private static final Logger logger = LoggerFactory.getLogger(PageLoader.class);
     
     private final PageFactory pageFactory;
     
@@ -25,12 +21,6 @@ public class PageLoader {
     /** Loads and returns requested page with default authentication. */
     public <T> T load(Page page) {
         opener.open(page.getIdentify());
-        // wait for load
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            logger.error(e.getMessage());
-        }
         return getPage(page);
     }
     
@@ -38,12 +28,6 @@ public class PageLoader {
     public <T> T load(Page page, String username, String password) throws WrongAuthException {
         auther.auth(username, password);
         opener.open(page.getIdentify());
-        // wait for load
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            logger.error(e.getMessage());
-        }
         return getPage(page);
     }
     

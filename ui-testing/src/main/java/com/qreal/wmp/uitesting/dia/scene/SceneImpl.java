@@ -52,11 +52,6 @@ public class SceneImpl implements Scene {
                             createDiv("SceneWindowHorSize") + createDiv("SceneWindowVerSize")
             );
         }
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            logger.error(e.getMessage());
-        }
         sceneWindow = SceneWindowImpl.getSceneWindow(this, webDriver, SELECTOR);
         blockProvider = BlockProvider.getBlockProvider(sceneWindow, SELECTOR);
         linkProvider = LinkProvider.getLinkProvider(SELECTOR, webDriver);
@@ -148,11 +143,6 @@ public class SceneImpl implements Scene {
         sceneWindow.focus(sceneElement.getCoordinateOnScene());
         logger.info("Remove element {} form scene", sceneElement.getInnerSeleniumElement().toString());
         new Actions(webDriver).contextClick(sceneElement.getInnerSeleniumElement()).perform();
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            logger.error(e.getMessage());
-        }
         SelenideElement contextMenu = $(By.id("scene-context-menu"));
         if (!contextMenu.is(Condition.visible)) {
             logger.info("Context menu " + contextMenu + " is not visible. Try to focus again. " );

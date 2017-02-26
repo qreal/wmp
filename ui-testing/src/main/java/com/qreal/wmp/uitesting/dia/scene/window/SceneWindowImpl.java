@@ -87,16 +87,6 @@ public class SceneWindowImpl implements SceneWindow, PageInfoUpdator {
                     "canvas.scrollTop = " + Math.max(0, (coordinate.getYAbsolute() - sizeVer / 2)) + ";"
             );
         }
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            logger.error(e.getMessage());
-        }
-       
-        /*
-        focusHelper.horizontalWindowMovement(coordinate.getXAbsolute());
-        focusHelper.verticalWindowMovement(coordinate.getYAbsolute());
-        */
     }
     
     @Contract("_, _, _ -> !null")
@@ -115,11 +105,6 @@ public class SceneWindowImpl implements SceneWindow, PageInfoUpdator {
                     "$('#SceneWindowHorSize').html(BB.right - BB.left);" +
                     "$('#SceneWindowVerSize').html(BB.bottom - BB.top);"
             );
-        }
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-            logger.error(e.getMessage());
         }
     }
     

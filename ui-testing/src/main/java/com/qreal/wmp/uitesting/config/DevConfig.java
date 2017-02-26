@@ -17,6 +17,8 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.env.Environment;
 
+import java.util.concurrent.TimeUnit;
+
 /** Creates beans for Spring needs. **/
 @Configuration
 @PropertySource("classpath:pages.properties")
@@ -35,6 +37,10 @@ public class DevConfig {
     public WebDriver webDriver() {
         ChromeDriverManager.getInstance().setup();
         WebDriver driver = new ChromeDriver();
+        driver.manage().window().maximize();
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        driver.manage().timeouts().setScriptTimeout(3, TimeUnit.SECONDS);
+        driver.manage().timeouts().pageLoadTimeout(3, TimeUnit.SECONDS);
         WebDriverRunner.setWebDriver(driver);
         return driver;
     }
