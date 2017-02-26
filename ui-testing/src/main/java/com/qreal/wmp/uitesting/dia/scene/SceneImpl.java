@@ -94,7 +94,7 @@ public class SceneImpl implements Scene {
     @Override
     public void remove(SceneElement element) throws ElementNotOnTheSceneException {
         if (element instanceof Link) {
-            removeSceneElement(((Link) element).getSource());
+            removeSceneElement(((Link) element).getTarget());
         } else {
             removeSceneElement(element);
         }
@@ -147,17 +147,15 @@ public class SceneImpl implements Scene {
     private void removeSceneElement(SceneElement sceneElement) throws ElementNotOnTheSceneException {
         sceneWindow.focus(sceneElement.getCoordinateOnScene());
         logger.info("Remove element {} form scene", sceneElement.getInnerSeleniumElement().toString());
-        new Actions(webDriver).contextClick(sceneElement.getInnerSeleniumElement()).build().perform();
+        new Actions(webDriver).contextClick(sceneElement.getInnerSeleniumElement()).perform();
         try {
-            Thread.sleep(1000);
+            Thread.sleep(3000);
         } catch (InterruptedException e) {
             logger.error(e.getMessage());
         }
         SelenideElement contextMenu = $(By.id("scene-context-menu"));
         if (!contextMenu.is(Condition.visible)) {
-            logger.info("Context menu is not visible. Try to focus again.");
-            $(By.cssSelector(SELECTOR)).click();
-            
+            logger.info("Context menu " + contextMenu + " is not visible. Try to focus again. " );
             removeSceneElement(sceneElement);
         } else {
             contextMenu.click();

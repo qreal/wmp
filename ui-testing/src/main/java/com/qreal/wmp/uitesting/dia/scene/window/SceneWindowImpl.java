@@ -26,8 +26,6 @@ public class SceneWindowImpl implements SceneWindow, PageInfoUpdator {
     
     private final String selector;
     
-    private final FocusHelper focusHelper;
-    
     private final MoveHelper moveHelper;
     
     private int stepVert = 40;
@@ -38,7 +36,6 @@ public class SceneWindowImpl implements SceneWindow, PageInfoUpdator {
     private SceneWindowImpl(final Scene scene, final WebDriver driver, String selector) {
         this.driver = driver;
         this.selector = selector;
-        focusHelper = FocusHelper.getFocusHelper(this);
         moveHelper = MoveHelper.getMoveHelper(scene, driver);
         updateSteps();
     }
@@ -78,9 +75,28 @@ public class SceneWindowImpl implements SceneWindow, PageInfoUpdator {
 
     @Override
     public void focus(final Coordinate coordinate) {
+        int sizeHor = Double.valueOf($(By.id("SceneWindowHorSize")).innerHtml()).intValue();
+        int sizeVer = Double.valueOf($(By.id("SceneWindowVerSize")).innerHtml()).intValue();
+    
         logger.info("Focus to " + coordinate.getXAbsolute() + " " + coordinate.getYAbsolute());
+        if (driver instanceof JavascriptExecutor) {
+            ((JavascriptExecutor) driver).executeScript("var canvas = " +
+                    "document.getElementsByClassName(\"scene-wrapper\")[0]; " +
+                    "var BB=canvas.getBoundingClientRect();" +
+                    "canvas.scrollLeft = " + Math.max(0, (coordinate.getXAbsolute() - sizeHor / 2)) + "; " +
+                    "canvas.scrollTop = " + Math.max(0, (coordinate.getYAbsolute() - sizeVer / 2)) + ";"
+            );
+        }
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            logger.error(e.getMessage());
+        }
+       
+        /*
         focusHelper.horizontalWindowMovement(coordinate.getXAbsolute());
         focusHelper.verticalWindowMovement(coordinate.getYAbsolute());
+        */
     }
     
     @Contract("_, _, _ -> !null")

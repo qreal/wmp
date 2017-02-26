@@ -37,6 +37,11 @@ public class PropertyEditorImpl implements PropertyEditor {
     public String getProperty(final SelenideElement element, final String propertyName) throws NoSuchElementException {
         $(By.cssSelector(SELECTOR)).click();
         element.click();
+        try {
+            Thread.sleep(300);
+        } catch (InterruptedException e) {
+            logger.error(e.getMessage());
+        }
         SelenideElement property = getInputOfElement(propertyName);
         logger.info("Get value of preperty {}", propertyName);
         if (property.attr("class").equals("input-group")) {

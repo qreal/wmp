@@ -4,16 +4,18 @@ import com.codeborne.selenide.SelenideElement;
 import com.qreal.wmp.uitesting.dia.scene.Coordinate;
 import com.qreal.wmp.uitesting.exceptions.ElementNotOnTheSceneException;
 import org.openqa.selenium.By;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static com.codeborne.selenide.Selenide.$;
 
 public class Link extends SceneElementImpl {
     
+    private static final Logger logger = LoggerFactory.getLogger(Link.class);
+    
     public static final String CLASS_NAME = "link";
     
-    private static final String SOURCE_POINT_CLASSNAME = "marker-source";
-    
-    private static final String TARGET_POINT_CLASSNAME = "marker-target";
+    private static final String ARROWHEAD = "marker-arrowheads";
     
     private final String name;
     
@@ -21,11 +23,21 @@ public class Link extends SceneElementImpl {
     
     private final SceneElement target;
     
+    /** Describes link between two blocks. */
     public Link(String name, SelenideElement innerSeleniumObject) {
         super(innerSeleniumObject);
         this.name = name;
-        this.source = new SceneElementImpl($(innerSeleniumObject.find(By.className(SOURCE_POINT_CLASSNAME))));
-        this.target = new SceneElementImpl($(innerSeleniumObject.find(By.className(TARGET_POINT_CLASSNAME))));
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            logger.error(e.getMessage());
+        }
+        this.source = new SceneElementImpl($(innerSeleniumObject
+                .find(By.className(ARROWHEAD))).find(By.cssSelector(":nth-child(1)"))
+        );
+        this.target = new SceneElementImpl($(innerSeleniumObject
+                .find(By.className(ARROWHEAD))).find(By.cssSelector(":nth-child(2)"))
+        );
     }
     
     public String getName() {
