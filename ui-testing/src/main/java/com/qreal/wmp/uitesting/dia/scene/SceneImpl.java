@@ -1,5 +1,7 @@
 package com.qreal.wmp.uitesting.dia.scene;
 
+import com.codeborne.selenide.Condition;
+import com.codeborne.selenide.SelenideElement;
 import com.qreal.wmp.uitesting.dia.pallete.PalleteElement;
 import com.qreal.wmp.uitesting.dia.pallete.PalleteImpl;
 import com.qreal.wmp.uitesting.dia.scene.elements.Block;
@@ -51,7 +53,7 @@ public class SceneImpl implements Scene {
             );
         }
         try {
-            Thread.sleep(3000);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             logger.error(e.getMessage());
         }
@@ -151,9 +153,16 @@ public class SceneImpl implements Scene {
         } catch (InterruptedException e) {
             logger.error(e.getMessage());
         }
-        $(By.id("scene-context-menu")).click();
-        
-        blockProvider.recalculateBlocks();
-        linkProvider.recalculateLinks();
+        SelenideElement contextMenu = $(By.id("scene-context-menu"));
+        if (!contextMenu.is(Condition.visible)) {
+            logger.info("Context menu is not visible. Try to focus again.");
+            $(By.cssSelector(SELECTOR)).click();
+            
+            removeSceneElement(sceneElement);
+        } else {
+            contextMenu.click();
+            blockProvider.recalculateBlocks();
+            linkProvider.recalculateLinks();
+        }
     }
 }

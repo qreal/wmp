@@ -27,6 +27,7 @@ public class FocusHelper {
         if (left + sizeHor * 2 / 3 < horizontal) {
             updator.sendKey(Keys.RIGHT);
             updator.updateCanvasInfo();
+            logger.info("Now left = " + Double.valueOf($(By.id("SceneWindowLeft")).innerHtml()).intValue());
             if (Double.valueOf($(By.id("SceneWindowLeft")).innerHtml()).intValue() != left) {
                 horizontalWindowMovement(horizontal);
             }
@@ -34,9 +35,16 @@ public class FocusHelper {
         if (left + sizeHor / 3 > horizontal) {
             updator.sendKey(Keys.LEFT);
             updator.updateCanvasInfo();
+            logger.info("Now left = " + Double.valueOf($(By.id("SceneWindowLeft")).innerHtml()).intValue());
             if (Double.valueOf($(By.id("SceneWindowLeft")).innerHtml()).intValue() != left) {
                 horizontalWindowMovement(horizontal);
             }
+        }
+        
+        updator.updateCanvasInfo();
+        left = Double.valueOf($(By.id("SceneWindowLeft")).innerHtml()).intValue();
+        if (!inVisibleSpace(left, horizontal, sizeHor)) {
+            horizontalWindowMovement(horizontal);
         }
     }
     
@@ -49,21 +57,32 @@ public class FocusHelper {
         if (top + sizeVer * 2 / 3 < vertical) {
             updator.sendKey(Keys.DOWN);
             updator.updateCanvasInfo();
+            logger.info("Now top = " + Double.valueOf($(By.id("SceneWindowTop")).innerHtml()).intValue());
+            if (Double.valueOf($(By.id("SceneWindowTop")).innerHtml()).intValue() != top) {
+                verticalWindowMovement(vertical);
+            }
+        } else if (top + sizeVer / 3 > vertical) {
+            updator.sendKey(Keys.UP);
+            updator.updateCanvasInfo();
+            logger.info("Now top = " + Double.valueOf($(By.id("SceneWindowTop")).innerHtml()).intValue());
             if (Double.valueOf($(By.id("SceneWindowTop")).innerHtml()).intValue() != top) {
                 verticalWindowMovement(vertical);
             }
         }
-        if (top + sizeVer / 3 > vertical) {
-            updator.sendKey(Keys.UP);
-            updator.updateCanvasInfo();
-            if (Double.valueOf($(By.id("SceneWindowTop")).innerHtml()).intValue() != top) {
-                verticalWindowMovement(vertical);
-            }
+        
+        updator.updateCanvasInfo();
+        top = Double.valueOf($(By.id("SceneWindowTop")).innerHtml()).intValue();
+        if (!inVisibleSpace(top, vertical, sizeVer)) {
+            verticalWindowMovement(vertical);
         }
     }
     
     @Contract("_ -> !null")
     public static FocusHelper getFocusHelper(PageInfoUpdator updator) {
         return new FocusHelper(updator);
+    }
+    
+    private boolean inVisibleSpace(int src, int dist, int size) {
+        return Math.abs(src - dist) <= size;
     }
 }

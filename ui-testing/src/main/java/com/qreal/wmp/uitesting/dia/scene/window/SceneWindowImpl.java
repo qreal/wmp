@@ -30,9 +30,9 @@ public class SceneWindowImpl implements SceneWindow, PageInfoUpdator {
     
     private final MoveHelper moveHelper;
     
-    private int stepVert;
+    private int stepVert = 40;
 
-    private int stepHor;
+    private int stepHor = 40;
     
     /** Constructor takes links to current scene and current driver. */
     private SceneWindowImpl(final Scene scene, final WebDriver driver, String selector) {
@@ -101,7 +101,7 @@ public class SceneWindowImpl implements SceneWindow, PageInfoUpdator {
             );
         }
         try {
-            Thread.sleep(1000);
+            Thread.sleep(100);
         } catch (InterruptedException e) {
             logger.error(e.getMessage());
         }
@@ -110,10 +110,11 @@ public class SceneWindowImpl implements SceneWindow, PageInfoUpdator {
     // todo: make it waits real time until action is completed
     @Override
     public void sendKey(Keys key) {
-        new Actions(driver).sendKeys(key).perform();
+        $(selector).click();
+        new Actions(driver).sendKeys(key).build().perform();
         try {
             // wait hard coded time until action is completed
-            Thread.sleep(1000);
+            Thread.sleep(100);
         } catch (InterruptedException e) {
             logger.error(e.getMessage());
         }
