@@ -72,12 +72,12 @@ class SceneController {
         this.lastCellMouseDownPosition = { x: 0, y: 0 };
     }
 
-    public createLink(sourceId: string, targetId: string): void {
+    public createLink(sourceId: string, target: any): void {
 
         var link: joint.dia.Link = this.scene.getCurrentLinkType();
         link.set({
             source: { id: sourceId },
-            target: { id: targetId }
+            target: target
         });
 
         var nodeType: NodeType = this.diagramEditorController.getNodeType(this.scene.getCurrentLinkTypeName());
@@ -160,27 +160,12 @@ class SceneController {
     }
 
     public createLinkBetweenCurrentAndEventTargetElements(event): void {
-        var diagramPaper: HTMLDivElement = <HTMLDivElement> document.getElementById(this.scene.getId());
-
-        var elementBelow = this.diagramEditorController.getGraph().get('cells').find((cell) => {
-            if (cell instanceof joint.dia.Link) return false; // Not interested in links.
-            if (cell.id === this.currentElement.getJointObject().id) return false; // The same element as the dropped one.
-            var mXBegin = cell.getBBox().origin().x;
-            var mYBegin = cell.getBBox().origin().y;
-            var mXEnd = cell.getBBox().corner().x;
-            var mYEnd = cell.getBBox().corner().y;
-
-            var leftElementPos:number = (event.pageX - $(diagramPaper).offset().left + $(diagramPaper).scrollLeft()) /
-                this.scene.getZoom();
-            var topElementPos:number = (event.pageY - $(diagramPaper).offset().top + $(diagramPaper).scrollTop()) /
-                this.scene.getZoom();
-
-            return ((mXBegin <= leftElementPos) && (mXEnd >= leftElementPos)
-                && (mYBegin <= topElementPos) && (mYEnd >= topElementPos) && (this.rightClickFlag))
+        var controller = this;
+        var elementBelow = this.getElementBelow(event, function(cell) {
+            return !(cell instanceof joint.dia.Link || cell.id === controller.currentElement.getJointObject().id) && controller.rightClickFlag;
         });
-
         if (elementBelow) {
-            this.createLink(this.currentElement.getJointObject().id, elementBelow.id);
+            this.createLink(this.currentElement.getJointObject().id, {id: elementBelow.id});
         }
     }
 
@@ -300,7 +285,17 @@ class SceneController {
 
                 var type = $(ui.draggable.context).data("type");
 
-                controller.createNode(type, leftElementPos, topElementPos, $(ui.draggable.context).data("id"),
+                if (paper.getCurrentLinkTypeName() == type) {
+                    var elementBelow = controller.getElementBelow(event, function(cell) {
+                        return !(cell instanceof joint.dia.Link);
+                    });
+                    if (elementBelow)
+                        controller.createLink(elementBelow.id, {
+                            x: elementBelow.getBBox().x + controller.scene.getGridSize() * 4,
+                            y: elementBelow.getBBox().y + controller.scene.getGridSize()
+                        });
+                }
+                else controller.createNode(type, leftElementPos, topElementPos, $(ui.draggable.context).data("id"),
                     $(ui.draggable.context).data("name"));
             }
         });
@@ -371,4 +366,23 @@ class SceneController {
         });
     }
 
+    private getElementBelow(event: any, checker?: (cell: any) => boolean) {
+        var diagramPaper: HTMLDivElement = <HTMLDivElement> document.getElementById(this.scene.getId());
+        return this.diagramEditorController.getGraph().get('cells').find((cell) => {
+            if (checker && !checker(cell))
+                return false;
+            var mXBegin = cell.getBBox().origin().x;
+            var mYBegin = cell.getBBox().origin().y;
+            var mXEnd = cell.getBBox().corner().x;
+            var mYEnd = cell.getBBox().corner().y;
+
+            var leftElementPos:number = (event.pageX - $(diagramPaper).offset().left + $(diagramPaper).scrollLeft()) /
+                this.scene.getZoom();
+            var topElementPos:number = (event.pageY - $(diagramPaper).offset().top + $(diagramPaper).scrollTop()) /
+                this.scene.getZoom();
+
+            return ((mXBegin <= leftElementPos) && (mXEnd >= leftElementPos)
+            && (mYBegin <= topElementPos) && (mYEnd >= topElementPos));
+        });
+    }
 }
