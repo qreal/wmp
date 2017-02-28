@@ -1,20 +1,23 @@
-/// <reference path="../../../common/interfaces/editorCore.d.ts" />
-/// <reference path="../../../common/interfaces/vendor.d.ts" />
 /// <reference path="../../../../resources/thrift/editor/PaletteService_types.d.ts" />
 /// <reference path="../../../../resources/thrift/editor/PaletteServiceThrift.d.ts" />
 /// <reference path="../../../../resources/thrift/struct/Palette_types.d.ts" />
-/// <reference path="../../../../resources/types/thrift/Thrift.d.ts" />
-/// <reference path="../../../common/constants/GeneralConstants.ts" />
-/// <reference path="../exporters/PaletteExporter.ts" />
-/// <reference path="../parsers/PaletteParser.ts" />
-/// <reference path="../model/PaletteView.ts" />
+/// <reference path="../../../types/thrift/Thrift.d.ts" />
+import {GeneralConstants} from "../../../common/constants/GeneralConstants";
+import app = require("../../../require/app");
+import {ElementTypes} from "core/editorCore/model/ElementTypes";
+import {DiagramEditorController} from "core/editorCore/controller/DiagramEditorController";
+import {PaletteExporter} from "../exporters/PaletteExporter";
+import {PaletteParser} from "../parsers/PaletteParser";
+import {PaletteView} from "../model/PaletteView";
 
-class PaletteDiagramEditorController extends DiagramEditorController {
+export class PaletteDiagramEditorController extends DiagramEditorController {
 
     private exporter: PaletteExporter;
     private parser: PaletteParser;
     private palettes: PaletteView[] = [];
     private availableCreate: boolean = true;
+    //Hack for firefox
+    static $$ngIsClass: boolean;
 
     constructor($scope, $attrs) {
         super($scope, $attrs);
@@ -129,3 +132,7 @@ class PaletteDiagramEditorController extends DiagramEditorController {
         return new PaletteServiceThriftClient(protocol);
     }
 }
+
+PaletteDiagramEditorController.$$ngIsClass = true;
+app.controller("PaletteDiagramEditorController", PaletteDiagramEditorController);
+console.log("Adding controller PaletteDiagramEditorController");

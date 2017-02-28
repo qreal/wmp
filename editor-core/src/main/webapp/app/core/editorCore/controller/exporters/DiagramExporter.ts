@@ -1,10 +1,9 @@
-/// <reference path="../../model/DiagramParts.ts" />
-/// <reference path="../../model/DiagramNode.ts" />
-/// <reference path="../../model/Map.ts" />
-/// <reference path="../../model/Property.ts" />
-/// <reference path="../../../../vendor.d.ts" />
-
-class DiagramExporter {
+import {Property} from "../../model/Property";
+import {Link} from "../../model/Link";
+import {DiagramParts} from "../../model/DiagramParts";
+import {SubprogramNode} from "../../model/SubprogramNode";
+import {DiagramNode} from "../../model/DiagramNode";
+export class DiagramExporter {
 
     public exportDiagramStateToJSON(graph: joint.dia.Graph, diagramParts: DiagramParts) {
         var json = {
@@ -36,7 +35,7 @@ class DiagramExporter {
                 'incomingExplosions': []
             };
 
-            var constLogicalProperties: Map<Property> = node.getConstPropertiesPack().logical;
+            var constLogicalProperties: Map<String, Property> = node.getConstPropertiesPack().logical;
             if (node.getType() === "Subprogram") {
                 constLogicalProperties["outgoingExplosion"] = new Property("outgoingExplosion", "qReal::Id",
                     "qrm:/RobotsMetamodel/RobotsDiagram/SubprogramDiagram/{" +
@@ -153,7 +152,7 @@ class DiagramExporter {
         return links;
     }
 
-    protected exportProperties(properties: Map<Property>) {
+    protected exportProperties(properties: Map<String, Property>) {
         var propertiesJSON = [];
         for (var propertyName in properties) {
             var type: string = properties[propertyName].type;

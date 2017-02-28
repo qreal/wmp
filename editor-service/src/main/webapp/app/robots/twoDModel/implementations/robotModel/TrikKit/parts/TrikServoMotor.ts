@@ -1,7 +1,6 @@
-/// <reference path="../../robotParts/Motor.ts" />
-
-class TrikServoMotor extends Motor {
+import {Motor} from "../../robotParts/Motor";
+export class TrikServoMotor extends Motor {
     static parentType = Motor;
-    static name = "servo";
+    static deviceName = "servo";
     static friendlyName = "Servo Motor";
 }

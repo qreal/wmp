@@ -1,4 +1,9 @@
-abstract class MotorsBlock extends AbstractBlock {
+import {AbstractBlock} from "./AbstractBlock";
+import {Link} from "core/editorCore/model/Link";
+import {DiagramNode} from "core/editorCore/model/DiagramNode";
+import {Motor} from "../../twoDModel/implementations/robotModel/robotParts/Motor";
+import {RobotModel} from "../../twoDModel/interfaces/engine/model/RobotModel";
+export abstract class MotorsBlock extends AbstractBlock {
     
     private robotModels: RobotModel[];
     private EXPECTED_NUMBER_OF_OUTBOUND_LINKS = 1;

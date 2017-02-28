@@ -1,16 +1,15 @@
-/// <reference path="Map.ts" />
-/// <reference path="Property.ts" />
-/// <reference path="../../../vendor.d.ts" />
-
-class NodeType {
+import {Property} from "./Property";
+//import {Map} from "./Map";
+import {StringUtils} from "../../../utils/StringUtils";
+export class NodeType {
 
     private name: string;
     private shownName: string;
-    private propertiesMap: Map<Property>;
+    private propertiesMap: Map<String, Property>;
     private image: string;
     private isVisible: Boolean;
 
-    constructor(name: string, propertiesMap: Map<Property>, image: string, path?: string[]) {
+    constructor(name: string, propertiesMap: Map<String, Property>, image: string, path?: string[]) {
         if (path) {
             this.name = path.reverse().join('-');
             path.reverse();
@@ -30,7 +29,7 @@ class NodeType {
         return this.shownName;
     }
 
-    public getPropertiesMap(): Map<Property> {
+    public getPropertiesMap(): Map<String, Property> {
         return this.propertiesMap;
     }
 

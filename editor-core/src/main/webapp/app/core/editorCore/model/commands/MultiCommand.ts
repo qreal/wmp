@@ -1,4 +1,5 @@
-class MultiCommand implements Command {
+import {Command} from "./Command";
+export class MultiCommand implements Command {
 
     private commands: Command[];
 

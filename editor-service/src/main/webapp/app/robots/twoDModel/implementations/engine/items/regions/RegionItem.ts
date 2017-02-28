@@ -1,8 +1,8 @@
-/// <reference path="../../../../types/TwoDPosition.ts" />
-/// <reference path="../../../../utils/ColorUtils.ts" />
-/// <reference path="../../../../../../vendor.d.ts" />
-
-class RegionItem {
+import {ColorUtils} from "../../../../utils/ColorUtils";
+import {RGBAColor} from "../../../../utils/RGBAColor";
+import {TwoDPosition} from "../../../../types/TwoDPosition";
+import {WorldModel} from "../../../../interfaces/engine/model/WorldModel";
+export class RegionItem {
     protected shape: RaphaelElement;
     protected defaultColor: string = "#87CEFA";
     protected defaultWidth: number = 200;

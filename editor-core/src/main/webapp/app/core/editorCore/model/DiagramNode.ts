@@ -1,6 +1,6 @@
-/// <reference path="DiagramElement.ts" />
-
-interface DiagramNode extends DiagramElement {
+import {PropertyEditElement} from "./PropertyEditElement";
+import {DiagramElement} from "./DiagramElement";
+export interface DiagramNode extends DiagramElement {
     getX(): number;
     getY(): number;
     getImagePath(): string;

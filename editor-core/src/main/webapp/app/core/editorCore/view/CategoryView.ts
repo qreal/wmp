@@ -1,10 +1,9 @@
-/// <reference path="HtmlView.ts" />
-/// <reference path="PaletteElementView.ts" />
-/// <reference path="../../../core/editorCore/model/Map.ts" />
-/// <reference path="../../../core/editorCore/model/NodeType.ts" />
-/// <reference path="../../../utils/StringUtils.ts" />
-
-class CategoryView extends HtmlView {
+import {StringUtils} from "../../../utils/StringUtils";
+import {PaletteElementView} from "./PaletteElementView";
+import {NodeType} from "../model/NodeType";
+import {PaletteTree} from "../model/PaletteTree";
+import {HtmlView} from "./HtmlView";
+export class CategoryView extends HtmlView {
 
     private template: string = '' +
         '<li>' +

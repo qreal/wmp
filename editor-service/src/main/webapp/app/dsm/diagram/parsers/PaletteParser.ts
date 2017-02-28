@@ -1,4 +1,9 @@
-class PaletteParser {
+import {PaletteDiagramEditorController} from "../controller/PaletteDiagramEditorController";
+import {ElementTypes} from "core/editorCore/model/ElementTypes";
+import {PaletteTree} from "core/editorCore/model/PaletteTree";
+import {Property} from "core/editorCore/model/Property";
+import {NodeType} from "core/editorCore/model/NodeType";
+export class PaletteParser {
     private controller: PaletteDiagramEditorController;
 
     constructor(controller: PaletteDiagramEditorController) {
@@ -17,7 +22,7 @@ class PaletteParser {
         for (var i = 0; i < json.length; i++) {
             var nodeName = json[i].name;
             var nodeImage = json[i].image;
-            var nodeProperties: Map<Property> = {};
+            var nodeProperties: Map<String, Property> = new Map<String, Property>();
             if (json[i].properties) {
                 var properties = json[i].properties;
                 for (var j = 0; j < properties.length; j++) {

@@ -1,7 +1,9 @@
-/// <reference path="../../../common/constants/GeneralConstants.ts" />
+import {GeneralConstants} from "../../../common/constants/GeneralConstants";
+import {DiagramNode} from "core/editorCore/model/DiagramNode";
+import {Link} from "core/editorCore/model/Link";
 
-class PaletteExporter {
-    public exportPalette(nodesMap: Map<DiagramNode>, linksMap: Map<Link>, name: string) {
+export class PaletteExporter {
+    public exportPalette(nodesMap: Map<String, DiagramNode>, linksMap: Map<String, Link>, name: string) {
         var newPalette = new TPalette();
 
         newPalette.name = name;
@@ -10,7 +12,7 @@ class PaletteExporter {
         return newPalette;
     }
 
-    private getEntities(nodesMap: Map<DiagramNode>, linksMap: Map<Link>) {
+    private getEntities(nodesMap: Map<String, DiagramNode>, linksMap: Map<String, Link>) {
         var nodes = [];
         for (var id in nodesMap) {
             var node: DiagramNode = nodesMap[id];
@@ -26,7 +28,7 @@ class PaletteExporter {
         return nodes;
     }
 
-    private getProperties(nodesMap: Map<DiagramNode>, linksMap: Map<Link>, node: DiagramNode) {
+    private getProperties(nodesMap: Map<String, DiagramNode>, linksMap: Map<String, Link>, node: DiagramNode) {
         var properties = [];
         for (var id in linksMap) {
             var link = linksMap[id];

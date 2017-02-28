@@ -1,12 +1,9 @@
 package com.qreal.wmp.db.palette.dao;
 
-
 import com.qreal.wmp.db.palette.config.AppInit;
-import com.qreal.wmp.db.palette.exceptions.AbortedException;
 import com.qreal.wmp.db.palette.exceptions.NotFoundException;
 import com.qreal.wmp.db.palette.model.Palette;
 import com.qreal.wmp.db.palette.model.PaletteView;
-import com.qreal.wmp.thrift.gen.TNotFound;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

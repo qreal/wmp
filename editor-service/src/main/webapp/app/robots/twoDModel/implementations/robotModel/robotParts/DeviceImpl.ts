@@ -1,5 +1,4 @@
-/// <reference path="../../../interfaces/robotModel/robotParts/Device" />
-
-class DeviceImpl implements Device {
+import {Device} from "../../../interfaces/robotModel/robotParts/Device";
+export class DeviceImpl implements Device {
     static parentType;
 }

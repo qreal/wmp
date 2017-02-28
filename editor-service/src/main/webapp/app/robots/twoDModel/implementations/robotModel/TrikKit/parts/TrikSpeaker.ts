@@ -1,5 +1,4 @@
-/// <reference path="../../robotParts/Speaker.ts" />
-
-class TrikSpeaker extends Speaker {
+import {Speaker} from "../../robotParts/Speaker";
+export class TrikSpeaker extends Speaker {
     static parentType = Speaker;
 }

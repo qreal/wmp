@@ -1,18 +1,17 @@
-/// <reference path="Map.ts" />
-/// <reference path="NodeType.ts" />
+import {NodeType} from "./NodeType";
+//import {Map} from "./Map";
+export class PaletteTree {
 
-class PaletteTree {
-
-    categories: Map<PaletteTree>;
+    categories: Map<String, PaletteTree>;
     nodes: NodeType[];
 
     constructor() {
-        this.categories = {};
+        this.categories = new Map<String, PaletteTree>();
         this.nodes = [];
     }
 
-    convertToMap(): Map<NodeType> {
-        var nodesMap: Map<NodeType> = {};
+    convertToMap(): Map<String, NodeType> {
+        var nodesMap: Map<String, NodeType> = new Map<String, NodeType>();
         for (var category in this.categories)
             $.extend(nodesMap, this.categories[category].convertToMap());
         for (var i in this.nodes)

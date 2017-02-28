@@ -1,4 +1,5 @@
-interface Timeline {
+import {RobotModel} from "./RobotModel";
+export interface Timeline {
     start(): void;
     stop(): void;
     setSpeedFactor(factor: number): void;

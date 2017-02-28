@@ -1,12 +1,12 @@
-/// <reference path="BlockFactory.ts" />
-/// <reference path="../../common/interfaces/editorCore.d.ts" />
-/// <reference path="../../common/interfaces/two-d-model-core.d.ts" />
-/// <reference path="../../common/interfaces/vendor.d.ts" />
+import {AbstractBlock} from "./Blocks/AbstractBlock";
+import {BlockFactory} from "./BlockFactory";
+import {DiagramNode} from "core/editorCore/model/DiagramNode";
+import {Link} from "core/editorCore/model/Link";
+import {Timeline} from "../twoDModel/interfaces/engine/model/Timeline";
+export class Interpreter {
 
-class Interpreter {
-
-    private userVariablesMap: Map<any>;
-    private environmentVariablesMap: Map<any>;
+    private userVariablesMap: Map<String, any>;
+    private environmentVariablesMap: Map<String, any>;
     private blockFactory: BlockFactory;
     private delay: number;
     private delayTimeoutId: number;
@@ -17,7 +17,7 @@ class Interpreter {
         this.blockFactory = new BlockFactory();
     }
 
-    public interpret(graph: joint.dia.Graph, nodesMap: Map<DiagramNode>, linksMap: Map<Link>, 
+    public interpret(graph: joint.dia.Graph, nodesMap: Map<String, DiagramNode>, linksMap: Map<String, Link>, 
                      timeline: Timeline): void {
         this.clearState();
         this.timeline = timeline;
@@ -34,7 +34,7 @@ class Interpreter {
         this.userVariablesMap[name] = value;
     }
 
-    public addOrChangeUserVariablesMap(variablesMap: Map<any>): void {
+    public addOrChangeUserVariablesMap(variablesMap: Map<String, any>): void {
         $.extend(this.userVariablesMap, variablesMap);
     }
 
@@ -42,7 +42,7 @@ class Interpreter {
         this.environmentVariablesMap[name] = value;
     }
 
-    public addOrChangeEnvironmentVariablesMap(variablesMap: Map<any>): void {
+    public addOrChangeEnvironmentVariablesMap(variablesMap: Map<String, any>): void {
         $.extend(this.environmentVariablesMap, variablesMap);
     }
 
@@ -64,7 +64,7 @@ class Interpreter {
         this.delay = delay;
     }
 
-    private run(nodeId: string, graph: joint.dia.Graph, nodesMap: Map<DiagramNode>, linksMap: Map<Link>): void {
+    private run(nodeId: string, graph: joint.dia.Graph, nodesMap: Map<String, DiagramNode>, linksMap: Map<String, Link>): void {
         if (this.stopFlag) {
             return;
         }
@@ -94,7 +94,7 @@ class Interpreter {
         }
     }
     
-    private getOutboundLinks(graph: joint.dia.Graph, node: DiagramNode, linksMap: Map<Link>): Link[] {
+    private getOutboundLinks(graph: joint.dia.Graph, node: DiagramNode, linksMap: Map<String, Link>): Link[] {
         var links: Link[] = [];
         var cell = graph.getCell(node.getJointObject().id);
         var jointOutboundLinks: joint.dia.Link[] = graph.getConnectedLinks(cell, { outbound : true });
@@ -102,7 +102,7 @@ class Interpreter {
         return links;
     }
 
-    private findInitialNodeId(nodesMap: Map<DiagramNode>): string {
+    private findInitialNodeId(nodesMap: Map<String, DiagramNode>): string {
         for (var id in nodesMap) {
             if (nodesMap.hasOwnProperty(id)) {
                 var node: DiagramNode = nodesMap[id];
@@ -115,7 +115,7 @@ class Interpreter {
     }
 
     private clearState(): void {
-        this.userVariablesMap = {};
+        this.userVariablesMap = new Map<String, any>();
         this.initEnvironmentVariables();
         this.delay = 0;
         this.stopFlag = false;
@@ -124,7 +124,7 @@ class Interpreter {
     }
 
     private initEnvironmentVariables(): void {
-        this.environmentVariablesMap = {};
+        this.environmentVariablesMap = new Map<String, any>();
         this.environmentVariablesMap["painterColor"] = "black";
         this.environmentVariablesMap["painterWidth"] = 1;
     }

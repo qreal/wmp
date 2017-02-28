@@ -1,109 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
-    <resourceExtensions />
-    <wildcardResourcePatterns>
-      <entry name="!?*.java" />
-      <entry name="!?*.form" />
-      <entry name="!?*.class" />
-      <entry name="!?*.groovy" />
-      <entry name="!?*.scala" />
-      <entry name="!?*.flex" />
-      <entry name="!?*.kt" />
-      <entry name="!?*.clj" />
-      <entry name="!?*.aj" />
-    </wildcardResourcePatterns>
     <annotationProcessing>
-      <profile default="true" name="Default" enabled="true">
-        <processorPath useClasspath="true" />
-      </profile>
-      <profile default="false" name="Maven default annotation processors profile" enabled="true">
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <processorPath useClasspath="true" />
-        <module name="UI-testing" />
-        <module name="user-service" />
-      </profile>
-      <profile default="false" name="Annotation profile for editor-core" enabled="true">
-        <sourceOutputDir name="target\generated-sources\annotations" />
-        <sourceTestOutputDir name="target\generated-test-sources\test-annotations" />
-        <outputRelativeToContentRoot value="true" />
-        <processorPath useClasspath="true" />
-        <module name="editor-core" />
-      </profile>
-      <profile default="false" name="Annotation profile for editor-service" enabled="true">
-        <sourceOutputDir name="target\generated-sources\annotations" />
-        <sourceTestOutputDir name="target\generated-test-sources\test-annotations" />
-        <outputRelativeToContentRoot value="true" />
-        <processorPath useClasspath="true" />
-        <module name="editor-service" />
-      </profile>
-      <profile default="false" name="Annotation profile for allintomcat-deployment" enabled="true">
-        <sourceOutputDir name="target\generated-sources\annotations" />
-        <sourceTestOutputDir name="target\generated-test-sources\test-annotations" />
-        <outputRelativeToContentRoot value="true" />
-        <processorPath useClasspath="true" />
         <module name="allintomcat-deployment" />
-      </profile>
-      <profile default="false" name="Annotation profile for db-palette-service" enabled="true">
-        <sourceOutputDir name="target\generated-sources\annotations" />
-        <sourceTestOutputDir name="target\generated-test-sources\test-annotations" />
-        <outputRelativeToContentRoot value="true" />
-        <processorPath useClasspath="true" />
-        <module name="db-palette-service" />
-      </profile>
-      <profile default="false" name="Annotation profile for db-robot-store-service" enabled="true">
-        <sourceOutputDir name="target\generated-sources\annotations" />
-        <sourceTestOutputDir name="target\generated-test-sources\test-annotations" />
-        <outputRelativeToContentRoot value="true" />
-        <processorPath useClasspath="true" />
-        <module name="db-robot-store-service" />
-      </profile>
-      <profile default="false" name="Annotation profile for dashboard-service" enabled="true">
-        <sourceOutputDir name="target\generated-sources\annotations" />
-        <sourceTestOutputDir name="target\generated-test-sources\test-annotations" />
-        <outputRelativeToContentRoot value="true" />
-        <processorPath useClasspath="true" />
-        <module name="dashboard-service" />
-      </profile>
-      <profile default="false" name="Annotation profile for db-user-service" enabled="true">
-        <sourceOutputDir name="target\generated-sources\annotations" />
-        <sourceTestOutputDir name="target\generated-test-sources\test-annotations" />
-        <outputRelativeToContentRoot value="true" />
-        <processorPath useClasspath="true" />
-        <module name="db-user-service" />
-      </profile>
-      <profile default="false" name="Annotation profile for db-diagram-service" enabled="true">
-        <sourceOutputDir name="target\generated-sources\annotations" />
-        <sourceTestOutputDir name="target\generated-test-sources\test-annotations" />
-        <outputRelativeToContentRoot value="true" />
-        <processorPath useClasspath="true" />
-        <module name="db-diagram-service" />
-      </profile>
-      <profile default="false" name="Annotation profile for spring-security-oauth2-client" enabled="true">
-        <sourceOutputDir name="target\generated-sources\annotations" />
-        <sourceTestOutputDir name="target\generated-test-sources\test-annotations" />
-        <outputRelativeToContentRoot value="true" />
-        <processorPath useClasspath="true" />
-        <module name="spring-security-oauth2-client" />
-      </profile>
-      <profile default="false" name="Annotation profile for auth-service" enabled="true">
-        <sourceOutputDir name="target\generated-sources\annotations" />
-        <sourceTestOutputDir name="target\generated-test-sources\test-annotations" />
-        <outputRelativeToContentRoot value="true" />
-        <processorPath useClasspath="true" />
         <module name="auth-service" />
-      </profile>
-      <profile default="false" name="Annotation profile for ui-testing" enabled="true">
-        <sourceOutputDir name="target\generated-sources\annotations" />
-        <sourceTestOutputDir name="target\generated-test-sources\test-annotations" />
-        <outputRelativeToContentRoot value="true" />
-        <processorPath useClasspath="true" />
+        <module name="dashboard-service" />
+        <module name="db-diagram-service" />
+        <module name="db-palette-service" />
+        <module name="db-robot-store-service" />
+        <module name="db-user-service" />
+        <module name="editor-core" />
+        <module name="editor-service" />
+        <module name="spring-security-oauth2-client" />
         <module name="ui-testing" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel target="1.8">
+    <bytecodeTargetLevel>
       <module name="allintomcat-deployment" target="1.8" />
       <module name="auth-deps" target="1.5" />
       <module name="auth-service" target="1.8" />
@@ -116,9 +33,7 @@
       <module name="editor-service" target="1.8" />
       <module name="logging-deps" target="1.5" />
       <module name="parent" target="1.5" />
-      <module name="shared-resources" target="1.8" />
       <module name="spring-security-oauth2-client" target="1.7" />
-      <module name="UI-testing" target="1.8" />
       <module name="ui-testing" target="1.8" />
     </bytecodeTargetLevel>
   </component>

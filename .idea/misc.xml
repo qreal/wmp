@@ -56,6 +56,9 @@
     <file type="web" url="file://$PROJECT_DIR$/editor-core" />
     <file type="web" url="file://$PROJECT_DIR$/editor-service" />
   </component>
+  <component name="JavaScriptSettings">
+    <option name="languageLevel" value="ES6" />
+  </component>
   <component name="JavadocGenerationManager">
     <option name="OUTPUT_DIRECTORY" value="$PROJECT_DIR$/javadoc" />
     <option name="OPTION_SCOPE" value="protected" />

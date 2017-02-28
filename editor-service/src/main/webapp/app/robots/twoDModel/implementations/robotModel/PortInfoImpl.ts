@@ -1,8 +1,7 @@
-/// <reference path="../../interfaces/robotModel/PortInfo.ts" />
-/// <reference path="../../types/Direction.ts" />
-/// <reference path="../../types/ReservedVariableType.ts" />
-
-class PortInfoImpl implements PortInfo {
+import {ReservedVariableType} from "../../types/ReservedVariableType";
+import {Direction} from "../../types/Direction";
+import {PortInfo} from "../../interfaces/robotModel/PortInfo";
+export class PortInfoImpl implements PortInfo {
     private name: string;
     private direction: Direction;
     private nameAliases: string[] = [];

@@ -1,4 +1,9 @@
-class IfBlock extends ConditionBlock {
+import {Interpreter} from "../Interpreter";
+import {ConditionBlock} from "./ConditionBlock";
+import {Parser} from "../Parser";
+import {Link} from "core/editorCore/model/Link";
+import {DiagramNode} from "core/editorCore/model/DiagramNode";
+export class IfBlock extends ConditionBlock {
 
     private interpreter: Interpreter;
     private parsedCondition: any;

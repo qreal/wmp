@@ -1,7 +1,6 @@
-/// <reference path="DeviceImpl" />
-
-class Display extends DeviceImpl {
+import {DeviceImpl} from "./DeviceImpl";
+export class Display extends DeviceImpl {
     static parentType = DeviceImpl;
-    static name: string = "display";
+    static deviceName : string = "display";
     static friendlyName: string = "Display";
 }

@@ -1,4 +1,4 @@
-class PaletteView {
+export class PaletteView {
 
     private id: number;
     private name: string;

@@ -1,7 +1,5 @@
-/// <reference path="ColorFieldItem.ts" />
-/// <reference path="../../../../../vendor.d.ts"/>
-
-interface CubicBezierItem extends ColorFieldItem {
+import {ColorFieldItem} from "./ColorFieldItem";
+export interface CubicBezierItem extends ColorFieldItem {
     getPath(): RaphaelPath;
     updateStart(x: number, y: number): void;
     updateEnd(x: number, y: number): void;

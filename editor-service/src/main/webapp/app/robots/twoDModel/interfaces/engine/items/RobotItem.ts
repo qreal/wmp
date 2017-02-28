@@ -1,9 +1,7 @@
-/// <reference path="AbstractItem.ts" />
-/// <reference path="../../robotModel/DeviceInfo.ts" />
-/// <reference path="../../../types/TwoDPosition.ts" />
-
-
-interface RobotItem extends AbstractItem {
+import {AbstractItem} from "./AbstractItem";
+import {TwoDPosition} from "../../../types/TwoDPosition";
+import {DeviceInfo} from "../../robotModel/DeviceInfo";
+export interface RobotItem extends AbstractItem {
     getWidth(): number;
     getHeight(): number;
     getStartPosition(): TwoDPosition;

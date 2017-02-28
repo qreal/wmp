@@ -9,20 +9,21 @@
     <script src="<c:url value='/resources/thrift/struct/Diagram_types.js'/> "></script>
     <script src="<c:url value='/resources/thrift/editor/EditorService_types.js'/> "></script>
     <script src="<c:url value='/resources/thrift/editor/EditorServiceThrift.js'/> "></script>
-    <script src="<c:url value='/resources/treeview/jquery.treeview.js' />"></script>
+    <script src="<c:url value='/resources/js/libs/jquery/treeview/jquery.treeview.js' />"></script>
 
-    <link rel="stylesheet" href="<c:url value='/resources/bootstrap/css/bootstrap.min.css' />"/>
-    <link rel="stylesheet" href="<c:url value='/resources/css/joint.css' />"/>
-    <link rel="stylesheet" href="<c:url value='/resources/treeview/jquery.treeview.css' />"/>
-    <link rel="stylesheet" href="<c:url value='/resources/css/jquery-ui.css' />"/>
-    <link rel="stylesheet" href="<c:url value='/resources/css/2dmodel.css' />" />
-    <link rel="stylesheet" href="<c:url value='/resources/css/context-menu.css' />" />
-    <link rel="stylesheet" href="<c:url value='/resources/css/base.css' />"/>
+    <link rel="stylesheet" href="<c:url value='/resources/css/bootstrap/bootstrap.min.css' />"/>
+    <link rel="stylesheet" href="<c:url value='/resources/css/joint/joint.css' />"/>
+    <link rel="stylesheet" href="<c:url value='/resources/css/treeview/jquery.treeview.css' />"/>
+    <link rel="stylesheet" href="<c:url value='/resources/css/jquery/jquery-ui.css' />"/>
+    <link rel="stylesheet" href="<c:url value='/resources/css/2dmodel/2dmodel.css' />" />
+    <link rel="stylesheet" href="<c:url value='/resources/css/contex-menu/context-menu.css' />" />
+    <link rel="stylesheet" href="<c:url value='/resources/css/base/base.css' />"/>
 </head>
 
-<body ng-app ng-controller="RootDiagramController">
+<body ng-controller="RootDiagramController">
     <%@ include file="../../include/properties.jsp" %>
     <div id="diagram-area" class="unselectable" ng-controller="BpmnDiagramEditorController">
+        <%@ include file="toolbar.jsp" %>
         <%@ include file="../diagramContent.jsp" %>
     </div>
 </body>

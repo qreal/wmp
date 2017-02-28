@@ -1,18 +1,25 @@
-/// <reference path="../items/regions/RegionItem.ts" />
-/// <reference path="../items/StartPositionItem.ts" />
-/// <reference path="../items/LineItemImpl.ts" />
-/// <reference path="../items/WallItemImpl.ts" />
-/// <reference path="../items/PencilItemImpl.ts" />
-/// <reference path="../items/EllipseItemImpl.ts" />
-/// <reference path="../../../interfaces/engine/model/WorldModel.ts" />
-/// <reference path="../../../interfaces/engine/items/AbstractItem.ts" />
-/// <reference path="../../../interfaces/engine/items/ColorFieldItem.ts" />
-/// <reference path="../../../interfaces/engine/items/WallItem.ts" />
-/// <reference path="../../../utils/ColorUtils.ts" />
-/// <reference path="../../../../../vendor.d.ts" />
-/// <reference path="../../../../../common/constants/MouseButton.ts" />
-
-class WorldModelImpl implements WorldModel {
+import {SensorItem} from "../items/SensorItem";
+import {RobotItemImpl} from "../items/RobotItemImpl";
+import {MouseButton} from "../../../../../common/constants/MouseButton";
+import {EllipseItemImpl} from "../items/EllipseItemImpl";
+import {PencilItemImpl} from "../items/PencilItemImpl";
+import {WallItemImpl} from "../items/WallItemImpl";
+import {RGBAColor} from "../../../utils/RGBAColor";
+import {LineItemImpl} from "../items/LineItemImpl";
+import {ColorUtils} from "../../../utils/ColorUtils";
+import {EllipseRegion} from "../items/regions/EllipseRegion";
+import {RectangularRegion} from "../items/regions/RectangularRegion";
+import {StartPositionItem} from "../items/StartPositionItem";
+import {MathUtils} from "../../../utils/MathUtils";
+import {CubicBezierItemImpl} from "../items/CubicBezierItemImpl";
+import {GeneralConstants} from "../../../../../common/constants/GeneralConstants";
+import {RegionItem} from "../items/regions/RegionItem";
+import {WallItem} from "../../../interfaces/engine/items/WallItem";
+import {ColorFieldItem} from "../../../interfaces/engine/items/ColorFieldItem";
+import {AbstractItem} from "../../../interfaces/engine/items/AbstractItem";
+import {WorldModel} from "../../../interfaces/engine/model/WorldModel";
+import {TwoDPosition} from "../../../types/TwoDPosition";
+export class WorldModelImpl implements WorldModel {
 
     private drawMode: number = 0;
     private paper: RaphaelPaper;

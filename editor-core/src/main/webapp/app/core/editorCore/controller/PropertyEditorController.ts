@@ -1,13 +1,14 @@
-/// <reference path="PropertyViewFactory.ts" />
-/// <reference path="SceneController.ts" />
-/// <reference path="VariantListMapper.ts" />
-/// <reference path="../model/DiagramElement.ts" />
-/// <reference path="../model/Map.ts" />
-/// <reference path="../model/Property.ts" />
-/// <reference path="../view/HtmlView.ts" />
-/// <reference path="../../../vendor.d.ts" />
-
-class PropertyEditorController {
+import {Property} from "../model/Property";
+import {DiagramElement} from "../model/DiagramElement";
+import {VariantListMapper} from "./VariantListMapper";
+import {ChangePropertyCommand} from "../model/commands/ChangePropertyCommand";
+import {Command} from "../model/commands/Command";
+import {HtmlView} from "../view/HtmlView";
+// import {Map} from "../model/Map";
+import {PropertyViewFactory} from "./PropertyViewFactory";
+import {UndoRedoController} from "./UndoRedoController";
+import {SceneController} from "./SceneController";
+export class PropertyEditorController {
 
     private propertyViewFactory: PropertyViewFactory;
     private sceneController: SceneController;
@@ -34,7 +35,7 @@ class PropertyEditorController {
 
     public setNodeProperties(element: DiagramElement): void {
         $('#property_table tbody').empty();
-        var properties: Map<Property> = element.getChangeableProperties();
+        var properties: Map<String, Property> = element.getChangeableProperties();
         for (var property in properties) {
             var propertyView: HtmlView = this.propertyViewFactory.createView(element.getLogicalId(), element.getType(),
                 property, properties[property]);

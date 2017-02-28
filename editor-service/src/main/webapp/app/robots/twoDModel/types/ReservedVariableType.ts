@@ -1,4 +1,4 @@
-enum ReservedVariableType {
+export enum ReservedVariableType {
     scalar,
     vector
 }

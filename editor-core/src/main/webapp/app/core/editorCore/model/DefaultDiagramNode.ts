@@ -1,22 +1,21 @@
-/// <reference path="DiagramNode.ts" />
-/// <reference path="PropertiesPack.ts" />
-/// <reference path="Map.ts" />
-/// <reference path="Property.ts" />
-/// <reference path="PropertyEditElement.ts" />
-/// <reference path="../../../vendor.d.ts" />
-
-class DefaultDiagramNode implements DiagramNode {
+import {Property} from "./Property";
+//import {Map} from "./Map";
+import {PropertiesPack} from "./PropertiesPack";
+import {PropertyEditElement} from "./PropertyEditElement";
+import {UIDGenerator} from "../controller/UIDGenerator";
+import {DiagramNode} from "./DiagramNode";
+export class DefaultDiagramNode implements DiagramNode {
 
     private logicalId: string;
     private jointObject: joint.shapes.devs.ImageWithPorts;
     private name: string;
     private type: string;
     private constPropertiesPack: PropertiesPack;
-    private changeableProperties: Map<Property>;
+    private changeableProperties: Map<String, Property>;
     private imagePath: string;
     private propertyEditElement: PropertyEditElement;
 
-    constructor(name: string, type: string, x: number, y: number, properties: Map<Property>, imagePath: string,
+    constructor(name: string, type: string, x: number, y: number, properties: Map<String, Property>, imagePath: string,
                 id?: string, notDefaultConstProperties?: PropertiesPack) {
         this.logicalId = UIDGenerator.generate();
         this.name = name;
@@ -112,18 +111,18 @@ class DefaultDiagramNode implements DiagramNode {
         document.dispatchEvent(propertyChangedEvent);
     }
 
-    getChangeableProperties(): Map<Property> {
+    getChangeableProperties(): Map<String, Property> {
         return this.changeableProperties;
     }
 
     private getDefaultConstPropertiesPack(name: string): PropertiesPack {
-        var logical: Map<Property> = this.initConstLogicalProperties(name);
-        var graphical: Map<Property> = this.initConstGraphicalProperties(name);
+        var logical: Map<String, Property> = this.initConstLogicalProperties(name);
+        var graphical: Map<String, Property> = this.initConstGraphicalProperties(name);
         return new PropertiesPack(logical, graphical);
     }
 
-    private initConstLogicalProperties(name: string): Map<Property> {
-        var logical: Map<Property> = {};
+    private initConstLogicalProperties(name: string): Map<String, Property> {
+        var logical: Map<String, Property> = new Map<String, Property>();
         logical["name"] = new Property("name", "QString", name);
         logical["from"] = new Property("from", "qReal::Id", "qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID");
         logical["linkShape"] = new Property("linkShape", "int", "0");
@@ -132,8 +131,8 @@ class DefaultDiagramNode implements DiagramNode {
         return logical;
     }
 
-    private initConstGraphicalProperties(name: string): Map<Property> {
-        var graphical: Map<Property> = {};
+    private initConstGraphicalProperties(name: string): Map<String, Property> {
+        var graphical: Map<String, Property> = new Map<String, Property>();
         graphical["name"] = new Property("name", "QString", name);
         graphical["to"] = new Property("to", "qreal::Id", "qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID");
         graphical["configuration"] = new Property("configuration", "QPolygon", "0, 0 : 50, 0 : 50, 50 : 0, 50 : ");

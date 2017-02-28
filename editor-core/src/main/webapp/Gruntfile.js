@@ -1,18 +1,21 @@
 module.exports = function (grunt) {
 
+    grunt.loadNpmTasks("grunt-ts");
     grunt.initConfig({
         ts: {
-            editorCore: {
-                src: ["app/core/editorCore/**/*.ts"],
-                out: "resources/js/compiled/editor-core.js"
-            },
-            utils: {
-                src: ["app/utils/*.ts"],
-                out: "resources/js/compiled/utils.js"
+            all: {
+                src: ["app/**/*.ts"],
+                //Use out param and declaration true to generate one d.ts for the whole lib
+                // out: "resources/js/compiled/editorCore.js",
+                outDir: "resources/js/compiled/",
+                options: {
+                    // declaration: true,
+                    module: "amd",
+                    target: "es6"
+                }
             }
         }
     });
 
-    grunt.loadNpmTasks("grunt-ts");
-    grunt.registerTask("default", ["ts:editorCore", "ts:utils"]);
-}
+    grunt.registerTask("default", ["ts:all"]);
+};

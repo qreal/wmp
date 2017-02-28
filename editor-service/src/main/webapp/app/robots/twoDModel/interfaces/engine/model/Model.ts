@@ -1,9 +1,9 @@
-/// <reference path="WorldModel.ts" />
-/// <reference path="RobotModel.ts" />
-/// <reference path="Settings.ts" />
-/// <reference path="../../../implementations/robotModel/TwoDRobotModel.ts" />
-
-interface Model {
+import {WorldModel} from "./WorldModel";
+import {Timeline} from "./Timeline";
+import {TwoDRobotModel} from "../../../implementations/robotModel/TwoDRobotModel";
+import {Settings} from "./Settings";
+import {RobotModel} from "./RobotModel";
+export interface Model {
     getWorldModel() : WorldModel;
     getRobotModels() : RobotModel[];
     getSetting() : Settings;

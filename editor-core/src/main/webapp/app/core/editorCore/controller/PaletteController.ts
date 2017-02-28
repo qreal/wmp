@@ -1,11 +1,11 @@
-/// <reference path="../model/SubprogramDiagramNode.ts" />
-/// <reference path="../model/NodeType.ts" />
-/// <reference path="../model/Map.ts" />
-/// <reference path="../view/SubprogramPaletteView.ts" />
-/// <reference path="../view/BlocksPaletteView.ts" />
-/// <reference path="../../../vendor.d.ts" />
-
-class PaletteController {
+import {NodeType} from "../model/NodeType";
+import {ElementTypes} from "../model/ElementTypes";
+import {BlocksPaletteView} from "../view/BlocksPaletteView";
+import {PaletteTree} from "../model/PaletteTree";
+import {SubprogramPaletteView} from "../view/SubprogramPaletteView";
+import {SubprogramDiagramNode} from "../model/SubprogramDiagramNode";
+import {DiagramScene} from "../model/DiagramScene";
+export class PaletteController {
 
     public initDraggable(): void {
         $(".tree-element").draggable({
@@ -30,7 +30,7 @@ class PaletteController {
     }
 
     public appendSubprogramsPalette(subprogramDiagramNodes: SubprogramDiagramNode[],
-                                    nodeTypesMap: Map<NodeType>): void {
+                                    nodeTypesMap: Map<String, NodeType>): void {
         var typeName: string = "Subprogram";
         var paletteView: SubprogramPaletteView = new SubprogramPaletteView(subprogramDiagramNodes,
             nodeTypesMap[typeName].getImage());
@@ -51,7 +51,7 @@ class PaletteController {
         $("#blocks-navigation").empty();
     }
 
-    public searchPaletteReload(event: Event, elementTypes: ElementTypes, nodesTypesMap: Map<NodeType>) {
+    public searchPaletteReload(event: Event, elementTypes: ElementTypes, nodesTypesMap: Map<String, NodeType>) {
         var searchPatterns: string[] = (<any> event.target).value.split(" ").map((str) => str.toLowerCase());
 
         for (var name in nodesTypesMap) {

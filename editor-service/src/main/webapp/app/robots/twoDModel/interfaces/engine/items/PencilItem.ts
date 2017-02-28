@@ -1,5 +1,4 @@
-/// <reference path="ColorFieldItem.ts" />
-
-interface PencilItem extends ColorFieldItem {
+import {ColorFieldItem} from "./ColorFieldItem";
+export interface PencilItem extends ColorFieldItem {
     updatePath(x: number, y: number): void
 }
