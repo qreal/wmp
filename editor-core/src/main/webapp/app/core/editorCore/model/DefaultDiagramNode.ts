@@ -139,10 +139,23 @@ class DefaultDiagramNode implements DiagramNode {
         return String(this.boundingBox.width) + ", " + String(this.boundingBox.height);
     }
 
-    setPosition(x: number, y: number, zoom: number): void {
+    setPosition(x: number, y: number, zoom: number, cellView : joint.dia.CellView): void {
         this.jointObject.position(x, y);
-        var position = this.getJointObjectPagePosition(zoom);
-        this.propertyEditElement.setPosition(position.x, position.y);
+        // var position = this.getJointObjectPagePosition(zoom);
+        // this.propertyEditElement.setPosition(position.x, position.y);
+        var bbox = cellView.getBBox();
+        var newX = bbox.x + (<number> (bbox.width - 50)/2);
+        var newY = bbox.y + bbox.height - 50;
+        this.propertyEditElement.setPosition(newX, newY);
+    }
+
+    setSize(width: number, height: number, cellView : joint.dia.CellView): void {
+        var model = <joint.dia.Element> cellView.model;
+        model.resize(width - 2, height);
+        var bbox = cellView.getBBox();
+        var newX = bbox.x + (<number> (bbox.width - 50)/2);
+        var newY = bbox.y + bbox.height - 50;
+        this.propertyEditElement.setPosition(newX, newY);
     }
 
     getImagePath(): string {
@@ -226,20 +239,24 @@ class DefaultDiagramNode implements DiagramNode {
         };
     }
 
+    isResizing() : boolean {
+        return this.resizeParameters.isBottomResizing || this.resizeParameters.isRightResizing;
+    }
+
     private static isLeftBorderClicked(bbox, x, y, paddingPercent): boolean {
         return (x <= bbox.x + paddingPercent && x >= bbox.x - paddingPercent &&
-            y <= bbox.y + bbox.height + paddingPercent && y >= bbox.y - paddingPercent);
+        y <= bbox.y + bbox.height + paddingPercent && y >= bbox.y - paddingPercent);
     }
     private static isRightBorderClicked(bbox, x, y, paddingPercent): boolean {
         return (x <= bbox.x + bbox.width + paddingPercent && x >= bbox.x + bbox.width - paddingPercent &&
-            y <= bbox.y + bbox.height + paddingPercent && y >= bbox.y - paddingPercent);
+        y <= bbox.y + bbox.height + paddingPercent && y >= bbox.y - paddingPercent);
     }
     private static isTopBorderClicked(bbox, x, y, paddingPercent): boolean {
         return (x <= bbox.x + bbox.width + paddingPercent && x >= bbox.x - paddingPercent &&
-            y <= bbox.y + paddingPercent && y >= bbox.y - paddingPercent);
+        y <= bbox.y + paddingPercent && y >= bbox.y - paddingPercent);
     }
     private static isBottomBorderClicked(bbox, x, y, paddingPercent): boolean {
         return (x <= bbox.x + bbox.width + paddingPercent && x >= bbox.x - paddingPercent &&
-            y <= bbox.y + bbox.height + paddingPercent && y >= bbox.y + bbox.height - paddingPercent);
+        y <= bbox.y + bbox.height + paddingPercent && y >= bbox.y + bbox.height - paddingPercent);
     }
 }
