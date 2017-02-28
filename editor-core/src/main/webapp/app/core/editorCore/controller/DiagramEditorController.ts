@@ -2,7 +2,6 @@
 import {PropertyEditorController} from "./PropertyEditorController";
 import {ElementTypes} from "../model/ElementTypes";
 import {DiagramParts} from "../model/DiagramParts";
-//import {Map} from "../model/Map";
 import {NodeType} from "../model/NodeType";
 import {UndoRedoController} from "./UndoRedoController";
 import {Property} from "../model/Property";

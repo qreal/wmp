@@ -1,7 +1,6 @@
 import {VariantListMapper} from "../VariantListMapper";
 import {Variant} from "../../model/Variant";
 import {Property} from "../../model/Property";
-//import {Map} from "../../model/Map";
 import {NodeType} from "../../model/NodeType";
 import {PaletteTree} from "../../model/PaletteTree";
 import {GeneralConstants} from "../../../../common/constants/GeneralConstants";

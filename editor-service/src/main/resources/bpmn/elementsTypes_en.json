@@ -213,7 +213,7 @@
         "Message": {
             "name": "Message",
             "image": {
-                "src": "images/bpmn/{0}.svg"
+                "src": "images/bpmn/{0}.png"
             },
             "subtypes": {
                 "Start" : [
@@ -234,7 +234,7 @@
         "Timer": {
             "name": "Timer",
             "image": {
-                "src": "images/bpmn/{0}.svg"
+                "src": "images/bpmn/{0}.png"
             },
             "subtypes": {
                 "Start" : [

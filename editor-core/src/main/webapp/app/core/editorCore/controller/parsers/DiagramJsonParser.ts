@@ -1,7 +1,6 @@
 import {Link} from "../../model/Link";
 import {NodeType} from "../../model/NodeType";
 import {Property} from "../../model/Property";
-//import {Map} from "../../model/Map";
 import {PropertiesPack} from "../../model/PropertiesPack";
 import {DefaultDiagramNode} from "../../model/DefaultDiagramNode";
 import {SubprogramNode} from "../../model/SubprogramNode";
