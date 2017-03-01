@@ -1,29 +1,47 @@
 requirejs.config({
     baseUrl: 'resources/js/compiled',
     paths: {
-        //angular
         angular: '../libs/angular/angular',
+
+        jquery: '../libs/jquery/jquery',
+        jqueryui: '../libs/jquery/ui/jquery-ui',
+        jquerytree: '../libs/jquery/treeview/jquery.treeview',
+
         lodash: '../libs/lodash/lodash',
         backbone: '../libs/backbone/backbone',
+
+        bootstrap: '../libs/bootstrap/bootstrap',
+
+        jointjs: '../libs/joint/joint'
     },
     shim: {
         angular: {
             exports: 'angular',
         },
-        jquery: {
-            exports: '$'
-        },
+        jqueryui: ['jquery'],
+        jquerytree: ['jquery'],
+        bootstrap: ['jquery']
+
     },
     map: {
         '*': {
-            // Backbone requires underscore. This forces requireJS to load lodash instead:
             'underscore': 'lodash'
         }
     }
 });
 
 requirejs(
-    ['angular','jquery', 'lodash', 'backbone','joint',
+    ['jointjs']
+    , function (joint) {
+        console.log('Adding joint to global');
+        this.joint = joint;
+    });
+
+requirejs(
+    ['angular', 'jointjs',
+    'jquery', 'jqueryui', 'jquerytree',
+    'lodash', 'backbone',
+    'bootstrap',
     'require/app',
     'robots/RootDiagramController',
     'robots/diagram/controller/RobotsDiagramEditorController',
