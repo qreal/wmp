@@ -7,7 +7,9 @@ import java.util.Optional;
 
 public class Coordinate {
     
-    private static final int POINT_IN_CELL = 25;
+    public static final String SELECTOR = "transform";
+    
+    public static final int POINT_IN_CELL = 25;
     
     private final int xAbsolute;
     
@@ -49,5 +51,9 @@ public class Coordinate {
     
     public boolean equals(final Coordinate other) {
         return xAbsolute == other.getXAbsolute() && yAbsolute == other.getYAbsolute();
+    }
+    
+    public String toString() {
+        return "(" + getXAbsolute() + "," + getYAbsolute() + ")";
     }
 }

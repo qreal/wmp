@@ -2,6 +2,7 @@ package com.qreal.wmp.uitesting.dia.scene;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
+import com.google.common.base.Predicate;
 import com.qreal.wmp.uitesting.dia.pallete.PalleteElement;
 import com.qreal.wmp.uitesting.dia.pallete.PalleteImpl;
 import com.qreal.wmp.uitesting.dia.scene.elements.Block;
@@ -17,6 +18,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -52,7 +54,7 @@ public class SceneImpl implements Scene {
                             createDiv("SceneWindowHorSize") + createDiv("SceneWindowVerSize")
             );
         }
-        sceneWindow = SceneWindowImpl.getSceneWindow(this, webDriver, SELECTOR);
+        sceneWindow = SceneWindowImpl.getSceneWindow(webDriver);
         blockProvider = BlockProvider.getBlockProvider(sceneWindow, SELECTOR);
         linkProvider = LinkProvider.getLinkProvider(SELECTOR, webDriver);
     }
@@ -75,6 +77,7 @@ public class SceneImpl implements Scene {
         blockProvider.moveToCell(block, cell_x, cell_y);
     }
     
+    @SuppressWarnings("SimplifiableIfStatement")
     @Override
     public boolean exist(SceneElement element) {
         if (element instanceof Block) {
@@ -142,15 +145,19 @@ public class SceneImpl implements Scene {
     private void removeSceneElement(SceneElement sceneElement) throws ElementNotOnTheSceneException {
         sceneWindow.focus(sceneElement.getCoordinateOnScene());
         logger.info("Remove element {} form scene", sceneElement.getInnerSeleniumElement().toString());
-        new Actions(webDriver).contextClick(sceneElement.getInnerSeleniumElement()).perform();
+        new Actions(webDriver)
+                .contextClick(sceneElement.getInnerSeleniumElement())
+                .build()
+                .perform();
         SelenideElement contextMenu = $(By.id("scene-context-menu"));
-        if (!contextMenu.is(Condition.visible)) {
-            logger.info("Context menu " + contextMenu + " is not visible. Try to focus again. " );
-            removeSceneElement(sceneElement);
-        } else {
-            contextMenu.click();
-            blockProvider.recalculateBlocks();
-            linkProvider.recalculateLinks();
-        }
+        contextMenu.shouldBe(Condition.visible);
+        contextMenu.click();
+        (new WebDriverWait(webDriver, 5))
+                .until((Predicate<WebDriver>) webDriver -> {
+                    assert webDriver != null;
+                    return webDriver.findElements(sceneElement.getBy()).size() == 0;
+                });
+        blockProvider.recalculateBlocks();
+        linkProvider.recalculateLinks();
     }
 }

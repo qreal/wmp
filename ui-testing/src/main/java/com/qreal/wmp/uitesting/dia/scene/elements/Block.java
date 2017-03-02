@@ -1,6 +1,5 @@
 package com.qreal.wmp.uitesting.dia.scene.elements;
 
-import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.By;
 
 import static com.codeborne.selenide.Selenide.$;
@@ -15,10 +14,10 @@ public class Block extends SceneElementImpl {
     
     private final SceneElement port;
     
-    public Block(String name, SelenideElement innerSeleniumObject) {
-        super(innerSeleniumObject);
+    public Block(String name, By by) {
+        super(by);
         this.name = name;
-        this.port = new SceneElementImpl($(innerSeleniumObject.find(By.className(PORT_CLASS_NAME))));
+        this.port = new SceneElementImpl(By.id($(by).find(By.className(PORT_CLASS_NAME)).attr("id")));
     }
     
     public String getName() {

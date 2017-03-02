@@ -49,11 +49,12 @@ public class LinkProvider {
                 source.getInnerSeleniumElement().attr("id") + " .outPorts"));
         logger.info("Begin element {}, end element {} ", begin, target);
         new Actions(webDriver)
+                .release()
                 .dragAndDrop(source.getPort().getInnerSeleniumElement(), target.getInnerSeleniumElement())
                 .build().perform();
         SelenideElement newEl = updateLinks().orElseThrow(() -> new NoSuchElementException("Link was not created"));
         logger.info("Add link {}", newEl);
-        Link res = new Link(newEl.attr("id"), newEl);
+        Link res = new Link(newEl.attr("id"), By.id(newEl.attr("id")));
         links.add(res);
         return res;
     }
@@ -61,7 +62,7 @@ public class LinkProvider {
     public void recalculateLinks() {
         links = $$(By.cssSelector(selector + " #v_7 > *")).stream()
                 .filter(x -> x.attr("class").contains(Link.CLASS_NAME))
-                .map(x -> new Link(x.attr("id"), x))
+                .map(x -> new Link(x.attr("id"), By.id(x.attr("id"))))
                 .collect(Collectors.toSet());
     }
     

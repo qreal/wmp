@@ -20,15 +20,13 @@ public class Link extends SceneElementImpl {
     private final SceneElement target;
     
     /** Describes link between two blocks. */
-    public Link(String name, SelenideElement innerSeleniumObject) {
-        super(innerSeleniumObject);
+    public Link(String name, By by) {
+        super(by);
         this.name = name;
-        this.source = new SceneElementImpl($(innerSeleniumObject
-                .find(By.className(ARROWHEAD))).find(By.cssSelector(":nth-child(1)"))
-        );
-        this.target = new SceneElementImpl($(innerSeleniumObject
-                .find(By.className(ARROWHEAD))).find(By.cssSelector(":nth-child(2)"))
-        );
+        SelenideElement source = $(by).find(By.className(ARROWHEAD)).find(By.cssSelector(":nth-child(1)"));
+        this.source = new SceneElementImpl(By.id(source.attr("id")));
+        SelenideElement target = $(by).find(By.className(ARROWHEAD)).find(By.cssSelector(":nth-child(2)"));
+        this.target = new SceneElementImpl(By.id(target.attr("id")));
     }
     
     public String getName() {

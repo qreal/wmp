@@ -49,7 +49,7 @@ public class BlockProvider {
     public Block getNewBlock() {
         final SelenideElement newEl = updateBlocks().orElseThrow(NotFoundException::new);
         logger.info("Add element {} to scene", newEl);
-        Block block = new Block(newEl.attr("id"), newEl);
+        Block block = new Block(newEl.attr("id"), By.id(newEl.attr("id")));
         blocks.add(block);
         return block;
     }
@@ -65,7 +65,7 @@ public class BlockProvider {
     public void recalculateBlocks() {
         blocks = $$(By.cssSelector(selector + " #v_7 > *")).stream()
                 .filter(x -> x.attr("class").contains(Block.CLASS_NAME))
-                .map(x -> new Block(x.attr("id"), x))
+                .map(x -> new Block(x.attr("id"), By.id(x.attr("id"))))
                 .collect(Collectors.toSet());
     }
     
@@ -84,5 +84,4 @@ public class BlockProvider {
                                         .attr("id").equals(htmlElement.attr("id")))
                 ).findFirst();
     }
-    
 }
