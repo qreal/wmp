@@ -289,14 +289,16 @@ class SceneController {
                     var elementBelow = controller.getElementBelow(event, function(cell) {
                         return !(cell instanceof joint.dia.Link);
                     });
-                    if (elementBelow)
+                    if (elementBelow) {
                         controller.createLink(elementBelow.id, {
                             x: elementBelow.getBBox().x + controller.scene.getGridSize() * 4,
                             y: elementBelow.getBBox().y + controller.scene.getGridSize()
                         });
+                    }
+                } else {
+                    controller.createNode(type, leftElementPos, topElementPos, $(ui.draggable.context).data("id"),
+                        $(ui.draggable.context).data("name"));
                 }
-                else controller.createNode(type, leftElementPos, topElementPos, $(ui.draggable.context).data("id"),
-                    $(ui.draggable.context).data("name"));
             }
         });
     }
