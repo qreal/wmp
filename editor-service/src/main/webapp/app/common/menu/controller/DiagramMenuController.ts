@@ -24,6 +24,7 @@ export class DiagramMenuController {
     private currentFolder: Folder;
     private contextMenuId = "open-diagram-context-menu";
     private selectedElement: DiagramMenuElement;
+    private intervalSaving;
 
     constructor(diagramEditorController: DiagramEditorController) {
         this.diagramEditorController = diagramEditorController;
@@ -32,6 +33,7 @@ export class DiagramMenuController {
         this.currentDiagramName = "";
         this.currentDiagramFolder = null;
         this.canBeDeleted = false;
+        this.intervalSaving = null;
 
         var menuManager = this;
         var folderTree;
@@ -131,6 +133,8 @@ export class DiagramMenuController {
         this.currentDiagramName = "";
         this.currentDiagramFolder = null;
         this.selectedElement = null;
+        clearInterval(this.intervalSaving);
+        this.intervalSaving = null;
     }
 
     private showFolderMenu(): void {
@@ -183,6 +187,15 @@ export class DiagramMenuController {
         catch (ouch) {
             console.log("Error: can't save diagram");
         }
+
+        if (this.intervalSaving == null) {
+            let self = this;
+            this.intervalSaving = setInterval(function () {
+                self.updateCurrentDiagramInDatabase();
+                console.log('It saved your diagram');
+            }, 5000);
+
+        }
     }
 
     private updateCurrentDiagramInDatabase(): void {
@@ -220,6 +233,14 @@ export class DiagramMenuController {
         }
         catch (ouch) {
             console.log("Error: can't open diagram");
+        }
+        if (this.intervalSaving == null) {
+            let self = this;
+            this.intervalSaving = setInterval(function () {
+                self.updateCurrentDiagramInDatabase();
+                console.log('It saved your diagram');
+            }, 5000);
+
         }
     }
 
