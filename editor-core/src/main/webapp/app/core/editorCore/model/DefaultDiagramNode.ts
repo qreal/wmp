@@ -6,9 +6,11 @@ import {UIDGenerator} from "../controller/UIDGenerator";
 import {DiagramNode} from "./DiagramNode";
 
 class ImageWithPorts extends joint.shapes.basic.Generic {
-
     constructor(portsModelInterface: joint.shapes.basic.PortsModelInterface) {
         super(portsModelInterface);
+
+        this.set("markup", '<g class="rotatable"><g class="scalable"><rect class ="outer"/><image/></g><text/><g class="inPorts"/><g class="outPorts"/></g>')
+        this.set("portMarkup", '<g class="port<%= id %>"><circle/><text/></g>')
     }
 
     getPortAttrs(portName: string, index: number, total: number, selector: string, type: string): {} {
@@ -21,10 +23,12 @@ class ImageWithPorts extends joint.shapes.basic.Generic {
         var portCircleSelector = portSelector + '>circle';
 
         attrs[portTextSelector] = { text: portName };
-        attrs[portCircleSelector] = { port: { id: portName || _.uniqueId
-        (type), type: type } };
-        attrs[portSelector] = { ref: 'rect', 'ref-x': (index + 0.5) * (1 /
-        total) };
+        attrs[portCircleSelector] = { port: { id: portName || _.uniqueId(type), type: type } };
+        attrs[portSelector] = { ref: 'rect', 'ref-x': (index + 0.5) * (1 / total) };
+
+        if (selector === '.outPorts') {
+            attrs[portSelector]['ref-dx'] = 0;
+        }
 
         return attrs;
     }
