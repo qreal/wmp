@@ -42,9 +42,13 @@ declare interface DiagramNode extends DiagramElement {
     getX(): number;
     getY(): number;
     getImagePath(): string;
+    getSize() : string;
     setPosition(x: number, y: number, zoom: number): void;
-    getChangeableProperties(): Map<Property>;
+    getPropertyEditElement(): PropertyEditElement;
     initPropertyEditElements(zoom: number): void;
+    initResize(bbox, x: number, y: number, paddingPercent) : void;
+    completeResize() : void;
+    pointermove(cellView, evt, x, y) : void;
 
 }
 
@@ -79,7 +83,8 @@ declare class PropertyEditElement {
 
 declare class DefaultDiagramNode implements DiagramNode {
 
-    constructor(name: string, type: string, x: number, y: number, properties: Map<Property>, imagePath: string,
+    constructor(name: string, type: string, x: number, y: number, width: number, height: number,
+                properties: Map<Property>, imagePath: string,
                 id?: string, notDefaultConstProperties?: PropertiesPack);
     getLogicalId(): string;
     getJointObject(): any;
@@ -89,12 +94,16 @@ declare class DefaultDiagramNode implements DiagramNode {
     getChangeableProperties(): Map<Property>;
     setProperty(key: string, property: Property): void;
     getImagePath(): string;
+    getSize() : string;
     getX(): number;
     getY(): number;
     setPosition(x: number, y: number): void;
     getChangeableProperties(): Map<Property>;
     initPropertyEditElements(zoom: number): void;
     getPropertyEditElement(): PropertyEditElement
+    initResize(bbox, x: number, y: number, paddingPercent) : void;
+    completeResize() : void;
+    pointermove(cellView, evt, x, y) : void;
 }
 
 declare interface Map<T> {
@@ -122,7 +131,8 @@ declare class Property {
 
 declare class SubprogramNode extends DefaultDiagramNode {
 
-    constructor(name: string, type: string, x: number, y: number, properties: Map<Property>, imagePath: string,
+    constructor(name: string, type: string, x: number, y: number, width: number, height: number,
+                properties: Map<Property>, imagePath: string,
                 subprogramDiagramId: string, id?: string, notDefaultConstProperties?: PropertiesPack);
     getSubprogramDiagramId(): string;
     getTextObject(): joint.shapes.basic.Text;
@@ -354,6 +364,7 @@ declare class DiagramJsonParser {
     protected getSourcePosition(configuration: string);
     protected getTargetPosition(configuration: string);
     protected parsePosition(position: string): {x: number; y: number};
+    protected parseSize(size: string): {width: number; height: number};
     protected parseId(idString: string): string;
 
 }
