@@ -322,9 +322,10 @@ class SceneController {
                         return !(cell instanceof joint.dia.Link);
                     });
                     if (elementBelow) {
+                        var bBox = elementBelow.getBBox();
                         controller.createLink(elementBelow.id, {
-                            x: elementBelow.getBBox().x + controller.scene.getGridSize() * 4,
-                            y: elementBelow.getBBox().y + controller.scene.getGridSize()
+                            x: bBox.x + bBox.width + controller.scene.getGridSize() * 2,
+                            y: bBox.y + bBox.height / 2
                         });
                     }
                 } else {
