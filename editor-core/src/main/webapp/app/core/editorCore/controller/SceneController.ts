@@ -17,6 +17,7 @@ class SceneController {
     private rightClickFlag : boolean;
     private undoRedoController: UndoRedoController;
     private lastCellMouseDownPosition: {x: number, y: number};
+    private lastCellMouseDownSize: {width: number, height: number};
     private paperCommandFactory: SceneCommandFactory;
     private contextMenuId = "scene-context-menu";
 
@@ -28,6 +29,7 @@ class SceneController {
         this.clickFlag = false;
         this.rightClickFlag = false;
         this.lastCellMouseDownPosition = { x: 0, y: 0 };
+        this.lastCellMouseDownSize = { width: 0, height: 0 };
 
         this.scene.on('cell:pointerdown', (cellView, event, x, y): void => {
             this.cellPointerdownListener(cellView, event, x, y);
@@ -108,9 +110,11 @@ class SceneController {
 
         var node: DiagramNode;
         if (subprogramId) {
-            node = new SubprogramNode(subprogramName, type, x, y, nodeProperties, image, subprogramId);
+            node = new SubprogramNode(subprogramName, type, x, y, defaultNodeWidth, defaultNodeHeight,
+                nodeProperties, image, subprogramId);
         } else {
-            node = new DefaultDiagramNode(name, type, x, y, nodeProperties, image);
+            node = new DefaultDiagramNode(name, type, x, y, defaultNodeWidth, defaultNodeHeight,
+                nodeProperties, image);
         }
 
         var command: Command = new MultiCommand([this.paperCommandFactory.makeCreateNodeCommand(node),
@@ -240,11 +244,15 @@ class SceneController {
             var node:DiagramNode = this.scene.getNodeById(cellView.model.id);
             this.lastCellMouseDownPosition.x = node.getX();
             this.lastCellMouseDownPosition.y = node.getY();
+            var bbox = cellView.getBBox();
+            this.lastCellMouseDownSize.width = bbox.width;
+            this.lastCellMouseDownSize.height = bbox.height;
+            cellView.highlight(cellView.model.id);
+            node.initResize(cellView.getBBox(), x, y, 20);
         }
         if (event.button == MouseButton.right) {
             this.rightClickFlag = true;
         }
-
     }
 
     private cellPointerupListener(cellView, event, x, y): void {
@@ -258,15 +266,39 @@ class SceneController {
         } else if (event.button == MouseButton.left){
             var node: DiagramNode = this.scene.getNodeById(cellView.model.id);
             if (node) {
-                var command: Command = this.paperCommandFactory.makeMoveCommand(node, this.lastCellMouseDownPosition.x,
-                    this.lastCellMouseDownPosition.y, node.getX(), node.getY(), this.scene.getZoom());
-                this.undoRedoController.addCommand(command);
+                if (node.isResizing()) {
+                    var bbox = cellView.getBBox();
+                    var command : Command = this.paperCommandFactory.makeResizeCommand(
+                        node,
+                        this.lastCellMouseDownSize.width,
+                        this.lastCellMouseDownSize.height,
+                        bbox.width,
+                        bbox.height,
+                        cellView);
+                    this.undoRedoController.addCommand(command);
+                } else {
+                    var command: Command = this.paperCommandFactory.makeMoveCommand(
+                        node,
+                        this.lastCellMouseDownPosition.x,
+                        this.lastCellMouseDownPosition.y,
+                        node.getX(),
+                        node.getY(),
+                        this.scene.getZoom(),
+                        cellView);
+                    this.undoRedoController.addCommand(command);
+                }
+                node.completeResize();
+                cellView.unhighlight(cellView.model.id);
             }
         }
     }
 
     private cellPointermoveListener(cellView, event, x, y): void {
         this.clickFlag = false;
+        var node: DiagramNode = this.scene.getNodeById(cellView.model.id);
+        if (node) {
+            node.pointermove(cellView, event, x, y);
+        }
     }
 
     private initDropPaletteElementListener(): void {
@@ -356,7 +388,7 @@ class SceneController {
         } else if (this.currentElement instanceof Link) {
             removeCommands.push(this.paperCommandFactory.makeRemoveLinkCommand(<Link> this.currentElement));
         }
-        var multiCommand: Command = new MultiCommand(removeCommands);
+        var multiCommand : Command = new MultiCommand(removeCommands);
         this.undoRedoController.addCommand(multiCommand);
         multiCommand.execute();
     }
@@ -384,7 +416,7 @@ class SceneController {
                 this.scene.getZoom();
 
             return ((mXBegin <= leftElementPos) && (mXEnd >= leftElementPos)
-            && (mYBegin <= topElementPos) && (mYEnd >= topElementPos));
+                && (mYBegin <= topElementPos) && (mYEnd >= topElementPos));
         });
     }
 }
