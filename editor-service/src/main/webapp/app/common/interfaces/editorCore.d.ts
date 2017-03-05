@@ -64,6 +64,7 @@ declare module "core/editorCore/model/commands/Command" {
 declare module "core/editorCore/model/commands/ChangePropertyCommand" {
     import { Command } from "core/editorCore/model/commands/Command";
     export class ChangePropertyCommand implements Command {
+        static sideEffect: Command;
         private key;
         private value;
         private oldValue;
@@ -73,6 +74,7 @@ declare module "core/editorCore/model/commands/ChangePropertyCommand" {
         execute(): void;
         revert(): void;
         isRevertible(): boolean;
+        private makeSideEffect();
     }
 }
 declare module "core/editorCore/view/HtmlView" {
@@ -146,11 +148,13 @@ declare module "core/editorCore/controller/UndoRedoController" {
 declare module "core/editorCore/model/commands/MultiCommand" {
     import { Command } from "core/editorCore/model/commands/Command";
     export class MultiCommand implements Command {
+        static sideEffect: Command;
         private commands;
         constructor(commands: Command[]);
         execute(): void;
         revert(): void;
         isRevertible(): boolean;
+        private makeSideEffect();
     }
 }
 declare module "core/editorCore/controller/UIDGenerator" {
@@ -323,6 +327,7 @@ declare module "core/editorCore/model/DiagramScene" {
 declare module "core/editorCore/model/commands/MoveCommand" {
     import { Command } from "core/editorCore/model/commands/Command";
     export class MoveCommand implements Command {
+        static sideEffect: Command;
         private oldX;
         private oldY;
         private newX;
@@ -333,12 +338,14 @@ declare module "core/editorCore/model/commands/MoveCommand" {
         execute(): void;
         revert(): void;
         isRevertible(): boolean;
+        private makeSideEffect();
     }
 }
 declare module "core/editorCore/model/commands/RemoveElementCommand" {
     import { DiagramElement } from "core/editorCore/model/DiagramElement";
     import { Command } from "core/editorCore/model/commands/Command";
     export class RemoveElementCommand implements Command {
+        static sideEffect: Command;
         private element;
         private executionFunction;
         private revertFunction;
@@ -346,12 +353,14 @@ declare module "core/editorCore/model/commands/RemoveElementCommand" {
         execute(): void;
         revert(): void;
         isRevertible(): boolean;
+        private makeSideEffect();
     }
 }
 declare module "core/editorCore/model/commands/CreateElementCommand" {
     import { DiagramElement } from "core/editorCore/model/DiagramElement";
     import { Command } from "core/editorCore/model/commands/Command";
     export class CreateElementCommand implements Command {
+        static sideEffect: Command;
         private element;
         private executionFunction;
         private revertFunction;
@@ -359,12 +368,14 @@ declare module "core/editorCore/model/commands/CreateElementCommand" {
         execute(): void;
         revert(): void;
         isRevertible(): boolean;
+        private makeSideEffect();
     }
 }
 declare module "core/editorCore/model/commands/ChangeCurrentElementCommand" {
     import { DiagramElement } from "core/editorCore/model/DiagramElement";
     import { Command } from "core/editorCore/model/commands/Command";
     export class ChangeCurrentElementCommand implements Command {
+        static sideEffect: Command;
         private element;
         private oldElement;
         private executionFunction;
@@ -372,6 +383,7 @@ declare module "core/editorCore/model/commands/ChangeCurrentElementCommand" {
         execute(): void;
         revert(): void;
         isRevertible(): boolean;
+        private makeSideEffect();
     }
 }
 declare module "core/editorCore/model/commands/SceneCommandFactory" {

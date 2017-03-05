@@ -98,6 +98,15 @@ public class DiagramDaoImpl implements DiagramDao {
     public void rewriteDiagram(@NotNull Diagram diagram) throws AbortedException {
         logger.trace("updateDiagram() was called with parameters: diagram = {}.", diagram.getName());
         Session session = sessionFactory.getCurrentSession();
+        //try {
+        //    Diagram currentSavedDiagram = getDiagram(diagram.getId());
+        //    if (diagram.getUpdateTime() - currentSavedDiagram.getUpdateTime() < 150) {
+        //        return;
+        //    }
+        //} catch (NotFoundException e) {
+        //  logger.error("RewriteDiagram call was made without id in diagram");
+        //}
+
         if (!isExistsDiagram(diagram.getId())) {
             throw new AbortedException("Diagram with specified Id doesn't exist. Use save instead.",
                     "updateDiagram() safely aborted.", DiagramDaoImpl.class.getName());

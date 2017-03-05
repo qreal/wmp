@@ -2,6 +2,8 @@ package com.qreal.wmp.db.diagram.model;
 
 import com.qreal.wmp.thrift.gen.TDiagram;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -15,6 +17,8 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Entity
 @Table(name = "diagrams")
 @Data
+@EqualsAndHashCode(exclude = "updateTime")
+@ToString(exclude = "updateTime")
 public class Diagram implements Serializable {
     @Id
     @Column(name = "diagram_id")
@@ -31,6 +35,9 @@ public class Diagram implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinColumn(name = "diagram_id", referencedColumnName = "diagram_id")
     private Set<Link> links = new HashSet<>();
+
+    @Column(name = "update_time")
+    private long updateTime;
 
     public Diagram() {
     }
@@ -52,6 +59,8 @@ public class Diagram implements Serializable {
         if (tDiagram.isSetLinks()) {
             links = tDiagram.getLinks().stream().map(Link::new).collect(Collectors.toSet());
         }
+
+        updateTime = System.currentTimeMillis();
     }
 
     /** Converter from Diagram to Thrift TDiagram.*/

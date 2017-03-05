@@ -6,6 +6,13 @@ import {Interpreter} from "../../interpreter/Interpreter";
 import {ElementTypes} from "core/editorCore/model/ElementTypes";
 import {DiagramScene} from "core/editorCore/model/DiagramScene";
 import {DiagramEditorController} from "core/editorCore/controller/DiagramEditorController";
+import {ChangeCurrentElementCommand} from "core/editorCore/model/commands/ChangeCurrentElementCommand";
+import {SaveCommand} from "../sideeffect/SaveCommand";
+import {ChangePropertyCommand} from "core/editorCore/model/commands/ChangePropertyCommand";
+import {MultiCommand} from "core/editorCore/model/commands/MultiCommand";
+import {RemoveElementCommand} from "core/editorCore/model/commands/RemoveElementCommand";
+import {CreateElementCommand} from "core/editorCore/model/commands/CreateElementCommand";
+import {MoveCommand} from "core/editorCore/model/commands/MoveCommand";
 export class RobotsDiagramEditorController extends DiagramEditorController {
 
     private menuController: DiagramMenuController;
@@ -20,6 +27,9 @@ export class RobotsDiagramEditorController extends DiagramEditorController {
 
         var scene: DiagramScene = this.diagramEditor.getScene();
         this.menuController = new DiagramMenuController(this);
+
+        this.setSideEffectSaveForScene();
+
         this.gesturesController = new GesturesController(this.sceneController, this.diagramEditor.getScene());
         this.diagramInterpreter = new Interpreter();
 
@@ -57,6 +67,16 @@ export class RobotsDiagramEditorController extends DiagramEditorController {
         this.elementsTypeLoader.load((elementTypes: ElementTypes): void => {
             this.handleLoadedTypes(elementTypes);
         }, "", "robots");
+    }
+
+    private setSideEffectSaveForScene() {
+        ChangeCurrentElementCommand.sideEffect = new SaveCommand(this.menuController);
+        ChangePropertyCommand.sideEffect = new SaveCommand(this.menuController);
+        CreateElementCommand.sideEffect = new SaveCommand(this.menuController);
+        MoveCommand.sideEffect = new SaveCommand(this.menuController);
+        MultiCommand.sideEffect = new SaveCommand(this.menuController);
+        RemoveElementCommand.sideEffect = new SaveCommand(this.menuController);
+
     }
 
     public openTwoDModel(): void {
