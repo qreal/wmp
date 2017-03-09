@@ -81,9 +81,11 @@ public class SceneImpl implements Scene {
     @Override
     public boolean exist(SceneElement element) {
         if (element instanceof Block) {
+            blockProvider.recalculateBlocks();
             return blockProvider.exist((Block) element);
         }
         if (element instanceof Link) {
+            linkProvider.recalculateLinks();
             return linkProvider.exist((Link) element);
         }
         return false;
@@ -110,6 +112,8 @@ public class SceneImpl implements Scene {
     
     @Override
     public void clean() {
+        blockProvider.recalculateBlocks();
+        linkProvider.recalculateLinks();
         if (!linkProvider.isEmpty()) {
             try {
                 remove(linkProvider.getLinks().get(0));
@@ -157,7 +161,5 @@ public class SceneImpl implements Scene {
                     assert webDriver != null;
                     return webDriver.findElements(sceneElement.getBy()).size() == 0;
                 });
-        blockProvider.recalculateBlocks();
-        linkProvider.recalculateLinks();
     }
 }
