@@ -27,6 +27,9 @@ public class Link implements Serializable {
     @Column(name = "graphical_id")
     private String graphicalId;
 
+    @Column(name = "type")
+    private String type;
+
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinColumn(name = "link_id", referencedColumnName = "id")
     private Set<Property> properties = new HashSet<>();
@@ -36,12 +39,21 @@ public class Link implements Serializable {
 
     /** Constructor-converter from Thrift TLink to Link.*/
     public Link(TLink tLink) {
+
+        if (tLink.isSetId()) {
+            id = tLink.getId();
+        }
+
         if (tLink.isSetGraphicalId()) {
             graphicalId = tLink.getGraphicalId();
         }
 
         if (tLink.isSetLogicalId()) {
             logicalId = tLink.getLogicalId();
+        }
+
+        if (tLink.isSetType()) {
+            type = tLink.getType();
         }
 
         if (tLink.isSetProperties()) {
@@ -53,12 +65,20 @@ public class Link implements Serializable {
     public TLink toTLink() {
         TLink tLink = new TLink();
 
+        if (id != null) {
+            tLink.setId(id);
+        }
+
         if (logicalId != null) {
             tLink.setLogicalId(logicalId);
         }
 
         if (graphicalId != null) {
             tLink.setGraphicalId(graphicalId);
+        }
+
+        if (type != null) {
+            tLink.setType(type);
         }
 
         if (properties != null && !properties.isEmpty()) {

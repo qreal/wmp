@@ -14,17 +14,20 @@ include "../exception/DbExceptions.thrift"
 * robot from user's list will be also deleted.
 **/
 service RobotDbService {
+
+//CRUD ROBOT + isExists
+
     /**
-    * In case of exception registerRobot operation will be safely aborted.
+    * In case of exception saveRobot operation will be safely aborted.
     *
     * TAborted will be thrown in the following cases:
     * No cases for now
     **/
-    i64 registerRobot(1: Robot.TRobot tRobot) throws (1: DbExceptions.TIdAlreadyDefined alreadyDefined,
-                                                      2: DbExceptions.TAborted aborted),
+    i64 saveRobot(1: Robot.TRobot tRobot) throws (1: DbExceptions.TIdAlreadyDefined alreadyDefined,
+                                                  2: DbExceptions.TAborted aborted),
 
-    /** TNotFound is thrown if the robot with specified id is not found*/
-    Robot.TRobot findById(1: i64 id) throws (1: DbExceptions.TNotFound e),
+    /** TNotFound is thrown if the robot with specified id is not found.*/
+    Robot.TRobot getRobot(1: i64 id) throws (1: DbExceptions.TNotFound e),
 
 
     /**
@@ -40,17 +43,17 @@ service RobotDbService {
     void deleteRobot(1: i64 id) throws (1: DbExceptions.TAborted aborted,
                                         2: DbExceptions.TErrorConnection errorConnection),
 
-    /** No exceptions possible.*/
-    bool isRobotExists(1: i64 id),
-
     /**
-    * In case of exception deleteRobot operation will be safely aborted.
+    * In case of exception updateRobot operation will be safely aborted.
     *
     * TAborted will be thrown in the following cases:
     * 1. The robot to update doesn't exist
     **/
     void updateRobot(1: Robot.TRobot tRobot) throws (1: DbExceptions.TAborted aborted,
                                                      2: DbExceptions.TIdNotDefined notDefined)
+
+    /** No exceptions possible.*/
+    bool isRobotExists(1: i64 id),
 }
 
 

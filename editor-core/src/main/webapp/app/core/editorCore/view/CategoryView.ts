@@ -12,16 +12,23 @@ class CategoryView extends HtmlView {
         '   <ul>{1}</ul>' +
         '</li>';
 
-    constructor(categoryName: string, category: Map<NodeType>) {
+    constructor(categoryName: string, category: PaletteTree, elementClass: string) {
         super();
         var elementsContent: string = '';
-        for (var typeName in category) {
-            var nodeType: NodeType = category[typeName];
-            var nodeName: string = nodeType.getName();
-            var paletteElementView: PaletteElementView = new PaletteElementView(typeName, nodeName, nodeType.getImage());
+        for (var subcategory in category.categories) {
+            var subcategoryView: CategoryView = new CategoryView(subcategory, category.categories[subcategory], elementClass);
+            elementsContent += subcategoryView.getContent();
+        }
+        for (var i in category.nodes) {
+            var nodeType: NodeType = category.nodes[i];
+            if (!nodeType.getVisibility())
+                continue;
+            var paletteElementView: PaletteElementView = new PaletteElementView(nodeType.getName(),
+                nodeType.getShownName(), nodeType.getImage(), elementClass);
             elementsContent += paletteElementView.getContent();
         }
-        this.content = StringUtils.format(this.template, categoryName, elementsContent);
+        if (elementsContent)
+            this.content = StringUtils.format(this.template, categoryName, elementsContent);
     }
 
 }

@@ -1,20 +1,14 @@
 package com.qreal.wmp.uitesting.innertests;
 
-import com.codeborne.selenide.WebDriverRunner;
-import com.qreal.wmp.uitesting.Auther;
-import com.qreal.wmp.uitesting.Opener;
 import com.qreal.wmp.uitesting.config.AppInit;
 import com.qreal.wmp.uitesting.exceptions.WrongAuthException;
-import io.github.bonigarcia.wdm.ChromeDriverManager;
+import com.qreal.wmp.uitesting.services.Auther;
+import com.qreal.wmp.uitesting.services.Opener;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
@@ -23,8 +17,10 @@ import static com.codeborne.selenide.Condition.appear;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 
+/** Tests for opener and auther services. */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = AppInit.class, loader = AnnotationConfigContextLoader.class)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class AuthTest {
 
     @Autowired
@@ -32,21 +28,6 @@ public class AuthTest {
 
     @Autowired
     private Opener opener;
-
-    private WebDriver driver;
-
-    /** Setup ChromeDriverManager. */
-    @BeforeClass
-    public static void init() {
-        ChromeDriverManager.getInstance().setup();
-    }
-
-    /** Setup browser. */
-    @Before
-    public void runDriver() {
-        driver = new ChromeDriver();
-        WebDriverRunner.setWebDriver(driver);
-    }
 
     /**
      * Try to login with correct username and password.
@@ -97,24 +78,31 @@ public class AuthTest {
     }
 
     /**
-     * Try to open editor page without authentication.
+     * Try to open robots-editor page without authentication.
      * Should be redirected to auth page.
-     * Try to open editor page with correct login and password.
+     * Try to open robots-editor page with correct login and password.
      */
     @Test
-    public void editorTest() {
-        opener.cleanOpen("editor");
+    public void robotsEditorTest() {
+        opener.cleanOpen("robotsEditor");
         assert inAuthPage();
-        opener.open("editor");
+        opener.open("robotsEditor");
         $(byText("Property Editor")).waitUntil(appear, 5000);
     }
-
-    /** Close the browser. */
-    @After
-    public void stopDriver() {
-        driver.close();
+    
+    /**
+     * Try to open bpmn-editor page without authentication.
+     * Should be redirected to auth page.
+     * Try to open bpmn-editor page with correct login and password.
+     */
+    @Test
+    public void bpmnEditorTest() {
+        opener.cleanOpen("bpmnEditor");
+        assert inAuthPage();
+        opener.open("bpmnEditor");
+        $(byText("Property Editor")).waitUntil(appear, 5000);
     }
-
+    
     /**
      * Check that current page is Auth page.
      *

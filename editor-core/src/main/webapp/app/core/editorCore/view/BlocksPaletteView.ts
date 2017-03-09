@@ -5,12 +5,12 @@
 
 class BlocksPaletteView extends HtmlView {
 
-    constructor(paletteTypes: PaletteTypes) {
+    constructor(paletteTypes: PaletteTree, elementClass: string) {
         super();
-        var categories: Map<Map<NodeType>> = paletteTypes.categories;
+        var categories: Map<PaletteTree> = paletteTypes.categories;
         for (var categoryName in categories) {
-            var category: Map<NodeType> = categories[categoryName];
-            var categoryView = new CategoryView(categoryName, category);
+            var category: PaletteTree = categories[categoryName];
+            var categoryView = new CategoryView(categoryName, category, elementClass);
             this.content += categoryView.getContent();
         }
     }

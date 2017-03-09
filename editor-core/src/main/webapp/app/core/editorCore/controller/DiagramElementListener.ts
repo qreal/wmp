@@ -12,7 +12,7 @@ class DiagramElementListener {
         ) {
             this.model.trigger('batch:start');
 
-            var link = this.paper.getDefaultLink(this, evt.target);
+            var link = this.paper.getCurrentLinkType();
             if (evt.target.tagName === "circle") {
                 link.set({
                     source: {
@@ -31,7 +31,8 @@ class DiagramElementListener {
                 });
             }
 
-            var typeProperties = DiagramElementListener.getNodeProperties("ControlFlow");
+            var nodeType: NodeType = DiagramElementListener.getNodeType(this.paper.getCurrentLinkTypeName());
+            var typeProperties: Map<Property> = nodeType.getPropertiesMap();
 
             var nodeProperties: Map<Property> = {};
             for (var property in typeProperties) {
@@ -39,7 +40,7 @@ class DiagramElementListener {
                     typeProperties[property].type, typeProperties[property].value);
             }
 
-            var linkObject: Link = new Link(link, nodeProperties);
+            var linkObject: Link = new Link(link, nodeType.getShownName(), nodeType.getName(), nodeProperties);
             DiagramElementListener.makeAndExecuteCreateLinkCommand(linkObject);
 
             this.paper.model.addCell(link);
@@ -56,8 +57,8 @@ class DiagramElementListener {
         }
     };
 
-    static getNodeProperties: (type: string) => Map<Property> = function(type: string): Map<Property> {
-        console.error("DiagramElementListener getNodeProperties method is empty");
+    static getNodeType: (type: string) => NodeType = function(type: string): NodeType {
+        console.error("DiagramElementListener getNodeType method is empty");
         return null;
     };
 

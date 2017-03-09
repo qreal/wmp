@@ -1,6 +1,8 @@
 package com.qreal.wmp.uitesting.headerpanel;
 
+import com.codeborne.selenide.Condition;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 
 import static com.codeborne.selenide.Selectors.withText;
 import static com.codeborne.selenide.Selenide.$;
@@ -11,20 +13,28 @@ public class FileItem {
 
     private SaveDiagramConfirm saveDiagramConfirm;
 
-    private SaveItem saveItem;
+    private FolderArea folderArea;
 
-    public FileItem() {
+    public FileItem(WebDriver driver) {
         saveDiagramConfirm = new SaveDiagramConfirm();
-        saveItem = new SaveItem();
+        folderArea = new FolderAreaImpl(driver);
     }
 
     public void newDiagram() {
         $(selector).find(withText("New")).click();
+        $(SaveDiagramConfirm.selector).shouldBe(Condition.visible);
         saveDiagramConfirm.notSave();
     }
 
-    public SaveItem getSaveItem() {
+    public FolderArea getSaveItem() {
         $(selector).find(withText("Save")).click();
-        return saveItem;
+        $(FolderAreaImpl.selector).shouldBe(Condition.visible);
+        return folderArea;
+    }
+    
+    public FolderArea getOpenItem() {
+        $(selector).find(withText("Open")).click();
+        $(FolderAreaImpl.selector).shouldBe(Condition.visible);
+        return folderArea;
     }
 }

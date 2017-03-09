@@ -28,10 +28,8 @@
         <module name="db-diagram-service" />
         <module name="db-robot-store-service" />
         <module name="db-user-service" />
-        <module name="editor-core" />
         <module name="editor-service" />
         <module name="spring-security-oauth2-client" />
-        <module name="UI-testing" />
         <module name="ui-testing" />
         <module name="user-service" />
       </profile>
@@ -44,13 +42,11 @@
       <module name="db-diagram-service" target="1.8" />
       <module name="db-robot-store-service" target="1.8" />
       <module name="db-user-service" target="1.8" />
-      <module name="editor-core" target="1.8" />
       <module name="editor-service" target="1.8" />
       <module name="logging-deps" target="1.5" />
       <module name="parent" target="1.5" />
       <module name="shared-resources" target="1.8" />
       <module name="spring-security-oauth2-client" target="1.7" />
-      <module name="UI-testing" target="1.8" />
       <module name="ui-testing" target="1.8" />
     </bytecodeTargetLevel>
   </component>

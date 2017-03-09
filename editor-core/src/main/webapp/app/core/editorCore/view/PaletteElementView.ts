@@ -8,15 +8,15 @@ class PaletteElementView extends HtmlView {
 
     private template: string = '' +
         '<li>' +
-        '   <div class="tree-element" data-type="{0}">' +
-        '       <img class="element-img" src="{1}" width="{2}" height="{3}">' +
-        '       {4}' +
+        '   <div class="{0}" data-type="{1}">' +
+        '       <img class="element-img" src="{2}" width="{3}" height="{4}">' +
+        '       {5}' +
         '   </div>' +
         '</li>';
 
-    constructor(typeName: string, name: string, imageSrc: string) {
+    constructor(typeName: string, name: string, imageSrc: string, elementClass: string) {
         super();
-        this.content = StringUtils.format(this.template, typeName, imageSrc,
+        this.content = StringUtils.format(this.template, elementClass, typeName, imageSrc,
             this.imageWidth.toString(), this.imageHeight.toString(), name);
     }
 

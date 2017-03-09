@@ -6,10 +6,15 @@
 
 class DiagramScene extends joint.dia.Paper {
 
+    public static get WIDTH(): number {return 2000;}
+    public static get HEIGHT(): number {return 2000;}
+
     private htmlId: string;
     private graph: joint.dia.Graph;
+    private currentLinkType: string;
     private nodesMap: Map<DiagramNode>;
     private linksMap: Map<Link>;
+    private linkPatternsMap: Map<joint.dia.Link>;
     private gridSize: number;
     private zoom: number;
 
@@ -20,8 +25,8 @@ class DiagramScene extends joint.dia.Paper {
 
         super({
             el: $('#' + htmlId),
-            width: 2000,
-            height: 2000,
+            width: DiagramScene.WIDTH,
+            height: DiagramScene.HEIGHT,
             model: graph,
             gridSize: gridSize,
             defaultLink: new joint.dia.Link({
@@ -42,6 +47,8 @@ class DiagramScene extends joint.dia.Paper {
                 pointerdown: DiagramElementListener.pointerdown
                 }))
         });
+
+        this.linkPatternsMap = {};
 
         this.htmlId = htmlId;
         this.gridSize = gridSize;
@@ -162,8 +169,24 @@ class DiagramScene extends joint.dia.Paper {
         }
     }
 
+    public setCurrentLinkType(linkType: string): void {
+        this.currentLinkType = linkType;
+    }
+
+    public getCurrentLinkType(): joint.dia.Link {
+        return <joint.dia.Link> this.linkPatternsMap[this.currentLinkType].clone();
+    }
+
+    public getCurrentLinkTypeName(): string {
+        return this.currentLinkType;
+    }
+
+    public setLinkPatterns(linkPatterns: Map<joint.dia.Link>): void {
+        this.linkPatternsMap = linkPatterns;
+        this.currentLinkType = Object.keys(this.linkPatternsMap)[0];
+    }
+
     private addLink(link: Link): void {
         this.graph.addCell(link.getJointObject());
     }
-
 }

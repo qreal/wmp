@@ -24,6 +24,7 @@ before_install:
   - sudo rm /dev/random
   - sudo mknod /dev/random c 1 9
   # for gui tests
+  - export DBUS_SESSION_BUS_ADDRESS=/dev/null
   - export CHROME_BIN=/usr/bin/google-chrome
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
@@ -33,7 +34,7 @@ before_install:
 
 install:
   #install and run tests and run style checking
-  - mvn install -P travis
+  - mvn clean install -P travis
   - cd ui-testing
   - mvn clean install -DskipTests
   - cd ..
@@ -66,11 +67,9 @@ script:
   - mvn tomcat7:run-war-only -P travis &
   - sleep 30
 
-  - ../Travis/callTomcat.sh
-
   - cd ../ui-testing
   - mvn test -P travis &
-  - sleep 180
+  - sleep 900
 
 notifications:
   slack: qreal-web:sT5qgA4qZZ9eyLI0yy2Mp81E

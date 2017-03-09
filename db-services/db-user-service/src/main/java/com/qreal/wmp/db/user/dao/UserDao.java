@@ -14,7 +14,7 @@ import org.jetbrains.annotations.Nullable;
 public interface UserDao {
     /**
      * Saves a user.
-     * @param user user to save (Id must not be set).
+     * @param user user to saveUser (Id must not be set).
      */
     void saveUser(@NotNull TUser user) throws AbortedException, ErrorConnectionException;
 
@@ -23,11 +23,11 @@ public interface UserDao {
      * @param username name of a user to find.
      */
     @Nullable
-    TUser findByUserName(String username) throws NotFoundException, ErrorConnectionException;
+    TUser getUser(String username) throws NotFoundException, ErrorConnectionException;
 
     /**
      * Updates user state.
-     * @param user user to update (Id must be set)
+     * @param user user to updateUser (Id must be set)
      */
     void updateUser(@NotNull TUser user) throws AbortedException, ErrorConnectionException;
 

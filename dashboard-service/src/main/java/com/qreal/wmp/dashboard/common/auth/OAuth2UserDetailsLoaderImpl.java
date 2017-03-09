@@ -44,7 +44,7 @@ public class OAuth2UserDetailsLoaderImpl implements OAuth2UserDetailsLoader<User
         logger.trace("OAuth passed user {} for authentication", id);
         UserDetails userDetails = null;
         try {
-            User user = userService.findByUserName(id);
+            User user = userService.getUser(id);
             userDetails = convert(user);
             logger.trace("User {} was found", id);
         } catch (NotFoundException e) {
@@ -61,7 +61,7 @@ public class OAuth2UserDetailsLoaderImpl implements OAuth2UserDetailsLoader<User
     /** Updates user retrieved from OAuth authentication point. Not used right now.*/
     @Override
     public UserDetails updateUser(UserDetails userDetails, Map<String, Object> userInfo) {
-        logger.trace("OAuth tried to update user {}", userDetails.getUsername());
+        logger.trace("OAuth tried to updateUser user {}", userDetails.getUsername());
         logger.trace("No actual updating was performed for user {}.", userDetails.getUsername());
         return userDetails;
     }
@@ -76,7 +76,7 @@ public class OAuth2UserDetailsLoaderImpl implements OAuth2UserDetailsLoader<User
         User user = createUserFromId(id);
 
         try {
-            userService.save(user);
+            userService.saveUser(user);
         } catch (AbortedException e) {
             //TODO what to do in that case?
             logger.error("Fatal error: must create user but can't because operation was aborted.");

@@ -1,21 +1,20 @@
 package com.qreal.wmp.uitesting.testspace;
 
-import com.codeborne.selenide.SelenideElement;
-import com.codeborne.selenide.WebDriverRunner;
-import com.qreal.wmp.uitesting.Opener;
+import com.qreal.wmp.uitesting.Page;
+import com.qreal.wmp.uitesting.PageLoader;
 import com.qreal.wmp.uitesting.config.AppInit;
-import com.qreal.wmp.uitesting.dia.Pallete;
-import com.qreal.wmp.uitesting.dia.PropertyEditor;
-import com.qreal.wmp.uitesting.dia.Scene;
-import io.github.bonigarcia.wdm.ChromeDriverManager;
+import com.qreal.wmp.uitesting.dia.pallete.Pallete;
+import com.qreal.wmp.uitesting.dia.property.PropertyEditor;
+import com.qreal.wmp.uitesting.dia.scene.Scene;
+import com.qreal.wmp.uitesting.dia.scene.elements.Block;
+import com.qreal.wmp.uitesting.dia.scene.elements.Link;
+import com.qreal.wmp.uitesting.pages.EditorPage;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
@@ -24,38 +23,28 @@ import java.util.ArrayList;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = AppInit.class, loader = AnnotationConfigContextLoader.class)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class DiagramConstructingTest {
 
     @Autowired
-    private Opener opener;
-
-    @Autowired
-    private Pallete pallete;
-
-    @Autowired
+    private PageLoader pageLoader;
+    
     private Scene scene;
 
-    @Autowired
     private PropertyEditor propertyEditor;
 
-    private WebDriver driver;
-
-    private ArrayList<SelenideElement> elements;
-    private ArrayList<SelenideElement> links;
-
-    /** Setup ChromeDriverManager. */
-    @BeforeClass
-    public static void init() {
-        ChromeDriverManager.getInstance().setup();
-    }
-
+    private ArrayList<Block> elements;
+    
+    private ArrayList<Link> links;
+    
+    /** Open editor page. */
     @Before
-    public void runDriver() {
-        driver = new ChromeDriver();
-        WebDriverRunner.setWebDriver(driver);
-        opener.open("editor");
-        scene.updateWebdriver(driver);
-
+    public void openEditor() {
+        EditorPage editorPage = pageLoader.load(Page.EditorRobots);
+        scene = editorPage.getScene();
+        Pallete pallete = editorPage.getPallete();
+        propertyEditor = editorPage.getPropertyEditor();
+        
         elements = new ArrayList<>();
         links = new ArrayList<>();
 
@@ -85,22 +74,22 @@ public class DiagramConstructingTest {
 
     @Test
     public void fillProperties() {
-        propertyEditor.setProperty(elements.get(1), "Power", "80");
-        assert propertyEditor.getProperty(elements.get(1), "Power").equals("80");
-        propertyEditor.setProperty(elements.get(2), "Color", "green");
-        assert propertyEditor.getProperty(elements.get(2), "Color").equals("green");
-        propertyEditor.setProperty(elements.get(3), "Delay", "200");
-        assert propertyEditor.getProperty(elements.get(3), "Delay").equals("200");
+        propertyEditor.setProperty(elements.get(1).getInnerSeleniumElement(), "Power", "80");
+        assert propertyEditor.getProperty(elements.get(1).getInnerSeleniumElement(), "Power").equals("80");
+        propertyEditor.setProperty(elements.get(2).getInnerSeleniumElement(), "Color", "green");
+        assert propertyEditor.getProperty(elements.get(2).getInnerSeleniumElement(), "Color").equals("green");
+        propertyEditor.setProperty(elements.get(3).getInnerSeleniumElement(), "Delay", "200");
+        assert propertyEditor.getProperty(elements.get(3).getInnerSeleniumElement(), "Delay").equals("200");
     }
 
+    /** Clean scene. */
     @After
-    public void stopDriver() {
+    public void cleanScene() {
         scene.clean();
-        driver.close();
     }
 
     private boolean allExist() {
-        return elements.stream().allMatch(scene::isExist) && links.stream().anyMatch(scene::isExist);
+        return elements.stream().allMatch(scene::exist) && links.stream().anyMatch(scene::exist);
     }
 
 }

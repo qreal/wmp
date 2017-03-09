@@ -17,18 +17,29 @@ public class Link implements Serializable {
 
     private String graphicalId;
 
+    private String type;
+
     private Set<Property> properties = new HashSet<>();
 
     public Link() { }
 
     /** Constructor-converter from Thrift TLink to Link.*/
     public Link(TLink tLink) {
+
+        if (tLink.isSetId()) {
+            id = tLink.getId();
+        }
+
         if (tLink.isSetGraphicalId()) {
             graphicalId = tLink.getGraphicalId();
         }
 
         if (tLink.isSetLogicalId()) {
             logicalId = tLink.getLogicalId();
+        }
+
+        if (tLink.isSetType()) {
+            type = tLink.getType();
         }
 
         if (tLink.isSetProperties()) {
@@ -40,12 +51,20 @@ public class Link implements Serializable {
     public TLink toTLink() {
         TLink tLink = new TLink();
 
+        if (id != null) {
+            tLink.setId(id);
+        }
+
         if (logicalId != null) {
             tLink.setLogicalId(logicalId);
         }
 
         if (graphicalId != null) {
             tLink.setGraphicalId(graphicalId);
+        }
+
+        if (type != null) {
+            tLink.setType(type);
         }
 
         if (properties != null) {

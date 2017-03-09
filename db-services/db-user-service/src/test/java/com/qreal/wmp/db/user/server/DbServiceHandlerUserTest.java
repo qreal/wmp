@@ -54,7 +54,7 @@ public class DbServiceHandlerUserTest {
     public void saveUser_correctInput_userDaoCalled() throws Exception {
         TUser tUser = createUser("username", "password", true);
 
-        handler.save(tUser);
+        handler.saveUser(tUser);
 
         verify(userDaoMocked).saveUser(tUser);
     }
@@ -65,7 +65,7 @@ public class DbServiceHandlerUserTest {
     public void saveUser_idNotSet_throwsTIdNotDefined()  {
         TUser tUser = createUser(null, "password", true);
 
-        assertThatThrownBy(() -> handler.save(tUser)).isInstanceOf(TIdNotDefined.class);
+        assertThatThrownBy(() -> handler.saveUser(tUser)).isInstanceOf(TIdNotDefined.class);
     }
 
     /** Test saveUser operation for user. */
@@ -76,7 +76,7 @@ public class DbServiceHandlerUserTest {
 
         doThrow(new AbortedException("0", "Exception", "Exception")).when(userDaoMocked).saveUser(tUser);
 
-        assertThatThrownBy(() -> handler.save(tUser)).isInstanceOf(TAborted.class);
+        assertThatThrownBy(() -> handler.saveUser(tUser)).isInstanceOf(TAborted.class);
     }
 
     /** Test saveUser operation for user. */
@@ -87,7 +87,7 @@ public class DbServiceHandlerUserTest {
 
         doThrow(new ErrorConnectionException("0", "Exception")).when(userDaoMocked).saveUser(tUser);
 
-        assertThatThrownBy(() -> handler.save(tUser)).isInstanceOf(TErrorConnection.class);
+        assertThatThrownBy(() -> handler.saveUser(tUser)).isInstanceOf(TErrorConnection.class);
     }
 
     /** Test findByUsername operation for user. */
@@ -97,9 +97,9 @@ public class DbServiceHandlerUserTest {
         String username = "username";
         TUser tUser = createUser("username", "password", true);
 
-        when(userDaoMocked.findByUserName(username)).thenReturn(tUser);
+        when(userDaoMocked.getUser(username)).thenReturn(tUser);
 
-        TUser gotTUser = handler.findByUserName(username);
+        TUser gotTUser = handler.getUser(username);
 
         assertThat(gotTUser).isEqualTo(tUser);
     }
@@ -110,9 +110,9 @@ public class DbServiceHandlerUserTest {
     public void findByUsername_daoThrowsNotFound_throwsTNotFound() throws Exception {
         String username = "username";
 
-        when(userDaoMocked.findByUserName(username)).thenThrow(new NotFoundException("0", "Exception"));
+        when(userDaoMocked.getUser(username)).thenThrow(new NotFoundException("0", "Exception"));
 
-        assertThatThrownBy(() -> handler.findByUserName(username)).isInstanceOf(TNotFound.class);
+        assertThatThrownBy(() -> handler.getUser(username)).isInstanceOf(TNotFound.class);
     }
 
     /** Test findByUsername operation for user. */
@@ -121,9 +121,9 @@ public class DbServiceHandlerUserTest {
     public void findByUsername_daoThrowsErrorConnection_throwsTErrorConnection() throws Exception {
         String username = "username";
 
-        when(userDaoMocked.findByUserName(username)).thenThrow(new ErrorConnectionException("0", "Exception"));
+        when(userDaoMocked.getUser(username)).thenThrow(new ErrorConnectionException("0", "Exception"));
 
-        assertThatThrownBy(() -> handler.findByUserName(username)).isInstanceOf(TErrorConnection.class);
+        assertThatThrownBy(() -> handler.getUser(username)).isInstanceOf(TErrorConnection.class);
     }
 
     /** Test updateUser operation for user. */
@@ -132,7 +132,7 @@ public class DbServiceHandlerUserTest {
     public void updateUser_correctInput_userDaoCalled() throws Exception {
         TUser tUser = createUser("username", "password", true);
 
-        handler.update(tUser);
+        handler.updateUser(tUser);
 
         verify(userDaoMocked).updateUser(tUser);
     }
@@ -143,7 +143,7 @@ public class DbServiceHandlerUserTest {
     public void updateUser_idNotSet_throwsTIdNotDefined()  {
         TUser tUser = createUser(null, "password", true);
 
-        assertThatThrownBy(() -> handler.update(tUser)).isInstanceOf(TIdNotDefined.class);
+        assertThatThrownBy(() -> handler.updateUser(tUser)).isInstanceOf(TIdNotDefined.class);
     }
 
     /** Test updateUser operation for user. */
@@ -154,7 +154,7 @@ public class DbServiceHandlerUserTest {
 
         doThrow(new AbortedException("0", "Exception", "Exception")).when(userDaoMocked).updateUser(tUser);
 
-        assertThatThrownBy(() -> handler.update(tUser)).isInstanceOf(TAborted.class);
+        assertThatThrownBy(() -> handler.updateUser(tUser)).isInstanceOf(TAborted.class);
     }
 
     /** Test updateUser operation for user. */
@@ -165,7 +165,7 @@ public class DbServiceHandlerUserTest {
 
         doThrow(new ErrorConnectionException("0", "Exception")).when(userDaoMocked).updateUser(tUser);
 
-        assertThatThrownBy(() -> handler.update(tUser)).isInstanceOf(TErrorConnection.class);
+        assertThatThrownBy(() -> handler.updateUser(tUser)).isInstanceOf(TErrorConnection.class);
     }
 
     private TUser createUser(String username, String password, boolean enabled) {
