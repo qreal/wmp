@@ -27,7 +27,7 @@ public class FileItem {
     }
 
     public FolderArea getSaveItem() {
-        $(selector).find(withText("Save")).click();
+        $(selector).find(withText("SaveAs")).click();
         $(FolderAreaImpl.selector).shouldBe(Condition.visible);
         return folderArea;
     }

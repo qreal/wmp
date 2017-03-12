@@ -72,7 +72,7 @@ public class SceneWindowImpl implements SceneWindow {
         
         jump(actions, element, dist);
 
-        (new WebDriverWait(driver, 20))
+        (new WebDriverWait(driver, 40))
                 .until((Predicate<WebDriver>) webDriver -> {
                     try {
                         return element.getCoordinateOnScene().equals(dist);

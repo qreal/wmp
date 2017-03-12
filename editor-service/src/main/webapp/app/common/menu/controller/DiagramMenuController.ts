@@ -73,7 +73,6 @@ class DiagramMenuController {
     }
 
     public saveDiagramAs(): void {
-        $('#diagrams').modal('show');
         this.showFolderMenu();
         this.showFolderTable(this.currentFolder);
         this.showSavingMenu();
