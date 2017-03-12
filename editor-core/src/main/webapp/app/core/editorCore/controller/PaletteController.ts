@@ -1,5 +1,4 @@
 import {NodeType} from "../model/NodeType";
-//import {Map} from "../model/Map";
 import {ElementTypes} from "../model/ElementTypes";
 import {BlocksPaletteView} from "../view/BlocksPaletteView";
 import {PaletteTree} from "../model/PaletteTree";

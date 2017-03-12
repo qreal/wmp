@@ -1,5 +1,4 @@
 import {Property} from "./Property";
-//import {Map} from "./Map";
 import {PropertiesPack} from "./PropertiesPack";
 export interface DiagramElement {
     getLogicalId(): string;

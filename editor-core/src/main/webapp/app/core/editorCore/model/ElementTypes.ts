@@ -1,5 +1,4 @@
 import {PaletteTree} from "./PaletteTree";
-//import {Map} from "./Map";
 import {NodeType} from "./NodeType";
 export class ElementTypes {
 
