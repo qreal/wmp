@@ -48,7 +48,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void saveUser(@NotNull User user) throws AbortedException, ErrorConnectionException, TException {
+    synchronized public void saveUser(@NotNull User user) throws AbortedException, ErrorConnectionException,
+            TException {
         TUser tUser = user.toTUser();
         logger.trace("saveUser() was called with parameters: user = {}.", user.getUsername());
         transport.open();
@@ -62,7 +63,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void updateUser(@NotNull User user) throws AbortedException, ErrorConnectionException, TException {
+    synchronized public void updateUser(@NotNull User user) throws AbortedException, ErrorConnectionException,
+            TException {
         TUser tUser = user.toTUser();
         logger.trace("updateUser() was called with parameters: user = {}", user.getUsername());
         transport.open();
@@ -77,7 +79,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     @NotNull
-    public User getUser(String username) throws NotFoundException, ErrorConnectionException, TException {
+    synchronized public User getUser(String username) throws NotFoundException, ErrorConnectionException, TException {
         logger.trace("getUser() was called with parameters: username = {}.", username);
         TUser tUser = null;
         transport.open();
@@ -92,7 +94,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public boolean isUserExists(String username) throws ErrorConnectionException, TException {
+    synchronized public boolean isUserExists(String username) throws ErrorConnectionException, TException {
         logger.trace("isUserExists() was called with parameters: username = {}", username);
         boolean isUserExist = false;
         transport.open();

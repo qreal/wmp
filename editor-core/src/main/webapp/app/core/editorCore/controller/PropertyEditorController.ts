@@ -7,6 +7,7 @@ import {HtmlView} from "../view/HtmlView";
 import {PropertyViewFactory} from "./PropertyViewFactory";
 import {UndoRedoController} from "./UndoRedoController";
 import {SceneController} from "./SceneController";
+import {ChangeElementEvent} from "../events/ChangeElementEvent";
 export class PropertyEditorController {
 
     private propertyViewFactory: PropertyViewFactory;
@@ -28,6 +29,7 @@ export class PropertyEditorController {
                     $(this).val(e.detail.value);
                     $(this).trigger('autosize');
                 }
+
             })
         }, false);
     }
@@ -64,6 +66,7 @@ export class PropertyEditorController {
         var property: Property = currentElement.getChangeableProperties()[key];
         property.value = value;
         currentElement.setProperty(key, property);
+        ChangeElementEvent.signalEvent();
     }
 
     public changeHtmlElementValue(id: string, value: string): void {

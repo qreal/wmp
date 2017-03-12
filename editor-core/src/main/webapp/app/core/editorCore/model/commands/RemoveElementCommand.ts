@@ -1,8 +1,7 @@
 import {DiagramElement} from "../DiagramElement";
 import {Command} from "./Command";
+import {DeleteElementEvent} from "../../events/DeleteElementEvent";
 export class RemoveElementCommand implements Command {
-
-    public static sideEffect : Command = null;
 
     private element: DiagramElement;
     private executionFunction: (element: DiagramElement) => void;
@@ -17,22 +16,16 @@ export class RemoveElementCommand implements Command {
 
     public execute(): void {
         this.executionFunction(this.element);
-        this.makeSideEffect();
+        DeleteElementEvent.signalEvent();
     }
 
     public revert(): void {
         this.revertFunction(this.element);
-        this.makeSideEffect();
+        DeleteElementEvent.signalEvent();
     }
 
     public isRevertible(): boolean {
         return true;
-    }
-
-    private makeSideEffect() {
-        if (RemoveElementCommand.sideEffect != null) {
-            RemoveElementCommand.sideEffect.execute();
-        }
     }
 
 }

@@ -13,6 +13,7 @@ import {SceneController} from "./SceneController";
 import {DiagramEditor} from "../model/DiagramEditor";
 import {DiagramElementListener} from "./DiagramElementListener";
 import {PaletteController} from "./PaletteController";
+import {Events} from "../events/Events";
 export class DiagramEditorController {
 
     protected diagramEditor: DiagramEditor;
@@ -106,9 +107,30 @@ export class DiagramEditorController {
     }
 
     public addFromMap(diagramParts: DiagramParts): void {
+        Events.disableSignals();
+
         var scene = this.diagramEditor.getScene();
         scene.addNodesFromMap(diagramParts.nodesMap);
         scene.addLinksFromMap(diagramParts.linksMap);
+
+        Events.enableSignals();
+    }
+
+    public updateFromMap(diagramParts : DiagramParts) : void {
+        Events.disableSignals();
+
+        console.log("updating from map");
+
+        let currentElement = this.sceneController.getCurrentElement();
+
+        let currentElementId = currentElement == null ? "" : currentElement.getJointObject().id;
+
+        let scene = this.diagramEditor.getScene();
+
+        scene.updateNodesFromMap(diagramParts.nodesMap, currentElementId);
+        scene.updateLinksFromMap(diagramParts.linksMap, currentElementId);
+
+        Events.enableSignals();
     }
 
     protected handleLoadedTypes(elementTypes: ElementTypes): void {

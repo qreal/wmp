@@ -12,18 +12,21 @@ import {DiagramThriftExporter} from "../exporters/DiagramThriftExporter";
 import {GeneralConstants} from "../../constants/GeneralConstants";
 import {DiagramParts} from "core/editorCore/model/DiagramParts";
 import {DiagramEditorController} from "core/editorCore/controller/DiagramEditorController";
+import {StompClient} from "../../longpoll/StompClient";
 export class DiagramMenuController {
 
     private diagramEditorController: DiagramEditorController;
     private diagramThriftExporter: DiagramThriftExporter;
     private diagramThriftParser: DiagramThriftParser;
     private currentDiagramName: string;
+    private currentDiagramId : number;
     private currentDiagramFolder: Folder;
     private canBeDeleted: boolean;
     private folderTree: Folder;
     private currentFolder: Folder;
     private contextMenuId = "open-diagram-context-menu";
     private selectedElement: DiagramMenuElement;
+    private diagramLoader : StompClient;
     public diagramSaved : boolean;
 
     constructor(diagramEditorController: DiagramEditorController) {
@@ -34,6 +37,8 @@ export class DiagramMenuController {
         this.currentDiagramFolder = null;
         this.canBeDeleted = false;
         this.diagramSaved = false;
+
+        this.diagramLoader = new StompClient(this);
 
         var menuManager = this;
         var folderTree;
@@ -55,6 +60,7 @@ export class DiagramMenuController {
                 menuManager.updateCurrentDiagramInDatabase();
             });
         });
+
     }
 
     public createNewDiagram(): void {
@@ -133,7 +139,7 @@ export class DiagramMenuController {
         this.currentDiagramName = "";
         this.currentDiagramFolder = null;
         this.selectedElement = null;
-        this.diagramSaved = false;
+        this.diagramLoader.stop();
     }
 
     private showFolderMenu(): void {
@@ -171,11 +177,12 @@ export class DiagramMenuController {
         var menuManager = this;
         this.currentDiagramName = diagramName;
         this.currentDiagramFolder = this.currentFolder;
+        let self = this;
         try {
             var diagram = this.diagramThriftExporter.exportSavingDiagramState(this.diagramEditorController.getGraph(),
                 this.diagramEditorController.getDiagramParts(), diagramName, this.currentFolder.getId());
-            var diagramId = menuManager.getClient().saveDiagram(diagram);
-            menuManager.currentFolder.addDiagram(new Diagram(diagramId, diagramName));
+            self.currentDiagramId = menuManager.getClient().saveDiagram(diagram);
+            menuManager.currentFolder.addDiagram(new Diagram(self.currentDiagramId, diagramName));
             menuManager.currentFolder = menuManager.folderTree;
             $('#diagrams').modal('hide');
             if (menuManager.canBeDeleted) {
@@ -187,6 +194,7 @@ export class DiagramMenuController {
             console.log("Error: can't save diagram");
         }
 
+        this.diagramLoader.start(this.currentDiagramId);
         this.diagramSaved = true;
     }
 
@@ -211,11 +219,17 @@ export class DiagramMenuController {
         }
     }
 
-    private reloadDiagram() : void {
-        let diagram = this.getClient().openDiagram(this.currentDiagramFolder.getDiagramIdByName(this.currentDiagramName));
-        let diagramParts: DiagramParts = this.diagramThriftParser.parse(diagram, this.diagramEditorController.getNodeTypes(),
-            this.diagramEditorController.getLinkPatterns());
-        this.diagramEditorController.addFromMap(diagramParts);
+    public reloadDiagram() : void {
+        console.log("Reloading diagram");
+        try {
+            let diagram = this.getClient().openDiagram(this.currentDiagramId);
+            let diagramParts: DiagramParts = this.diagramThriftParser.parse(diagram, this.diagramEditorController.getNodeTypes(),
+                this.diagramEditorController.getLinkPatterns());
+            this.diagramEditorController.updateFromMap(diagramParts);
+        }
+        catch (ouch) {
+            console.log("Error: can't reload diagram", ouch);
+        }
     }
 
     private openDiagramFromDatabase(diagramName: string): void {
@@ -233,6 +247,9 @@ export class DiagramMenuController {
         catch (ouch) {
             console.log("Error: can't open diagram");
         }
+
+        this.currentDiagramId = menuManager.currentDiagramFolder.getDiagramIdByName(diagramName);
+        this.diagramLoader.start(this.currentDiagramId);
 
         this.diagramSaved = true;
     }

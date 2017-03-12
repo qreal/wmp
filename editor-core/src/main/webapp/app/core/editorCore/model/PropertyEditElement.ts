@@ -2,6 +2,13 @@ import {StringUtils} from "../../../utils/StringUtils";
 import {Property} from "./Property";
 export class PropertyEditElement {
 
+    public equals(propertyEditElement : PropertyEditElement) {
+        if (propertyEditElement == undefined) {
+            return false;
+        }
+        return _.isEqual(this.getHtmlElement(), propertyEditElement.getHtmlElement());
+    }
+
     private static propertyTemplate = "" +
         "<span>{3}:</span> " +
         "<input class='{0} property-edit-input' data-id='{1}' data-type='{2}' " +

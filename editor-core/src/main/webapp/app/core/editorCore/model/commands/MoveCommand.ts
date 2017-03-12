@@ -1,7 +1,6 @@
 import {Command} from "./Command";
+import {ChangeElementEvent} from "../../events/ChangeElementEvent";
 export class MoveCommand implements Command {
-
-    public static sideEffect : Command = null;
 
     private oldX: number;
     private oldY: number;
@@ -22,22 +21,13 @@ export class MoveCommand implements Command {
 
     public execute(): void {
         this.executionFunction(this.newX, this.newY, this.zoom);
-        this.makeSideEffect();
     }
 
     public revert(): void {
         this.executionFunction(this.oldX, this.oldY, this.zoom);
-        this.makeSideEffect()
     }
 
     public isRevertible(): boolean {
         return !(this.newX === this.oldX && this.newY === this.oldY);
     }
-
-    private makeSideEffect() {
-        if (MoveCommand.sideEffect != null) {
-            MoveCommand.sideEffect.execute();
-        }
-    }
-
 }

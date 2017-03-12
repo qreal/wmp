@@ -8,6 +8,7 @@ import {DiagramNode} from "../../model/DiagramNode";
 import {SubprogramDiagramNode} from "../../model/SubprogramDiagramNode";
 import {DiagramParts} from "../../model/DiagramParts";
 import {MathUtils} from "../../../../utils/MathUtils";
+import {UIDGenerator} from "../UIDGenerator";
 export class DiagramJsonParser {
 
     public parse(diagramJson: any, nodeTypesMap: Map<String, NodeType>, linkPatterns: Map<String, joint.dia.Link>): DiagramParts {
@@ -151,7 +152,7 @@ export class DiagramJsonParser {
                 subprogramDiagramId, nodeObject.graphicalId,
                 new PropertiesPack(constLogicalProperties, constGraphicalProperties));
         } else {
-            node = new DefaultDiagramNode(name, type, x, y, changeableLogicalProperties,
+            node = new DefaultDiagramNode(UIDGenerator.generate(), name, type, x, y, changeableLogicalProperties,
                 nodeTypesMap[nodeObject.type].getImage(), nodeObject.graphicalId,
                 new PropertiesPack(constLogicalProperties, constGraphicalProperties));
         }

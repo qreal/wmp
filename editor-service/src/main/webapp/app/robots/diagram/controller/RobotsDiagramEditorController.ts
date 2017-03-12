@@ -6,13 +6,10 @@ import {Interpreter} from "../../interpreter/Interpreter";
 import {ElementTypes} from "core/editorCore/model/ElementTypes";
 import {DiagramScene} from "core/editorCore/model/DiagramScene";
 import {DiagramEditorController} from "core/editorCore/controller/DiagramEditorController";
-import {ChangeCurrentElementCommand} from "core/editorCore/model/commands/ChangeCurrentElementCommand";
 import {SaveCommand} from "../sideeffect/SaveCommand";
-import {ChangePropertyCommand} from "core/editorCore/model/commands/ChangePropertyCommand";
-import {MultiCommand} from "core/editorCore/model/commands/MultiCommand";
-import {RemoveElementCommand} from "core/editorCore/model/commands/RemoveElementCommand";
-import {CreateElementCommand} from "core/editorCore/model/commands/CreateElementCommand";
-import {MoveCommand} from "core/editorCore/model/commands/MoveCommand";
+import {AddElementEvent} from "core/editorCore/events/AddElementEvent";
+import {ChangeElementEvent} from "core/editorCore/events/ChangeElementEvent";
+import {DeleteElementEvent} from "core/editorCore/events/DeleteElementEvent";
 export class RobotsDiagramEditorController extends DiagramEditorController {
 
     private menuController: DiagramMenuController;
@@ -70,13 +67,10 @@ export class RobotsDiagramEditorController extends DiagramEditorController {
     }
 
     private setSideEffectSaveForScene() {
-        ChangeCurrentElementCommand.sideEffect = new SaveCommand(this.menuController);
-        ChangePropertyCommand.sideEffect = new SaveCommand(this.menuController);
-        CreateElementCommand.sideEffect = new SaveCommand(this.menuController);
-        MoveCommand.sideEffect = new SaveCommand(this.menuController);
-        MultiCommand.sideEffect = new SaveCommand(this.menuController);
-        RemoveElementCommand.sideEffect = new SaveCommand(this.menuController);
-
+        let save = new SaveCommand(this.menuController);
+        AddElementEvent.subscribeEvent(save);
+        ChangeElementEvent.subscribeEvent(save);
+        DeleteElementEvent.subscribeEvent(save);
     }
 
     public openTwoDModel(): void {

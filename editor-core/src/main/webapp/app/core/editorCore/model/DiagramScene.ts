@@ -2,6 +2,9 @@ import {Link} from "./Link";
 import {DiagramNode} from "./DiagramNode";
 import {SubprogramNode} from "./SubprogramNode";
 import {DiagramElementListener} from "../controller/DiagramElementListener";
+import {AddElementEvent} from "../events/AddElementEvent";
+import {DeleteElementEvent} from "../events/DeleteElementEvent";
+import {ChangeElementEvent} from "../events/ChangeElementEvent";
 export class DiagramScene extends joint.dia.Paper {
 
     private htmlId: string;
@@ -43,6 +46,7 @@ export class DiagramScene extends joint.dia.Paper {
                 }))
         });
 
+
         this.linkPatternsMap = new Map<String, joint.dia.Link>();
 
         this.htmlId = htmlId;
@@ -53,7 +57,7 @@ export class DiagramScene extends joint.dia.Paper {
         this.linksMap = new Map<String, Link>();
         this.scale(this.zoom, this.zoom);
     }
-    
+
     public getId(): string {
         return this.htmlId;
     }
@@ -80,6 +84,46 @@ export class DiagramScene extends joint.dia.Paper {
 
     public getLinkById(id: string): Link {
         return this.linksMap[id];
+    }
+
+    public updateNodesFromMap(nodesMap : Map<String, DiagramNode>, currentElementId) {
+        for (let nodeId in nodesMap) {
+            if (this.nodesMap[nodeId] == undefined) {
+                let node = nodesMap[nodeId];
+                if (node instanceof SubprogramNode) {
+                    this.addSubprogramNode(<SubprogramNode> node);
+                } else {
+                    this.addNode(node);
+                }
+            }
+            else if (!(this.nodesMap[nodeId].equals(nodesMap[nodeId])) && (nodeId != currentElementId)) {
+                this.replaceNode(nodeId, nodesMap[nodeId]);
+            }
+        }
+
+        for (let nodeId in this.nodesMap) {
+            if (nodesMap[nodeId] == undefined) {
+                this.removeNode(nodeId);
+            }
+        }
+    }
+
+    public updateLinksFromMap(linksMap : Map<String, Link>, currentElementId) {
+        for (let linkId in linksMap) {
+            if (this.linksMap[linkId] == undefined) {
+                this.addLink(linksMap[linkId]);
+            }
+            else if (!(this.linksMap[linkId].equals(linksMap[linkId])) && (linkId != currentElementId)) {
+                this.removeLink(linkId);
+                this.addLink(linksMap[linkId]);
+            }
+        }
+
+        for (let linkId in this.linksMap) {
+            if (linksMap[linkId] == undefined) {
+                this.removeLink(linkId);
+            }
+        }
     }
 
     public addNodesFromMap(nodesMap: Map<String, DiagramNode>): void {
@@ -125,6 +169,11 @@ export class DiagramScene extends joint.dia.Paper {
             node.getPropertyEditElement().getHtmlElement().remove();
         }
         delete this.nodesMap[nodeId];
+    }
+
+    private replaceNode(nodeToReplaceId : string, node : DiagramNode) : void {
+        this.removeNode(nodeToReplaceId);
+        this.addNode(node);
     }
     
     public getConnectedLinkObjects(node: DiagramNode): Link[] {
@@ -182,6 +231,7 @@ export class DiagramScene extends joint.dia.Paper {
     }
 
     private addLink(link: Link): void {
+        this.linksMap[link.getJointObject().id] = link;
         this.graph.addCell(link.getJointObject());
     }
 }

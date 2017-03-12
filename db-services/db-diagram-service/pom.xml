@@ -69,6 +69,18 @@
                 </configuration>
                 <executions>
                     <execution>
+                        <id>java-generation-longpoll</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                        <configuration>
+                            <generator>java</generator>
+                            <thriftSourceRoot>${thrift.src.base}/longpoll</thriftSourceRoot>
+                            <outputDirectory>${thrift.output.dir}/longpoll</outputDirectory>
+                        </configuration>
+                    </execution>
+                    <execution>
                         <id>java-generation-diagram-db</id>
                         <phase>generate-sources</phase>
                         <goals>
@@ -124,6 +136,8 @@
                                 <source>src/main/java</source>
                                 <source>${thrift.output.dir}/struct</source>
                                 <source>${thrift.output.dir}/diagram-database</source>
+                                <source>${thrift.output.dir}/exception</source>
+                                <source>${thrift.output.dir}/longpoll</source>
                             </sources>
                         </configuration>
                     </execution>

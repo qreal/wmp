@@ -1,6 +1,7 @@
 import {PropertiesPack} from "./PropertiesPack";
 import {Property} from "./Property";
 import {DefaultDiagramNode} from "./DefaultDiagramNode";
+import {UIDGenerator} from "../controller/UIDGenerator";
 export class SubprogramNode extends DefaultDiagramNode {
 
     private subprogramDiagramId: string;
@@ -8,7 +9,7 @@ export class SubprogramNode extends DefaultDiagramNode {
 
     constructor(name: string, type: string, x: number, y: number, properties: Map<String, Property>, imagePath: string,
                 subprogramDiagramId: string, id?: string, notDefaultConstProperties?: PropertiesPack) {
-        super(name, type, x, y, properties, imagePath, id, notDefaultConstProperties);
+        super(UIDGenerator.generate(), name, type, x, y, properties, imagePath, id, notDefaultConstProperties);
         this.subprogramDiagramId = subprogramDiagramId;
 
         var fontSize: number = 16;

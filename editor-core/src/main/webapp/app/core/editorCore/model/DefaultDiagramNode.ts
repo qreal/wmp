@@ -3,7 +3,8 @@ import {PropertiesPack} from "./PropertiesPack";
 import {PropertyEditElement} from "./PropertyEditElement";
 import {UIDGenerator} from "../controller/UIDGenerator";
 import {DiagramNode} from "./DiagramNode";
-export class DefaultDiagramNode implements DiagramNode {
+import {ChangeElementEvent} from "../events/ChangeElementEvent";
+export class DefaultDiagramNode extends DiagramNode {
 
     private logicalId: string;
     private jointObject: joint.shapes.devs.ImageWithPorts;
@@ -14,9 +15,10 @@ export class DefaultDiagramNode implements DiagramNode {
     private imagePath: string;
     private propertyEditElement: PropertyEditElement;
 
-    constructor(name: string, type: string, x: number, y: number, properties: Map<String, Property>, imagePath: string,
+    constructor(logicalId : string, name: string, type: string, x: number, y: number, properties: Map<String, Property>, imagePath: string,
                 id?: string, notDefaultConstProperties?: PropertiesPack) {
-        this.logicalId = UIDGenerator.generate();
+        super();
+        this.logicalId = logicalId;
         this.name = name;
         this.type = type;
         this.constPropertiesPack = this.getDefaultConstPropertiesPack(name);
@@ -43,6 +45,15 @@ export class DefaultDiagramNode implements DiagramNode {
         this.jointObject = new joint.shapes.devs.ImageWithPorts(jointObjectAttributes);
         this.changeableProperties = properties;
         this.imagePath = imagePath;
+
+        this.subscribeJointEventsToSystemEvents();
+
+    }
+
+    private subscribeJointEventsToSystemEvents() : void {
+        this.jointObject.on('transition:end', function() { ChangeElementEvent.signalEvent() });
+        this.jointObject.on('change:size', function() { ChangeElementEvent.signalEvent() });
+        this.jointObject.on('change:attrs', function() { ChangeElementEvent.signalEvent() });
     }
 
     initPropertyEditElements(zoom: number): void {

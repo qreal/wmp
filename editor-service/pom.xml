@@ -43,13 +43,10 @@
                         </fileset>
                         <fileset>
                             <directory>src/main/webapp/resources/js/compiled</directory>
-                            <excludes>
-                                <exclude>angular.js</exclude>
-                            </excludes>
                         </fileset>
-                        <fileset>
-                            <directory>src/main/webapp/node_modules</directory>
-                        </fileset>
+                        <!--<fileset>-->
+                            <!--<directory>src/main/webapp/node_modules</directory>-->
+                        <!--</fileset>-->
                         <fileset>
                             <directory>src/main/webapp/.tscache</directory>
                         </fileset>

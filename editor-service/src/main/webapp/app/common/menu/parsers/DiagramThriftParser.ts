@@ -55,8 +55,9 @@ export class DiagramThriftParser extends DiagramJsonParser {
             }
         }
 
-        var node: DiagramNode = new DefaultDiagramNode(name, type, x, y, changeableLogicalProperties,
-                nodeTypesMap[nodeObject.type].getImage(), nodeObject.graphicalId);
+        var node: DiagramNode = new DefaultDiagramNode(nodeObject.logicalId, name, type, x, y,
+            changeableLogicalProperties, nodeTypesMap[nodeObject.type].getImage(), nodeObject.graphicalId);
+
 
         return node;
     }

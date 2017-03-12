@@ -18,6 +18,12 @@
 
         <thrift.executable>thrift</thrift.executable>
 
+        <!-- Long poll service -->
+        <port.longpoll>7070</port.longpoll>
+        <path.longpoll>localhost</path.longpoll>
+        <path.longpoll.websocket>/</path.longpoll.websocket>
+        <path.longpoll.thrift>/thrift</path.longpoll.thrift>
+
         <!-- Db services configuration -->
         <path.db.diagram>localhost</path.db.diagram>
         <path.db.robot>localhost</path.db.robot>
@@ -83,6 +89,7 @@
         <module>auth-service</module>
         <module>dashboard-service</module>
         <module>editor-service</module>
+        <module>longpoll-service</module>
         <module>db-services/db-diagram-service</module>
         <module>db-services/db-robot-store-service</module>
         <module>db-services/db-user-service</module>

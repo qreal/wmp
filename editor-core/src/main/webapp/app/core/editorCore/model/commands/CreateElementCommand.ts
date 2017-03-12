@@ -1,8 +1,7 @@
 import {DiagramElement} from "../DiagramElement";
 import {Command} from "./Command";
+import {AddElementEvent} from "../../events/AddElementEvent";
 export class CreateElementCommand implements Command {
-
-    public static sideEffect : Command = null;
 
     private element: DiagramElement;
     private executionFunction: (element: DiagramElement) => void;
@@ -17,22 +16,15 @@ export class CreateElementCommand implements Command {
 
     public execute(): void {
         this.executionFunction(this.element);
-        this.makeSideEffect();
+        AddElementEvent.signalEvent();
     }
 
     public revert(): void {
         this.revertFunction(this.element);
-        this.makeSideEffect();
+        AddElementEvent.signalEvent();
     }
 
     public isRevertible(): boolean {
         return true;
     }
-
-    private makeSideEffect() {
-        if (CreateElementCommand.sideEffect != null) {
-            CreateElementCommand.sideEffect.execute();
-        }
-    }
-
 }

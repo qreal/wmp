@@ -1,9 +1,11 @@
 package com.qreal.wmp.db.diagram.config;
 
+import com.qreal.wmp.db.diagram.client.longpoll.LongpollService;
 import com.qreal.wmp.db.diagram.dao.DiagramDao;
 import com.qreal.wmp.db.diagram.dao.DiagramDaoImpl;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -18,8 +20,9 @@ public class Dao {
     public static class ProdConfig {
         @Bean(name = "diagramDao")
         @Autowired
-        public DiagramDao createDao(SessionFactory sessionFactory) {
-            return new DiagramDaoImpl(sessionFactory);
+        public DiagramDao createDao(SessionFactory sessionFactory,
+                                    @Qualifier("longpollService") LongpollService longpollService) {
+            return new DiagramDaoImpl(sessionFactory, longpollService);
         }
     }
 

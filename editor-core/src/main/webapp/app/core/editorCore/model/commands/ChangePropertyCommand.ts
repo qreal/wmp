@@ -1,7 +1,6 @@
 import {Command} from "./Command";
+import {ChangeElementEvent} from "../../events/ChangeElementEvent";
 export class ChangePropertyCommand implements Command {
-
-    public static sideEffect : Command = null;
 
     private key: string;
     private value: string;
@@ -22,23 +21,14 @@ export class ChangePropertyCommand implements Command {
     public execute(): void {
         this.executionFunction(this.key, this.value);
         this.changeHtmlFunction(this.value);
-        this.makeSideEffect()
     }
 
     public revert(): void {
         this.executionFunction(this.key, this.oldValue);
         this.changeHtmlFunction(this.oldValue);
-        this.makeSideEffect()
     }
 
     public isRevertible() {
         return this.oldValue !== this.value;
     }
-
-    private makeSideEffect() {
-        if (ChangePropertyCommand.sideEffect != null) {
-            ChangePropertyCommand.sideEffect.execute();
-        }
-    }
-
 }

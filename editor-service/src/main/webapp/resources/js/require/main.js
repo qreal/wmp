@@ -1,18 +1,21 @@
 requirejs.config({
     baseUrl: 'resources/js/compiled',
     paths: {
-        //angular
-        angular: '../libs/angular/angular'
+        angular: '../libs/angular/angular',
+        stompjs: '../libs/stompjs/stomp'
     },
     shim: {
         angular: {
             exports: 'angular',
+        },
+        stompjs: {
+            exports: 'Stomp'
         }
     }
 });
 
 requirejs(
-    ['angular',
+    ['angular', 'stompjs',
     'require/app',
     'robots/RootDiagramController',
     'robots/diagram/controller/RobotsDiagramEditorController',

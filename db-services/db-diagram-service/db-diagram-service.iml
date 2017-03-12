@@ -12,6 +12,7 @@
           <root url="file://$MODULE_DIR$/src/main/test" />
           <root url="file://$MODULE_DIR$/target/generated-sources/thrift/diagram-database" />
           <root url="file://$MODULE_DIR$/target/generated-sources/thrift/exception" />
+          <root url="file://$MODULE_DIR$/target/generated-sources/thrift/longpoll" />
           <root url="file://$MODULE_DIR$/target/generated-sources/thrift/struct" />
         </sourceRoots>
       </configuration>
@@ -39,6 +40,7 @@
       <sourceFolder url="file://$MODULE_DIR$/target/generated-sources/thrift/exception" isTestSource="false" generated="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/test" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/target/generated-sources/thrift/longpoll" isTestSource="false" generated="true" />
       <excludeFolder url="file://$MODULE_DIR$/target/db-diagram-service" />
       <excludeFolder url="file://$MODULE_DIR$/target/db-diagram-service-1.0-SNAPSHOT" />
       <excludeFolder url="file://$MODULE_DIR$/target/maven-archiver" />

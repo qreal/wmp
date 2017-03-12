@@ -20,6 +20,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import java.util.HashSet;
@@ -51,7 +52,9 @@ public class DiagramServiceImpl implements DiagramService {
     }
 
     @Override
-    public Long saveDiagram(@NotNull Diagram diagram, Long folderId) throws AbortedException, ErrorConnectionException,
+    @Transactional
+    synchronized public Long saveDiagram(@NotNull Diagram diagram, Long folderId) throws AbortedException,
+            ErrorConnectionException,
             TException {
         logger.trace("saveDiagram() was called with parameters: diagram = {}, folderId = {}.", diagram.getName(),
                 folderId);
@@ -69,7 +72,9 @@ public class DiagramServiceImpl implements DiagramService {
     }
 
     @Override
-    public @NotNull Diagram getDiagram(Long diagramId) throws NotFoundException, ErrorConnectionException, TException {
+    @Transactional
+    synchronized public @NotNull Diagram getDiagram(Long diagramId) throws NotFoundException,
+            ErrorConnectionException, TException {
         logger.trace("getDiagram() was called with parameters: diagramId = {}.", diagramId);
         TDiagram tDiagram = null;
         transport.open();
@@ -83,7 +88,9 @@ public class DiagramServiceImpl implements DiagramService {
     }
 
     @Override
-    public void updateDiagram(@NotNull Diagram diagram) throws AbortedException, ErrorConnectionException, TException {
+    @Transactional
+    synchronized public void updateDiagram(@NotNull Diagram diagram) throws AbortedException,
+            ErrorConnectionException, TException {
         logger.trace("updateDiagram() was called with parameters: diagram = {}", diagram.getName());
         transport.open();
         try {
@@ -95,7 +102,9 @@ public class DiagramServiceImpl implements DiagramService {
     }
 
     @Override
-    public void deleteDiagram(Long diagramId) throws AbortedException, ErrorConnectionException, TException {
+    @Transactional
+    synchronized public void deleteDiagram(Long diagramId) throws AbortedException, ErrorConnectionException,
+            TException {
         logger.trace("deleteDiagram() was called with parameters: diagramId = {}.", diagramId);
         transport.open();
         try {
@@ -107,7 +116,9 @@ public class DiagramServiceImpl implements DiagramService {
     }
 
     @Override
-    public Long saveFolder(@NotNull Folder folder) throws AbortedException, ErrorConnectionException, TException {
+    @Transactional
+    synchronized public Long saveFolder(@NotNull Folder folder) throws AbortedException, ErrorConnectionException,
+            TException {
         logger.trace("saveFolder() was called with parameters: folder = {}.", folder.getFolderName());
         Long result = 0L;
 
@@ -127,7 +138,9 @@ public class DiagramServiceImpl implements DiagramService {
     }
 
     @Override
-    public Folder getFolder(Long folderId, String username) throws NotFoundException, ErrorConnectionException,
+    @Transactional
+    synchronized public Folder getFolder(Long folderId, String username) throws NotFoundException,
+            ErrorConnectionException,
             TException {
         logger.trace("getFolder() was called with parameters: folderId = {}.", folderId);
         transport.open();
@@ -142,7 +155,9 @@ public class DiagramServiceImpl implements DiagramService {
     }
 
     @Override
-    public void updateFolder(@NotNull Folder folder) throws AbortedException, ErrorConnectionException, TException {
+    @Transactional
+    synchronized public void updateFolder(@NotNull Folder folder) throws AbortedException, ErrorConnectionException,
+            TException {
         logger.trace("updateFolder() was called with parameters: folder = {}", folder.getFolderName());
         transport.open();
         try {
@@ -154,7 +169,8 @@ public class DiagramServiceImpl implements DiagramService {
     }
 
     @Override
-    public void deleteFolder(Long folderId) throws AbortedException, ErrorConnectionException, TException {
+    @Transactional
+    synchronized public void deleteFolder(Long folderId) throws AbortedException, ErrorConnectionException, TException {
         logger.trace("deleteFolder() was called with parameters: folderId = {}.", folderId);
         transport.open();
         try {
@@ -166,7 +182,9 @@ public class DiagramServiceImpl implements DiagramService {
     }
 
     @Override
-    public void createRootFolder(String userName) throws AbortedException, ErrorConnectionException, TException {
+    @Transactional
+    synchronized public void createRootFolder(String userName) throws AbortedException, ErrorConnectionException,
+            TException {
         logger.trace("createRootFolder() was called with parameters: username = {}.", userName);
         Folder rootFolder = new Folder("root", userName);
         transport.open();
@@ -181,7 +199,9 @@ public class DiagramServiceImpl implements DiagramService {
 
     @Override
     @NotNull
-    public Folder getFolderTree(String username) throws NotFoundException, ErrorConnectionException, TException {
+    @Transactional
+    synchronized public Folder getFolderTree(String username) throws NotFoundException, ErrorConnectionException,
+            TException {
         logger.trace("getFolderTree() was called with parameters: owners = {}.",
                 AuthenticatedUser.getUserName());
         TFolder folder = new TFolder();
@@ -197,7 +217,8 @@ public class DiagramServiceImpl implements DiagramService {
 
     @Override
     @NotNull
-    public void shareFolderTo(String username, Folder folder) throws TException {
+    @Transactional
+    synchronized public void shareFolderTo(String username, Folder folder) throws TException {
         logger.trace("shareFolderTo() was called with parameters: username = {}.", username);
         TFolder tFolder = folder.toTFolder();
         transport.open();

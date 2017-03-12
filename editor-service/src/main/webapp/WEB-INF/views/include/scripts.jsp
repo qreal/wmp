@@ -11,5 +11,6 @@
     <script src="<c:url value='/resources/js/libs/luaparse/luaparse.js' />"></script>
     <script src="<c:url value='/resources/js/libs/thrift/thrift.js' />"></script>
     <script src="<c:url value='/resources/js/libs/transform-to-element/transform-to-element-fix.js' />"></script>
+    <script src="<c:url value='/resources/js/libs/sockjs/sock.js' />"></script>
 
     <script data-main='/editor/resources/js/require/main' src="<c:url value='/resources/js/libs/require/require.js' />"> </script>

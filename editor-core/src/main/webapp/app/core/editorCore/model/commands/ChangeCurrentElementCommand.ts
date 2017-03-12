@@ -1,8 +1,7 @@
 import {DiagramElement} from "../DiagramElement";
 import {Command} from "./Command";
+import {ChangeElementEvent} from "../../events/ChangeElementEvent";
 export class ChangeCurrentElementCommand implements Command{
-
-    public static sideEffect : Command = null;
 
     private element: DiagramElement;
     private oldElement: DiagramElement;
@@ -17,22 +16,14 @@ export class ChangeCurrentElementCommand implements Command{
 
     public execute(): void {
         this.executionFunction(this.element);
-        this.makeSideEffect();
+        ChangeElementEvent.signalEvent();
     }
 
     public revert(): void {
         this.executionFunction(this.oldElement);
-        this.makeSideEffect();
     }
 
     public isRevertible() : boolean{
         return (this.oldElement !== this.element);
     }
-
-    private makeSideEffect() {
-        if (ChangeCurrentElementCommand.sideEffect != null) {
-            ChangeCurrentElementCommand.sideEffect.execute();
-        }
-    }
-
 }

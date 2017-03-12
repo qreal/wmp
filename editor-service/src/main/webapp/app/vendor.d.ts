@@ -9,3 +9,5 @@
 /// <reference path="./types/bootstrap/bootstrap.d.ts" />
 /// <reference path="./types/treeview/treeview.d.ts" />
 /// <reference path="./types/requirejs/require.d.ts" />
+/// <reference path="./types/stompjs/stompjs.d.ts" />
+/// <reference path="./types/sockjs/sockjs.d.ts" />

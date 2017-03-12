@@ -12,6 +12,7 @@
       <module fileurl="file://$PROJECT_DIR$/editor-core/editor-core.iml" filepath="$PROJECT_DIR$/editor-core/editor-core.iml" />
       <module fileurl="file://$PROJECT_DIR$/editor-service/editor-service.iml" filepath="$PROJECT_DIR$/editor-service/editor-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/dependencies/logging-deps/logging-deps.iml" filepath="$PROJECT_DIR$/dependencies/logging-deps/logging-deps.iml" />
+      <module fileurl="file://$PROJECT_DIR$/longpoll-service/longpoll-service.iml" filepath="$PROJECT_DIR$/longpoll-service/longpoll-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/parent.iml" filepath="$PROJECT_DIR$/parent.iml" />
       <module fileurl="file://$PROJECT_DIR$/3dparty/spring-security-oauth2-client/spring-security-oauth2-client.iml" filepath="$PROJECT_DIR$/3dparty/spring-security-oauth2-client/spring-security-oauth2-client.iml" />
       <module fileurl="file://$PROJECT_DIR$/ui-testing/ui-testing.iml" filepath="$PROJECT_DIR$/ui-testing/ui-testing.iml" />

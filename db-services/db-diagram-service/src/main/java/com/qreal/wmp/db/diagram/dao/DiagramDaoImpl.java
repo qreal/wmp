@@ -1,5 +1,6 @@
 package com.qreal.wmp.db.diagram.dao;
 
+import com.qreal.wmp.db.diagram.client.longpoll.LongpollService;
 import com.qreal.wmp.db.diagram.exceptions.AbortedException;
 import com.qreal.wmp.db.diagram.exceptions.NotFoundException;
 import com.qreal.wmp.db.diagram.model.Diagram;
@@ -19,7 +20,10 @@ public class DiagramDaoImpl implements DiagramDao {
 
     private final SessionFactory sessionFactory;
 
-    public DiagramDaoImpl(SessionFactory sessionFactory) {
+    private LongpollService longpollService;
+
+    public DiagramDaoImpl(SessionFactory sessionFactory, LongpollService longpollService) {
+        this.longpollService = longpollService;
         this.sessionFactory = sessionFactory;
     }
 
@@ -62,6 +66,10 @@ public class DiagramDaoImpl implements DiagramDao {
                     DiagramDaoImpl.class.getName(), e);
         }
         logger.trace("saveDiagram() successfully saved diagram {}.", diagram.getName());
+
+        longpollService.sendDiagramPush(diagram.getId());
+        logger.trace("saveDiagram() sent to longpoll notification");
+
         return diagram.getId();
     }
 
@@ -98,14 +106,6 @@ public class DiagramDaoImpl implements DiagramDao {
     public void rewriteDiagram(@NotNull Diagram diagram) throws AbortedException {
         logger.trace("updateDiagram() was called with parameters: diagram = {}.", diagram.getName());
         Session session = sessionFactory.getCurrentSession();
-        //try {
-        //    Diagram currentSavedDiagram = getDiagram(diagram.getId());
-        //    if (diagram.getUpdateTime() - currentSavedDiagram.getUpdateTime() < 150) {
-        //        return;
-        //    }
-        //} catch (NotFoundException e) {
-        //  logger.error("RewriteDiagram call was made without id in diagram");
-        //}
 
         if (!isExistsDiagram(diagram.getId())) {
             throw new AbortedException("Diagram with specified Id doesn't exist. Use save instead.",
@@ -113,6 +113,9 @@ public class DiagramDaoImpl implements DiagramDao {
         }
         session.merge(diagram);
         logger.trace("updateDiagram() successfully edited diagram {}.", diagram.getName());
+
+        longpollService.sendDiagramPush(diagram.getId());
+        logger.trace("rewriteDiagram() sent to longpoll notification");
     }
 
     /**

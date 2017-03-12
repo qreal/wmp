@@ -13,6 +13,8 @@ import {DiagramElementListener} from "./DiagramElementListener";
 import {SceneCommandFactory} from "../model/commands/SceneCommandFactory";
 import {DiagramEditorController} from "./DiagramEditorController";
 import {UndoRedoController} from "./UndoRedoController";
+import {UIDGenerator} from "./UIDGenerator";
+import {ChangeElementEvent} from "../events/ChangeElementEvent";
 export class SceneController {
 
     private diagramEditorController: DiagramEditorController;
@@ -66,10 +68,6 @@ export class SceneController {
         };
     }
 
-    public getCurrentElement(): DiagramElement {
-        return this.currentElement;
-    }
-
     public clearState(): void {
         this.currentElement = null;
         this.clickFlag = false;
@@ -115,7 +113,7 @@ export class SceneController {
         if (subprogramId) {
             node = new SubprogramNode(subprogramName, type, x, y, nodeProperties, image, subprogramId);
         } else {
-            node = new DefaultDiagramNode(name, type, x, y, nodeProperties, image);
+            node = new DefaultDiagramNode(UIDGenerator.generate(), name, type, x, y, nodeProperties, image);
         }
 
         var command: Command = new MultiCommand([this.paperCommandFactory.makeCreateNodeCommand(node),
@@ -187,6 +185,7 @@ export class SceneController {
         if (elementBelow) {
             this.createLink(this.currentElement.getJointObject().id, elementBelow.id);
         }
+
     }
 
     public changeCurrentElement(element: DiagramElement): void {
@@ -215,6 +214,10 @@ export class SceneController {
         } else {
             this.diagramEditorController.clearNodeProperties();
         }
+    }
+
+    public restoreCurrentElement(element: DiagramElement) : void {
+        this.selectElement(this.currentElement.getJointObject());
     }
 
     public addNode(node: DiagramNode): void {
@@ -282,6 +285,7 @@ export class SceneController {
                     this.lastCellMouseDownPosition.y, node.getX(), node.getY(), this.scene.getZoom());
                 this.undoRedoController.addCommand(command);
             }
+            //ChangeElementEvent.signalEvent();
         }
     }
 
@@ -376,4 +380,7 @@ export class SceneController {
         });
     }
 
+    public getCurrentElement() : DiagramElement {
+        return this.currentElement;
+    }
 }

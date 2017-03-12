@@ -15,6 +15,7 @@
         <module name="db-user-service" />
         <module name="editor-core" />
         <module name="editor-service" />
+        <module name="longpoll-service" />
         <module name="spring-security-oauth2-client" />
         <module name="UI-testing" />
         <module name="ui-testing" />
@@ -32,6 +33,7 @@
       <module name="editor-core" target="1.8" />
       <module name="editor-service" target="1.8" />
       <module name="logging-deps" target="1.5" />
+      <module name="longpoll-service" target="1.8" />
       <module name="parent" target="1.5" />
       <module name="shared-resources" target="1.8" />
       <module name="spring-security-oauth2-client" target="1.7" />

@@ -10,6 +10,7 @@ declare module "common/constants/MouseButton" {
 }
 declare module "core/editorCore/model/Property" {
     export class Property {
+        equals(property: Property): boolean;
         name: string;
         type: string;
         value: string;
@@ -19,6 +20,8 @@ declare module "core/editorCore/model/Property" {
 declare module "core/editorCore/model/PropertiesPack" {
     import { Property } from "core/editorCore/model/Property";
     export class PropertiesPack {
+        equals(pack: PropertiesPack): boolean;
+        private equalsMap(firstMap, secondMap);
         logical: Map<String, Property>;
         graphical: Map<String, Property>;
         constructor(logical: Map<String, Property>, graphical: Map<String, Property>);
@@ -27,14 +30,15 @@ declare module "core/editorCore/model/PropertiesPack" {
 declare module "core/editorCore/model/DiagramElement" {
     import { Property } from "core/editorCore/model/Property";
     import { PropertiesPack } from "core/editorCore/model/PropertiesPack";
-    export interface DiagramElement {
-        getLogicalId(): string;
-        getJointObject(): any;
-        getName(): string;
-        getType(): string;
-        getConstPropertiesPack(): PropertiesPack;
-        getChangeableProperties(): Map<String, Property>;
-        setProperty(name: string, property: Property): void;
+    export abstract class DiagramElement {
+        abstract getLogicalId(): string;
+        abstract getJointObject(): any;
+        abstract getName(): string;
+        abstract getType(): string;
+        abstract getConstPropertiesPack(): PropertiesPack;
+        abstract getChangeableProperties(): Map<String, Property>;
+        abstract setProperty(name: string, property: Property): void;
+        equals(element: DiagramElement): boolean;
     }
 }
 declare module "core/editorCore/model/Variant" {
@@ -61,10 +65,25 @@ declare module "core/editorCore/model/commands/Command" {
         isRevertible(): boolean;
     }
 }
+declare module "core/editorCore/events/Events" {
+    export class Events {
+        private static isSignalsEnabled;
+        static enableSignals(): void;
+        static disableSignals(): void;
+        static isSignalsEnagled(): boolean;
+    }
+}
+declare module "core/editorCore/events/ChangeElementEvent" {
+    import { Command } from "core/editorCore/model/commands/Command";
+    export class ChangeElementEvent {
+        private static subscriptions;
+        static subscribeEvent(command: Command): void;
+        static signalEvent(): void;
+    }
+}
 declare module "core/editorCore/model/commands/ChangePropertyCommand" {
     import { Command } from "core/editorCore/model/commands/Command";
     export class ChangePropertyCommand implements Command {
-        static sideEffect: Command;
         private key;
         private value;
         private oldValue;
@@ -74,7 +93,6 @@ declare module "core/editorCore/model/commands/ChangePropertyCommand" {
         execute(): void;
         revert(): void;
         isRevertible(): boolean;
-        private makeSideEffect();
     }
 }
 declare module "core/editorCore/view/HtmlView" {
@@ -148,13 +166,11 @@ declare module "core/editorCore/controller/UndoRedoController" {
 declare module "core/editorCore/model/commands/MultiCommand" {
     import { Command } from "core/editorCore/model/commands/Command";
     export class MultiCommand implements Command {
-        static sideEffect: Command;
         private commands;
         constructor(commands: Command[]);
         execute(): void;
         revert(): void;
         isRevertible(): boolean;
-        private makeSideEffect();
     }
 }
 declare module "core/editorCore/controller/UIDGenerator" {
@@ -166,7 +182,7 @@ declare module "core/editorCore/model/Link" {
     import { Property } from "core/editorCore/model/Property";
     import { PropertiesPack } from "core/editorCore/model/PropertiesPack";
     import { DiagramElement } from "core/editorCore/model/DiagramElement";
-    export class Link implements DiagramElement {
+    export class Link extends DiagramElement {
         private logicalId;
         private jointObject;
         private constPropertiesPack;
@@ -174,6 +190,7 @@ declare module "core/editorCore/model/Link" {
         private name;
         private type;
         constructor(jointObject: joint.dia.Link, name: string, type: string, properties: Map<String, Property>);
+        private subscribeJointEventsToSystemEvents();
         getLogicalId(): string;
         getJointObject(): joint.dia.Link;
         getName(): string;
@@ -191,6 +208,7 @@ declare module "core/editorCore/model/Link" {
 declare module "core/editorCore/model/PropertyEditElement" {
     import { Property } from "core/editorCore/model/Property";
     export class PropertyEditElement {
+        equals(propertyEditElement: PropertyEditElement): boolean;
         private static propertyTemplate;
         private static template;
         private htmlElement;
@@ -204,13 +222,14 @@ declare module "core/editorCore/model/PropertyEditElement" {
 declare module "core/editorCore/model/DiagramNode" {
     import { PropertyEditElement } from "core/editorCore/model/PropertyEditElement";
     import { DiagramElement } from "core/editorCore/model/DiagramElement";
-    export interface DiagramNode extends DiagramElement {
-        getX(): number;
-        getY(): number;
-        getImagePath(): string;
-        setPosition(x: number, y: number, zoom: number): void;
-        getPropertyEditElement(): PropertyEditElement;
-        initPropertyEditElements(zoom: number): void;
+    export abstract class DiagramNode extends DiagramElement {
+        abstract getX(): number;
+        abstract getY(): number;
+        abstract getImagePath(): string;
+        abstract setPosition(x: number, y: number, zoom: number): void;
+        abstract getPropertyEditElement(): PropertyEditElement;
+        abstract initPropertyEditElements(zoom: number): void;
+        equals(node: DiagramNode): boolean;
     }
 }
 declare module "core/editorCore/model/DefaultDiagramNode" {
@@ -218,7 +237,7 @@ declare module "core/editorCore/model/DefaultDiagramNode" {
     import { PropertiesPack } from "core/editorCore/model/PropertiesPack";
     import { PropertyEditElement } from "core/editorCore/model/PropertyEditElement";
     import { DiagramNode } from "core/editorCore/model/DiagramNode";
-    export class DefaultDiagramNode implements DiagramNode {
+    export class DefaultDiagramNode extends DiagramNode {
         private logicalId;
         private jointObject;
         private name;
@@ -227,7 +246,8 @@ declare module "core/editorCore/model/DefaultDiagramNode" {
         private changeableProperties;
         private imagePath;
         private propertyEditElement;
-        constructor(name: string, type: string, x: number, y: number, properties: Map<String, Property>, imagePath: string, id?: string, notDefaultConstProperties?: PropertiesPack);
+        constructor(logicalId: string, name: string, type: string, x: number, y: number, properties: Map<String, Property>, imagePath: string, id?: string, notDefaultConstProperties?: PropertiesPack);
+        private subscribeJointEventsToSystemEvents();
         initPropertyEditElements(zoom: number): void;
         getPropertyEditElement(): PropertyEditElement;
         getLogicalId(): string;
@@ -286,6 +306,22 @@ declare module "core/editorCore/controller/DiagramElementListener" {
         static makeAndExecuteCreateLinkCommand: (linkObject: Link) => void;
     }
 }
+declare module "core/editorCore/events/AddElementEvent" {
+    import { Command } from "core/editorCore/model/commands/Command";
+    export class AddElementEvent {
+        private static subscriptions;
+        static subscribeEvent(command: Command): void;
+        static signalEvent(): void;
+    }
+}
+declare module "core/editorCore/events/DeleteElementEvent" {
+    import { Command } from "core/editorCore/model/commands/Command";
+    export class DeleteElementEvent {
+        private static subscriptions;
+        static subscribeEvent(command: Command): void;
+        static signalEvent(): void;
+    }
+}
 declare module "core/editorCore/model/DiagramScene" {
     import { Link } from "core/editorCore/model/Link";
     import { DiagramNode } from "core/editorCore/model/DiagramNode";
@@ -300,6 +336,7 @@ declare module "core/editorCore/model/DiagramScene" {
         private gridSize;
         private zoom;
         constructor(id: string, graph: joint.dia.Graph);
+        private subscribeJointEventsToSystemEvents();
         getId(): string;
         getGridSize(): number;
         getZoom(): number;
@@ -307,11 +344,14 @@ declare module "core/editorCore/model/DiagramScene" {
         getLinksMap(): Map<String, Link>;
         getNodeById(id: string): DiagramNode;
         getLinkById(id: string): Link;
+        updateNodesFromMap(nodesMap: Map<String, DiagramNode>, currentElementId: any): void;
+        updateLinksFromMap(linksMap: Map<String, Link>, currentElementId: any): void;
         addNodesFromMap(nodesMap: Map<String, DiagramNode>): void;
         addLinksFromMap(linksMap: Map<String, Link>): void;
         addLinkToMap(link: Link): void;
         addLinkToPaper(link: Link): void;
         removeNode(nodeId: string): void;
+        private replaceNode(nodeToReplaceId, node);
         getConnectedLinkObjects(node: DiagramNode): Link[];
         removeLink(linkId: string): void;
         clear(): void;
@@ -327,7 +367,6 @@ declare module "core/editorCore/model/DiagramScene" {
 declare module "core/editorCore/model/commands/MoveCommand" {
     import { Command } from "core/editorCore/model/commands/Command";
     export class MoveCommand implements Command {
-        static sideEffect: Command;
         private oldX;
         private oldY;
         private newX;
@@ -338,14 +377,12 @@ declare module "core/editorCore/model/commands/MoveCommand" {
         execute(): void;
         revert(): void;
         isRevertible(): boolean;
-        private makeSideEffect();
     }
 }
 declare module "core/editorCore/model/commands/RemoveElementCommand" {
     import { DiagramElement } from "core/editorCore/model/DiagramElement";
     import { Command } from "core/editorCore/model/commands/Command";
     export class RemoveElementCommand implements Command {
-        static sideEffect: Command;
         private element;
         private executionFunction;
         private revertFunction;
@@ -353,14 +390,12 @@ declare module "core/editorCore/model/commands/RemoveElementCommand" {
         execute(): void;
         revert(): void;
         isRevertible(): boolean;
-        private makeSideEffect();
     }
 }
 declare module "core/editorCore/model/commands/CreateElementCommand" {
     import { DiagramElement } from "core/editorCore/model/DiagramElement";
     import { Command } from "core/editorCore/model/commands/Command";
     export class CreateElementCommand implements Command {
-        static sideEffect: Command;
         private element;
         private executionFunction;
         private revertFunction;
@@ -368,14 +403,12 @@ declare module "core/editorCore/model/commands/CreateElementCommand" {
         execute(): void;
         revert(): void;
         isRevertible(): boolean;
-        private makeSideEffect();
     }
 }
 declare module "core/editorCore/model/commands/ChangeCurrentElementCommand" {
     import { DiagramElement } from "core/editorCore/model/DiagramElement";
     import { Command } from "core/editorCore/model/commands/Command";
     export class ChangeCurrentElementCommand implements Command {
-        static sideEffect: Command;
         private element;
         private oldElement;
         private executionFunction;
@@ -383,7 +416,6 @@ declare module "core/editorCore/model/commands/ChangeCurrentElementCommand" {
         execute(): void;
         revert(): void;
         isRevertible(): boolean;
-        private makeSideEffect();
     }
 }
 declare module "core/editorCore/model/commands/SceneCommandFactory" {
@@ -420,7 +452,6 @@ declare module "core/editorCore/controller/SceneController" {
         private paperCommandFactory;
         private contextMenuId;
         constructor(diagramEditorController: DiagramEditorController, paper: DiagramScene);
-        getCurrentElement(): DiagramElement;
         clearState(): void;
         createLink(sourceId: string, targetId: string): void;
         createNode(type: string, x: number, y: number, subprogramId?: string, subprogramName?: string): void;
@@ -429,6 +460,7 @@ declare module "core/editorCore/controller/SceneController" {
         changeCurrentElement(element: DiagramElement): void;
         makeAndExecuteCreateLinkCommand(link: Link): void;
         setCurrentElement(element: DiagramElement): void;
+        restoreCurrentElement(element: DiagramElement): void;
         addNode(node: DiagramNode): void;
         removeElement(element: DiagramElement): void;
         addLink(link: Link): void;
@@ -443,6 +475,7 @@ declare module "core/editorCore/controller/SceneController" {
         private initDeleteListener();
         private removeCurrentElement();
         private initPropertyEditorListener();
+        getCurrentElement(): DiagramElement;
     }
 }
 declare module "core/editorCore/controller/PropertyEditorController" {
@@ -642,6 +675,7 @@ declare module "core/editorCore/controller/DiagramEditorController" {
         getNodeTypes(): Map<String, NodeType>;
         getLinkPatterns(): Map<String, joint.dia.Link>;
         addFromMap(diagramParts: DiagramParts): void;
+        updateFromMap(diagramParts: DiagramParts): void;
         protected handleLoadedTypes(elementTypes: ElementTypes): void;
     }
 }

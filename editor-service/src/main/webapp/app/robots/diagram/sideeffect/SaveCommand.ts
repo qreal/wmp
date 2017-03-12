@@ -9,6 +9,7 @@ export class SaveCommand implements Command {
     }
 
     public execute() : void {
+        console.log("SAVE!!!");
         if (this.menuController.diagramSaved) {
             this.menuController.saveCurrentDiagram();
         }

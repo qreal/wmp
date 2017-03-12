@@ -2,7 +2,8 @@ import {Property} from "./Property";
 import {PropertiesPack} from "./PropertiesPack";
 import {UIDGenerator} from "../controller/UIDGenerator";
 import {DiagramElement} from "./DiagramElement";
-export class Link implements DiagramElement {
+import {ChangeElementEvent} from "../events/ChangeElementEvent";
+export class Link extends DiagramElement {
 
     private logicalId: string;
     private jointObject: joint.dia.Link;
@@ -12,6 +13,7 @@ export class Link implements DiagramElement {
     private type: string;
 
     constructor(jointObject: joint.dia.Link, name: string, type: string, properties: Map<String, Property>) {
+        super();
         this.logicalId = UIDGenerator.generate();
         this.constPropertiesPack = this.getDefaultConstPropertiesPack();
         this.name = name;
@@ -23,15 +25,15 @@ export class Link implements DiagramElement {
         this.changeLabel(properties["Guard"].value);
         this.updateHighlight();
 
-        jointObject.on('change:source', () => {
-                this.updateHighlight();
-            }
-        );
+        this.subscribeJointEventsToSystemEvents();
+    }
 
-        jointObject.on('change:target', () => {
-                this.updateHighlight();
-            }
-        );
+    private subscribeJointEventsToSystemEvents() : void {
+        let self = this;
+        this.jointObject.on('change:source', function () { self.updateHighlight();});
+        this.jointObject.on('transition:end', function () {ChangeElementEvent.signalEvent();})
+        this.jointObject.on('change:target', function () { self.updateHighlight();});
+        this.jointObject.on('change:attrs', function() { ChangeElementEvent.signalEvent() });
     }
 
     getLogicalId(): string {
