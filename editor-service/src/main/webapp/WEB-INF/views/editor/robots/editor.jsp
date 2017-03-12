@@ -24,6 +24,7 @@
 <%@ include file="../../include/properties.jsp" %>
 
 <div id="diagram-area" class="unselectable" ng-controller="RobotsDiagramEditorController">
+    <%@ include file="toolbar.jsp" %>
     <%@ include file="../diagramContent.jsp" %>
 </div>
 

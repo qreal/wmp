@@ -1,5 +1,4 @@
 import {NodeType} from "./NodeType";
-//import {Map} from "./Map";
 export class PaletteTree {
 
     categories: Map<String, PaletteTree>;

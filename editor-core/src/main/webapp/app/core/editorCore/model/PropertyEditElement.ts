@@ -1,6 +1,5 @@
 import {StringUtils} from "../../../utils/StringUtils";
 import {Property} from "./Property";
-//import {Map} from "./Map";
 export class PropertyEditElement {
 
     private static propertyTemplate = "" +

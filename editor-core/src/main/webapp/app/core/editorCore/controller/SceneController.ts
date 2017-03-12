@@ -8,7 +8,6 @@ import {MouseButton} from "../../../common/constants/MouseButton";
 import {DiagramElement} from "../model/DiagramElement";
 import {SubprogramNode} from "../model/SubprogramNode";
 import {Property} from "../model/Property";
-//import {Map} from "../model/Map";
 import {NodeType} from "../model/NodeType";
 import {DiagramElementListener} from "./DiagramElementListener";
 import {SceneCommandFactory} from "../model/commands/SceneCommandFactory";

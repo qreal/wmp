@@ -1,6 +1,5 @@
 import {PropertiesPack} from "./PropertiesPack";
 import {Property} from "./Property";
-//import {Map} from "./Map";
 import {DefaultDiagramNode} from "./DefaultDiagramNode";
 export class SubprogramNode extends DefaultDiagramNode {
 

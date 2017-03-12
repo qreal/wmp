@@ -1,5 +1,4 @@
 import {Property} from "./Property";
-//import {Map} from "./Map";
 export class PropertiesPack {
 
     logical: Map<String, Property>;

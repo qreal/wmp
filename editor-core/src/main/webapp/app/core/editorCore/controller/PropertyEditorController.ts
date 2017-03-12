@@ -4,7 +4,6 @@ import {VariantListMapper} from "./VariantListMapper";
 import {ChangePropertyCommand} from "../model/commands/ChangePropertyCommand";
 import {Command} from "../model/commands/Command";
 import {HtmlView} from "../view/HtmlView";
-// import {Map} from "../model/Map";
 import {PropertyViewFactory} from "./PropertyViewFactory";
 import {UndoRedoController} from "./UndoRedoController";
 import {SceneController} from "./SceneController";
