@@ -10,20 +10,17 @@ import static com.codeborne.selenide.Selenide.$;
 public class FileItem {
 
     public static final By selector = By.id("file-menu");
-
-    private SaveDiagramConfirm saveDiagramConfirm;
-
+    
     private FolderArea folderArea;
 
     public FileItem(WebDriver driver) {
-        saveDiagramConfirm = new SaveDiagramConfirm();
         folderArea = new FolderAreaImpl(driver);
     }
 
     public void newDiagram() {
         $(selector).find(withText("New")).click();
         $(SaveDiagramConfirm.selector).shouldBe(Condition.visible);
-        saveDiagramConfirm.notSave();
+        SaveDiagramConfirm.getSaveDiagramConfirm().notSave();
     }
 
     public FolderArea getSaveItem() {

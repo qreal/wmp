@@ -12,4 +12,12 @@ public class SaveDiagramConfirm {
     public void notSave() {
         $(selector).find(withText("No")).click();
     }
+    
+    public void save() {
+        $(selector).find(withText("Yes")).click();
+    }
+    
+    public static SaveDiagramConfirm getSaveDiagramConfirm() {
+        return new SaveDiagramConfirm();
+    }
 }

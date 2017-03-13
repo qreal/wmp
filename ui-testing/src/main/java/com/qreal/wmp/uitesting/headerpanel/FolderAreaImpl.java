@@ -2,6 +2,7 @@ package com.qreal.wmp.uitesting.headerpanel;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Selectors;
+import com.codeborne.selenide.SelenideElement;
 import com.google.common.base.Predicate;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -36,7 +37,7 @@ public class FolderAreaImpl implements FolderArea {
     
     @Override
     public boolean isFolderExist(String name) {
-        return $(selector).find(By.className("folders")).has(text(name));
+        return $(selector).findAll(By.className("folders")).stream().anyMatch(elem -> elem.has(text(name)));
     }
     
     @Override
@@ -73,7 +74,7 @@ public class FolderAreaImpl implements FolderArea {
         while (!("").equals(getCurrentPath())) {
             moveBack();
         }
-        Arrays.stream(path.split("/")).forEach(subfolder -> {
+        Arrays.stream(path.split("/")).filter(subfolder -> !subfolder.isEmpty()).forEach(subfolder -> {
             if (!isFolderExist(subfolder)) {
                 createFolder(subfolder);
             }
@@ -95,7 +96,10 @@ public class FolderAreaImpl implements FolderArea {
     
     @Override
     public void close() {
-        $(selector).find(By.className("close")).click();
+        SelenideElement closeButton = $(selector).find(By.className("close"));
+        if ($(selector).isDisplayed() && closeButton.isDisplayed()) {
+            $(selector).find(By.className("close")).click();
+        }
     }
     
     private void waitUntilEquals(String path, Function<FolderArea, String> function) {

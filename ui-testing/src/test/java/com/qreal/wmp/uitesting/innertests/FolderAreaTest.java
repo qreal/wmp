@@ -49,7 +49,7 @@ public class FolderAreaTest {
     private final char[] alphabet = "abcdefghijklmnopqrstuvwxyz0123456789".toCharArray();
     
     @Before
-    public void runDriver() {
+    public void openEditor() {
         EditorPage editorPage = pageLoader.load(Page.EditorRobots);
         scene = editorPage.getScene();
         pallete = editorPage.getPallete();

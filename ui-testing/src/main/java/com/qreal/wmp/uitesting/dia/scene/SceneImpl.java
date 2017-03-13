@@ -32,7 +32,7 @@ import static com.codeborne.selenide.Selenide.$;
  */
 public class SceneImpl implements Scene {
 
-    private static final String SELECTOR = ".scene-wrapper";
+    public static final String SELECTOR = ".scene-wrapper";
 
     private static final Logger logger = LoggerFactory.getLogger(PalleteImpl.class);
     

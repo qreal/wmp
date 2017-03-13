@@ -21,8 +21,11 @@ public class EditorHeaderPanelImpl implements EditorHeaderPanel {
     private final FileItem fileItem;
     
     private final PageFactory pageFactory;
-
-    public EditorHeaderPanelImpl(PageFactory pageFactory, WebDriver webDriver) {
+    
+    private final DiagramStoreService service;
+    
+    private EditorHeaderPanelImpl(PageFactory pageFactory, WebDriver webDriver) {
+        service = new DiagramStoreService();
         fileItem = new FileItem(webDriver);
         this.pageFactory = pageFactory;
     }
@@ -48,6 +51,7 @@ public class EditorHeaderPanelImpl implements EditorHeaderPanel {
         try (FolderArea folderArea = getFolderArea()) {
             String[] steps = path.split("/");
             folderArea.move(String.join("/", Arrays.copyOf(steps, steps.length - 1)));
+            service.addDiagram(steps[steps.length - 1]);
         } catch (Exception e) {
             logger.error(e.getMessage());
         }
@@ -56,6 +60,18 @@ public class EditorHeaderPanelImpl implements EditorHeaderPanel {
     @Override
     public void openDiagram() {
         
+    }
+    
+    @Override
+    public boolean isDiagramExist(String path) {
+        try (FolderArea folderArea = getFolderArea()) {
+            String[] steps = path.split("/");
+            folderArea.move(String.join("/", Arrays.copyOf(steps, steps.length - 1)));
+            return service.isDiagramExist(steps[steps.length - 1]);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        }
+        return false;
     }
     
     private FileItem clickFile() {
