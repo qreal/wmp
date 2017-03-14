@@ -7,7 +7,7 @@ import com.qreal.wmp.uitesting.headerpanel.EditorHeaderPanel;
 
 import static com.codeborne.selenide.Selenide.title;
 
-public class EditorPage {
+public class EditorPage implements EventProvider.EventListener {
     
     private final String title;
     
@@ -47,5 +47,10 @@ public class EditorPage {
     
     public boolean onPage() {
         return title.equals(title());
+    }
+    
+    @Override
+    public void updateEvent() {
+        ((Resettable) scene).reset();
     }
 }

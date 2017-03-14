@@ -7,6 +7,7 @@ import com.qreal.wmp.uitesting.headerpanel.EditorHeaderPanelImpl;
 import com.qreal.wmp.uitesting.pages.AuthPage;
 import com.qreal.wmp.uitesting.pages.DashboardPage;
 import com.qreal.wmp.uitesting.pages.EditorPage;
+import com.qreal.wmp.uitesting.pages.EventProvider;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,20 +20,25 @@ public class PageFactory {
     
     private final WebDriver webDriver;
     
+    private final EventProvider eventProvider;
+    
     public PageFactory(WebDriver webDriver) {
         this.webDriver = webDriver;
+        eventProvider = new EventProvider();
     }
     
     /** Returns Editor Page instance. */
     public EditorPage getEditorPage() {
         logger.info("Editor page was created");
-        return new EditorPage(
+        EditorPage page = new EditorPage(
                 title(),
                 SceneImpl.getScene(webDriver),
                 PalleteImpl.getPallete(),
                 PropertyEditorImpl.getPropertyEditor(),
-                EditorHeaderPanelImpl.getEditorHeaderPanel(this, webDriver)
+                EditorHeaderPanelImpl.getEditorHeaderPanel(this, webDriver, eventProvider)
         );
+        eventProvider.addListener(page);
+        return page;
     }
     
     /** Returns Dashboard Page instance. */

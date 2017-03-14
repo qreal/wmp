@@ -12,7 +12,9 @@ public interface EditorHeaderPanel {
     
     void saveDiagram(String path);
     
-    void openDiagram();
+    void openDiagram(String path);
     
     boolean isDiagramExist(String path);
+    
+    boolean equalsDiagrams(String path);
 }

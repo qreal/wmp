@@ -13,6 +13,7 @@ import com.qreal.wmp.uitesting.dia.scene.providers.LinkProvider;
 import com.qreal.wmp.uitesting.dia.scene.window.SceneWindow;
 import com.qreal.wmp.uitesting.dia.scene.window.SceneWindowImpl;
 import com.qreal.wmp.uitesting.exceptions.ElementNotOnTheSceneException;
+import com.qreal.wmp.uitesting.pages.Resettable;
 import org.jetbrains.annotations.Contract;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -30,7 +31,7 @@ import static com.codeborne.selenide.Selenide.$;
  * Describes Scene of Editor.
  * Can add rm and manipulate with objects on that area.
  */
-public class SceneImpl implements Scene {
+public class SceneImpl implements Scene, Resettable {
 
     public static final String SELECTOR = ".scene-wrapper";
 
@@ -133,6 +134,12 @@ public class SceneImpl implements Scene {
                 logger.info("Clean scene");
             }
         }
+    }
+    
+    @Override
+    public void reset() {
+        blockProvider.recalculateBlocks();
+        linkProvider.recalculateLinks();
     }
     
     @Contract("_ -> !null")
