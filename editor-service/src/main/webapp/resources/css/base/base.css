@@ -99,7 +99,7 @@ body{
 }
 
 #diagram-scene svg {
-    background: #ffffff url('../../../images/bg/bg.png');
+    background: #ffffff url('/editor/images/bg/bg.png');
 }
 
 #property_table {

@@ -1,5 +1,4 @@
 import {Property} from "./Property";
-//import {Map} from "./Map";
 export class SubprogramDiagramNode {
 
     private logicalId: string;
