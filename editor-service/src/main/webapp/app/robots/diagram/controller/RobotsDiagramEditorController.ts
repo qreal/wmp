@@ -33,8 +33,8 @@ export class RobotsDiagramEditorController extends DiagramEditorController {
         $("#" + scene.getId()).mousemove((event) => { this.gesturesController.onMouseMove(event) } );
         $("#elements-search").on('input', (event) => {
             this.paletteController.searchPaletteReload(event, this.elementTypes, this.nodeTypesMap);
-            this.paletteController.initDraggable();
             this.paletteController.initClick(this.diagramEditor.getScene());
+            this.paletteController.initDraggable();
         } );
 
         (scene as any).on('cell:pointerdown', (cellView, event, x, y): void => {

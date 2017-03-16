@@ -32,14 +32,14 @@ export class DiagramScene extends joint.dia.Paper {
             }),
             validateConnection: function (cellViewS, magnetS, cellViewT, magnetT, end, linkView) {
                 return (!(magnetT && magnetT.getAttribute('type') === 'output')
-                     && !(cellViewT && cellViewT.model.get('type') === 'link'));
+                    && !(cellViewT && cellViewT.model.get('type') === 'link'));
             },
             validateMagnet: function (cellView, magnet) {
                 return magnet.getAttribute('magnet') !== 'passive';
             },
             diagramElementView: joint.dia.ElementView.extend(jQuery.extend(joint.shapes.basic.PortsViewInterface,
                 {
-                pointerdown: DiagramElementListener.pointerdown
+                    pointerdown: DiagramElementListener.pointerdown
                 }))
         });
 
@@ -53,7 +53,7 @@ export class DiagramScene extends joint.dia.Paper {
         this.linksMap = new Map<String, Link>();
         this.scale(this.zoom, this.zoom);
     }
-    
+
     public getId(): string {
         return this.htmlId;
     }
@@ -126,11 +126,11 @@ export class DiagramScene extends joint.dia.Paper {
         }
         delete this.nodesMap[nodeId];
     }
-    
+
     public getConnectedLinkObjects(node: DiagramNode): Link[] {
         var links = this.graph.getConnectedLinks(node.getJointObject(), { inbound: true, outbound: true });
         var linkObjects: Link[] = [];
-        
+
         links.forEach((link) => linkObjects.push(this.linksMap[link.id]));
         return linkObjects;
     }

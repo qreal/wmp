@@ -10,7 +10,7 @@ import {DiagramNode} from "core/editorCore/model/DiagramNode";
 import {DiagramExporter} from "core/editorCore/controller/exporters/DiagramExporter";
 export class DiagramThriftExporter extends DiagramExporter {
     public exportSavingDiagramState(graph: joint.dia.Graph, diagramParts: DiagramParts,
-                                          name: string, folderId: number) {
+                                    name: string, folderId: number) {
         var newDiagram = new TDiagram();
         newDiagram.name = name;
         newDiagram.folderId = folderId;
@@ -22,7 +22,7 @@ export class DiagramThriftExporter extends DiagramExporter {
     }
 
     public exportUpdatingDiagramState(graph: joint.dia.Graph, diagramParts: DiagramParts,
-                                            name: string, parentFolder: Folder) {
+                                      name: string, parentFolder: Folder) {
         var newDiagram = new TDiagram();
         newDiagram.name = name;
         newDiagram.folderId = parentFolder.getId();
@@ -56,6 +56,12 @@ export class DiagramThriftExporter extends DiagramExporter {
             positionProperty.value = "" + node.getX() + ", " + node.getY();
             positionProperty.type = "QPointF";
             newNode.properties.push(positionProperty);
+
+            var sizeProperty = new TProperty();
+            sizeProperty.name = "size";
+            sizeProperty.value = node.getSize();
+            sizeProperty.type = "string";
+            newNode.properties.push(sizeProperty);
 
             nodes.push(newNode);
         }
