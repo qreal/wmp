@@ -3,10 +3,40 @@ import {PropertiesPack} from "./PropertiesPack";
 import {PropertyEditElement} from "./PropertyEditElement";
 import {UIDGenerator} from "../controller/UIDGenerator";
 import {DiagramNode} from "./DiagramNode";
+
+class ImageWithPorts extends joint.shapes.basic.Generic {
+    constructor(portsModelInterface: joint.shapes.basic.PortsModelInterface) {
+        super(portsModelInterface);
+
+        this.set("markup", '<g class="rotatable"><g class="scalable"><rect class ="outer"/><image/></g><text/><g class="inPorts"/><g class="outPorts"/></g>')
+        this.set("portMarkup", '<g class="port<%= id %>"><circle/><text/></g>')
+    }
+
+    getPortAttrs(portName: string, index: number, total: number, selector: string, type: string): {} {
+
+        var attrs = {};
+
+        var portClass = 'port' + index;
+        var portSelector = selector + '>.' + portClass;
+        var portTextSelector = portSelector + '>text';
+        var portCircleSelector = portSelector + '>circle';
+
+        attrs[portTextSelector] = { text: portName };
+        attrs[portCircleSelector] = { port: { id: portName || _.uniqueId(type), type: type } };
+        attrs[portSelector] = { ref: 'rect', 'ref-x': (index + 0.5) * (1 / total) };
+
+        if (selector === '.outPorts') {
+            attrs[portSelector]['ref-dx'] = 0;
+        }
+
+        return attrs;
+    }
+};
+
 export class DefaultDiagramNode implements DiagramNode {
 
     private logicalId: string;
-    private jointObject: joint.shapes.devs.ImageWithPorts;
+    private jointObject: ImageWithPorts;
     private name: string;
     private type: string;
     private constPropertiesPack: PropertiesPack;
@@ -51,7 +81,7 @@ export class DefaultDiagramNode implements DiagramNode {
             position: { x: x, y: y },
             size: { width: this.boundingBox.width, height: this.boundingBox.height },
             outPorts: [''],
-            attrs: {
+            attrs: <{ [selector: string]: { [key: string]: string} }> {
                 image: {
                     'xlink:href': imagePath
                 },
@@ -62,7 +92,7 @@ export class DefaultDiagramNode implements DiagramNode {
             jQuery.extend(jointObjectAttributes, {id: id});
         }
 
-        this.jointObject = new joint.shapes.devs.ImageWithPorts(jointObjectAttributes);
+        this.jointObject = new ImageWithPorts(jointObjectAttributes);
         this.changeableProperties = properties;
         this.imagePath = imagePath;
     }
