@@ -35,6 +35,8 @@ export class DiagramThriftParser extends DiagramJsonParser {
 
         var x: number = 0;
         var y: number = 0;
+        var width: number = 0;
+        var height: number = 0;
 
         for (var j = 0; j < propertiesObject.length; j++) {
             var propertyName = propertiesObject[j].name;
@@ -52,11 +54,17 @@ export class DiagramThriftParser extends DiagramJsonParser {
                 var positionNums = this.parsePosition(position);
                 x = positionNums.x + offsetX;
                 y = positionNums.y + offsetY;
+            } else if (propertyName === "size") {
+                var size:string = propertiesObject[j].value;
+                var bboxDimensions = this.parseSize(size);
+                width = bboxDimensions.width;
+                height = bboxDimensions.height;
             }
         }
 
-        var node: DiagramNode = new DefaultDiagramNode(name, type, x, y, changeableLogicalProperties,
-                nodeTypesMap[nodeObject.type].getImage(), nodeObject.graphicalId);
+        var node: DiagramNode = new DefaultDiagramNode(name, type, x, y, width, height,
+            changeableLogicalProperties,
+            nodeTypesMap[nodeObject.type].getImage(), nodeObject.graphicalId);
 
         return node;
     }

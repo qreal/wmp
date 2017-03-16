@@ -26,11 +26,9 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">File<b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li><a href="" role="menuitem" tabindex="-1" ng-click="createNewDiagram()">New</a></li>
-                        <li><a href="" role="menuitem" tabindex="-1" data-toggle="modal" data-target="#diagrams"
-                               ng-click="openFolderWindow()">Open</a></li>
+                        <li><a href="" role="menuitem" tabindex="-1" ng-click="openFolderWindow()">Open</a></li>
                         <li><a href="" role="menuitem" tabindex="-1" ng-click="saveCurrentDiagram()">Save</a></li>
-                        <li><a href="" role="menuitem" tabindex="-1" data-toggle="modal" data-target="#diagrams"
-                               ng-click="saveDiagramAs()">SaveAs</a></li>
+                        <li><a href="" role="menuitem" tabindex="-1" ng-click="saveDiagramAs()">SaveAs</a></li>
                     </ul>
                 </li>
                 <li>

@@ -1,5 +1,4 @@
 import {Property} from "./Property";
-//import {Map} from "./Map";
 import {PropertiesPack} from "./PropertiesPack";
 import {UIDGenerator} from "../controller/UIDGenerator";
 import {DiagramElement} from "./DiagramElement";

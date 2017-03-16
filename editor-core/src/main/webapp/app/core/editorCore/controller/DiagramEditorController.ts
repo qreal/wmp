@@ -2,7 +2,6 @@
 import {PropertyEditorController} from "./PropertyEditorController";
 import {ElementTypes} from "../model/ElementTypes";
 import {DiagramParts} from "../model/DiagramParts";
-//import {Map} from "../model/Map";
 import {NodeType} from "../model/NodeType";
 import {UndoRedoController} from "./UndoRedoController";
 import {Property} from "../model/Property";
@@ -121,10 +120,10 @@ export class DiagramEditorController {
         $.extend(this.nodeTypesMap, elementTypes.blockTypes.convertToMap(), elementTypes.flowTypes.convertToMap(),
             elementTypes.uncategorisedTypes);
 
+        this.diagramEditor.getScene().setLinkPatterns(this.linkPatternsMap);
         this.paletteController.appendBlocksPalette(elementTypes.blockTypes);
         this.paletteController.appendFlowsPalette(elementTypes.flowTypes);
-        this.paletteController.initDraggable();
         this.paletteController.initClick(this.diagramEditor.getScene());
-        this.diagramEditor.getScene().setLinkPatterns(this.linkPatternsMap);
+        this.paletteController.initDraggable();
     }
 }

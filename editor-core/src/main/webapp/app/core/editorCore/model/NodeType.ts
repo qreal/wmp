@@ -1,6 +1,6 @@
 import {Property} from "./Property";
-//import {Map} from "./Map";
 import {StringUtils} from "../../../utils/StringUtils";
+
 export class NodeType {
 
     private name: string;
@@ -44,4 +44,5 @@ export class NodeType {
     public setVisibility(isVisible: Boolean) {
         this.isVisible = isVisible;
     }
+
 }

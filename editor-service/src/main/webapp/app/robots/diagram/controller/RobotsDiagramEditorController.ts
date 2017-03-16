@@ -6,11 +6,6 @@ import {Interpreter} from "../../interpreter/Interpreter";
 import {ElementTypes} from "core/editorCore/model/ElementTypes";
 import {DiagramScene} from "core/editorCore/model/DiagramScene";
 import {DiagramEditorController} from "core/editorCore/controller/DiagramEditorController";
-import {PaletteController} from "core/editorCore/controller/PaletteController";
-import {SceneController} from "core/editorCore/controller/SceneController";
-import {ElementsTypeLoader} from "core/editorCore/controller/loaders/ElementsTypeLoader";
-import {UndoRedoController} from "core/editorCore/controller/UndoRedoController";
-import {PropertyEditorController} from "core/editorCore/controller/PropertyEditorController";
 export class RobotsDiagramEditorController extends DiagramEditorController {
 
     private menuController: DiagramMenuController;
@@ -33,8 +28,8 @@ export class RobotsDiagramEditorController extends DiagramEditorController {
         $("#" + scene.getId()).mousemove((event) => { this.gesturesController.onMouseMove(event) } );
         $("#elements-search").on('input', (event) => {
             this.paletteController.searchPaletteReload(event, this.elementTypes, this.nodeTypesMap);
-            this.paletteController.initDraggable();
             this.paletteController.initClick(this.diagramEditor.getScene());
+            this.paletteController.initDraggable();
         } );
 
         (scene as any).on('cell:pointerdown', (cellView, event, x, y): void => {

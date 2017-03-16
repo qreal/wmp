@@ -1,5 +1,4 @@
 import {Property} from "./Property";
-//import {Map} from "./Map";
 import {PropertiesPack} from "./PropertiesPack";
 import {PropertyEditElement} from "./PropertyEditElement";
 import {UIDGenerator} from "../controller/UIDGenerator";
@@ -15,12 +14,34 @@ export class DefaultDiagramNode implements DiagramNode {
     private imagePath: string;
     private propertyEditElement: PropertyEditElement;
 
-    constructor(name: string, type: string, x: number, y: number, properties: Map<String, Property>, imagePath: string,
-                id?: string, notDefaultConstProperties?: PropertiesPack) {
+    private resizeParameters = {
+        isTopResizing: false,
+        isBottomResizing: false,
+        isRightResizing: false,
+        isLeftResizing: false,
+    };
+
+    private lastMousePosition = {
+        x: 0,
+        y: 0,
+    };
+
+    private boundingBox = {
+        width: 0,
+        height: 0,
+    };
+
+    constructor(name: string, type: string, x: number, y: number, width: number, height: number,
+                properties: Map<String, Property>, imagePath: string, id?: string,
+                notDefaultConstProperties?: PropertiesPack) {
         this.logicalId = UIDGenerator.generate();
         this.name = name;
         this.type = type;
-        this.constPropertiesPack = this.getDefaultConstPropertiesPack(name);
+
+        this.boundingBox.width = width;
+        this.boundingBox.height = height;
+
+        this.constPropertiesPack = DefaultDiagramNode.getDefaultConstPropertiesPack(name);
         if (notDefaultConstProperties) {
             $.extend(this.constPropertiesPack.logical, notDefaultConstProperties.logical);
             $.extend(this.constPropertiesPack.graphical, notDefaultConstProperties.graphical);
@@ -28,7 +49,7 @@ export class DefaultDiagramNode implements DiagramNode {
 
         var jointObjectAttributes = {
             position: { x: x, y: y },
-            size: { width: 50, height: 50 },
+            size: { width: this.boundingBox.width, height: this.boundingBox.height },
             outPorts: [''],
             attrs: {
                 image: {
@@ -46,17 +67,47 @@ export class DefaultDiagramNode implements DiagramNode {
         this.imagePath = imagePath;
     }
 
+    pointermove(cellView, evt, x, y): void {
+        cellView.options.interactive = true;
+        var bbox = cellView.getBBox();
+        var newX = bbox.x + (<number> (bbox.width - 50)/2);
+        var newY = bbox.y + bbox.height - 50;
+        this.propertyEditElement.setPosition(newX, newY);
+
+        if (this.resizeParameters.isBottomResizing || this.resizeParameters.isRightResizing)
+        {
+            cellView.options.interactive = false;
+            var model = <joint.dia.Element> cellView.model;
+            var diffX = x - this.lastMousePosition.x;
+            var diffY = y - this.lastMousePosition.y;
+            this.lastMousePosition.x = x;
+            this.lastMousePosition.y = y;
+
+            if (this.resizeParameters.isBottomResizing) {
+                if (this.resizeParameters.isRightResizing) {
+                    this.boundingBox.width = bbox.width + diffX;
+                    this.boundingBox.height = bbox.height + diffY;
+                } else {
+                    this.boundingBox.width = bbox.width;
+                    this.boundingBox.height = bbox.height + diffY;
+                }
+            } else if (this.resizeParameters.isRightResizing) {
+                this.boundingBox.width = bbox.width + diffX;
+                this.boundingBox.height = bbox.height;
+            }
+            model.resize(this.boundingBox.width - 2, this.boundingBox.height);
+        }
+    }
+
     initPropertyEditElements(zoom: number): void {
         var parentPosition = this.getJointObjectPagePosition(zoom);
         this.propertyEditElement = new PropertyEditElement(this.logicalId, this.jointObject.id,
             this.changeableProperties);
-        this.propertyEditElement.setPosition(parentPosition.x, parentPosition.y);
-        this.jointObject.on('change:position', () => {
-            var position = this.getJointObjectPagePosition(zoom);
-            this.propertyEditElement.setPosition(position.x, position.y);
-        });
+        var propertyEditElementX = parentPosition.x + (<number> (this.boundingBox.width - 50)/2);
+        var propertyEditElementY = parentPosition.y + this.boundingBox.height - 50;
+        this.propertyEditElement.setPosition(propertyEditElementX, propertyEditElementY);
     }
-    
+
     getPropertyEditElement(): PropertyEditElement {
         return this.propertyEditElement;
     }
@@ -81,10 +132,27 @@ export class DefaultDiagramNode implements DiagramNode {
         return (this.jointObject.get("position"))['y'];
     }
 
-    setPosition(x: number, y: number, zoom: number): void {
+    getSize(): string {
+        return String(this.boundingBox.width) + ", " + String(this.boundingBox.height);
+    }
+
+    setPosition(x: number, y: number, zoom: number, cellView : joint.dia.CellView): void {
         this.jointObject.position(x, y);
-        var position = this.getJointObjectPagePosition(zoom);
-        this.propertyEditElement.setPosition(position.x, position.y);
+        // var position = this.getJointObjectPagePosition(zoom);
+        // this.propertyEditElement.setPosition(position.x, position.y);
+        var bbox = cellView.getBBox();
+        var newX = bbox.x + (<number> (bbox.width - 50)/2);
+        var newY = bbox.y + bbox.height - 50;
+        this.propertyEditElement.setPosition(newX, newY);
+    }
+
+    setSize(width: number, height: number, cellView : joint.dia.CellView): void {
+        var model = <joint.dia.Element> cellView.model;
+        model.resize(width - 2, height);
+        var bbox = cellView.getBBox();
+        var newX = bbox.x + (<number> (bbox.width - 50)/2);
+        var newY = bbox.y + bbox.height - 50;
+        this.propertyEditElement.setPosition(newX, newY);
     }
 
     getImagePath(): string {
@@ -115,13 +183,13 @@ export class DefaultDiagramNode implements DiagramNode {
         return this.changeableProperties;
     }
 
-    private getDefaultConstPropertiesPack(name: string): PropertiesPack {
+    private static getDefaultConstPropertiesPack(name: string): PropertiesPack {
         var logical: Map<String, Property> = this.initConstLogicalProperties(name);
         var graphical: Map<String, Property> = this.initConstGraphicalProperties(name);
         return new PropertiesPack(logical, graphical);
     }
 
-    private initConstLogicalProperties(name: string): Map<String, Property> {
+    private static initConstLogicalProperties(name: string): Map<String, Property> {
         var logical: Map<String, Property> = new Map<String, Property>();
         logical["name"] = new Property("name", "QString", name);
         logical["from"] = new Property("from", "qReal::Id", "qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID");
@@ -131,7 +199,7 @@ export class DefaultDiagramNode implements DiagramNode {
         return logical;
     }
 
-    private initConstGraphicalProperties(name: string): Map<String, Property> {
+    private static initConstGraphicalProperties(name: string): Map<String, Property> {
         var graphical: Map<String, Property> = new Map<String, Property>();
         graphical["name"] = new Property("name", "QString", name);
         graphical["to"] = new Property("to", "qreal::Id", "qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID");
@@ -147,6 +215,50 @@ export class DefaultDiagramNode implements DiagramNode {
             x: this.jointObject.get("position")['x'] * zoom,
             y: this.jointObject.get("position")['y'] * zoom
         };
+    }
+
+    initResize(bbox, x: number, y: number, paddingPercent): void {
+        this.resizeParameters = {
+            isTopResizing: DefaultDiagramNode.isTopBorderClicked(bbox, x, y, paddingPercent),
+            isBottomResizing: DefaultDiagramNode.isBottomBorderClicked(bbox, x, y, paddingPercent),
+            isRightResizing: DefaultDiagramNode.isRightBorderClicked(bbox, x, y, paddingPercent),
+            isLeftResizing: DefaultDiagramNode.isLeftBorderClicked(bbox, x, y, paddingPercent),
+        };
+        this.lastMousePosition.x = x;
+        this.lastMousePosition.y = y;
+    }
+
+    completeResize(): void {
+        this.resizeParameters = {
+            isTopResizing: false,
+            isBottomResizing: false,
+            isRightResizing: false,
+            isLeftResizing: false,
+        };
+    }
+
+    isResizing() : boolean {
+        return this.resizeParameters.isBottomResizing || this.resizeParameters.isRightResizing;
+    }
+
+    private static isLeftBorderClicked(bbox, x, y, paddingPercent): boolean {
+        return (x <= bbox.x + paddingPercent && x >= bbox.x - paddingPercent &&
+        y <= bbox.y + bbox.height + paddingPercent && y >= bbox.y - paddingPercent);
+    }
+
+    private static isRightBorderClicked(bbox, x, y, paddingPercent): boolean {
+        return (x <= bbox.x + bbox.width + paddingPercent && x >= bbox.x + bbox.width - paddingPercent &&
+        y <= bbox.y + bbox.height + paddingPercent && y >= bbox.y - paddingPercent);
+    }
+
+    private static isTopBorderClicked(bbox, x, y, paddingPercent): boolean {
+        return (x <= bbox.x + bbox.width + paddingPercent && x >= bbox.x - paddingPercent &&
+        y <= bbox.y + paddingPercent && y >= bbox.y - paddingPercent);
+    }
+
+    private static isBottomBorderClicked(bbox, x, y, paddingPercent): boolean {
+        return (x <= bbox.x + bbox.width + paddingPercent && x >= bbox.x - paddingPercent &&
+        y <= bbox.y + bbox.height + paddingPercent && y >= bbox.y + bbox.height - paddingPercent);
     }
 
 }

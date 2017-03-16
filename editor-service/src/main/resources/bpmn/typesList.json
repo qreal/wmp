@@ -13,7 +13,7 @@
         "general": [
             "Subprogram"
         ],
-        
+
         "palette": {
 
             "Events": [
@@ -21,7 +21,7 @@
                 "Timer"
             ]
         }
-        
+
     }
 
 }

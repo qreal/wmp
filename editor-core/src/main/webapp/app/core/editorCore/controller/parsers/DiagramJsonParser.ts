@@ -1,7 +1,6 @@
 import {Link} from "../../model/Link";
 import {NodeType} from "../../model/NodeType";
 import {Property} from "../../model/Property";
-//import {Map} from "../../model/Map";
 import {PropertiesPack} from "../../model/PropertiesPack";
 import {DefaultDiagramNode} from "../../model/DefaultDiagramNode";
 import {SubprogramNode} from "../../model/SubprogramNode";
@@ -9,6 +8,7 @@ import {DiagramNode} from "../../model/DiagramNode";
 import {SubprogramDiagramNode} from "../../model/SubprogramDiagramNode";
 import {DiagramParts} from "../../model/DiagramParts";
 import {MathUtils} from "../../../../utils/MathUtils";
+import {DefaultSize} from "../../../../common/constants/DefaultSize";
 export class DiagramJsonParser {
 
     public parse(diagramJson: any, nodeTypesMap: Map<String, NodeType>, linkPatterns: Map<String, joint.dia.Link>): DiagramParts {
@@ -85,7 +85,7 @@ export class DiagramJsonParser {
     }
 
     protected parseDiagramNodeObject(nodeObject: any, nodeTypesMap: Map<String, NodeType>,
-                                   offsetX: number, offsetY: number): DiagramNode {
+                                     offsetX: number, offsetY: number): DiagramNode {
         var changeableLogicalProperties: Map<String, Property> = new Map<String, Property>();
         var constLogicalProperties: Map<String, Property> = new Map<String, Property>();
         var subprogramDiagramId: string = "";
@@ -147,12 +147,13 @@ export class DiagramJsonParser {
 
         var node: DiagramNode;
         if (subprogramDiagramId) {
-            node = new SubprogramNode(name, type, x, y, changeableLogicalProperties,
-                nodeTypesMap[nodeObject.type].getImage(),
+            node = new SubprogramNode(name, type, x, y, DefaultSize.DEFAULT_NODE_WIDTH,
+                DefaultSize.DEFAULT_NODE_HEIGHT, changeableLogicalProperties, nodeTypesMap[nodeObject.type].getImage(),
                 subprogramDiagramId, nodeObject.graphicalId,
                 new PropertiesPack(constLogicalProperties, constGraphicalProperties));
         } else {
-            node = new DefaultDiagramNode(name, type, x, y, changeableLogicalProperties,
+            node = new DefaultDiagramNode(name, type, x, y, DefaultSize.DEFAULT_NODE_WIDTH,
+                DefaultSize.DEFAULT_NODE_HEIGHT, changeableLogicalProperties,
                 nodeTypesMap[nodeObject.type].getImage(), nodeObject.graphicalId,
                 new PropertiesPack(constLogicalProperties, constGraphicalProperties));
         }
@@ -286,6 +287,11 @@ export class DiagramJsonParser {
     protected parsePosition(position: string): {x: number; y: number} {
         var parts = position.split(", ");
         return {x: parseFloat(parts[0]), y: parseFloat(parts[1])};
+    }
+
+    protected parseSize(size: string): {width: number; height: number} {
+        var parts = size.split(", ");
+        return {width: parseFloat(parts[0]), height: parseFloat(parts[1])};
     }
 
     protected parseId(idString: string): string {

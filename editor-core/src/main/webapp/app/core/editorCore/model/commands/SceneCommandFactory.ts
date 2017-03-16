@@ -1,4 +1,5 @@
 import {MoveCommand} from "./MoveCommand";
+import {ResizeCommand} from "./ResizeCommand";
 import {Command} from "./Command";
 import {DiagramNode} from "../DiagramNode";
 import {RemoveElementCommand} from "./RemoveElementCommand";
@@ -41,8 +42,12 @@ export class SceneCommandFactory {
     }
 
     public makeMoveCommand(node: DiagramNode, oldX: number, oldY: number, newX: number, newY: number,
-                           zoom: number): Command {
-        return new MoveCommand(oldX, oldY, newX, newY, zoom, node.setPosition.bind(node));
+                           zoom: number, cellView : joint.dia.CellView): Command {
+        return new MoveCommand(oldX, oldY, newX, newY, zoom, cellView, node.setPosition.bind(node));
     }
 
+    public makeResizeCommand(node: DiagramNode, oldWidth: number, oldHeight: number, newWidth: number, newHeight: number,
+                             cellView : joint.dia.CellView): Command {
+        return new ResizeCommand(oldWidth, oldHeight, newWidth, newHeight, cellView, node.setSize.bind(node));
+    }
 }

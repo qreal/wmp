@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 cd ../../editor-core
 mvn clean install
 cd ../editor-service
