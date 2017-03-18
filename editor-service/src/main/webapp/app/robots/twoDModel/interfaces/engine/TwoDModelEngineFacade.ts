@@ -1,4 +1,4 @@
-interface TwoDModelEngineFacade {
+export interface TwoDModelEngineFacade {
     setDrawLineMode(): void;
     setDrawWallMode(): void;
     setDrawPencilMode(): void;

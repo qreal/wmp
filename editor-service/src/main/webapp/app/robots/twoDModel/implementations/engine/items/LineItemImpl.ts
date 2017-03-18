@@ -1,8 +1,7 @@
-/// <reference path="../../../interfaces/engine/items/LineItem.ts" />
-/// <reference path="../../../interfaces/engine/model/WorldModel.ts" />
-/// <reference path="../../../../../vendor.d.ts" />
-
-class LineItemImpl implements LineItem {
+import {RGBAColor} from "../../../utils/RGBAColor";
+import {LineItem} from "../../../interfaces/engine/items/LineItem";
+import {WorldModel} from "../../../interfaces/engine/model/WorldModel";
+export class LineItemImpl implements LineItem {
     private path: RaphaelPath;
     private worldModel: WorldModel;
     private handleStart: RaphaelElement;

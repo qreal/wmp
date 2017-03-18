@@ -1,4 +1,9 @@
-class RandomInitBlock extends AbstractBlock {
+import {Parser} from "../Parser";
+import {Interpreter} from "../Interpreter";
+import {AbstractBlock} from "./AbstractBlock";
+import {Link} from "core/editorCore/model/Link";
+import {DiagramNode} from "core/editorCore/model/DiagramNode";
+export class RandomInitBlock extends AbstractBlock {
 
     private interpreter: Interpreter;
     private EXPECTED_NUMBER_OF_OUTBOUND_LINKS = 1;

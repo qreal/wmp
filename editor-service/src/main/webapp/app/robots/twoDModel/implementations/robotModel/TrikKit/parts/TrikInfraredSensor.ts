@@ -1,7 +1,6 @@
-/// <reference path="../../robotParts/RangeSensor.ts" />
-
-class TrikInfraredSensor extends RangeSensor {
+import {RangeSensor} from "../../robotParts/RangeSensor";
+export class TrikInfraredSensor extends RangeSensor {
     static parentType = RangeSensor;
-    static name = "infrared";
+    static deviceName = "infrared";
     static friendlyName = "Infrared Sensor";
 }

@@ -1,4 +1,5 @@
-class MoveCommand implements Command {
+import {Command} from "./Command";
+export class MoveCommand implements Command {
 
     private oldX: number;
     private oldY: number;

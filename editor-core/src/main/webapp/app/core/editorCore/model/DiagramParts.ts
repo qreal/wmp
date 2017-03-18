@@ -1,19 +1,16 @@
-/// <reference path="Map.ts" />
-/// <reference path="DiagramNode.ts" />
-/// <reference path="Link.ts" />
-/// <reference path="SubprogramDiagramNode.ts" />
-/// <reference path="../../../vendor.d.ts" />
+import {SubprogramDiagramNode} from "./SubprogramDiagramNode";
+import {Link} from "./Link";
+import {DiagramNode} from "./DiagramNode";
+export class DiagramParts {
 
-class DiagramParts {
-
-    nodesMap: Map<DiagramNode>;
-    linksMap: Map<Link>;
+    nodesMap: Map<String, DiagramNode>;
+    linksMap: Map<String, Link>;
     subprogramDiagramNodes: SubprogramDiagramNode[] = [];
 
-    constructor(nodesMap?: Map<DiagramNode>, linksMap?: Map<Link>,
+    constructor(nodesMap?: Map<String, DiagramNode>, linksMap?: Map<String, Link>,
                 subprogramDiagramNodes?: SubprogramDiagramNode[]) {
-        this.nodesMap = nodesMap || {};
-        this.linksMap = linksMap || {};
+        this.nodesMap = nodesMap || new Map<String, DiagramNode>();
+        this.linksMap = linksMap || new Map<String, Link>();
         this.subprogramDiagramNodes = subprogramDiagramNodes || [];
     }
 }

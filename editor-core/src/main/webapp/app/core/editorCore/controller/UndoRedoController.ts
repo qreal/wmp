@@ -1,6 +1,5 @@
-/// <reference path="../model/commands/Command.ts" />
-
-class UndoRedoController {
+import {Command} from "../model/commands/Command";
+export class UndoRedoController {
 
     private stack: Command[];
     private pointer: number;

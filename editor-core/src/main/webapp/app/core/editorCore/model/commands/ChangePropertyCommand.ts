@@ -1,4 +1,5 @@
-class ChangePropertyCommand implements Command {
+import {Command} from "./Command";
+export class ChangePropertyCommand implements Command {
 
     private key: string;
     private value: string;

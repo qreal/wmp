@@ -1,7 +1,6 @@
-/// <reference path="ColorSensor" />
-
-class ColorSensorBlue extends ColorSensor {
+import {ColorSensor} from "./ColorSensor";
+export class ColorSensorBlue extends ColorSensor {
     static parentType = ColorSensor;
-    static name: string = "colorBlue";
+    static deviceName : string = "colorBlue";
     static friendlyName: string = "Color sensor (blue)";
 }

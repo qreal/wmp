@@ -1,6 +1,7 @@
-/// <reference path="DiagramElement.ts" />
+import {PropertyEditElement} from "./PropertyEditElement";
+import {DiagramElement} from "./DiagramElement";
+export interface DiagramNode extends DiagramElement {
 
-interface DiagramNode extends DiagramElement {
     getX(): number;
     getY(): number;
     getImagePath(): string;
@@ -13,4 +14,5 @@ interface DiagramNode extends DiagramElement {
     completeResize() : void;
     isResizing() : boolean;
     pointermove(cellView, evt, x, y) : void;
+
 }

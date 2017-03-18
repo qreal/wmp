@@ -1,13 +1,13 @@
-/// <reference path="CommonRobotModelImpl.ts" />
-/// <reference path="robotParts/LightSensor.ts" />
-/// <reference path="TrikKit/parts/TrikInfraredSensor.ts" />
-/// <reference path="TrikKit/parts/TrikSonarSensor.ts" />
-/// <reference path="TrikKit/parts/TrikLineSensor.ts" />
-/// <reference path="../../interfaces/robotModel/RobotModelInterface.ts" />
-/// <reference path="../../interfaces/robotModel/PortInfo.ts" />
-/// <reference path="../../../../common/constants/GeneralConstants.ts" />
-
-class TwoDRobotModel extends CommonRobotModelImpl {
+import {GeneralConstants} from "../../../../common/constants/GeneralConstants";
+import {TrikLineSensor} from "./TrikKit/parts/TrikLineSensor";
+import {TrikSonarSensor} from "./TrikKit/parts/TrikSonarSensor";
+import {TrikInfraredSensor} from "./TrikKit/parts/TrikInfraredSensor";
+import {LightSensor} from "./robotParts/LightSensor";
+import {DeviceInfo} from "../../interfaces/robotModel/DeviceInfo";
+import {RobotModelInterface} from "../../interfaces/robotModel/RobotModelInterface";
+import {CommonRobotModelImpl} from "./CommonRobotModelImpl";
+import {PortInfo} from "../../interfaces/robotModel/PortInfo";
+export class TwoDRobotModel extends CommonRobotModelImpl {
     private name: string;
     private image: string;
     private realModel: RobotModelInterface;

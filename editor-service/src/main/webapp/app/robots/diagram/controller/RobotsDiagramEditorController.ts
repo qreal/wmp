@@ -1,15 +1,19 @@
-/// <reference path="../../../common/menu/controller/DiagramMenuController.ts" />
-/// <reference path="../../../robots/interpreter/Interpreter.ts" />
-/// <reference path="../../../common/interfaces/editorCore.d.ts" />
-/// <reference path="../../../common/interfaces/vendor.d.ts" />
-/// <reference path="../../../common/gestures/GesturesController.ts" />
-/// <reference path="../../../common/constants/MouseButton.ts" />
-
-class RobotsDiagramEditorController extends DiagramEditorController {
+import {MouseButton} from "../../../common/constants/MouseButton";
+import {GesturesController} from "../../../common/gestures/GesturesController";
+import {DiagramMenuController} from "../../../common/menu/controller/DiagramMenuController";
+import app = require("../../../require/app");
+import {Interpreter} from "../../interpreter/Interpreter";
+import {ElementTypes} from "core/editorCore/model/ElementTypes";
+import {DiagramScene} from "core/editorCore/model/DiagramScene";
+import {DiagramEditorController} from "core/editorCore/controller/DiagramEditorController";
+export class RobotsDiagramEditorController extends DiagramEditorController {
 
     private menuController: DiagramMenuController;
     private gesturesController: GesturesController;
     private diagramInterpreter: Interpreter;
+    //Hack for firefox
+    static $$ngIsClass: boolean;
+
 
     constructor($scope, $attrs) {
         super($scope, $attrs);
@@ -77,3 +81,6 @@ class RobotsDiagramEditorController extends DiagramEditorController {
         }
     }
 }
+RobotsDiagramEditorController.$$ngIsClass = true;
+app.controller("RobotsDiagramEditorController", RobotsDiagramEditorController);
+console.log("Adding controller RobotsDiagramEditorController");

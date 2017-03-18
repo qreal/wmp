@@ -1,6 +1,5 @@
-/// <reference path="../../robotParts/RangeSensor.ts" />
-
-class TrikSonarSensor extends RangeSensor {
+import {RangeSensor} from "../../robotParts/RangeSensor";
+export class TrikSonarSensor extends RangeSensor {
     static parentType = RangeSensor;
     static friendlyName = "Sonic Sensor";
 }

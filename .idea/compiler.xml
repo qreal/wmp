@@ -1,33 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
-    <resourceExtensions />
-    <wildcardResourcePatterns>
-      <entry name="!?*.java" />
-      <entry name="!?*.form" />
-      <entry name="!?*.class" />
-      <entry name="!?*.groovy" />
-      <entry name="!?*.scala" />
-      <entry name="!?*.flex" />
-      <entry name="!?*.kt" />
-      <entry name="!?*.clj" />
-      <entry name="!?*.aj" />
-    </wildcardResourcePatterns>
     <annotationProcessing>
-      <profile default="true" name="Default" enabled="true">
-        <processorPath useClasspath="true" />
-      </profile>
-      <profile default="false" name="Maven default annotation processors profile" enabled="true">
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <processorPath useClasspath="true" />
         <module name="allintomcat-deployment" />
         <module name="auth-service" />
         <module name="dashboard-service" />
         <module name="db-diagram-service" />
         <module name="db-robot-store-service" />
         <module name="db-user-service" />
+        <module name="editor-core" />
         <module name="editor-service" />
         <module name="spring-security-oauth2-client" />
         <module name="UI-testing" />
@@ -43,6 +29,7 @@
       <module name="db-diagram-service" target="1.8" />
       <module name="db-robot-store-service" target="1.8" />
       <module name="db-user-service" target="1.8" />
+      <module name="editor-core" target="1.8" />
       <module name="editor-service" target="1.8" />
       <module name="logging-deps" target="1.5" />
       <module name="parent" target="1.5" />

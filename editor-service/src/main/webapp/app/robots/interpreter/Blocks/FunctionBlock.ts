@@ -1,4 +1,9 @@
-class FunctionBlock extends AbstractBlock {
+import {Interpreter} from "../Interpreter";
+import {AbstractBlock} from "./AbstractBlock";
+import {Parser} from "../Parser";
+import {Link} from "core/editorCore/model/Link";
+import {DiagramNode} from "core/editorCore/model/DiagramNode";
+export class FunctionBlock extends AbstractBlock {
 
     private interpreter: Interpreter;
     private EXPECTED_NUMBER_OF_OUTBOUND_LINKS = 1;

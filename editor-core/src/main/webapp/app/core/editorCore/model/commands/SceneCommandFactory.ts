@@ -1,4 +1,14 @@
-class SceneCommandFactory {
+import {MoveCommand} from "./MoveCommand";
+import {ResizeCommand} from "./ResizeCommand";
+import {Command} from "./Command";
+import {DiagramNode} from "../DiagramNode";
+import {RemoveElementCommand} from "./RemoveElementCommand";
+import {Link} from "../Link";
+import {CreateElementCommand} from "./CreateElementCommand";
+import {ChangeCurrentElementCommand} from "./ChangeCurrentElementCommand";
+import {DiagramElement} from "../DiagramElement";
+import {SceneController} from "../../controller/SceneController";
+export class SceneCommandFactory {
 
     private sceneController: SceneController;
 

@@ -1,9 +1,9 @@
-/// <reference path="HtmlView.ts" />
-/// <reference path="../../../core/editorCore/controller/VariantListMapper.ts" />
-/// <reference path="../../../core/editorCore/model/Property.ts" />
-/// <reference path="../../../utils/StringUtils.ts" />
-
-class DropdownPropertyView extends HtmlView {
+import {StringUtils} from "../../../utils/StringUtils";
+import {VariantListMapper} from "../controller/VariantListMapper";
+import {Variant} from "../model/Variant";
+import {Property} from "../model/Property";
+import {HtmlView} from "./HtmlView";
+export class DropdownPropertyView extends HtmlView {
 
     private template: string = '' +
         '<tr class="property">' +

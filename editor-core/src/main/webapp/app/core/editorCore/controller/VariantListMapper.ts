@@ -1,6 +1,5 @@
-/// <reference path="../model/Variant.ts" />
-
-class VariantListMapper {
+import {Variant} from "../model/Variant";
+export class VariantListMapper {
 
     private static variantsMap = {};
 

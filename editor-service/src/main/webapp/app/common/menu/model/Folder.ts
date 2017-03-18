@@ -1,4 +1,10 @@
-class Folder {
+/// <reference path="../../../../resources/thrift/editor/EditorService_types.d.ts" />
+/// <reference path="../../../../resources/thrift/struct/Diagram_types.d.ts" />
+/// <reference path="../../../../resources/thrift/editor/EditorServiceThrift.d.ts" />
+/// <reference path="../../../types/thrift/Thrift.d.ts" />
+
+import {Diagram} from "./Diagram";
+export class Folder {
 
     private id: number;
     private name: string;

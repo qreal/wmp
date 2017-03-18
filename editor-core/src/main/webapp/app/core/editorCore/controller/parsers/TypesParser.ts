@@ -1,22 +1,23 @@
-/// <reference path="../../model/Map.ts" />
-/// <reference path="../../model/NodeType.ts" />
-/// <reference path="../../model/ElementTypes.ts" />
-/// <reference path="../../../../common/constants/GeneralConstants.d.ts" />
-/// <reference path="../../../../vendor.d.ts" />
+import {VariantListMapper} from "../VariantListMapper";
+import {Variant} from "../../model/Variant";
+import {Property} from "../../model/Property";
+import {NodeType} from "../../model/NodeType";
+import {PaletteTree} from "../../model/PaletteTree";
+import {GeneralConstants} from "../../../../common/constants/GeneralConstants";
+import {ElementTypes} from "../../model/ElementTypes";
+export class TypesParser {
 
-class TypesParser {
-
-    private currentProperties: Map<Property>;
-    private linkPatterns: Map<joint.dia.Link>;
+    private currentProperties: Map<String, Property>;
+    private linkPatterns: Map<String, joint.dia.Link>;
     private currentImage: string;
 
     public parse(typesJson: any): ElementTypes {
         var diagramElementTypes: ElementTypes = new ElementTypes();
-        this.linkPatterns = {};
+        this.linkPatterns = new Map<String, joint.dia.Link>();
         diagramElementTypes.uncategorisedTypes = this.parseGeneralTypes(typesJson.blocks.general);;
         diagramElementTypes.blockTypes = this.parsePaletteTypes(typesJson.blocks.palette);
         diagramElementTypes.flowTypes = this.parseElementsTypes(typesJson.elements);
-        var flowsMap: Map<NodeType> = diagramElementTypes.flowTypes.convertToMap();
+        var flowsMap: Map<String, NodeType> = diagramElementTypes.flowTypes.convertToMap();
         for (var flow in flowsMap) {
             if (!this.linkPatterns[flow])
                 this.linkPatterns[flow] = new joint.dia.Link({
@@ -42,8 +43,8 @@ class TypesParser {
         return elementsTree;
     }
 
-    private parseGeneralTypes(generalTypes: any): Map<NodeType> {
-        var generalTypesMap: Map<NodeType> = {};
+    private parseGeneralTypes(generalTypes: any): Map<String, NodeType> {
+        var generalTypesMap: Map<String, NodeType> = new Map<String, NodeType>();
 
         for (var i in generalTypes) {
             var typeObject = generalTypes[i];
@@ -117,8 +118,8 @@ class TypesParser {
         return nodesTree;
     }
 
-    private parseTypeProperties(typeName: string, propertiesArrayNode: any): Map<Property> {
-        var properties: Map<Property> = {};
+    private parseTypeProperties(typeName: string, propertiesArrayNode: any): Map<String, Property> {
+        var properties: Map<String, Property> = new Map<String, Property>()
         for (var i in propertiesArrayNode) {
             var propertyObject = propertiesArrayNode[i];
             var propertyKey: string = propertyObject.key;

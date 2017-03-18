@@ -1,14 +1,20 @@
-/// <reference path="DiagramEditorController.ts" />
-/// <reference path="../model/DiagramScene.ts" />
-/// <reference path="../model/DiagramElement.ts" />
-/// <reference path="../model/DiagramNode.ts" />
-/// <reference path="../model/DefaultDiagramNode.ts" />
-/// <reference path="../model/commands/Command.ts"/>
-/// <reference path="../model/commands/SceneCommandFactory.ts" />
-/// <reference path="../../../vendor.d.ts" />
-/// <reference path="../../../common/constants/MouseButton.ts" />
-
-class SceneController {
+import {MultiCommand} from "../model/commands/MultiCommand";
+import {Command} from "../model/commands/Command";
+import {Link} from "../model/Link";
+import {DiagramNode} from "../model/DiagramNode";
+import {DefaultDiagramNode} from "../model/DefaultDiagramNode";
+import {DiagramScene} from "../model/DiagramScene";
+import {MouseButton} from "../../../common/constants/MouseButton";
+import {DefaultSize} from "../../../common/constants/DefaultSize";
+import {DiagramElement} from "../model/DiagramElement";
+import {SubprogramNode} from "../model/SubprogramNode";
+import {Property} from "../model/Property";
+import {NodeType} from "../model/NodeType";
+import {DiagramElementListener} from "./DiagramElementListener";
+import {SceneCommandFactory} from "../model/commands/SceneCommandFactory";
+import {DiagramEditorController} from "./DiagramEditorController";
+import {UndoRedoController} from "./UndoRedoController";
+export class SceneController {
 
     private diagramEditorController: DiagramEditorController;
     private scene: DiagramScene;
@@ -83,9 +89,9 @@ class SceneController {
         });
 
         var nodeType: NodeType = this.diagramEditorController.getNodeType(this.scene.getCurrentLinkTypeName());
-        var typeProperties: Map<Property> = nodeType.getPropertiesMap();
+        var typeProperties: Map<String, Property> = nodeType.getPropertiesMap();
 
-        var linkProperties: Map<Property> = {};
+        var linkProperties: Map<String, Property> = new Map<String, Property>();
         for (var property in typeProperties) {
             linkProperties[property] = new Property(typeProperties[property].name,
                 typeProperties[property].type, typeProperties[property].value);
@@ -100,9 +106,9 @@ class SceneController {
         var image: string = this.diagramEditorController.getNodeType(type).getImage();
         var name: string = this.diagramEditorController.getNodeType(type).getName();
 
-        var typeProperties: Map<Property> = this.diagramEditorController.getNodeType(type).getPropertiesMap();
+        var typeProperties: Map<String, Property> = this.diagramEditorController.getNodeType(type).getPropertiesMap();
 
-        var nodeProperties: Map<Property> = {};
+        var nodeProperties: Map<String, Property> = new Map<String, Property>();
         for (var property in typeProperties) {
             nodeProperties[property] = new Property(typeProperties[property].name, typeProperties[property].type,
                 typeProperties[property].value);
@@ -110,11 +116,11 @@ class SceneController {
 
         var node: DiagramNode;
         if (subprogramId) {
-            node = new SubprogramNode(subprogramName, type, x, y, defaultNodeWidth, defaultNodeHeight,
-                nodeProperties, image, subprogramId);
+            node = new SubprogramNode(subprogramName, type, x, y, DefaultSize.DEFAULT_NODE_WIDTH,
+                DefaultSize.DEFAULT_NODE_HEIGHT, nodeProperties, image, subprogramId);
         } else {
-            node = new DefaultDiagramNode(name, type, x, y, defaultNodeWidth, defaultNodeHeight,
-                nodeProperties, image);
+            node = new DefaultDiagramNode(name, type, x, y, DefaultSize.DEFAULT_NODE_WIDTH,
+                DefaultSize.DEFAULT_NODE_HEIGHT, nodeProperties, image);
         }
 
         var command: Command = new MultiCommand([this.paperCommandFactory.makeCreateNodeCommand(node),
@@ -417,7 +423,7 @@ class SceneController {
                 this.scene.getZoom();
 
             return ((mXBegin <= leftElementPos) && (mXEnd >= leftElementPos)
-                && (mYBegin <= topElementPos) && (mYEnd >= topElementPos));
+            && (mYBegin <= topElementPos) && (mYEnd >= topElementPos));
         });
     }
 }
