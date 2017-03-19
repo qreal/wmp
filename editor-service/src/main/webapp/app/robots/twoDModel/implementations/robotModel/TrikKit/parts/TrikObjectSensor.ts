@@ -1,7 +1,6 @@
-/// <reference path="../../robotParts/VectorSensor.ts" />
-
-class TrikObjectSensor extends VectorSensor {
+import {VectorSensor} from "../../robotParts/VectorSensor";
+export class TrikObjectSensor extends VectorSensor {
     static parentType = VectorSensor;
-    static name = "trikObjectSensor";
+    static deviceName = "trikObjectSensor";
     static friendlyName = "Object Sensor";
 }

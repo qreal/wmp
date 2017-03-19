@@ -1,7 +1,6 @@
-/// <reference path="../../robotParts/VectorSensor.ts" />
-
-class TrikColorSensor extends VectorSensor {
+import {VectorSensor} from "../../robotParts/VectorSensor";
+export class TrikColorSensor extends VectorSensor {
     static parentType = VectorSensor;
-    static name = "trikColorSensor";
+    static deviceName = "trikColorSensor";
     static friendlyName = "Color Sensor";
 }

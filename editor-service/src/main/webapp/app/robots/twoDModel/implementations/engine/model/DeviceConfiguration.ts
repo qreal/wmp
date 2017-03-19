@@ -1,4 +1,6 @@
-class DeviceConfiguration {
+import {Device} from "../../../interfaces/robotModel/robotParts/Device";
+import {Motor} from "../../robotModel/robotParts/Motor";
+export class DeviceConfiguration {
 
     private configurationMap: {[portName: string]: Device};
 

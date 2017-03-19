@@ -1,8 +1,6 @@
-/// <reference path="../../../interfaces/engine/model/WorldModel.ts" />
-/// <reference path="../../../../../common/constants/GeneralConstants.ts" />
-/// <reference path="../../../../../vendor.d.ts" />
-
-class StartPositionItem {
+import {GeneralConstants} from "../../../../../common/constants/GeneralConstants";
+import {WorldModel} from "../../../interfaces/engine/model/WorldModel";
+export class StartPositionItem {
     private width = 15;
     private height = 15;
     private image: RaphaelElement;

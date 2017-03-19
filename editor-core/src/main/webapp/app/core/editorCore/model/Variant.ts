@@ -1,4 +1,4 @@
-class Variant {
+export class Variant {
 
     private key: string;
     private value: string;

@@ -1,3 +1,4 @@
-class DiagramContainer extends DefaultDiagramNode {
+import {DefaultDiagramNode} from "DefaultDiagramNode";
+export class DiagramContainer extends DefaultDiagramNode {
 
 }

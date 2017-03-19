@@ -1,8 +1,7 @@
-/// <reference path="DeviceImpl" />
-
-class Motor extends DeviceImpl {
+import {DeviceImpl} from "./DeviceImpl";
+export class Motor extends DeviceImpl {
     static parentType  = DeviceImpl;
-    static name: string = "motor";
+    static deviceName : string = "motor";
     static friendlyName: string = "Motor";
 
     private power: number;

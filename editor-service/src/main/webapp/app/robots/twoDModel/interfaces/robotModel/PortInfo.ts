@@ -1,7 +1,6 @@
-/// <reference path="../../types/Direction.ts" />
-/// <reference path="../../types/ReservedVariableType.ts" />
-
-interface PortInfo {
+import {ReservedVariableType} from "../../types/ReservedVariableType";
+import {Direction} from "../../types/Direction";
+export interface PortInfo {
     getName(): string;
     getDirection(): Direction;
     getNameAliases(): string[];

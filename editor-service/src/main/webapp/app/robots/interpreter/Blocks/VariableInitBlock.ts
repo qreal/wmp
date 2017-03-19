@@ -1,4 +1,9 @@
-class VariableInitBlock extends AbstractBlock {
+import {Parser} from "../Parser";
+import {AbstractBlock} from "./AbstractBlock";
+import {Interpreter} from "../Interpreter";
+import {Link} from "core/editorCore/model/Link";
+import {DiagramNode} from "core/editorCore/model/DiagramNode";
+export class VariableInitBlock extends AbstractBlock {
 
     private interpreter: Interpreter;
     private EXPECTED_NUMBER_OF_OUTBOUND_LINKS = 1;

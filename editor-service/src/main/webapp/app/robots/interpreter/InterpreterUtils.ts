@@ -1,6 +1,4 @@
-
-
-class InterpreterUtils {
+export class InterpreterUtils {
 
     public static getOperatorFunctionByString(operatorString: string) {
         switch (operatorString) {

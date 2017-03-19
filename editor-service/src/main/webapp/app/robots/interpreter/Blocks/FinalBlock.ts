@@ -1,5 +1,7 @@
-
-class FinalBlock extends AbstractBlock {
+import {AbstractBlock} from "./AbstractBlock";
+import {Link} from "core/editorCore/model/Link";
+import {DiagramNode} from "core/editorCore/model/DiagramNode";
+export class FinalBlock extends AbstractBlock {
 
     private EXPECTED_NUMBER_OF_OUTBOUND_LINKS = 0;
 

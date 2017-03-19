@@ -1,4 +1,4 @@
-class ServerProperties {
+export class ServerProperties {
     static pathEditor: string = "${path.editor}";
     static pathDashboard: string = "${path.dashboard}";
     static portEditor: string = "${port.editor}";

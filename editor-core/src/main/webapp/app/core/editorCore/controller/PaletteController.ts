@@ -1,20 +1,20 @@
-/// <reference path="../model/SubprogramDiagramNode.ts" />
-/// <reference path="../model/NodeType.ts" />
-/// <reference path="../model/Map.ts" />
-/// <reference path="../view/SubprogramPaletteView.ts" />
-/// <reference path="../view/BlocksPaletteView.ts" />
-/// <reference path="../../../vendor.d.ts" />
-
-class PaletteController {
+import {NodeType} from "../model/NodeType";
+import {ElementTypes} from "../model/ElementTypes";
+import {BlocksPaletteView} from "../view/BlocksPaletteView";
+import {PaletteTree} from "../model/PaletteTree";
+import {SubprogramPaletteView} from "../view/SubprogramPaletteView";
+import {SubprogramDiagramNode} from "../model/SubprogramDiagramNode";
+import {DiagramScene} from "../model/DiagramScene";
+export class PaletteController {
 
     private subprogramsSelector: string = "#subprograms-navigation";
     private blocksSelector: string = "#blocks-navigation";
     private flowsSelector: string = "#flows-navigation";
     private paper: DiagramScene;
     private elementTypes: ElementTypes;
-    private nodesTypesMap: Map<NodeType>;
+    private nodesTypesMap: Map<String, NodeType>;
 
-    public init(paper: DiagramScene, elementTypes: ElementTypes, nodesTypesMap: Map<NodeType>) {
+    public init(paper: DiagramScene, elementTypes: ElementTypes, nodesTypesMap: Map<String, NodeType>) {
         this.paper = paper;
         this.elementTypes = elementTypes;
         this.nodesTypesMap = nodesTypesMap;
@@ -65,15 +65,16 @@ class PaletteController {
 
     private initClick(): void {
         $("[data-type='" + this.paper.getCurrentLinkTypeName() + "']").css("border", "2px solid #00ff00");
+        var paper: DiagramScene = this.paper;
         $(".flow-element").mousedown(function () {
-            this.paper.setCurrentLinkType($(this).attr("data-type"));
+            paper.setCurrentLinkType($(this).attr("data-type"));
             $(".flow-element").css("border", "");
             $(this).css("border", "2px solid #00ff00");
         });
     }
 
-    private appendSubprogramsPalette(subprogramDiagramNodes: SubprogramDiagramNode[],
-                                    nodeTypesMap: Map<NodeType>): void {
+    public appendSubprogramsPalette(subprogramDiagramNodes: SubprogramDiagramNode[],
+                                    nodeTypesMap: Map<String, NodeType>): void {
         var typeName: string = "Subprogram";
         var paletteView: SubprogramPaletteView = new SubprogramPaletteView(subprogramDiagramNodes,
             nodeTypesMap[typeName].getImage());

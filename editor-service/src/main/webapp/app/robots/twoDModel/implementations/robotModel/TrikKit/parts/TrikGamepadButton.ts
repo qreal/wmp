@@ -1,7 +1,6 @@
-/// <reference path="../../robotParts/Button.ts" />
-
-class TrikGamepadButton extends Button {
+import {Button} from "../../robotParts/Button";
+export class TrikGamepadButton extends Button {
     static parentType = Button;
-    static name = "gamepadButton";
+    static deviceName = "gamepadButton";
     static friendlyName = "Android Gamepad Button";
 }

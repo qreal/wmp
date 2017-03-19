@@ -1,16 +1,17 @@
-/// <reference path="../../model/SubprogramDiagramNode.ts" />
-/// <reference path="../../model/DiagramNode.ts" />
-/// <reference path="../../model/Link.ts" />
-/// <reference path="../../model/DiagramParts.ts" />
-/// <reference path="../../model/NodeType.ts" />
-/// <reference path="../../model/Map.ts" />
-/// <reference path="../../model/Property.ts" />
-/// <reference path="../../../../utils/MathUtils.ts" />
-/// <reference path="../../../../vendor.d.ts" />
+import {Link} from "../../model/Link";
+import {NodeType} from "../../model/NodeType";
+import {Property} from "../../model/Property";
+import {PropertiesPack} from "../../model/PropertiesPack";
+import {DefaultDiagramNode} from "../../model/DefaultDiagramNode";
+import {SubprogramNode} from "../../model/SubprogramNode";
+import {DiagramNode} from "../../model/DiagramNode";
+import {SubprogramDiagramNode} from "../../model/SubprogramDiagramNode";
+import {DiagramParts} from "../../model/DiagramParts";
+import {MathUtils} from "../../../../utils/MathUtils";
+import {DefaultSize} from "../../../../common/constants/DefaultSize";
+export class DiagramJsonParser {
 
-class DiagramJsonParser {
-
-    public parse(diagramJson: any, nodeTypesMap: Map<NodeType>, linkPatterns: Map<joint.dia.Link>): DiagramParts {
+    public parse(diagramJson: any, nodeTypesMap: Map<String, NodeType>, linkPatterns: Map<String, joint.dia.Link>): DiagramParts {
         var minPos: {x: number; y: number} = this.findMinPosition(diagramJson, nodeTypesMap);
         var minOffset: number = 25;
         var offsetX = (minPos.x < 0) ? (-minPos.x + minOffset) : minOffset;
@@ -20,7 +21,7 @@ class DiagramJsonParser {
         return diagramParts;
     }
 
-    protected findMinPosition(diagramJson: any, nodeTypesMap: Map<NodeType>): {x: number; y: number} {
+    protected findMinPosition(diagramJson: any, nodeTypesMap: Map<String, NodeType>): {x: number; y: number} {
         var minX = Infinity;
         var minY = Infinity;
 
@@ -50,7 +51,7 @@ class DiagramJsonParser {
         return {x: minX, y: minY};
     }
 
-    protected parseNodes(diagramJson: any, nodeTypesMap: Map<NodeType>, offsetX: number, offsetY: number): DiagramParts {
+    protected parseNodes(diagramJson: any, nodeTypesMap: Map<String, NodeType>, offsetX: number, offsetY: number): DiagramParts {
         var diagramParts: DiagramParts = new DiagramParts();
 
         for (var i = 0; i < diagramJson.nodes.length; i++) {
@@ -83,10 +84,10 @@ class DiagramJsonParser {
         return new SubprogramDiagramNode(nodeObject.logicalId, name);
     }
 
-    protected parseDiagramNodeObject(nodeObject: any, nodeTypesMap: Map<NodeType>,
+    protected parseDiagramNodeObject(nodeObject: any, nodeTypesMap: Map<String, NodeType>,
                                      offsetX: number, offsetY: number): DiagramNode {
-        var changeableLogicalProperties: Map<Property> = {};
-        var constLogicalProperties: Map<Property> = {};
+        var changeableLogicalProperties: Map<String, Property> = new Map<String, Property>();
+        var constLogicalProperties: Map<String, Property> = new Map<String, Property>();
         var subprogramDiagramId: string = "";
         var name = "";
         var type = nodeObject.type;
@@ -125,7 +126,7 @@ class DiagramJsonParser {
             }
         }
 
-        var constGraphicalProperties: Map<Property> = {};
+        var constGraphicalProperties: Map<String, Property> = new Map<String, Property>();
         var graphicalPropertiesObject = nodeObject.graphicalProperties;
 
         var x: number = 0;
@@ -146,13 +147,13 @@ class DiagramJsonParser {
 
         var node: DiagramNode;
         if (subprogramDiagramId) {
-            node = new SubprogramNode(name, type, x, y, defaultNodeWidth, defaultNodeHeight,
-                changeableLogicalProperties, nodeTypesMap[nodeObject.type].getImage(),
+            node = new SubprogramNode(name, type, x, y, DefaultSize.DEFAULT_NODE_WIDTH,
+                DefaultSize.DEFAULT_NODE_HEIGHT, changeableLogicalProperties, nodeTypesMap[nodeObject.type].getImage(),
                 subprogramDiagramId, nodeObject.graphicalId,
                 new PropertiesPack(constLogicalProperties, constGraphicalProperties));
         } else {
-            node = new DefaultDiagramNode(name, type, x, y, defaultNodeWidth, defaultNodeHeight,
-                changeableLogicalProperties,
+            node = new DefaultDiagramNode(name, type, x, y, DefaultSize.DEFAULT_NODE_WIDTH,
+                DefaultSize.DEFAULT_NODE_HEIGHT, changeableLogicalProperties,
                 nodeTypesMap[nodeObject.type].getImage(), nodeObject.graphicalId,
                 new PropertiesPack(constLogicalProperties, constGraphicalProperties));
         }
@@ -160,9 +161,9 @@ class DiagramJsonParser {
         return node;
     }
 
-    protected parseLinks(diagramJson: any, nodeTypesMap: Map<NodeType>, linkPatterns: Map<joint.dia.Link>,
-                         offsetX: number, offsetY: number): Map<Link> {
-        var linksMap: Map<Link> = {};
+    protected parseLinks(diagramJson: any, nodeTypesMap: Map<String, NodeType>, linkPatterns: Map<String, joint.dia.Link>,
+                         offsetX: number, offsetY: number): Map<String, Link> {
+        var linksMap: Map<String, Link> = new Map<String, Link>();
 
         for (var i = 0; i < diagramJson.links.length; i++) {
             linksMap[diagramJson.links[i].graphicalId] = this.parseLinkObject(diagramJson.links[i], nodeTypesMap,
@@ -172,12 +173,12 @@ class DiagramJsonParser {
         return linksMap;
     }
 
-    protected parseLinkObject(linkObject: any, nodeTypesMap: Map<NodeType>, linkPatterns: Map<joint.dia.Link>,
+    protected parseLinkObject(linkObject: any, nodeTypesMap: Map<String, NodeType>, linkPatterns: Map<String, joint.dia.Link>,
                               offsetX: number, offsetY: number): Link {
         var sourceId: string = "";
         var targetId: string = "";
 
-        var properties: Map<Property> = {};
+        var properties: Map<String, Property> = new Map<String, Property>();
         var logicalPropertiesObject = linkObject.logicalProperties;
 
         for (var j = 0; j < logicalPropertiesObject.length; j++) {

@@ -1,6 +1,5 @@
-/// <reference path="../../interfaces/robotModel/DeviceInfo.ts" />
-
-class DevicesConfigurationProvider {
+import {DeviceInfo} from "../../interfaces/robotModel/DeviceInfo";
+export class DevicesConfigurationProvider {
     private currentConfiguration: {string?: {string?: DeviceInfo}} = {};
 
     deviceConfigurationChanged(robotModelName: string, portName: string, device: DeviceInfo): void {

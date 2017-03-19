@@ -1,4 +1,6 @@
-abstract class AbstractBlock {
+import {Link} from "core/editorCore/model/Link";
+import {DiagramNode} from "core/editorCore/model/DiagramNode";
+export abstract class AbstractBlock {
 
     protected node: DiagramNode;
     protected outboundLinks: Link[];

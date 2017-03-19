@@ -1,4 +1,6 @@
-class CreateElementCommand implements Command {
+import {DiagramElement} from "../DiagramElement";
+import {Command} from "./Command";
+export class CreateElementCommand implements Command {
 
     private element: DiagramElement;
     private executionFunction: (element: DiagramElement) => void;

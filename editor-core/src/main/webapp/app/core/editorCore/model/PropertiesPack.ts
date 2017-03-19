@@ -1,12 +1,10 @@
-/// <reference path="Map.ts" />
-/// <reference path="Property.ts" />
+import {Property} from "./Property";
+export class PropertiesPack {
 
-class PropertiesPack {
+    logical: Map<String, Property>;
+    graphical: Map<String, Property>;
 
-    logical: Map<Property>;
-    graphical: Map<Property>;
-
-    constructor(logical: Map<Property>, graphical: Map<Property>) {
+    constructor(logical: Map<String, Property>, graphical: Map<String, Property>) {
         this.logical = logical;
         this.graphical = graphical;
     }

@@ -1,6 +1,4 @@
-/// <reference path="../../../../../vendor.d.ts" />
-
-class LedWidget {
+export class LedWidget {
 
     private color: string;
 

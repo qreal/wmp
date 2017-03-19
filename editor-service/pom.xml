@@ -28,16 +28,34 @@
                 <directory>src/main/resources</directory>
                 <filtering>true</filtering>
             </resource>
-
-            <!-- Used to move ts files to target with maven variables exporting  -->
-            <resource>
-                <targetPath>../properties</targetPath>
-                <directory>src/main/webapp/app/common/properties</directory>
-                <filtering>true</filtering>
-            </resource>
         </resources>
 
         <plugins>
+
+            <!-- Configure maven clean-->
+            <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>3.0.0</version>
+                <configuration>
+                    <filesets>
+                        <fileset>
+                            <directory>target</directory>
+                        </fileset>
+                        <fileset>
+                            <directory>src/main/webapp/resources/js/compiled</directory>
+                            <excludes>
+                                <exclude>angular.js</exclude>
+                            </excludes>
+                        </fileset>
+                        <fileset>
+                            <directory>src/main/webapp/node_modules</directory>
+                        </fileset>
+                        <fileset>
+                            <directory>src/main/webapp/.tscache</directory>
+                        </fileset>
+                    </filesets>
+                </configuration>
+            </plugin>
 
             <!-- Plugin customizing process of war building -->
             <plugin>
@@ -53,6 +71,11 @@
                             <includes>
                                 <include>properties.jsp</include>
                             </includes>
+                            <filtering>true</filtering>
+                        </resource>
+                        <resource>
+                            <targetPath>resources/js/compiled/common/properties</targetPath>
+                            <directory>${basedir}/src/main/webapp/resources/js/compiled/common/properties</directory>
                             <filtering>true</filtering>
                         </resource>
                     </webResources>

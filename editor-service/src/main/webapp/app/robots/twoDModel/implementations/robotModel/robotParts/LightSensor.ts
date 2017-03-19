@@ -1,7 +1,6 @@
-/// <reference path="ScalarSensor" />
-
-class LightSensor extends ScalarSensor {
+import {ScalarSensor} from "./ScalarSensor";
+export class LightSensor extends ScalarSensor {
     static parentType = ScalarSensor;
-    static name: string = "light";
+    static deviceName : string = "light";
     static friendlyName: string = "Light sensor";
 }

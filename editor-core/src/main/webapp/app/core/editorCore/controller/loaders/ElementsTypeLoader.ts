@@ -1,9 +1,7 @@
-/// <reference path="../../model/ElementTypes.ts" />
-/// <reference path="../parsers/TypesParser.ts" />
-/// <reference path="../../../../common/constants/GeneralConstants.d.ts" />
-/// <reference path="../../../../vendor.d.ts" />
-
-class ElementsTypeLoader {
+import {GeneralConstants} from "../../../../common/constants/GeneralConstants";
+import {TypesParser} from "../parsers/TypesParser";
+import {ElementTypes} from "../../model/ElementTypes";
+export class ElementsTypeLoader {
 
     load(callback: (elementTypes: ElementTypes) => void, kit?: string, task?: string): void {
         var typesParser: TypesParser = new TypesParser();

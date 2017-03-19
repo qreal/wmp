@@ -1,4 +1,5 @@
-class ResizeCommand implements Command {
+import {Command} from "./Command";
+export class ResizeCommand implements Command {
 
     private oldWidth: number;
     private oldHeight: number;

@@ -1,4 +1,4 @@
-class XmlHttpFactory {
+export class XmlHttpFactory {
 
     private static XMLHttpFactories = [
         function () { return new XMLHttpRequest() },

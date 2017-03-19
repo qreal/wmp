@@ -1,18 +1,16 @@
-/// <reference path="DiagramNode.ts" />
-/// <reference path="PropertiesPack.ts" />
-/// <reference path="Map.ts" />
-/// <reference path="Property.ts" />
-/// <reference path="PropertyEditElement.ts" />
-/// <reference path="../../../vendor.d.ts" />
-
-class DefaultDiagramNode implements DiagramNode {
+import {Property} from "./Property";
+import {PropertiesPack} from "./PropertiesPack";
+import {PropertyEditElement} from "./PropertyEditElement";
+import {UIDGenerator} from "../controller/UIDGenerator";
+import {DiagramNode} from "./DiagramNode";
+export class DefaultDiagramNode implements DiagramNode {
 
     private logicalId: string;
     private jointObject: joint.shapes.devs.ImageWithPorts;
     private name: string;
     private type: string;
     private constPropertiesPack: PropertiesPack;
-    private changeableProperties: Map<Property>;
+    private changeableProperties: Map<String, Property>;
     private imagePath: string;
     private propertyEditElement: PropertyEditElement;
 
@@ -34,7 +32,7 @@ class DefaultDiagramNode implements DiagramNode {
     };
 
     constructor(name: string, type: string, x: number, y: number, width: number, height: number,
-                properties: Map<Property>, imagePath: string, id?: string,
+                properties: Map<String, Property>, imagePath: string, id?: string,
                 notDefaultConstProperties?: PropertiesPack) {
         this.logicalId = UIDGenerator.generate();
         this.name = name;
@@ -70,7 +68,6 @@ class DefaultDiagramNode implements DiagramNode {
     }
 
     pointermove(cellView, evt, x, y): void {
-
         cellView.options.interactive = true;
         var bbox = cellView.getBBox();
         var newX = bbox.x + (<number> (bbox.width - 50)/2);
@@ -182,18 +179,18 @@ class DefaultDiagramNode implements DiagramNode {
         document.dispatchEvent(propertyChangedEvent);
     }
 
-    getChangeableProperties(): Map<Property> {
+    getChangeableProperties(): Map<String, Property> {
         return this.changeableProperties;
     }
 
     private static getDefaultConstPropertiesPack(name: string): PropertiesPack {
-        var logical: Map<Property> = DefaultDiagramNode.initConstLogicalProperties(name);
-        var graphical: Map<Property> = DefaultDiagramNode.initConstGraphicalProperties(name);
+        var logical: Map<String, Property> = this.initConstLogicalProperties(name);
+        var graphical: Map<String, Property> = this.initConstGraphicalProperties(name);
         return new PropertiesPack(logical, graphical);
     }
 
-    private static initConstLogicalProperties(name: string): Map<Property> {
-        var logical: Map<Property> = {};
+    private static initConstLogicalProperties(name: string): Map<String, Property> {
+        var logical: Map<String, Property> = new Map<String, Property>();
         logical["name"] = new Property("name", "QString", name);
         logical["from"] = new Property("from", "qReal::Id", "qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID");
         logical["linkShape"] = new Property("linkShape", "int", "0");
@@ -202,8 +199,8 @@ class DefaultDiagramNode implements DiagramNode {
         return logical;
     }
 
-    private static initConstGraphicalProperties(name: string): Map<Property> {
-        var graphical: Map<Property> = {};
+    private static initConstGraphicalProperties(name: string): Map<String, Property> {
+        var graphical: Map<String, Property> = new Map<String, Property>();
         graphical["name"] = new Property("name", "QString", name);
         graphical["to"] = new Property("to", "qreal::Id", "qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID");
         graphical["configuration"] = new Property("configuration", "QPolygon", "0, 0 : 50, 0 : 50, 50 : 0, 50 : ");
@@ -230,6 +227,7 @@ class DefaultDiagramNode implements DiagramNode {
         this.lastMousePosition.x = x;
         this.lastMousePosition.y = y;
     }
+
     completeResize(): void {
         this.resizeParameters = {
             isTopResizing: false,
@@ -247,16 +245,20 @@ class DefaultDiagramNode implements DiagramNode {
         return (x <= bbox.x + paddingPercent && x >= bbox.x - paddingPercent &&
         y <= bbox.y + bbox.height + paddingPercent && y >= bbox.y - paddingPercent);
     }
+
     private static isRightBorderClicked(bbox, x, y, paddingPercent): boolean {
         return (x <= bbox.x + bbox.width + paddingPercent && x >= bbox.x + bbox.width - paddingPercent &&
         y <= bbox.y + bbox.height + paddingPercent && y >= bbox.y - paddingPercent);
     }
+
     private static isTopBorderClicked(bbox, x, y, paddingPercent): boolean {
         return (x <= bbox.x + bbox.width + paddingPercent && x >= bbox.x - paddingPercent &&
         y <= bbox.y + paddingPercent && y >= bbox.y - paddingPercent);
     }
+
     private static isBottomBorderClicked(bbox, x, y, paddingPercent): boolean {
         return (x <= bbox.x + bbox.width + paddingPercent && x >= bbox.x - paddingPercent &&
         y <= bbox.y + bbox.height + paddingPercent && y >= bbox.y + bbox.height - paddingPercent);
     }
+
 }

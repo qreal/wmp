@@ -1,8 +1,7 @@
-/// <reference path="HtmlView.ts" />
-/// <reference path="SubprogramPaletteElementView.ts" />
-/// <reference path="../../../core/editorCore/model/SubprogramDiagramNode.ts" />
-
-class SubprogramPaletteView extends HtmlView {
+import {SubprogramPaletteElementView} from "./SubprogramPaletteElementView";
+import {SubprogramDiagramNode} from "../model/SubprogramDiagramNode";
+import {HtmlView} from "./HtmlView";
+export class SubprogramPaletteView extends HtmlView {
 
     constructor(subprogramDiagramNodes: SubprogramDiagramNode[], subprogramImageSrc: string) {
         super();
