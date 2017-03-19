@@ -1,6 +1,6 @@
 {
 
-    "elements": {
+    "flows": {
         
          "ControlFlow": {
             "name": "Link",
@@ -1026,6 +1026,8 @@
             }
         }
     
-    }
+    },
 
+    "containers": {
+    }
 }

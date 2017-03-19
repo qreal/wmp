@@ -32,6 +32,10 @@ public class DefaultDiagramNode implements Serializable {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinColumn(name = "node_id", referencedColumnName = "id")
+    private Set<DefaultDiagramNode> childrenNodes = new HashSet<>();
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @JoinColumn(name = "node_id", referencedColumnName = "id")
     private Set<Property> properties = new HashSet<>();
 
     public DefaultDiagramNode() {
@@ -53,6 +57,11 @@ public class DefaultDiagramNode implements Serializable {
 
         if (tDefaultDiagramNode.isSetType()) {
             type = tDefaultDiagramNode.getType();
+        }
+
+        if (tDefaultDiagramNode.isSetChildrenNodes()) {
+            childrenNodes = tDefaultDiagramNode.getChildrenNodes().stream().map(DefaultDiagramNode::new).
+                    collect(Collectors.toSet());
         }
 
         if (tDefaultDiagramNode.isSetProperties()) {
@@ -79,6 +88,11 @@ public class DefaultDiagramNode implements Serializable {
 
         if (type != null) {
             tDefaultDiagramNode.setType(type);
+        }
+
+        if (childrenNodes != null && !childrenNodes.isEmpty()) {
+            tDefaultDiagramNode.setChildrenNodes(childrenNodes.stream().map(DefaultDiagramNode::toTDefaultDiagramNode).
+                    collect(Collectors.toSet()));
         }
 
         if (properties != null && !properties.isEmpty()) {

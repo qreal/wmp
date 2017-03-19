@@ -112,12 +112,9 @@ class DiagramEditorController {
 
         $.extend(this.linkPatternsMap, elementTypes.linkPatterns);
         $.extend(this.nodeTypesMap, elementTypes.blockTypes.convertToMap(), elementTypes.flowTypes.convertToMap(),
-            elementTypes.uncategorisedTypes);
+            this.elementTypes.containerTypes.convertToMap());
 
         this.diagramEditor.getScene().setLinkPatterns(this.linkPatternsMap);
-        this.paletteController.appendBlocksPalette(elementTypes.blockTypes);
-        this.paletteController.appendFlowsPalette(elementTypes.flowTypes);
-        this.paletteController.initClick(this.diagramEditor.getScene());
-        this.paletteController.initDraggable();
+        this.paletteController.init(this.diagramEditor.getScene(), elementTypes, this.nodeTypesMap);
     }
 }

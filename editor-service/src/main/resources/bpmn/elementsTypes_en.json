@@ -1,6 +1,5 @@
 {
-
-    "elements": {
+    "flows": {
 
         "ControlFlow": {
             "name": "Control flow",
@@ -205,7 +204,8 @@
 
     "categoriesNames": {
         "Events": "Events",
-        "Gateways": "Gateways"
+        "Gateways": "Gateways",
+        "Containers": "Containers"
     },
 
     "blocks": {
@@ -248,12 +248,12 @@
             }
         },
 
-        "Subprogram": {
-            "name": "Subprogram",
+        "Subprocess": {
+            "name": "Subprocess",
+            "container": true,
             "image": {
-                "src": "images/subprogramRobotsBlock.svg"
+                "src": "images/bpmn/subprocess.svg"
             }
         }
     }
-
 }

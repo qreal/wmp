@@ -16,7 +16,8 @@ struct TDefaultDiagramNode {
     5 : string type,
     6 : double x,
     7 : double y,
-    8 : set<TProperty> properties
+    8 : set<TDefaultDiagramNode> childrenNodes,
+    9 : set<TProperty> properties
 }
 
 struct TLink {

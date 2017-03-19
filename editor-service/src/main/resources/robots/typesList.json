@@ -1,55 +1,49 @@
 {
-    "elements": [
+    "flows": [
         "ControlFlow"
     ],
 
     "blocks": {
-
-        "general": [
-            "Subprogram"
+        "Algorithms": [
+            "InitialNode",
+            "FinalNode",
+            "Function",
+            "IfBlock",
+            "FiBlock",
+            "SwitchBlock",
+            "VariableInit",
+            "Randomizer"
         ],
-        
-        "palette": {
-            
-            "Algorithms": [
-                "InitialNode",
-                "FinalNode",
-                "Function",
-                "IfBlock",
-                "FiBlock",
-                "SwitchBlock",
-                "VariableInit",
-                "Randomizer"
-            ],
 
-            "Actions": [
-                "TrikV6EnginesForward",
-                "TrikV6EnginesBackward",
-                "TrikV6EnginesStop"
-            ],
+        "Actions": [
+            "TrikV6EnginesForward",
+            "TrikV6EnginesBackward",
+            "TrikV6EnginesStop"
+        ],
 
-            "Wait": [
-                "Timer"
-            ],
+        "Wait": [
+            "Timer"
+        ],
 
-            "Drawing": [
-                "TrikSetPainterColor",
-                "TrikSetPainterWidth",
-                "TrikDrawPixel",
-                "TrikDrawLine",
-                "TrikDrawRect",
-                "TrikDrawEllipse",
-                "TrikSmile",
-                "TrikSadSmile",
-                "TrikSetBackground",
-                "PrintText",
-                "ClearScreen",
-                "MarkerDown",
-                "MarkerUp"
-            ]
+        "Drawing": [
+            "TrikSetPainterColor",
+            "TrikSetPainterWidth",
+            "TrikDrawPixel",
+            "TrikDrawLine",
+            "TrikDrawRect",
+            "TrikDrawEllipse",
+            "TrikSmile",
+            "TrikSadSmile",
+            "TrikSetBackground",
+            "PrintText",
+            "ClearScreen",
+            "MarkerDown",
+            "MarkerUp"
+        ]
 
-        }
-        
-    }
+    },
+
+    "containers": [
+    ]
 
 }
