@@ -4,6 +4,9 @@ import com.qreal.wmp.uitesting.dia.pallete.Pallete;
 import com.qreal.wmp.uitesting.dia.property.PropertyEditor;
 import com.qreal.wmp.uitesting.dia.scene.Scene;
 
+/** Describes Editor page of the WMP project.
+ * Includes such components as Scene, Pallete and PropertyEditor.
+ */
 public class EditorPage {
     
     private final Scene scene;

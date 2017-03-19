@@ -55,7 +55,7 @@ public class SceneImpl implements Scene {
             );
         }
         sceneWindow = SceneWindowImpl.getSceneWindow(webDriver);
-        blockProvider = BlockProvider.getBlockProvider(sceneWindow, SELECTOR);
+        blockProvider = BlockProvider.getBlockProvider(sceneWindow, SELECTOR, this);
         linkProvider = LinkProvider.getLinkProvider(SELECTOR, webDriver);
     }
     
@@ -66,15 +66,15 @@ public class SceneImpl implements Scene {
     }
     
     @Override
-    public Block dragAndDrop(final PalleteElement element, int cell_x, int cell_y) {
+    public Block dragAndDrop(final PalleteElement element, int cellX, int cellY) {
         Block newBlock = dragAndDrop(element);
-        blockProvider.moveToCell(newBlock, cell_x, cell_y);
+        blockProvider.moveToCell(newBlock, cellX, cellY);
         return newBlock;
     }
     
     @Override
-    public void moveToCell(Block block, final int cell_x, final int cell_y) {
-        blockProvider.moveToCell(block, cell_x, cell_y);
+    public void moveToCell(Block block, int cellX, int cellY) {
+        blockProvider.moveToCell(block, cellX, cellY);
     }
     
     @SuppressWarnings("SimplifiableIfStatement")
@@ -114,7 +114,7 @@ public class SceneImpl implements Scene {
             try {
                 remove(linkProvider.getLinks().get(0));
             } catch (ElementNotOnTheSceneException e) {
-                logger.error(e.getMessage());
+                logger.error("It's impossible to remove link, because it is not on the Scene.");
             }
             clean();
         } else {
@@ -122,7 +122,7 @@ public class SceneImpl implements Scene {
                 try {
                     remove(blockProvider.getBlocks().get(0));
                 } catch (ElementNotOnTheSceneException e) {
-                    logger.error(e.getMessage());
+                    logger.error("It's impossible to remove block, because it is not on the scene.");
                 }
                 clean();
             } else {

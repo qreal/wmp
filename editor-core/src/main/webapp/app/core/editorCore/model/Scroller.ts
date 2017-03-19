@@ -4,11 +4,11 @@ enum Direction {
 
 class Scroller {
 
-    private _scroll: boolean;
+    private scroll: boolean;
 
-    private _intervalId: number;
+    private intervalId: number;
 
-    private _direction: Direction;
+    private direction: Direction;
 
     constructor() {
         this.scroll = false;
@@ -16,27 +16,27 @@ class Scroller {
     }
 
     get direction(): Direction {
-        return this._direction;
+        return this.direction;
     }
 
     set direction(value: Direction) {
-        this._direction = value;
+        this.direction = value;
     }
 
     get intervalId(): number {
-        return this._intervalId;
+        return this.intervalId;
     }
 
     set intervalId(value: number) {
-        this._intervalId = value;
+        this.intervalId = value;
     }
 
     get scroll(): boolean {
-        return this._scroll;
+        return this.scroll;
     }
 
     set scroll(value: boolean) {
-        this._scroll = value;
+        this.scroll = value;
     }
 
 }

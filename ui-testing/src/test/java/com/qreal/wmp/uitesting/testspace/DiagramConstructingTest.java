@@ -66,9 +66,9 @@ public class DiagramConstructingTest {
 
     @Test
     public void moveSomeNodes() {
-        scene.moveToCell(elements.get(1), 20, 20);
-        scene.moveToCell(elements.get(0), 20, 10);
-        scene.moveToCell(elements.get(1), 0, 20);
+        elements.get(1).moveToCell(20, 20);
+        elements.get(0).moveToCell(20, 10);
+        elements.get(1).moveToCell(0, 20);
         assert allExist();
     }
 

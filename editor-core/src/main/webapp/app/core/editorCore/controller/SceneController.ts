@@ -291,25 +291,8 @@ class SceneController {
     private cellPointermoveListener(cellView, event, x, y): void {
         var element: DiagramElement = this.scene.getNodeById(cellView.model.id) ||
             this.scene.getLinkById(cellView.model.id);
-        var sceneWrapper: HTMLDivElement = <HTMLDivElement> $(".scene-wrapper")[0];
-        var boundingBox: any = sceneWrapper.getBoundingClientRect();
         if (element instanceof DefaultDiagramNode) {
-            var node = this.scene.getNodeById(cellView.model.id);
-            this.borderUnCrossed();
-            if (event.pageX + this.scene.getGridSize() * this.scene.getZoom() >= boundingBox.right) {
-                this.scroller.direction = Direction.Right;
-                this.borderCrossed(node, event);
-            } else if (event.pageX - this.scene.getGridSize() * this.scene.getZoom() <= boundingBox.left) {
-                this.scroller.direction = Direction.Left;
-                this.borderCrossed(node, event);
-            } else if (event.pageY + this.scene.getGridSize() * this.scene.getZoom() >= boundingBox.bottom) {
-                this.scroller.direction = Direction.Down;
-                this.borderCrossed(node, event);
-            } else if (event.pageY - this.scene.getGridSize() * this.scene.getZoom() <= boundingBox.top) {
-                this.scroller.direction = Direction.Up;
-                this.borderCrossed(node, event);
-            }
-            this.updateLastCellScrollPosition(event);
+           this.checkBorder(element, cellView, event)
         }
         this.clickFlag = false;
     }
@@ -399,6 +382,28 @@ class SceneController {
         $(document).on('focus', ".property-edit-element input", function() {
             controller.changeCurrentElement(controller.scene.getNodeById($(this).data("id")));
         });
+    }
+
+    private checkBorder(element: DiagramElement, cellView, event) : void {
+        var sceneWrapper: HTMLDivElement = <HTMLDivElement> $(".scene-wrapper")[0];
+        var boundingBox: any = sceneWrapper.getBoundingClientRect();
+
+        var node = this.scene.getNodeById(cellView.model.id);
+        this.borderUnCrossed();
+        if (event.pageX + this.scene.getGridSize() * this.scene.getZoom() >= boundingBox.right) {
+            this.scroller.direction = Direction.Right;
+            this.borderCrossed(node, event);
+        } else if (event.pageX - this.scene.getGridSize() * this.scene.getZoom() <= boundingBox.left) {
+            this.scroller.direction = Direction.Left;
+            this.borderCrossed(node, event);
+        } else if (event.pageY + this.scene.getGridSize() * this.scene.getZoom() >= boundingBox.bottom) {
+            this.scroller.direction = Direction.Down;
+            this.borderCrossed(node, event);
+        } else if (event.pageY - this.scene.getGridSize() * this.scene.getZoom() <= boundingBox.top) {
+            this.scroller.direction = Direction.Up;
+            this.borderCrossed(node, event);
+        }
+        this.updateLastCellScrollPosition(event);
     }
 
     private borderCrossed(node: DiagramNode, event): void {

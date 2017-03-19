@@ -13,6 +13,7 @@ import java.util.stream.IntStream;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 
+/** {@inheritDoc} */
 public class PropertyEditorImpl implements PropertyEditor {
 
     private static final String SELECTOR = "#property_table";

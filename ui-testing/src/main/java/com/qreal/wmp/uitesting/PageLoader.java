@@ -4,6 +4,10 @@ import com.qreal.wmp.uitesting.exceptions.WrongAuthException;
 import com.qreal.wmp.uitesting.services.Auther;
 import com.qreal.wmp.uitesting.services.Opener;
 
+/** Loads page.
+ * It means, firstly, it opens uri by Opener service.
+ * Secondly, it returns page by PageFactory.
+ * */
 public class PageLoader {
     
     private final PageFactory pageFactory;
