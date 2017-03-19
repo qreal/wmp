@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import static com.codeborne.selenide.Selectors.withText;
 import static com.codeborne.selenide.Selenide.$;
 
+/** {@inheritDoc} */
 public class PalleteImpl implements Pallete {
 
     private static final String SELECTOR = "#palette-tab-content";

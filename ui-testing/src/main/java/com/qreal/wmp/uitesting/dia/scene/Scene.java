@@ -13,10 +13,10 @@ public interface Scene {
     Block dragAndDrop(PalleteElement palleteElement);
     
     /** Drag element from scene or pallete and put it in cell of the scene. */
-    Block dragAndDrop(PalleteElement element, int cell_x, int cell_y);
+    Block dragAndDrop(PalleteElement element, int cellX, int cellY);
     
     /** Move element from scene to the cell. */
-    void moveToCell(Block block, int cell_x, int cell_y);
+    void moveToCell(Block block, int cellX, int cellY);
     
     /** Check if element exist on the scene. */
     boolean exist(SceneElement element);

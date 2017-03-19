@@ -25,9 +25,9 @@ import org.springframework.test.context.support.AnnotationConfigContextLoader;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = AppInit.class, loader = AnnotationConfigContextLoader.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-public class DiaTest {
+public class ManipulatingDiagramTest {
     
-    private static final Logger logger = LoggerFactory.getLogger(DiaTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(ManipulatingDiagramTest.class);
     
     @Autowired
     private PageLoader pageLoader;
@@ -75,7 +75,7 @@ public class DiaTest {
         final Block motor = scene.dragAndDrop(pallete.getElement("Motors Forward"), 4, 7);
         Link link = scene.addLink(initNode, motor);
         Link link2 = scene.addLink(motor, finalNode);
-        scene.moveToCell(motor, 72, 64);
+        motor.moveToCell(72, 64);
         assert scene.exist(link);
         assert scene.exist(link2);
     }
@@ -93,11 +93,11 @@ public class DiaTest {
     public void moveElement() {
         final Block motor = scene.dragAndDrop(pallete.getElement("Motors Forward"));
         try {
-            scene.moveToCell(motor, 40, 40);
+            motor.moveToCell(40, 40);
             assert motor.getCoordinateOnScene().getXCell() == 40 && motor.getCoordinateOnScene().getYCell() == 40;
-            scene.moveToCell(motor, 72, 64);
+            motor.moveToCell(72, 64);
             assert motor.getCoordinateOnScene().getXCell() == 72 && motor.getCoordinateOnScene().getYCell() == 64;
-            scene.moveToCell(motor, 0, 0);
+            motor.moveToCell(0, 0);
             assert motor.getCoordinateOnScene().getXCell() == 0 && motor.getCoordinateOnScene().getYCell() == 0;
         } catch (ElementNotOnTheSceneException e) {
             logger.error(e.getMessage());

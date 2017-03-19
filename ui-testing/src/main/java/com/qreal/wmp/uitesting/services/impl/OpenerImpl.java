@@ -11,6 +11,7 @@ import org.springframework.security.access.AccessDeniedException;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 
+/** {@inheritDoc} */
 public class OpenerImpl implements Opener {
 
     /** Uses properties from pages.properies file. */

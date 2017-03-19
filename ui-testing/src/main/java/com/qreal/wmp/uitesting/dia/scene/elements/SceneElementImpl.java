@@ -7,21 +7,24 @@ import org.openqa.selenium.By;
 
 import static com.codeborne.selenide.Selenide.$;
 
+/** All Scene elements have selector by which we can clearly define their web instances.
+ * Also all scene elements have coordinates on the Scene. */
 public class SceneElementImpl implements SceneElement {
     
-    private By by;
+    // Wrapper over an string selector. Used to search the element in HTML representation of current page.
+    private final By selector;
     
-    public SceneElementImpl(By by) {
-        this.by = by;
+    public SceneElementImpl(By selector) {
+        this.selector = selector;
     }
     
     /** Based on the Selenium element. */
     public SelenideElement getInnerSeleniumElement() {
-        return $(by);
+        return $(selector);
     }
     
     public By getBy() {
-        return by;
+        return selector;
     }
     
     public Coordinate getCoordinateOnScene() throws ElementNotOnTheSceneException {

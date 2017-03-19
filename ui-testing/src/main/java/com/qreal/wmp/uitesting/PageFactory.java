@@ -10,6 +10,7 @@ import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/** Returns page instance for requested uri. */
 public class PageFactory {
     
     private static final Logger logger = LoggerFactory.getLogger(PageFactory.class);
