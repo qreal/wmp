@@ -2,6 +2,7 @@ package com.qreal.wmp.uitesting.pages;
 
 import static com.codeborne.selenide.Selenide.title;
 
+/** Describes Dashboard page of the WMP project. */
 public class DashboardPage {
     
     private final String title;

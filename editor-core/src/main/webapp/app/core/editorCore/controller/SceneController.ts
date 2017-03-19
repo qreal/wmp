@@ -49,7 +49,7 @@ class SceneController {
         });
 
         this.diagramEditorController.getGraph().on('change:position', (cell) => {
-            if (this.scroller.scroll) {
+            if (this.scroller.getScroll()) {
                 cell.set('position', this.lastCellScrollPosition);
             }
             if (this.rightClickFlag) {
@@ -291,25 +291,8 @@ class SceneController {
     private cellPointermoveListener(cellView, event, x, y): void {
         var element: DiagramElement = this.scene.getNodeById(cellView.model.id) ||
             this.scene.getLinkById(cellView.model.id);
-        var sceneWrapper: HTMLDivElement = <HTMLDivElement> $(".scene-wrapper")[0];
-        var boundingBox: any = sceneWrapper.getBoundingClientRect();
         if (element instanceof DefaultDiagramNode) {
-            var node = this.scene.getNodeById(cellView.model.id);
-            this.borderUnCrossed();
-            if (event.pageX + this.scene.getGridSize() * this.scene.getZoom() >= boundingBox.right) {
-                this.scroller.direction = Direction.Right;
-                this.borderCrossed(node, event);
-            } else if (event.pageX - this.scene.getGridSize() * this.scene.getZoom() <= boundingBox.left) {
-                this.scroller.direction = Direction.Left;
-                this.borderCrossed(node, event);
-            } else if (event.pageY + this.scene.getGridSize() * this.scene.getZoom() >= boundingBox.bottom) {
-                this.scroller.direction = Direction.Down;
-                this.borderCrossed(node, event);
-            } else if (event.pageY - this.scene.getGridSize() * this.scene.getZoom() <= boundingBox.top) {
-                this.scroller.direction = Direction.Up;
-                this.borderCrossed(node, event);
-            }
-            this.updateLastCellScrollPosition(event);
+           this.checkBorder(element, cellView, event)
         }
         this.clickFlag = false;
     }
@@ -401,35 +384,57 @@ class SceneController {
         });
     }
 
+    private checkBorder(element: DiagramElement, cellView, event) : void {
+        var sceneWrapper: HTMLDivElement = <HTMLDivElement> $(".scene-wrapper")[0];
+        var boundingBox: any = sceneWrapper.getBoundingClientRect();
+
+        var node = this.scene.getNodeById(cellView.model.id);
+        this.borderUnCrossed();
+        if (event.pageX + this.scene.getGridSize() * this.scene.getZoom() >= boundingBox.right) {
+            this.scroller.setDirection(Direction.Right);
+            this.borderCrossed(node, event);
+        } else if (event.pageX - this.scene.getGridSize() * this.scene.getZoom() <= boundingBox.left) {
+            this.scroller.setDirection(Direction.Left);
+            this.borderCrossed(node, event);
+        } else if (event.pageY + this.scene.getGridSize() * this.scene.getZoom() >= boundingBox.bottom) {
+            this.scroller.setDirection(Direction.Down);
+            this.borderCrossed(node, event);
+        } else if (event.pageY - this.scene.getGridSize() * this.scene.getZoom() <= boundingBox.top) {
+            this.scroller.setDirection(Direction.Up);
+            this.borderCrossed(node, event);
+        }
+        this.updateLastCellScrollPosition(event);
+    }
+
     private borderCrossed(node: DiagramNode, event): void {
-        this.scroller.scroll = true;
+        this.scroller.setScroll(true);
         var that = this;
-        switch (this.scroller.direction) {
+        switch (this.scroller.getDirection()) {
             case Direction.Right: {
-                this.scroller.intervalId = setInterval(() => that.scrollRight(node, event), 150);
+                this.scroller.setIntervalId(setInterval(() => that.scrollRight(node, event), 150));
                 break;
             }
             case Direction.Left: {
-                this.scroller.intervalId = setInterval(() => that.scrollLeft(node, event), 150);
+                this.scroller.setIntervalId(setInterval(() => that.scrollLeft(node, event), 150));
                 break;
             }
             case Direction.Down: {
-                this.scroller.intervalId = setInterval(() => that.scrollBottom(node, event), 150);
+                this.scroller.setIntervalId(setInterval(() => that.scrollBottom(node, event), 150));
                 break;
             }
             case Direction.Up: {
-                this.scroller.intervalId = setInterval(() => that.scrollTop(node, event), 150);
+                this.scroller.setIntervalId(setInterval(() => that.scrollTop(node, event), 150));
                 break;
             }
         }
     }
 
     private borderUnCrossed(): void {
-        this.scroller.direction = Direction.None;
-        if (this.scroller.intervalId != -1) {
-            clearInterval(this.scroller.intervalId);
-            this.scroller.intervalId = -1;
-            this.scroller.scroll = false;
+        this.scroller.setDirection(Direction.None);
+        if (this.scroller.getIntervalId() != -1) {
+            clearInterval(this.scroller.getIntervalId());
+            this.scroller.setIntervalId(-1);
+            this.scroller.setScroll(false);
         }
     }
 

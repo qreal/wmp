@@ -2,6 +2,8 @@ package com.qreal.wmp.uitesting.dia.pallete;
 
 import com.codeborne.selenide.SelenideElement;
 
+
+/** Describes pallete's items. */
 public class PalleteElement {
 
     private final SelenideElement inner;

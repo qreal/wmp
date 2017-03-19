@@ -8,7 +8,6 @@ import lombok.ToString;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -99,8 +98,16 @@ public class Folder implements Serializable {
         }
     }
     
-    public long getId() {
+    public Long getId() {
         return id;
+    }
+    
+    public void setId(Long id) {
+        this.id = id;
+    }
+    
+    public void setFolderName(String folderName) {
+        this.folderName = folderName;
     }
     
     public void remove() {
@@ -108,15 +115,50 @@ public class Folder implements Serializable {
         parentFolders.clear();
     }
     
-    public List<Folder> getChildrenFolders() {
-        return childrenFolders.stream().collect(Collectors.toList());
+    public Set<Folder> getChildrenFolders() {
+        return childrenFolders;
     }
     
-    
-    private void removeChild(long childId) {
-        childrenFolders.stream().filter(x -> x.id == childId).findFirst().ifPresent(x -> childrenFolders.remove(x));
+    public Set<String> getOwners() {
+        return owners;
     }
-
+    
+    public void setOwners(Set<String> owners) {
+        this.owners = owners;
+    }
+    
+    public Long getFolderParentId() {
+        return folderParentId;
+    }
+    
+    public void setFolderParentId(Long folderParentId) {
+        this.folderParentId = folderParentId;
+    }
+    
+    public Set<Folder> getParentFolders() {
+        return parentFolders;
+    }
+    
+    public void setParentFolders(Set<Folder> parentFolders) {
+        this.parentFolders = parentFolders;
+    }
+    
+    public void setChildrenFolders(Set<Folder> childrenFolders) {
+        this.childrenFolders = childrenFolders;
+    }
+    
+    public Set<Diagram> getDiagrams() {
+        return diagrams;
+    }
+    
+    public void setDiagrams(Set<Diagram> diagrams) {
+        this.diagrams = diagrams;
+    }
+    
+    public String getFolderName() {
+        return folderName;
+    }
+    
     /** Converter from Folder to Thrift TFolder.*/
     public TFolder toTFolder(final String username) {
         TFolder tFolder = new TFolder();
@@ -154,6 +196,10 @@ public class Folder implements Serializable {
         if (!tFolder.isSetFolderParentId() && folderParentId != null) {
             tFolder.setFolderParentId(folderParentId);
         }
+    }
+    
+    private void removeChild(long childId) {
+        childrenFolders.stream().filter(x -> x.id == childId).findFirst().ifPresent(x -> childrenFolders.remove(x));
     }
 }
 

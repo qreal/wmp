@@ -7,6 +7,9 @@ import com.qreal.wmp.uitesting.headerpanel.EditorHeaderPanel;
 
 import static com.codeborne.selenide.Selenide.title;
 
+/** Describes Editor page of the WMP project.
+ * Includes such components as Scene, Pallete and PropertyEditor.
+ */
 public class EditorPage implements EventProvider.EventListener {
     
     private final String title;

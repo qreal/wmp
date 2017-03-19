@@ -47,26 +47,32 @@ public class SceneWindowImpl implements SceneWindow {
     
         Actions actions = new Actions(driver);
         actions.clickAndHold(element.getInnerSeleniumElement());
-        if (Math.abs(dist.getXAbsolute() - element.getCoordinateOnScene().getXAbsolute()) < sizeHor / 2
-                && Math.abs(dist.getYAbsolute() - element.getCoordinateOnScene().getYAbsolute()) < sizeVer / 2) {
+        if (isDistanceLessThenBarrier(
+                dist,
+                element.getCoordinateOnScene(),
+                new OffsetObject(sizeHor / 2, sizeVer / 2))) {
+            
             jump(actions, element, dist);
         } else {
-            Predicate<Coordinate> condX = x -> Math.abs(x.getXAbsolute() - dist.getXAbsolute()) <= sizeHor / 3;
+            java.util.function.Predicate<Coordinate> condX = x ->
+                    isDistanceLessThenBarrier(x.getXAbsolute(), dist.getXAbsolute(), sizeHor / 3);
+            
             if (src.getXAbsolute() < dist.getXAbsolute()) {
-                movement(actions, element, new OffsetObject(sizeHor / 4, 0), condX);
+                innerMove(actions, element, new OffsetObject(sizeHor / 4, 0), condX);
             } else {
-                movement(actions, element, new OffsetObject(-sizeHor / 4, 0), condX);
+                innerMove(actions, element, new OffsetObject(-sizeHor / 4, 0), condX);
             }
         }
         if (Math.abs(dist.getXAbsolute() - element.getCoordinateOnScene().getXAbsolute()) < sizeHor / 2
                 && Math.abs(dist.getYAbsolute() - element.getCoordinateOnScene().getYAbsolute()) < sizeVer / 2) {
             jump(actions, element, dist);
         } else {
-            Predicate<Coordinate> condY = x -> Math.abs(x.getYAbsolute() - dist.getYAbsolute()) <= sizeVer / 3;
+            java.util.function.Predicate<Coordinate> condY = x ->
+                    isDistanceLessThenBarrier(x.getYAbsolute(), dist.getYAbsolute(), sizeVer / 3);
             if (src.getYAbsolute() < dist.getYAbsolute()) {
-                movement(actions, element, new OffsetObject(0, sizeVer / 4), condY);
+                innerMove(actions, element, new OffsetObject(0, sizeVer / 4), condY);
             } else {
-                movement(actions, element, new OffsetObject(0, -sizeVer / 4), condY);
+                innerMove(actions, element, new OffsetObject(0, -sizeVer / 4), condY);
             }
         }
         
@@ -77,7 +83,7 @@ public class SceneWindowImpl implements SceneWindow {
                     try {
                         return element.getCoordinateOnScene().equals(dist);
                     } catch (ElementNotOnTheSceneException e) {
-                        logger.error(e.getMessage());
+                        logger.error("It is impossible to move element, which is not on the Scene");
                     }
                     return false;
                 });
@@ -119,7 +125,9 @@ public class SceneWindowImpl implements SceneWindow {
         }
     }
     
-    private void movement(Actions actions, SceneElement element, OffsetObject offset, Predicate<Coordinate> cond) {
+    private void innerMove(Actions actions, SceneElement element,
+                           OffsetObject offset, java.util.function.Predicate<Coordinate> cond) {
+        
         (new WebDriverWait(driver, 40))
                 .until((Predicate<WebDriver>) webDriver -> {
                     try {
@@ -139,9 +147,9 @@ public class SceneWindowImpl implements SceneWindow {
                                 offset.offsetY = signY * random.nextInt(Math.abs(offset.offsetY));
                             }
                         }
-                        return cond.apply(element.getCoordinateOnScene());
+                        return cond.test(element.getCoordinateOnScene());
                     } catch (ElementNotOnTheSceneException e) {
-                        logger.error(e.getMessage());
+                        logger.error("It is impossible to move element, which is not on the Scene");
                     }
                     return false;
                 });
@@ -166,5 +174,14 @@ public class SceneWindowImpl implements SceneWindow {
             this.offsetX = offsetX;
             this.offsetY = offsetY;
         }
+    }
+    
+    private boolean isDistanceLessThenBarrier(double fst, double snd, double barrier) {
+        return Math.abs(fst - snd) <= barrier;
+    }
+    
+    private boolean isDistanceLessThenBarrier(Coordinate fst, Coordinate snd, OffsetObject barrier) {
+        return isDistanceLessThenBarrier(fst.getXAbsolute(), snd.getXAbsolute(), barrier.offsetX) &&
+                isDistanceLessThenBarrier(fst.getYAbsolute(), snd.getYAbsolute(), barrier.offsetY);
     }
 }

@@ -7,6 +7,7 @@ import org.openqa.selenium.By;
 
 import static com.codeborne.selenide.Selenide.$;
 
+/** Link describes relations between blocks. */
 public class Link extends SceneElementImpl {
     
     public static final String CLASS_NAME = "link";
@@ -20,12 +21,12 @@ public class Link extends SceneElementImpl {
     private final SceneElement target;
     
     /** Describes link between two blocks. */
-    public Link(String name, By by) {
-        super(by);
+    public Link(String name, By selector) {
+        super(selector);
         this.name = name;
-        SelenideElement source = $(by).find(By.className(ARROWHEAD)).find(By.cssSelector(":nth-child(1)"));
+        SelenideElement source = $(selector).find(By.className(ARROWHEAD)).find(By.cssSelector(":nth-child(1)"));
         this.source = new SceneElementImpl(By.id(source.attr("id")));
-        SelenideElement target = $(by).find(By.className(ARROWHEAD)).find(By.cssSelector(":nth-child(2)"));
+        SelenideElement target = $(selector).find(By.className(ARROWHEAD)).find(By.cssSelector(":nth-child(2)"));
         this.target = new SceneElementImpl(By.id(target.attr("id")));
     }
     

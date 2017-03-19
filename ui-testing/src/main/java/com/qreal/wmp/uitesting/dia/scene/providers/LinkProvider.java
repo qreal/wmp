@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 
+/** Encapsulates links operations. */
 public class LinkProvider {
     
     private static final Logger logger = LoggerFactory.getLogger(LinkProvider.class);

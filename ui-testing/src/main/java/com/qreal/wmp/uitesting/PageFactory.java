@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import static com.codeborne.selenide.Selenide.title;
 
+/** Returns page instance for requested uri. */
 public class PageFactory {
     
     private static final Logger logger = LoggerFactory.getLogger(PageFactory.class);

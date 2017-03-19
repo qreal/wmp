@@ -5,6 +5,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
+/** Describes element's position on the Scene.
+ * Contains absolute coordinates of scene, which are written in 'transform' tag on the html representation.
+ * Also contains cell's position (the Scene is represented by a mesh of cells)*/
 public class Coordinate {
     
     public static final String SELECTOR = "transform";
@@ -18,7 +21,7 @@ public class Coordinate {
     /** Returns coordinate of object on scene. */
     @NotNull
     public static Optional<Coordinate> getCoordinateFromSeleniumObject(SelenideElement element) {
-        final String position = element.attr("transform");
+        final String position = element.attr(SELECTOR);
         final String[] pairStr = position.substring(position.indexOf('(') + 1, position.indexOf(')')).split(",");
         return Optional.of(
                 new Coordinate(

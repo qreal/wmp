@@ -1,5 +1,6 @@
 package com.qreal.wmp.uitesting;
 
+/** Describes WMP pages in browser. */
 public enum Page {
     Auth("auth"), Dashboard("dashboard"), EditorRobots("robotsEditor"), EditorBPMN("bpmnEditor");
     

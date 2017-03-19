@@ -2,6 +2,7 @@ package com.qreal.wmp.uitesting.dia.scene.providers;
 
 import com.codeborne.selenide.SelenideElement;
 import com.qreal.wmp.uitesting.dia.scene.Coordinate;
+import com.qreal.wmp.uitesting.dia.scene.Scene;
 import com.qreal.wmp.uitesting.dia.scene.elements.Block;
 import com.qreal.wmp.uitesting.dia.scene.window.SceneWindow;
 import com.qreal.wmp.uitesting.exceptions.ElementNotOnTheSceneException;
@@ -16,6 +17,7 @@ import java.util.stream.Collectors;
 
 import static com.codeborne.selenide.Selenide.$$;
 
+/** Encapsulates blocks operations. */
 public class BlockProvider {
     
     private static final Logger logger = LoggerFactory.getLogger(BlockProvider.class);
@@ -24,20 +26,23 @@ public class BlockProvider {
     
     private final String selector;
     
+    private final Scene scene;
+    
     private Set<Block> blocks = new HashSet<>();
     
-    private BlockProvider(SceneWindow sceneWindow, String selector) {
+    private BlockProvider(SceneWindow sceneWindow, String selector, Scene scene) {
         this.sceneWindow = sceneWindow;
         this.selector = selector;
+        this.scene = scene;
     }
     
     /** Move element to cell with x and y coordinates. */
-    public void moveToCell(final Block block, final int cell_x, final int cell_y) {
-        logger.info("Move element {} to cell ({}, {})", block, cell_x, cell_y);
+    public void moveToCell(final Block block, final int cellX, final int cellY) {
+        logger.info("Move element {} to cell ({}, {})", block, cellX, cellY);
         try {
-            sceneWindow.move(block, new Coordinate(cell_x * 25, cell_y * 25));
+            sceneWindow.move(block, new Coordinate(cellX * 25, cellY * 25));
         } catch (ElementNotOnTheSceneException e) {
-            logger.error(e.getMessage());
+            logger.error("It is impossible to move element, which is not on the Scene");
         }
     }
     
@@ -49,7 +54,7 @@ public class BlockProvider {
     public Block getNewBlock() {
         final SelenideElement newEl = updateBlocks().orElseThrow(NotFoundException::new);
         logger.info("Add element {} to scene", newEl);
-        Block block = new Block(newEl.attr("id"), By.id(newEl.attr("id")));
+        Block block = new Block(newEl.attr("id"), By.id(newEl.attr("id")), scene);
         blocks.add(block);
         return block;
     }
@@ -65,13 +70,13 @@ public class BlockProvider {
     public void recalculateBlocks() {
         blocks = $$(By.cssSelector(selector + " #v_7 > *")).stream()
                 .filter(x -> x.attr("class").contains(Block.CLASS_NAME))
-                .map(x -> new Block(x.attr("id"), By.id(x.attr("id"))))
+                .map(x -> new Block(x.attr("id"), By.id(x.attr("id")), scene))
                 .collect(Collectors.toSet());
     }
     
-    @Contract("_, _ -> !null")
-    public static BlockProvider getBlockProvider(SceneWindow sceneWindow, String selector) {
-        return new BlockProvider(sceneWindow, selector);
+    @Contract("_, _, _ -> !null")
+    public static BlockProvider getBlockProvider(SceneWindow sceneWindow, String selector, Scene scene) {
+        return new BlockProvider(sceneWindow, selector, scene);
     }
     
     /** Return new element of the scene. */

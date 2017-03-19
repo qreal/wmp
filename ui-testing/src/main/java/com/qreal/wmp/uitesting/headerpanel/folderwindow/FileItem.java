@@ -24,21 +24,21 @@ public class FileItem {
     /** Corresponds 'New' button. */
     public void newDiagram() {
         $(selector).find(withText("New")).click();
-        $(SaveDiagramConfirm.selector).shouldBe(Condition.visible);
+        $(SaveDiagramConfirm.selector).waitUntil(Condition.visible, 10000);
         SaveDiagramConfirm.getSaveDiagramConfirm(driver).notSave();
     }
     
     /** Returns folder window by clicking 'SaveAs'. */
     public FolderArea getSaveItem() {
         $(selector).find(withText("SaveAs")).click();
-        $(FolderAreaImpl.selector).shouldBe(Condition.visible);
+        $(FolderAreaImpl.selector).waitUntil(Condition.visible, 10000);
         return folderArea;
     }
     
     /** Returns folder window by clicking 'Open'. */
     public FolderArea getOpenItem() {
         $(selector).find(withText("Open")).click();
-        $(FolderAreaImpl.selector).shouldBe(Condition.visible);
+        $(FolderAreaImpl.selector).waitUntil(Condition.visible, 10000);
         return folderArea;
     }
     

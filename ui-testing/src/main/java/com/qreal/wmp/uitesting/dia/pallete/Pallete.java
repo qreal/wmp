@@ -9,7 +9,7 @@ import org.openqa.selenium.NoSuchElementException;
 public interface Pallete {
     
     /**
-     * Chose element from Pallete.
+     * Chooses an element from Pallete.
      *
      * @param elementName name of block
      * @return block
