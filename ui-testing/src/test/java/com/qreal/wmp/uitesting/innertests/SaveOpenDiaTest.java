@@ -86,6 +86,15 @@ public class SaveOpenDiaTest {
         assert !headerPanel.equalsDiagrams(diagram);
     }
     
+    @Test
+    public void saveAfterChangesTest() {
+        scene.clean();
+        addElements();
+        scene.moveToCell(elements.get(0), 10, 10);
+        headerPanel.saveDiagram();
+        assert headerPanel.equalsDiagrams(diagram);
+    }
+    
     private void addElements() {
         elements.clear();
         links.clear();

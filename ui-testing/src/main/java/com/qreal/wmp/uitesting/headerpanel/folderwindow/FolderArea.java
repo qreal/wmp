@@ -1,5 +1,6 @@
-package com.qreal.wmp.uitesting.headerpanel;
+package com.qreal.wmp.uitesting.headerpanel.folderwindow;
 
+/** Provides interface to working with folder window. */
 public interface FolderArea extends AutoCloseable {
     FolderArea createFolder(String name);
     

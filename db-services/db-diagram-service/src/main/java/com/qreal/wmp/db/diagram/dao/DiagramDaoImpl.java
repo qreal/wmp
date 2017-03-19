@@ -179,6 +179,10 @@ public class DiagramDaoImpl implements DiagramDao {
                     DiagramDaoImpl.class.getName());
         }
         Folder folder = (Folder) session.get(Folder.class, folderId);
+        for (Folder child : folder.getChildrenFolders()) {
+            deleteFolder(child.getId());
+        }
+        folder.remove();
         session.delete(folder);
 
         logger.trace("deleteFolder() successfully deleted a folder with id {}", folderId);

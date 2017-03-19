@@ -1,6 +1,8 @@
 package com.qreal.wmp.uitesting.headerpanel;
 
 import com.qreal.wmp.uitesting.PageFactory;
+import com.qreal.wmp.uitesting.headerpanel.folderwindow.FileItem;
+import com.qreal.wmp.uitesting.headerpanel.folderwindow.FolderArea;
 import com.qreal.wmp.uitesting.pages.DashboardPage;
 import com.qreal.wmp.uitesting.pages.EventProvider;
 import org.openqa.selenium.By;
@@ -13,12 +15,13 @@ import java.util.Arrays;
 import static com.codeborne.selenide.Selectors.withText;
 import static com.codeborne.selenide.Selenide.$;
 
+/** {@inheritDoc} */
 public class EditorHeaderPanelImpl implements EditorHeaderPanel {
+    
+    public static final By selector = By.id("main-toolbar-area");
     
     private static final Logger logger = LoggerFactory.getLogger(EditorHeaderPanel.class);
     
-    public static final By selector = By.id("main-toolbar-area");
-
     private final FileItem fileItem;
     
     private final PageFactory pageFactory;
@@ -55,24 +58,33 @@ public class EditorHeaderPanelImpl implements EditorHeaderPanel {
     
     @Override
     public void saveDiagram(String path) {
-        service.saveDiagram(moveByFolderArea(path));
-        logger.info("Save diagram {0}", path);
+        moveByFolderArea(clickFile().getSaveItem(), path);
+        service.saveDiagram(path);
+        logger.info("Save diagram {}", path);
+    }
+    
+    @Override
+    public void saveDiagram() {
+        clickFile().saveDiagram();
+        service.saveDiagram();
     }
     
     @Override
     public void openDiagram(String path) {
-        service.openDiagram(moveByFolderArea(path));
-        logger.info("Open diagram {0}", path);
+        moveByFolderArea(clickFile().getOpenItem(), path);
+        service.openDiagram(path);
+        logger.info("Open diagram {}", path);
     }
     
     @Override
     public boolean isDiagramExist(String path) {
-        return service.isDiagramExist(moveByFolderArea(path));
+        moveByFolderArea(clickFile().getSaveItem(), path);
+        return service.isDiagramExist(path);
     }
     
     @Override
     public boolean equalsDiagrams(String path) {
-        return service.equalsDrigrams(moveByFolderArea(path));
+        return service.equalsDrigrams(path);
     }
     
     public static EditorHeaderPanel getEditorHeaderPanel(PageFactory pageFactory,
@@ -86,10 +98,8 @@ public class EditorHeaderPanelImpl implements EditorHeaderPanel {
         return fileItem;
     }
     
-    private String moveByFolderArea(String path) {
-        FolderArea folderArea = getFolderArea();
+    private void moveByFolderArea(FolderArea folderArea, String path) {
         String[] steps = path.split("/");
         folderArea.move(String.join("/", Arrays.copyOf(steps, steps.length - 1)));
-        return steps[steps.length - 1];
     }
 }

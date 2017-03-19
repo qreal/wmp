@@ -1,4 +1,4 @@
-package com.qreal.wmp.uitesting.headerpanel;
+package com.qreal.wmp.uitesting.headerpanel.folderwindow;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Selectors;
@@ -14,6 +14,7 @@ import java.util.function.Function;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.$;
 
+/** {@inheritDoc} */
 public class FolderAreaImpl implements FolderArea {
     
     public static final By selector = By.cssSelector("#diagrams .modal-content");

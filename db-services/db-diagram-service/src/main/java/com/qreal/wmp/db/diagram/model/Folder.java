@@ -8,6 +8,7 @@ import lombok.ToString;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -19,6 +20,8 @@ import java.util.stream.Collectors;
 @ToString(exclude = "parentFolders")
 public class Folder implements Serializable {
 
+    private static final String ROOT_FOLDER = "root";
+    
     @Id
     @Column(name = "folder_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,10 +38,10 @@ public class Folder implements Serializable {
     @Transient
     private Long folderParentId;
 
-    @ManyToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER, mappedBy = "childrenFolders")
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "childrenFolders")
     private Set<Folder> parentFolders = new HashSet<>();
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.EAGER)
     @JoinTable(name = "folders_folders", joinColumns = {@JoinColumn(name = "parent_id")},
             inverseJoinColumns = {@JoinColumn(name = "child_id")})
     private Set<Folder> childrenFolders = new HashSet<>();
@@ -94,6 +97,24 @@ public class Folder implements Serializable {
         if (tFolder.isSetDiagrams()) {
             diagrams = tFolder.getDiagrams().stream().map(Diagram::new).collect(Collectors.toSet());
         }
+    }
+    
+    public long getId() {
+        return id;
+    }
+    
+    public void remove() {
+        parentFolders.forEach(x -> x.removeChild(id));
+        parentFolders.clear();
+    }
+    
+    public List<Folder> getChildrenFolders() {
+        return childrenFolders.stream().collect(Collectors.toList());
+    }
+    
+    
+    private void removeChild(long childId) {
+        childrenFolders.stream().filter(x -> x.id == childId).findFirst().ifPresent(x -> childrenFolders.remove(x));
     }
 
     /** Converter from Folder to Thrift TFolder.*/
