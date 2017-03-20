@@ -12,11 +12,11 @@ struct TDefaultDiagramNode {
     1 : string id,
     2 : string logicalId,
     3 : string graphicalId,
-    4 : string jointObject,
-    5 : string type,
-    6 : double x,
-    7 : double y,
-    8 : set<TDefaultDiagramNode> childrenNodes,
+    4 : string parentId,
+    5 : string jointObject,
+    6 : string type,
+    7 : double x,
+    8 : double y,
     9 : set<TProperty> properties
 }
 

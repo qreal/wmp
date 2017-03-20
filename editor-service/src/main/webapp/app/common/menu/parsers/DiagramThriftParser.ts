@@ -14,6 +14,7 @@ export class DiagramThriftParser extends DiagramJsonParser {
     public parse(diagram: TDiagram, nodeTypesMap: Map<String, NodeType>, linkPatterns: Map<String, joint.dia.Link>): DiagramParts {
         var diagramParts: DiagramParts = this.parseNodes(diagram, nodeTypesMap, 0, 0);
         diagramParts.linksMap = this.parseLinks(diagram, nodeTypesMap, linkPatterns, 0, 0);
+        this.setEmbedding(<Map<String, DefaultDiagramNode>> diagramParts.nodesMap, diagram.nodes);
         return diagramParts;
     }
 
@@ -117,7 +118,7 @@ export class DiagramThriftParser extends DiagramJsonParser {
         if (targetId !== "ROOT_ID") {
             targetObject = {id: targetId};
         } else {
-            targetObject = this.getTargetPosition(configuration);;
+            targetObject = this.getTargetPosition(configuration);
         }
 
         var jointObject: joint.dia.Link = <joint.dia.Link> linkPatterns[linkObject.type].clone();
@@ -132,4 +133,12 @@ export class DiagramThriftParser extends DiagramJsonParser {
         return new Link(jointObject, nodeType.getShownName(), nodeType.getName(), properties);
     }
 
+    protected setEmbedding(nodesMap: Map<String, DefaultDiagramNode>, nodeObjects: TDefaultDiagramNode[]) {
+        for (var i = 0; i < nodeObjects.length; i++) {
+            if (!nodeObjects[i].parentId)
+                continue;
+            var child: joint.shapes.devs.ImageWithPorts = nodesMap[nodeObjects[i].graphicalId].getJointObject();
+            nodesMap[nodeObjects[i].parentId].getJointObject().embed(child);
+        }
+    }
 }
