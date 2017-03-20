@@ -26,7 +26,7 @@ export class BpmnDiagramEditorController extends DiagramEditorController {
         document.addEventListener('mouseup', (event) => { this.gesturesController.onMouseUp(event) } );
         $("#" + scene.getId()).mousemove((event) => { this.gesturesController.onMouseMove(event) } );
         $("#elements-search").on('input', (event) => {
-            this.paletteController.searchPaletteReload(event, this.elementTypes, this.nodeTypesMap);
+            this.paletteController.searchPaletteReload(event);
         } );
 
         (scene as any).on('cell:pointerdown', (cellView, event, x, y): void => {

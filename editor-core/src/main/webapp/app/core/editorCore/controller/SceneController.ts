@@ -14,6 +14,8 @@ import {DiagramElementListener} from "./DiagramElementListener";
 import {SceneCommandFactory} from "../model/commands/SceneCommandFactory";
 import {DiagramEditorController} from "./DiagramEditorController";
 import {UndoRedoController} from "./UndoRedoController";
+import {ContainerNodeType} from "../model/ContainerNodeType";
+import {DiagramContainer} from "../model/DiagramContainer";
 export class SceneController {
 
     private diagramEditorController: DiagramEditorController;
@@ -119,8 +121,12 @@ export class SceneController {
             node = new SubprogramNode(subprogramName, type, x, y, DefaultSize.DEFAULT_NODE_WIDTH,
                 DefaultSize.DEFAULT_NODE_HEIGHT, nodeProperties, image, subprogramId);
         } else {
-            node = new DefaultDiagramNode(name, type, x, y, DefaultSize.DEFAULT_NODE_WIDTH,
-                DefaultSize.DEFAULT_NODE_HEIGHT, nodeProperties, image);
+            if (this.diagramEditorController.getNodesMap()[type] instanceof ContainerNodeType)
+                node = new DiagramContainer(name, type, x, y, DefaultSize.DEFAULT_NODE_WIDTH,
+                    DefaultSize.DEFAULT_NODE_HEIGHT, nodeProperties, image);
+            else
+                node = new DefaultDiagramNode(name, type, x, y, DefaultSize.DEFAULT_NODE_WIDTH,
+                    DefaultSize.DEFAULT_NODE_HEIGHT, nodeProperties, image);
         }
 
         var command: Command = new MultiCommand([this.paperCommandFactory.makeCreateNodeCommand(node),

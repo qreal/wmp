@@ -6,6 +6,8 @@ import {Property} from "core/editorCore/model/Property";
 import {Link} from "core/editorCore/model/Link";
 import {NodeType} from "core/editorCore/model/NodeType";
 import {DefaultDiagramNode} from "core/editorCore/model/DefaultDiagramNode";
+import {DiagramContainer} from "core/editorCore/model/DiagramContainer";
+import {ContainerNodeType} from "core/editorCore/model/ContainerNodeType";
 import {DiagramNode} from "core/editorCore/model/DiagramNode";
 import {DiagramParts} from "core/editorCore/model/DiagramParts";
 import {DiagramJsonParser} from "core/editorCore/controller/parsers/DiagramJsonParser";
@@ -63,9 +65,13 @@ export class DiagramThriftParser extends DiagramJsonParser {
             }
         }
 
-        var node: DiagramNode = new DefaultDiagramNode(name, type, x, y, width, height,
-            changeableLogicalProperties,
-            nodeTypesMap[nodeObject.type].getImage(), nodeObject.graphicalId);
+        var node: DiagramNode;
+        if (nodeTypesMap[type] instanceof ContainerNodeType)
+            node = new DiagramContainer(name, type, x, y, width, height, changeableLogicalProperties,
+                nodeTypesMap[nodeObject.type].getImage(), nodeObject.graphicalId);
+        else
+            node = new DefaultDiagramNode(name, type, x, y, width, height, changeableLogicalProperties,
+                nodeTypesMap[nodeObject.type].getImage(), nodeObject.graphicalId);
 
         return node;
     }

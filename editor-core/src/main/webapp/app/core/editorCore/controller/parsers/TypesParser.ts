@@ -5,6 +5,7 @@ import {NodeType} from "../../model/NodeType";
 import {PaletteTree} from "../../model/PaletteTree";
 import {GeneralConstants} from "../../../../common/constants/GeneralConstants";
 import {ElementTypes} from "../../model/ElementTypes";
+import {ContainerNodeType} from "../../model/ContainerNodeType";
 export class TypesParser {
 
     private currentProperties: Map<String, Property>;
@@ -43,6 +44,7 @@ export class TypesParser {
         }
         return elementsTree;
     }
+
     private parsePaletteTypes(paletteTypes: any): PaletteTree {
         var paletteTypesObject: PaletteTree = new PaletteTree();
 
@@ -78,7 +80,11 @@ export class TypesParser {
 
         var categories: any = typeObject.subtypes;
         if (!categories) {
-            var node: NodeType = new NodeType(name, this.currentProperties, this.currentImage, [typeName]);
+            var node: NodeType;
+            if (typeObject.container)
+                node = new ContainerNodeType(name, this.currentProperties, this.currentImage, [typeName]);
+            else
+                node = new NodeType(name, this.currentProperties, this.currentImage, [typeName]);
             nodesTree = new PaletteTree();
             nodesTree.nodes.push(node);
         } else

@@ -307,6 +307,13 @@ declare module "core/editorCore/controller/DiagramElementListener" {
         static makeAndExecuteCreateLinkCommand: (linkObject: Link) => void;
     }
 }
+declare module "core/editorCore/model/ContainerNodeType" {
+    import { NodeType } from "core/editorCore/model/NodeType";
+    import { Property } from "core/editorCore/model/Property";
+    export class ContainerNodeType extends NodeType {
+        constructor(name: string, propertiesMap: Map<String, Property>, image: string, path?: string[]);
+    }
+}
 declare module "core/editorCore/model/DiagramScene" {
     import { Link } from "core/editorCore/model/Link";
     import { DiagramNode } from "core/editorCore/model/DiagramNode";
@@ -433,6 +440,14 @@ declare module "core/editorCore/model/commands/SceneCommandFactory" {
         makeResizeCommand(node: DiagramNode, oldWidth: number, oldHeight: number, newWidth: number, newHeight: number, cellView: joint.dia.CellView): Command;
     }
 }
+declare module "core/editorCore/model/DiagramContainer" {
+    import { DefaultDiagramNode } from "core/editorCore/model/DefaultDiagramNode";
+    import { PropertiesPack } from "core/editorCore/model/PropertiesPack";
+    import { Property } from "core/editorCore/model/Property";
+    export class DiagramContainer extends DefaultDiagramNode {
+        constructor(name: string, type: string, x: number, y: number, width: number, height: number, properties: Map<String, Property>, imagePath: string, id?: string, notDefaultConstProperties?: PropertiesPack);
+    }
+}
 declare module "core/editorCore/controller/SceneController" {
     import { Link } from "core/editorCore/model/Link";
     import { DiagramNode } from "core/editorCore/model/DiagramNode";
@@ -511,11 +526,10 @@ declare module "core/editorCore/model/PaletteTree" {
 }
 declare module "core/editorCore/model/ElementTypes" {
     import { PaletteTree } from "core/editorCore/model/PaletteTree";
-    import { NodeType } from "core/editorCore/model/NodeType";
     export class ElementTypes {
-        uncategorisedTypes: Map<String, NodeType>;
         blockTypes: PaletteTree;
         flowTypes: PaletteTree;
+        containerTypes: PaletteTree;
         linkPatterns: Map<String, joint.dia.Link>;
         constructor();
     }
@@ -553,8 +567,7 @@ declare module "core/editorCore/controller/parsers/TypesParser" {
         private linkPatterns;
         private currentImage;
         parse(typesJson: any): ElementTypes;
-        private parseElementsTypes(elementsTypes);
-        private parseGeneralTypes(generalTypes);
+        private parseGeneralTypes(elementsTypes, category);
         private parsePaletteTypes(paletteTypes);
         private createNodeTypes(typeObject);
         private parseSubtypes(categories, path);
@@ -622,19 +635,23 @@ declare module "core/editorCore/view/SubprogramPaletteView" {
 declare module "core/editorCore/controller/PaletteController" {
     import { NodeType } from "core/editorCore/model/NodeType";
     import { ElementTypes } from "core/editorCore/model/ElementTypes";
-    import { PaletteTree } from "core/editorCore/model/PaletteTree";
     import { SubprogramDiagramNode } from "core/editorCore/model/SubprogramDiagramNode";
     import { DiagramScene } from "core/editorCore/model/DiagramScene";
     export class PaletteController {
         private subprogramsSelector;
         private blocksSelector;
         private flowsSelector;
-        initDraggable(): void;
-        initClick(paper: DiagramScene): void;
+        private paper;
+        private elementTypes;
+        private nodesTypesMap;
+        init(paper: DiagramScene, elementTypes: ElementTypes, nodesTypesMap: Map<String, NodeType>): void;
+        reload(): void;
+        searchPaletteReload(event: Event): void;
+        private initDraggable();
+        private initClick();
         appendSubprogramsPalette(subprogramDiagramNodes: SubprogramDiagramNode[], nodeTypesMap: Map<String, NodeType>): void;
-        appendBlocksPalette(paletteTypes: PaletteTree): void;
-        appendFlowsPalette(paletteTypes: PaletteTree): void;
-        searchPaletteReload(event: Event, elementTypes: ElementTypes, nodesTypesMap: Map<String, NodeType>): void;
+        private appendBlocksPalette(paletteTypes);
+        private appendFlowsPalette(paletteTypes);
         private appendPaletteContent(selector, content);
         private clearPaletteContent(selector);
     }
