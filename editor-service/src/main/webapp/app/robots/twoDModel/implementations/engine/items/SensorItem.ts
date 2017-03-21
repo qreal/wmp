@@ -1,21 +1,19 @@
-/// <reference path="../../robotModel/robotParts/TouchSensor.ts" />
-/// <reference path="../../robotModel/robotParts/ColorSensor.ts" />
-/// <reference path="../../robotModel/robotParts/ColorSensorFull.ts" />
-/// <reference path="../../robotModel/robotParts/ColorSensorPassive.ts" />
-/// <reference path="../../robotModel/robotParts/ColorSensorRed.ts" />
-/// <reference path="../../robotModel/robotParts/ColorSensorGreen.ts" />
-/// <reference path="../../robotModel/robotParts/ColorSensorBlue.ts" />
-/// <reference path="../../robotModel/robotParts/RangeSensor.ts" />
-/// <reference path="../../robotModel/robotParts/LightSensor.ts" />
-/// <reference path="../../../interfaces/engine/model/WorldModel.ts" />
-/// <reference path="../../../interfaces/engine/items/RobotItem.ts" />
-/// <reference path="../../../interfaces/robotModel/DeviceInfo.ts" />
-/// <reference path="../../../types/TwoDPosition.ts" />
-/// <reference path="../../../../../common/constants/GeneralConstants.ts" />
-/// <reference path="../../../utils/MathUtils.ts" />
-/// <reference path="../../../../../vendor.d.ts" />
-
-class SensorItem {
+import {MathUtils} from "../../../utils/MathUtils";
+import {RangeSensor} from "../../robotModel/robotParts/RangeSensor";
+import {LightSensor} from "../../robotModel/robotParts/LightSensor";
+import {ColorSensor} from "../../robotModel/robotParts/ColorSensor";
+import {TouchSensor} from "../../robotModel/robotParts/TouchSensor";
+import {GeneralConstants} from "../../../../../common/constants/GeneralConstants";
+import {ColorSensorBlue} from "../../robotModel/robotParts/ColorSensorBlue";
+import {ColorSensorGreen} from "../../robotModel/robotParts/ColorSensorGreen";
+import {ColorSensorRed} from "../../robotModel/robotParts/ColorSensorRed";
+import {ColorSensorPassive} from "../../robotModel/robotParts/ColorSensorPassive";
+import {ColorSensorFull} from "../../robotModel/robotParts/ColorSensorFull";
+import {RobotItem} from "../../../interfaces/engine/items/RobotItem";
+import {TwoDPosition} from "../../../types/TwoDPosition";
+import {DeviceInfo} from "../../../interfaces/robotModel/DeviceInfo";
+import {WorldModel} from "../../../interfaces/engine/model/WorldModel";
+export class SensorItem {
     protected robotItem: RobotItem;
     protected worldModel: WorldModel;
     protected image: RaphaelElement;

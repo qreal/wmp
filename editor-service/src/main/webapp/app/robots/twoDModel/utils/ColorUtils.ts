@@ -1,6 +1,5 @@
-/// <reference path="RGBAColor.ts" />
-
-class ColorUtils {
+import {RGBAColor} from "./RGBAColor";
+export class ColorUtils {
 
     public static getRBGAColor(color: string): RGBAColor {
         if (color.length == 9) {

@@ -1,13 +1,16 @@
-/// <reference path="model/ModelImpl.ts" />
-/// <reference path="../robotModel/TwoDRobotModel.ts" />
-/// <reference path="../robotModel/DeviceInfoImpl.ts" />
-/// <reference path="../../interfaces/engine/model/Model.ts" />
-/// <reference path="../../interfaces/engine/TwoDModelEngineFacade.ts" />
-
-class TwoDModelEngineFacadeImpl implements TwoDModelEngineFacade {
+import {DeviceInfoImpl} from "../robotModel/DeviceInfoImpl";
+import {ModelImpl} from "./model/ModelImpl";
+import {TrikRobotModelBase} from "../robotModel/TrikKit/TrikRobotModelBase";
+import app = require("../../../../require/app");
+import {TwoDRobotModel} from "../robotModel/TwoDRobotModel";
+import {Model} from "../../interfaces/engine/model/Model";
+import {TwoDModelEngineFacade} from "../../interfaces/engine/TwoDModelEngineFacade";
+export class TwoDModelEngineFacadeImpl implements TwoDModelEngineFacade {
 
     protected robotModelName: string;
     protected model: Model;
+    //Hack for firefox
+    static $$ngIsClass: boolean;
 
     constructor($scope, $compile, $attrs) {
         var facade = this;
@@ -147,3 +150,6 @@ class TwoDModelEngineFacadeImpl implements TwoDModelEngineFacade {
     }
 
 }
+TwoDModelEngineFacadeImpl.$$ngIsClass = true;
+app.controller("TwoDModelEngineFacadeImpl", TwoDModelEngineFacadeImpl);
+console.log("Adding controller TwoDModelEngineFacadeImpl");

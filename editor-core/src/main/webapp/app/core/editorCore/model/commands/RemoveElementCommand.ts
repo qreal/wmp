@@ -1,4 +1,6 @@
-class RemoveElementCommand implements Command {
+import {DiagramElement} from "../DiagramElement";
+import {Command} from "./Command";
+export class RemoveElementCommand implements Command {
 
     private element: DiagramElement;
     private executionFunction: (element: DiagramElement) => void;

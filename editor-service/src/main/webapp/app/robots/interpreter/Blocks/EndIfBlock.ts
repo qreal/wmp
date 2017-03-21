@@ -1,5 +1,7 @@
-
-class EndIfBlock extends AbstractBlock {
+import {AbstractBlock} from "./AbstractBlock";
+import {Link} from "core/editorCore/model/Link";
+import {DiagramNode} from "core/editorCore/model/DiagramNode";
+export class EndIfBlock extends AbstractBlock {
 
     private EXPECTED_NUMBER_OF_OUTBOUND_LINKS = 1;
 

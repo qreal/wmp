@@ -1,7 +1,6 @@
-/// <reference path="../../robotParts/ScalarSensor.ts" />
-
-class TrikGamepadConnectionIndicator extends ScalarSensor {
+import {ScalarSensor} from "../../robotParts/ScalarSensor";
+export class TrikGamepadConnectionIndicator extends ScalarSensor {
     static parentType = ScalarSensor;
-    static name = "gamepadConnectionIndicator";
+    static deviceName = "gamepadConnectionIndicator";
     static friendlyName = "Android Gamepad Connection Indicator";
 }

@@ -1,4 +1,4 @@
-enum MouseButton {
+export enum MouseButton {
     left,
     middle,
     right,

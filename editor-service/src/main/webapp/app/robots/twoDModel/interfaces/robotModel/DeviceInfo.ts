@@ -1,4 +1,4 @@
-interface DeviceInfo {
+export interface DeviceInfo {
     getName(): string;
     getFriendlyName(): string;
     getType();

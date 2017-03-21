@@ -1,14 +1,18 @@
-/// <reference path="../../../common/menu/controller/DiagramMenuController.ts" />
-/// <reference path="../../../robots/interpreter/Interpreter.ts" />
-/// <reference path="../../../common/interfaces/editorCore.d.ts" />
-/// <reference path="../../../common/interfaces/vendor.d.ts" />
-/// <reference path="../../../common/gestures/GesturesController.ts" />
-
-class BpmnDiagramEditorController extends DiagramEditorController {
+import {MouseButton} from "../../../common/constants/MouseButton";
+import {DiagramMenuController} from "../../../common/menu/controller/DiagramMenuController";
+import {GesturesController} from "../../../common/gestures/GesturesController";
+import {ElementTypes} from "core/editorCore/model/ElementTypes";
+import {DiagramScene} from "core/editorCore/model/DiagramScene";
+import {DiagramEditorController} from "core/editorCore/controller/DiagramEditorController";
+import app = require("../../../require/app");
+import {Interpreter} from "../../../robots/interpreter/Interpreter";
+export class BpmnDiagramEditorController extends DiagramEditorController {
 
     private menuController: DiagramMenuController;
     private gesturesController: GesturesController;
     private diagramInterpreter: Interpreter;
+    //Hack for firefox
+    static $$ngIsClass: boolean;
 
     constructor($scope, $attrs) {
         super($scope, $attrs);
@@ -23,8 +27,8 @@ class BpmnDiagramEditorController extends DiagramEditorController {
         $("#" + scene.getId()).mousemove((event) => { this.gesturesController.onMouseMove(event) } );
         $("#elements-search").on('input', (event) => {
             this.paletteController.searchPaletteReload(event, this.elementTypes, this.nodeTypesMap);
-            this.paletteController.initDraggable();
             this.paletteController.initClick(this.diagramEditor.getScene());
+            this.paletteController.initDraggable();
         } );
 
         (scene as any).on('cell:pointerdown', (cellView, event, x, y): void => {
@@ -62,3 +66,8 @@ class BpmnDiagramEditorController extends DiagramEditorController {
         }
     }
 }
+
+BpmnDiagramEditorController.$$ngIsClass = true;
+
+app.controller("BpmnDiagramEditorController", BpmnDiagramEditorController);
+console.log("Adding controller BpmnDiagramEditorController");

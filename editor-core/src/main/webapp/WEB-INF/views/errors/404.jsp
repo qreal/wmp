@@ -2,9 +2,9 @@
 
 <html>
 <head>
-    <script src="<c:url value='/resources/bootstrap/js/bootstrap.min.js' />"></script>
-    <link rel="stylesheet" href="<c:url value='/resources/bootstrap/css/bootstrap.min.css' />"/>
-    <link rel="stylesheet" href="<c:url value='/resources/css/error_page.css' />" />
+    <script src="<c:url value='/resources/js/libs/bootstrap/bootstrap.min.js' />"></script>
+    <link rel="stylesheet" href="<c:url value='/resources/css/bootstrap/bootstrap.min.css' />"/>
+    <link rel="stylesheet" href="<c:url value='/resources/css/error/error_page.css' />" />
     <title>404 Not Found</title>
 </head>
 <body>

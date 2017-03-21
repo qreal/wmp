@@ -1,6 +1,10 @@
-
-
-abstract class MotorsDirectionBlock extends MotorsBlock {
+import {Interpreter} from "../Interpreter";
+import {MotorsBlock} from "./MotorsBlock";
+import {Parser} from "../Parser";
+import {Link} from "core/editorCore/model/Link";
+import {DiagramNode} from "core/editorCore/model/DiagramNode";
+import {RobotModel} from "../../twoDModel/interfaces/engine/model/RobotModel";
+export abstract class MotorsDirectionBlock extends MotorsBlock {
 
     private interpreter: Interpreter;
     

@@ -1,6 +1,5 @@
-/// <reference path="../../../../../../target/properties/ServerProperties.ts" />
-
-class GeneralConstants {
+import {ServerProperties} from "../properties/ServerProperties";
+export class GeneralConstants {
 
     static APP_ROOT_PATH: string = ServerProperties.pathEditor + "/";
     static DEFAULT_KIT: string = "2015";

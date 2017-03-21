@@ -1,15 +1,18 @@
-/// <reference path="DisplayWidget.ts" />
-/// <reference path="SensorsConfiguration.ts" />
-/// <reference path="../Runner.ts" />
-/// <reference path="../items/RobotItemImpl.ts" />
-/// <reference path="../../robotModel/TwoDRobotModel.ts" />
-/// <reference path="../../../interfaces/engine/model/RobotModel.ts" />
-/// <reference path="../../../interfaces/engine/items/RobotItem.ts" />
-/// <reference path="../../../interfaces/engine/model/WorldModel.ts" />
-/// <reference path="../../../interfaces/robotModel/DeviceInfo.ts" />
-/// <reference path="../../../types/TwoDPosition.ts" />
-
-class RobotModelImpl implements RobotModel {
+import {MathUtils} from "../../../utils/MathUtils";
+import {Runner} from "../Runner";
+import {DeviceConfiguration} from "./DeviceConfiguration";
+import {RobotItemImpl} from "../items/RobotItemImpl";
+import {RobotItem} from "../../../interfaces/engine/items/RobotItem";
+import {DisplayWidget} from "./DisplayWidget";
+import {Motor} from "../../robotModel/robotParts/Motor";
+import {Device} from "../../../interfaces/robotModel/robotParts/Device";
+import {TwoDPosition} from "../../../types/TwoDPosition";
+import {DeviceInfo} from "../../../interfaces/robotModel/DeviceInfo";
+import {SensorsConfiguration} from "./SensorsConfiguration";
+import {TwoDRobotModel} from "../../robotModel/TwoDRobotModel";
+import {WorldModel} from "../../../interfaces/engine/model/WorldModel";
+import {RobotModel} from "../../../interfaces/engine/model/RobotModel";
+export class RobotModelImpl implements RobotModel {
     
     private robotItem: RobotItem;
     private twoDRobotModel: TwoDRobotModel;
@@ -155,6 +158,4 @@ class RobotModelImpl implements RobotModel {
     getDisplayWidget(): DisplayWidget {
         return this.displayWidget;    
     }
-    
-
 }

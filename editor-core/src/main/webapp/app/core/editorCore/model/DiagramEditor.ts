@@ -1,7 +1,5 @@
-/// <reference path="DiagramScene.ts" />
-/// <reference path="../../../vendor.d.ts" />
-
-class DiagramEditor {
+import {DiagramScene} from "./DiagramScene";
+export class DiagramEditor {
 
     private graph: joint.dia.Graph;
     private scene: DiagramScene;

@@ -1,14 +1,15 @@
-/// <reference path="WorldModelImpl.ts" />
-/// <reference path="../../robotModel/TwoDRobotModel.ts" />
-/// <reference path="../../../interfaces/engine/model/Model.ts" />
-/// <reference path="../../../interfaces/engine/model/WorldModel.ts" />
-/// <reference path="../../../interfaces/engine/model/Settings.ts" />
-/// <reference path="../../../interfaces/engine/model/RobotModel.ts" />
-/// <reference path="../../../interfaces/engine/model/Timeline.ts" />
-/// <reference path="../../../types/TwoDPosition.ts" />
-/// <reference path="../../../utils/MathUtils.ts" />
-
-class ModelImpl implements Model {
+import {MathUtils} from "../../../utils/MathUtils";
+import {RobotModelImpl} from "./RobotModelImpl";
+import {TimelineImpl} from "./TimelineImpl";
+import {WorldModelImpl} from "./WorldModelImpl";
+import {TwoDPosition} from "../../../types/TwoDPosition";
+import {RobotModel} from "../../../interfaces/engine/model/RobotModel";
+import {TwoDRobotModel} from "../../robotModel/TwoDRobotModel";
+import {Settings} from "../../../interfaces/engine/model/Settings";
+import {WorldModel} from "../../../interfaces/engine/model/WorldModel";
+import {Timeline} from "../../../interfaces/engine/model/Timeline";
+import {Model} from "../../../interfaces/engine/model/Model";
+export class ModelImpl implements Model {
     private worldModel : WorldModel;
     private settings : Settings;
     private robotModels : RobotModel[] = [];
@@ -46,7 +47,7 @@ class ModelImpl implements Model {
     addRobotModel(robotModel: TwoDRobotModel): void {
         var model = this;
         $(document).ready(() => {
-            var robot:RobotModel = new RobotModelImpl(model.worldModel, robotModel, new TwoDPosition(300, 300),
+            var robot : RobotModel = new RobotModelImpl(model.worldModel, robotModel, new TwoDPosition(300, 300),
                 this.isInteractive);
             model.robotModels.push(robot);
             model.timeline.addRobotModel(robot);
