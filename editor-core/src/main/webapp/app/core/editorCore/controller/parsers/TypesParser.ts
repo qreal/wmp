@@ -15,8 +15,6 @@ export class TypesParser {
     public parse(typesJson: any): ElementTypes {
         var diagramElementTypes: ElementTypes = new ElementTypes();
         this.linkPatterns = new Map<String, joint.dia.Link>();
-        diagramElementTypes.containerTypes = this.parseGeneralTypes(typesJson.blocks.containers, "containers");
-        typesJson.blocks.containers = null;
         diagramElementTypes.blockTypes = this.parsePaletteTypes(typesJson.blocks);
         diagramElementTypes.flowTypes = this.parseGeneralTypes(typesJson.flows, "flows");
         var flowsMap: Map<String, NodeType> = diagramElementTypes.flowTypes.convertToMap();

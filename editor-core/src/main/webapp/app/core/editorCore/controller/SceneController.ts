@@ -121,7 +121,7 @@ export class SceneController {
             node = new SubprogramNode(subprogramName, type, x, y, DefaultSize.DEFAULT_NODE_WIDTH,
                 DefaultSize.DEFAULT_NODE_HEIGHT, nodeProperties, image, subprogramId);
         } else {
-            if (this.diagramEditorController.getNodesMap()[type] instanceof ContainerNodeType)
+            if (this.diagramEditorController.getNodeType(type) instanceof ContainerNodeType)
                 node = new DiagramContainer(name, type, x, y, DefaultSize.DEFAULT_NODE_WIDTH,
                     DefaultSize.DEFAULT_NODE_HEIGHT, nodeProperties, image);
             else

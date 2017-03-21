@@ -2,7 +2,8 @@ import {Link} from "./Link";
 import {DiagramNode} from "./DiagramNode";
 import {SubprogramNode} from "./SubprogramNode";
 import {DiagramElementListener} from "../controller/DiagramElementListener";
-import {ContainerNodeType} from "./ContainerNodeType";
+import {DiagramContainer} from "./DiagramContainer";
+import {DefaultDiagramNode} from "./DefaultDiagramNode";
 export class DiagramScene extends joint.dia.Paper {
 
     private htmlId: string;
@@ -41,9 +42,9 @@ export class DiagramScene extends joint.dia.Paper {
                 return magnet.getAttribute('magnet') !== 'passive';
             },
             validateEmbedding: function(childView, parentView) {
-                return nodesMap[parentView.getJointObject().id] instanceof ContainerNodeType;
+                return nodesMap[parentView.model.id] instanceof DiagramContainer;
             },
-            diagramElementView: joint.dia.ElementView.extend(jQuery.extend(joint.shapes.basic.PortsViewInterface,
+            elementView: joint.dia.ElementView.extend(jQuery.extend(joint.shapes.basic.PortsViewInterface,
                 {
                     pointerdown: DiagramElementListener.pointerdown
                 }))
