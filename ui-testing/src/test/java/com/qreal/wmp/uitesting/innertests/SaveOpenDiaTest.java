@@ -64,12 +64,14 @@ public class SaveOpenDiaTest {
         assert headerPanel.isDiagramExist(diagram);
     }
     
-    @Test
-    public void openDiagramTest() {
-        headerPanel.newDiagram();
-        headerPanel.openDiagram(diagram);
-        assert headerPanel.equalsDiagrams(diagram);
-    }
+    /*
+        @Test
+        public void openDiagramTest() {
+            headerPanel.newDiagram();
+            headerPanel.openDiagram(diagram);
+            assert headerPanel.equalsDiagrams(diagram);
+        }
+    */
     
     @Test
     public void equalsTrueTest() {

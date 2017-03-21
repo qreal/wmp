@@ -1,7 +1,6 @@
 package com.qreal.wmp.uitesting.headerpanel.folderwindow;
 
 import com.codeborne.selenide.Condition;
-import com.codeborne.selenide.Selectors;
 import com.codeborne.selenide.SelenideElement;
 import com.google.common.base.Predicate;
 import org.openqa.selenium.By;
@@ -12,6 +11,7 @@ import java.util.Arrays;
 import java.util.function.Function;
 
 import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 
 /** {@inheritDoc} */
@@ -48,7 +48,7 @@ public class FolderAreaImpl implements FolderArea {
         }
         String oldPath = getCurrentPath();
         oldPath = "".equals(oldPath) ? name : oldPath + "/" + name;
-        $(selector).find(By.className("folders")).find(Selectors.byText(name)).click();
+        $(selector).find(By.className("folders")).find(byText(name)).click();
         waitUntilEquals(oldPath, FolderArea::getCurrentPath);
         return this;
     }
@@ -89,9 +89,9 @@ public class FolderAreaImpl implements FolderArea {
         if (!isFolderExist(name)) {
             throw new NullPointerException("Folder is not exist");
         }
-        $(selector).find(By.className("folders")).find(Selectors.byText(name)).contextClick();
+        $(selector).find(By.className("folders")).find(byText(name)).contextClick();
         $(By.id("open-diagram-context-menu")).should(Condition.visible);
-        $(By.id("open-diagram-context-menu")).click();
+        $(By.id("open-diagram-context-menu")).find(byText("Delete")).click();
         return this;
     }
     
