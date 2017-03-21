@@ -1,4 +1,6 @@
-class GesturesMatcher {
+import {Pair} from "./utils/Pair";
+import {Gesture} from "./Gesture";
+export class GesturesMatcher {
 
     private prevKey: number;
     private gestureMatrixSize = 9;
@@ -8,8 +10,8 @@ class GesturesMatcher {
         this.gestures = gestures;
     }
 
-    public getMatches(pointList: GesturesUtils.Pair[]): string[] {
-        var gestureSizes: GesturesUtils.Pair = this.getGestureSizes(pointList);
+    public getMatches(pointList: Pair[]): string[] {
+        var gestureSizes: Pair = this.getGestureSizes(pointList);
         var key = this.makeKey(pointList, gestureSizes.first, gestureSizes.second);
         for (var i = 0; i < this.gestures.length; i++) {
             var curr = this.gestures[i];
@@ -43,12 +45,12 @@ class GesturesMatcher {
         return names;
     }
 
-    private getGestureSizes(pointList: GesturesUtils.Pair[]): GesturesUtils.Pair {
+    private getGestureSizes(pointList: Pair[]): Pair {
         var width: number = 0;
         var height: number = 0;
 
         if (pointList.length === 0) {
-            pointList[0] = new GesturesUtils.Pair(0, 0);
+            pointList[0] = new Pair(0, 0);
         }
         var minX = pointList[0].first;
         var minY = pointList[0].second;
@@ -97,10 +99,10 @@ class GesturesMatcher {
         }
         width = maxX + 1;
         height = maxY + 1;
-        return new GesturesUtils.Pair(width, height);
+        return new Pair(width, height);
     }
 
-    private makeKey(pointList: GesturesUtils.Pair[], width: number, height: number) {
+    private makeKey(pointList: Pair[], width: number, height: number) {
         var key = [];
         var index = 0;
         var firstCell = this.getSymbol(pointList[0], width, height);
@@ -123,7 +125,7 @@ class GesturesMatcher {
         return key;
     }
 
-    private getSymbol(pair: GesturesUtils.Pair, width: number, height: number) {
+    private getSymbol(pair: Pair, width: number, height: number) {
         var columnNames = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'];
         return columnNames[Math.floor(pair.first * this.gestureMatrixSize / width)] +
             (Math.floor(pair.second * this.gestureMatrixSize / height));

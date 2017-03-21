@@ -1,6 +1,6 @@
-/// <reference path="../../../interfaces/engine/model/Timeline.ts" />
-
-class TimelineImpl implements Timeline {
+import {Timeline} from "../../../interfaces/engine/model/Timeline";
+import {RobotModel} from "../../../interfaces/engine/model/RobotModel";
+export class TimelineImpl implements Timeline {
 
     private fps: number = 60;
     private defaultFrameLength: number = 1000 / this.fps;

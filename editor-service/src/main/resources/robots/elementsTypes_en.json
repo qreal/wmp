@@ -1,9 +1,11 @@
 {
-
     "elements": {
         
          "ControlFlow": {
             "name": "Link",
+             "image": {
+                 "src": "images/robotsFlow.png"
+             },
             "properties": [
                 {
                     "key": "Guard",

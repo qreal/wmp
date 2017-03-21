@@ -1,15 +1,21 @@
-/// <reference path="DiagramEditorController.ts" />
-/// <reference path="../model/DiagramScene.ts" />
-/// <reference path="../model/DiagramElement.ts" />
-/// <reference path="../model/DiagramNode.ts" />
-/// <reference path="../model/DefaultDiagramNode.ts" />
-/// <reference path="../model/Scroller.ts" />
-/// <reference path="../model/commands/Command.ts"/>
-/// <reference path="../model/commands/SceneCommandFactory.ts" />
-/// <reference path="../../../vendor.d.ts" />
-/// <reference path="../../../common/constants/MouseButton.ts" />
-
-class SceneController {
+import {MultiCommand} from "../model/commands/MultiCommand";
+import {Command} from "../model/commands/Command";
+import {Link} from "../model/Link";
+import {DiagramNode} from "../model/DiagramNode";
+import {DefaultDiagramNode} from "../model/DefaultDiagramNode";
+import {DiagramScene} from "../model/DiagramScene";
+import {MouseButton} from "../../../common/constants/MouseButton";
+import {DefaultSize} from "../../../common/constants/DefaultSize";
+import {DiagramElement} from "../model/DiagramElement";
+import {SubprogramNode} from "../model/SubprogramNode";
+import {Property} from "../model/Property";
+import {NodeType} from "../model/NodeType";
+import {Scroller} from "../model/Scroller";
+import {DiagramElementListener} from "./DiagramElementListener";
+import {SceneCommandFactory} from "../model/commands/SceneCommandFactory";
+import {DiagramEditorController} from "./DiagramEditorController";
+import {UndoRedoController} from "./UndoRedoController";
+export class SceneController {
 
     private diagramEditorController: DiagramEditorController;
     private scene: DiagramScene;
@@ -20,6 +26,7 @@ class SceneController {
     private undoRedoController: UndoRedoController;
     private lastCellMouseDownPosition: {x: number, y: number};
     private lastCellScrollPosition: {x: number, y: number};
+    private lastCellMouseDownSize: {width: number, height: number};
     private paperCommandFactory: SceneCommandFactory;
     private contextMenuId = "scene-context-menu";
 
@@ -32,6 +39,7 @@ class SceneController {
         this.rightClickFlag = false;
         this.scroller = new Scroller();
         this.lastCellMouseDownPosition = { x: 0, y: 0 };
+        this.lastCellMouseDownSize = { width: 0, height: 0 };
         this.lastCellScrollPosition = { x: 0, y: 0 };
 
         this.scene.on('cell:pointerdown', (cellView, event, x, y): void => {
@@ -79,18 +87,18 @@ class SceneController {
         this.lastCellMouseDownPosition = { x: 0, y: 0 };
     }
 
-    public createLink(sourceId: string, targetId: string): void {
+    public createLink(sourceId: string, target: any): void {
 
         var link: joint.dia.Link = this.scene.getCurrentLinkType();
         link.set({
             source: { id: sourceId },
-            target: { id: targetId }
+            target: target
         });
 
         var nodeType: NodeType = this.diagramEditorController.getNodeType(this.scene.getCurrentLinkTypeName());
-        var typeProperties: Map<Property> = nodeType.getPropertiesMap();
+        var typeProperties: Map<String, Property> = nodeType.getPropertiesMap();
 
-        var linkProperties: Map<Property> = {};
+        var linkProperties: Map<String, Property> = new Map<String, Property>();
         for (var property in typeProperties) {
             linkProperties[property] = new Property(typeProperties[property].name,
                 typeProperties[property].type, typeProperties[property].value);
@@ -105,9 +113,9 @@ class SceneController {
         var image: string = this.diagramEditorController.getNodeType(type).getImage();
         var name: string = this.diagramEditorController.getNodeType(type).getName();
 
-        var typeProperties: Map<Property> = this.diagramEditorController.getNodeType(type).getPropertiesMap();
+        var typeProperties: Map<String, Property> = this.diagramEditorController.getNodeType(type).getPropertiesMap();
 
-        var nodeProperties: Map<Property> = {};
+        var nodeProperties: Map<String, Property> = new Map<String, Property>();
         for (var property in typeProperties) {
             nodeProperties[property] = new Property(typeProperties[property].name, typeProperties[property].type,
                 typeProperties[property].value);
@@ -115,9 +123,11 @@ class SceneController {
 
         var node: DiagramNode;
         if (subprogramId) {
-            node = new SubprogramNode(subprogramName, type, x, y, nodeProperties, image, subprogramId);
+            node = new SubprogramNode(subprogramName, type, x, y, DefaultSize.DEFAULT_NODE_WIDTH,
+                DefaultSize.DEFAULT_NODE_HEIGHT, nodeProperties, image, subprogramId);
         } else {
-            node = new DefaultDiagramNode(name, type, x, y, nodeProperties, image);
+            node = new DefaultDiagramNode(name, type, x, y, DefaultSize.DEFAULT_NODE_WIDTH,
+                DefaultSize.DEFAULT_NODE_HEIGHT, nodeProperties, image);
         }
 
         var command: Command = new MultiCommand([this.paperCommandFactory.makeCreateNodeCommand(node),
@@ -167,27 +177,12 @@ class SceneController {
     }
 
     public createLinkBetweenCurrentAndEventTargetElements(event): void {
-        var diagramPaper: HTMLDivElement = <HTMLDivElement> document.getElementById(this.scene.getId());
-
-        var elementBelow = this.diagramEditorController.getGraph().get('cells').find((cell) => {
-            if (cell instanceof joint.dia.Link) return false; // Not interested in links.
-            if (cell.id === this.currentElement.getJointObject().id) return false; // The same element as the dropped one.
-            var mXBegin = cell.getBBox().origin().x;
-            var mYBegin = cell.getBBox().origin().y;
-            var mXEnd = cell.getBBox().corner().x;
-            var mYEnd = cell.getBBox().corner().y;
-
-            var leftElementPos:number = (event.pageX - $(diagramPaper).offset().left + $(diagramPaper).scrollLeft()) /
-                this.scene.getZoom();
-            var topElementPos:number = (event.pageY - $(diagramPaper).offset().top + $(diagramPaper).scrollTop()) /
-                this.scene.getZoom();
-
-            return ((mXBegin <= leftElementPos) && (mXEnd >= leftElementPos)
-                && (mYBegin <= topElementPos) && (mYEnd >= topElementPos) && (this.rightClickFlag))
+        var controller = this;
+        var elementBelow = this.getElementBelow(event, function(cell) {
+            return !(cell instanceof joint.dia.Link || cell.id === controller.currentElement.getJointObject().id) && controller.rightClickFlag;
         });
-
         if (elementBelow) {
-            this.createLink(this.currentElement.getJointObject().id, elementBelow.id);
+            this.createLink(this.currentElement.getJointObject().id, {id: elementBelow.id});
         }
     }
 
@@ -262,11 +257,15 @@ class SceneController {
             var node: DiagramNode = this.scene.getNodeById(cellView.model.id);
             this.lastCellMouseDownPosition.x = node.getX();
             this.lastCellMouseDownPosition.y = node.getY();
+            var bbox = cellView.getBBox();
+            this.lastCellMouseDownSize.width = bbox.width;
+            this.lastCellMouseDownSize.height = bbox.height;
+            cellView.highlight(cellView.model.id);
+            node.initResize(cellView.getBBox(), x, y, 20);
         }
         if (event.button == MouseButton.right) {
             this.rightClickFlag = true;
         }
-
     }
 
     private cellPointerupListener(cellView, event, x, y): void {
@@ -281,9 +280,29 @@ class SceneController {
             this.borderUnCrossed();
             var node: DiagramNode = this.scene.getNodeById(cellView.model.id);
             if (node) {
-                var command: Command = this.paperCommandFactory.makeMoveCommand(node, this.lastCellMouseDownPosition.x,
-                    this.lastCellMouseDownPosition.y, node.getX(), node.getY(), this.scene.getZoom());
-                this.undoRedoController.addCommand(command);
+                if (node.isResizing()) {
+                    var bbox = cellView.getBBox();
+                    var command : Command = this.paperCommandFactory.makeResizeCommand(
+                        node,
+                        this.lastCellMouseDownSize.width,
+                        this.lastCellMouseDownSize.height,
+                        bbox.width,
+                        bbox.height,
+                        cellView);
+                    this.undoRedoController.addCommand(command);
+                } else {
+                    var command: Command = this.paperCommandFactory.makeMoveCommand(
+                        node,
+                        this.lastCellMouseDownPosition.x,
+                        this.lastCellMouseDownPosition.y,
+                        node.getX(),
+                        node.getY(),
+                        this.scene.getZoom(),
+                        cellView);
+                    this.undoRedoController.addCommand(command);
+                }
+                node.completeResize();
+                cellView.unhighlight(cellView.model.id);
             }
         }
     }
@@ -295,6 +314,10 @@ class SceneController {
            this.checkBorder(element, cellView, event)
         }
         this.clickFlag = false;
+        var node: DiagramNode = this.scene.getNodeById(cellView.model.id);
+        if (node) {
+            node.pointermove(cellView, event, x, y);
+        }
     }
 
     private initDropPaletteElementListener(): void {
@@ -313,8 +336,21 @@ class SceneController {
 
                 var type = $(ui.draggable.context).data("type");
 
-                controller.createNode(type, leftElementPos, topElementPos, $(ui.draggable.context).data("id"),
-                    $(ui.draggable.context).data("name"));
+                if (paper.getCurrentLinkTypeName() == type) {
+                    var elementBelow = controller.getElementBelow(event, function(cell) {
+                        return !(cell instanceof joint.dia.Link);
+                    });
+                    if (elementBelow) {
+                        var bBox = elementBelow.getBBox();
+                        controller.createLink(elementBelow.id, {
+                            x: bBox.x + bBox.width + controller.scene.getGridSize() * 2,
+                            y: bBox.y + bBox.height / 2
+                        });
+                    }
+                } else {
+                    controller.createNode(type, leftElementPos, topElementPos, $(ui.draggable.context).data("id"),
+                        $(ui.draggable.context).data("name"));
+                }
             }
         });
     }
@@ -372,7 +408,7 @@ class SceneController {
         } else if (this.currentElement instanceof Link) {
             removeCommands.push(this.paperCommandFactory.makeRemoveLinkCommand(<Link> this.currentElement));
         }
-        var multiCommand: Command = new MultiCommand(removeCommands);
+        var multiCommand : Command = new MultiCommand(removeCommands);
         this.undoRedoController.addCommand(multiCommand);
         multiCommand.execute();
     }
@@ -481,5 +517,24 @@ class SceneController {
         offsetY -= offsetY % gridSize;
         this.lastCellScrollPosition.x = Math.min(offsetX, DiagramScene.WIDTH - 2 * this.scene.getGridSize());
         this.lastCellScrollPosition.y = Math.min(offsetY, DiagramScene.HEIGHT - 2 * this.scene.getGridSize());
+    }
+    private getElementBelow(event: any, checker?: (cell: any) => boolean) {
+        var diagramPaper: HTMLDivElement = <HTMLDivElement> document.getElementById(this.scene.getId());
+        return this.diagramEditorController.getGraph().get('cells').find((cell) => {
+            if (checker && !checker(cell))
+                return false;
+            var mXBegin = cell.getBBox().origin().x;
+            var mYBegin = cell.getBBox().origin().y;
+            var mXEnd = cell.getBBox().corner().x;
+            var mYEnd = cell.getBBox().corner().y;
+
+            var leftElementPos:number = (event.pageX - $(diagramPaper).offset().left + $(diagramPaper).scrollLeft()) /
+                this.scene.getZoom();
+            var topElementPos:number = (event.pageY - $(diagramPaper).offset().top + $(diagramPaper).scrollTop()) /
+                this.scene.getZoom();
+
+            return ((mXBegin <= leftElementPos) && (mXEnd >= leftElementPos)
+            && (mYBegin <= topElementPos) && (mYEnd >= topElementPos));
+        });
     }
 }

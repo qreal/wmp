@@ -1,6 +1,6 @@
-/// <reference path="../vendor.d.ts"/>
+/// <reference path="../vendor.d.ts" />
 
-class StringUtils {
+export class StringUtils {
 
     static format(str: string, ...args: string[]): string {
         return str.replace(/{(\d+)}/g, (match, number) => {

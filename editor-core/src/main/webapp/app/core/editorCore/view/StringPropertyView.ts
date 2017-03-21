@@ -1,8 +1,7 @@
-/// <reference path="HtmlView.ts" />
-/// <reference path="../../../core/editorCore/model/Property.ts" />
-/// <reference path="../../../utils/StringUtils.ts" />
-
-class StringPropertyView extends HtmlView {
+import {StringUtils} from "../../../utils/StringUtils";
+import {Property} from "../model/Property";
+import {HtmlView} from "./HtmlView";
+export class StringPropertyView extends HtmlView {
 
     private template: string = '' +
         '<tr class="property">' +

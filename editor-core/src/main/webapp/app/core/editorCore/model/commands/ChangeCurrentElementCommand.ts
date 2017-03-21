@@ -1,4 +1,6 @@
-class ChangeCurrentElementCommand implements Command {
+import {DiagramElement} from "../DiagramElement";
+import {Command} from "./Command";
+export class ChangeCurrentElementCommand implements Command {
 
     private element: DiagramElement;
     private oldElement: DiagramElement;

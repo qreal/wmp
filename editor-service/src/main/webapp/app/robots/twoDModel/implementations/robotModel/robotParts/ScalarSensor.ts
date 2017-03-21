@@ -1,5 +1,4 @@
-/// <reference path="AbstractSensor" />
-
-class ScalarSensor extends AbstractSensor {
+import {AbstractSensor} from "./AbstractSensor";
+export class ScalarSensor extends AbstractSensor {
     static parentType = AbstractSensor;
 }

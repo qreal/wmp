@@ -1,15 +1,13 @@
-/// <reference path="../../../interfaces/engine/items/EllipseItem.ts" />
-/// <reference path="../../../interfaces/engine/model/WorldModel.ts" />
-/// <reference path="../../../../../vendor.d.ts" />
-
-class EllipseItemImpl implements EllipseItem {
+import {EllipseItem} from "../../../interfaces/engine/items/EllipseItem";
+import {WorldModel} from "../../../interfaces/engine/model/WorldModel";
+export class EllipseItemImpl implements EllipseItem {
     private ellipse: RaphaelElement;
     private worldModel: WorldModel;
     private handleTopLeft: RaphaelElement;
     private handleTopRight: RaphaelElement;
     private handleBottomLeft: RaphaelElement;
     private handleBottomRight: RaphaelElement;
-    private handleSize: number  = 10;
+    private handleSize: number = 10;
 
     constructor(worldModel: WorldModel, xStart: number, yStart: number, width: number, color: string,
                 isInteractive: boolean) {
@@ -130,10 +128,22 @@ class EllipseItemImpl implements EllipseItem {
                     var newY = this.cy + dy;
                     ellipseItem.ellipse.attr({cx: newX, cy: newY});
 
-                    ellipseItem.handleTopLeft.attr({x : this.handleTopLeftCoord.x + dx, y: this.handleTopLeftCoord.y + dy});
-                    ellipseItem.handleTopRight.attr({x : this.handleTopRightCoord.x + dx, y: this.handleTopRightCoord.y + dy});
-                    ellipseItem.handleBottomLeft.attr({x : this.handleBottomLeftCoord.x + dx, y: this.handleBottomLeftCoord.y + dy});
-                    ellipseItem.handleBottomRight.attr({x : this.handleBottomRightCoord.x + dx, y: this.handleBottomRightCoord.y + dy});
+                    ellipseItem.handleTopLeft.attr({
+                        x: this.handleTopLeftCoord.x + dx,
+                        y: this.handleTopLeftCoord.y + dy
+                    });
+                    ellipseItem.handleTopRight.attr({
+                        x: this.handleTopRightCoord.x + dx,
+                        y: this.handleTopRightCoord.y + dy
+                    });
+                    ellipseItem.handleBottomLeft.attr({
+                        x: this.handleBottomLeftCoord.x + dx,
+                        y: this.handleBottomLeftCoord.y + dy
+                    });
+                    ellipseItem.handleBottomRight.attr({
+                        x: this.handleBottomRightCoord.x + dx,
+                        y: this.handleBottomRightCoord.y + dy
+                    });
                 }
                 return this;
             },
@@ -149,29 +159,29 @@ class EllipseItemImpl implements EllipseItem {
         var newCy = (oppositeCornerY + y) / 2;
         var newRx = Math.abs(x - oppositeCornerX) / 2;
         var newRy = Math.abs(y - oppositeCornerY) / 2;
-        this.ellipse.attr({"cx": newCx , "cy": newCy});
+        this.ellipse.attr({"cx": newCx, "cy": newCy});
         this.ellipse.attr({"rx": newRx, "ry": newRy});
 
         if (x - oppositeCornerX >= 0 && y - oppositeCornerY >= 0) {
-            this.handleTopLeft.attr({x : oppositeCornerX, y: oppositeCornerY});
-            this.handleTopRight.attr({x : x - this.handleSize, y: oppositeCornerY});
-            this.handleBottomLeft.attr({x : oppositeCornerX, y: y - this.handleSize});
-            this.handleBottomRight.attr({x : x - this.handleSize, y: y - this.handleSize});
+            this.handleTopLeft.attr({x: oppositeCornerX, y: oppositeCornerY});
+            this.handleTopRight.attr({x: x - this.handleSize, y: oppositeCornerY});
+            this.handleBottomLeft.attr({x: oppositeCornerX, y: y - this.handleSize});
+            this.handleBottomRight.attr({x: x - this.handleSize, y: y - this.handleSize});
         } else if (x - oppositeCornerX < 0 && y - oppositeCornerY >= 0) {
-            this.handleTopLeft.attr({x : x, y: oppositeCornerY});
-            this.handleTopRight.attr({x : oppositeCornerX - this.handleSize, y: oppositeCornerY});
-            this.handleBottomLeft.attr({x : x, y: y - this.handleSize});
-            this.handleBottomRight.attr({x : oppositeCornerX - this.handleSize, y: y - this.handleSize});
+            this.handleTopLeft.attr({x: x, y: oppositeCornerY});
+            this.handleTopRight.attr({x: oppositeCornerX - this.handleSize, y: oppositeCornerY});
+            this.handleBottomLeft.attr({x: x, y: y - this.handleSize});
+            this.handleBottomRight.attr({x: oppositeCornerX - this.handleSize, y: y - this.handleSize});
         } else if (x - oppositeCornerX >= 0 && y - oppositeCornerY < 0) {
-            this.handleTopLeft.attr({x : oppositeCornerX, y: y});
-            this.handleTopRight.attr({x : x - this.handleSize, y: y});
-            this.handleBottomLeft.attr({x : oppositeCornerX, y: oppositeCornerY - this.handleSize});
-            this.handleBottomRight.attr({x : x - this.handleSize, y: oppositeCornerY - this.handleSize});
+            this.handleTopLeft.attr({x: oppositeCornerX, y: y});
+            this.handleTopRight.attr({x: x - this.handleSize, y: y});
+            this.handleBottomLeft.attr({x: oppositeCornerX, y: oppositeCornerY - this.handleSize});
+            this.handleBottomRight.attr({x: x - this.handleSize, y: oppositeCornerY - this.handleSize});
         } else if (x - oppositeCornerX < 0 && y - oppositeCornerY < 0) {
-            this.handleTopLeft.attr({x : x, y: y});
-            this.handleTopRight.attr({x : oppositeCornerX - this.handleSize, y: y});
-            this.handleBottomLeft.attr({x : x, y: oppositeCornerY - this.handleSize});
-            this.handleBottomRight.attr({x : oppositeCornerX - this.handleSize, y: oppositeCornerY - this.handleSize});
+            this.handleTopLeft.attr({x: x, y: y});
+            this.handleTopRight.attr({x: oppositeCornerX - this.handleSize, y: y});
+            this.handleBottomLeft.attr({x: x, y: oppositeCornerY - this.handleSize});
+            this.handleBottomRight.attr({x: oppositeCornerX - this.handleSize, y: oppositeCornerY - this.handleSize});
         }
 
     }
@@ -197,5 +207,5 @@ class EllipseItemImpl implements EllipseItem {
         this.handleBottomRight.remove();
         this.ellipse.remove();
     }
-    
+
 }

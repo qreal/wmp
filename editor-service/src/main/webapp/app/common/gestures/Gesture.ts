@@ -1,4 +1,4 @@
-class Gesture {
+export class Gesture {
 
     name: string;
     key: string[];

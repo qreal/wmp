@@ -1,14 +1,14 @@
-/// <reference path="Gesture.ts" />
-/// <reference path="GesturesUtils.ts" />
-/// <reference path="GesturesMatcher.ts" />
-/// <reference path="XmlHttpFactory.ts" />
-/// <reference path="../../../resources/types/jqueryline/jqueryline.d.ts" />
-/// <reference path="../interfaces/editorCore.d.ts" />
-/// <reference path="../constants/GeneralConstants.ts" />
-/// <reference path="../constants/MouseButton.ts" />
-
-
-class GesturesController {
+/// <reference path="../../types/jqueryline/jqueryline.d.ts" />
+import {Pair} from "./utils/Pair";
+import {Gesture} from "./Gesture";
+import {GesturesMatcher} from "./GesturesMatcher";
+import {XmlHttpFactory} from "./XmlHttpFactory";
+import {GeneralConstants} from "../constants/GeneralConstants";
+import {MouseButton} from "../constants/MouseButton";
+import {DiagramScene} from "core/editorCore/model/DiagramScene";
+import {SceneController} from "core/editorCore/controller/SceneController";
+import {DiagramElement} from "core/editorCore/model/DiagramElement";
+export class GesturesController {
 
     private sceneController: SceneController;
     private paper: DiagramScene;
@@ -17,7 +17,7 @@ class GesturesController {
     private date: Date;
     private flagAdd: boolean;
     private flagDraw: boolean;
-    private pointList: GesturesUtils.Pair[];
+    private pointList: Pair[];
     private gesturesMatcher: GesturesMatcher;
     private rightButtonDown;
 
@@ -52,14 +52,14 @@ class GesturesController {
         var offsetY = (event.pageY - $("#" + this.paper.getId()).offset().top +
             $("#" + this.paper.getId()).scrollTop());
 
-        var pair: GesturesUtils.Pair = new GesturesUtils.Pair(offsetX, offsetY);
+        var pair: Pair = new Pair(offsetX, offsetY);
         if (this.flagAdd) {
 
             var currentPair = this.pointList[this.pointList.length - 1];
             var n = this.date.getTime();
             var diff = n - this.currentTime;
             this.currentTime = n;
-            pair = this.smoothing(currentPair, new GesturesUtils.Pair(offsetX, offsetY), diff);
+            pair = this.smoothing(currentPair, new Pair(offsetX, offsetY), diff);
 
             $("#" + this.paper.getId()).line(currentPair.first, currentPair.second, pair.first, pair.second);
         }
@@ -136,11 +136,10 @@ class GesturesController {
         return gestureList;
     }
 
-    private smoothing(pair1 : GesturesUtils.Pair, pair2 : GesturesUtils.Pair, diff : number) {
+    private smoothing(pair1 : Pair, pair2 : Pair, diff : number) {
         var c = 0.0275; // 'c' is empirical constants
         var b = Math.exp(-c * diff);
-        return new GesturesUtils.Pair(pair2.first * b + (1 - b) * pair1.first, pair2.second + (1 - b) * pair1.second);
+        return new Pair(pair2.first * b + (1 - b) * pair1.first, pair2.second + (1 - b) * pair1.second);
     }
 
 }
-

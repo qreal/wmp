@@ -1,10 +1,8 @@
-/// <reference path="Map.ts" />
-/// <reference path="Property.ts" />
-
-class SubprogramDiagramNode {
+import {Property} from "./Property";
+export class SubprogramDiagramNode {
 
     private logicalId: string;
-    private properties: Map<Property>;
+    private properties: Map<String, Property>;
     private type: string = "SubprogramDiagram";
     private name: string;
 
@@ -26,12 +24,12 @@ class SubprogramDiagramNode {
         return this.name;
     }
 
-    getProperties(): Map<Property> {
+    getProperties(): Map<String, Property> {
         return this.properties;
     }
 
     private initProperties(name: string): void {
-        this.properties = {};
+        this.properties = new Map<String, Property>();
         this.properties["name"] = new Property("name", "QString", name);
         this.properties["from"] = new Property("from", "qReal::Id", "qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID");
         this.properties["linkShape"] = new Property("linkShape", "int", "0");

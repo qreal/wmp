@@ -1,28 +1,34 @@
-/// <reference path="SceneController.ts" />
-/// <reference path="PropertyEditorController.ts" />
-/// <reference path="loaders/ElementsTypeLoader.ts" />
-/// <reference path="PaletteController.ts" />
-/// <reference path="exporters/DiagramExporter.ts" />
-/// <reference path="../model/DiagramEditor.ts" />
-/// <reference path="../model/Map.ts"/>
 /// <reference path="../../../vendor.d.ts" />
-
-class DiagramEditorController {
+import {PropertyEditorController} from "./PropertyEditorController";
+import {ElementTypes} from "../model/ElementTypes";
+import {DiagramParts} from "../model/DiagramParts";
+import {NodeType} from "../model/NodeType";
+import {UndoRedoController} from "./UndoRedoController";
+import {Property} from "../model/Property";
+import {DiagramElement} from "../model/DiagramElement";
+import {Link} from "../model/Link";
+import {DiagramNode} from "../model/DiagramNode";
+import {ElementsTypeLoader} from "./loaders/ElementsTypeLoader";
+import {SceneController} from "./SceneController";
+import {DiagramEditor} from "../model/DiagramEditor";
+import {DiagramElementListener} from "./DiagramElementListener";
+import {PaletteController} from "./PaletteController";
+export class DiagramEditorController {
 
     protected diagramEditor: DiagramEditor;
     protected sceneController: SceneController;
     protected propertyEditorController: PropertyEditorController;
     protected elementsTypeLoader: ElementsTypeLoader;
     protected paletteController: PaletteController;
-    protected nodeTypesMap: Map<NodeType>;
-    protected linkPatternsMap: Map<joint.dia.Link>;
+    protected nodeTypesMap: Map<String, NodeType>;
+    protected linkPatternsMap: Map<String, joint.dia.Link>;
     protected undoRedoController: UndoRedoController;
     protected elementTypes: ElementTypes;
 
     constructor($scope, $attrs) {
         this.undoRedoController = new UndoRedoController();
-        this.nodeTypesMap = {};
-        this.linkPatternsMap = {};
+        this.nodeTypesMap = new Map<String, NodeType>();
+        this.linkPatternsMap = new Map<String, joint.dia.Link>();
         this.paletteController = new PaletteController();
         DiagramElementListener.getNodeType = (type: string): NodeType => {
             return this.getNodeType(type);
@@ -50,12 +56,12 @@ class DiagramEditorController {
         return this.diagramEditor.getGraph();
     }
 
-    public getNodesMap(): Map<DiagramNode> {
+    public getNodesMap(): Map<String, DiagramNode> {
         var paper = this.diagramEditor.getScene();
         return paper.getNodesMap();
     }
 
-    public getLinksMap(): Map<Link> {
+    public getLinksMap(): Map<String, Link> {
         var paper = this.diagramEditor.getScene();
         return paper.getLinksMap();
     }
@@ -72,7 +78,7 @@ class DiagramEditorController {
         return this.nodeTypesMap[type];
     }
 
-    public getNodeProperties(type: string): Map<Property> {
+    public getNodeProperties(type: string): Map<String, Property> {
         return this.nodeTypesMap[type].getPropertiesMap();
     }
 
@@ -91,11 +97,11 @@ class DiagramEditorController {
         return new DiagramParts(this.getNodesMap(), this.getLinksMap());
     }
 
-    public getNodeTypes(): Map<NodeType> {
+    public getNodeTypes(): Map<String, NodeType> {
         return this.nodeTypesMap;
     }
 
-    public getLinkPatterns(): Map<joint.dia.Link> {
+    public getLinkPatterns(): Map<String, joint.dia.Link> {
         return this.linkPatternsMap;
     }
 
@@ -114,10 +120,10 @@ class DiagramEditorController {
         $.extend(this.nodeTypesMap, elementTypes.blockTypes.convertToMap(), elementTypes.flowTypes.convertToMap(),
             elementTypes.uncategorisedTypes);
 
+        this.diagramEditor.getScene().setLinkPatterns(this.linkPatternsMap);
         this.paletteController.appendBlocksPalette(elementTypes.blockTypes);
         this.paletteController.appendFlowsPalette(elementTypes.flowTypes);
-        this.paletteController.initDraggable();
         this.paletteController.initClick(this.diagramEditor.getScene());
-        this.diagramEditor.getScene().setLinkPatterns(this.linkPatternsMap);
+        this.paletteController.initDraggable();
     }
 }

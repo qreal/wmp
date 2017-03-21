@@ -1,18 +1,25 @@
-/// <reference path="../../interfaces/editorCore.d.ts" />
-/// <reference path="../../interfaces/vendor.d.ts" />
+/// <reference path="../../../../resources/thrift/editor/EditorService_types.d.ts" />
+/// <reference path="../../../../resources/thrift/struct/Diagram_types.d.ts" />
+/// <reference path="../../../../resources/thrift/editor/EditorServiceThrift.d.ts" />
+/// <reference path="../../../types/thrift/Thrift.d.ts" />
+import {Property} from "core/editorCore/model/Property";
+import {Link} from "core/editorCore/model/Link";
+import {NodeType} from "core/editorCore/model/NodeType";
+import {DefaultDiagramNode} from "core/editorCore/model/DefaultDiagramNode";
+import {DiagramNode} from "core/editorCore/model/DiagramNode";
+import {DiagramParts} from "core/editorCore/model/DiagramParts";
+import {DiagramJsonParser} from "core/editorCore/controller/parsers/DiagramJsonParser";
+export class DiagramThriftParser extends DiagramJsonParser {
 
-
-class DiagramThriftParser extends DiagramJsonParser {
-
-    public parse(diagram: TDiagram, nodeTypesMap: Map<NodeType>, linkPatterns: Map<joint.dia.Link>): DiagramParts {
+    public parse(diagram: TDiagram, nodeTypesMap: Map<String, NodeType>, linkPatterns: Map<String, joint.dia.Link>): DiagramParts {
         var diagramParts: DiagramParts = this.parseNodes(diagram, nodeTypesMap, 0, 0);
         diagramParts.linksMap = this.parseLinks(diagram, nodeTypesMap, linkPatterns, 0, 0);
         return diagramParts;
     }
 
-    protected parseDiagramNodeObject(nodeObject: TDefaultDiagramNode, nodeTypesMap: Map<NodeType>,
+    protected parseDiagramNodeObject(nodeObject: TDefaultDiagramNode, nodeTypesMap: Map<String, NodeType>,
                                      offsetX: number, offsetY: number): DiagramNode {
-        var changeableLogicalProperties: Map<Property> = {};
+        var changeableLogicalProperties: Map<String, Property> = new Map<String, Property>();
         var name = "";
         var type = nodeObject.type;
 
@@ -28,6 +35,8 @@ class DiagramThriftParser extends DiagramJsonParser {
 
         var x: number = 0;
         var y: number = 0;
+        var width: number = 0;
+        var height: number = 0;
 
         for (var j = 0; j < propertiesObject.length; j++) {
             var propertyName = propertiesObject[j].name;
@@ -45,22 +54,28 @@ class DiagramThriftParser extends DiagramJsonParser {
                 var positionNums = this.parsePosition(position);
                 x = positionNums.x + offsetX;
                 y = positionNums.y + offsetY;
+            } else if (propertyName === "size") {
+                var size:string = propertiesObject[j].value;
+                var bboxDimensions = this.parseSize(size);
+                width = bboxDimensions.width;
+                height = bboxDimensions.height;
             }
         }
 
-        var node: DiagramNode = new DefaultDiagramNode(name, type, x, y, changeableLogicalProperties,
-                nodeTypesMap[nodeObject.type].getImage(), nodeObject.graphicalId);
+        var node: DiagramNode = new DefaultDiagramNode(name, type, x, y, width, height,
+            changeableLogicalProperties,
+            nodeTypesMap[nodeObject.type].getImage(), nodeObject.graphicalId);
 
         return node;
     }
 
 
-    protected parseLinkObject(linkObject: TLink, nodeTypesMap: Map<NodeType>, linkPatterns: Map<joint.dia.Link>,
-                              offsetX: number, offsetY: number): Link {
+    protected parseLinkObject(linkObject: TLink, nodeTypesMap: Map<String, NodeType>,
+                              linkPatterns: Map<String, joint.dia.Link>, offsetX: number, offsetY: number): Link {
         var sourceId: string = "";
         var targetId: string = "";
 
-        var properties: Map<Property> = {};
+        var properties: Map<String, Property> = new Map<String, Property>();
         var propertiesObject = linkObject.properties;
 
         var vertices = [];

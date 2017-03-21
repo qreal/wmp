@@ -1,13 +1,16 @@
-/// <reference path="../../interfaces/editorCore.d.ts" />
-/// <reference path="../model/Diagram.ts" />
-/// <reference path="../model/Folder.ts" />
-/// <reference path="../../../../resources/thrift/struct/Diagram_types.d.ts" />
 /// <reference path="../../../../resources/thrift/editor/EditorService_types.d.ts" />
+/// <reference path="../../../../resources/thrift/struct/Diagram_types.d.ts" />
 /// <reference path="../../../../resources/thrift/editor/EditorServiceThrift.d.ts" />
-
-class DiagramThriftExporter extends DiagramExporter {
+/// <reference path="../../../types/thrift/Thrift.d.ts" />
+import {Folder} from "../model/Folder";
+import {Property} from "core/editorCore/model/Property";
+import {Link} from "core/editorCore/model/Link";
+import {DiagramParts} from "core/editorCore/model/DiagramParts";
+import {DiagramNode} from "core/editorCore/model/DiagramNode";
+import {DiagramExporter} from "core/editorCore/controller/exporters/DiagramExporter";
+export class DiagramThriftExporter extends DiagramExporter {
     public exportSavingDiagramState(graph: joint.dia.Graph, diagramParts: DiagramParts,
-                                          name: string, folderId: number) {
+                                    name: string, folderId: number) {
         var newDiagram = new TDiagram();
         newDiagram.name = name;
         newDiagram.folderId = folderId;
@@ -19,7 +22,7 @@ class DiagramThriftExporter extends DiagramExporter {
     }
 
     public exportUpdatingDiagramState(graph: joint.dia.Graph, diagramParts: DiagramParts,
-                                            name: string, parentFolder: Folder) {
+                                      name: string, parentFolder: Folder) {
         var newDiagram = new TDiagram();
         newDiagram.name = name;
         newDiagram.folderId = parentFolder.getId();
@@ -53,6 +56,12 @@ class DiagramThriftExporter extends DiagramExporter {
             positionProperty.value = "" + node.getX() + ", " + node.getY();
             positionProperty.type = "QPointF";
             newNode.properties.push(positionProperty);
+
+            var sizeProperty = new TProperty();
+            sizeProperty.name = "size";
+            sizeProperty.value = node.getSize();
+            sizeProperty.type = "string";
+            newNode.properties.push(sizeProperty);
 
             nodes.push(newNode);
         }
@@ -114,7 +123,7 @@ class DiagramThriftExporter extends DiagramExporter {
         return links;
     }
 
-    protected exportProperties(properties: Map<Property>) {
+    protected exportProperties(properties: Map<String, Property>) {
         var newProperties = [];
         for (var propertyName in properties) {
             var type: string = properties[propertyName].type;

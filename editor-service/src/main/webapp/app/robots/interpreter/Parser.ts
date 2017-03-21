@@ -1,6 +1,6 @@
-/// <reference path="InterpreterUtils.ts" />
-
-class Parser {
+import {InterpreterUtils} from "./InterpreterUtils";
+import {Interpreter} from "./Interpreter";
+export class Parser {
 
     public parseExpression(expression: string, interpreter: Interpreter): any {
         // Here we kinda adapt to normal lua grammar
@@ -14,14 +14,14 @@ class Parser {
         return this.calc(root, interpreter);
     }
 
-    public parseFunction(functionStr: string, interpreter: Interpreter): Map<string> {
+    public parseFunction(functionStr: string, interpreter: Interpreter): Map<String, string> {
         //And here we do not need to adapt
         var abstractSyntaxTree = JSON.parse(JSON.stringify(luaparse.parse(functionStr)));
         if (abstractSyntaxTree.hasOwnProperty("error")) {
             throw new Error(abstractSyntaxTree.error + abstractSyntaxTree.message);
         }
 
-        var variablesMap: Map<string> = {};
+        var variablesMap: Map<String, string> = new Map<String, string>();
 
         for (var i = 0; i < abstractSyntaxTree.body.length; i++) {
             if (abstractSyntaxTree.body[i].type === "AssignmentStatement") {

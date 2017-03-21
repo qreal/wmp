@@ -1,7 +1,6 @@
-/// <reference path="RegionItem.ts" />
-/// <reference path="../../../../interfaces/engine/model/WorldModel.ts" />
-
-class RectangularRegion extends RegionItem {
+import {RegionItem} from "./RegionItem";
+import {WorldModel} from "../../../../interfaces/engine/model/WorldModel";
+export class RectangularRegion extends RegionItem {
 
     constructor(worldModel: WorldModel) {
         super(worldModel);

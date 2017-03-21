@@ -1,11 +1,10 @@
-/// <reference path="SensorItem.ts" />
-/// <reference path="../../../interfaces/engine/model/WorldModel.ts" />
-/// <reference path="../../../interfaces/engine/items/RobotItem.ts" />
-/// <reference path="../../../interfaces/robotModel/DeviceInfo.ts" />
-/// <reference path="../../../types/TwoDPosition.ts" />
-/// <reference path="../../../../../vendor.d.ts" />
-
-class SonarSensorItem extends SensorItem {
+import {Constants} from "../model/Constants";
+import {RobotItem} from "../../../interfaces/engine/items/RobotItem";
+import {SensorItem} from "./SensorItem";
+import {TwoDPosition} from "../../../types/TwoDPosition";
+import {DeviceInfo} from "../../../interfaces/robotModel/DeviceInfo";
+import {WorldModel} from "../../../interfaces/engine/model/WorldModel";
+export class SonarSensorItem extends SensorItem {
     private scanningRegion: RaphaelPath;
     private sonarRange = 255;
     private regionStartX: number;

@@ -1,14 +1,14 @@
-/// <reference path="../../robotModel/DevicesConfigurationProvider.ts" />
-/// <reference path="../../robotModel/robotParts/TouchSensor.ts" />
-/// <reference path="../../robotModel/robotParts/ColorSensor.ts" />
-/// <reference path="../../robotModel/robotParts/LightSensor.ts" />
-/// <reference path="../../robotModel/robotParts/RangeSensor.ts" />
-/// <reference path="../../robotModel/robotParts/VectorSensor.ts" />
-/// <reference path="../../../interfaces/engine/model/RobotModel.ts" />
-/// <reference path="../../../interfaces/robotModel/DeviceInfo.ts" />
-/// <reference path="../../../types/TwoDPosition.ts" />
-
-class SensorsConfiguration extends DevicesConfigurationProvider {
+import {VectorSensor} from "../../robotModel/robotParts/VectorSensor";
+import {RangeSensor} from "../../robotModel/robotParts/RangeSensor";
+import {LightSensor} from "../../robotModel/robotParts/LightSensor";
+import {ColorSensor} from "../../robotModel/robotParts/ColorSensor";
+import {TouchSensor} from "../../robotModel/robotParts/TouchSensor";
+import {DeviceInfoImpl} from "../../robotModel/DeviceInfoImpl";
+import {DeviceInfo} from "../../../interfaces/robotModel/DeviceInfo";
+import {TwoDPosition} from "../../../types/TwoDPosition";
+import {RobotModel} from "../../../interfaces/engine/model/RobotModel";
+import {DevicesConfigurationProvider} from "../../robotModel/DevicesConfigurationProvider";
+export class SensorsConfiguration extends DevicesConfigurationProvider {
 
     private robotModel: RobotModel;
     private robotModelName: string;

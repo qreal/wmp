@@ -1,8 +1,6 @@
-/// <reference path="../../../interfaces/engine/items/PencilItem.ts" />
-/// <reference path="../../../interfaces/engine/model/WorldModel.ts" />
-/// <reference path="../../../../../vendor.d.ts" />
-
-class PencilItemImpl implements PencilItem {
+import {PencilItem} from "../../../interfaces/engine/items/PencilItem";
+import {WorldModel} from "../../../interfaces/engine/model/WorldModel";
+export class PencilItemImpl implements PencilItem {
     private path: RaphaelPath;
     private worldModel: WorldModel;
     private pathArray = new Array();

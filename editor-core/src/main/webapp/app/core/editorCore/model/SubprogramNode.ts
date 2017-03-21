@@ -1,17 +1,15 @@
-/// <reference path="DefaultDiagramNode.ts" />
-/// <reference path="Map.ts" />
-/// <reference path="Property.ts" />
-/// <reference path="PropertiesPack.ts" />
-/// <reference path="../../../vendor.d.ts" />
-
-class SubprogramNode extends DefaultDiagramNode {
+import {PropertiesPack} from "./PropertiesPack";
+import {Property} from "./Property";
+import {DefaultDiagramNode} from "./DefaultDiagramNode";
+export class SubprogramNode extends DefaultDiagramNode {
 
     private subprogramDiagramId: string;
     private textObject: joint.shapes.basic.Text;
 
-    constructor(name: string, type: string, x: number, y: number, properties: Map<Property>, imagePath: string,
-                subprogramDiagramId: string, id?: string, notDefaultConstProperties?: PropertiesPack) {
-        super(name, type, x, y, properties, imagePath, id, notDefaultConstProperties);
+    constructor(name: string, type: string, x: number, y: number, width: number, height: number,
+                properties: Map<String, Property>, imagePath: string, subprogramDiagramId: string, id?: string,
+                notDefaultConstProperties?: PropertiesPack) {
+        super(name, type, x, y, width, height, properties, imagePath, id, notDefaultConstProperties);
         this.subprogramDiagramId = subprogramDiagramId;
 
         var fontSize: number = 16;
@@ -37,8 +35,8 @@ class SubprogramNode extends DefaultDiagramNode {
         return this.textObject;
     }
 
-    setPosition(x: number, y: number, zoom: number): void {
-        super.setPosition(x, y, zoom);
+    setPosition(x: number, y: number, zoom: number, cellView: joint.dia.CellView): void {
+        super.setPosition(x, y, zoom, cellView);
         this.textObject.position(x - 10, y - 20);
     }
 

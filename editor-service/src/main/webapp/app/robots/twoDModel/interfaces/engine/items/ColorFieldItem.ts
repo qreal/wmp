@@ -1,4 +1,3 @@
-/// <reference path="AbstractItem.ts" />
-
-interface ColorFieldItem extends AbstractItem {
+import {AbstractItem} from "./AbstractItem";
+export interface ColorFieldItem extends AbstractItem {
 }

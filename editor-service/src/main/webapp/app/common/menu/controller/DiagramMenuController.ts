@@ -1,17 +1,18 @@
-/// <reference path="../exporters/DiagramThriftExporter.ts" />
-/// <reference path="../model/Folder.ts" />
-/// <reference path="../model/DiagramMenuElement.ts" />
-/// <reference path="../parsers/DiagramThriftParser.ts" />
-/// <reference path="../../interfaces/editorCore.d.ts" />
-/// <reference path="../../../vendor.d.ts" />
 /// <reference path="../../../../resources/thrift/editor/EditorService_types.d.ts" />
 /// <reference path="../../../../resources/thrift/struct/Diagram_types.d.ts" />
 /// <reference path="../../../../resources/thrift/editor/EditorServiceThrift.d.ts" />
-/// <reference path="../../../../resources/types/thrift/Thrift.d.ts" />
-/// <reference path="../../../common/constants/GeneralConstants.ts" />
-/// <reference path="../../../common/constants/MouseButton.ts" />
+/// <reference path="../../../types/thrift/Thrift.d.ts" />
 
-class DiagramMenuController {
+import {DiagramMenuElement} from "../model/DiagramMenuElement";
+import {MouseButton} from "../../constants/MouseButton";
+import {Folder} from "../model/Folder";
+import {Diagram} from "../model/Diagram";
+import {DiagramThriftParser} from "../parsers/DiagramThriftParser";
+import {DiagramThriftExporter} from "../exporters/DiagramThriftExporter";
+import {GeneralConstants} from "../../constants/GeneralConstants";
+import {DiagramParts} from "core/editorCore/model/DiagramParts";
+import {DiagramEditorController} from "core/editorCore/controller/DiagramEditorController";
+export class DiagramMenuController {
 
     private diagramEditorController: DiagramEditorController;
     private diagramThriftExporter: DiagramThriftExporter;
@@ -59,6 +60,7 @@ class DiagramMenuController {
     }
 
     public openFolderWindow(): void {
+        $('#diagrams').modal('show');
         this.showFolderMenu();
         this.showFolderTable(this.currentFolder);
         this.clearSavingMenu();
@@ -222,6 +224,7 @@ class DiagramMenuController {
 
     private deleteDiagramFromDatabase(diagramName: string): void {
         var menuManager = this;
+        //noinspection TypeScriptUnresolvedVariable
         var transport = new Thrift.TXHRTransport(GeneralConstants.EDITOR_REST_SERVLET);
         var protocol  = new Thrift.TJSONProtocol(transport);
         var client    = new EditorServiceThriftClient(protocol);
@@ -358,6 +361,7 @@ class DiagramMenuController {
     }
 
     private getClient(): EditorServiceThriftClient {
+        //noinspection TypeScriptUnresolvedVariable
         var transport = new Thrift.TXHRTransport(GeneralConstants.EDITOR_REST_SERVLET);
         var protocol = new Thrift.TJSONProtocol(transport);
         return new EditorServiceThriftClient(protocol);
