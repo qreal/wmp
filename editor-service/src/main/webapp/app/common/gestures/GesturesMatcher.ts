@@ -39,7 +39,7 @@ export class GesturesMatcher {
 
         var names: string[] = [];
         for (var i = 0; i < this.prevKey; ++i) {
-            names[i] = this.gestures[i].name;
+            names[i] = this.gestures[i].name.toLowerCase();
         }
 
         return names;
