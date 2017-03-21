@@ -5,6 +5,7 @@ import {DiagramNode} from "../model/DiagramNode";
 import {DefaultDiagramNode} from "../model/DefaultDiagramNode";
 import {DiagramScene} from "../model/DiagramScene";
 import {MouseButton} from "../../../common/constants/MouseButton";
+import {DefaultSize} from "../../../common/constants/DefaultSize";
 import {DiagramElement} from "../model/DiagramElement";
 import {SubprogramNode} from "../model/SubprogramNode";
 import {Property} from "../model/Property";
@@ -24,6 +25,7 @@ export class SceneController {
     private rightClickFlag : boolean;
     private undoRedoController: UndoRedoController;
     private lastCellMouseDownPosition: {x: number, y: number};
+    private lastCellMouseDownSize: {width: number, height: number};
     private paperCommandFactory: SceneCommandFactory;
     private contextMenuId = "scene-context-menu";
 
@@ -35,6 +37,7 @@ export class SceneController {
         this.clickFlag = false;
         this.rightClickFlag = false;
         this.lastCellMouseDownPosition = { x: 0, y: 0 };
+        this.lastCellMouseDownSize = { width: 0, height: 0 };
 
         this.scene.on('cell:pointerdown', (cellView, event, x, y): void => {
             this.cellPointerdownListener(cellView, event, x, y);
@@ -75,12 +78,12 @@ export class SceneController {
         this.lastCellMouseDownPosition = { x: 0, y: 0 };
     }
 
-    public createLink(sourceId: string, targetId: string): void {
+    public createLink(sourceId: string, target: any): void {
 
         var link: joint.dia.Link = this.scene.getCurrentLinkType();
         link.set({
             source: { id: sourceId },
-            target: { id: targetId }
+            target: target
         });
 
         var nodeType: NodeType = this.diagramEditorController.getNodeType(this.scene.getCurrentLinkTypeName());
@@ -111,9 +114,11 @@ export class SceneController {
 
         var node: DiagramNode;
         if (subprogramId) {
-            node = new SubprogramNode(subprogramName, type, x, y, nodeProperties, image, subprogramId);
+            node = new SubprogramNode(subprogramName, type, x, y, DefaultSize.DEFAULT_NODE_WIDTH,
+                DefaultSize.DEFAULT_NODE_HEIGHT, nodeProperties, image, subprogramId);
         } else {
-            node = new DefaultDiagramNode(UIDGenerator.generate(), name, type, x, y, nodeProperties, image);
+            node = new DefaultDiagramNode(UIDGenerator.generate(), name, type, x, y, DefaultSize.DEFAULT_NODE_WIDTH,
+                DefaultSize.DEFAULT_NODE_HEIGHT, nodeProperties, image);
         }
 
         var command: Command = new MultiCommand([this.paperCommandFactory.makeCreateNodeCommand(node),
@@ -163,27 +168,12 @@ export class SceneController {
     }
 
     public createLinkBetweenCurrentAndEventTargetElements(event): void {
-        var diagramPaper: HTMLDivElement = <HTMLDivElement> document.getElementById(this.scene.getId());
-
-        var elementBelow = this.diagramEditorController.getGraph().get('cells').find((cell) => {
-            if (cell instanceof joint.dia.Link) return false; // Not interested in links.
-            if (cell.id === this.currentElement.getJointObject().id) return false; // The same element as the dropped one.
-            var mXBegin = cell.getBBox().origin().x;
-            var mYBegin = cell.getBBox().origin().y;
-            var mXEnd = cell.getBBox().corner().x;
-            var mYEnd = cell.getBBox().corner().y;
-
-            var leftElementPos:number = (event.pageX - $(diagramPaper).offset().left + $(diagramPaper).scrollLeft()) /
-                this.scene.getZoom();
-            var topElementPos:number = (event.pageY - $(diagramPaper).offset().top + $(diagramPaper).scrollTop()) /
-                this.scene.getZoom();
-
-            return ((mXBegin <= leftElementPos) && (mXEnd >= leftElementPos)
-                && (mYBegin <= topElementPos) && (mYEnd >= topElementPos) && (this.rightClickFlag))
+        var controller = this;
+        var elementBelow = this.getElementBelow(event, function(cell) {
+            return !(cell instanceof joint.dia.Link || cell.id === controller.currentElement.getJointObject().id) && controller.rightClickFlag;
         });
-
         if (elementBelow) {
-            this.createLink(this.currentElement.getJointObject().id, elementBelow.id);
+            this.createLink(this.currentElement.getJointObject().id, {id: elementBelow.id});
         }
 
     }
@@ -263,11 +253,15 @@ export class SceneController {
             var node:DiagramNode = this.scene.getNodeById(cellView.model.id);
             this.lastCellMouseDownPosition.x = node.getX();
             this.lastCellMouseDownPosition.y = node.getY();
+            var bbox = cellView.getBBox();
+            this.lastCellMouseDownSize.width = bbox.width;
+            this.lastCellMouseDownSize.height = bbox.height;
+            cellView.highlight(cellView.model.id);
+            node.initResize(cellView.getBBox(), x, y, 20);
         }
         if (event.button == MouseButton.right) {
             this.rightClickFlag = true;
         }
-
     }
 
     private cellPointerupListener(cellView, event, x, y): void {
@@ -281,9 +275,29 @@ export class SceneController {
         } else if (event.button == MouseButton.left){
             var node: DiagramNode = this.scene.getNodeById(cellView.model.id);
             if (node) {
-                var command: Command = this.paperCommandFactory.makeMoveCommand(node, this.lastCellMouseDownPosition.x,
-                    this.lastCellMouseDownPosition.y, node.getX(), node.getY(), this.scene.getZoom());
-                this.undoRedoController.addCommand(command);
+                if (node.isResizing()) {
+                    var bbox = cellView.getBBox();
+                    var command : Command = this.paperCommandFactory.makeResizeCommand(
+                        node,
+                        this.lastCellMouseDownSize.width,
+                        this.lastCellMouseDownSize.height,
+                        bbox.width,
+                        bbox.height,
+                        cellView);
+                    this.undoRedoController.addCommand(command);
+                } else {
+                    var command: Command = this.paperCommandFactory.makeMoveCommand(
+                        node,
+                        this.lastCellMouseDownPosition.x,
+                        this.lastCellMouseDownPosition.y,
+                        node.getX(),
+                        node.getY(),
+                        this.scene.getZoom(),
+                        cellView);
+                    this.undoRedoController.addCommand(command);
+                }
+                node.completeResize();
+                cellView.unhighlight(cellView.model.id);
             }
             //ChangeElementEvent.signalEvent();
         }
@@ -291,6 +305,10 @@ export class SceneController {
 
     private cellPointermoveListener(cellView, event, x, y): void {
         this.clickFlag = false;
+        var node: DiagramNode = this.scene.getNodeById(cellView.model.id);
+        if (node) {
+            node.pointermove(cellView, event, x, y);
+        }
     }
 
     private initDropPaletteElementListener(): void {
@@ -309,8 +327,21 @@ export class SceneController {
 
                 var type = $(ui.draggable.context).data("type");
 
-                controller.createNode(type, leftElementPos, topElementPos, $(ui.draggable.context).data("id"),
-                    $(ui.draggable.context).data("name"));
+                if (paper.getCurrentLinkTypeName() == type) {
+                    var elementBelow = controller.getElementBelow(event, function(cell) {
+                        return !(cell instanceof joint.dia.Link);
+                    });
+                    if (elementBelow) {
+                        var bBox = elementBelow.getBBox();
+                        controller.createLink(elementBelow.id, {
+                            x: bBox.x + bBox.width + controller.scene.getGridSize() * 2,
+                            y: bBox.y + bBox.height / 2
+                        });
+                    }
+                } else {
+                    controller.createNode(type, leftElementPos, topElementPos, $(ui.draggable.context).data("id"),
+                        $(ui.draggable.context).data("name"));
+                }
             }
         });
     }
@@ -368,7 +399,7 @@ export class SceneController {
         } else if (this.currentElement instanceof Link) {
             removeCommands.push(this.paperCommandFactory.makeRemoveLinkCommand(<Link> this.currentElement));
         }
-        var multiCommand: Command = new MultiCommand(removeCommands);
+        var multiCommand : Command = new MultiCommand(removeCommands);
         this.undoRedoController.addCommand(multiCommand);
         multiCommand.execute();
     }
@@ -382,5 +413,25 @@ export class SceneController {
 
     public getCurrentElement() : DiagramElement {
         return this.currentElement;
+    }
+
+    private getElementBelow(event: any, checker?: (cell: any) => boolean) {
+        var diagramPaper: HTMLDivElement = <HTMLDivElement> document.getElementById(this.scene.getId());
+        return this.diagramEditorController.getGraph().get('cells').find((cell) => {
+            if (checker && !checker(cell))
+                return false;
+            var mXBegin = cell.getBBox().origin().x;
+            var mYBegin = cell.getBBox().origin().y;
+            var mXEnd = cell.getBBox().corner().x;
+            var mYEnd = cell.getBBox().corner().y;
+
+            var leftElementPos:number = (event.pageX - $(diagramPaper).offset().left + $(diagramPaper).scrollLeft()) /
+                this.scene.getZoom();
+            var topElementPos:number = (event.pageY - $(diagramPaper).offset().top + $(diagramPaper).scrollTop()) /
+                this.scene.getZoom();
+
+            return ((mXBegin <= leftElementPos) && (mXEnd >= leftElementPos)
+            && (mYBegin <= topElementPos) && (mYEnd >= topElementPos));
+        });
     }
 }

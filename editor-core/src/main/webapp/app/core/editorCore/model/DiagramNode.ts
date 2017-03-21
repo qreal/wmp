@@ -4,9 +4,15 @@ export abstract class DiagramNode extends DiagramElement {
     abstract getX(): number;
     abstract getY(): number;
     abstract getImagePath(): string;
-    abstract setPosition(x: number, y: number, zoom: number): void;
+    abstract getSize() : string;
+    abstract setPosition(x: number, y: number, zoom: number, cellView : joint.dia.CellView): void;
+    abstract setSize(width: number, height: number, cellView : joint.dia.CellView): void;
     abstract getPropertyEditElement(): PropertyEditElement;
     abstract initPropertyEditElements(zoom: number): void;
+    abstract initResize(bbox, x: number, y: number, paddingPercent) : void;
+    abstract completeResize() : void;
+    abstract isResizing() : boolean;
+    abstract pointermove(cellView, evt, x, y) : void;
 
     equals(node : DiagramNode) : boolean {
         if (node == undefined) {{

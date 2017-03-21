@@ -4,7 +4,7 @@
          "ControlFlow": {
             "name": "Link",
              "image": {
-                 "src": "images/message-flow.svg"
+                 "src": "images/robotsFlow.png"
              },
             "properties": [
                 {

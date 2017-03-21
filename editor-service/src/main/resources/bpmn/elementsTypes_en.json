@@ -5,7 +5,7 @@
         "ControlFlow": {
             "name": "Control flow",
             "image": {
-                "src": "images/bpmn/regular-sequence-flow.svg"
+                "src": "images/bpmn/regular-sequence-flow.png"
             },
             "attrs": {
                 ".connection": { "stroke": "black" },
@@ -38,7 +38,7 @@
         "ConditionalFlow": {
             "name": "Conditional flow",
             "image": {
-                "src": "images/bpmn/conditional-sequence-flow.svg"
+                "src": "images/bpmn/conditional-sequence-flow.png"
             },
             "attrs": {
                 ".connection": { "stroke": "black" },
@@ -72,7 +72,7 @@
         "DefaultFlow": {
             "name": "Default flow",
             "image": {
-                "src": "images/bpmn/default-sequence-flow.svg"
+                "src": "images/bpmn/default-sequence-flow.png"
             },
             "attrs": {
                 ".connection": { "stroke": "black" },
@@ -106,7 +106,7 @@
         "MessageFlow": {
             "name": "Message flow",
             "image": {
-                "src": "images/bpmn/message-flow.svg"
+                "src": "images/bpmn/message-flow.png"
             },
             "attrs": {
                 ".connection": { "stroke": "black", "stroke-dasharray": "9 6" },
@@ -140,7 +140,7 @@
         "AssociationFlow": {
             "name": "Association flow",
             "image": {
-                "src": "images/bpmn/association-flow.svg"
+                "src": "images/bpmn/association-flow.png"
             },
             "attrs": {
                 ".connection": { "stroke": "black", "stroke-dasharray": "9 6" }
@@ -172,7 +172,7 @@
         "DataAssociationFlow": {
             "name": "Data association flow",
             "image": {
-                "src": "images/bpmn/data-association-flow.svg"
+                "src": "images/bpmn/data-association-flow.png"
             },
             "attrs": {
                 ".connection": { "stroke": "black", "stroke-dasharray": "9 6" },
@@ -251,7 +251,7 @@
         "Subprogram": {
             "name": "Subprogram",
             "image": {
-                "src": "images/subprogramRobotsBlock.svg"
+                "src": "images/subprogramRobotsBlock.png"
             }
         }
     }

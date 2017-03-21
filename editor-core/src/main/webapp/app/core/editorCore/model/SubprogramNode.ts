@@ -7,9 +7,10 @@ export class SubprogramNode extends DefaultDiagramNode {
     private subprogramDiagramId: string;
     private textObject: joint.shapes.basic.Text;
 
-    constructor(name: string, type: string, x: number, y: number, properties: Map<String, Property>, imagePath: string,
-                subprogramDiagramId: string, id?: string, notDefaultConstProperties?: PropertiesPack) {
-        super(UIDGenerator.generate(), name, type, x, y, properties, imagePath, id, notDefaultConstProperties);
+    constructor(name: string, type: string, x: number, y: number, width: number, height: number,
+                properties: Map<String, Property>, imagePath: string, subprogramDiagramId: string, id?: string,
+                notDefaultConstProperties?: PropertiesPack) {
+        super(UIDGenerator.generate(), name, type, x, y, width, height, properties, imagePath, id, notDefaultConstProperties);
         this.subprogramDiagramId = subprogramDiagramId;
 
         var fontSize: number = 16;
@@ -35,8 +36,8 @@ export class SubprogramNode extends DefaultDiagramNode {
         return this.textObject;
     }
 
-    setPosition(x: number, y: number, zoom: number): void {
-        super.setPosition(x, y, zoom);
+    setPosition(x: number, y: number, zoom: number, cellView: joint.dia.CellView): void {
+        super.setPosition(x, y, zoom, cellView);
         this.textObject.position(x - 10, y - 20);
     }
 
