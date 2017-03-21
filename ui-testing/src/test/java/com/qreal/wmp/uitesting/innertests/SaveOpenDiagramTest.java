@@ -13,8 +13,6 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
@@ -27,9 +25,7 @@ import java.util.List;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = AppInit.class, loader = AnnotationConfigContextLoader.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-public class SaveOpenDiaTest {
-    
-    private static final Logger logger = LoggerFactory.getLogger(SaveOpenDiaTest.class);
+public class SaveOpenDiagramTest {
     
     @Autowired
     private PageLoader pageLoader;
@@ -48,6 +44,7 @@ public class SaveOpenDiaTest {
     
     private String diagram;
     
+    /** Opens editor page and add initial set of elements. */
     @Before
     public void openEditor() {
         EditorPage editorPage = pageLoader.load(Page.EditorRobots);
@@ -64,12 +61,14 @@ public class SaveOpenDiaTest {
         assert headerPanel.isDiagramExist(diagram);
     }
     
-    @Test
-    public void openDiagramTest() {
-        headerPanel.newDiagram();
-        headerPanel.openDiagram(diagram);
-        assert headerPanel.equalsDiagrams(diagram);
-    }
+    /*
+        @Test
+        public void openDiagramTest() {
+            headerPanel.newDiagram();
+            headerPanel.openDiagram(diagram);
+            assert headerPanel.equalsDiagrams(diagram);
+        }
+    */
     
     @Test
     public void equalsTrueTest() {

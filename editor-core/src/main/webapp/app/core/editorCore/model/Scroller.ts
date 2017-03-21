@@ -1,8 +1,8 @@
-enum Direction {
+export enum Direction {
     Up, Down, Left, Right, None
 }
 
-class Scroller {
+export class Scroller {
 
     private scroll: boolean;
 
