@@ -10,6 +10,7 @@ import {DiagramElement} from "../model/DiagramElement";
 import {SubprogramNode} from "../model/SubprogramNode";
 import {Property} from "../model/Property";
 import {NodeType} from "../model/NodeType";
+import {Scroller, Direction} from "../model/Scroller";
 import {DiagramElementListener} from "./DiagramElementListener";
 import {SceneCommandFactory} from "../model/commands/SceneCommandFactory";
 import {DiagramEditorController} from "./DiagramEditorController";
@@ -461,38 +462,38 @@ export class SceneController {
         this.borderUnCrossed();
         if (event.pageX + this.scene.getGridSize() * this.scene.getZoom() >= boundingBox.right) {
             this.scroller.setDirection(Direction.Right);
-            this.borderCrossed(node, event);
+            this.borderCrossed(node, event, cellView);
         } else if (event.pageX - this.scene.getGridSize() * this.scene.getZoom() <= boundingBox.left) {
             this.scroller.setDirection(Direction.Left);
-            this.borderCrossed(node, event);
+            this.borderCrossed(node, event, cellView);
         } else if (event.pageY + this.scene.getGridSize() * this.scene.getZoom() >= boundingBox.bottom) {
             this.scroller.setDirection(Direction.Down);
-            this.borderCrossed(node, event);
+            this.borderCrossed(node, event, cellView);
         } else if (event.pageY - this.scene.getGridSize() * this.scene.getZoom() <= boundingBox.top) {
             this.scroller.setDirection(Direction.Up);
-            this.borderCrossed(node, event);
+            this.borderCrossed(node, event, cellView);
         }
         this.updateLastCellScrollPosition(event);
     }
 
-    private borderCrossed(node: DiagramNode, event): void {
+    private borderCrossed(node: DiagramNode, event, view): void {
         this.scroller.setScroll(true);
         var that = this;
         switch (this.scroller.getDirection()) {
             case Direction.Right: {
-                this.scroller.setIntervalId(setInterval(() => that.scrollRight(node, event), 150));
+                this.scroller.setIntervalId(setInterval(() => that.scrollRight(node, event, view), 150));
                 break;
             }
             case Direction.Left: {
-                this.scroller.setIntervalId(setInterval(() => that.scrollLeft(node, event), 150));
+                this.scroller.setIntervalId(setInterval(() => that.scrollLeft(node, event, view), 150));
                 break;
             }
             case Direction.Down: {
-                this.scroller.setIntervalId(setInterval(() => that.scrollBottom(node, event), 150));
+                this.scroller.setIntervalId(setInterval(() => that.scrollBottom(node, event, view), 150));
                 break;
             }
             case Direction.Up: {
-                this.scroller.setIntervalId(setInterval(() => that.scrollTop(node, event), 150));
+                this.scroller.setIntervalId(setInterval(() => that.scrollTop(node, event, view), 150));
                 break;
             }
         }
@@ -507,36 +508,36 @@ export class SceneController {
         }
     }
 
-    private scrollRight(node: DiagramNode, event) : void {
+    private scrollRight(node: DiagramNode, event, view) : void {
         var sceneWrapper : HTMLDivElement = (<HTMLDivElement> $(".scene-wrapper")[0]);
         sceneWrapper.scrollLeft += this.scene.getGridSize() * this.scene.getZoom();
         if (node.getX() + 3 * this.scene.getGridSize() <= DiagramScene.WIDTH) {
             this.updateLastCellScrollPosition(event);
-            node.setPosition(this.lastCellScrollPosition.x, this.lastCellScrollPosition.y, this.scene.getZoom());
+            node.setPosition(this.lastCellScrollPosition.x, this.lastCellScrollPosition.y, this.scene.getZoom(), view);
         }
     }
 
-    private scrollLeft(node: DiagramNode, event) : void {
+    private scrollLeft(node: DiagramNode, event, view) : void {
         (<HTMLDivElement> $(".scene-wrapper")[0]).scrollLeft -= this.scene.getGridSize() * this.scene.getZoom();
         if (node.getX() >= this.scene.getGridSize()) {
             this.updateLastCellScrollPosition(event);
-            node.setPosition(this.lastCellScrollPosition.x, this.lastCellScrollPosition.y, this.scene.getZoom());
+            node.setPosition(this.lastCellScrollPosition.x, this.lastCellScrollPosition.y, this.scene.getZoom(), view);
         }
     }
 
-    private scrollBottom(node: DiagramNode, event) : void {
+    private scrollBottom(node: DiagramNode, event, view) : void {
         (<HTMLDivElement> $(".scene-wrapper")[0]).scrollTop += this.scene.getGridSize() * this.scene.getZoom();
         if (node.getY() + 3 * this.scene.getGridSize() <= DiagramScene.HEIGHT) {
             this.updateLastCellScrollPosition(event);
-            node.setPosition(this.lastCellScrollPosition.x, this.lastCellScrollPosition.y, this.scene.getZoom());
+            node.setPosition(this.lastCellScrollPosition.x, this.lastCellScrollPosition.y, this.scene.getZoom(), view);
         }
     }
 
-    private scrollTop(node: DiagramNode, event) : void {
+    private scrollTop(node: DiagramNode, event, view) : void {
         (<HTMLDivElement> $(".scene-wrapper")[0]).scrollTop -= this.scene.getGridSize() * this.scene.getZoom();
         if (node.getY() >= this.scene.getGridSize()) {
             this.updateLastCellScrollPosition(event);
-            node.setPosition(this.lastCellScrollPosition.x, this.lastCellScrollPosition.y, this.scene.getZoom());
+            node.setPosition(this.lastCellScrollPosition.x, this.lastCellScrollPosition.y, this.scene.getZoom(), view);
         }
     }
 
