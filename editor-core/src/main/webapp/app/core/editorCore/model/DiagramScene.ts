@@ -3,7 +3,6 @@ import {DiagramNode} from "./DiagramNode";
 import {SubprogramNode} from "./SubprogramNode";
 import {DiagramElementListener} from "../controller/DiagramElementListener";
 import {DiagramContainer} from "./DiagramContainer";
-import {DefaultDiagramNode} from "./DefaultDiagramNode";
 export class DiagramScene extends joint.dia.Paper {
 
     private htmlId: string;

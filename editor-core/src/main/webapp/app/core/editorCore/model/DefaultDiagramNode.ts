@@ -3,6 +3,7 @@ import {PropertiesPack} from "./PropertiesPack";
 import {PropertyEditElement} from "./PropertyEditElement";
 import {UIDGenerator} from "../controller/UIDGenerator";
 import {DiagramNode} from "./DiagramNode";
+import {DiagramContainer} from "./DiagramContainer";
 
 class ImageWithPorts extends joint.shapes.basic.Generic {
     constructor(portsModelInterface: joint.shapes.basic.PortsModelInterface) {
@@ -43,6 +44,7 @@ export class DefaultDiagramNode implements DiagramNode {
     private changeableProperties: Map<String, Property>;
     private imagePath: string;
     private propertyEditElement: PropertyEditElement;
+    private parentNode: DiagramContainer;
 
     private resizeParameters = {
         isTopResizing: false,
@@ -95,6 +97,7 @@ export class DefaultDiagramNode implements DiagramNode {
         this.jointObject = new ImageWithPorts(jointObjectAttributes);
         this.changeableProperties = properties;
         this.imagePath = imagePath;
+        this.parentNode = null;
     }
 
     pointermove(cellView, evt, x, y): void {
@@ -154,6 +157,10 @@ export class DefaultDiagramNode implements DiagramNode {
         return this.type;
     }
 
+    getParentNode(): DiagramContainer {
+        return this.parentNode;
+    }
+
     getX(): number {
         return (this.jointObject.get("position"))['x'];
     }
@@ -185,11 +192,21 @@ export class DefaultDiagramNode implements DiagramNode {
         this.propertyEditElement.setPosition(newX, newY);
     }
 
+    setParentNode(parent: DiagramContainer): void {
+        if (parent === this.parentNode)
+            return;
+        if (this.parentNode)
+            this.parentNode.getJointObject().unembed(this.getJointObject());
+        this.parentNode = parent;
+        if (parent)
+            parent.getJointObject().embed(this.getJointObject());
+    }
+
     getImagePath(): string {
         return this.imagePath;
     }
 
-    getJointObject() {
+    getJointObject(): joint.shapes.basic.Generic {
         return this.jointObject;
     }
 

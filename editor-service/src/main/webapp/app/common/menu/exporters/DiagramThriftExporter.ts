@@ -37,13 +37,18 @@ export class DiagramThriftExporter extends DiagramExporter {
     protected exportNodes(graph: joint.dia.Graph, diagramParts: DiagramParts) {
         var nodes = [];
 
+        var keys = [];
+        for (var id in diagramParts.nodesMap)
+            keys.push(id);
+        diagramParts.nodesMap[keys[0]].getJointObject().embed(diagramParts.nodesMap[keys[1]].getJointObject());
+
         for (var id in diagramParts.nodesMap) {
             var node: DiagramNode = diagramParts.nodesMap[id];
             var newNode = new TDefaultDiagramNode();
             newNode.logicalId = node.getLogicalId();
             newNode.graphicalId = node.getJointObject().id;
             newNode.type = node.getType();
-            newNode.parentId = node.getJointObject().get('parent');
+            newNode.parentId = node.getParentNode().getJointObject().id;
             newNode.properties = this.exportProperties(node.getChangeableProperties());
 
             var nameProperty = new TProperty();

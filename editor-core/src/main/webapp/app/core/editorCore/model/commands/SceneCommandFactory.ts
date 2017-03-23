@@ -8,6 +8,8 @@ import {CreateElementCommand} from "./CreateElementCommand";
 import {ChangeCurrentElementCommand} from "./ChangeCurrentElementCommand";
 import {DiagramElement} from "../DiagramElement";
 import {SceneController} from "../../controller/SceneController";
+import {DiagramContainer} from "../DiagramContainer";
+import {EmbedCommand} from "./EmbedCommand";
 export class SceneCommandFactory {
 
     private sceneController: SceneController;
@@ -49,5 +51,9 @@ export class SceneCommandFactory {
     public makeResizeCommand(node: DiagramNode, oldWidth: number, oldHeight: number, newWidth: number, newHeight: number,
                              cellView : joint.dia.CellView): Command {
         return new ResizeCommand(oldWidth, oldHeight, newWidth, newHeight, cellView, node.setSize.bind(node));
+    }
+
+    public makeEmbedCommand(child: DiagramNode, parent: DiagramContainer, oldParent: DiagramContainer): Command {
+        return new EmbedCommand(child, parent, oldParent);
     }
 }

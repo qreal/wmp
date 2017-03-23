@@ -7,6 +7,10 @@ export class MultiCommand implements Command {
         this.commands = commands;
     }
 
+    public add(command: Command) {
+        this.commands.push(command);
+    }
+
     public execute(): void {
         this.commands.forEach((command: Command) => command.execute());
     }

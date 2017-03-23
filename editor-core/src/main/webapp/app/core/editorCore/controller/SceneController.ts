@@ -16,6 +16,7 @@ import {DiagramEditorController} from "./DiagramEditorController";
 import {UndoRedoController} from "./UndoRedoController";
 import {ContainerNodeType} from "../model/ContainerNodeType";
 import {DiagramContainer} from "../model/DiagramContainer";
+import {EmbedCommand} from "../model/commands/EmbedCommand";
 export class SceneController {
 
     private diagramEditorController: DiagramEditorController;
@@ -177,7 +178,7 @@ export class SceneController {
 
     public createLinkBetweenCurrentAndEventTargetElements(event): void {
         var controller = this;
-        var elementBelow = this.getElementBelow(event, function(cell) {
+        var elementBelow = this.getElementBelow(event, function(cell: joint.dia.Element) {
             return !(cell instanceof joint.dia.Link || cell.id === controller.currentElement.getJointObject().id) && controller.rightClickFlag;
         });
         if (elementBelow) {
@@ -280,7 +281,7 @@ export class SceneController {
             if (node) {
                 if (node.isResizing()) {
                     var bbox = cellView.getBBox();
-                    var command : Command = this.paperCommandFactory.makeResizeCommand(
+                    let command: Command = this.paperCommandFactory.makeResizeCommand(
                         node,
                         this.lastCellMouseDownSize.width,
                         this.lastCellMouseDownSize.height,
@@ -289,15 +290,7 @@ export class SceneController {
                         cellView);
                     this.undoRedoController.addCommand(command);
                 } else {
-                    var command: Command = this.paperCommandFactory.makeMoveCommand(
-                        node,
-                        this.lastCellMouseDownPosition.x,
-                        this.lastCellMouseDownPosition.y,
-                        node.getX(),
-                        node.getY(),
-                        this.scene.getZoom(),
-                        cellView);
-                    this.undoRedoController.addCommand(command);
+                    this.moveNode(cellView, node);
                 }
                 node.completeResize();
                 cellView.unhighlight(cellView.model.id);
@@ -311,6 +304,31 @@ export class SceneController {
         if (node) {
             node.pointermove(cellView, event, x, y);
         }
+    }
+
+    private moveNode(cellView, node: DiagramNode): void {
+        let command: MultiCommand = new MultiCommand([]);
+
+        var dependentNodes: DiagramNode[] = this.getDependentNodes(node);
+        var diffX: number = node.getX() - this.lastCellMouseDownPosition.x;
+        var diffY: number = node.getY() - this.lastCellMouseDownPosition.y;
+        dependentNodes.forEach((curNode: DiagramNode) => command.add(this.paperCommandFactory.makeMoveCommand(
+            curNode,
+            curNode.getX() - diffX,
+            curNode.getY() - diffY,
+            curNode.getX(),
+            curNode.getY(),
+            this.scene.getZoom(),
+            cellView)));
+
+        var parent: DiagramContainer = <DiagramContainer> this.scene.getNodeById(node.getJointObject().get('parent'));
+        var oldParent: DiagramContainer = (node).getParentNode();
+        if (parent !== oldParent) {
+            var embedCommand = new EmbedCommand(node, parent, oldParent);
+            embedCommand.execute();
+            command.add(embedCommand);
+        }
+        this.undoRedoController.addCommand(command);
     }
 
     private initDropPaletteElementListener(): void {
@@ -330,7 +348,7 @@ export class SceneController {
                 var type = $(ui.draggable.context).data("type");
 
                 if (paper.getCurrentLinkTypeName() == type) {
-                    var elementBelow = controller.getElementBelow(event, function(cell) {
+                    var elementBelow = controller.getElementBelow(event, function(cell: joint.dia.Element) {
                         return !(cell instanceof joint.dia.Link);
                     });
                     if (elementBelow) {
@@ -390,20 +408,47 @@ export class SceneController {
     }
 
     private removeCurrentElement(): void {
-        var removeCommands: Command[] = [];
-        removeCommands.push(this.paperCommandFactory.makeChangeCurrentElementCommand(null, this.currentElement));
-        if (this.currentElement instanceof DefaultDiagramNode) {
-            var node: DiagramNode = <DiagramNode> this.currentElement;
-            var connectedLinks: Link[] = this.scene.getConnectedLinkObjects(node);
-            connectedLinks.forEach((link: Link) => removeCommands.push(
-                this.paperCommandFactory.makeRemoveLinkCommand(link)));
-            removeCommands.push(this.paperCommandFactory.makeRemoveNodeCommand(node));
-        } else if (this.currentElement instanceof Link) {
-            removeCommands.push(this.paperCommandFactory.makeRemoveLinkCommand(<Link> this.currentElement));
+        var removedNodes: Set<DiagramNode> = new Set<DiagramNode>();
+        var removedLinks: Set<Link> = new Set<Link>();
+        var multiCommand: MultiCommand = new MultiCommand([this.paperCommandFactory.makeChangeCurrentElementCommand(null,
+            this.currentElement)]);
+
+        if (this.currentElement instanceof Link) {
+            removedLinks.add(<Link> this.currentElement);
+        } else {
+            this.getDependentNodes(<DiagramNode> this.currentElement).forEach((node: DiagramNode) => {
+                removedNodes.add(node);
+            })
         }
-        var multiCommand : Command = new MultiCommand(removeCommands);
+
+        removedNodes.forEach((node: DiagramNode) => {
+            this.scene.getConnectedLinkObjects(node).forEach((link: Link) => {
+                removedLinks.add(link);
+            });
+        });
+
+        removedLinks.forEach((link: Link) => {
+            multiCommand.add(this.paperCommandFactory.makeRemoveLinkCommand(link));
+        });
+
+        removedNodes.forEach((node: DiagramNode) => {
+            multiCommand.add(this.paperCommandFactory.makeEmbedCommand(node, null, node.getParentNode()));
+            multiCommand.add(this.paperCommandFactory.makeRemoveNodeCommand(node));
+        });
+
         this.undoRedoController.addCommand(multiCommand);
         multiCommand.execute();
+    }
+
+    private getDependentNodes(node: DiagramNode): DiagramNode[] {
+        var elements: DiagramNode[] = [];
+        if (node instanceof DiagramContainer) {
+            var embeddedCells: joint.dia.Cell[] = node.getJointObject().getEmbeddedCells();
+            for (var i = 0; i < embeddedCells.length; i++)
+                elements.push(...this.getDependentNodes(this.scene.getNodeById(embeddedCells[i].id)));
+        }
+        elements.push(node);
+        return elements;
     }
 
     private initPropertyEditorListener(): void {
@@ -413,23 +458,31 @@ export class SceneController {
         });
     }
 
-    private getElementBelow(event: any, checker?: (cell: any) => boolean) {
+    private getElementBelow(event: any, checker?: (cell: joint.dia.Element) => boolean): joint.dia.Element {
         var diagramPaper: HTMLDivElement = <HTMLDivElement> document.getElementById(this.scene.getId());
-        return this.diagramEditorController.getGraph().get('cells').find((cell) => {
+        var chosenElement: joint.dia.Element = null;
+        var chosenWidth = -1;
+        var cells: joint.dia.Element[] = this.diagramEditorController.getGraph().get('cells');
+        cells.forEach((cell: joint.dia.Element) => {
             if (checker && !checker(cell))
                 return false;
-            var mXBegin = cell.getBBox().origin().x;
-            var mYBegin = cell.getBBox().origin().y;
-            var mXEnd = cell.getBBox().corner().x;
-            var mYEnd = cell.getBBox().corner().y;
 
-            var leftElementPos:number = (event.pageX - $(diagramPaper).offset().left + $(diagramPaper).scrollLeft()) /
+            var mXBegin = cell.getBBox().x;
+            var mYBegin = cell.getBBox().y;
+            var mXEnd = cell.getBBox().x + cell.getBBox().width;
+            var mYEnd = cell.getBBox().y + cell.getBBox().height;
+            var leftElementPos: number = (event.pageX - $(diagramPaper).offset().left + $(diagramPaper).scrollLeft()) /
                 this.scene.getZoom();
-            var topElementPos:number = (event.pageY - $(diagramPaper).offset().top + $(diagramPaper).scrollTop()) /
+            var topElementPos: number = (event.pageY - $(diagramPaper).offset().top + $(diagramPaper).scrollTop()) /
                 this.scene.getZoom();
 
-            return ((mXBegin <= leftElementPos) && (mXEnd >= leftElementPos)
-            && (mYBegin <= topElementPos) && (mYEnd >= topElementPos));
+            if ((mXBegin <= leftElementPos) && (mXEnd >= leftElementPos)
+                && (mYBegin <= topElementPos) && (mYEnd >= topElementPos)
+                && (!chosenElement || mXEnd - mXBegin < chosenWidth)) {
+                    chosenElement = cell;
+                    chosenWidth = cell.getBBox().width;
+            }
         });
+        return chosenElement;
     }
 }
