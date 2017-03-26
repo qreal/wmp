@@ -48,7 +48,8 @@ export class DiagramThriftExporter extends DiagramExporter {
             newNode.logicalId = node.getLogicalId();
             newNode.graphicalId = node.getJointObject().id;
             newNode.type = node.getType();
-            newNode.parentId = node.getParentNode().getJointObject().id;
+            if (node.getParentNode())
+                newNode.parentId = node.getParentNode().getJointObject().id;
             newNode.properties = this.exportProperties(node.getChangeableProperties());
 
             var nameProperty = new TProperty();

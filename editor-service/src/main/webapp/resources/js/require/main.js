@@ -6,6 +6,7 @@ requirejs.config({
         jquery: '../libs/jquery/jquery',
         jqueryui: '../libs/jquery/ui/jquery-ui',
         jquerytree: '../libs/jquery/treeview/jquery.treeview',
+        jqueryline: '../libs/jquery/line/jquery.line',
 
         lodash: '../libs/lodash/lodash',
         backbone: '../libs/backbone/backbone',
@@ -20,6 +21,7 @@ requirejs.config({
         },
         jqueryui: ['jquery'],
         jquerytree: ['jquery'],
+        jqueryline: ['jquery'],
         bootstrap: ['jquery']
 
     },
@@ -39,17 +41,17 @@ requirejs(
 
 requirejs(
     ['angular', 'jointjs',
-    'jquery', 'jqueryui', 'jquerytree',
-    'lodash', 'backbone',
-    'bootstrap',
-    'require/app',
-    'robots/RootDiagramController',
-    'robots/diagram/controller/RobotsDiagramEditorController',
-    'robots/twoDModel/implementations/engine/TwoDModelEngineFacadeImpl',
-    'bpmn/diagram/controller/BpmnDiagramEditorController',
-    'core/editorCore/controller/DiagramEditorController']
+        'jquery', 'jqueryui', 'jquerytree', 'jqueryline',
+        'lodash', 'backbone',
+        'bootstrap',
+        'require/app',
+        'robots/RootDiagramController',
+        'robots/diagram/controller/RobotsDiagramEditorController',
+        'robots/twoDModel/implementations/engine/TwoDModelEngineFacadeImpl',
+        'bpmn/diagram/controller/BpmnDiagramEditorController',
+        'core/editorCore/controller/DiagramEditorController']
     , function (angular) {
-    console.log('Bootstraping Angular called');
-    angular.bootstrap(document, ['myApp']);
-});
+        console.log('Bootstraping Angular called');
+        angular.bootstrap(document, ['myApp']);
+    });
 

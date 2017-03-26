@@ -444,8 +444,11 @@ export class SceneController {
         var elements: DiagramNode[] = [];
         if (node instanceof DiagramContainer) {
             var embeddedCells: joint.dia.Cell[] = node.getJointObject().getEmbeddedCells();
-            for (var i = 0; i < embeddedCells.length; i++)
-                elements.push(...this.getDependentNodes(this.scene.getNodeById(embeddedCells[i].id)));
+            for (var i = 0; i < embeddedCells.length; i++) {
+                var diagramNode: DiagramNode = this.scene.getNodeById(embeddedCells[i].id);
+                if (diagramNode)
+                    elements.push(...this.getDependentNodes(diagramNode));
+            }
         }
         elements.push(node);
         return elements;
