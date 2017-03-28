@@ -118,17 +118,15 @@ export class DefaultDiagramNode implements DiagramNode {
 
             if (this.resizeParameters.isBottomResizing) {
                 if (this.resizeParameters.isRightResizing) {
-                    this.boundingBox.width = bbox.width + diffX;
-                    this.boundingBox.height = bbox.height + diffY;
+                    this.boundingBox.width += diffX;
+                    this.boundingBox.height += diffY;
                 } else {
-                    this.boundingBox.width = bbox.width;
-                    this.boundingBox.height = bbox.height + diffY;
+                    this.boundingBox.height += diffY;
                 }
             } else if (this.resizeParameters.isRightResizing) {
-                this.boundingBox.width = bbox.width + diffX;
-                this.boundingBox.height = bbox.height;
+                this.boundingBox.width += diffX;
             }
-            model.resize(this.boundingBox.width - 2, this.boundingBox.height);
+            model.resize(this.boundingBox.width, this.boundingBox.height);
         }
     }
 
