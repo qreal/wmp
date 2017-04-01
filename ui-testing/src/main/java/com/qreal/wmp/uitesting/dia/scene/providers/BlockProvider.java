@@ -6,6 +6,7 @@ import com.qreal.wmp.uitesting.dia.scene.Scene;
 import com.qreal.wmp.uitesting.dia.scene.elements.Block;
 import com.qreal.wmp.uitesting.dia.scene.window.SceneWindow;
 import com.qreal.wmp.uitesting.exceptions.ElementNotOnTheSceneException;
+import com.qreal.wmp.uitesting.pages.EditorPageFacade;
 import org.jetbrains.annotations.Contract;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NotFoundException;
@@ -26,14 +27,14 @@ public class BlockProvider {
     
     private final String selector;
     
-    private final Scene scene;
+    private final EditorPageFacade editorPageFacade;
     
     private Set<Block> blocks = new HashSet<>();
     
-    private BlockProvider(SceneWindow sceneWindow, String selector, Scene scene) {
+    private BlockProvider(SceneWindow sceneWindow, String selector, EditorPageFacade editorPageFacade) {
         this.sceneWindow = sceneWindow;
         this.selector = selector;
-        this.scene = scene;
+        this.editorPageFacade = editorPageFacade;
     }
     
     /** Move element to cell with x and y coordinates. */
@@ -54,7 +55,7 @@ public class BlockProvider {
     public Block getNewBlock() {
         final SelenideElement newEl = updateBlocks().orElseThrow(NotFoundException::new);
         logger.info("Add element {} to scene", newEl);
-        Block block = new Block(newEl.attr("id"), By.id(newEl.attr("id")), scene);
+        Block block = new Block(newEl.attr("id"), By.id(newEl.attr("id")), editorPageFacade);
         blocks.add(block);
         return block;
     }
@@ -70,17 +71,21 @@ public class BlockProvider {
     public void recalculateBlocks() {
         blocks = $$(By.cssSelector(selector + " #v_7 > *")).stream()
                 .filter(x -> x.attr("class").contains(Block.CLASS_NAME))
-                .map(x -> new Block(x.attr("id"), By.id(x.attr("id")), scene))
+                .map(x -> new Block(x.attr("id"), By.id(x.attr("id")), editorPageFacade))
                 .collect(Collectors.toSet());
     }
     
     @Contract("_, _, _ -> !null")
-    public static BlockProvider getBlockProvider(SceneWindow sceneWindow, String selector, Scene scene) {
-        return new BlockProvider(sceneWindow, selector, scene);
+    public static BlockProvider getBlockProvider(
+            SceneWindow sceneWindow,
+            String selector,
+            EditorPageFacade editorPageFacade) {
+        
+        return new BlockProvider(sceneWindow, selector, editorPageFacade);
     }
     
     /** Return new element of the scene. */
-    private Optional<SelenideElement> updateBlocks() {
+    public Optional<SelenideElement> updateBlocks() {
         final List<SelenideElement> allElements = $$(By.cssSelector(selector + " #v_7 > *"));
         return allElements.stream()
                 .filter(htmlElement ->

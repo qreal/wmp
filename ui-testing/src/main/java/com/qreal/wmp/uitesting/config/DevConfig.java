@@ -3,6 +3,7 @@ package com.qreal.wmp.uitesting.config;
 import com.codeborne.selenide.WebDriverRunner;
 import com.qreal.wmp.uitesting.PageFactory;
 import com.qreal.wmp.uitesting.PageLoader;
+import com.qreal.wmp.uitesting.mousegestures.RobotCalibration;
 import com.qreal.wmp.uitesting.services.Auther;
 import com.qreal.wmp.uitesting.services.Opener;
 import com.qreal.wmp.uitesting.services.impl.AutherImpl;
@@ -42,6 +43,7 @@ public class DevConfig {
         driver.manage().timeouts().setScriptTimeout(3, TimeUnit.SECONDS);
         driver.manage().timeouts().pageLoadTimeout(20, TimeUnit.SECONDS);
         WebDriverRunner.setWebDriver(driver);
+        RobotCalibration.calibrate(driver);
         return driver;
     }
     

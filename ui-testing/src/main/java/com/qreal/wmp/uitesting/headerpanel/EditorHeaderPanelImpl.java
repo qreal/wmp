@@ -4,7 +4,7 @@ import com.qreal.wmp.uitesting.PageFactory;
 import com.qreal.wmp.uitesting.headerpanel.folderwindow.FileItem;
 import com.qreal.wmp.uitesting.headerpanel.folderwindow.FolderArea;
 import com.qreal.wmp.uitesting.pages.DashboardPage;
-import com.qreal.wmp.uitesting.pages.EventProvider;
+import com.qreal.wmp.uitesting.pages.EditorPageFacade;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
@@ -28,13 +28,13 @@ public class EditorHeaderPanelImpl implements EditorHeaderPanel {
     
     private final DiagramStoreService service;
     
-    private final EventProvider eventProvider;
+    private final EditorPageFacade editorPageFacade;
     
-    private EditorHeaderPanelImpl(PageFactory pageFactory, WebDriver webDriver, EventProvider eventProvider) {
+    private EditorHeaderPanelImpl(PageFactory pageFactory, WebDriver webDriver, EditorPageFacade editorPageFacade) {
         service = new DiagramStoreService();
         fileItem = new FileItem(webDriver);
         this.pageFactory = pageFactory;
-        this.eventProvider = eventProvider;
+        this.editorPageFacade = editorPageFacade;
     }
 
     @Override
@@ -47,7 +47,7 @@ public class EditorHeaderPanelImpl implements EditorHeaderPanel {
     @Override
     public void newDiagram() {
         clickFile().newDiagram();
-        eventProvider.resetEvent();
+        editorPageFacade.update();
         logger.info("New diagram");
     }
     
@@ -89,8 +89,8 @@ public class EditorHeaderPanelImpl implements EditorHeaderPanel {
     
     public static EditorHeaderPanel getEditorHeaderPanel(PageFactory pageFactory,
                                                          WebDriver driver,
-                                                         EventProvider eventProvider) {
-        return new EditorHeaderPanelImpl(pageFactory, driver, eventProvider);
+                                                         EditorPageFacade editorPageFacade) {
+        return new EditorHeaderPanelImpl(pageFactory, driver, editorPageFacade);
     }
     
     private FileItem clickFile() {

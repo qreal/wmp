@@ -13,7 +13,7 @@ import com.qreal.wmp.uitesting.dia.scene.providers.LinkProvider;
 import com.qreal.wmp.uitesting.dia.scene.window.SceneWindow;
 import com.qreal.wmp.uitesting.dia.scene.window.SceneWindowImpl;
 import com.qreal.wmp.uitesting.exceptions.ElementNotOnTheSceneException;
-import com.qreal.wmp.uitesting.pages.Resettable;
+import com.qreal.wmp.uitesting.pages.EditorPageFacade;
 import org.jetbrains.annotations.Contract;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -31,11 +31,11 @@ import static com.codeborne.selenide.Selenide.$;
  * Describes Scene of Editor.
  * Can add rm and manipulate with objects on that area.
  */
-public class SceneImpl implements Scene, Resettable {
-
-    public static final String SELECTOR = ".scene-wrapper";
-
+public class DefaultScene implements Scene {
+    
     private static final Logger logger = LoggerFactory.getLogger(PalleteImpl.class);
+    
+    private final String selector;// = ".scene-wrapper";
     
     private final WebDriver webDriver;
     
@@ -46,7 +46,12 @@ public class SceneImpl implements Scene, Resettable {
     private final LinkProvider linkProvider;
     
     /** For actions such as mouse move we need driver of current page. */
-    private SceneImpl(WebDriver webDriver) {
+    public DefaultScene(WebDriver webDriver,
+                        String selector,
+                        SceneWindow sceneWindow,
+                        BlockProvider blockProvider,
+                        LinkProvider linkProvider) {
+        
         this.webDriver = webDriver;
         // For actions such as mouse move we need driver of current page.
         if (webDriver instanceof JavascriptExecutor) {
@@ -55,14 +60,15 @@ public class SceneImpl implements Scene, Resettable {
                             createDiv("SceneWindowHorSize") + createDiv("SceneWindowVerSize")
             );
         }
-        sceneWindow = SceneWindowImpl.getSceneWindow(webDriver);
-        blockProvider = BlockProvider.getBlockProvider(sceneWindow, SELECTOR, this);
-        linkProvider = LinkProvider.getLinkProvider(SELECTOR, webDriver);
+        this.sceneWindow = sceneWindow;//SceneWindowImpl.getSceneWindow(webDriver);
+        this.selector = selector;
+        this.blockProvider = blockProvider;//BlockProvider.getBlockProvider(sceneWindow, SELECTOR, this);
+        this.linkProvider = linkProvider;//LinkProvider.getLinkProvider(SELECTOR, webDriver);
     }
     
     @Override
     public Block dragAndDrop(final PalleteElement element) {
-        element.getInner().dragAndDropTo(SELECTOR);
+        element.getInner().dragAndDropTo(selector);
         return blockProvider.getNewBlock();
     }
     
@@ -136,17 +142,19 @@ public class SceneImpl implements Scene, Resettable {
         }
     }
     
-    @Override
-    public void reset() {
-        blockProvider.recalculateBlocks();
-        linkProvider.recalculateLinks();
+    public BlockProvider getBlockProvider() {
+        return blockProvider;
     }
     
-    @Contract("_ -> !null")
+    public LinkProvider getLinkProvider() {
+        return linkProvider;
+    }
+    
+   /* @Contract("_ -> !null")
     public static Scene getScene(WebDriver webDriver) {
-        return new SceneImpl(webDriver);
+        return new DefaultScene(webDriver);
     }
-    
+    */
     @Contract(pure = true)
     private static String createDiv(String divName) {
         return "$('body').append('<div id=\"" + divName + "\" style=\"position:absolute;visibility:hidden;\"></div>');";

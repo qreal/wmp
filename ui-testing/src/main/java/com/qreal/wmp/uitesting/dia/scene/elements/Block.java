@@ -1,6 +1,7 @@
 package com.qreal.wmp.uitesting.dia.scene.elements;
 
 import com.qreal.wmp.uitesting.dia.scene.Scene;
+import com.qreal.wmp.uitesting.pages.EditorPageFacade;
 import org.openqa.selenium.By;
 
 import static com.codeborne.selenide.Selenide.$;
@@ -17,13 +18,13 @@ public class Block extends SceneElementImpl {
     
     private final SceneElement port;
     
-    private final Scene scene;
+    private final EditorPageFacade editorPageFacade;
     
-    public Block(String name, By selector, Scene scene) {
+    public Block(String name, By selector, EditorPageFacade editorPageFacade) {
         super(selector);
         this.name = name;
         this.port = new SceneElementImpl(By.id($(selector).find(By.className(PORT_CLASS_NAME)).attr("id")));
-        this.scene = scene;
+        this.editorPageFacade = editorPageFacade;
     }
     
     public String getName() {
@@ -35,6 +36,6 @@ public class Block extends SceneElementImpl {
     }
     
     public void moveToCell(int cellX, int cellY) {
-        scene.moveToCell(this, cellX, cellY);
+        editorPageFacade.move(this, cellX, cellY);
     }
 }

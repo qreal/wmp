@@ -4,13 +4,14 @@ import com.qreal.wmp.uitesting.dia.pallete.Pallete;
 import com.qreal.wmp.uitesting.dia.property.PropertyEditor;
 import com.qreal.wmp.uitesting.dia.scene.Scene;
 import com.qreal.wmp.uitesting.headerpanel.EditorHeaderPanel;
+import com.qreal.wmp.uitesting.mousegestures.GestureManipulator;
 
 import static com.codeborne.selenide.Selenide.title;
 
 /** Describes Editor page of the WMP project.
  * Includes such components as Scene, Pallete and PropertyEditor.
  */
-public class EditorPage implements EventProvider.EventListener {
+public class EditorPage {
     
     private final String title;
     
@@ -22,14 +23,19 @@ public class EditorPage implements EventProvider.EventListener {
     
     private final EditorHeaderPanel headerPanel;
     
-    /** Describes page of the Editor and provides components. */
+    private final GestureManipulator gestureManipulator;
+    
+    /**
+     * Describes page of the Editor and provides components.
+     */
     public EditorPage(String title, Scene scene, Pallete pallete, PropertyEditor propertyEditor,
-                      EditorHeaderPanel headerPanel) {
+                      EditorHeaderPanel headerPanel, GestureManipulator gestureManipulator) {
         this.title = title;
         this.scene = scene;
         this.pallete = pallete;
         this.propertyEditor = propertyEditor;
         this.headerPanel = headerPanel;
+        this.gestureManipulator = gestureManipulator;
     }
     
     public Scene getScene() {
@@ -52,8 +58,7 @@ public class EditorPage implements EventProvider.EventListener {
         return title.equals(title());
     }
     
-    @Override
-    public void updateEvent() {
-        ((Resettable) scene).reset();
+    public GestureManipulator getGestureManipulator() {
+        return gestureManipulator;
     }
 }

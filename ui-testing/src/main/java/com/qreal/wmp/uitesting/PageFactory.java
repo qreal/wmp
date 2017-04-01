@@ -1,13 +1,13 @@
 package com.qreal.wmp.uitesting;
 
+import com.qreal.wmp.uitesting.dia.pallete.Pallete;
 import com.qreal.wmp.uitesting.dia.pallete.PalleteImpl;
+import com.qreal.wmp.uitesting.dia.property.PropertyEditor;
 import com.qreal.wmp.uitesting.dia.property.PropertyEditorImpl;
-import com.qreal.wmp.uitesting.dia.scene.SceneImpl;
+import com.qreal.wmp.uitesting.dia.scene.SceneProxy;
 import com.qreal.wmp.uitesting.headerpanel.EditorHeaderPanelImpl;
-import com.qreal.wmp.uitesting.pages.AuthPage;
-import com.qreal.wmp.uitesting.pages.DashboardPage;
-import com.qreal.wmp.uitesting.pages.EditorPage;
-import com.qreal.wmp.uitesting.pages.EventProvider;
+import com.qreal.wmp.uitesting.mousegestures.GestureManipulatorImpl;
+import com.qreal.wmp.uitesting.pages.*;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,24 +21,23 @@ public class PageFactory {
     
     private final WebDriver webDriver;
     
-    private final EventProvider eventProvider;
-    
     public PageFactory(WebDriver webDriver) {
         this.webDriver = webDriver;
-        eventProvider = new EventProvider();
     }
     
     /** Returns Editor Page instance. */
     public EditorPage getEditorPage() {
         logger.info("Editor page was created");
+        EditorPageFacade editorPageFacade = new EditorPageFacade();
         EditorPage page = new EditorPage(
                 title(),
-                SceneImpl.getScene(webDriver),
+                SceneProxy.getSceneProxy(webDriver, editorPageFacade),
                 PalleteImpl.getPallete(),
                 PropertyEditorImpl.getPropertyEditor(),
-                EditorHeaderPanelImpl.getEditorHeaderPanel(this, webDriver, eventProvider)
+                EditorHeaderPanelImpl.getEditorHeaderPanel(this, webDriver, editorPageFacade),
+                GestureManipulatorImpl.getGestureManipulator(editorPageFacade)
         );
-        eventProvider.addListener(page);
+        editorPageFacade.setScene((SceneProxy) page.getScene());
         return page;
     }
     

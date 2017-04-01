@@ -3,6 +3,7 @@ package com.qreal.wmp.uitesting.dia.scene.providers;
 import com.codeborne.selenide.SelenideElement;
 import com.qreal.wmp.uitesting.dia.scene.elements.Block;
 import com.qreal.wmp.uitesting.dia.scene.elements.Link;
+import com.qreal.wmp.uitesting.pages.EditorPageFacade;
 import org.jetbrains.annotations.Contract;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -25,11 +26,14 @@ public class LinkProvider {
     
     private final WebDriver webDriver;
     
+    private final EditorPageFacade editorPageFacade;
+    
     private Set<Link> links = new HashSet<>();
     
-    private LinkProvider(String selector, WebDriver webDriver) {
+    private LinkProvider(String selector, WebDriver webDriver, EditorPageFacade editorPageFacade) {
         this.selector = selector;
         this.webDriver = webDriver;
+        this.editorPageFacade = editorPageFacade;
     }
     
     public List<Link> getLinks() {
@@ -55,7 +59,7 @@ public class LinkProvider {
                 .build().perform();
         SelenideElement newEl = updateLinks().orElseThrow(() -> new NoSuchElementException("Link was not created"));
         logger.info("Add link {}", newEl);
-        Link res = new Link(newEl.attr("id"), By.id(newEl.attr("id")));
+        Link res = new Link(newEl.attr("id"), By.id(newEl.attr("id")), editorPageFacade);
         links.add(res);
         return res;
     }
@@ -63,16 +67,16 @@ public class LinkProvider {
     public void recalculateLinks() {
         links = $$(By.cssSelector(selector + " #v_7 > *")).stream()
                 .filter(x -> x.attr("class").contains(Link.CLASS_NAME))
-                .map(x -> new Link(x.attr("id"), By.id(x.attr("id"))))
+                .map(x -> new Link(x.attr("id"), By.id(x.attr("id")), editorPageFacade))
                 .collect(Collectors.toSet());
     }
     
     @Contract("_, _ -> !null")
-    public static LinkProvider getLinkProvider(String selector, WebDriver webDriver) {
-        return new LinkProvider(selector, webDriver);
+    public static LinkProvider getLinkProvider(String selector, WebDriver webDriver, EditorPageFacade facade) {
+        return new LinkProvider(selector, webDriver, facade);
     }
     
-    private Optional<SelenideElement> updateLinks() {
+    public Optional<SelenideElement> updateLinks() {
         final List<SelenideElement> allElements = $$(By.cssSelector(selector + " #v_7 > *"));
         return allElements.stream()
                 .filter(htmlElement ->

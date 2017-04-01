@@ -1,7 +1,8 @@
 package com.qreal.wmp.uitesting.headerpanel;
 
 import com.codeborne.selenide.SelenideElement;
-import com.qreal.wmp.uitesting.dia.scene.SceneImpl;
+import com.qreal.wmp.uitesting.dia.scene.DefaultScene;
+import com.qreal.wmp.uitesting.dia.scene.SceneProxy;
 import com.qreal.wmp.uitesting.headerpanel.folderwindow.FolderAreaImpl;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
@@ -23,7 +24,7 @@ public class DiagramStoreService {
     
     private final Map<String, Element> diagrams = new HashMap<>();
     
-    private final By sceneSelector = By.cssSelector(SceneImpl.SELECTOR);
+    private final By sceneSelector = By.cssSelector(SceneProxy.SELECTOR);
     
     private String lastKnownKey;
     
