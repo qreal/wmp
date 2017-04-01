@@ -6,7 +6,7 @@ import com.qreal.wmp.uitesting.dia.scene.elements.Link;
 
 public interface GestureManipulator {
 
-    Block draw(Coordinate point, String name);
+    Block draw(String name);
     
     Link drawLine(Block source, Block target);
 }

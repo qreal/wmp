@@ -1,12 +1,14 @@
 package com.qreal.wmp.uitesting.mousegestures;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 
 import java.awt.*;
 import java.awt.event.InputEvent;
 import java.net.URISyntaxException;
+import java.util.Set;
 
 public class RobotCalibration {
     
@@ -23,9 +25,9 @@ public class RobotCalibration {
     
     private final Point browserCenter;
     
-    private CalibratedPoint xPoint;
+    private CalibratedPoint xPoint = new CalibratedPoint();
     
-    private CalibratedPoint yPoint;
+    private CalibratedPoint yPoint = new CalibratedPoint();
     
     private int counter = 0;
     
@@ -52,8 +54,11 @@ public class RobotCalibration {
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
-        
+    
         this.driver = driver;
+        ((JavascriptExecutor) driver).executeScript("alert(\"Focus window\")");
+        driver.switchTo().alert().accept();
+        
         try {
             driver.manage().window().getSize();
         } catch (UnsupportedOperationException headlessBrowserException) {

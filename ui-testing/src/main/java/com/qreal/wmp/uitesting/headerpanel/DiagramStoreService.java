@@ -1,7 +1,6 @@
 package com.qreal.wmp.uitesting.headerpanel;
 
 import com.codeborne.selenide.SelenideElement;
-import com.qreal.wmp.uitesting.dia.scene.DefaultScene;
 import com.qreal.wmp.uitesting.dia.scene.SceneProxy;
 import com.qreal.wmp.uitesting.headerpanel.folderwindow.FolderAreaImpl;
 import org.jsoup.Jsoup;

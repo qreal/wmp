@@ -5,6 +5,7 @@ import com.qreal.wmp.uitesting.Page;
 import com.qreal.wmp.uitesting.PageLoader;
 import com.qreal.wmp.uitesting.config.AppInit;
 import com.qreal.wmp.uitesting.dia.pallete.Pallete;
+import com.qreal.wmp.uitesting.dia.scene.Coordinate;
 import com.qreal.wmp.uitesting.dia.scene.Scene;
 import com.qreal.wmp.uitesting.dia.scene.elements.Block;
 import com.qreal.wmp.uitesting.mousegestures.GestureManipulator;
@@ -45,5 +46,10 @@ public class GestureTest {
 		Block initNode = scene.dragAndDrop(pallete.getElement("Initial Node"), 4, 4);
 		Block motorForward = scene.dragAndDrop(pallete.getElement("Motors Forward"), 10, 4);
 		assert scene.exist(gestureManipulator.drawLine(initNode, motorForward));
+	}
+	
+	@Test
+	public void drawFinalNode() {
+		assert gestureManipulator.draw("FinalNode") != null;
 	}
 }

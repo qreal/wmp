@@ -1,6 +1,5 @@
 package com.qreal.wmp.uitesting.dia.scene.elements;
 
-import com.qreal.wmp.uitesting.dia.scene.Scene;
 import com.qreal.wmp.uitesting.pages.EditorPageFacade;
 import org.openqa.selenium.By;
 
