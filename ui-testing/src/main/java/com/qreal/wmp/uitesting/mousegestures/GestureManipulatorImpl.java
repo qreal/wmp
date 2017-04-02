@@ -3,7 +3,6 @@ package com.qreal.wmp.uitesting.mousegestures;
 import com.codeborne.selenide.SelenideElement;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.qreal.wmp.uitesting.dia.scene.Coordinate;
 import com.qreal.wmp.uitesting.dia.scene.SceneProxy;
 import com.qreal.wmp.uitesting.dia.scene.elements.Block;
 import com.qreal.wmp.uitesting.dia.scene.elements.Link;
@@ -16,11 +15,11 @@ import org.openqa.selenium.WebDriver;
 
 import java.awt.*;
 import java.awt.event.InputEvent;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.*;
-import java.util.List;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static com.codeborne.selenide.Selenide.$;
@@ -63,7 +62,7 @@ public class GestureManipulatorImpl implements GestureManipulator {
                 gestureMap.get(name).getKey(),
                 new java.awt.Point(screenCoordinate.x +  sizeVer / 2, screenCoordinate.y + sizeHor / 2)
         );
-        return pageFacade.addDrawnBlock();
+        return pageFacade.addDrawnBlock(name);
     }
     
     @Override
@@ -85,7 +84,7 @@ public class GestureManipulatorImpl implements GestureManipulator {
         return pageFacade.addDrawnLink();
     }
     
-    @Contract("_ -> !null")
+    @Contract("_, _ -> !null")
     public static GestureManipulator getGestureManipulator(WebDriver driver, EditorPageFacade pageFacade) {
         return new GestureManipulatorImpl(driver, pageFacade);
     }

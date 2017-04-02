@@ -1,5 +1,6 @@
 package com.qreal.wmp.uitesting.pages;
 
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import com.qreal.wmp.uitesting.dia.pallete.Pallete;
 import com.qreal.wmp.uitesting.dia.property.PropertyEditor;
@@ -10,6 +11,9 @@ import org.openqa.selenium.By;
 
 import java.util.NoSuchElementException;
 import java.util.Optional;
+
+import static com.codeborne.selenide.Selectors.byText;
+import static com.codeborne.selenide.Selenide.$;
 
 public class EditorPageFacade {
 
@@ -57,7 +61,10 @@ public class EditorPageFacade {
         return new Link(newLink.get().attr("id"), By.id(newLink.get().attr("id")), this);
     }
     
-    public Block addDrawnBlock() {
+    public Block addDrawnBlock(String name) {
+        if ($(By.className("gestures-menu")).is(Condition.visible)) {
+            $(By.className("gestures-menu")).find(byText(name.toLowerCase())).click();
+        }
         return scene.getBlockProvider().getNewBlock();
     }
 }
