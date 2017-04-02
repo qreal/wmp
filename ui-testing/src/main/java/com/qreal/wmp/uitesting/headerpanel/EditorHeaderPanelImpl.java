@@ -4,7 +4,7 @@ import com.qreal.wmp.uitesting.PageFactory;
 import com.qreal.wmp.uitesting.headerpanel.folderwindow.FileItem;
 import com.qreal.wmp.uitesting.headerpanel.folderwindow.FolderArea;
 import com.qreal.wmp.uitesting.pages.DashboardPage;
-import com.qreal.wmp.uitesting.pages.EditorPageFacade;
+import com.qreal.wmp.uitesting.pages.editor.EditorPageFacade;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;

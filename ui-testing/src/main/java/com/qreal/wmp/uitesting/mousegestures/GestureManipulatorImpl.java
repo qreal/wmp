@@ -6,12 +6,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.qreal.wmp.uitesting.dia.scene.SceneProxy;
 import com.qreal.wmp.uitesting.dia.scene.elements.Block;
 import com.qreal.wmp.uitesting.dia.scene.elements.Link;
-import com.qreal.wmp.uitesting.dia.scene.window.SceneWindowImpl;
-import com.qreal.wmp.uitesting.pages.EditorPageFacade;
+import com.qreal.wmp.uitesting.pages.editor.EditorPageFacade;
 import org.jetbrains.annotations.Contract;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Point;
-import org.openqa.selenium.WebDriver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.awt.*;
 import java.awt.event.InputEvent;
@@ -24,7 +23,10 @@ import java.util.stream.Collectors;
 
 import static com.codeborne.selenide.Selenide.$;
 
+/** {@inheritDoc} */
 public class GestureManipulatorImpl implements GestureManipulator {
+    
+    private static final Logger logger = LoggerFactory.getLogger(GestureManipulator.class);
     
     private final EditorPageFacade pageFacade;
     
@@ -32,10 +34,7 @@ public class GestureManipulatorImpl implements GestureManipulator {
     
     private final Map<String, Gesture> gestureMap = new HashMap<>();
     
-    private final WebDriver driver;
-    
-    private GestureManipulatorImpl(WebDriver driver, EditorPageFacade pageFacade) {
-        this.driver = driver;
+    private GestureManipulatorImpl(EditorPageFacade pageFacade) {
         this.pageFacade = pageFacade;
         painter = new Painter();
         try (InputStream is = this.getClass().getClassLoader().getResourceAsStream("gestures.json")) {
@@ -45,14 +44,14 @@ public class GestureManipulatorImpl implements GestureManipulator {
             gestureMap.putAll(Arrays.stream(gestures).collect(
                     Collectors.toMap(Gesture::getName, gesture -> gesture)));
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
     }
     
     @Override
     public Block draw(String name) {
+        pageFacade.update();
         SelenideElement element = $(By.cssSelector(SceneProxy.SELECTOR));
-        SceneWindowImpl.updateCanvasInfo(driver);
         int sizeHor = Double.valueOf($(By.id("SceneWindowHorSize")).innerHtml()).intValue();
         int sizeVer = Double.valueOf($(By.id("SceneWindowVerSize")).innerHtml()).intValue();
         Point screenCoordinate = new Point(
@@ -60,15 +59,15 @@ public class GestureManipulatorImpl implements GestureManipulator {
                 element.getLocation().y + RobotCalibration.getLastKnownPointY());
         painter.paint(
                 gestureMap.get(name).getKey(),
-                new java.awt.Point(screenCoordinate.x +  sizeVer / 2, screenCoordinate.y + sizeHor / 2)
+                new Point(screenCoordinate.x + sizeVer / 3, screenCoordinate.y + sizeHor / 3)
         );
         return pageFacade.addDrawnBlock(name);
     }
     
     @Override
     public Link drawLine(Block source, Block target) {
-        Point coordinate = source.getInnerSeleniumElement().getLocation();
-        Point coordinate2 = target.getInnerSeleniumElement().getLocation();
+        org.openqa.selenium.Point coordinate = source.getInnerSeleniumElement().getLocation();
+        org.openqa.selenium.Point coordinate2 = target.getInnerSeleniumElement().getLocation();
         Robot robot;
         try {
             robot = new Robot();
@@ -79,13 +78,13 @@ public class GestureManipulatorImpl implements GestureManipulator {
                     coordinate2.getY() + RobotCalibration.getLastKnownPointY());
             robot.mouseRelease(InputEvent.BUTTON3_DOWN_MASK);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Robot error:" + e.getMessage());
         }
         return pageFacade.addDrawnLink();
     }
     
-    @Contract("_, _ -> !null")
-    public static GestureManipulator getGestureManipulator(WebDriver driver, EditorPageFacade pageFacade) {
-        return new GestureManipulatorImpl(driver, pageFacade);
+    @Contract("_ -> !null")
+    public static GestureManipulator getGestureManipulator(EditorPageFacade pageFacade) {
+        return new GestureManipulatorImpl(pageFacade);
     }
 }

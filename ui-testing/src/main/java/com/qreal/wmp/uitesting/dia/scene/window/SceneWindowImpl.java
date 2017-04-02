@@ -91,7 +91,7 @@ public class SceneWindowImpl implements SceneWindow {
 
     @Override
     public void focus(final Coordinate coordinate) {
-        updateCanvasInfo(driver);
+        update();
         int sizeHor = Double.valueOf($(By.id("SceneWindowHorSize")).innerHtml()).intValue();
         int sizeVer = Double.valueOf($(By.id("SceneWindowVerSize")).innerHtml()).intValue();
     
@@ -104,7 +104,7 @@ public class SceneWindowImpl implements SceneWindow {
                     "canvas.scrollTop = " + Math.max(0, (coordinate.getYAbsolute() - sizeVer / 2)) + ";"
             );
         }
-        updateCanvasInfo(driver);
+        update();
     }
     
     @Contract("_ -> !null")
@@ -112,7 +112,8 @@ public class SceneWindowImpl implements SceneWindow {
         return new SceneWindowImpl(webDriver);
     }
     
-    public static void updateCanvasInfo(WebDriver driver) {
+    @Override
+    public void update() {
         if (driver instanceof JavascriptExecutor) {
             ((JavascriptExecutor) driver).executeScript("var canvas = " +
                     "document.getElementsByClassName(\"scene-wrapper\")[0]; " +

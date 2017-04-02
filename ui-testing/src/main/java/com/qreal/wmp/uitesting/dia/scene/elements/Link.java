@@ -3,7 +3,7 @@ package com.qreal.wmp.uitesting.dia.scene.elements;
 import com.codeborne.selenide.SelenideElement;
 import com.qreal.wmp.uitesting.dia.scene.Coordinate;
 import com.qreal.wmp.uitesting.exceptions.ElementNotOnTheSceneException;
-import com.qreal.wmp.uitesting.pages.EditorPageFacade;
+import com.qreal.wmp.uitesting.pages.editor.EditorPageFacade;
 import org.openqa.selenium.By;
 
 import static com.codeborne.selenide.Selenide.$;
@@ -21,6 +21,7 @@ public class Link extends SceneElementImpl {
     
     private final SceneElement target;
     
+    @SuppressWarnings({"all"})
     private final EditorPageFacade editorPageFacade;
     
     /** Describes link between two blocks. */

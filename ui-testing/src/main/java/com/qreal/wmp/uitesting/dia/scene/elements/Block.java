@@ -1,6 +1,6 @@
 package com.qreal.wmp.uitesting.dia.scene.elements;
 
-import com.qreal.wmp.uitesting.pages.EditorPageFacade;
+import com.qreal.wmp.uitesting.pages.editor.EditorPageFacade;
 import org.openqa.selenium.By;
 
 import static com.codeborne.selenide.Selenide.$;

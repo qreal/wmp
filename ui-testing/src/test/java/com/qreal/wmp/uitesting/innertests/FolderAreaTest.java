@@ -10,7 +10,7 @@ import com.qreal.wmp.uitesting.dia.scene.elements.Link;
 import com.qreal.wmp.uitesting.headerpanel.EditorHeaderPanel;
 import com.qreal.wmp.uitesting.headerpanel.folderwindow.FolderArea;
 import com.qreal.wmp.uitesting.pages.DashboardPage;
-import com.qreal.wmp.uitesting.pages.EditorPage;
+import com.qreal.wmp.uitesting.pages.editor.EditorPage;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,7 +27,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = AppInit.class, loader = AnnotationConfigContextLoader.class)

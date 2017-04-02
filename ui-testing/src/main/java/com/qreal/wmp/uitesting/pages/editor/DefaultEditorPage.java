@@ -1,19 +1,13 @@
-package com.qreal.wmp.uitesting.pages;
+package com.qreal.wmp.uitesting.pages.editor;
 
 import com.qreal.wmp.uitesting.dia.pallete.Pallete;
 import com.qreal.wmp.uitesting.dia.property.PropertyEditor;
 import com.qreal.wmp.uitesting.dia.scene.Scene;
 import com.qreal.wmp.uitesting.headerpanel.EditorHeaderPanel;
-import com.qreal.wmp.uitesting.mousegestures.GestureManipulator;
+import com.qreal.wmp.uitesting.pages.AbstractPage;
 
-import static com.codeborne.selenide.Selenide.title;
-
-/** Describes Editor page of the WMP project.
- * Includes such components as Scene, Pallete and PropertyEditor.
- */
-public class EditorPage {
-    
-    private final String title;
+/** {@inheritDoc} */
+public class DefaultEditorPage extends AbstractPage implements EditorPage {
     
     private final Scene scene;
     
@@ -23,42 +17,35 @@ public class EditorPage {
     
     private final EditorHeaderPanel headerPanel;
     
-    private final GestureManipulator gestureManipulator;
-    
     /**
      * Describes page of the Editor and provides components.
      */
-    public EditorPage(String title, Scene scene, Pallete pallete, PropertyEditor propertyEditor,
-                      EditorHeaderPanel headerPanel, GestureManipulator gestureManipulator) {
-        this.title = title;
+    public DefaultEditorPage(Scene scene, Pallete pallete, PropertyEditor propertyEditor,
+                      EditorHeaderPanel headerPanel) {
+        super();
         this.scene = scene;
         this.pallete = pallete;
         this.propertyEditor = propertyEditor;
         this.headerPanel = headerPanel;
-        this.gestureManipulator = gestureManipulator;
     }
     
+    @Override
     public Scene getScene() {
         return scene;
     }
     
+    @Override
     public Pallete getPallete() {
         return pallete;
     }
     
+    @Override
     public PropertyEditor getPropertyEditor() {
         return propertyEditor;
     }
     
+    @Override
     public EditorHeaderPanel getHeaderPanel() {
         return headerPanel;
-    }
-    
-    public boolean onPage() {
-        return title.equals(title());
-    }
-    
-    public GestureManipulator getGestureManipulator() {
-        return gestureManipulator;
     }
 }

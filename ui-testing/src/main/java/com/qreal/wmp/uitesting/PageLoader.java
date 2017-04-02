@@ -41,7 +41,7 @@ public class PageLoader {
             case Auth: return (T) pageFactory.getAuthPage();
             case Dashboard: return (T) pageFactory.getDashboardPage();
             case EditorBPMN: return (T) pageFactory.getEditorPage();
-            case EditorRobots: return (T) pageFactory.getEditorPage();
+            case EditorRobots: return (T) pageFactory.getEditorPageWithGestures();
             default: return null;
         }
     }

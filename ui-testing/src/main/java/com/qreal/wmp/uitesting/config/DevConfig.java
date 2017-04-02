@@ -3,14 +3,16 @@ package com.qreal.wmp.uitesting.config;
 import com.codeborne.selenide.WebDriverRunner;
 import com.qreal.wmp.uitesting.PageFactory;
 import com.qreal.wmp.uitesting.PageLoader;
-import com.qreal.wmp.uitesting.mousegestures.RobotCalibration;
 import com.qreal.wmp.uitesting.services.Auther;
 import com.qreal.wmp.uitesting.services.Opener;
 import com.qreal.wmp.uitesting.services.impl.AutherImpl;
 import com.qreal.wmp.uitesting.services.impl.OpenerImpl;
 import io.github.bonigarcia.wdm.ChromeDriverManager;
+import org.openqa.selenium.UnexpectedAlertBehaviour;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.remote.CapabilityType;
+import org.openqa.selenium.remote.DesiredCapabilities;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -37,13 +39,14 @@ public class DevConfig {
     @Bean
     public WebDriver webDriver() {
         ChromeDriverManager.getInstance().setup();
-        WebDriver driver = new ChromeDriver();
+        DesiredCapabilities dc = new DesiredCapabilities();
+        dc.setCapability(CapabilityType.UNEXPECTED_ALERT_BEHAVIOUR, UnexpectedAlertBehaviour.ACCEPT);
+        WebDriver driver = new ChromeDriver(dc);
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
         driver.manage().timeouts().setScriptTimeout(3, TimeUnit.SECONDS);
         driver.manage().timeouts().pageLoadTimeout(20, TimeUnit.SECONDS);
         WebDriverRunner.setWebDriver(driver);
-        RobotCalibration.calibrate(driver);
         return driver;
     }
     

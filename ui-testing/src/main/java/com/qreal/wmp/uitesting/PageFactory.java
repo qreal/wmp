@@ -5,17 +5,22 @@ import com.qreal.wmp.uitesting.dia.property.PropertyEditorImpl;
 import com.qreal.wmp.uitesting.dia.scene.SceneProxy;
 import com.qreal.wmp.uitesting.headerpanel.EditorHeaderPanelImpl;
 import com.qreal.wmp.uitesting.mousegestures.GestureManipulatorImpl;
+import com.qreal.wmp.uitesting.mousegestures.RobotCalibration;
 import com.qreal.wmp.uitesting.pages.AuthPage;
 import com.qreal.wmp.uitesting.pages.DashboardPage;
-import com.qreal.wmp.uitesting.pages.EditorPage;
-import com.qreal.wmp.uitesting.pages.EditorPageFacade;
+import com.qreal.wmp.uitesting.pages.editor.DefaultEditorPage;
+import com.qreal.wmp.uitesting.pages.editor.EditorPage;
+import com.qreal.wmp.uitesting.pages.editor.EditorPageFacade;
+import com.qreal.wmp.uitesting.pages.editor.EditorPageWithGestures;
+import org.jetbrains.annotations.Contract;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static com.codeborne.selenide.Selenide.title;
+import static com.codeborne.selenide.WebDriverRunner.url;
 
-/** Returns page instance for requested uri. */
+/** Returns page instance for requested uri.
+ * Important: Factory must be used only if url of wanted page is opened in browser. */
 public class PageFactory {
     
     private static final Logger logger = LoggerFactory.getLogger(PageFactory.class);
@@ -29,14 +34,20 @@ public class PageFactory {
     /** Returns Editor Page instance. */
     public EditorPage getEditorPage() {
         logger.info("Editor page was created");
-        EditorPageFacade editorPageFacade = new EditorPageFacade();
-        EditorPage page = new EditorPage(
-                title(),
-                SceneProxy.getSceneProxy(webDriver, editorPageFacade),
-                PalleteImpl.getPallete(),
-                PropertyEditorImpl.getPropertyEditor(),
-                EditorHeaderPanelImpl.getEditorHeaderPanel(this, webDriver, editorPageFacade),
-                GestureManipulatorImpl.getGestureManipulator(webDriver, editorPageFacade)
+        EditorPageFacade editorPageFacade = new EditorPageFacade(url());
+        EditorPage page = getDefaultEditorPage(editorPageFacade);
+        editorPageFacade.setScene((SceneProxy) page.getScene());
+        return page;
+    }
+    
+    /** Returns Editor page with gesture decorator. */
+    public EditorPage getEditorPageWithGestures() {
+        EditorPageFacade editorPageFacade = new EditorPageFacade(url());
+        RobotCalibration.calibrate(webDriver);
+        editorPageFacade.reload();
+        EditorPage page = new EditorPageWithGestures(
+                getDefaultEditorPage(editorPageFacade),
+                GestureManipulatorImpl.getGestureManipulator(editorPageFacade)
         );
         editorPageFacade.setScene((SceneProxy) page.getScene());
         return page;
@@ -45,12 +56,22 @@ public class PageFactory {
     /** Returns Dashboard Page instance. */
     public DashboardPage getDashboardPage() {
         logger.info("Dashboard page was created");
-        return new DashboardPage(title());
+        return new DashboardPage();
     }
     
     /** Returns Auth Page instance. */
     public AuthPage getAuthPage() {
         logger.info("Auth page was created");
-        return new AuthPage(title());
+        return new AuthPage();
+    }
+    
+    @Contract("_ -> !null")
+    private EditorPage getDefaultEditorPage(EditorPageFacade editorPageFacade) {
+        return new DefaultEditorPage(
+                SceneProxy.getSceneProxy(webDriver, editorPageFacade),
+                PalleteImpl.getPallete(),
+                PropertyEditorImpl.getPropertyEditor(),
+                EditorHeaderPanelImpl.getEditorHeaderPanel(this, webDriver, editorPageFacade)
+        );
     }
 }

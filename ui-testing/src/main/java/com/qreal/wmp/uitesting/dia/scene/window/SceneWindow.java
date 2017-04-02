@@ -20,4 +20,6 @@ public interface SceneWindow {
      * @param coordinate coordinate to move
      */
     void focus(final Coordinate coordinate);
+    
+    void update();
 }

@@ -3,14 +3,19 @@ package com.qreal.wmp.uitesting.mousegestures;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.awt.*;
 import java.awt.event.InputEvent;
 import java.net.URISyntaxException;
-import java.util.Set;
 
+import static com.codeborne.selenide.Selenide.open;
+
+/** For finding top left corner of the body in the any opened html file. */
 public class RobotCalibration {
+    
+    private static final Logger logger = LoggerFactory.getLogger(RobotCalibration.class);
     
     private static int lastKnownPointX;
     
@@ -49,16 +54,19 @@ public class RobotCalibration {
     @SuppressWarnings("ConstantConditions")
     private RobotCalibration(WebDriver driver) {
         try {
-            com.codeborne.selenide.Selenide.open(
-                    this.getClass().getClassLoader().getResource("RobotCalibration.html").toURI().toString());
+            open(this.getClass().getClassLoader().getResource("RobotCalibration.html").toURI().toString());
         } catch (URISyntaxException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
-    
+        
         this.driver = driver;
         ((JavascriptExecutor) driver).executeScript("alert(\"Focus window\")");
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            logger.error(e.getMessage());
+        }
         driver.switchTo().alert().accept();
-        
         try {
             driver.manage().window().getSize();
         } catch (UnsupportedOperationException headlessBrowserException) {
@@ -111,28 +119,14 @@ public class RobotCalibration {
         return new Point(xPoint.mid + 5, yPoint.mid + 5);
     }
     
-    /** Clicks on the specified location */
-    private void click(int x, int y) {
-        robot.mouseMove(x, y);
+    /** Clicks on the specified location. */
+    private void click(int xPosition, int yPosition) {
+        robot.mouseMove(xPosition, yPosition);
         robot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
         robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
-        
-        // for some reason, my IE8 can't properly register clicks that are close
-        // to each other faster than click every half a second
-        if (driver instanceof InternetExplorerDriver) {
-            sleep(500);
-        }
     }
     
-    private static void sleep(int millis) {
-        try {
-            Thread.sleep(millis);
-        } catch (InterruptedException ignored) {
-            // nothing to do
-        }
-    }
-    
-    /** @return whether the click on a page was successful */
+    /** @return whether the click on a page was successful. */
     private boolean clickWasSuccessful() {
         counter++;
         
@@ -146,7 +140,7 @@ public class RobotCalibration {
         return false;
     }
     
-    /** @return whether the top left corner has already been clicked at */
+    /** Returns whether the top left corner has already been clicked at. */
     private boolean isCalibrated() {
         long targetTime = System.currentTimeMillis() + TIMEOUT;
         while (System.currentTimeMillis() < targetTime) {

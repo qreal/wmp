@@ -8,13 +8,11 @@ import com.qreal.wmp.uitesting.dia.scene.Scene;
 import com.qreal.wmp.uitesting.dia.scene.elements.Block;
 import com.qreal.wmp.uitesting.dia.scene.elements.Link;
 import com.qreal.wmp.uitesting.headerpanel.EditorHeaderPanel;
-import com.qreal.wmp.uitesting.pages.EditorPage;
+import com.qreal.wmp.uitesting.pages.editor.EditorPage;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
@@ -28,8 +26,6 @@ import java.util.List;
 @ContextConfiguration(classes = AppInit.class, loader = AnnotationConfigContextLoader.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class SaveOpenDiaTest {
-    
-    private static final Logger logger = LoggerFactory.getLogger(SaveOpenDiaTest.class);
     
     @Autowired
     private PageLoader pageLoader;
@@ -48,6 +44,7 @@ public class SaveOpenDiaTest {
     
     private String diagram;
     
+    /** Open editor page and actions before each test. */
     @Before
     public void openEditor() {
         EditorPage editorPage = pageLoader.load(Page.EditorRobots);

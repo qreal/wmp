@@ -1,16 +1,20 @@
 package com.qreal.wmp.uitesting.mousegestures;
 
 import org.jetbrains.annotations.Contract;
+import org.openqa.selenium.By;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.awt.*;
 import java.awt.event.InputEvent;
 import java.util.List;
 
+import static com.codeborne.selenide.Selenide.$;
+
+/** Class for simulate painting. */
 public class Painter {
     
-    private static final int STEP_LENGTH = 20;
-    
-    private String currentCell;
+    private static final Logger logger = LoggerFactory.getLogger(Painter.class);
     
     private Point currentPoint;
     
@@ -18,6 +22,7 @@ public class Painter {
     
     private DrawingTable drawingTable;
     
+    /** Right mouse button down and draw gesture (by items from gestures parameter) at the point point. */
     public void paint(List<String> gestures, Point point) {
         try {
             robot = new Robot();
@@ -27,27 +32,23 @@ public class Painter {
             if (gestures.isEmpty()) {
                 return;
             }
-            currentCell = gestures.get(0);
+            String currentCell = gestures.get(0);
             currentPoint = drawingTable.getPoint(currentCell);
             robot.mouseMove(currentPoint.x, currentPoint.y);
-            System.out.println("CurrentPoint " + currentPoint.x + "," + currentPoint.y);
             robot.mousePress(InputEvent.BUTTON3_DOWN_MASK);
             robot.mouseMove(currentPoint.x - 1, currentPoint.y - 1);
             for (int i = 1; i < gestures.size(); ++ i) {
                 String next = gestures.get(i);
                 if (areNeigbors(currentCell, next)) {
-                    System.out.println("Draw to " + next);
                     drawToCell(next);
                 } else {
-                    System.out.println("Jump to " + next);
                     jumpToCell(next);
                 }
                 currentCell = next;
-                System.out.println("CurrentPoint " + currentPoint.x + "," + currentPoint.y);
             }
             robot.mouseRelease(InputEvent.BUTTON3_DOWN_MASK);
         } catch (AWTException e) {
-            e.printStackTrace();
+            logger.error("Robot error: " + e.getMessage());
         }
     }
     
@@ -74,12 +75,25 @@ public class Painter {
         return new Point(secondCell.charAt(0) - firstCell.charAt(0), secondCell.charAt(1) - firstCell.charAt(1));
     }
     
-    @SuppressWarnings("SameParameterValue")
-    private void sleep(long time) {
-        try {
-            Thread.sleep(time);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+    private class DrawingTable {
+        
+        private final int stepLength;
+        
+        private final Point leftUpCorner;
+        
+        public DrawingTable(Point leftUpCorner) {
+            this.leftUpCorner = leftUpCorner;
+            int sizeHor = Double.valueOf($(By.id("SceneWindowHorSize")).innerHtml()).intValue();
+            int sizeVer = Double.valueOf($(By.id("SceneWindowVerSize")).innerHtml()).intValue();
+            int minSize = Math.min(sizeHor, sizeVer);
+            stepLength = Math.max(20, minSize / 4 / 6);
+        }
+        
+        public Point getPoint(String cell) {
+            int cellOffsetX = (cell.charAt(0) - 'A') * stepLength;
+            int cellOffsetY = (cell.charAt(1) - '0') * stepLength;
+            return new Point(leftUpCorner.x + cellOffsetX, leftUpCorner.y + cellOffsetY);
         }
     }
+    
 }

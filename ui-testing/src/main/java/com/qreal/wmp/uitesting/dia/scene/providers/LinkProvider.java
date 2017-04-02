@@ -3,7 +3,7 @@ package com.qreal.wmp.uitesting.dia.scene.providers;
 import com.codeborne.selenide.SelenideElement;
 import com.qreal.wmp.uitesting.dia.scene.elements.Block;
 import com.qreal.wmp.uitesting.dia.scene.elements.Link;
-import com.qreal.wmp.uitesting.pages.EditorPageFacade;
+import com.qreal.wmp.uitesting.pages.editor.EditorPageFacade;
 import org.jetbrains.annotations.Contract;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -71,11 +71,12 @@ public class LinkProvider {
                 .collect(Collectors.toSet());
     }
     
-    @Contract("_, _ -> !null")
+    @Contract("_, _, _ -> !null")
     public static LinkProvider getLinkProvider(String selector, WebDriver webDriver, EditorPageFacade facade) {
         return new LinkProvider(selector, webDriver, facade);
     }
     
+    /** Returns new link if it was created. */
     public Optional<SelenideElement> updateLinks() {
         final List<SelenideElement> allElements = $$(By.cssSelector(selector + " #v_7 > *"));
         return allElements.stream()

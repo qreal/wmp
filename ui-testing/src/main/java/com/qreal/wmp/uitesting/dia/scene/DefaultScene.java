@@ -25,10 +25,7 @@ import java.util.List;
 
 import static com.codeborne.selenide.Selenide.$;
 
-/**
- * Describes Scene of Editor.
- * Can add rm and manipulate with objects on that area.
- */
+/** {@inheritDoc} */
 public class DefaultScene implements Scene {
     
     private static final Logger logger = LoggerFactory.getLogger(PalleteImpl.class);
@@ -148,11 +145,6 @@ public class DefaultScene implements Scene {
         return linkProvider;
     }
     
-   /* @Contract("_ -> !null")
-    public static Scene getScene(WebDriver webDriver) {
-        return new DefaultScene(webDriver);
-    }
-    */
     @Contract(pure = true)
     private static String createDiv(String divName) {
         return "$('body').append('<div id=\"" + divName + "\" style=\"position:absolute;visibility:hidden;\"></div>');";

@@ -2,6 +2,7 @@ package com.qreal.wmp.uitesting.mousegestures;
 
 import java.util.List;
 
+/** Describes gestures for JSON parsing. */
 public class Gesture {
     
     private String name;

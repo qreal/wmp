@@ -87,7 +87,7 @@ public class FolderAreaImpl implements FolderArea {
     @Override
     public FolderArea deleteFolder(String name) {
         if (!isFolderExist(name)) {
-            throw new NullPointerException("Folder is not exist");
+            throw new IllegalArgumentException("Folder is not exist");
         }
         $(selector).find(By.className("folders")).find(byText(name)).contextClick();
         $(By.id("open-diagram-context-menu")).should(Condition.visible);
