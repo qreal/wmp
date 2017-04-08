@@ -12,12 +12,18 @@ export class StompClient {
 
     private menuController: DiagramMenuController = null;
 
+    private diagramId : number;
+
+    private editorId : string;
+
     constructor(menuController: DiagramMenuController) {
         this.menuController = menuController;
     }
 
-    public start(diagramId : number): void {
+    public start(diagramId : number, editorId : string): void {
         console.log("Starting longpoll");
+        this.diagramId = diagramId;
+        this.editorId = editorId;
 
         console.log("Longpolling diagramId " + diagramId.toString());
         this.webSocket = new SockJS("http://localhost:" + ServerProperties.portLongpoll + "/diagrams");
@@ -29,11 +35,17 @@ export class StompClient {
         this.stompClient.connect({}, function(frame) {
             self.connected = true;
             console.log("Connected");
-            self.stompClient.subscribe("/push/diagrams/" + diagramId.toString(), function(messageOutput) {
+            self.stompClient.subscribe("/push/diagrams/" + diagramId.toString(), function(editorIdUpdated) {
                 console.log("Got push");
-                self.menuController.reloadDiagram();
+                if (editorId != editorIdUpdated.body) {
+                    self.menuController.reloadDiagram();
+                }
             });
         });
+    }
+
+    public sendUpdateMessage() {
+        this.stompClient.send("/messages/push/editors/" + this.editorId.toString(), {}, '"' + this.diagramId.toString() + '"')
     }
 
     public stop(): void {
@@ -41,6 +53,8 @@ export class StompClient {
         if (this.connected) {
             this.stompClient.disconnect();
             this.connected = false;
+            this.diagramId = 0;
+            this.editorId = "";
             console.log("Disconnected");
         }
     }

@@ -26,7 +26,7 @@ export class DiagramMenuController {
     private currentFolder: Folder;
     private contextMenuId = "open-diagram-context-menu";
     private selectedElement: DiagramMenuElement;
-    private diagramLoader : StompClient;
+    private stompClient : StompClient;
     public diagramSaved : boolean;
 
     constructor(diagramEditorController: DiagramEditorController) {
@@ -38,7 +38,7 @@ export class DiagramMenuController {
         this.canBeDeleted = false;
         this.diagramSaved = false;
 
-        this.diagramLoader = new StompClient(this);
+        this.stompClient = new StompClient(this);
 
         var menuManager = this;
         var folderTree;
@@ -75,12 +75,14 @@ export class DiagramMenuController {
     }
 
     public saveCurrentDiagram(): void {
-        if (this.currentDiagramName === "") {
+        if (this.currentDiagramName == "") {
             this.saveDiagramAs();
         } else {
             this.updateCurrentDiagramInDatabase();
         }
+        this.stompClient.sendUpdateMessage();
     }
+
 
     public saveDiagramAs(): void {
         $('#diagrams').modal('show');
@@ -139,7 +141,7 @@ export class DiagramMenuController {
         this.currentDiagramName = "";
         this.currentDiagramFolder = null;
         this.selectedElement = null;
-        this.diagramLoader.stop();
+        this.stompClient.stop();
     }
 
     private showFolderMenu(): void {
@@ -194,7 +196,7 @@ export class DiagramMenuController {
             console.log("Error: can't save diagram");
         }
 
-        this.diagramLoader.start(this.currentDiagramId);
+        this.stompClient.start(this.currentDiagramId, this.getEditorId());
         this.diagramSaved = true;
     }
 
@@ -232,6 +234,10 @@ export class DiagramMenuController {
         }
     }
 
+    public getEditorId() : string {
+        return this.diagramEditorController.getEditorId();
+    }
+
     private openDiagramFromDatabase(diagramName: string): void {
         var menuManager = this;
         this.currentDiagramName = diagramName;
@@ -249,7 +255,7 @@ export class DiagramMenuController {
         }
 
         this.currentDiagramId = menuManager.currentDiagramFolder.getDiagramIdByName(diagramName);
-        this.diagramLoader.start(this.currentDiagramId);
+        this.stompClient.start(this.currentDiagramId, this.getEditorId());
 
         this.diagramSaved = true;
     }

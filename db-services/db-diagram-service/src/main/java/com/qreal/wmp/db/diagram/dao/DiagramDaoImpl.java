@@ -1,6 +1,5 @@
 package com.qreal.wmp.db.diagram.dao;
 
-import com.qreal.wmp.db.diagram.client.longpoll.LongpollService;
 import com.qreal.wmp.db.diagram.exceptions.AbortedException;
 import com.qreal.wmp.db.diagram.exceptions.NotFoundException;
 import com.qreal.wmp.db.diagram.model.Diagram;
@@ -20,10 +19,7 @@ public class DiagramDaoImpl implements DiagramDao {
 
     private final SessionFactory sessionFactory;
 
-    private LongpollService longpollService;
-
-    public DiagramDaoImpl(SessionFactory sessionFactory, LongpollService longpollService) {
-        this.longpollService = longpollService;
+    public DiagramDaoImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
 
@@ -67,7 +63,7 @@ public class DiagramDaoImpl implements DiagramDao {
         }
         logger.trace("saveDiagram() successfully saved diagram {}.", diagram.getName());
 
-        longpollService.sendDiagramPush(diagram.getId());
+        //longpollService.sendDiagramPush(diagram.getId());
         logger.trace("saveDiagram() sent to longpoll notification");
 
         return diagram.getId();
@@ -114,7 +110,7 @@ public class DiagramDaoImpl implements DiagramDao {
         session.merge(diagram);
         logger.trace("updateDiagram() successfully edited diagram {}.", diagram.getName());
 
-        longpollService.sendDiagramPush(diagram.getId());
+        //longpollService.sendDiagramPush(diagram.getId());
         logger.trace("rewriteDiagram() sent to longpoll notification");
     }
 

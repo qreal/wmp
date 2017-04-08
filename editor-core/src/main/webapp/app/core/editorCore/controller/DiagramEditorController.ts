@@ -14,6 +14,11 @@ import {DiagramEditor} from "../model/DiagramEditor";
 import {DiagramElementListener} from "./DiagramElementListener";
 import {PaletteController} from "./PaletteController";
 import {Events} from "../events/Events";
+import {UIDGenerator} from "./UIDGenerator";
+/**
+ * Main controller for graph editor.
+ * Creates all other controllers and unique id for client-server communcations.
+ */
 export class DiagramEditorController {
 
     protected diagramEditor: DiagramEditor;
@@ -25,12 +30,15 @@ export class DiagramEditorController {
     protected linkPatternsMap: Map<String, joint.dia.Link>;
     protected undoRedoController: UndoRedoController;
     protected elementTypes: ElementTypes;
+    protected editorId: string;
 
     constructor($scope, $attrs) {
         this.undoRedoController = new UndoRedoController();
         this.nodeTypesMap = new Map<String, NodeType>();
         this.linkPatternsMap = new Map<String, joint.dia.Link>();
         this.paletteController = new PaletteController();
+        this.editorId = UIDGenerator.generate()
+
         DiagramElementListener.getNodeType = (type: string): NodeType => {
             return this.getNodeType(type);
         };
@@ -51,6 +59,10 @@ export class DiagramEditorController {
                 $(".custom-menu").hide(100);
             }
         });
+    }
+
+    public getEditorId() : string {
+        return this.editorId;
     }
 
     public getGraph(): joint.dia.Graph {

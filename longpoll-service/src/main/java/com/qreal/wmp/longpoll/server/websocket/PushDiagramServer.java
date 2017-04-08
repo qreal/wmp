@@ -18,8 +18,8 @@ public class PushDiagramServer {
         this.messagingTemplate = messagingTemplate;
     }
 
-    public void sendPushNotify(long diagramId) {
+    public void sendPushNotify(long diagramId, String editorId) {
         logger.trace("Send push notify called with id {}", diagramId);
-        this.messagingTemplate.convertAndSend("/push/diagrams/" + Long.valueOf(diagramId).toString(), "Update");
+        this.messagingTemplate.convertAndSend("/push/diagrams/" + Long.valueOf(diagramId).toString(), editorId);
     }
 }

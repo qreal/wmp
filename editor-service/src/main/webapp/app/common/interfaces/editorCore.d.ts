@@ -229,18 +229,18 @@ declare module "core/editorCore/model/DiagramNode" {
     import { PropertyEditElement } from "core/editorCore/model/PropertyEditElement";
     import { DiagramElement } from "core/editorCore/model/DiagramElement";
     export abstract class DiagramNode extends DiagramElement {
-        getX(): number;
-        getY(): number;
-        getImagePath(): string;
-        getSize(): string;
-        setPosition(x: number, y: number, zoom: number, cellView: joint.dia.CellView): void;
-        setSize(width: number, height: number, cellView: joint.dia.CellView): void;
-        getPropertyEditElement(): PropertyEditElement;
-        initPropertyEditElements(zoom: number): void;
-        initResize(bbox: any, x: number, y: number, paddingPercent: any): void;
-        completeResize(): void;
-        isResizing(): boolean;
-        pointermove(cellView: any, evt: any, x: any, y: any): void;
+        abstract getX(): number;
+        abstract getY(): number;
+        abstract getImagePath(): string;
+        abstract getSize(): string;
+        abstract setPosition(x: number, y: number, zoom: number, cellView: joint.dia.CellView): void;
+        abstract setSize(width: number, height: number, cellView: joint.dia.CellView): void;
+        abstract getPropertyEditElement(): PropertyEditElement;
+        abstract initPropertyEditElements(zoom: number): void;
+        abstract initResize(bbox: any, x: number, y: number, paddingPercent: any): void;
+        abstract completeResize(): void;
+        abstract isResizing(): boolean;
+        abstract pointermove(cellView: any, evt: any, x: any, y: any): void;
         equals(node: DiagramNode): boolean;
     }
 }
@@ -261,9 +261,8 @@ declare module "core/editorCore/model/DefaultDiagramNode" {
         private resizeParameters;
         private lastMousePosition;
         private boundingBox;
-        constructor(logicalId: string,  name: string, type: string, x: number, y: number, width: number, height: number, properties: Map<String, Property>, imagePath: string, id?: string, notDefaultConstProperties?: PropertiesPack);
+        constructor(logicalId: string, name: string, type: string, x: number, y: number, width: number, height: number, properties: Map<String, Property>, imagePath: string, id?: string, notDefaultConstProperties?: PropertiesPack);
         private subscribeJointEventsToSystemEvents();
-
         pointermove(cellView: any, evt: any, x: any, y: any): void;
         initPropertyEditElements(zoom: number): void;
         getPropertyEditElement(): PropertyEditElement;
@@ -362,7 +361,6 @@ declare module "core/editorCore/model/DiagramScene" {
         private gridSize;
         private zoom;
         constructor(id: string, graph: joint.dia.Graph);
-        private subscribeJointEventsToSystemEvents();
         getId(): string;
         getGridSize(): number;
         getZoom(): number;
@@ -709,7 +707,9 @@ declare module "core/editorCore/controller/DiagramEditorController" {
         protected linkPatternsMap: Map<String, joint.dia.Link>;
         protected undoRedoController: UndoRedoController;
         protected elementTypes: ElementTypes;
+        protected editorId: string;
         constructor($scope: any, $attrs: any);
+        getEditorId(): string;
         getGraph(): joint.dia.Graph;
         getNodesMap(): Map<String, DiagramNode>;
         getLinksMap(): Map<String, Link>;

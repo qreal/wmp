@@ -21,7 +21,7 @@ public class LongpollServletHandler implements LongpollThriftService.Iface {
     @Override
     public void sendDiagramPush(long id) throws TException {
         PushDiagramServer pushDiagramServer = (PushDiagramServer) context.getBean("pushDiagramServer");
-        pushDiagramServer.sendPushNotify(id);
+        pushDiagramServer.sendPushNotify(id, "UPDATE");
         logger.error("Send push for diagram {}", id);
 
     }
