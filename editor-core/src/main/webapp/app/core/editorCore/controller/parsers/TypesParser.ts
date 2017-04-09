@@ -5,6 +5,7 @@ import {NodeType} from "../../model/NodeType";
 import {PaletteTree} from "../../model/PaletteTree";
 import {GeneralConstants} from "../../../../common/constants/GeneralConstants";
 import {ElementTypes} from "../../model/ElementTypes";
+import {ContainerNodeType} from "../../model/ContainerNodeType";
 export class TypesParser {
 
     private currentProperties: Map<String, Property>;
@@ -14,9 +15,8 @@ export class TypesParser {
     public parse(typesJson: any): ElementTypes {
         var diagramElementTypes: ElementTypes = new ElementTypes();
         this.linkPatterns = new Map<String, joint.dia.Link>();
-        diagramElementTypes.uncategorisedTypes = this.parseGeneralTypes(typesJson.blocks.general);;
-        diagramElementTypes.blockTypes = this.parsePaletteTypes(typesJson.blocks.palette);
-        diagramElementTypes.flowTypes = this.parseElementsTypes(typesJson.elements);
+        diagramElementTypes.blockTypes = this.parsePaletteTypes(typesJson.blocks);
+        diagramElementTypes.flowTypes = this.parseGeneralTypes(typesJson.flows, "flows");
         var flowsMap: Map<String, NodeType> = diagramElementTypes.flowTypes.convertToMap();
         for (var flow in flowsMap) {
             if (!this.linkPatterns[flow])
@@ -31,27 +31,16 @@ export class TypesParser {
         return diagramElementTypes;
     }
 
-    private parseElementsTypes(elementsTypes: any): PaletteTree {
+    private parseGeneralTypes(elementsTypes: any, category: string): PaletteTree {
         var elementsTree: PaletteTree = new PaletteTree();
         var elements: PaletteTree = new PaletteTree();
-        elementsTree.categories["Elements"] = elements;
+        elementsTree.categories[category] = elements;
 
         for (var i in elementsTypes) {
             var typeObject = elementsTypes[i];
             elements.nodes = elements.nodes.concat(this.createNodeTypes(typeObject).nodes);
         }
         return elementsTree;
-    }
-
-    private parseGeneralTypes(generalTypes: any): Map<String, NodeType> {
-        var generalTypesMap: Map<String, NodeType> = new Map<String, NodeType>();
-
-        for (var i in generalTypes) {
-            var typeObject = generalTypes[i];
-            $.extend(generalTypesMap, this.createNodeTypes(typeObject).convertToMap());
-        }
-
-        return generalTypesMap;
     }
 
     private parsePaletteTypes(paletteTypes: any): PaletteTree {
@@ -89,7 +78,11 @@ export class TypesParser {
 
         var categories: any = typeObject.subtypes;
         if (!categories) {
-            var node: NodeType = new NodeType(name, this.currentProperties, this.currentImage, [typeName]);
+            var node: NodeType;
+            if (typeObject.container)
+                node = new ContainerNodeType(name, this.currentProperties, this.currentImage, [typeName]);
+            else
+                node = new NodeType(name, this.currentProperties, this.currentImage, [typeName]);
             nodesTree = new PaletteTree();
             nodesTree.nodes.push(node);
         } else

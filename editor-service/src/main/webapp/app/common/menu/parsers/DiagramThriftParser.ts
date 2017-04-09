@@ -6,6 +6,8 @@ import {Property} from "core/editorCore/model/Property";
 import {Link} from "core/editorCore/model/Link";
 import {NodeType} from "core/editorCore/model/NodeType";
 import {DefaultDiagramNode} from "core/editorCore/model/DefaultDiagramNode";
+import {DiagramContainer} from "core/editorCore/model/DiagramContainer";
+import {ContainerNodeType} from "core/editorCore/model/ContainerNodeType";
 import {DiagramNode} from "core/editorCore/model/DiagramNode";
 import {DiagramParts} from "core/editorCore/model/DiagramParts";
 import {DiagramJsonParser} from "core/editorCore/controller/parsers/DiagramJsonParser";
@@ -14,6 +16,7 @@ export class DiagramThriftParser extends DiagramJsonParser {
     public parse(diagram: TDiagram, nodeTypesMap: Map<String, NodeType>, linkPatterns: Map<String, joint.dia.Link>): DiagramParts {
         var diagramParts: DiagramParts = this.parseNodes(diagram, nodeTypesMap, 0, 0);
         diagramParts.linksMap = this.parseLinks(diagram, nodeTypesMap, linkPatterns, 0, 0);
+        this.setEmbedding(diagramParts.nodesMap, diagram.nodes);
         return diagramParts;
     }
 
@@ -62,9 +65,13 @@ export class DiagramThriftParser extends DiagramJsonParser {
             }
         }
 
-        var node: DiagramNode = new DefaultDiagramNode(name, type, x, y, width, height,
-            changeableLogicalProperties,
-            nodeTypesMap[nodeObject.type].getImage(), nodeObject.graphicalId);
+        var node: DiagramNode;
+        if (nodeTypesMap[type] instanceof ContainerNodeType)
+            node = new DiagramContainer(name, type, x, y, width, height, changeableLogicalProperties,
+                nodeTypesMap[nodeObject.type].getImage(), nodeObject.graphicalId);
+        else
+            node = new DefaultDiagramNode(name, type, x, y, width, height, changeableLogicalProperties,
+                nodeTypesMap[nodeObject.type].getImage(), nodeObject.graphicalId);
 
         return node;
     }
@@ -117,7 +124,7 @@ export class DiagramThriftParser extends DiagramJsonParser {
         if (targetId !== "ROOT_ID") {
             targetObject = {id: targetId};
         } else {
-            targetObject = this.getTargetPosition(configuration);;
+            targetObject = this.getTargetPosition(configuration);
         }
 
         var jointObject: joint.dia.Link = <joint.dia.Link> linkPatterns[linkObject.type].clone();
@@ -132,4 +139,14 @@ export class DiagramThriftParser extends DiagramJsonParser {
         return new Link(jointObject, nodeType.getShownName(), nodeType.getName(), properties);
     }
 
+    protected setEmbedding(nodesMap: Map<String, DiagramNode>, nodeObjects: TDefaultDiagramNode[]) {
+        for (var i = 0; i < nodeObjects.length; i++) {
+            if (!nodeObjects[i].parentId)
+                continue;
+            var child: DiagramNode = nodesMap[nodeObjects[i].graphicalId];
+            var parent: DiagramContainer = <DiagramContainer> nodesMap[nodeObjects[i].parentId];
+            parent.getJointObject().embed(child.getJointObject());
+            child.setParentNode(parent);
+        }
+    }
 }

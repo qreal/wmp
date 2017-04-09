@@ -19,6 +19,8 @@ public class DefaultDiagramNode implements Serializable {
 
     private String type;
 
+    private String parentId;
+
     private Set<Property> properties = new HashSet<>();
 
     public DefaultDiagramNode() { }
@@ -39,6 +41,10 @@ public class DefaultDiagramNode implements Serializable {
 
         if (tDefaultDiagramNode.isSetType()) {
             type = tDefaultDiagramNode.getType();
+        }
+
+        if (tDefaultDiagramNode.isSetParentId()) {
+            parentId = tDefaultDiagramNode.getParentId();
         }
 
         if (tDefaultDiagramNode.isSetProperties()) {
@@ -65,6 +71,10 @@ public class DefaultDiagramNode implements Serializable {
 
         if (type != null) {
             tDefaultDiagramNode.setType(type);
+        }
+
+        if (parentId != null) {
+            tDefaultDiagramNode.setParentId(parentId);
         }
 
         if (properties != null) {

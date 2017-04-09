@@ -2,6 +2,7 @@ import {Link} from "./Link";
 import {DiagramNode} from "./DiagramNode";
 import {SubprogramNode} from "./SubprogramNode";
 import {DiagramElementListener} from "../controller/DiagramElementListener";
+import {DiagramContainer} from "./DiagramContainer";
 export class DiagramScene extends joint.dia.Paper {
 
     private htmlId: string;
@@ -17,6 +18,7 @@ export class DiagramScene extends joint.dia.Paper {
         var htmlId = id;
         var gridSize = 25;
         var zoomAttr: number = parseFloat($("#" + htmlId).attr("zoom"));
+        var nodesMap = new Map<String, DiagramNode>();
 
         super({
             el: $('#' + htmlId),
@@ -24,6 +26,7 @@ export class DiagramScene extends joint.dia.Paper {
             height: 2000,
             model: graph,
             gridSize: gridSize,
+            embeddingMode: true,
             defaultLink: new joint.dia.Link({
                 attrs: {
                     '.connection': { stroke: 'black' },
@@ -37,7 +40,10 @@ export class DiagramScene extends joint.dia.Paper {
             validateMagnet: function (cellView, magnet) {
                 return magnet.getAttribute('magnet') !== 'passive';
             },
-            diagramElementView: joint.dia.ElementView.extend(jQuery.extend(joint.shapes.basic.PortsViewInterface,
+            validateEmbedding: function(childView, parentView) {
+                return nodesMap[parentView.model.id] instanceof DiagramContainer;
+            },
+            elementView: joint.dia.ElementView.extend(jQuery.extend(joint.shapes.basic.PortsViewInterface,
                 {
                     pointerdown: DiagramElementListener.pointerdown
                 }))
@@ -49,7 +55,7 @@ export class DiagramScene extends joint.dia.Paper {
         this.gridSize = gridSize;
         this.zoom = (zoomAttr) ? zoomAttr : 1;
         this.graph = graph;
-        this.nodesMap = new Map<String, DiagramNode>();
+        this.nodesMap = nodesMap;
         this.linksMap = new Map<String, Link>();
         this.scale(this.zoom, this.zoom);
     }
