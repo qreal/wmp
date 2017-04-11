@@ -2,6 +2,7 @@ package com.qreal.wmp.uitesting.services.impl;
 
 import com.qreal.wmp.uitesting.exceptions.WrongAuthException;
 import com.qreal.wmp.uitesting.services.Auther;
+import com.qreal.wmp.uitesting.services.SelectorService;
 import org.openqa.selenium.By;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,23 +14,26 @@ import static com.codeborne.selenide.Selenide.open;
 
 /** {@inheritDoc} */
 public class AutherImpl implements Auther {
-
-    /** Use properties from pages.properies file. */
-    private Environment env;
-
+    
     private static final Logger logger = LoggerFactory.getLogger(AutherImpl.class);
     
-    public AutherImpl(Environment env) {
+    /** Use properties from pages.properies file. */
+    private final Environment env;
+    
+    private final SelectorService selectorService;
+    
+    public AutherImpl(Environment env, SelectorService selectorService) {
         this.env = env;
+        this.selectorService = selectorService;
     }
     
     /** {@inheritDoc} */
     public void auth(final String username, final String password) throws WrongAuthException {
         open(env.getProperty("auth"));
-        $(By.name("username")).setValue(username);
-        $(By.name("password")).setValue(password);
-        $("[type=\"submit\"]").click();
-        if ($(byText("Password or login wrong")).exists()) {
+        $(By.name(selectorService.getName("usernameInput"))).setValue(username);
+        $(By.name(selectorService.getName("passwordInput"))).setValue(password);
+        $("[type=" + selectorService.getType("submitButton") + "]").click();
+        if ($(byText(selectorService.getText("wrongAuthLabel"))).exists()) {
             throw new WrongAuthException(username, password);
         }
         logger.info("Authentication with login: {} and password: {}", username, password);

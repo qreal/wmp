@@ -8,6 +8,9 @@
     },
     "submitButton" : {
       "type" : "submit"
+    },
+    "wrongAuthLabel" : {
+      "text" : "Password or login wrong"
     }
   },
   "dashboard" : {},
@@ -22,6 +25,6 @@
     "scene" : "$path:editor/scene.json",
     "pallete" : "$path:editor/pallete.json",
     "propertyEditor" : "$path:editor/propertyEditor.json",
-    "editorHeaderPanel" : "$path:editor/editorPanelHeader.json"
+    "editorHeaderPanel" : "$path:editor/editorHeaderPanel.json"
   }
 }

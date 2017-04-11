@@ -5,8 +5,11 @@ import com.qreal.wmp.uitesting.PageFactory;
 import com.qreal.wmp.uitesting.PageLoader;
 import com.qreal.wmp.uitesting.services.Auther;
 import com.qreal.wmp.uitesting.services.Opener;
+import com.qreal.wmp.uitesting.services.SelectorService;
 import com.qreal.wmp.uitesting.services.impl.AutherImpl;
 import com.qreal.wmp.uitesting.services.impl.OpenerImpl;
+import com.qreal.wmp.uitesting.services.impl.SelectorServiceImpl;
+import com.qreal.wmp.uitesting.utils.ConfigsMerger;
 import io.github.bonigarcia.wdm.ChromeDriverManager;
 import org.openqa.selenium.UnexpectedAlertBehaviour;
 import org.openqa.selenium.WebDriver;
@@ -52,7 +55,7 @@ public class DevConfig {
     
     @Bean
     public Auther auther() {
-        return new AutherImpl(environment);
+        return new AutherImpl(environment, selectorService().create("authform"));
     }
     
     @Bean
@@ -68,5 +71,10 @@ public class DevConfig {
     @Bean
     public PageLoader pageLoader() {
         return new PageLoader(pageFactory(), opener(), auther());
+    }
+    
+    @Bean
+    public SelectorService selectorService() {
+        return SelectorServiceImpl.getFirstSelectorService(new ConfigsMerger(environment));
     }
 }

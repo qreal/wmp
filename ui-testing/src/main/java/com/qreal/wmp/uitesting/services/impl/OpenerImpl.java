@@ -3,6 +3,7 @@ package com.qreal.wmp.uitesting.services.impl;
 import com.qreal.wmp.uitesting.exceptions.WrongAuthException;
 import com.qreal.wmp.uitesting.services.Auther;
 import com.qreal.wmp.uitesting.services.Opener;
+import com.qreal.wmp.uitesting.services.SelectorService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
@@ -13,13 +14,13 @@ import static com.codeborne.selenide.Selenide.$;
 
 /** {@inheritDoc} */
 public class OpenerImpl implements Opener {
-
-    /** Uses properties from pages.properies file. */
-    private Environment env;
-
-    private Auther auther;
     
     private static final Logger logger = LoggerFactory.getLogger(OpenerImpl.class);
+    
+    /** Uses properties from pages.properies file. */
+    private final Environment env;
+
+    private final Auther auther;
     
     public OpenerImpl(Environment env, Auther auther) {
         this.env = env;
