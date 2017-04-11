@@ -1,0 +1,35 @@
+{
+  "id" : "main-toolbar-area",
+  "dashboardItem" : {
+    "text" : "Dashboard"
+  },
+  "fileItem" : {
+    "id" : "file-menu",
+    "newDiagramItem" : {
+      "text" : "New"
+    },
+    "saveAsItem" : {
+      "text" : "SaveAs"
+    },
+    "openItem" : {
+      "text" : "Open"
+    },
+    "saveItem" : {
+      "text" : "Save"
+    }
+  },
+  "folderArea" : "$path:folders/folderArea.json",
+  "saveDiagramConfirmWindow" : {
+    "id" : "confirm-save-diagram",
+    "confirm" : {
+      "text" : "Yes"
+    },
+    "cancel" : {
+      "text" : "No"
+    }
+  },
+  "savingMenu" : ".saving-menu :nth-child(2)",
+  "savingItem" : {
+    "id" : "saving"
+  }
+}

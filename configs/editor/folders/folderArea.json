@@ -1,0 +1,34 @@
+{
+  "selector" : "#diagrams .modal-content",
+  "createItem" : {
+    "id" : "creating-menu"
+  },
+  "levelUpItem" : {
+    "id" : "level-up"
+  },
+  "folderPath" : {
+    "class" : "folder-path"
+  },
+  "folderMenu" : {
+    "class" : "folder-menu",
+    "folderNameInputSelector" : "[type=\"text\"]",
+    "confirmItem" : {
+      "id" : "creating"
+    }
+  },
+  "warningMessage" : {
+    "class" : "warningMessage"
+  },
+  "poolOfFolders" : {
+    "class" : "folders"
+  },
+  "contextMenu" : {
+    "id" : "open-diagram-context-menu",
+    "deleteItem" : {
+      "text" : "Delete"
+    }
+  },
+  "closeItem" : {
+    "class" : "close"
+  }
+}

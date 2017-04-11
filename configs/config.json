@@ -1,0 +1,27 @@
+{
+  "authform": {
+    "usernameInput" : {
+      "name" : "username"
+    },
+    "passwordInput" : {
+      "name" : "password"
+    },
+    "submitButton" : {
+      "type" : "submit"
+    }
+  },
+  "dashboard" : {},
+  "authService": {},
+  "robotEditor": {
+    "scene" : "$path:editor/scene.json",
+    "pallete" : "$path:editor/pallete.json",
+    "propertyEditor" : "$path:editor/propertyEditor.json",
+    "editorHeaderPanel" : "$path:editor/editorHeaderPanel.json"
+  },
+  "bpmnEditor": {
+    "scene" : "$path:editor/scene.json",
+    "pallete" : "$path:editor/pallete.json",
+    "propertyEditor" : "$path:editor/propertyEditor.json",
+    "editorHeaderPanel" : "$path:editor/editorPanelHeader.json"
+  }
+}
