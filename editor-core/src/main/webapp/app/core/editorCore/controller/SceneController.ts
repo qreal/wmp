@@ -106,11 +106,9 @@ export class SceneController {
     }
 
     public createNode(type: string, x: number, y: number, subprogramId?: string, subprogramName?: string): void {
-        var image: string = this.diagramEditorController.getNodeType(type).getImage();
-        var name: string = this.diagramEditorController.getNodeType(type).getName();
+        var nodeType: NodeType = this.diagramEditorController.getNodeType(type);
 
-        var typeProperties: Map<String, Property> = this.diagramEditorController.getNodeType(type).getPropertiesMap();
-
+        var typeProperties: Map<String, Property> = nodeType.getPropertiesMap();
         var nodeProperties: Map<String, Property> = new Map<String, Property>();
         for (var property in typeProperties) {
             nodeProperties[property] = new Property(typeProperties[property].name, typeProperties[property].type,
@@ -120,14 +118,10 @@ export class SceneController {
         var node: DiagramNode;
         if (subprogramId) {
             node = new SubprogramNode(subprogramName, type, x, y, DefaultSize.DEFAULT_NODE_WIDTH,
-                DefaultSize.DEFAULT_NODE_HEIGHT, nodeProperties, image, subprogramId);
+                DefaultSize.DEFAULT_NODE_HEIGHT, nodeProperties, nodeType.getImage(), subprogramId);
         } else {
-            if (this.diagramEditorController.getNodeType(type) instanceof ContainerNodeType)
-                node = new DiagramContainer(name, type, x, y, DefaultSize.DEFAULT_NODE_WIDTH,
-                    DefaultSize.DEFAULT_NODE_HEIGHT, nodeProperties, image);
-            else
-                node = new DefaultDiagramNode(name, type, x, y, DefaultSize.DEFAULT_NODE_WIDTH,
-                    DefaultSize.DEFAULT_NODE_HEIGHT, nodeProperties, image);
+            node = this.diagramEditorController.getElementConstructor().createNode(nodeType, x, y, DefaultSize.DEFAULT_NODE_WIDTH,
+                DefaultSize.DEFAULT_NODE_HEIGHT, nodeProperties);
         }
 
         var command: Command = new MultiCommand([this.paperCommandFactory.makeCreateNodeCommand(node),

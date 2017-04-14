@@ -6,6 +6,7 @@ import {DiagramScene} from "core/editorCore/model/DiagramScene";
 import {DiagramEditorController} from "core/editorCore/controller/DiagramEditorController";
 import app = require("../../../require/app");
 import {Interpreter} from "../../../robots/interpreter/Interpreter";
+import {BpmnElementConstructor} from "../model/BpmnElementConstructor";
 export class BpmnDiagramEditorController extends DiagramEditorController {
 
     private menuController: DiagramMenuController;
@@ -21,6 +22,7 @@ export class BpmnDiagramEditorController extends DiagramEditorController {
         this.menuController = new DiagramMenuController(this);
         this.gesturesController = new GesturesController(this.sceneController, this.diagramEditor.getScene());
         this.diagramInterpreter = new Interpreter();
+        this.elementConstructor = new BpmnElementConstructor();
 
         document.addEventListener('mousedown', (event) => { this.gesturesController.onMouseDown(event) } );
         document.addEventListener('mouseup', (event) => { this.gesturesController.onMouseUp(event) } );

@@ -242,13 +242,14 @@ declare module "core/editorCore/model/DefaultDiagramNode" {
         getConstPropertiesPack(): PropertiesPack;
         setProperty(key: string, property: Property): void;
         getChangeableProperties(): Map<String, Property>;
+        initResize(bbox: any, x: number, y: number, paddingPercent: any): void;
+        completeResize(): void;
+        isResizing(): boolean;
+        isValidEmbedding(child: DiagramNode): boolean;
         private static getDefaultConstPropertiesPack(name);
         private static initConstLogicalProperties(name);
         private static initConstGraphicalProperties(name);
         private getJointObjectPagePosition(zoom);
-        initResize(bbox: any, x: number, y: number, paddingPercent: any): void;
-        completeResize(): void;
-        isResizing(): boolean;
         private static isLeftBorderClicked(bbox, x, y, paddingPercent);
         private static isRightBorderClicked(bbox, x, y, paddingPercent);
         private static isTopBorderClicked(bbox, x, y, paddingPercent);
@@ -266,6 +267,7 @@ declare module "core/editorCore/model/DiagramContainer" {
         getChildrenNodes(): Set<DiagramNode>;
         addChild(node: DiagramNode): void;
         removeChild(node: DiagramNode): void;
+        isValidEmbedding(child: DiagramNode): boolean;
     }
 }
 declare module "core/editorCore/model/DiagramNode" {
@@ -286,6 +288,7 @@ declare module "core/editorCore/model/DiagramNode" {
         initResize(bbox: any, x: number, y: number, paddingPercent: any): void;
         completeResize(): void;
         isResizing(): boolean;
+        isValidEmbedding(child: DiagramNode): boolean;
         pointermove(cellView: any, evt: any, x: any, y: any): void;
     }
 }
@@ -687,6 +690,16 @@ declare module "core/editorCore/controller/PaletteController" {
         private clearPaletteContent(selector);
     }
 }
+declare module "core/editorCore/model/ElementConstructor" {
+    import { DiagramNode } from "core/editorCore/model/DiagramNode";
+    import { Link } from "core/editorCore/model/Link";
+    import { Property } from "core/editorCore/model/Property";
+    import { NodeType } from "core/editorCore/model/NodeType";
+    export class ElementConstructor {
+        createLink(): Link;
+        createNode(nodeType: NodeType, x: number, y: number, width: number, height: number, properties: Map<String, Property>, id?: string): DiagramNode;
+    }
+}
 declare module "core/editorCore/controller/DiagramEditorController" {
     import { PropertyEditorController } from "core/editorCore/controller/PropertyEditorController";
     import { ElementTypes } from "core/editorCore/model/ElementTypes";
@@ -701,6 +714,7 @@ declare module "core/editorCore/controller/DiagramEditorController" {
     import { SceneController } from "core/editorCore/controller/SceneController";
     import { DiagramEditor } from "core/editorCore/model/DiagramEditor";
     import { PaletteController } from "core/editorCore/controller/PaletteController";
+    import { ElementConstructor } from "core/editorCore/model/ElementConstructor";
     export class DiagramEditorController {
         protected diagramEditor: DiagramEditor;
         protected sceneController: SceneController;
@@ -711,6 +725,7 @@ declare module "core/editorCore/controller/DiagramEditorController" {
         protected linkPatternsMap: Map<String, joint.dia.Link>;
         protected undoRedoController: UndoRedoController;
         protected elementTypes: ElementTypes;
+        protected elementConstructor: ElementConstructor;
         constructor($scope: any, $attrs: any);
         getGraph(): joint.dia.Graph;
         getNodesMap(): Map<String, DiagramNode>;
@@ -719,6 +734,7 @@ declare module "core/editorCore/controller/DiagramEditorController" {
         clearNodeProperties(): void;
         getNodeType(type: string): NodeType;
         getNodeProperties(type: string): Map<String, Property>;
+        getElementConstructor(): ElementConstructor;
         getUndoRedoController(): UndoRedoController;
         clearState(): void;
         getDiagramParts(): DiagramParts;

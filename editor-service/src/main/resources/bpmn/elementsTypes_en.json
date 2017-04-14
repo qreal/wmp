@@ -254,6 +254,14 @@
             "image": {
                 "src": "images/bpmn/subprocess.svg"
             }
+        },
+
+        "Lane": {
+            "name": "Lane",
+            "container": true,
+            "image": {
+                "src": "images/bpmn/lane.svg"
+            }
         }
     }
 }

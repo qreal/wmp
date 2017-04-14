@@ -28,7 +28,7 @@ export class DiagramMenuController {
     constructor(diagramEditorController: DiagramEditorController) {
         this.diagramEditorController = diagramEditorController;
         this.diagramThriftExporter = new DiagramThriftExporter();
-        this.diagramThriftParser = new DiagramThriftParser();
+        this.diagramThriftParser = new DiagramThriftParser(diagramEditorController.getElementConstructor());
         this.currentDiagramName = "";
         this.currentDiagramFolder = null;
         this.canBeDeleted = false;

@@ -41,7 +41,7 @@ export class DiagramScene extends joint.dia.Paper {
                 return magnet.getAttribute('magnet') !== 'passive';
             },
             validateEmbedding: function(childView, parentView) {
-                return nodesMap[parentView.model.id] instanceof DiagramContainer;
+                return nodesMap[parentView.model.id].isValidEmbedding(nodesMap[childView.model.id]);
             },
             elementView: joint.dia.ElementView.extend(jQuery.extend(joint.shapes.basic.PortsViewInterface,
                 {

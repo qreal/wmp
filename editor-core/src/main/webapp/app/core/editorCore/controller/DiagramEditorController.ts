@@ -13,6 +13,7 @@ import {SceneController} from "./SceneController";
 import {DiagramEditor} from "../model/DiagramEditor";
 import {DiagramElementListener} from "./DiagramElementListener";
 import {PaletteController} from "./PaletteController";
+import {ElementConstructor} from "../model/ElementConstructor"
 export class DiagramEditorController {
 
     protected diagramEditor: DiagramEditor;
@@ -24,12 +25,14 @@ export class DiagramEditorController {
     protected linkPatternsMap: Map<String, joint.dia.Link>;
     protected undoRedoController: UndoRedoController;
     protected elementTypes: ElementTypes;
+    protected elementConstructor: ElementConstructor;
 
     constructor($scope, $attrs) {
         this.undoRedoController = new UndoRedoController();
         this.nodeTypesMap = new Map<String, NodeType>();
         this.linkPatternsMap = new Map<String, joint.dia.Link>();
         this.paletteController = new PaletteController();
+        this.elementConstructor = new ElementConstructor();
         DiagramElementListener.getNodeType = (type: string): NodeType => {
             return this.getNodeType(type);
         };
@@ -80,6 +83,10 @@ export class DiagramEditorController {
 
     public getNodeProperties(type: string): Map<String, Property> {
         return this.nodeTypesMap[type].getPropertiesMap();
+    }
+
+    public getElementConstructor(): ElementConstructor {
+        return this.elementConstructor;
     }
 
     public getUndoRedoController(): UndoRedoController {

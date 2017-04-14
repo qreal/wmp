@@ -1,6 +1,7 @@
 import {PropertyEditElement} from "./PropertyEditElement";
 import {DiagramElement} from "./DiagramElement";
 import {DiagramContainer} from "./DiagramContainer";
+import CellView = joint.dia.CellView;
 export interface DiagramNode extends DiagramElement {
 
     getX(): number;
@@ -16,6 +17,7 @@ export interface DiagramNode extends DiagramElement {
     initResize(bbox, x: number, y: number, paddingPercent) : void;
     completeResize() : void;
     isResizing() : boolean;
+    isValidEmbedding(child: DiagramNode): boolean;
     pointermove(cellView, evt, x, y) : void;
 
 }

@@ -28,4 +28,8 @@ export class DiagramContainer extends DefaultDiagramNode {
     public removeChild(node: DiagramNode) {
         this.childrenNodes.delete(node);
     }
+
+    public isValidEmbedding(child: DiagramNode): boolean {
+        return true;
+    }
 }

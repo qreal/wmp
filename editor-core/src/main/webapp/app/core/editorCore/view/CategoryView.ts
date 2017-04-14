@@ -3,6 +3,7 @@ import {PaletteElementView} from "./PaletteElementView";
 import {NodeType} from "../model/NodeType";
 import {PaletteTree} from "../model/PaletteTree";
 import {HtmlView} from "./HtmlView";
+import {ContainerNodeType} from "../model/ContainerNodeType";
 export class CategoryView extends HtmlView {
 
     private template: string = '' +
@@ -22,8 +23,9 @@ export class CategoryView extends HtmlView {
             var nodeType: NodeType = category.nodes[i];
             if (!nodeType.getVisibility())
                 continue;
+            var scale: number = nodeType instanceof ContainerNodeType ? 1.5 : 1;
             var paletteElementView: PaletteElementView = new PaletteElementView(nodeType.getName(),
-                nodeType.getShownName(), nodeType.getImage(), elementClass);
+                nodeType.getShownName(), nodeType.getImage(), elementClass, scale);
             elementsContent += paletteElementView.getContent();
         }
         if (elementsContent)

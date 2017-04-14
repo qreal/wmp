@@ -11,7 +11,15 @@ import {ContainerNodeType} from "core/editorCore/model/ContainerNodeType";
 import {DiagramNode} from "core/editorCore/model/DiagramNode";
 import {DiagramParts} from "core/editorCore/model/DiagramParts";
 import {DiagramJsonParser} from "core/editorCore/controller/parsers/DiagramJsonParser";
+import {ElementConstructor} from "core/editorCore/model/ElementConstructor";
 export class DiagramThriftParser extends DiagramJsonParser {
+
+    private elementConstructor: ElementConstructor;
+
+    constructor(elementConstructor: ElementConstructor) {
+        super();
+        this.elementConstructor = elementConstructor;
+    }
 
     public parse(diagram: TDiagram, nodeTypesMap: Map<String, NodeType>, linkPatterns: Map<String, joint.dia.Link>): DiagramParts {
         var diagramParts: DiagramParts = this.parseNodes(diagram, nodeTypesMap, 0, 0);
@@ -28,7 +36,7 @@ export class DiagramThriftParser extends DiagramJsonParser {
 
         var propertiesObject = nodeObject.properties;
 
-        var typeProperties = nodeTypesMap[nodeObject.type].getPropertiesMap();
+        var typeProperties = nodeTypesMap[type].getPropertiesMap();
 
         propertiesObject.sort(function (a:any, b:any) {
             if (a.name < b.name) return -1;
@@ -49,7 +57,7 @@ export class DiagramThriftParser extends DiagramJsonParser {
             }
 
             if (typeProperties.hasOwnProperty(propertyName)) {
-                var property:Property = new Property(typeProperties[propertyName].name,
+                var property: Property = new Property(typeProperties[propertyName].name,
                     typeProperties[propertyName].type, propertiesObject[j].value);
                 changeableLogicalProperties[propertyName] = property;
             } else if (propertyName === "position") {
@@ -58,22 +66,14 @@ export class DiagramThriftParser extends DiagramJsonParser {
                 x = positionNums.x + offsetX;
                 y = positionNums.y + offsetY;
             } else if (propertyName === "size") {
-                var size:string = propertiesObject[j].value;
+                var size: string = propertiesObject[j].value;
                 var bboxDimensions = this.parseSize(size);
                 width = bboxDimensions.width;
                 height = bboxDimensions.height;
             }
         }
 
-        var node: DiagramNode;
-        if (nodeTypesMap[type] instanceof ContainerNodeType)
-            node = new DiagramContainer(name, type, x, y, width, height, changeableLogicalProperties,
-                nodeTypesMap[nodeObject.type].getImage(), nodeObject.graphicalId);
-        else
-            node = new DefaultDiagramNode(name, type, x, y, width, height, changeableLogicalProperties,
-                nodeTypesMap[nodeObject.type].getImage(), nodeObject.graphicalId);
-
-        return node;
+        return this.elementConstructor.createNode(nodeTypesMap[type], x, y, width, height, changeableLogicalProperties, nodeObject.graphicalId);
     }
 
 
