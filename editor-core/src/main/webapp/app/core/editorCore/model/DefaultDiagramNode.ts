@@ -83,9 +83,15 @@ export class DefaultDiagramNode implements DiagramNode {
             position: { x: x, y: y },
             size: { width: this.boundingBox.width, height: this.boundingBox.height },
             outPorts: [''],
-            attrs: <{ [selector: string]: { [key: string]: string} }> {
+            attrs: {
                 image: {
+                    'width': width,
+                    'height': height,
                     'xlink:href': imagePath
+                },
+                rect: {
+                    width: width,
+                    height: height
                 },
             }
         };
