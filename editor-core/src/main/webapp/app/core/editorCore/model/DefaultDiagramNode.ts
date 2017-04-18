@@ -58,7 +58,7 @@ export class DefaultDiagramNode implements DiagramNode {
         y: 0,
     };
 
-    private boundingBox = {
+    protected boundingBox = {
         width: 0,
         height: 0,
     };
@@ -109,7 +109,7 @@ export class DefaultDiagramNode implements DiagramNode {
     public pointermove(cellView, evt, x, y): void {
         cellView.options.interactive = true;
         var bbox = cellView.getBBox();
-        var newX = bbox.x + (<number> (bbox.width - 50)/2);
+        var newX = bbox.x + (<number> (bbox.width - 50) / 2);
         var newY = bbox.y + bbox.height - 50;
         this.propertyEditElement.setPosition(newX, newY);
 
@@ -140,7 +140,7 @@ export class DefaultDiagramNode implements DiagramNode {
         var parentPosition = this.getJointObjectPagePosition(zoom);
         this.propertyEditElement = new PropertyEditElement(this.logicalId, this.jointObject.id,
             this.changeableProperties);
-        var propertyEditElementX = parentPosition.x + (<number> (this.boundingBox.width - 50)/2);
+        var propertyEditElementX = parentPosition.x + (<number> (this.boundingBox.width - 50) / 2);
         var propertyEditElementY = parentPosition.y + this.boundingBox.height - 50;
         this.propertyEditElement.setPosition(propertyEditElementX, propertyEditElementY);
     }
@@ -199,11 +199,15 @@ export class DefaultDiagramNode implements DiagramNode {
     public setParentNode(parent: DiagramContainer): void {
         if (parent === this.parentNode)
             return;
-        if (this.parentNode)
+        if (this.parentNode) {
             this.parentNode.getJointObject().unembed(this.getJointObject());
+            this.parentNode.removeChild(this);
+        }
         this.parentNode = parent;
-        if (parent)
+        if (parent) {
             parent.getJointObject().embed(this.getJointObject());
+            parent.addChild(this);
+        }
     }
 
     public getImagePath(): string {
@@ -252,6 +256,12 @@ export class DefaultDiagramNode implements DiagramNode {
             isRightResizing: false,
             isLeftResizing: false,
         };
+    }
+
+    private resize(width: number, height: number) {
+        this.boundingBox.width = width;
+        this.boundingBox.height = height;
+        this.jointObject.resize(width, height);
     }
 
     public isResizing() : boolean {

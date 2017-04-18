@@ -4,7 +4,7 @@ import {Property} from "./Property";
 import {DiagramNode} from "./DiagramNode";
 export class DiagramContainer extends DefaultDiagramNode {
 
-    private childrenNodes: Set<DiagramNode>;
+    protected childrenNodes: Set<DiagramNode>;
 
     constructor(name: string, type: string, x: number, y: number, width: number, height: number,
                 properties: Map<String, Property>, imagePath: string, border: any, id?: string,

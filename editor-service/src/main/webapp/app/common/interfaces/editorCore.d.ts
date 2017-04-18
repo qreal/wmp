@@ -222,7 +222,10 @@ declare module "core/editorCore/model/DefaultDiagramNode" {
         private parentNode;
         private resizeParameters;
         private lastMousePosition;
-        private boundingBox;
+        protected boundingBox: {
+            width: number;
+            height: number;
+        };
         constructor(name: string, type: string, x: number, y: number, width: number, height: number, properties: Map<String, Property>, imagePath: string, id?: string, notDefaultConstProperties?: PropertiesPack);
         pointermove(cellView: any, evt: any, x: any, y: any): void;
         initPropertyEditElements(zoom: number): void;
@@ -244,6 +247,7 @@ declare module "core/editorCore/model/DefaultDiagramNode" {
         getChangeableProperties(): Map<String, Property>;
         initResize(bbox: any, x: number, y: number, paddingPercent: any): void;
         completeResize(): void;
+        private resize(width, height);
         isResizing(): boolean;
         isValidEmbedding(child: DiagramNode): boolean;
         private static getDefaultConstPropertiesPack(name);
@@ -262,7 +266,7 @@ declare module "core/editorCore/model/DiagramContainer" {
     import { Property } from "core/editorCore/model/Property";
     import { DiagramNode } from "core/editorCore/model/DiagramNode";
     export class DiagramContainer extends DefaultDiagramNode {
-        private childrenNodes;
+        protected childrenNodes: Set<DiagramNode>;
         constructor(name: string, type: string, x: number, y: number, width: number, height: number, properties: Map<String, Property>, imagePath: string, border: any, id?: string, notDefaultConstProperties?: PropertiesPack);
         getChildrenNodes(): Set<DiagramNode>;
         addChild(node: DiagramNode): void;
@@ -696,11 +700,12 @@ declare module "core/editorCore/controller/PaletteController" {
 }
 declare module "core/editorCore/model/ElementConstructor" {
     import { DiagramNode } from "core/editorCore/model/DiagramNode";
-    import { Link } from "core/editorCore/model/Link";
     import { Property } from "core/editorCore/model/Property";
     import { NodeType } from "core/editorCore/model/NodeType";
     export class ElementConstructor {
-        createLink(): Link;
+        protected nodesMap: Map<String, DiagramNode>;
+        protected nodesTypesMap: Map<String, NodeType>;
+        constructor(nodesMap?: Map<String, DiagramNode>, nodesTypesMap?: Map<String, NodeType>);
         createNode(nodeType: NodeType, x: number, y: number, width: number, height: number, properties: Map<String, Property>, id?: string): DiagramNode;
     }
 }

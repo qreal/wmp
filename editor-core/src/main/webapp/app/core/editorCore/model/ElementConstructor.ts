@@ -7,8 +7,12 @@ import {ContainerNodeType} from "./ContainerNodeType";
 import {NodeType} from "./NodeType";
 export class ElementConstructor {
 
-    public createLink(): Link {
-        return null;
+    protected nodesMap: Map<String, DiagramNode>;
+    protected nodesTypesMap: Map<String, NodeType>
+
+    constructor(nodesMap?: Map<String, DiagramNode>, nodesTypesMap?: Map<String, NodeType>) {
+        this.nodesMap = nodesMap;
+        this.nodesTypesMap = nodesTypesMap;
     }
 
     public createNode(nodeType: NodeType, x: number, y: number, width: number, height: number,
@@ -16,9 +20,16 @@ export class ElementConstructor {
         var name: string = nodeType.getShownName();
         var type: string = nodeType.getName();
         var imagePath: string = nodeType.getImage();
+        var node: DiagramNode;
         if (nodeType instanceof ContainerNodeType)
-            return new DiagramContainer(name, type, x, y, width, height, properties, imagePath, nodeType.getBorder(), id);
+            node = new DiagramContainer(name, type, x, y, width, height, properties, imagePath, nodeType.getBorder(), id);
         else
-            return new DefaultDiagramNode(name, type, x, y, width, height, properties, imagePath, id);
+            node = new DefaultDiagramNode(name, type, x, y, width, height, properties, imagePath, id);
+        var nodesMap: Map<String, DiagramNode> = this.nodesMap;
+        node.getJointObject().on("change:parent", (parent: joint.shapes.basic.Generic) => {
+            if (parent)
+                node.setParentNode(nodesMap[parent.id]);
+        })
+        return node;
     }
 }

@@ -16,7 +16,8 @@
 
         "Containers": [
             "Subprocess",
-            "Lane"
+            "Lane",
+            "Pool"
         ]
     }
 }

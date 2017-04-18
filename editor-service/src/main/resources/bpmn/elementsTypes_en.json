@@ -274,6 +274,19 @@
                 "stroke": "black",
                 "stroke-width": "5px"
             }
+        },
+
+        "Pool": {
+            "name": "Pool",
+            "container": true,
+            "image": {
+                "isHidden": true,
+                "src": "images/bpmn/pool.svg"
+            },
+            "border": {
+                "stroke": "black",
+                "stroke-width": "5px"
+            }
         }
     }
 }

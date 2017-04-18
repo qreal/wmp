@@ -168,6 +168,9 @@ export class DiagramScene extends joint.dia.Paper {
         if (node.getPropertyEditElement()) {
             node.getPropertyEditElement().getHtmlElement().insertBefore("#" + this.getId());
         }
+        if (node instanceof DiagramContainer) {
+            node.getChildrenNodes().forEach(child => this.addNode(child));
+        }
     }
 
     public setCurrentLinkType(linkType: string): void {
