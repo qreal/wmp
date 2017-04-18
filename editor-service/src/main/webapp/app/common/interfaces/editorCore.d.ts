@@ -263,7 +263,7 @@ declare module "core/editorCore/model/DiagramContainer" {
     import { DiagramNode } from "core/editorCore/model/DiagramNode";
     export class DiagramContainer extends DefaultDiagramNode {
         private childrenNodes;
-        constructor(name: string, type: string, x: number, y: number, width: number, height: number, properties: Map<String, Property>, imagePath: string, id?: string, notDefaultConstProperties?: PropertiesPack);
+        constructor(name: string, type: string, x: number, y: number, width: number, height: number, properties: Map<String, Property>, imagePath: string, border: any, id?: string, notDefaultConstProperties?: PropertiesPack);
         getChildrenNodes(): Set<DiagramNode>;
         addChild(node: DiagramNode): void;
         removeChild(node: DiagramNode): void;
@@ -313,11 +313,13 @@ declare module "core/editorCore/model/NodeType" {
         private propertiesMap;
         private image;
         private isVisible;
-        constructor(name: string, propertiesMap: Map<String, Property>, image: string, path?: string[]);
+        private isImageHidden;
+        constructor(name: string, propertiesMap: Map<String, Property>, image: any, path?: string[]);
         getName(): string;
         getShownName(): string;
         getPropertiesMap(): Map<String, Property>;
         getImage(): string;
+        getIcon(): string;
         getVisibility(): Boolean;
         setVisibility(isVisible: Boolean): void;
     }
@@ -477,7 +479,9 @@ declare module "core/editorCore/model/ContainerNodeType" {
     import { NodeType } from "core/editorCore/model/NodeType";
     import { Property } from "core/editorCore/model/Property";
     export class ContainerNodeType extends NodeType {
-        constructor(name: string, propertiesMap: Map<String, Property>, image: string, path?: string[]);
+        private border;
+        constructor(name: string, propertiesMap: Map<String, Property>, image: string, border: any, path?: string[]);
+        getBorder(): any;
     }
 }
 declare module "core/editorCore/controller/SceneController" {
@@ -632,7 +636,7 @@ declare module "core/editorCore/view/PaletteElementView" {
         private imageWidth;
         private imageHeight;
         private template;
-        constructor(typeName: string, name: string, imageSrc: string, elementClass: string);
+        constructor(typeName: string, name: string, imageSrc: string, elementClass: string, scale: number);
     }
 }
 declare module "core/editorCore/view/CategoryView" {

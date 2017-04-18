@@ -25,7 +25,7 @@ export class CategoryView extends HtmlView {
                 continue;
             var scale: number = nodeType instanceof ContainerNodeType ? 1.5 : 1;
             var paletteElementView: PaletteElementView = new PaletteElementView(nodeType.getName(),
-                nodeType.getShownName(), nodeType.getImage(), elementClass, scale);
+                nodeType.getShownName(), nodeType.getIcon(), elementClass, scale);
             elementsContent += paletteElementView.getContent();
         }
         if (elementsContent)

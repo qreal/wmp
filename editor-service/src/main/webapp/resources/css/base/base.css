@@ -27,9 +27,8 @@ body{
 
 .selected rect {
     opacity: 0.9;
-    fill: #00ff00;
-    stroke: #00ff00;
-    stroke-width: 2px;
+    stroke: #F39C12;
+    stroke-width: 5px;
 }
 
 .selected {

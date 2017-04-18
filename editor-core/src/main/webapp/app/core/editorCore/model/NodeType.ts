@@ -8,8 +8,9 @@ export class NodeType {
     private propertiesMap: Map<String, Property>;
     private image: string;
     private isVisible: Boolean;
+    private isImageHidden: Boolean;
 
-    constructor(name: string, propertiesMap: Map<String, Property>, image: string, path?: string[]) {
+    constructor(name: string, propertiesMap: Map<String, Property>, image: any, path?: string[]) {
         if (path) {
             this.name = path.reverse().join('-');
             path.reverse();
@@ -17,7 +18,8 @@ export class NodeType {
             this.name = name;
         this.shownName = name;
         this.propertiesMap = propertiesMap;
-        this.image = (image) ? StringUtils.format(image, this.name) : null;
+        this.image = (image.src) ? StringUtils.format(image.src, this.name) : null;
+        this.isImageHidden = (image.isHidden) ? image.isHidden : false;
         this.isVisible = true;
     }
 
@@ -34,6 +36,10 @@ export class NodeType {
     }
 
     public getImage(): string {
+        return this.isImageHidden ? "" : this.image;
+    }
+
+    public getIcon(): string {
         return this.image;
     }
 

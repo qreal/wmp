@@ -92,7 +92,7 @@ export class DefaultDiagramNode implements DiagramNode {
                 rect: {
                     width: width,
                     height: height
-                },
+                }
             }
         };
 

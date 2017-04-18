@@ -7,14 +7,11 @@ export class DiagramContainer extends DefaultDiagramNode {
     private childrenNodes: Set<DiagramNode>;
 
     constructor(name: string, type: string, x: number, y: number, width: number, height: number,
-                properties: Map<String, Property>, imagePath: string, id?: string,
+                properties: Map<String, Property>, imagePath: string, border: any, id?: string,
                 notDefaultConstProperties?: PropertiesPack) {
         super(name, type, x, y, width, height, properties, imagePath, id, notDefaultConstProperties);
         this.childrenNodes = new Set<DiagramNode>();
-        this.getJointObject().on("change:embeds", function(a, b) {
-            console.log(a);
-            console.log(b);
-        })
+        this.getJointObject().attr(".outer", border);
     }
 
     public getChildrenNodes(): Set<DiagramNode> {

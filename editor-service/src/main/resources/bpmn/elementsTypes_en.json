@@ -252,7 +252,14 @@
             "name": "Subprocess",
             "container": true,
             "image": {
+                "isHidden": true,
                 "src": "images/bpmn/subprocess.svg"
+            },
+            "border": {
+                "stroke": "black",
+                "stroke-width": "5px",
+                "rx": "5px",
+                "ry": "5px"
             }
         },
 
@@ -260,7 +267,12 @@
             "name": "Lane",
             "container": true,
             "image": {
+                "isHidden": true,
                 "src": "images/bpmn/lane.svg"
+            },
+            "border": {
+                "stroke": "black",
+                "stroke-width": "5px"
             }
         }
     }

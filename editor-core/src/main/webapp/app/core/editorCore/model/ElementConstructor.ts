@@ -17,7 +17,7 @@ export class ElementConstructor {
         var type: string = nodeType.getName();
         var imagePath: string = nodeType.getImage();
         if (nodeType instanceof ContainerNodeType)
-            return new DiagramContainer(name, type, x, y, width, height, properties, imagePath, id);
+            return new DiagramContainer(name, type, x, y, width, height, properties, imagePath, nodeType.getBorder(), id);
         else
             return new DefaultDiagramNode(name, type, x, y, width, height, properties, imagePath, id);
     }
