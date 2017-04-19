@@ -15,6 +15,6 @@ export class Lane extends DiagramContainer {
     }
 
     public isValidEmbedding(child: DiagramNode) {
-        return true;
+        return !(child instanceof Lane) && !(child instanceof Pool);
     }
 }

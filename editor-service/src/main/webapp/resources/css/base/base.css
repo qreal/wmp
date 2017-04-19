@@ -26,7 +26,6 @@ body{
 }
 
 .selected rect {
-    opacity: 0.9;
     stroke: #F39C12;
     stroke-width: 5px;
 }

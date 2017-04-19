@@ -236,6 +236,7 @@ declare module "core/editorCore/model/DefaultDiagramNode" {
         getParentNode(): DiagramContainer;
         getX(): number;
         getY(): number;
+        getBBox(): any;
         getSize(): string;
         setPosition(x: number, y: number, zoom: number, cellView: joint.dia.CellView): void;
         setSize(width: number, height: number, cellView: joint.dia.CellView): void;
@@ -247,7 +248,7 @@ declare module "core/editorCore/model/DefaultDiagramNode" {
         getChangeableProperties(): Map<String, Property>;
         initResize(bbox: any, x: number, y: number, paddingPercent: any): void;
         completeResize(): void;
-        private resize(width, height);
+        resize(width: number, height: number): void;
         isResizing(): boolean;
         isValidEmbedding(child: DiagramNode): boolean;
         private static getDefaultConstPropertiesPack(name);
@@ -292,6 +293,7 @@ declare module "core/editorCore/model/DiagramNode" {
         initResize(bbox: any, x: number, y: number, paddingPercent: any): void;
         completeResize(): void;
         isResizing(): boolean;
+        resize(width: number, height: number): void;
         isValidEmbedding(child: DiagramNode): boolean;
         pointermove(cellView: any, evt: any, x: any, y: any): void;
     }

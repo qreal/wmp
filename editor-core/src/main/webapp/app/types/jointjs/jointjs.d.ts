@@ -243,6 +243,7 @@ declare namespace joint {
             markAvailable?: boolean;
             async?: boolean | { batchZise: number };
             embeddingMode?: boolean;
+            frontParentOnly?: boolean;
             validateEmbedding?: (childView: ElementView, parentView: ElementView) => boolean;
             restrictTranslate?: ((elementView: ElementView) => BBox) | boolean;
             guard?: (evt: Event, view: CellView) => boolean;

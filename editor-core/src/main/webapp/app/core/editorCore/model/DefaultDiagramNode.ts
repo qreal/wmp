@@ -173,6 +173,10 @@ export class DefaultDiagramNode implements DiagramNode {
         return (this.jointObject.get("position"))['y'];
     }
 
+    public getBBox(): any {
+        return this.jointObject.getBBox();
+    }
+
     public getSize(): string {
         return String(this.boundingBox.width) + ", " + String(this.boundingBox.height);
     }
@@ -200,13 +204,13 @@ export class DefaultDiagramNode implements DiagramNode {
         if (parent === this.parentNode)
             return;
         if (this.parentNode) {
-            this.parentNode.getJointObject().unembed(this.getJointObject());
             this.parentNode.removeChild(this);
+            this.parentNode.getJointObject().unembed(this.getJointObject());
         }
         this.parentNode = parent;
         if (parent) {
-            parent.getJointObject().embed(this.getJointObject());
             parent.addChild(this);
+            parent.getJointObject().embed(this.getJointObject());
         }
     }
 
@@ -258,7 +262,7 @@ export class DefaultDiagramNode implements DiagramNode {
         };
     }
 
-    private resize(width: number, height: number) {
+    public resize(width: number, height: number) {
         this.boundingBox.width = width;
         this.boundingBox.height = height;
         this.jointObject.resize(width, height);

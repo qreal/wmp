@@ -21,11 +21,11 @@ export class BpmnElementConstructor extends ElementConstructor {
 
             let pool: Pool = new Pool(nodeType.getShownName(), nodeType.getName(), x, y, width, height, properties,
                 nodeType.getImage(), (<ContainerNodeType> nodeType).getBorder(), id);
-
             let laneNodeType: ContainerNodeType = <ContainerNodeType> this.nodesTypesMap["lane"];
             let lane: Lane = new Lane(laneNodeType.getShownName(), laneNodeType.getName(), x + width, y, width, height, properties,
                 laneNodeType.getImage(), (<ContainerNodeType> laneNodeType).getBorder(), id);
             lane.setParentNode(pool);
+
             lane.getJointObject().on("change:parent", (laneModel: joint.shapes.basic.Generic, parentId: string) =>
                 this.onParentChange(laneModel, parentId));
 
@@ -46,13 +46,15 @@ export class BpmnElementConstructor extends ElementConstructor {
         if (oldParent instanceof Pool)
             oldParent.removeLane(lane);
 
-        if (!parent)
-            lane.setParentNode(null);
-        else if (parent instanceof Pool)
+        var initialParent: DiagramNode = this.nodesMap[laneModel.get('parent')];
+        if (initialParent)
+            initialParent.getJointObject().unembed(laneModel);
+
+        if (parent instanceof Pool)
             parent.addLane(lane);
         else if (parent instanceof Lane)
             (<Pool> parent.getParentNode()).addLane(lane);
-        else
+        else if (parent)
             lane.setParentNode(parent);
     }
 }

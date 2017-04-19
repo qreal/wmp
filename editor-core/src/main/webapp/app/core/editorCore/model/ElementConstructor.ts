@@ -26,9 +26,9 @@ export class ElementConstructor {
         else
             node = new DefaultDiagramNode(name, type, x, y, width, height, properties, imagePath, id);
         var nodesMap: Map<String, DiagramNode> = this.nodesMap;
-        node.getJointObject().on("change:parent", (parent: joint.shapes.basic.Generic) => {
+        node.getJointObject().on("change:parent", (laneModel: joint.shapes.basic.Generic, parentId: string) => {
             if (parent)
-                node.setParentNode(nodesMap[parent.id]);
+                node.setParentNode(nodesMap[parentId]);
         })
         return node;
     }

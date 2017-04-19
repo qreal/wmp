@@ -27,6 +27,7 @@ export class DiagramScene extends joint.dia.Paper {
             model: graph,
             gridSize: gridSize,
             embeddingMode: true,
+            frontParentOnly: false,
             defaultLink: new joint.dia.Link({
                 attrs: {
                     '.connection': { stroke: 'black' },
