@@ -99,6 +99,10 @@ export class DiagramScene extends joint.dia.Paper {
                 this.addNode(node);
             }
         }
+        for (var nodeId in nodesMap) {
+            var node: DiagramNode = nodesMap[nodeId];
+            node.setParentNode(node.getParentNode(), true);
+        }
     }
 
     public addLinksFromMap(linksMap: Map<String, Link>): void {
@@ -163,6 +167,8 @@ export class DiagramScene extends joint.dia.Paper {
     }
 
     public addNode(node: DiagramNode): void {
+        if (this.graph.getCell(node.getJointObject().id))
+            return;
         this.nodesMap[node.getJointObject().id] = node;
         this.graph.addCell(node.getJointObject());
         node.initPropertyEditElements(this.zoom);

@@ -200,17 +200,17 @@ export class DefaultDiagramNode implements DiagramNode {
         this.propertyEditElement.setPosition(newX, newY);
     }
 
-    public setParentNode(parent: DiagramContainer): void {
-        if (parent === this.parentNode)
-            return;
+    public setParentNode(parent: DiagramContainer, embedding?: Boolean): void {
         if (this.parentNode) {
             this.parentNode.removeChild(this);
-            this.parentNode.getJointObject().unembed(this.getJointObject());
+            if (embedding)
+                this.parentNode.getJointObject().unembed(this.getJointObject());
         }
         this.parentNode = parent;
         if (parent) {
             parent.addChild(this);
-            parent.getJointObject().embed(this.getJointObject());
+            if (embedding)
+                parent.getJointObject().embed(this.getJointObject());
         }
     }
 

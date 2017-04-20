@@ -5,9 +5,7 @@
 import {Property} from "core/editorCore/model/Property";
 import {Link} from "core/editorCore/model/Link";
 import {NodeType} from "core/editorCore/model/NodeType";
-import {DefaultDiagramNode} from "core/editorCore/model/DefaultDiagramNode";
 import {DiagramContainer} from "core/editorCore/model/DiagramContainer";
-import {ContainerNodeType} from "core/editorCore/model/ContainerNodeType";
 import {DiagramNode} from "core/editorCore/model/DiagramNode";
 import {DiagramParts} from "core/editorCore/model/DiagramParts";
 import {DiagramJsonParser} from "core/editorCore/controller/parsers/DiagramJsonParser";
@@ -145,7 +143,6 @@ export class DiagramThriftParser extends DiagramJsonParser {
                 continue;
             var child: DiagramNode = nodesMap[nodeObjects[i].graphicalId];
             var parent: DiagramContainer = <DiagramContainer> nodesMap[nodeObjects[i].parentId];
-            parent.getJointObject().embed(child.getJointObject());
             child.setParentNode(parent);
         }
     }

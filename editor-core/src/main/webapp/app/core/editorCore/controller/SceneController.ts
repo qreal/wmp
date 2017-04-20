@@ -303,17 +303,14 @@ export class SceneController {
     private moveNode(cellView, node: DiagramNode): void {
         let command: MultiCommand = new MultiCommand([]);
 
-        var dependentNodes: DiagramNode[] = this.getDependentNodes(node);
-        var diffX: number = node.getX() - this.lastCellMouseDownPosition.x;
-        var diffY: number = node.getY() - this.lastCellMouseDownPosition.y;
-        dependentNodes.forEach((curNode: DiagramNode) => command.add(this.paperCommandFactory.makeMoveCommand(
-            curNode,
-            curNode.getX() - diffX,
-            curNode.getY() - diffY,
-            curNode.getX(),
-            curNode.getY(),
+        command.add(this.paperCommandFactory.makeMoveCommand(
+            node,
+            this.lastCellMouseDownPosition.x,
+            this.lastCellMouseDownPosition.y,
+            node.getX(),
+            node.getY(),
             this.scene.getZoom(),
-            cellView)));
+            cellView));
 
         var parent: DiagramContainer = <DiagramContainer> this.scene.getNodeById(node.getJointObject().get('parent'));
         var oldParent: DiagramContainer = (node).getParentNode();

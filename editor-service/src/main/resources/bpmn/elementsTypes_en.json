@@ -282,11 +282,29 @@
             "image": {
                 "isHidden": true,
                 "src": "images/bpmn/pool.svg"
+            }
+        },
+
+        "PoolText": {
+            "name": "PoolText",
+            "container": true,
+            "image": {
+                "isHidden": true,
+                "src": "images/bpmn/lane.svg"
             },
             "border": {
                 "stroke": "black",
                 "stroke-width": "5px"
-            }
+            },
+            "properties": [
+                {
+                    "key": "Text",
+                    "name": "Text",
+                    "type": "string",
+                    "value": "Pool"
+                }
+
+            ]
         }
     }
 }

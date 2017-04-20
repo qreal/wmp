@@ -19,18 +19,24 @@ export class BpmnElementConstructor extends ElementConstructor {
 
         } else if (nodeType.getName() === 'pool') {
 
-            let pool: Pool = new Pool(nodeType.getShownName(), nodeType.getName(), x, y, width, height, properties,
-                nodeType.getImage(), (<ContainerNodeType> nodeType).getBorder(), id);
+            var poolNodeType: ContainerNodeType = <ContainerNodeType> this.nodesTypesMap["pooltext"];
+            let pool: Pool = new Pool(poolNodeType.getShownName(), poolNodeType.getName(), x, y, width, height, properties,
+                poolNodeType.getImage(), poolNodeType.getBorder(), id);
+
             let laneNodeType: ContainerNodeType = <ContainerNodeType> this.nodesTypesMap["lane"];
             let lane: Lane = new Lane(laneNodeType.getShownName(), laneNodeType.getName(), x + width, y, width, height, properties,
-                laneNodeType.getImage(), (<ContainerNodeType> laneNodeType).getBorder(), id);
-            lane.setParentNode(pool);
+                laneNodeType.getImage(), laneNodeType.getBorder(), id);
+            lane.setParentNode(pool, true);
 
             lane.getJointObject().on("change:parent", (laneModel: joint.shapes.basic.Generic, parentId: string) =>
                 this.onParentChange(laneModel, parentId));
 
             return pool;
 
+        } else if (nodeType.getName() === 'pooltext') {
+            let pool: Pool = new Pool(nodeType.getShownName(), nodeType.getName(), x, y, width, height, properties,
+                nodeType.getImage(), (<ContainerNodeType> nodeType).getBorder(), id);
+            return pool;
         } else
             return super.createNode(nodeType, x, y, width, height, properties, id);
     }
@@ -40,15 +46,11 @@ export class BpmnElementConstructor extends ElementConstructor {
         let lane: Lane = this.nodesMap[laneModel.id];
         let parent: DiagramContainer = this.nodesMap[parentId];
 
-        let oldParent: DiagramNode = lane.getParentNode();
-        if (oldParent == parent)
-            return;
-        if (oldParent instanceof Pool)
+        let oldParent: DiagramContainer = lane.getParentNode();
+        if (oldParent instanceof Pool) {
             oldParent.removeLane(lane);
-
-        var initialParent: DiagramNode = this.nodesMap[laneModel.get('parent')];
-        if (initialParent)
-            initialParent.getJointObject().unembed(laneModel);
+            lane.setParentNode(oldParent);
+        }
 
         if (parent instanceof Pool)
             parent.addLane(lane);

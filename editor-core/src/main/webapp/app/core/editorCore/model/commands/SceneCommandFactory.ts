@@ -45,7 +45,7 @@ export class SceneCommandFactory {
 
     public makeMoveCommand(node: DiagramNode, oldX: number, oldY: number, newX: number, newY: number,
                            zoom: number, cellView : joint.dia.CellView): Command {
-        return new MoveCommand(oldX, oldY, newX, newY, zoom, cellView, node.setPosition.bind(node));
+        return new MoveCommand(oldX, oldY, newX, newY, zoom, cellView, node.getJointObject().translate.bind(node.getJointObject()));
     }
 
     public makeResizeCommand(node: DiagramNode, oldWidth: number, oldHeight: number, newWidth: number, newHeight: number,

@@ -240,7 +240,7 @@ declare module "core/editorCore/model/DefaultDiagramNode" {
         getSize(): string;
         setPosition(x: number, y: number, zoom: number, cellView: joint.dia.CellView): void;
         setSize(width: number, height: number, cellView: joint.dia.CellView): void;
-        setParentNode(parent: DiagramContainer): void;
+        setParentNode(parent: DiagramContainer, embedding?: Boolean): void;
         getImagePath(): string;
         getJointObject(): joint.shapes.basic.Generic;
         getConstPropertiesPack(): PropertiesPack;
@@ -287,7 +287,7 @@ declare module "core/editorCore/model/DiagramNode" {
         getParentNode(): DiagramContainer;
         setPosition(x: number, y: number, zoom: number, cellView: joint.dia.CellView): void;
         setSize(width: number, height: number, cellView: joint.dia.CellView): void;
-        setParentNode(parent: DiagramContainer): void;
+        setParentNode(parent: DiagramContainer, skipEmbedding?: Boolean): void;
         getPropertyEditElement(): PropertyEditElement;
         initPropertyEditElements(zoom: number): void;
         initResize(bbox: any, x: number, y: number, paddingPercent: any): void;

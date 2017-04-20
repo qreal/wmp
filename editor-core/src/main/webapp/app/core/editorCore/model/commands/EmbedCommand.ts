@@ -14,11 +14,11 @@ export class EmbedCommand implements Command {
     }
 
     public execute(): void {
-        this.child.setParentNode(this.parent);
+        this.child.setParentNode(this.parent, true);
     }
 
     public revert(): void {
-        this.child.setParentNode(this.oldParent);
+        this.child.setParentNode(this.oldParent, true);
     }
 
     public isRevertible() : boolean {
