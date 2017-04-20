@@ -305,6 +305,41 @@
                 }
 
             ]
+        },
+
+        "Exclusive": {
+            "name": "Exclusive",
+            "image": {
+                "src": "images/bpmn/exclusive-gateway.svg"
+            }
+        },
+
+        "Event-Based": {
+            "name": "Event-Based",
+            "image": {
+                "src": "images/bpmn/event-based-gateway.svg"
+            }
+        },
+
+        "Parallel": {
+            "name": "Parallel",
+            "image": {
+                "src": "images/bpmn/parallel-gateway.svg"
+            }
+        },
+
+        "Inclusive": {
+            "name": "Inclusive",
+            "image": {
+                "src": "images/bpmn/inclusive-gateway.svg"
+            }
+        },
+
+        "Complex": {
+            "name": "Complex",
+            "image": {
+                "src": "images/bpmn/Complex-gateway.svg"
+            }
         }
     }
 }

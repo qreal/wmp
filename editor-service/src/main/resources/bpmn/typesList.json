@@ -19,6 +19,14 @@
             "Lane",
             "Pool",
             "PoolText"
+        ],
+
+        "Gateways": [
+            "Exclusive",
+            "Event-Based",
+            "Parallel",
+            "Inclusive",
+            "Complex"
         ]
     }
 }

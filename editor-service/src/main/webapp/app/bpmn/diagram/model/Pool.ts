@@ -5,7 +5,6 @@ import {PropertiesPack} from "core/editorCore/model/PropertiesPack";
 import {Property} from "core/editorCore/model/Property";
 import {DefaultSize} from "../../../common/constants/DefaultSize";
 import sortElements = joint.util.sortElements;
-import {Command} from "core/editorCore/model/commands/Command";
 export class Pool extends DiagramContainer {
 
     private minWidth: number;
