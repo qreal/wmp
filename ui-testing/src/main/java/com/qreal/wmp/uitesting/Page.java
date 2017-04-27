@@ -19,7 +19,7 @@ public enum Page {
     EditorRobots("robotsEditor") {
         @Override
         public <T> T getInstance(PageFactory pageFactory) {
-            return (T) pageFactory.getEditorPage();
+            return (T) pageFactory.getEditorPageWithGestures();
         }
     },
     EditorBPMN("bpmnEditor") {

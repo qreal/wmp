@@ -6,12 +6,6 @@ import com.qreal.wmp.uitesting.dia.scene.Scene;
 import com.qreal.wmp.uitesting.headerpanel.EditorHeaderPanel;
 import com.qreal.wmp.uitesting.pages.AbstractPage;
 
-import static com.codeborne.selenide.Selenide.title;
-
-/**
- * Describes Editor page of the WMP project.
- * Includes such components as Scene, Pallete and PropertyEditor.
- */
 /** {@inheritDoc} */
 public class DefaultEditorPage extends AbstractPage implements EditorPage {
     
@@ -39,9 +33,9 @@ public class DefaultEditorPage extends AbstractPage implements EditorPage {
         return scene;
     }
     
-	@Override
+    @Override
     public Palette getPalette() {
-	    return palette;
+        return palette;
     }
     
     @Override

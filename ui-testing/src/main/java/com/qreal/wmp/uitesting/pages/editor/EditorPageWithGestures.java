@@ -1,6 +1,6 @@
 package com.qreal.wmp.uitesting.pages.editor;
 
-import com.qreal.wmp.uitesting.dia.pallete.Pallete;
+import com.qreal.wmp.uitesting.dia.palette.Palette;
 import com.qreal.wmp.uitesting.dia.property.PropertyEditor;
 import com.qreal.wmp.uitesting.dia.scene.Scene;
 import com.qreal.wmp.uitesting.headerpanel.EditorHeaderPanel;
@@ -26,8 +26,8 @@ public class EditorPageWithGestures extends AbstractPage implements EditorPage {
     }
     
     @Override
-    public Pallete getPallete() {
-        return editorPage.getPallete();
+    public Palette getPalette() {
+        return editorPage.getPalette();
     }
     
     @Override

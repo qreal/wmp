@@ -3,7 +3,7 @@ package com.qreal.wmp.uitesting.innertests;
 import com.qreal.wmp.uitesting.Page;
 import com.qreal.wmp.uitesting.PageLoader;
 import com.qreal.wmp.uitesting.config.AppInit;
-import com.qreal.wmp.uitesting.dia.pallete.Pallete;
+import com.qreal.wmp.uitesting.dia.palette.Palette;
 import com.qreal.wmp.uitesting.dia.scene.Scene;
 import com.qreal.wmp.uitesting.dia.scene.elements.Block;
 import com.qreal.wmp.uitesting.mousegestures.GestureManipulator;
@@ -27,7 +27,7 @@ public class GestureTest {
     
     private Scene scene;
     
-    private Pallete pallete;
+    private Palette palette;
     
     private GestureManipulator gestureManipulator;
     
@@ -35,14 +35,14 @@ public class GestureTest {
     public void openEditor() {
         EditorPageWithGestures editorPage = pageLoader.load(Page.EditorRobots);
         scene = editorPage.getScene();
-        pallete = editorPage.getPallete();
+        palette = editorPage.getPalette();
         gestureManipulator = editorPage.getGestureManipulator();
     }
     
     @Test
     public void drawLinkTest() {
-        Block initNode = scene.dragAndDrop(pallete.getElement("Initial Node"), 4, 4);
-        Block motorForward = scene.dragAndDrop(pallete.getElement("Motors Forward"), 10, 4);
+        Block initNode = scene.dragAndDrop(palette.getElement("Initial Node"), 4, 4);
+        Block motorForward = scene.dragAndDrop(palette.getElement("Motors Forward"), 10, 4);
         assert scene.exist(gestureManipulator.drawLine(initNode, motorForward));
     }
     

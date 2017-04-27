@@ -19,8 +19,10 @@ import org.slf4j.LoggerFactory;
 
 import static com.codeborne.selenide.WebDriverRunner.url;
 
-/** Returns page instance for requested uri.
- * Important: Factory must be used only if url of wanted page is opened in browser. */
+/**
+ * Returns page instance for requested uri.
+ * Important: Factory must be used only if url of wanted page is opened in browser.
+ */
 public class PageFactory {
     
     private static final Logger logger = LoggerFactory.getLogger(PageFactory.class);
