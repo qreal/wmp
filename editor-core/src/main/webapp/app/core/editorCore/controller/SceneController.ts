@@ -10,6 +10,7 @@ import {DiagramElement} from "../model/DiagramElement";
 import {SubprogramNode} from "../model/SubprogramNode";
 import {Property} from "../model/Property";
 import {NodeType} from "../model/NodeType";
+import {Scroller, Direction} from "../model/Scroller";
 import {DiagramElementListener} from "./DiagramElementListener";
 import {SceneCommandFactory} from "../model/commands/SceneCommandFactory";
 import {DiagramEditorController} from "./DiagramEditorController";
@@ -21,9 +22,11 @@ export class SceneController {
     private currentElement: DiagramElement;
     private clickFlag : boolean;
     private rightClickFlag : boolean;
+    private scroller : Scroller;
     private undoRedoController: UndoRedoController;
     private lastCellMouseDownPosition: {x: number, y: number};
     private lastCellMouseDownSize: {width: number, height: number};
+    private lastCellScrollPosition: {x: number, y: number};
     private paperCommandFactory: SceneCommandFactory;
     private contextMenuId = "scene-context-menu";
 
@@ -34,8 +37,10 @@ export class SceneController {
         this.paperCommandFactory = new SceneCommandFactory(this);
         this.clickFlag = false;
         this.rightClickFlag = false;
+        this.scroller = new Scroller();
         this.lastCellMouseDownPosition = { x: 0, y: 0 };
         this.lastCellMouseDownSize = { width: 0, height: 0 };
+        this.lastCellScrollPosition = { x: 0, y: 0 };
 
         this.scene.on('cell:pointerdown', (cellView, event, x, y): void => {
             this.cellPointerdownListener(cellView, event, x, y);
@@ -52,10 +57,12 @@ export class SceneController {
         });
 
         this.diagramEditorController.getGraph().on('change:position', (cell) => {
-            if (!this.rightClickFlag) {
-                return;
+            if (this.scroller.getScroll()) {
+                cell.set('position', this.lastCellScrollPosition);
             }
-            cell.set('position', cell.previous('position'));
+            if (this.rightClickFlag) {
+                cell.set('position', cell.previous('position'));
+            }
         });
 
         this.initDropPaletteElementListener();
@@ -170,12 +177,27 @@ export class SceneController {
     }
 
     public createLinkBetweenCurrentAndEventTargetElements(event): void {
-        var controller = this;
-        var elementBelow = this.getElementBelow(event, function(cell) {
-            return !(cell instanceof joint.dia.Link || cell.id === controller.currentElement.getJointObject().id) && controller.rightClickFlag;
+        var diagramPaper: HTMLDivElement = <HTMLDivElement> document.getElementById(this.scene.getId());
+
+        var elementBelow = this.diagramEditorController.getGraph().get('cells').find((cell) => {
+            if (cell instanceof joint.dia.Link) return false; // Not interested in links.
+            if (cell.id === this.currentElement.getJointObject().id) return false; // The same element as the dropped one.
+            var mXBegin = cell.getBBox().origin().x;
+            var mYBegin = cell.getBBox().origin().y;
+            var mXEnd = cell.getBBox().corner().x;
+            var mYEnd = cell.getBBox().corner().y;
+
+            var leftElementPos:number = (event.pageX - $(diagramPaper).offset().left + $(diagramPaper).scrollLeft()) /
+                this.scene.getZoom();
+            var topElementPos:number = (event.pageY - $(diagramPaper).offset().top + $(diagramPaper).scrollTop()) /
+                this.scene.getZoom();
+
+            return ((mXBegin <= leftElementPos) && (mXEnd >= leftElementPos)
+                && (mYBegin <= topElementPos) && (mYEnd >= topElementPos) && (this.rightClickFlag))
         });
+
         if (elementBelow) {
-            this.createLink(this.currentElement.getJointObject().id, {id: elementBelow.id});
+            this.createLink(this.currentElement.getJointObject().id, elementBelow.id);
         }
     }
 
@@ -247,7 +269,7 @@ export class SceneController {
         this.changeCurrentElement(element);
 
         if (this.scene.getNodeById(cellView.model.id) && event.button == MouseButton.left) {
-            var node:DiagramNode = this.scene.getNodeById(cellView.model.id);
+            var node: DiagramNode = this.scene.getNodeById(cellView.model.id);
             this.lastCellMouseDownPosition.x = node.getX();
             this.lastCellMouseDownPosition.y = node.getY();
             var bbox = cellView.getBBox();
@@ -270,6 +292,7 @@ export class SceneController {
 
             });
         } else if (event.button == MouseButton.left){
+            this.borderUnCrossed();
             var node: DiagramNode = this.scene.getNodeById(cellView.model.id);
             if (node) {
                 if (node.isResizing()) {
@@ -300,6 +323,11 @@ export class SceneController {
     }
 
     private cellPointermoveListener(cellView, event, x, y): void {
+        var element: DiagramElement = this.scene.getNodeById(cellView.model.id) ||
+            this.scene.getLinkById(cellView.model.id);
+        if (element instanceof DefaultDiagramNode) {
+           this.checkBorder(element, cellView, event)
+        }
         this.clickFlag = false;
         var node: DiagramNode = this.scene.getNodeById(cellView.model.id);
         if (node) {
@@ -425,5 +453,103 @@ export class SceneController {
             return ((mXBegin <= leftElementPos) && (mXEnd >= leftElementPos)
             && (mYBegin <= topElementPos) && (mYEnd >= topElementPos));
         });
+    }
+    private checkBorder(element: DiagramElement, cellView, event) : void {
+        var sceneWrapper: HTMLDivElement = <HTMLDivElement> $(".scene-wrapper")[0];
+        var boundingBox: any = sceneWrapper.getBoundingClientRect();
+
+        var node = this.scene.getNodeById(cellView.model.id);
+        this.borderUnCrossed();
+        if (event.pageX + this.scene.getGridSize() * this.scene.getZoom() >= boundingBox.right) {
+            this.scroller.setDirection(Direction.Right);
+            this.borderCrossed(node, event, cellView);
+        } else if (event.pageX - this.scene.getGridSize() * this.scene.getZoom() <= boundingBox.left) {
+            this.scroller.setDirection(Direction.Left);
+            this.borderCrossed(node, event, cellView);
+        } else if (event.pageY + this.scene.getGridSize() * this.scene.getZoom() >= boundingBox.bottom) {
+            this.scroller.setDirection(Direction.Down);
+            this.borderCrossed(node, event, cellView);
+        } else if (event.pageY - this.scene.getGridSize() * this.scene.getZoom() <= boundingBox.top) {
+            this.scroller.setDirection(Direction.Up);
+            this.borderCrossed(node, event, cellView);
+        }
+        this.updateLastCellScrollPosition(event);
+    }
+
+    private borderCrossed(node: DiagramNode, event, view): void {
+        this.scroller.setScroll(true);
+        var that = this;
+        switch (this.scroller.getDirection()) {
+            case Direction.Right: {
+                this.scroller.setIntervalId(setInterval(() => that.scrollRight(node, event, view), 150));
+                break;
+            }
+            case Direction.Left: {
+                this.scroller.setIntervalId(setInterval(() => that.scrollLeft(node, event, view), 150));
+                break;
+            }
+            case Direction.Down: {
+                this.scroller.setIntervalId(setInterval(() => that.scrollBottom(node, event, view), 150));
+                break;
+            }
+            case Direction.Up: {
+                this.scroller.setIntervalId(setInterval(() => that.scrollTop(node, event, view), 150));
+                break;
+            }
+        }
+    }
+
+    private borderUnCrossed(): void {
+        this.scroller.setDirection(Direction.None);
+        if (this.scroller.getIntervalId() != -1) {
+            clearInterval(this.scroller.getIntervalId());
+            this.scroller.setIntervalId(-1);
+            this.scroller.setScroll(false);
+        }
+    }
+
+    private scrollRight(node: DiagramNode, event, view) : void {
+        var sceneWrapper : HTMLDivElement = (<HTMLDivElement> $(".scene-wrapper")[0]);
+        sceneWrapper.scrollLeft += this.scene.getGridSize() * this.scene.getZoom();
+        if (node.getX() + 3 * this.scene.getGridSize() <= DiagramScene.WIDTH) {
+            this.updateLastCellScrollPosition(event);
+            node.setPosition(this.lastCellScrollPosition.x, this.lastCellScrollPosition.y, this.scene.getZoom(), view);
+        }
+    }
+
+    private scrollLeft(node: DiagramNode, event, view) : void {
+        (<HTMLDivElement> $(".scene-wrapper")[0]).scrollLeft -= this.scene.getGridSize() * this.scene.getZoom();
+        if (node.getX() >= this.scene.getGridSize()) {
+            this.updateLastCellScrollPosition(event);
+            node.setPosition(this.lastCellScrollPosition.x, this.lastCellScrollPosition.y, this.scene.getZoom(), view);
+        }
+    }
+
+    private scrollBottom(node: DiagramNode, event, view) : void {
+        (<HTMLDivElement> $(".scene-wrapper")[0]).scrollTop += this.scene.getGridSize() * this.scene.getZoom();
+        if (node.getY() + 3 * this.scene.getGridSize() <= DiagramScene.HEIGHT) {
+            this.updateLastCellScrollPosition(event);
+            node.setPosition(this.lastCellScrollPosition.x, this.lastCellScrollPosition.y, this.scene.getZoom(), view);
+        }
+    }
+
+    private scrollTop(node: DiagramNode, event, view) : void {
+        (<HTMLDivElement> $(".scene-wrapper")[0]).scrollTop -= this.scene.getGridSize() * this.scene.getZoom();
+        if (node.getY() >= this.scene.getGridSize()) {
+            this.updateLastCellScrollPosition(event);
+            node.setPosition(this.lastCellScrollPosition.x, this.lastCellScrollPosition.y, this.scene.getZoom(), view);
+        }
+    }
+
+    private updateLastCellScrollPosition(event) : void {
+        var offsetX = (event.pageX - $("#" + this.scene.getId()).offset().left +
+            $("#" + this.scene.getId()).scrollLeft()) / this.scene.getZoom();
+        var offsetY = (event.pageY - $("#" + this.scene.getId()).offset().top +
+            $("#" + this.scene.getId()).scrollTop()) / this.scene.getZoom();
+        var gridSize: number = this.scene.getGridSize();
+        offsetX -= offsetX % gridSize;
+        offsetY -= offsetY % gridSize;
+        this.lastCellScrollPosition.x = Math.min(offsetX, DiagramScene.WIDTH - 2 * this.scene.getGridSize());
+        this.lastCellScrollPosition.y = Math.min(offsetY, DiagramScene.HEIGHT - 2 * this.scene.getGridSize());
     }
 }
