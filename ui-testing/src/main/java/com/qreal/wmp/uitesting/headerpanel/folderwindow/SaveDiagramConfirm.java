@@ -1,5 +1,6 @@
 package com.qreal.wmp.uitesting.headerpanel.folderwindow;
 
+import com.codeborne.selenide.Condition;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
@@ -20,11 +21,13 @@ public class SaveDiagramConfirm {
     /** 'No' button. */
     public void notSave() {
         $(selector).find(withText("No")).click();
+        $(selector).shouldBe(Condition.disappear);
     }
     
     /** 'Yes' button. */
     public FolderArea save() {
         $(selector).find(withText("Yes")).click();
+        $(selector).shouldBe(Condition.disappear);
         return new FolderAreaImpl(driver);
     }
     

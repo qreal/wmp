@@ -1,5 +1,6 @@
 package com.qreal.wmp.uitesting.headerpanel;
 
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import com.qreal.wmp.uitesting.dia.scene.SceneProxy;
 import com.qreal.wmp.uitesting.headerpanel.folderwindow.FolderAreaImpl;
@@ -35,6 +36,7 @@ public class DiagramStoreService {
         element.setValue(getFilename(key));
         diagrams.put(key, prepareElement(Jsoup.parseBodyFragment($(sceneSelector).innerHtml()).body()));
         $(By.id("saving")).click();
+        $(By.id("saving")).shouldBe(Condition.disappear);
         lastKnownKey = key;
     }
     

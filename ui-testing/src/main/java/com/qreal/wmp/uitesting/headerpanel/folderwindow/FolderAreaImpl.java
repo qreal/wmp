@@ -90,7 +90,7 @@ public class FolderAreaImpl implements FolderArea {
             throw new IllegalArgumentException("Folder is not exist");
         }
         $(selector).find(By.className("folders")).find(byText(name)).contextClick();
-        $(By.id("open-diagram-context-menu")).should(Condition.visible);
+        $(By.id("open-diagram-context-menu")).shouldBe(Condition.visible);
         $(By.id("open-diagram-context-menu")).find(byText("Delete")).click();
         return this;
     }
@@ -100,6 +100,7 @@ public class FolderAreaImpl implements FolderArea {
         SelenideElement closeButton = $(selector).find(By.className("close"));
         if ($(selector).isDisplayed() && closeButton.isDisplayed()) {
             $(selector).find(By.className("close")).click();
+            $(selector).shouldBe(Condition.disappear);
         }
     }
     
