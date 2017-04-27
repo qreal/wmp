@@ -12,6 +12,7 @@ import com.qreal.wmp.uitesting.dia.scene.providers.BlockProvider;
 import com.qreal.wmp.uitesting.dia.scene.providers.LinkProvider;
 import com.qreal.wmp.uitesting.dia.scene.window.SceneWindow;
 import com.qreal.wmp.uitesting.exceptions.ElementNotOnTheSceneException;
+import com.qreal.wmp.uitesting.services.SelectorService;
 import org.jetbrains.annotations.Contract;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -30,8 +31,6 @@ public class DefaultScene implements Scene {
     
     private static final Logger logger = LoggerFactory.getLogger(PalleteImpl.class);
     
-    private final String selector;// = ".scene-wrapper";
-    
     private final WebDriver webDriver;
     
     private final SceneWindow sceneWindow;
@@ -40,12 +39,14 @@ public class DefaultScene implements Scene {
     
     private final LinkProvider linkProvider;
     
+    private final SelectorService selectorService;
+    
     /** For actions such as mouse move we need driver of current page. */
     public DefaultScene(WebDriver webDriver,
-                        String selector,
                         SceneWindow sceneWindow,
                         BlockProvider blockProvider,
-                        LinkProvider linkProvider) {
+                        LinkProvider linkProvider,
+                        SelectorService selectorService) {
         
         this.webDriver = webDriver;
         // For actions such as mouse move we need driver of current page.
@@ -55,15 +56,15 @@ public class DefaultScene implements Scene {
                             createDiv("SceneWindowHorSize") + createDiv("SceneWindowVerSize")
             );
         }
-        this.sceneWindow = sceneWindow;//SceneWindowImpl.getSceneWindow(webDriver);
-        this.selector = selector;
-        this.blockProvider = blockProvider;//BlockProvider.getBlockProvider(sceneWindow, SELECTOR, this);
-        this.linkProvider = linkProvider;//LinkProvider.getLinkProvider(SELECTOR, webDriver);
+        this.sceneWindow = sceneWindow;
+        this.blockProvider = blockProvider;
+        this.linkProvider = linkProvider;
+        this.selectorService = selectorService;
     }
     
     @Override
     public Block dragAndDrop(final PalleteElement element) {
-        element.getInner().dragAndDropTo(selector);
+        element.getInner().dragAndDropTo("." + selectorService.get(SelectorService.Attribute.CLASS));
         return blockProvider.getNewBlock();
     }
     
@@ -158,7 +159,7 @@ public class DefaultScene implements Scene {
                 .contextClick(sceneElement.getInnerSeleniumElement())
                 .build()
                 .perform();
-        SelenideElement contextMenu = $(By.id("scene-context-menu"));
+        SelenideElement contextMenu = $(By.id(selectorService.get("contextMenu", SelectorService.Attribute.ID)));
         contextMenu.shouldBe(Condition.visible);
         contextMenu.click();
         (new WebDriverWait(webDriver, 5))

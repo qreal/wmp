@@ -10,6 +10,7 @@ import com.qreal.wmp.uitesting.dia.scene.window.SceneWindow;
 import com.qreal.wmp.uitesting.dia.scene.window.SceneWindowImpl;
 import com.qreal.wmp.uitesting.exceptions.ElementNotOnTheSceneException;
 import com.qreal.wmp.uitesting.pages.editor.EditorPageFacade;
+import com.qreal.wmp.uitesting.services.SelectorService;
 import org.jetbrains.annotations.Contract;
 import org.openqa.selenium.WebDriver;
 
@@ -28,11 +29,12 @@ public class SceneProxy implements Scene {
     
     private final Scene scene;
     
-    private SceneProxy(WebDriver driver, EditorPageFacade editorPageFacade) {
+    private SceneProxy(WebDriver driver, EditorPageFacade editorPageFacade, SelectorService selectorService) {
+        SelectorService sceneSelectorService = selectorService.create("scene");
         sceneWindow = SceneWindowImpl.getSceneWindow(driver);
-        blockProvider = BlockProvider.getBlockProvider(sceneWindow, SELECTOR, editorPageFacade);
-        linkProvider = LinkProvider.getLinkProvider(SELECTOR, driver, editorPageFacade);
-        scene = new DefaultScene(driver, SELECTOR, sceneWindow, blockProvider, linkProvider);
+        blockProvider = BlockProvider.getBlockProvider(sceneWindow, editorPageFacade, sceneSelectorService.create("poolOfElements"));
+        linkProvider = LinkProvider.getLinkProvider(driver, editorPageFacade, sceneSelectorService.create("poolOfElements"));
+        scene = new DefaultScene(driver, sceneWindow, blockProvider, linkProvider, sceneSelectorService);
     }
     
     public BlockProvider getBlockProvider() {
@@ -95,8 +97,12 @@ public class SceneProxy implements Scene {
         scene.clean();
     }
     
-    @Contract("_, _ -> !null")
-    public static SceneProxy getSceneProxy(WebDriver driver, EditorPageFacade editorPageFacade) {
-        return new SceneProxy(driver, editorPageFacade);
+    @Contract("_, _, _ -> !null")
+    public static SceneProxy getSceneProxy(
+            WebDriver driver,
+            EditorPageFacade editorPageFacade,
+            SelectorService selectorService) {
+        
+        return new SceneProxy(driver, editorPageFacade, selectorService);
     }
 }

@@ -2,15 +2,23 @@ package com.qreal.wmp.uitesting.services;
 
 public interface SelectorService {
     
-    String getId(String element);
+    String get(String element, Attribute attr);
     
-    String getText(String element);
-    
-    String getSelector(String element);
-    
-    String getName(String element);
-    
-    String getType(String element);
+    String get(Attribute attr);
     
     SelectorService create(String sublevel);
+    
+    enum Attribute {
+        ID("id"), CLASS("class"), NAME("name"), TYPE("type"), TEXT("text"), SELECTOR("selector");
+        
+        Attribute(String str) {
+            this.str = str;
+        }
+        
+        private String str;
+        
+        public String toString() {
+            return str;
+        }
+    }
 }

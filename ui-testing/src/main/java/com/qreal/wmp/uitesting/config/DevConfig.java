@@ -70,7 +70,7 @@ public class DevConfig {
     
     @Bean
     public PageLoader pageLoader() {
-        return new PageLoader(pageFactory(), opener(), auther());
+        return new PageLoader(pageFactory(), opener(), auther(), selectorService());
     }
     
     @Bean

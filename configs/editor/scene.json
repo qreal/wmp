@@ -4,7 +4,7 @@
     "id" : "scene-context-menu"
   },
   "poolOfElements" : {
-    "selector" : "#v_6 > *",
+    "selector" : "#v_7 > *",
     "sceneElement" : {
       "coordinates": {
         "attr": "transform"
@@ -13,14 +13,18 @@
     "block" : {
       "class" : "element devs ImageWithPorts",
       "port" : {
-        "attr" : "port0"
+        "class" : "port0"
       }
     },
     "link" : {
       "class" : "link",
       "arrow" : {
-        "sourceSelector" : ".marker-arrowheads :nth-child(1)",
-        "targetSelector" : ".marker-arrowheads :nth-child(2)"
+        "source" : {
+          "selector" : ".marker-arrowheads :nth-child(1)"
+        },
+        "target" : {
+          "selector": ".marker-arrowheads :nth-child(2)"
+        }
       }
     }
   }

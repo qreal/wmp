@@ -3,7 +3,6 @@ package com.qreal.wmp.uitesting.services.impl;
 import com.qreal.wmp.uitesting.exceptions.WrongAuthException;
 import com.qreal.wmp.uitesting.services.Auther;
 import com.qreal.wmp.uitesting.services.Opener;
-import com.qreal.wmp.uitesting.services.SelectorService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;

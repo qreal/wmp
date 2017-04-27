@@ -4,16 +4,14 @@ import com.codeborne.selenide.SelenideElement;
 import com.qreal.wmp.uitesting.dia.scene.Coordinate;
 import com.qreal.wmp.uitesting.exceptions.ElementNotOnTheSceneException;
 import com.qreal.wmp.uitesting.pages.editor.EditorPageFacade;
+import com.qreal.wmp.uitesting.services.SelectorService;
+import com.qreal.wmp.uitesting.services.SelectorService.Attribute;
 import org.openqa.selenium.By;
 
 import static com.codeborne.selenide.Selenide.$;
 
 /** Link describes relations between blocks. */
 public class Link extends SceneElementImpl {
-    
-    public static final String CLASS_NAME = "link";
-    
-    private static final String ARROWHEAD = "marker-arrowheads";
     
     private final String name;
     
@@ -24,13 +22,16 @@ public class Link extends SceneElementImpl {
     @SuppressWarnings({"all"})
     private final EditorPageFacade editorPageFacade;
     
+    private final SelectorService selectorService;
+    
     /** Describes link between two blocks. */
-    public Link(String name, By selector, EditorPageFacade editorPageFacade) {
+    public Link(String name, By selector, EditorPageFacade editorPageFacade, SelectorService selectorService) {
         super(selector);
+        this.selectorService = selectorService;
         this.name = name;
-        SelenideElement source = $(selector).find(By.className(ARROWHEAD)).find(By.cssSelector(":nth-child(1)"));
+        SelenideElement source = $(selector).find(selectorService.get("arrow.source", Attribute.SELECTOR));
         this.source = new SceneElementImpl(By.id(source.attr("id")));
-        SelenideElement target = $(selector).find(By.className(ARROWHEAD)).find(By.cssSelector(":nth-child(2)"));
+        SelenideElement target = $(selector).find(selectorService.get("arrow.target", Attribute.SELECTOR));
         this.target = new SceneElementImpl(By.id(target.attr("id")));
         this.editorPageFacade = editorPageFacade;
     }

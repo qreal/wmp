@@ -6,6 +6,8 @@ import com.qreal.wmp.uitesting.dia.scene.elements.Block;
 import com.qreal.wmp.uitesting.dia.scene.window.SceneWindow;
 import com.qreal.wmp.uitesting.exceptions.ElementNotOnTheSceneException;
 import com.qreal.wmp.uitesting.pages.editor.EditorPageFacade;
+import com.qreal.wmp.uitesting.services.SelectorService;
+import com.qreal.wmp.uitesting.services.SelectorService.Attribute;
 import org.jetbrains.annotations.Contract;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NotFoundException;
@@ -24,15 +26,15 @@ public class BlockProvider {
     
     private final SceneWindow sceneWindow;
     
-    private final String selector;
+    private final SelectorService selectorService;
     
     private final EditorPageFacade editorPageFacade;
     
     private Set<Block> blocks = new HashSet<>();
     
-    private BlockProvider(SceneWindow sceneWindow, String selector, EditorPageFacade editorPageFacade) {
+    private BlockProvider(SceneWindow sceneWindow, EditorPageFacade editorPageFacade, SelectorService selectorService) {
         this.sceneWindow = sceneWindow;
-        this.selector = selector;
+        this.selectorService = selectorService;
         this.editorPageFacade = editorPageFacade;
     }
     
@@ -54,7 +56,12 @@ public class BlockProvider {
     public Block getNewBlock() {
         final SelenideElement newEl = updateBlocks().orElseThrow(NotFoundException::new);
         logger.info("Add element {} to scene", newEl);
-        Block block = new Block(newEl.attr("id"), By.id(newEl.attr("id")), editorPageFacade);
+        Block block = new Block(
+                newEl.attr("id"),
+                By.id(newEl.attr("id")),
+                editorPageFacade,
+                selectorService.create("block"));
+        
         blocks.add(block);
         return block;
     }
@@ -68,27 +75,32 @@ public class BlockProvider {
     }
     
     public void recalculateBlocks() {
-        blocks = $$(By.cssSelector(selector + " #v_7 > *")).stream()
-                .filter(x -> x.attr("class").contains(Block.CLASS_NAME))
-                .map(x -> new Block(x.attr("id"), By.id(x.attr("id")), editorPageFacade))
+        blocks = $$(selectorService.get(Attribute.SELECTOR)).stream()
+                .filter(x -> x.attr("class").contains(selectorService.get("block", Attribute.CLASS)))
+                .map(x -> new Block(
+                        x.attr("id"),
+                        By.id(x.attr("id")),
+                        editorPageFacade,
+                        selectorService.create("block"))
+                )
                 .collect(Collectors.toSet());
     }
     
     @Contract("_, _, _ -> !null")
     public static BlockProvider getBlockProvider(
             SceneWindow sceneWindow,
-            String selector,
-            EditorPageFacade editorPageFacade) {
+            EditorPageFacade editorPageFacade,
+            SelectorService selectorService) {
         
-        return new BlockProvider(sceneWindow, selector, editorPageFacade);
+        return new BlockProvider(sceneWindow, editorPageFacade, selectorService);
     }
     
     /** Return new element of the scene. */
     public Optional<SelenideElement> updateBlocks() {
-        final List<SelenideElement> allElements = $$(By.cssSelector(selector + " #v_7 > *"));
+        final List<SelenideElement> allElements = $$(By.cssSelector(selectorService.get(Attribute.SELECTOR)));
         return allElements.stream()
                 .filter(htmlElement ->
-                        htmlElement.attr("class").contains("element devs ImageWithPorts") &&
+                        htmlElement.attr("class").contains(selectorService.get("block", Attribute.CLASS)) &&
                                 blocks.stream().noneMatch(block -> block.getInnerSeleniumElement()
                                         .attr("id").equals(htmlElement.attr("id")))
                 ).findFirst();

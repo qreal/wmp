@@ -4,6 +4,8 @@ import com.codeborne.selenide.SelenideElement;
 import com.qreal.wmp.uitesting.dia.scene.elements.Block;
 import com.qreal.wmp.uitesting.dia.scene.elements.Link;
 import com.qreal.wmp.uitesting.pages.editor.EditorPageFacade;
+import com.qreal.wmp.uitesting.services.SelectorService;
+import com.qreal.wmp.uitesting.services.SelectorService.Attribute;
 import org.jetbrains.annotations.Contract;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -22,7 +24,7 @@ public class LinkProvider {
     
     private static final Logger logger = LoggerFactory.getLogger(LinkProvider.class);
     
-    private final String selector;
+    private final SelectorService selectorService;
     
     private final WebDriver webDriver;
     
@@ -30,10 +32,14 @@ public class LinkProvider {
     
     private Set<Link> links = new HashSet<>();
     
-    private LinkProvider(String selector, WebDriver webDriver, EditorPageFacade editorPageFacade) {
-        this.selector = selector;
+    private LinkProvider(WebDriver webDriver, EditorPageFacade editorPageFacade, SelectorService selectorService) {
+        this.selectorService = selectorService;
         this.webDriver = webDriver;
         this.editorPageFacade = editorPageFacade;
+    }
+    
+    public SelectorService getSelectorService() {
+        return selectorService;
     }
     
     public List<Link> getLinks() {
@@ -50,7 +56,7 @@ public class LinkProvider {
     
     /** Add link between two blocks. */
     public Link addLink(final Block source, final Block target) {
-        final SelenideElement begin = $(By.cssSelector(selector + " #" +
+        final SelenideElement begin = $(By.cssSelector(selectorService.get(Attribute.SELECTOR) + " #" +
                 source.getInnerSeleniumElement().attr("id") + " .outPorts"));
         logger.info("Begin element {}, end element {} ", begin, target);
         new Actions(webDriver)
@@ -59,29 +65,43 @@ public class LinkProvider {
                 .build().perform();
         SelenideElement newEl = updateLinks().orElseThrow(() -> new NoSuchElementException("Link was not created"));
         logger.info("Add link {}", newEl);
-        Link res = new Link(newEl.attr("id"), By.id(newEl.attr("id")), editorPageFacade);
+        Link res = new Link(
+                newEl.attr("id"),
+                By.id(newEl.attr("id")),
+                editorPageFacade,
+                selectorService.create("link"));
+        
         links.add(res);
         return res;
     }
     
     public void recalculateLinks() {
-        links = $$(By.cssSelector(selector + " #v_7 > *")).stream()
-                .filter(x -> x.attr("class").contains(Link.CLASS_NAME))
-                .map(x -> new Link(x.attr("id"), By.id(x.attr("id")), editorPageFacade))
+        links = $$(By.cssSelector(selectorService.get(Attribute.SELECTOR))).stream()
+                .filter(x -> x.attr("class").contains(selectorService.get("link", Attribute.CLASS)))
+                .map(x -> new Link(
+                        x.attr("id"),
+                        By.id(x.attr("id")),
+                        editorPageFacade,
+                        selectorService.create("link"))
+                )
                 .collect(Collectors.toSet());
     }
     
     @Contract("_, _, _ -> !null")
-    public static LinkProvider getLinkProvider(String selector, WebDriver webDriver, EditorPageFacade facade) {
-        return new LinkProvider(selector, webDriver, facade);
+    public static LinkProvider getLinkProvider(
+            WebDriver webDriver,
+            EditorPageFacade facade,
+            SelectorService selectorService) {
+        
+        return new LinkProvider(webDriver, facade, selectorService);
     }
     
     /** Returns new link if it was created. */
     public Optional<SelenideElement> updateLinks() {
-        final List<SelenideElement> allElements = $$(By.cssSelector(selector + " #v_7 > *"));
+        final List<SelenideElement> allElements = $$(By.cssSelector(selectorService.get(Attribute.SELECTOR)));
         return allElements.stream()
                 .filter(htmlElement ->
-                        htmlElement.attr("class").contains("link") &&
+                        htmlElement.attr("class").contains(selectorService.get("link", Attribute.CLASS)) &&
                                 links.stream().noneMatch(link -> htmlElement.attr("id")
                                         .equals(link.getInnerSeleniumElement().attr("id")))
                 ).findFirst();

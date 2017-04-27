@@ -3,6 +3,7 @@ package com.qreal.wmp.uitesting;
 import com.qreal.wmp.uitesting.exceptions.WrongAuthException;
 import com.qreal.wmp.uitesting.services.Auther;
 import com.qreal.wmp.uitesting.services.Opener;
+import com.qreal.wmp.uitesting.services.SelectorService;
 
 /** Loads page.
  * It means, firstly, it opens uri by Opener service.
@@ -16,10 +17,13 @@ public class PageLoader {
     
     private final Auther auther;
     
-    public PageLoader(PageFactory pageFactory, Opener opener, Auther auther) {
+    private final SelectorService selectorService;
+    
+    public PageLoader(PageFactory pageFactory, Opener opener, Auther auther, SelectorService selectorService) {
         this.pageFactory = pageFactory;
         this.opener = opener;
         this.auther = auther;
+        this.selectorService = selectorService;
     }
     
     /** Loads and returns requested page with default authentication. */
@@ -40,8 +44,8 @@ public class PageLoader {
         switch (page) {
             case Auth: return (T) pageFactory.getAuthPage();
             case Dashboard: return (T) pageFactory.getDashboardPage();
-            case EditorBPMN: return (T) pageFactory.getEditorPage();
-            case EditorRobots: return (T) pageFactory.getEditorPageWithGestures();
+            case EditorBPMN: return (T) pageFactory.getEditorPage(selectorService.create("bpmnEditor"));
+            case EditorRobots: return (T) pageFactory.getEditorPageWithGestures(selectorService.create("robotEditor"));
             default: return null;
         }
     }

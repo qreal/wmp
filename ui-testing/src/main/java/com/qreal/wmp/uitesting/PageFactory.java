@@ -12,6 +12,7 @@ import com.qreal.wmp.uitesting.pages.editor.DefaultEditorPage;
 import com.qreal.wmp.uitesting.pages.editor.EditorPage;
 import com.qreal.wmp.uitesting.pages.editor.EditorPageFacade;
 import com.qreal.wmp.uitesting.pages.editor.EditorPageWithGestures;
+import com.qreal.wmp.uitesting.services.SelectorService;
 import org.jetbrains.annotations.Contract;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
@@ -32,21 +33,21 @@ public class PageFactory {
     }
     
     /** Returns Editor Page instance. */
-    public EditorPage getEditorPage() {
+    public EditorPage getEditorPage(SelectorService selectorService) {
         logger.info("Editor page was created");
-        EditorPageFacade editorPageFacade = new EditorPageFacade(url());
-        EditorPage page = getDefaultEditorPage(editorPageFacade);
+        EditorPageFacade editorPageFacade = new EditorPageFacade(url(), selectorService);
+        EditorPage page = getDefaultEditorPage(editorPageFacade, selectorService);
         editorPageFacade.setScene((SceneProxy) page.getScene());
         return page;
     }
     
     /** Returns Editor page with gesture decorator. */
-    public EditorPage getEditorPageWithGestures() {
-        EditorPageFacade editorPageFacade = new EditorPageFacade(url());
+    public EditorPage getEditorPageWithGestures(SelectorService selectorService) {
+        EditorPageFacade editorPageFacade = new EditorPageFacade(url(), selectorService);
         RobotCalibration.calibrate(webDriver);
         editorPageFacade.reload();
         EditorPage page = new EditorPageWithGestures(
-                getDefaultEditorPage(editorPageFacade),
+                getDefaultEditorPage(editorPageFacade, selectorService),
                 GestureManipulatorImpl.getGestureManipulator(editorPageFacade)
         );
         editorPageFacade.setScene((SceneProxy) page.getScene());
@@ -65,10 +66,10 @@ public class PageFactory {
         return new AuthPage();
     }
     
-    @Contract("_ -> !null")
-    private EditorPage getDefaultEditorPage(EditorPageFacade editorPageFacade) {
+    @Contract("_, _ -> !null")
+    private EditorPage getDefaultEditorPage(EditorPageFacade editorPageFacade, SelectorService selectorService) {
         return new DefaultEditorPage(
-                SceneProxy.getSceneProxy(webDriver, editorPageFacade),
+                SceneProxy.getSceneProxy(webDriver, editorPageFacade, selectorService),
                 PalleteImpl.getPallete(),
                 PropertyEditorImpl.getPropertyEditor(),
                 EditorHeaderPanelImpl.getEditorHeaderPanel(this, webDriver, editorPageFacade)

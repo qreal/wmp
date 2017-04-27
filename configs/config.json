@@ -19,7 +19,8 @@
     "scene" : "$path:editor/scene.json",
     "pallete" : "$path:editor/pallete.json",
     "propertyEditor" : "$path:editor/propertyEditor.json",
-    "editorHeaderPanel" : "$path:editor/editorHeaderPanel.json"
+    "editorHeaderPanel" : "$path:editor/editorHeaderPanel.json",
+    "gestures" : "$path:/editor/robots/robotGestures.json"
   },
   "bpmnEditor": {
     "scene" : "$path:editor/scene.json",

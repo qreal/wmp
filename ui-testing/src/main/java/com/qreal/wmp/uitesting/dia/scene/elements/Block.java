@@ -1,6 +1,7 @@
 package com.qreal.wmp.uitesting.dia.scene.elements;
 
 import com.qreal.wmp.uitesting.pages.editor.EditorPageFacade;
+import com.qreal.wmp.uitesting.services.SelectorService;
 import org.openqa.selenium.By;
 
 import static com.codeborne.selenide.Selenide.$;
@@ -9,20 +10,17 @@ import static com.codeborne.selenide.Selenide.$;
  * Pallete have items. If we dragAndDrop these items to the Scene, we'll get Blocks. */
 public class Block extends SceneElementImpl {
     
-    public static final String CLASS_NAME = "element devs ImageWithPorts";
-    
-    private static final String PORT_CLASS_NAME = "port0";
-    
     private final String name;
     
     private final SceneElement port;
     
     private final EditorPageFacade editorPageFacade;
     
-    public Block(String name, By selector, EditorPageFacade editorPageFacade) {
+    public Block(String name, By selector, EditorPageFacade editorPageFacade, SelectorService selectorService) {
         super(selector);
         this.name = name;
-        this.port = new SceneElementImpl(By.id($(selector).find(By.className(PORT_CLASS_NAME)).attr("id")));
+        this.port = new SceneElementImpl(By.id($(selector)
+                .find(By.className(selectorService.get("port", SelectorService.Attribute.CLASS))).attr("id")));
         this.editorPageFacade = editorPageFacade;
     }
     
