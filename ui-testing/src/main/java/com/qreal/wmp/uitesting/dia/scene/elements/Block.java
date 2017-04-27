@@ -1,5 +1,6 @@
 package com.qreal.wmp.uitesting.dia.scene.elements;
 
+import com.qreal.wmp.uitesting.dia.scene.Scene;
 import org.openqa.selenium.By;
 
 import static com.codeborne.selenide.Selenide.$;

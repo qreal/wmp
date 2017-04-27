@@ -3,7 +3,7 @@ package com.qreal.wmp.uitesting.innertests;
 import com.qreal.wmp.uitesting.Page;
 import com.qreal.wmp.uitesting.PageLoader;
 import com.qreal.wmp.uitesting.config.AppInit;
-import com.qreal.wmp.uitesting.dia.pallete.Pallete;
+import com.qreal.wmp.uitesting.dia.palette.Palette;
 import com.qreal.wmp.uitesting.dia.scene.Scene;
 import com.qreal.wmp.uitesting.dia.scene.elements.Block;
 import com.qreal.wmp.uitesting.dia.scene.elements.Link;
@@ -40,7 +40,7 @@ public class FolderAreaTest {
     
     private Scene scene;
     
-    private Pallete pallete;
+    private Palette pallete;
 
     private EditorHeaderPanel headerPanel;
     
@@ -50,7 +50,7 @@ public class FolderAreaTest {
     public void openEditor() {
         EditorPage editorPage = pageLoader.load(Page.EditorRobots);
         scene = editorPage.getScene();
-        pallete = editorPage.getPallete();
+        pallete = editorPage.getPalette();
         headerPanel = editorPage.getHeaderPanel();
     }
 

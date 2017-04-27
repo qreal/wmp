@@ -17,8 +17,10 @@ import java.util.stream.Collectors;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.$;
 
-/** Keeps custom html representations of saved diagrams.
- * Also makes final steps of save/open action in folder menu. */
+/**
+ * Keeps custom html representations of saved diagrams.
+ * Also makes final steps of save/open action in folder menu.
+ */
 public class DiagramStoreService {
     
     private final Map<String, Element> diagrams = new HashMap<>();
@@ -36,8 +38,10 @@ public class DiagramStoreService {
         lastKnownKey = key;
     }
     
-    /** Key is the last knownKey.
-     * Call when user click save button (not SaveAs). */
+    /**
+     * Key is the last knownKey.
+     * Call when user click save button (not SaveAs).
+     */
     public void saveDiagram() {
         diagrams.put(lastKnownKey, prepareElement(Jsoup.parseBodyFragment($(sceneSelector).innerHtml()).body()));
     }
@@ -69,10 +73,12 @@ public class DiagramStoreService {
                 .stream().anyMatch(elem -> elem.has(text(filename)));
     }
     
-    /** Diagrams can be the same but have different generated ids.
+    /**
+     * Diagrams can be the same but have different generated ids.
      * It depends on how we restore them by opening.
      * In this case, we believe that they are the same.
-     * So we get rid of bad ids. */
+     * So we get rid of bad ids.
+     */
     private Element prepareElement(Element element) {
         removeByAttr(element, "id", el -> el.attr("id").startsWith("j_")
                 || el.attr("id").startsWith("v_")
