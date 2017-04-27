@@ -479,17 +479,23 @@ export class SceneController {
         sceneWrapper.scrollLeft += this.scene.getGridSize() * this.scene.getZoom();
         if (node.getX() + 3 * this.scene.getGridSize() <= DiagramScene.WIDTH) {
             this.updateLastCellScrollPosition(event);
-            node.setPosition(this.lastCellScrollPosition.x,
-                this.lastCellScrollPosition.y, this.scene.getZoom(), cellView);
-        }
+            node.setPosition(
+                this.lastCellScrollPosition.x,
+                this.lastCellScrollPosition.y,
+                this.scene.getZoom(),
+                cellView);
+         }
     }
 
     private scrollLeft(node: DiagramNode, event, cellView) : void {
         (<HTMLDivElement> $(".scene-wrapper")[0]).scrollLeft -= this.scene.getGridSize() * this.scene.getZoom();
         if (node.getX() >= this.scene.getGridSize()) {
             this.updateLastCellScrollPosition(event);
-            node.setPosition(this.lastCellScrollPosition.x,
-                this.lastCellScrollPosition.y, this.scene.getZoom(), cellView);
+            node.setPosition(
+                this.lastCellScrollPosition.x,
+                this.lastCellScrollPosition.y,
+                this.scene.getZoom(),
+                cellView);
         }
     }
 
@@ -497,8 +503,11 @@ export class SceneController {
         (<HTMLDivElement> $(".scene-wrapper")[0]).scrollTop += this.scene.getGridSize() * this.scene.getZoom();
         if (node.getY() + 3 * this.scene.getGridSize() <= DiagramScene.HEIGHT) {
             this.updateLastCellScrollPosition(event);
-            node.setPosition(this.lastCellScrollPosition.x,
-                this.lastCellScrollPosition.y, this.scene.getZoom(), cellView);
+            node.setPosition(
+                this.lastCellScrollPosition.x,
+                this.lastCellScrollPosition.y,
+                this.scene.getZoom(),
+                cellView);
         }
     }
 
@@ -506,8 +515,11 @@ export class SceneController {
         (<HTMLDivElement> $(".scene-wrapper")[0]).scrollTop -= this.scene.getGridSize() * this.scene.getZoom();
         if (node.getY() >= this.scene.getGridSize()) {
             this.updateLastCellScrollPosition(event);
-            node.setPosition(this.lastCellScrollPosition.x,
-                this.lastCellScrollPosition.y, this.scene.getZoom(), cellView);
+            node.setPosition(
+                this.lastCellScrollPosition.x,
+                this.lastCellScrollPosition.y,
+                this.scene.getZoom(),
+                cellView);
         }
     }
 
@@ -522,6 +534,7 @@ export class SceneController {
         this.lastCellScrollPosition.x = Math.min(offsetX, DiagramScene.WIDTH - 2 * this.scene.getGridSize());
         this.lastCellScrollPosition.y = Math.min(offsetY, DiagramScene.HEIGHT - 2 * this.scene.getGridSize());
     }
+
     private getElementBelow(event: any, checker?: (cell: any) => boolean) {
         var diagramPaper: HTMLDivElement = <HTMLDivElement> document.getElementById(this.scene.getId());
         return this.diagramEditorController.getGraph().get('cells').find((cell) => {

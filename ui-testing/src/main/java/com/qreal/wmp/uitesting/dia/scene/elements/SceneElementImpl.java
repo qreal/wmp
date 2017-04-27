@@ -7,8 +7,10 @@ import org.openqa.selenium.By;
 
 import static com.codeborne.selenide.Selenide.$;
 
-/** All Scene elements have selector by which we can clearly define their web instances.
- * Also all scene elements have coordinates on the Scene. */
+/**
+ * All Scene elements have selector by which we can clearly define their web instances.
+ * Also all scene elements have coordinates on the Scene.
+ */
 public class SceneElementImpl implements SceneElement {
     
     // Wrapper over an string selector. Used to search the element in HTML representation of current page.

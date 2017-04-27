@@ -3,8 +3,8 @@ package com.qreal.wmp.uitesting.dia.scene;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import com.google.common.base.Predicate;
-import com.qreal.wmp.uitesting.dia.pallete.PalleteElement;
-import com.qreal.wmp.uitesting.dia.pallete.PalleteImpl;
+import com.qreal.wmp.uitesting.dia.palette.PaletteElement;
+import com.qreal.wmp.uitesting.dia.palette.PaletteImpl;
 import com.qreal.wmp.uitesting.dia.scene.elements.Block;
 import com.qreal.wmp.uitesting.dia.scene.elements.Link;
 import com.qreal.wmp.uitesting.dia.scene.elements.SceneElement;
@@ -30,7 +30,7 @@ public class DefaultScene implements Scene {
     
     private static final Logger logger = LoggerFactory.getLogger(PalleteImpl.class);
     
-    private final String selector;// = ".scene-wrapper";
+    private final String selector;
     
     private final WebDriver webDriver;
     
@@ -55,20 +55,20 @@ public class DefaultScene implements Scene {
                             createDiv("SceneWindowHorSize") + createDiv("SceneWindowVerSize")
             );
         }
-        this.sceneWindow = sceneWindow;//SceneWindowImpl.getSceneWindow(webDriver);
+        this.sceneWindow = sceneWindow;
         this.selector = selector;
-        this.blockProvider = blockProvider;//BlockProvider.getBlockProvider(sceneWindow, SELECTOR, this);
-        this.linkProvider = linkProvider;//LinkProvider.getLinkProvider(SELECTOR, webDriver);
+        this.blockProvider = blockProvider;
+        this.linkProvider = linkProvider;
     }
     
     @Override
-    public Block dragAndDrop(final PalleteElement element) {
-        element.getInner().dragAndDropTo(selector);
+    public Block dragAndDrop(final PaletteElement element) {
+        element.getInnerSeleniumELement().dragAndDropTo(selector);
         return blockProvider.getNewBlock();
     }
     
     @Override
-    public Block dragAndDrop(final PalleteElement element, int cellX, int cellY) {
+    public Block dragAndDrop(final PaletteElement element, int cellX, int cellY) {
         Block newBlock = dragAndDrop(element);
         blockProvider.moveToCell(newBlock, cellX, cellY);
         return newBlock;

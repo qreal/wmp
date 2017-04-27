@@ -5,9 +5,11 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
-/** Describes element's position on the Scene.
+/**
+ * Describes element's position on the Scene.
  * Contains absolute coordinates of scene, which are written in 'transform' tag on the html representation.
- * Also contains cell's position (the Scene is represented by a mesh of cells)*/
+ * Also contains cell's position (the Scene is represented by a mesh of cells)
+ */
 public class Coordinate {
     
     public static final String SELECTOR = "transform";
