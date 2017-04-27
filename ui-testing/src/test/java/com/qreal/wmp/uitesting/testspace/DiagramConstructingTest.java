@@ -1,0 +1,95 @@
+package com.qreal.wmp.uitesting.testspace;
+
+import com.qreal.wmp.uitesting.Page;
+import com.qreal.wmp.uitesting.PageLoader;
+import com.qreal.wmp.uitesting.config.AppInit;
+import com.qreal.wmp.uitesting.dia.palette.Palette;
+import com.qreal.wmp.uitesting.dia.property.PropertyEditor;
+import com.qreal.wmp.uitesting.dia.scene.Scene;
+import com.qreal.wmp.uitesting.dia.scene.elements.Block;
+import com.qreal.wmp.uitesting.dia.scene.elements.Link;
+import com.qreal.wmp.uitesting.pages.EditorPage;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.support.AnnotationConfigContextLoader;
+
+import java.util.ArrayList;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = AppInit.class, loader = AnnotationConfigContextLoader.class)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+public class DiagramConstructingTest {
+
+    @Autowired
+    private PageLoader pageLoader;
+    
+    private Scene scene;
+
+    private PropertyEditor propertyEditor;
+
+    private ArrayList<Block> elements;
+    
+    private ArrayList<Link> links;
+    
+    /** Open editor page. */
+    @Before
+    public void openEditor() {
+        EditorPage editorPage = pageLoader.load(Page.EditorRobots);
+        scene = editorPage.getScene();
+        Palette palette = editorPage.getPalette();
+        propertyEditor = editorPage.getPropertyEditor();
+        
+        elements = new ArrayList<>();
+        links = new ArrayList<>();
+
+        elements.add(scene.dragAndDrop(palette.getElement("Initial Node"), 4, 4));
+        elements.add(scene.dragAndDrop(palette.getElement("Motors Forward"), 10, 4));
+        links.add(scene.addLink(elements.get(0), elements.get(1)));
+        elements.add(scene.dragAndDrop(palette.getElement("Painter Color"), 16, 4));
+        links.add(scene.addLink(elements.get(1), elements.get(2)));
+        elements.add(scene.dragAndDrop(palette.getElement("Timer"), 22, 4));
+        links.add(scene.addLink(elements.get(2), elements.get(3)));
+        elements.add(scene.dragAndDrop(palette.getElement("Final Node"), 28, 4));
+        links.add(scene.addLink(elements.get(3), elements.get(4)));
+    }
+
+    @Test
+    public void digramFiveNodes() {
+        assert allExist();
+    }
+
+    @Test
+    public void moveSomeNodes() {
+        elements.get(1).moveToCell(20, 20);
+        elements.get(0).moveToCell(20, 10);
+        elements.get(1).moveToCell(0, 20);
+        assert allExist();
+    }
+
+    @Test
+    public void fillProperties() {
+        propertyEditor.setProperty(elements.get(1).getInnerSeleniumElement(), "Power", "80");
+        assert propertyEditor.getProperty(elements.get(1).getInnerSeleniumElement(), "Power").equals("80");
+        propertyEditor.setProperty(elements.get(2).getInnerSeleniumElement(), "Color", "green");
+        assert propertyEditor.getProperty(elements.get(2).getInnerSeleniumElement(), "Color").equals("green");
+        propertyEditor.setProperty(elements.get(3).getInnerSeleniumElement(), "Delay", "200");
+        assert propertyEditor.getProperty(elements.get(3).getInnerSeleniumElement(), "Delay").equals("200");
+    }
+
+    /** Clean scene. */
+    @After
+    public void cleanScene() {
+        scene.clean();
+    }
+
+    private boolean allExist() {
+        return elements.stream().allMatch(scene::exist) && links.stream().anyMatch(scene::exist);
+    }
+
+}
