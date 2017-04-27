@@ -1,13 +1,14 @@
 package com.qreal.wmp.uitesting.pages;
 
-import com.qreal.wmp.uitesting.dia.pallete.Pallete;
+import com.qreal.wmp.uitesting.dia.palette.Palette;
 import com.qreal.wmp.uitesting.dia.property.PropertyEditor;
 import com.qreal.wmp.uitesting.dia.scene.Scene;
 import com.qreal.wmp.uitesting.headerpanel.EditorHeaderPanel;
 
 import static com.codeborne.selenide.Selenide.title;
 
-/** Describes Editor page of the WMP project.
+/**
+ * Describes Editor page of the WMP project.
  * Includes such components as Scene, Pallete and PropertyEditor.
  */
 public class EditorPage implements EventProvider.EventListener {
@@ -16,18 +17,18 @@ public class EditorPage implements EventProvider.EventListener {
     
     private final Scene scene;
     
-    private final Pallete pallete;
+    private final Palette palette;
     
     private final PropertyEditor propertyEditor;
     
     private final EditorHeaderPanel headerPanel;
     
     /** Describes page of the Editor and provides components. */
-    public EditorPage(String title, Scene scene, Pallete pallete, PropertyEditor propertyEditor,
+    public EditorPage(String title, Scene scene, Palette palette, PropertyEditor propertyEditor,
                       EditorHeaderPanel headerPanel) {
         this.title = title;
         this.scene = scene;
-        this.pallete = pallete;
+        this.palette = palette;
         this.propertyEditor = propertyEditor;
         this.headerPanel = headerPanel;
     }
@@ -36,8 +37,8 @@ public class EditorPage implements EventProvider.EventListener {
         return scene;
     }
     
-    public Pallete getPallete() {
-        return pallete;
+    public Palette getPalette() {
+        return palette;
     }
     
     public PropertyEditor getPropertyEditor() {

@@ -1,6 +1,6 @@
 package com.qreal.wmp.uitesting;
 
-import com.qreal.wmp.uitesting.dia.pallete.PalleteImpl;
+import com.qreal.wmp.uitesting.dia.palette.PaletteImpl;
 import com.qreal.wmp.uitesting.dia.property.PropertyEditorImpl;
 import com.qreal.wmp.uitesting.dia.scene.SceneImpl;
 import com.qreal.wmp.uitesting.headerpanel.EditorHeaderPanelImpl;
@@ -34,7 +34,7 @@ public class PageFactory {
         EditorPage page = new EditorPage(
                 title(),
                 SceneImpl.getScene(webDriver),
-                PalleteImpl.getPallete(),
+                PaletteImpl.getPalette(),
                 PropertyEditorImpl.getPropertyEditor(),
                 EditorHeaderPanelImpl.getEditorHeaderPanel(this, webDriver, eventProvider)
         );

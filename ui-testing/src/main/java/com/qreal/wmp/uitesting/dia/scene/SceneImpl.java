@@ -3,8 +3,8 @@ package com.qreal.wmp.uitesting.dia.scene;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import com.google.common.base.Predicate;
-import com.qreal.wmp.uitesting.dia.pallete.PalleteElement;
-import com.qreal.wmp.uitesting.dia.pallete.PalleteImpl;
+import com.qreal.wmp.uitesting.dia.palette.PaletteElement;
+import com.qreal.wmp.uitesting.dia.palette.PaletteImpl;
 import com.qreal.wmp.uitesting.dia.scene.elements.Block;
 import com.qreal.wmp.uitesting.dia.scene.elements.Link;
 import com.qreal.wmp.uitesting.dia.scene.elements.SceneElement;
@@ -29,13 +29,13 @@ import static com.codeborne.selenide.Selenide.$;
 
 /**
  * Describes Scene of Editor.
- * Can add rm and manipulate with objects on that area.
+ * Can add, rm and manipulate with objects on that area.
  */
 public class SceneImpl implements Scene, Resettable {
 
     public static final String SELECTOR = ".scene-wrapper";
 
-    private static final Logger logger = LoggerFactory.getLogger(PalleteImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(PaletteImpl.class);
     
     private final WebDriver webDriver;
     
@@ -61,13 +61,13 @@ public class SceneImpl implements Scene, Resettable {
     }
     
     @Override
-    public Block dragAndDrop(final PalleteElement element) {
-        element.getInner().dragAndDropTo(SELECTOR);
+    public Block dragAndDrop(final PaletteElement element) {
+        element.getInnerSeleniumELement().dragAndDropTo(SELECTOR);
         return blockProvider.getNewBlock();
     }
     
     @Override
-    public Block dragAndDrop(final PalleteElement element, int cellX, int cellY) {
+    public Block dragAndDrop(final PaletteElement element, int cellX, int cellY) {
         Block newBlock = dragAndDrop(element);
         blockProvider.moveToCell(newBlock, cellX, cellY);
         return newBlock;
@@ -168,5 +168,6 @@ public class SceneImpl implements Scene, Resettable {
                     assert webDriver != null;
                     return webDriver.findElements(sceneElement.getBy()).size() == 0;
                 });
+    
     }
 }
