@@ -111,7 +111,7 @@ export class DefaultDiagramNode implements DiagramNode {
         var bbox = cellView.getBBox();
         var newX = bbox.x + (<number> (bbox.width - 50) / 2);
         var newY = bbox.y + bbox.height - 50;
-        this.propertyEditElement.setPosition(newX, newY);
+        //this.propertyEditElement.setPosition(newX, newY);
 
         if (this.resizeParameters.isBottomResizing || this.resizeParameters.isRightResizing)
         {
@@ -137,12 +137,13 @@ export class DefaultDiagramNode implements DiagramNode {
     }
 
     public initPropertyEditElements(zoom: number): void {
-        var parentPosition = this.getJointObjectPagePosition(zoom);
+        return;
+        /*var parentPosition = this.getJointObjectPagePosition(zoom);
         this.propertyEditElement = new PropertyEditElement(this.logicalId, this.jointObject.id,
             this.changeableProperties);
         var propertyEditElementX = parentPosition.x + (<number> (this.boundingBox.width - 50) / 2);
         var propertyEditElementY = parentPosition.y + this.boundingBox.height - 50;
-        this.propertyEditElement.setPosition(propertyEditElementX, propertyEditElementY);
+        this.propertyEditElement.setPosition(propertyEditElementX, propertyEditElementY);*/
     }
 
     public getPropertyEditElement(): PropertyEditElement {
@@ -188,7 +189,7 @@ export class DefaultDiagramNode implements DiagramNode {
         var bbox = cellView.getBBox();
         var newX = bbox.x + (<number> (bbox.width - 50)/2);
         var newY = bbox.y + bbox.height - 50;
-        this.propertyEditElement.setPosition(newX, newY);
+        //this.propertyEditElement.setPosition(newX, newY);
     }
 
     public setSize(width: number, height: number, cellView : joint.dia.CellView): void {
@@ -197,7 +198,7 @@ export class DefaultDiagramNode implements DiagramNode {
         var bbox = cellView.getBBox();
         var newX = bbox.x + (<number> (bbox.width - 50)/2);
         var newY = bbox.y + bbox.height - 50;
-        this.propertyEditElement.setPosition(newX, newY);
+        //this.propertyEditElement.setPosition(newX, newY);
     }
 
     public setParentNode(parent: DiagramContainer, embedding?: Boolean): void {

@@ -205,10 +205,22 @@
     "categoriesNames": {
         "Events": "Events",
         "Gateways": "Gateways",
+        "Activities": "Activities",
         "Containers": "Containers"
     },
 
     "blocks": {
+
+        "None": {
+            "name": "None",
+            "image": {
+                "src": "images/bpmn/{0}.svg"
+            },
+            "subtypes": [
+                "Start",
+                "End"
+            ]
+        },
 
         "Message": {
             "name": "Message",
@@ -246,6 +258,29 @@
                     "Catch-non-interrupting"
                 ]
             }
+        },
+
+        "Task": {
+            "name": "Task",
+            "container": true,
+            "image": {
+                "isHidden": true,
+                "src": "images/bpmn/subprocess.svg"
+            },
+            "border": {
+                "stroke": "black",
+                "stroke-width": "5px",
+                "rx": "5px",
+                "ry": "5px"
+            },
+            "properties": [
+                {
+                    "key": "Text",
+                    "name": "Text",
+                    "type": "string",
+                    "value": ""
+                }
+            ]
         },
 
         "Subprocess": {
@@ -303,7 +338,6 @@
                     "type": "string",
                     "value": "Pool"
                 }
-
             ]
         },
 
@@ -338,7 +372,7 @@
         "Complex": {
             "name": "Complex",
             "image": {
-                "src": "images/bpmn/Complex-gateway.svg"
+                "src": "images/bpmn/complex-gateway.svg"
             }
         }
     }

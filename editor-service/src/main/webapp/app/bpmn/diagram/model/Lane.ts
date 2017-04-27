@@ -18,6 +18,13 @@ export class Lane extends DiagramContainer {
             border, id, notDefaultConstProperties);
         this.minWidth = minWidth;
         this.minHeight = minHeight;
+
+        this.getJointObject().on("change:size", (laneModel: joint.shapes.basic.Generic) =>
+            this.getParentNode().updateWidth(laneModel.getBBox().width));
+    }
+
+    public getParentNode(): Pool {
+        return (<Pool> super.getParentNode());
     }
 
     public isValidEmbedding(child: DiagramNode) {

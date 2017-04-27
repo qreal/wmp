@@ -10,15 +10,9 @@
 
     "blocks": {
         "Events": [
+            "None",
             "Message",
             "Timer"
-        ],
-
-        "Containers": [
-            "Subprocess",
-            "Lane",
-            "Pool",
-            "PoolText"
         ],
 
         "Gateways": [
@@ -27,6 +21,17 @@
             "Parallel",
             "Inclusive",
             "Complex"
+        ],
+
+        "Activities": [
+            "Task"
+        ],
+
+        "Containers": [
+            "Subprocess",
+            "Lane",
+            "Pool",
+            "PoolText"
         ]
     }
 }

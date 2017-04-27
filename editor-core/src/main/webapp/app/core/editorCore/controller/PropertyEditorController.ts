@@ -61,6 +61,16 @@ export class PropertyEditorController {
 
     public setProperty(key: string, value: string): void {
         var currentElement: DiagramElement = this.sceneController.getCurrentElement();
+        currentElement.getJointObject().attr("text", {
+            fill: '#000000',
+            text: value,
+            'font-size': 14,
+            'ref-x': .5,
+            'ref-y': .5,
+            'text-anchor': 'middle',
+            'y-alignment': 'middle',
+            'font-family': 'Arial, helvetica, sans-serif'
+        });
         var property: Property = currentElement.getChangeableProperties()[key];
         property.value = value;
         currentElement.setProperty(key, property);

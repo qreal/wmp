@@ -12,7 +12,7 @@ export class Pool extends DiagramContainer {
 
     constructor(name: string, type: string, x: number, y: number, width: number, height: number, properties: Map<String, Property>,
                 imagePath: string, border: any, id?: string, notDefaultConstProperties?: PropertiesPack) {
-        var minWidth = DefaultSize.DEFAULT_NODE_WIDTH * 1;
+        var minWidth = DefaultSize.DEFAULT_NODE_WIDTH * 2;
         var minHeight = DefaultSize.DEFAULT_NODE_HEIGHT * 2;
         super(name, type, x, y, Math.max(width, minWidth), Math.max(height, minHeight), properties, imagePath,
             border, id, notDefaultConstProperties);
@@ -46,12 +46,17 @@ export class Pool extends DiagramContainer {
         this.resize(this.getBBox().width, sumHeight);
 
         var curHeight = this.getBBox().y;
-        var leftBorder = this.getBBox().x + this.getBBox().width;
+        var leftBorder = this.getBBox().x + this.getBBox().width - DefaultSize.DEFAULT_NODE_WIDTH;
         for (var i in lanes) {
             lanes[i].getJointObject().translate(leftBorder - lanes[i].getBBox().x, curHeight - lanes[i].getBBox().y);
             lanes[i].resize(maxWidth, lanes[i].getBBox().height);
             curHeight += lanes[i].getBBox().height;
         }
+    }
+
+    public updateWidth(newWidth: number) {
+        this.childrenNodes.forEach((lane: Lane) => lane.resize(newWidth, lane.getBBox().height));
+        this.update();
     }
 
     public isValidEmbedding(child: DiagramNode) {

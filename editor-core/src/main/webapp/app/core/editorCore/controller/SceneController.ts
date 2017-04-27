@@ -358,6 +358,7 @@ export class SceneController {
     }
 
     private selectElement(jointObject): void {
+        jointObject.toFront({deep: true});
         var jQueryEl = this.scene.findViewByModel(jointObject).$el;
         var oldClasses = jQueryEl.attr('class');
         jQueryEl.attr('class', oldClasses + ' selected');
@@ -459,7 +460,7 @@ export class SceneController {
         var cells: joint.dia.Element[] = this.diagramEditorController.getGraph().get('cells');
         cells.forEach((cell: joint.dia.Element) => {
             if (checker && !checker(cell))
-                return false;
+                return;
 
             var mXBegin = cell.getBBox().x;
             var mYBegin = cell.getBBox().y;
