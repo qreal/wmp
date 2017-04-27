@@ -3,7 +3,7 @@ package com.qreal.wmp.uitesting.innertests;
 import com.qreal.wmp.uitesting.Page;
 import com.qreal.wmp.uitesting.PageLoader;
 import com.qreal.wmp.uitesting.config.AppInit;
-import com.qreal.wmp.uitesting.dia.pallete.Pallete;
+import com.qreal.wmp.uitesting.dia.palette.Palette;
 import com.qreal.wmp.uitesting.dia.property.PropertyEditor;
 import com.qreal.wmp.uitesting.dia.scene.Scene;
 import com.qreal.wmp.uitesting.dia.scene.elements.Block;
@@ -32,7 +32,7 @@ public class ManipulatingDiagramTest {
     @Autowired
     private PageLoader pageLoader;
     
-    private Pallete pallete;
+    private Palette palette;
 
     private Scene scene;
 
@@ -43,21 +43,21 @@ public class ManipulatingDiagramTest {
     public void openEditor() {
         EditorPage editorPage = pageLoader.load(Page.EditorRobots);
         scene = editorPage.getScene();
-        pallete = editorPage.getPallete();
+        palette = editorPage.getPalette();
         propertyEditor = editorPage.getPropertyEditor();
     }
 
-    /** Drag element from pallete and drop on the scene. */
+    /** Drag element from palette and drop on the scene. */
     @Test
     public void dragAndDrop() {
-        final Block initialNode = scene.dragAndDrop(pallete.getElement("Initial Node"));
+        final Block initialNode = scene.dragAndDrop(palette.getElement("Initial Node"));
         assert scene.exist(initialNode);
     }
 
     /** Remove element from scene. */
     @Test
     public void remove() {
-        final Block sceneElement = scene.dragAndDrop(pallete.getElement("Initial Node"));
+        final Block sceneElement = scene.dragAndDrop(palette.getElement("Initial Node"));
         assert scene.exist(sceneElement);
         try {
             scene.remove(sceneElement);
@@ -70,9 +70,9 @@ public class ManipulatingDiagramTest {
     /** Add two elements and link them. */
     @Test
     public void addLink() {
-        final Block initNode = scene.dragAndDrop(pallete.getElement("Initial Node"), 4, 4);
-        final Block finalNode = scene.dragAndDrop(pallete.getElement("Final Node"), 4, 70);
-        final Block motor = scene.dragAndDrop(pallete.getElement("Motors Forward"), 4, 7);
+        final Block initNode = scene.dragAndDrop(palette.getElement("Initial Node"), 4, 4);
+        final Block finalNode = scene.dragAndDrop(palette.getElement("Final Node"), 4, 70);
+        final Block motor = scene.dragAndDrop(palette.getElement("Motors Forward"), 4, 7);
         Link link = scene.addLink(initNode, motor);
         Link link2 = scene.addLink(motor, finalNode);
         motor.moveToCell(72, 64);
@@ -83,7 +83,7 @@ public class ManipulatingDiagramTest {
     /** Set property 'Ports' of motor forward item to '123' and checks that all is correct. */
     @Test
     public void propertyEditor() {
-        final Block motor = scene.dragAndDrop(pallete.getElement("Motors Forward"));
+        final Block motor = scene.dragAndDrop(palette.getElement("Motors Forward"));
         propertyEditor.setProperty(motor.getInnerSeleniumElement(), "Ports", "123");
         assert propertyEditor.getProperty(motor.getInnerSeleniumElement(), "Ports").equals("123");
     }
@@ -91,7 +91,7 @@ public class ManipulatingDiagramTest {
     /** Move element to cell. */
     @Test
     public void moveElement() {
-        final Block motor = scene.dragAndDrop(pallete.getElement("Motors Forward"));
+        final Block motor = scene.dragAndDrop(palette.getElement("Motors Forward"));
         try {
             motor.moveToCell(40, 40);
             assert motor.getCoordinateOnScene().getXCell() == 40 && motor.getCoordinateOnScene().getYCell() == 40;

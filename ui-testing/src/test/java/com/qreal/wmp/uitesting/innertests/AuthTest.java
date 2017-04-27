@@ -23,12 +23,16 @@ import static com.codeborne.selenide.Selenide.$;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class AuthTest {
 
+    private static final String WRONG_LOGIN = "lbltfn16vup5boj7o1ju";
+    
+    private static final String WRONG_PASSWORD = "8epo7li9uq5vs3wujpm4";
+    
     @Autowired
     private Auther auther;
 
     @Autowired
     private Opener opener;
-
+    
     /**
      * Try to login with correct username and password.
      * Should redirect to OAuth page.
@@ -53,11 +57,8 @@ public class AuthTest {
     public void authWrongTest() {
         opener.cleanOpen("auth");
         assert inAuthPage();
-        final char[] alphabet = "abcdefghijklmnopqrstuvwxyz0123456789".toCharArray();
-        final String wrongLogin = RandomStringUtils.random(20, alphabet);
-        final String wrongPassword = RandomStringUtils.random(20, alphabet);
         try {
-            auther.auth(wrongLogin, wrongPassword);
+            auther.auth(WRONG_LOGIN, WRONG_PASSWORD);
         } catch (WrongAuthException e) {
             System.err.println(e.getMessage());
         }
@@ -110,5 +111,14 @@ public class AuthTest {
      */
     private boolean inAuthPage() {
         return  $(byText("Sign in to continue to Auth")).exists();
+    }
+    
+    /** To generate random login and password. */
+    public static void main(String[] args) {
+        final char[] alphabet = "abcdefghijklmnopqrstuvwxyz0123456789".toCharArray();
+        final String wrongLogin = RandomStringUtils.random(20, alphabet);
+        final String wrongPassword = RandomStringUtils.random(20, alphabet);
+        System.out.println(wrongLogin);
+        System.out.println(wrongPassword);
     }
 }

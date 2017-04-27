@@ -1,23 +1,23 @@
 package com.qreal.wmp.uitesting.pages;
 
-import com.qreal.wmp.uitesting.dia.pallete.Pallete;
+import com.qreal.wmp.uitesting.dia.palette.Palette;
 import com.qreal.wmp.uitesting.dia.property.PropertyEditor;
 import com.qreal.wmp.uitesting.dia.scene.Scene;
 
 /** Describes Editor page of the WMP project.
- * Includes such components as Scene, Pallete and PropertyEditor.
+ * Includes such components as Scene, Palette and PropertyEditor.
  */
 public class EditorPage {
     
     private final Scene scene;
     
-    private final Pallete pallete;
+    private final Palette palette;
     
     private final PropertyEditor propertyEditor;
     
-    public EditorPage(Scene scene, Pallete pallete, PropertyEditor propertyEditor) {
+    public EditorPage(Scene scene, Palette palette, PropertyEditor propertyEditor) {
         this.scene = scene;
-        this.pallete = pallete;
+        this.palette = palette;
         this.propertyEditor = propertyEditor;
     }
     
@@ -25,8 +25,8 @@ public class EditorPage {
         return scene;
     }
     
-    public Pallete getPallete() {
-        return pallete;
+    public Palette getPalette() {
+        return palette;
     }
     
     public PropertyEditor getPropertyEditor() {
