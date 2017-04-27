@@ -3,7 +3,7 @@ package com.qreal.wmp.uitesting.innertests;
 import com.qreal.wmp.uitesting.Page;
 import com.qreal.wmp.uitesting.PageLoader;
 import com.qreal.wmp.uitesting.config.AppInit;
-import com.qreal.wmp.uitesting.dia.pallete.Pallete;
+import com.qreal.wmp.uitesting.dia.palette.Palette;
 import com.qreal.wmp.uitesting.dia.scene.Scene;
 import com.qreal.wmp.uitesting.dia.scene.elements.Block;
 import com.qreal.wmp.uitesting.dia.scene.elements.Link;
@@ -25,14 +25,14 @@ import java.util.List;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = AppInit.class, loader = AnnotationConfigContextLoader.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-public class SaveOpenDiaTest {
+public class SaveOpenDiagramTest {
     
     @Autowired
     private PageLoader pageLoader;
     
     private Scene scene;
     
-    private Pallete pallete;
+    private Palette palette;
     
     private EditorHeaderPanel headerPanel;
     
@@ -49,7 +49,7 @@ public class SaveOpenDiaTest {
     public void openEditor() {
         EditorPage editorPage = pageLoader.load(Page.EditorRobots);
         scene = editorPage.getScene();
-        pallete = editorPage.getPallete();
+        palette = editorPage.getPalette();
         headerPanel = editorPage.getHeaderPanel();
         addElements();
         diagram = RandomStringUtils.random(10, alphabet);
@@ -97,10 +97,10 @@ public class SaveOpenDiaTest {
     private void addElements() {
         elements.clear();
         links.clear();
-        elements.add(scene.dragAndDrop(pallete.getElement("Initial Node"), 4, 4));
-        elements.add(scene.dragAndDrop(pallete.getElement("Motors Forward"), 10, 4));
+        elements.add(scene.dragAndDrop(palette.getElement("Initial Node"), 4, 4));
+        elements.add(scene.dragAndDrop(palette.getElement("Motors Forward"), 10, 4));
         links.add(scene.addLink(elements.get(0), elements.get(1)));
-        elements.add(scene.dragAndDrop(pallete.getElement("Painter Color"), 16, 4));
+        elements.add(scene.dragAndDrop(palette.getElement("Painter Color"), 16, 4));
         links.add(scene.addLink(elements.get(1), elements.get(2)));
     }
 }

@@ -1,6 +1,6 @@
 package com.qreal.wmp.uitesting.dia.scene;
 
-import com.qreal.wmp.uitesting.dia.pallete.PalleteElement;
+import com.qreal.wmp.uitesting.dia.palette.PaletteElement;
 import com.qreal.wmp.uitesting.dia.scene.elements.Block;
 import com.qreal.wmp.uitesting.dia.scene.elements.Link;
 import com.qreal.wmp.uitesting.dia.scene.elements.SceneElement;
@@ -51,13 +51,13 @@ public class SceneProxy implements Scene {
     
     /** {@inheritDoc} */
     @Override
-    public Block dragAndDrop(PalleteElement palleteElement) {
-        return scene.dragAndDrop(palleteElement);
+    public Block dragAndDrop(PaletteElement paletteElement) {
+        return scene.dragAndDrop(paletteElement);
     }
     
     /** {@inheritDoc} */
     @Override
-    public Block dragAndDrop(PalleteElement element, int cellX, int cellY) {
+    public Block dragAndDrop(PaletteElement element, int cellX, int cellY) {
         return scene.dragAndDrop(element, cellX, cellY);
     }
     

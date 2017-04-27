@@ -3,7 +3,7 @@ package com.qreal.wmp.uitesting.testspace;
 import com.qreal.wmp.uitesting.Page;
 import com.qreal.wmp.uitesting.PageLoader;
 import com.qreal.wmp.uitesting.config.AppInit;
-import com.qreal.wmp.uitesting.dia.pallete.Pallete;
+import com.qreal.wmp.uitesting.dia.palette.Palette;
 import com.qreal.wmp.uitesting.dia.property.PropertyEditor;
 import com.qreal.wmp.uitesting.dia.scene.Scene;
 import com.qreal.wmp.uitesting.dia.scene.elements.Block;
@@ -42,20 +42,20 @@ public class DiagramConstructingTest {
     public void openEditor() {
         EditorPage editorPage = pageLoader.load(Page.EditorRobots);
         scene = editorPage.getScene();
-        Pallete pallete = editorPage.getPallete();
+        Palette palette = editorPage.getPalette();
         propertyEditor = editorPage.getPropertyEditor();
         
         elements = new ArrayList<>();
         links = new ArrayList<>();
 
-        elements.add(scene.dragAndDrop(pallete.getElement("Initial Node"), 4, 4));
-        elements.add(scene.dragAndDrop(pallete.getElement("Motors Forward"), 10, 4));
+        elements.add(scene.dragAndDrop(palette.getElement("Initial Node"), 4, 4));
+        elements.add(scene.dragAndDrop(palette.getElement("Motors Forward"), 10, 4));
         links.add(scene.addLink(elements.get(0), elements.get(1)));
-        elements.add(scene.dragAndDrop(pallete.getElement("Painter Color"), 16, 4));
+        elements.add(scene.dragAndDrop(palette.getElement("Painter Color"), 16, 4));
         links.add(scene.addLink(elements.get(1), elements.get(2)));
-        elements.add(scene.dragAndDrop(pallete.getElement("Timer"), 22, 4));
+        elements.add(scene.dragAndDrop(palette.getElement("Timer"), 22, 4));
         links.add(scene.addLink(elements.get(2), elements.get(3)));
-        elements.add(scene.dragAndDrop(pallete.getElement("Final Node"), 28, 4));
+        elements.add(scene.dragAndDrop(palette.getElement("Final Node"), 28, 4));
         links.add(scene.addLink(elements.get(3), elements.get(4)));
     }
 

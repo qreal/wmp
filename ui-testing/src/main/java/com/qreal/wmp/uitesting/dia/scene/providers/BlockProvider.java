@@ -42,7 +42,8 @@ public class BlockProvider {
     public void moveToCell(final Block block, final int cellX, final int cellY) {
         logger.info("Move element {} to cell ({}, {})", block, cellX, cellY);
         try {
-            sceneWindow.move(block, new Coordinate(cellX * 25, cellY * 25));
+            sceneWindow.move(block,
+                    new Coordinate(cellX * Coordinate.POINT_IN_CELL, cellY * Coordinate.POINT_IN_CELL));
         } catch (ElementNotOnTheSceneException e) {
             logger.error("It is impossible to move element, which is not on the Scene");
         }

@@ -6,8 +6,10 @@ import org.openqa.selenium.By;
 
 import static com.codeborne.selenide.Selenide.$;
 
-/** Describes item, which is placed on the scene.
- * Pallete have items. If we dragAndDrop these items to the Scene, we'll get Blocks. */
+/**
+ * Describes item, which is placed on the scene.
+ * Palette have items. If we dragAndDrop these items to the Scene, we'll get Blocks.
+ */
 public class Block extends SceneElementImpl {
     
     private final String name;

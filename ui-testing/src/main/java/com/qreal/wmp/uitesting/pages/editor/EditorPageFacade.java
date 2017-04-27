@@ -3,7 +3,7 @@ package com.qreal.wmp.uitesting.pages.editor;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
-import com.qreal.wmp.uitesting.dia.pallete.Pallete;
+import com.qreal.wmp.uitesting.dia.palette.Palette;
 import com.qreal.wmp.uitesting.dia.property.PropertyEditor;
 import com.qreal.wmp.uitesting.dia.scene.SceneProxy;
 import com.qreal.wmp.uitesting.dia.scene.elements.Block;
@@ -26,7 +26,7 @@ public class EditorPageFacade {
 
     private SceneProxy scene;
     
-    private Pallete pallete;
+    private Palette palette;
     
     private PropertyEditor propertyEditor;
     
@@ -40,7 +40,7 @@ public class EditorPageFacade {
         
         this.url = url;
         this.scene = scene;
-        this.pallete = pallete;
+        this.palette = palette;
         this.propertyEditor = propertyEditor;
         this.selectorService = selectorService;
     }
@@ -54,8 +54,8 @@ public class EditorPageFacade {
         this.scene = scene;
     }
     
-    public void setPallete(Pallete pallete) {
-        this.pallete = pallete;
+    public void setPallete(Palette pallete) {
+        this.palette = palette;
     }
     
     public void setPropertyEditor(PropertyEditor propertyEditor) {

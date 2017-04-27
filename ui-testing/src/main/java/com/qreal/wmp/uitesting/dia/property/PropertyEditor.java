@@ -3,8 +3,10 @@ package com.qreal.wmp.uitesting.dia.property;
 import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.NoSuchElementException;
 
-/** Describe Property Editor.
- * When block is clicked, it could be configured by Property Editor. */
+/**
+ * Describe Property Editor.
+ * When block is clicked, it could be configured by Property Editor.
+ */
 public interface PropertyEditor {
     /** Set property of element which on the focus. */
     void setProperty(SelenideElement element, String propertyName, String propertyValue) throws NoSuchElementException;
