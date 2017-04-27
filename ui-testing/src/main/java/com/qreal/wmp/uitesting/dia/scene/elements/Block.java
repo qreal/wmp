@@ -18,6 +18,7 @@ public class Block extends SceneElementImpl {
     
     private final EditorPageFacade editorPageFacade;
     
+    /** Part of diagram. Appears when element from palette moves to scene. */
     public Block(String name, By selector, EditorPageFacade editorPageFacade, SelectorService selectorService) {
         super(selector);
         this.name = name;

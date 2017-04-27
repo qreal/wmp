@@ -34,12 +34,12 @@ public class SelectorServiceImpl implements SelectorService {
     }
     
     private JsonElement find(String element) {
-        String[] parts = element.split(".");
+        String[] parts = element.split("\\.");
         JsonElement tmp = config;
         for (int i = 0; i < parts.length - 1; ++i) {
             tmp = tmp.getAsJsonObject().get(parts[i]);
         }
-       return element.contains(".")
+        return parts.length > 0
                 ? tmp.getAsJsonObject().get(parts[parts.length - 1])
                 : tmp.getAsJsonObject().get(element);
     }

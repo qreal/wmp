@@ -75,6 +75,7 @@ public class BlockProvider {
         return blocks.isEmpty();
     }
     
+    /** Scans scene and updates set of blocks. */
     public void recalculateBlocks() {
         blocks = $$(selectorService.get(Attribute.SELECTOR)).stream()
                 .filter(x -> x.attr("class").contains(selectorService.get("block", Attribute.CLASS)))

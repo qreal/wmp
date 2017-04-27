@@ -32,8 +32,10 @@ public class SceneProxy implements Scene {
     private SceneProxy(WebDriver driver, EditorPageFacade editorPageFacade, SelectorService selectorService) {
         SelectorService sceneSelectorService = selectorService.create("scene");
         sceneWindow = SceneWindowImpl.getSceneWindow(driver);
-        blockProvider = BlockProvider.getBlockProvider(sceneWindow, editorPageFacade, sceneSelectorService.create("poolOfElements"));
-        linkProvider = LinkProvider.getLinkProvider(driver, editorPageFacade, sceneSelectorService.create("poolOfElements"));
+        blockProvider = BlockProvider
+                .getBlockProvider(sceneWindow, editorPageFacade, sceneSelectorService.create("poolOfElements"));
+        linkProvider = LinkProvider
+                .getLinkProvider(driver, editorPageFacade, sceneSelectorService.create("poolOfElements"));
         scene = new DefaultScene(driver, sceneWindow, blockProvider, linkProvider, sceneSelectorService);
     }
     

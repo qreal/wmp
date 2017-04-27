@@ -22,6 +22,7 @@ public class Link extends SceneElementImpl {
     @SuppressWarnings({"all"})
     private final EditorPageFacade editorPageFacade;
     
+    @SuppressWarnings({"all"})
     private final SelectorService selectorService;
     
     /** Describes link between two blocks. */

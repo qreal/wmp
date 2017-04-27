@@ -24,6 +24,7 @@ public class ConfigsMerger {
         this.env = env;
     }
     
+    /** Generates one config file from all which are used. */
     public JsonObject generateCommonConfig() {
         String path = getFolderPath(System.getProperty("user.dir")) + "/" + env.getProperty("selectorConfig");
         try {

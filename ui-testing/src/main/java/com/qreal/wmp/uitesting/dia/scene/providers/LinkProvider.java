@@ -56,8 +56,7 @@ public class LinkProvider {
     
     /** Add link between two blocks. */
     public Link addLink(final Block source, final Block target) {
-        final SelenideElement begin = $(By.cssSelector(selectorService.get(Attribute.SELECTOR) + " #" +
-                source.getInnerSeleniumElement().attr("id") + " .outPorts"));
+        final SelenideElement begin = $(By.cssSelector(source.getInnerSeleniumElement().attr("id") + " .outPorts"));
         logger.info("Begin element {}, end element {} ", begin, target);
         new Actions(webDriver)
                 .release()
@@ -75,6 +74,7 @@ public class LinkProvider {
         return res;
     }
     
+    /** Scans scene and updates set of links. */
     public void recalculateLinks() {
         links = $$(By.cssSelector(selectorService.get(Attribute.SELECTOR))).stream()
                 .filter(x -> x.attr("class").contains(selectorService.get("link", Attribute.CLASS)))

@@ -32,9 +32,10 @@ public class EditorPageFacade {
     
     private SelectorService selectorService;
     
+    /** Facade for commands to EditorPage. */
     public EditorPageFacade(String url,
                             SceneProxy scene,
-                            Pallete pallete,
+                            Palette palette,
                             PropertyEditor propertyEditor,
                             SelectorService selectorService) {
         
