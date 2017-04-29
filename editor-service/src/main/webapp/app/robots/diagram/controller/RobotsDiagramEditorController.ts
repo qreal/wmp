@@ -6,6 +6,7 @@ import {Interpreter} from "../../interpreter/Interpreter";
 import {ElementTypes} from "core/editorCore/model/ElementTypes";
 import {DiagramScene} from "core/editorCore/model/DiagramScene";
 import {DiagramEditorController} from "core/editorCore/controller/DiagramEditorController";
+import {SelectorService} from "core/editorCore/service/SelectorService";
 export class RobotsDiagramEditorController extends DiagramEditorController {
 
     private menuController: DiagramMenuController;
@@ -15,9 +16,9 @@ export class RobotsDiagramEditorController extends DiagramEditorController {
     static $$ngIsClass: boolean;
 
 
-    constructor($scope, $attrs) {
+    constructor($scope, $attrs, selectorService: SelectorService) {
         super($scope, $attrs);
-
+        selectorService.printLog();
         var scene: DiagramScene = this.diagramEditor.getScene();
         this.menuController = new DiagramMenuController(this);
         this.gesturesController = new GesturesController(this.sceneController, this.diagramEditor.getScene());

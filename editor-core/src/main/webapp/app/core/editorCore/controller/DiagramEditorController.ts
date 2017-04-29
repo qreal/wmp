@@ -13,8 +13,8 @@ import {SceneController} from "./SceneController";
 import {DiagramEditor} from "../model/DiagramEditor";
 import {DiagramElementListener} from "./DiagramElementListener";
 import {PaletteController} from "./PaletteController";
-export class DiagramEditorController {
 
+export class DiagramEditorController {
     protected diagramEditor: DiagramEditor;
     protected sceneController: SceneController;
     protected propertyEditorController: PropertyEditorController;

@@ -125,6 +125,11 @@ declare module "core/editorCore/view/StringPropertyView" {
         constructor(nodeId: string, propertyKey: string, property: Property);
     }
 }
+declare module "core/editorCore/service/SelectorService" {
+    export class SelectorService {
+        printLog(): void;
+    }
+}
 declare module "core/editorCore/controller/PropertyViewFactory" {
     import { HtmlView } from "core/editorCore/view/HtmlView";
     import { Property } from "core/editorCore/model/Property";
