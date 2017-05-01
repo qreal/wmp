@@ -9,7 +9,6 @@ import com.qreal.wmp.uitesting.services.SelectorService;
 import com.qreal.wmp.uitesting.services.impl.AutherImpl;
 import com.qreal.wmp.uitesting.services.impl.OpenerImpl;
 import com.qreal.wmp.uitesting.services.impl.SelectorServiceImpl;
-import com.qreal.wmp.uitesting.utils.ConfigsMerger;
 import io.github.bonigarcia.wdm.ChromeDriverManager;
 import org.openqa.selenium.UnexpectedAlertBehaviour;
 import org.openqa.selenium.WebDriver;
@@ -22,6 +21,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.env.Environment;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.concurrent.TimeUnit;
 
@@ -75,6 +75,7 @@ public class DevConfig {
     
     @Bean
     public SelectorService selectorService() {
-        return SelectorServiceImpl.getFirstSelectorService(new ConfigsMerger(environment));
+        String jsonString = new RestTemplate().getForObject("http://localhost:8081/selectors/all", String.class);
+        return SelectorServiceImpl.getFirstSelectorService(jsonString);
     }
 }

@@ -1,12 +1,14 @@
 package com.qreal.wmp.uitesting.innertests;
 
+import com.codeborne.selenide.Condition;
 import com.qreal.wmp.uitesting.config.AppInit;
 import com.qreal.wmp.uitesting.exceptions.WrongAuthException;
 import com.qreal.wmp.uitesting.services.Auther;
 import com.qreal.wmp.uitesting.services.Opener;
-import org.apache.commons.lang3.RandomStringUtils;
+import com.qreal.wmp.uitesting.services.SelectorService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.openqa.selenium.By;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
@@ -33,6 +35,9 @@ public class AuthTest {
     @Autowired
     private Opener opener;
     
+    @Autowired
+    private SelectorService selectorService;
+    
     /**
      * Try to login with correct username and password.
      * Should redirect to OAuth page.
@@ -56,19 +61,22 @@ public class AuthTest {
     @Test
     public void authWrongTest() {
         opener.cleanOpen("auth");
+        assert !$(By.id(selectorService.get("authform.wrongAuthLabel", SelectorService.Attribute.ID)))
+                .isDisplayed();
         assert inAuthPage();
         try {
             auther.auth(WRONG_LOGIN, WRONG_PASSWORD);
         } catch (WrongAuthException e) {
             System.err.println(e.getMessage());
         }
-        $(byText("Password or login wrong")).waitUntil(appear, 5000);
+        $(By.id(selectorService.get("authform.wrongAuthLabel", SelectorService.Attribute.ID)))
+                .waitUntil(Condition.visible, 5000);
     }
 
     /**
      * Try to open dashboard page without authentication.
      * Should be redirected to auth page.
-     * Try to open dashboard page with correct login and password.
+     * Try to open dashboard page with correct login and password..
      */
     @Test
     public void dashboardTest() {
@@ -110,15 +118,7 @@ public class AuthTest {
      * @return true if it is
      */
     private boolean inAuthPage() {
-        return  $(byText("Sign in to continue to Auth")).exists();
-    }
-    
-    /** To generate random login and password. */
-    public static void main(String[] args) {
-        final char[] alphabet = "abcdefghijklmnopqrstuvwxyz0123456789".toCharArray();
-        final String wrongLogin = RandomStringUtils.random(20, alphabet);
-        final String wrongPassword = RandomStringUtils.random(20, alphabet);
-        System.out.println(wrongLogin);
-        System.out.println(wrongPassword);
+        return  $(By.id(selectorService.get("authform.usernameInput", SelectorService.Attribute.ID)))
+                .isDisplayed();
     }
 }

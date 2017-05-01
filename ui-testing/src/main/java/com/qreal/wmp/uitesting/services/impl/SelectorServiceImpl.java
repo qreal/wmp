@@ -1,8 +1,8 @@
 package com.qreal.wmp.uitesting.services.impl;
 
 import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 import com.qreal.wmp.uitesting.services.SelectorService;
-import com.qreal.wmp.uitesting.utils.ConfigsMerger;
 import org.jetbrains.annotations.Contract;
 
 public class SelectorServiceImpl implements SelectorService {
@@ -29,8 +29,8 @@ public class SelectorServiceImpl implements SelectorService {
     }
     
     @Contract("_ -> !null")
-    public static SelectorService getFirstSelectorService(ConfigsMerger merger) {
-        return new SelectorServiceImpl(merger.generateCommonConfig());
+    public static SelectorService getFirstSelectorService(String jsonString) {
+        return new SelectorServiceImpl(new JsonParser().parse(jsonString));
     }
     
     private JsonElement find(String element) {

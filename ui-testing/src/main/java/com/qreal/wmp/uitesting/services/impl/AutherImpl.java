@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
 
-import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 
@@ -31,10 +30,10 @@ public class AutherImpl implements Auther {
     /** {@inheritDoc} */
     public void auth(final String username, final String password) throws WrongAuthException {
         open(env.getProperty("auth"));
-        $(By.name(selectorService.get("usernameInput", Attribute.NAME))).setValue(username);
-        $(By.name(selectorService.get("passwordInput", Attribute.NAME))).setValue(password);
-        $("[type=" + selectorService.get("submitButton", Attribute.TYPE) + "]").click();
-        if ($(byText(selectorService.get("wrongAuthLabel", Attribute.TEXT))).exists()) {
+        $(By.id(selectorService.get("usernameInput", Attribute.ID))).setValue(username);
+        $(By.id(selectorService.get("passwordInput", Attribute.ID))).setValue(password);
+        $(By.id(selectorService.get("submitButton", Attribute.ID))).click();
+        if ($(By.id(selectorService.get("wrongAuthLabel", Attribute.ID))).isDisplayed()) {
             throw new WrongAuthException(username, password);
         }
         logger.info("Authentication with login: {} and password: {}", username, password);

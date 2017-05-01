@@ -1,16 +1,16 @@
 {
   "authform": {
     "usernameInput" : {
-      "name" : "username"
+      "id" : "usernameInputFormAuthForm"
     },
     "passwordInput" : {
-      "name" : "password"
+      "id" : "passwordInputFormAuthForm"
     },
     "submitButton" : {
-      "type" : "submit"
+      "id" : "submitAuthForm"
     },
     "wrongAuthLabel" : {
-      "text" : "Password or login wrong"
+      "id" : "WrongAuth"
     }
   },
   "dashboard" : {},

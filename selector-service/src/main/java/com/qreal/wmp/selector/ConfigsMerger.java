@@ -1,32 +1,33 @@
-package com.qreal.wmp.uitesting.utils;
+package com.qreal.wmp.selector;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.env.Environment;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.stereotype.Component;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.Arrays;
 import java.util.Map;
 
+@Component
+@PropertySource("classpath:application.properties")
 public class ConfigsMerger {
     
     private static final Logger logger = LoggerFactory.getLogger(ConfigsMerger.class);
     
-    private final Environment env;
-    
     private final JsonParser parser = new JsonParser();
     
-    public ConfigsMerger(Environment env) {
-        this.env = env;
-    }
+    @Value("${selectorConfig}")
+    private String configFile;
     
     /** Generates one config file from all which are used. */
     public JsonObject generateCommonConfig() {
-        String path = getFolderPath(System.getProperty("user.dir")) + "/" + env.getProperty("selectorConfig");
+        String path = getClass().getClassLoader().getResource(configFile).getPath();
         try {
             JsonElement jsonElement = parser.parse(new FileReader(path));
             JsonObject initialConfig = jsonElement.getAsJsonObject();
