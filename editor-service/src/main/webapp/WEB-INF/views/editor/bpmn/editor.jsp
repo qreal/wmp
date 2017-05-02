@@ -3,6 +3,8 @@
 <head>
     <title>BPMN diagram editor</title>
 
+    <input type="hidden" id="selectorsTmp" value='${selectors}'/>
+
     <jsp:include page="../../include/properties.jsp" flush="true"/>
     <jsp:include page="../../include/scripts.jsp" flush="true"/>
 

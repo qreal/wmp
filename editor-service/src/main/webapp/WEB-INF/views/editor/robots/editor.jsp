@@ -3,6 +3,8 @@
 <head>
     <title>Robots diagram editor</title>
 
+    <input type="hidden" id="selectorsTmp" value='${selectors}'/>
+
     <jsp:include page="../../include/properties.jsp" flush="true"/>
     <jsp:include page="../../include/scripts.jsp" flush="true"/>
 
@@ -18,6 +20,7 @@
     <link rel="stylesheet" href="<c:url value='/resources/css/2dmodel/2dmodel.css' />"/>
     <link rel="stylesheet" href="<c:url value='/resources/css/contex-menu/context-menu.css' />"/>
     <link rel="stylesheet" href="<c:url value='/resources/css/base/base.css' />"/>
+
 </head>
 
 <body ng-controller="RootDiagramController">

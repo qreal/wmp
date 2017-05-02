@@ -128,6 +128,7 @@ declare module "core/editorCore/view/StringPropertyView" {
 declare module "core/editorCore/service/SelectorService" {
     export class SelectorService {
         printLog(): void;
+        constructor(selectos: string);
     }
 }
 declare module "core/editorCore/controller/PropertyViewFactory" {

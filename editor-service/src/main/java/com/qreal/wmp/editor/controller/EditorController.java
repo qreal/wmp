@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
@@ -34,13 +35,17 @@ public class EditorController {
     @RequestMapping(value = "/robots", method = RequestMethod.GET)
     public ModelAndView robotsIndex() {
         logger.info("User {} requested robots editor", AuthenticatedUser.getUserName());
-        return new ModelAndView("editor/robots/editor");
+        ModelAndView modelAndView = new ModelAndView("editor/robots/editor");
+        modelAndView.getModel().put("selectors", getConfig("/editor/robots"));
+        return modelAndView;
     }
 
     @RequestMapping(value = "/bpmn", method = RequestMethod.GET)
     public ModelAndView bpmnIndex() {
         logger.info("User {} requested bpmn editor", AuthenticatedUser.getUserName());
-        return new ModelAndView("editor/bpmn/editor");
+        ModelAndView modelAndView = new ModelAndView("editor/bpmn/editor");
+        modelAndView.getModel().put("selectors", getConfig("/editor/bpmn"));
+        return modelAndView;
     }
 
     @ResponseBody
@@ -48,5 +53,9 @@ public class EditorController {
     public JsonNode getTypes(@RequestParam(value = "kit") String kit,
                              @RequestParam(value = "task") String task) throws IOException {
         return typesLoader.getTypesJson(task);
+    }
+    
+    private static String getConfig(String page) {
+        return new RestTemplate().getForObject("http://localhost:8081/selectors" + page, String.class);
     }
 }
