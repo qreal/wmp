@@ -1,3 +1,9 @@
+<%@ page import="org.codehaus.jettison.json.JSONObject" %>
+
+<%
+    JSONObject selectors = new JSONObject(request.getAttribute("selectors").toString());
+%>
+
 <!-- Main area -->
 <div id="main-editor-area" class="row unselectable">
     <div id="editor-and-property-editor-area" class="col-md-10 content-col">
@@ -5,7 +11,8 @@
             <div id="property-editor-area" class="col-md-3 content-col">
                 <div id="diagram-property-editor">
                     <legend style="padding: 10px">Property Editor</legend>
-                    <table class="table table-condensed" id="property_table">
+                    <table class="table table-condensed" name="property_table"
+                           id="<%=selectors.getJSONObject("propertyEditor").getString("id")%>">
                         <thead>
                         <tr>
                             <th>Property</th>

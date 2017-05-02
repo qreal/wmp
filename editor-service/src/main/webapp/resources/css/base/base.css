@@ -102,7 +102,7 @@ body{
     background: #ffffff url('/editor/images/bg/bg.png');
 }
 
-#property_table {
+table[name="property_table"] {
     width: 100%;
 }
 

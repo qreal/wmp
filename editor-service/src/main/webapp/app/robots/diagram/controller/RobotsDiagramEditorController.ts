@@ -17,8 +17,7 @@ export class RobotsDiagramEditorController extends DiagramEditorController {
 
 
     constructor($scope, $attrs, selectorService: SelectorService) {
-        super($scope, $attrs);
-        selectorService.printLog();
+        super($scope, $attrs, selectorService.getSelectors());
         var scene: DiagramScene = this.diagramEditor.getScene();
         this.menuController = new DiagramMenuController(this);
         this.gesturesController = new GesturesController(this.sceneController, this.diagramEditor.getScene());

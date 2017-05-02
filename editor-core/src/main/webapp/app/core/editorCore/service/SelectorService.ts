@@ -6,7 +6,7 @@ export class SelectorService {
         this.selectors = selectors;
     }
 
-    public printLog() : void {
-        console.log(this.selectors);
+    public getSelectors() : any {
+        return JSON.parse(this.selectors);
     }
 }

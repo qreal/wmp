@@ -6,6 +6,7 @@ import {DiagramScene} from "core/editorCore/model/DiagramScene";
 import {DiagramEditorController} from "core/editorCore/controller/DiagramEditorController";
 import app = require("../../../require/app");
 import {Interpreter} from "../../../robots/interpreter/Interpreter";
+import {SelectorService} from "core/editorCore/service/SelectorService";
 export class BpmnDiagramEditorController extends DiagramEditorController {
 
     private menuController: DiagramMenuController;
@@ -14,8 +15,8 @@ export class BpmnDiagramEditorController extends DiagramEditorController {
     //Hack for firefox
     static $$ngIsClass: boolean;
 
-    constructor($scope, $attrs) {
-        super($scope, $attrs);
+    constructor($scope, $attrs, selectorService : SelectorService) {
+        super($scope, $attrs, selectorService.getSelectors());
 
         var scene: DiagramScene = this.diagramEditor.getScene();
         this.menuController = new DiagramMenuController(this);

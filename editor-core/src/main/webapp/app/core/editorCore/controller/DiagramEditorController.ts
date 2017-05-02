@@ -24,8 +24,9 @@ export class DiagramEditorController {
     protected linkPatternsMap: Map<String, joint.dia.Link>;
     protected undoRedoController: UndoRedoController;
     protected elementTypes: ElementTypes;
+    protected selectorService: any;
 
-    constructor($scope, $attrs) {
+    constructor($scope, $attrs, selectorService) {
         this.undoRedoController = new UndoRedoController();
         this.nodeTypesMap = new Map<String, NodeType>();
         this.linkPatternsMap = new Map<String, joint.dia.Link>();
@@ -50,6 +51,7 @@ export class DiagramEditorController {
                 $(".custom-menu").hide(100);
             }
         });
+        this.selectorService = selectorService;
     }
 
     public getGraph(): joint.dia.Graph {
@@ -112,7 +114,11 @@ export class DiagramEditorController {
     }
 
     protected handleLoadedTypes(elementTypes: ElementTypes): void {
-        this.propertyEditorController = new PropertyEditorController(this.sceneController, this.undoRedoController);
+        this.propertyEditorController = new PropertyEditorController(
+            this.sceneController,
+            this.undoRedoController,
+            this.selectorService.propertyEditor
+        );
 
         this.elementTypes = elementTypes;
 
