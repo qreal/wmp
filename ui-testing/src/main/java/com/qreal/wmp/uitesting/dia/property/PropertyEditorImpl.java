@@ -1,14 +1,13 @@
 package com.qreal.wmp.uitesting.dia.property;
 
 import com.codeborne.selenide.SelenideElement;
+import com.qreal.wmp.uitesting.services.SelectorService;
+import com.qreal.wmp.uitesting.services.SelectorService.Attribute;
+import org.jetbrains.annotations.Contract;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.List;
-import java.util.OptionalInt;
-import java.util.stream.IntStream;
 
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
@@ -19,6 +18,12 @@ public class PropertyEditorImpl implements PropertyEditor {
     private static final String SELECTOR = "#property_table";
 
     private static final Logger logger = LoggerFactory.getLogger(PropertyEditorImpl.class);
+    
+    private final SelectorService selectorService;
+    
+    public PropertyEditorImpl(SelectorService selectorService) {
+        this.selectorService = selectorService;
+    }
     
     /** {@inheritDoc} */
     public void setProperty(final SelenideElement element, final String propertyName, final String propertyValue)
@@ -47,21 +52,19 @@ public class PropertyEditorImpl implements PropertyEditor {
         }
     }
 
-    public static PropertyEditor getPropertyEditor() {
-        return new PropertyEditorImpl();
+    @Contract("_ -> !null")
+    public static PropertyEditor getPropertyEditor(SelectorService selectorService) {
+        return new PropertyEditorImpl(selectorService);
     }
     
     /** To set/get property we need to take web element which describes needed field. */
     private SelenideElement getInputOfElement(final String propertyName) {
-        final List<SelenideElement> allChilds = $$(By.cssSelector(SELECTOR + " tbody > * > *"));
-        final OptionalInt indexOfNeeded = IntStream.range(0, allChilds.size())
-                .filter(index -> allChilds.get(index).getText().contains(propertyName))
-                .findFirst();
-        if (!indexOfNeeded.isPresent()) {
-            throw new NoSuchElementException("There is no property with name " + propertyName);
-        }
-        return $(By.cssSelector(SELECTOR + " tbody > *:nth-of-type("
-                + (indexOfNeeded.getAsInt() / 2 + 1)
-                + ") > *:nth-of-type(2) > *" ));
+          return $$(By.cssSelector(selectorService.get("property", Attribute.SELECTOR)))
+                .stream()
+                .filter(property ->
+                        property.find(selectorService.get("property.propertyName", Attribute.SELECTOR)).exists()
+                ).map(property -> property.find(selectorService.get("property.propertyValue", Attribute.SELECTOR)))
+                .findFirst()
+                .orElseThrow(() -> new NoSuchElementException("There is no property with name " + propertyName));
     }
 }

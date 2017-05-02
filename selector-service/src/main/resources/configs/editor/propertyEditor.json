@@ -1,3 +1,12 @@
 {
-  "id" : "property_table"
+  "id" : "property_table",
+  "property" : {
+    "selector" : "#property_table .property",
+    "propertyName" : {
+      "selector" : "#property_table .property [data-name=\"propertyName\"]"
+    },
+    "propertyValue" : {
+      "selector" : "#property_table .property [data-name=\"propertyValue\"]"
+    }
+  }
 }

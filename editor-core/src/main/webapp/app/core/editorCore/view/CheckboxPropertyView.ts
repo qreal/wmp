@@ -7,9 +7,9 @@ export class CheckboxPropertyView extends HtmlView {
 
     private template: string = '' +
         '<tr class="property">' +
-        '   <td class="vert-align">{0}</td>' +
+        '   <td class="vert-align" data-name="propertyName">{0}</td>' +
         '   <td class="vert-align">' +
-        '       <div id="{1}" class="checkbox" data-type="{2}" data-true="{3}" data-false="{4}">' +
+        '       <div data-name="propertyValue" id="{1}" class="checkbox" data-type="{2}" data-true="{3}" data-false="{4}">' +
         '           <label class="active"><input type="checkbox" {5}>{6}</label>' +
         '       </div>' +
         '   </td>' +

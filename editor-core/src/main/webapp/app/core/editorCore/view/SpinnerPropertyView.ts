@@ -5,9 +5,9 @@ export class SpinnerPropertyView extends HtmlView {
 
     private template: string = '' +
         '<tr class="property">' +
-        '   <td class="vert-align">{0}</td>' +
+        '   <td class="vert-align" data-name="propertyName">{0}</td>' +
         '   <td class="vert-align">' +
-        '       <input id="{1}" type="number" data-type="{2}" class="spinner" value="{3}">' +
+        '       <input data-name="propertyValue" id="{1}" type="number" data-type="{2}" class="spinner" value="{3}">' +
         '   </td>' +
         '</tr>';
 

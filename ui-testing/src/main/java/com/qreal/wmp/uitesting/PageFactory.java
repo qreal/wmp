@@ -73,7 +73,7 @@ public class PageFactory {
         return new DefaultEditorPage(
                 SceneProxy.getSceneProxy(webDriver, editorPageFacade, selectorService),
                 PaletteImpl.getPalette(),
-                PropertyEditorImpl.getPropertyEditor(),
+                PropertyEditorImpl.getPropertyEditor(selectorService.create("propertyEditor")),
                 EditorHeaderPanelImpl.getEditorHeaderPanel(this, webDriver, editorPageFacade)
         );
     }
