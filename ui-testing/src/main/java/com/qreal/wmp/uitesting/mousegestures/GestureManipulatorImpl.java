@@ -3,10 +3,10 @@ package com.qreal.wmp.uitesting.mousegestures;
 import com.codeborne.selenide.SelenideElement;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.qreal.wmp.uitesting.dia.scene.SceneProxy;
 import com.qreal.wmp.uitesting.dia.scene.elements.Block;
 import com.qreal.wmp.uitesting.dia.scene.elements.Link;
 import com.qreal.wmp.uitesting.pages.editor.EditorPageFacade;
+import com.qreal.wmp.uitesting.services.SelectorService;
 import org.jetbrains.annotations.Contract;
 import org.openqa.selenium.By;
 import org.slf4j.Logger;
@@ -51,7 +51,7 @@ public class GestureManipulatorImpl implements GestureManipulator {
     @Override
     public Block draw(String name) {
         pageFacade.update();
-        SelenideElement element = $(By.cssSelector(SceneProxy.SELECTOR));
+        SelenideElement element = $(By.className(pageFacade.getEditorPageSelectors().get("scene", SelectorService.Attribute.CLASS)));
         int sizeHor = Double.valueOf($(By.id("SceneWindowHorSize")).innerHtml()).intValue();
         int sizeVer = Double.valueOf($(By.id("SceneWindowVerSize")).innerHtml()).intValue();
         Point screenCoordinate = new Point(

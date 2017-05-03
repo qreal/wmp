@@ -13,7 +13,6 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 
-import static com.codeborne.selenide.Selectors.withText;
 import static com.codeborne.selenide.Selenide.$;
 
 /** {@inheritDoc} */
@@ -37,7 +36,7 @@ public class EditorHeaderPanelImpl implements EditorHeaderPanel {
             EditorPageFacade editorPageFacade,
             SelectorService selectorService) {
         
-        service = new DiagramStoreService();
+        service = new DiagramStoreService(editorPageFacade, selectorService);
         fileItem = new FileItem(webDriver, selectorService);
         this.pageFactory = pageFactory;
         this.editorPageFacade = editorPageFacade;

@@ -2,8 +2,9 @@ package com.qreal.wmp.uitesting.headerpanel;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
-import com.qreal.wmp.uitesting.dia.scene.SceneProxy;
 import com.qreal.wmp.uitesting.headerpanel.folderwindow.FolderAreaImpl;
+import com.qreal.wmp.uitesting.pages.editor.EditorPageFacade;
+import com.qreal.wmp.uitesting.services.SelectorService;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -26,17 +27,27 @@ public class DiagramStoreService {
     
     private final Map<String, Element> diagrams = new HashMap<>();
     
-    private final By sceneSelector = By.cssSelector(SceneProxy.SELECTOR);
+    private final By sceneSelector;
+    
+    private final SelectorService selectorService;
     
     private String lastKnownKey;
     
+    public DiagramStoreService(EditorPageFacade facade, SelectorService selectorService) {
+        this.selectorService = selectorService;
+        sceneSelector = By.className(facade.getEditorPageSelectors().get("scene", SelectorService.Attribute.CLASS));
+    }
+    
+    
     /** Saves diagram. */
     public void saveDiagram(String key) {
-        SelenideElement element = $(By.cssSelector(".saving-menu")).find(By.cssSelector(":nth-child(2)"));
+        SelenideElement element =
+                $(By.id(selectorService.get("savingMenu.savingInput", SelectorService.Attribute.ID)));
         element.setValue(getFilename(key));
         diagrams.put(key, prepareElement(Jsoup.parseBodyFragment($(sceneSelector).innerHtml()).body()));
-        $(By.id("saving")).click();
-        $(By.id("saving")).shouldBe(Condition.disappear);
+        $(By.id(selectorService.get("savingMenu.savingItem", SelectorService.Attribute.ID))).click();
+        $(By.id(selectorService.get("savingMenu.savingItem", SelectorService.Attribute.ID)))
+                .shouldBe(Condition.disappear);
         lastKnownKey = key;
     }
     

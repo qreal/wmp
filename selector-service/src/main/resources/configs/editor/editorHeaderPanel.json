@@ -22,14 +22,19 @@
   "saveDiagramConfirmWindow" : {
     "id" : "confirm-save-diagram",
     "confirm" : {
-      "id" : "confirmSaveDiagramYes",
+      "id" : "confirmSaveDiagramYes"
     },
     "cancel" : {
-      "id" : "confirmSaveDiagramNo",
+      "id" : "confirmSaveDiagramNo"
     }
   },
-  "savingMenu" : ".saving-menu :nth-child(2)",
-  "savingItem" : {
-    "id" : "saving"
+  "savingMenu" : {
+    "id" : "saving-menu",
+    "savingInput" : {
+      "id" : "savingMenuInput"
+    },
+    "savingItem" : {
+      "id" : "saving"
+    }
   }
 }

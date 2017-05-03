@@ -107,4 +107,8 @@ public class EditorPageFacade {
     public void reload() {
         Selenide.open(url);
     }
+    
+    public SelectorService getEditorPageSelectors() {
+        return selectorService;
+    }
 }

@@ -19,8 +19,6 @@ import java.util.List;
 /** Provides Scene interface and getters to its components. */
 public class SceneProxy implements Scene {
     
-    public static final String SELECTOR = ".scene-wrapper";
-    
     private final BlockProvider blockProvider;
     
     private final LinkProvider linkProvider;

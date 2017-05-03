@@ -87,7 +87,8 @@
                     <ul class="folder-table">
                     </ul>
                 </div>
-                <div class="saving-menu">
+                <div id="<%=selectors.getJSONObject("editorHeaderPanel").getJSONObject("savingMenu").getString("id")%>"
+                     class="saving-menu">
                 </div>
             </div>
             <div class="modal-footer">

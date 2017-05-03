@@ -2,7 +2,6 @@
 /// <reference path="../../../../resources/thrift/struct/Diagram_types.d.ts" />
 /// <reference path="../../../../resources/thrift/editor/EditorServiceThrift.d.ts" />
 /// <reference path="../../../types/thrift/Thrift.d.ts" />
-
 import {DiagramMenuElement} from "../model/DiagramMenuElement";
 import {MouseButton} from "../../constants/MouseButton";
 import {Folder} from "../model/Folder";
@@ -112,16 +111,19 @@ export class DiagramMenuController {
         var menuManager = this;
         this.clearSavingMenu();
 
-        $('.saving-menu').append("<b>Input diagram name</b><input type:text>");
-        $('#diagrams .modal-footer').prepend("<button id='saving' type='button' class='btn btn-success'>Save</button>");
+        $('#' + this.selectorService.savingMenu.id).append("<b>Input diagram name</b>" +
+            `<input id='${this.selectorService.savingMenu.savingInput.id}' type:text>`);
+        $('#diagrams .modal-footer')
+            .prepend(`<button id='${this.selectorService.savingMenu.savingItem.id}' type='button' class='btn btn-success'>Save</button>`);
 
-        $('#saving').click(function() {
-            menuManager.clearWarning('.saving-menu p');
-            var diagramName: string = $('.saving-menu input:text').val();
+        $('#' + this.selectorService.savingMenu.savingItem.id).click(function() {
+            menuManager.clearWarning('#' + menuManager.getSelectors().savingMenu.id + ' p');
+            var diagramName: string = $('#' + menuManager.getSelectors().savingMenu.id + ' input:text').val();
             if (diagramName === "") {
-                menuManager.writeWarning("Empty name", '.saving-menu');
+                menuManager.writeWarning("Empty name", '#' + menuManager.getSelectors().savingMenu.id);
             } else if (menuManager.currentFolder.isDiagramExists(diagramName)) {
-                menuManager.writeWarning("The diagram with this name already exists", '.saving-menu');
+                menuManager
+                    .writeWarning("The diagram with this name already exists", '#' + menuManager.getSelectors().savingMenu.id);
             } else {
                 menuManager.saveDiagramInDatabase(diagramName);
             }
@@ -133,6 +135,10 @@ export class DiagramMenuController {
         this.currentDiagramName = "";
         this.currentDiagramFolder = null;
         this.selectedElement = null;
+    }
+
+    public getSelectors(): any {
+        return this.selectorService;
     }
 
     private showFolderMenu(): void {
@@ -263,8 +269,8 @@ export class DiagramMenuController {
     }
 
     private clearSavingMenu(): void {
-        $('.saving-menu').empty();
-        $('.modal-footer #saving').remove();
+        $('#' + this.selectorService.savingMenu.id).empty();
+        $('.modal-footer #' + this.selectorService.savingMenu.savingItem.id).remove();
     }
 
     private clearFolderMenu(): void {
