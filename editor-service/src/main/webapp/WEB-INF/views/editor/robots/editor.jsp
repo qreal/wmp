@@ -4,6 +4,7 @@
     <title>Robots diagram editor</title>
 
     <input type="hidden" id="selectorsTmp" value='${selectors}'/>
+    <%JSONObject selectors = new JSONObject(request.getAttribute("selectors").toString());%>
 
     <jsp:include page="../../include/properties.jsp" flush="true"/>
     <jsp:include page="../../include/scripts.jsp" flush="true"/>

@@ -5,6 +5,7 @@ import com.qreal.wmp.uitesting.headerpanel.folderwindow.FileItem;
 import com.qreal.wmp.uitesting.headerpanel.folderwindow.FolderArea;
 import com.qreal.wmp.uitesting.pages.DashboardPage;
 import com.qreal.wmp.uitesting.pages.editor.EditorPageFacade;
+import com.qreal.wmp.uitesting.services.SelectorService;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
@@ -18,8 +19,6 @@ import static com.codeborne.selenide.Selenide.$;
 /** {@inheritDoc} */
 public class EditorHeaderPanelImpl implements EditorHeaderPanel {
     
-    public static final By selector = By.id("main-toolbar-area");
-    
     private static final Logger logger = LoggerFactory.getLogger(EditorHeaderPanel.class);
     
     private final FileItem fileItem;
@@ -30,16 +29,24 @@ public class EditorHeaderPanelImpl implements EditorHeaderPanel {
     
     private final EditorPageFacade editorPageFacade;
     
-    private EditorHeaderPanelImpl(PageFactory pageFactory, WebDriver webDriver, EditorPageFacade editorPageFacade) {
+    private final SelectorService selectorService;
+    
+    private EditorHeaderPanelImpl(
+            PageFactory pageFactory,
+            WebDriver webDriver,
+            EditorPageFacade editorPageFacade,
+            SelectorService selectorService) {
+        
         service = new DiagramStoreService();
-        fileItem = new FileItem(webDriver);
+        fileItem = new FileItem(webDriver, selectorService);
         this.pageFactory = pageFactory;
         this.editorPageFacade = editorPageFacade;
+        this.selectorService = selectorService;
     }
 
     @Override
     public DashboardPage toDashboard() {
-        $(selector).find(withText("Dashboard")).click();
+        $(By.id(selectorService.get("dashboardButton", SelectorService.Attribute.ID))).click();
         logger.info("Open dashboard");
         return pageFactory.getDashboardPage();
     }
@@ -89,12 +96,14 @@ public class EditorHeaderPanelImpl implements EditorHeaderPanel {
     
     public static EditorHeaderPanel getEditorHeaderPanel(PageFactory pageFactory,
                                                          WebDriver driver,
-                                                         EditorPageFacade editorPageFacade) {
-        return new EditorHeaderPanelImpl(pageFactory, driver, editorPageFacade);
+                                                         EditorPageFacade editorPageFacade,
+                                                         SelectorService selectorService) {
+        
+        return new EditorHeaderPanelImpl(pageFactory, driver, editorPageFacade, selectorService);
     }
     
     private FileItem clickFile() {
-        $(FileItem.selector).click();
+        $(By.id(selectorService.get("fileItem", SelectorService.Attribute.ID))).click();
         return fileItem;
     }
     

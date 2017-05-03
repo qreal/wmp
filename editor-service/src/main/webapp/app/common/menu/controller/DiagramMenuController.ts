@@ -24,14 +24,16 @@ export class DiagramMenuController {
     private currentFolder: Folder;
     private contextMenuId = "open-diagram-context-menu";
     private selectedElement: DiagramMenuElement;
+    private selectorService: any;
 
-    constructor(diagramEditorController: DiagramEditorController) {
+    constructor(diagramEditorController: DiagramEditorController, selectorService: any) {
         this.diagramEditorController = diagramEditorController;
         this.diagramThriftExporter = new DiagramThriftExporter();
         this.diagramThriftParser = new DiagramThriftParser();
         this.currentDiagramName = "";
         this.currentDiagramFolder = null;
         this.canBeDeleted = false;
+        this.selectorService = selectorService;
 
         var menuManager = this;
         var folderTree;
@@ -56,7 +58,7 @@ export class DiagramMenuController {
     }
 
     public createNewDiagram(): void {
-        $('#confirm-save-diagram').modal('show');
+        $('#' + this.selectorService.saveDiagramConfirmWindow.id).modal('show');
     }
 
     public openFolderWindow(): void {

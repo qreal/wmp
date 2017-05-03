@@ -1,6 +1,8 @@
 package com.qreal.wmp.uitesting.headerpanel.folderwindow;
 
 import com.codeborne.selenide.Condition;
+import com.qreal.wmp.uitesting.services.SelectorService;
+import com.qreal.wmp.uitesting.services.SelectorService.Attribute;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
@@ -12,26 +14,27 @@ public class SaveDiagramConfirm {
 
     private final WebDriver driver;
     
-    public static final By selector = By.id("confirm-save-diagram");
+    private final SelectorService selectorService;
     
-    public SaveDiagramConfirm(WebDriver driver) {
+    public SaveDiagramConfirm(WebDriver driver, SelectorService selectorService) {
         this.driver = driver;
+        this.selectorService = selectorService;
     }
     
     /** 'No' button. */
     public void notSave() {
-        $(selector).find(withText("No")).click();
-        $(selector).shouldBe(Condition.disappear);
+        $(By.id(selectorService.get("cancel", Attribute.ID))).click();
+        $(By.id(selectorService.get(Attribute.ID))).shouldBe(Condition.disappear);
     }
     
     /** 'Yes' button. */
     public FolderArea save() {
-        $(selector).find(withText("Yes")).click();
-        $(selector).shouldBe(Condition.disappear);
+        $(By.id(selectorService.get("confirm", Attribute.ID))).click();
+        $(By.id(selectorService.get(Attribute.ID))).shouldBe(Condition.disappear);
         return new FolderAreaImpl(driver);
     }
     
-    public static SaveDiagramConfirm getSaveDiagramConfirm(WebDriver driver) {
-        return new SaveDiagramConfirm(driver);
+    public static SaveDiagramConfirm getSaveDiagramConfirm(WebDriver driver, SelectorService selectorService) {
+        return new SaveDiagramConfirm(driver, selectorService);
     }
 }

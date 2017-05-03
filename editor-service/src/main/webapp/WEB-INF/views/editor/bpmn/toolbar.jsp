@@ -1,3 +1,5 @@
+<%JSONObject headerPanelSelector = selectors.getJSONObject("editorHeaderPanel"); %>
+
 <!-- Context menu in File->'Open diagram' window -->
 <ul id="open-diagram-context-menu" class='custom-menu'>
     <li data-action="delete">Delete</li>
@@ -18,17 +20,23 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="<c:url value="${dashboardService}"/>">Dashboard</a>
+            <a id="<%=headerPanelSelector.getJSONObject("dashboardItem").getString("id")%>"
+               class="navbar-brand" href="<c:url value="${dashboardService}"/>">Dashboard</a>
         </div>
         <div class="navbar-collapse collapse">
             <ul id="tool-buttons-left-area" class="nav navbar-nav">
-                <li id="file-menu" class="dropdown">
+                <% JSONObject fileItemSelector = headerPanelSelector.getJSONObject("fileItem"); %>
+                <li id="<%=fileItemSelector.getString("id")%>" class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">File<b class="caret"></b></a>
                     <ul class="dropdown-menu">
-                        <li><a href="" role="menuitem" tabindex="-1" ng-click="createNewDiagram()">New</a></li>
-                        <li><a href="" role="menuitem" tabindex="-1" ng-click="openFolderWindow()">Open</a></li>
-                        <li><a href="" role="menuitem" tabindex="-1" ng-click="saveCurrentDiagram()">Save</a></li>
-                        <li><a href="" role="menuitem" tabindex="-1" ng-click="saveDiagramAs()">SaveAs</a></li>
+                        <li><a id="<%=fileItemSelector.getJSONObject("newDiagramItem").getString("id")%>"
+                               href="" role="menuitem" tabindex="-1" ng-click="createNewDiagram()">New</a></li>
+                        <li><a id="<%=fileItemSelector.getJSONObject("openItem").getString("id")%>"
+                               href="" role="menuitem" tabindex="-1" ng-click="openFolderWindow()">Open</a></li>
+                        <li><a id="<%=fileItemSelector.getJSONObject("saveItem").getString("id")%>"
+                               href="" role="menuitem" tabindex="-1" ng-click="saveCurrentDiagram()">Save</a></li>
+                        <li><a id="<%=fileItemSelector.getJSONObject("saveAsItem").getString("id")%>"
+                               href="" role="menuitem" tabindex="-1" ng-click="saveDiagramAs()">SaveAs</a></li>
                     </ul>
                 </li>
                 <li>

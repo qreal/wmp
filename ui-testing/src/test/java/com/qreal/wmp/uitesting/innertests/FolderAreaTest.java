@@ -40,7 +40,7 @@ public class FolderAreaTest {
     
     private Scene scene;
     
-    private Palette pallete;
+    private Palette palette;
 
     private EditorHeaderPanel headerPanel;
     
@@ -50,7 +50,7 @@ public class FolderAreaTest {
     public void openEditor() {
         EditorPage editorPage = pageLoader.load(Page.EditorRobots);
         scene = editorPage.getScene();
-        pallete = editorPage.getPalette();
+        palette = editorPage.getPalette();
         headerPanel = editorPage.getHeaderPanel();
     }
 
@@ -60,10 +60,10 @@ public class FolderAreaTest {
         List<Block> elements = new ArrayList<>();
         List<Link> links = new ArrayList<>();
 
-        elements.add(scene.dragAndDrop(pallete.getElement("Initial Node"), 4, 4));
-        elements.add(scene.dragAndDrop(pallete.getElement("Motors Forward"), 10, 4));
+        elements.add(scene.dragAndDrop(palette.getElement("Initial Node"), 4, 4));
+        elements.add(scene.dragAndDrop(palette.getElement("Motors Forward"), 10, 4));
         links.add(scene.addLink(elements.get(0), elements.get(1)));
-        elements.add(scene.dragAndDrop(pallete.getElement("Painter Color"), 16, 4));
+        elements.add(scene.dragAndDrop(palette.getElement("Painter Color"), 16, 4));
         links.add(scene.addLink(elements.get(1), elements.get(2)));
 
         headerPanel.newDiagram();

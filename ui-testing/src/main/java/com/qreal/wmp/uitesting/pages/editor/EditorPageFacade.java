@@ -55,7 +55,7 @@ public class EditorPageFacade {
         this.scene = scene;
     }
     
-    public void setPallete(Palette pallete) {
+    public void setPallete(Palette palette) {
         this.palette = palette;
     }
     

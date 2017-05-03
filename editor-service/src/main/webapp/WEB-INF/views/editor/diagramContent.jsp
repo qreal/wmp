@@ -1,9 +1,5 @@
 <%@ page import="org.codehaus.jettison.json.JSONObject" %>
 
-<%
-    JSONObject selectors = new JSONObject(request.getAttribute("selectors").toString());
-%>
-
 <!-- Main area -->
 <div id="main-editor-area" class="row unselectable">
     <div id="editor-and-property-editor-area" class="col-md-10 content-col">
@@ -102,8 +98,12 @@
 </div>
 
 <!-- Save confirmation window on creating new diagram -->
-<div id="confirm-save-diagram" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-     aria-hidden="true">
+<% JSONObject saveConfirmSelector = selectors
+        .getJSONObject("editorHeaderPanel")
+        .getJSONObject("saveDiagramConfirmWindow"); %>
+
+<div id="<%=saveConfirmSelector.getString("id")%>"
+     class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -114,8 +114,10 @@
                 <p>Do you want to save current diagram?</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" id="saveAfterCreate" data-dismiss="modal">Yes</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clearAll()">No</button>
+                <button id="<%=saveConfirmSelector.getJSONObject("confirm").getString("id")%>"
+                        type="button" class="btn btn-default" id="saveAfterCreate" data-dismiss="modal">Yes</button>
+                <button id="<%=saveConfirmSelector.getJSONObject("cancel").getString("id")%>"
+                        type="button" class="btn btn-default" data-dismiss="modal" ng-click="clearAll()">No</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
             </div>
         </div>

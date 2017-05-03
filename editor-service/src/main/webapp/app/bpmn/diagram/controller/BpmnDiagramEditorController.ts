@@ -19,7 +19,7 @@ export class BpmnDiagramEditorController extends DiagramEditorController {
         super($scope, $attrs, selectorService.getSelectors());
 
         var scene: DiagramScene = this.diagramEditor.getScene();
-        this.menuController = new DiagramMenuController(this);
+        this.menuController = new DiagramMenuController(this, selectorService.getSelectors());
         this.gesturesController = new GesturesController(this.sceneController, this.diagramEditor.getScene());
         this.diagramInterpreter = new Interpreter();
 

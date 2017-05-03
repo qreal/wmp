@@ -72,9 +72,13 @@ public class PageFactory {
     private EditorPage getDefaultEditorPage(EditorPageFacade editorPageFacade, SelectorService selectorService) {
         return new DefaultEditorPage(
                 SceneProxy.getSceneProxy(webDriver, editorPageFacade, selectorService),
-                PaletteImpl.getPalette(),
+                PaletteImpl.getPalette(selectorService.create("palette")),
                 PropertyEditorImpl.getPropertyEditor(selectorService.create("propertyEditor")),
-                EditorHeaderPanelImpl.getEditorHeaderPanel(this, webDriver, editorPageFacade)
-        );
+                EditorHeaderPanelImpl.getEditorHeaderPanel(
+                        this,
+                        webDriver,
+                        editorPageFacade,
+                        selectorService.create("editorHeaderPanel")
+                ));
     }
 }
