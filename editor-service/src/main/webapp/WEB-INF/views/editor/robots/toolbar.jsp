@@ -9,7 +9,7 @@
 </ul>
 
 <!-- Scene's elements context menu -->
-<ul id="scene-context-menu" class='custom-menu'>
+<ul id="<%=selectors.getJSONObject("scene").getJSONObject("contextMenu").getString("id")%>" class='custom-menu'>
     <li data-action="delete">Delete</li>
 </ul>
 

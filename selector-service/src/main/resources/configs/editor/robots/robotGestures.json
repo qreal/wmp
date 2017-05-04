@@ -1,5 +1,5 @@
 {
   "gesturesMenu" : {
-    "class" : "gestures-menu"
+    "id" : "gestures-menu"
   }
 }

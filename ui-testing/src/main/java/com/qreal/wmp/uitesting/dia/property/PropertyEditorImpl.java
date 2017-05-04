@@ -15,8 +15,6 @@ import static com.codeborne.selenide.Selenide.$$;
 /** {@inheritDoc} */
 public class PropertyEditorImpl implements PropertyEditor {
 
-    private static final String SELECTOR = "#property_table";
-
     private static final Logger logger = LoggerFactory.getLogger(PropertyEditorImpl.class);
     
     private final SelectorService selectorService;
@@ -41,7 +39,7 @@ public class PropertyEditorImpl implements PropertyEditor {
     
     /** {@inheritDoc} */
     public String getProperty(final SelenideElement element, final String propertyName) throws NoSuchElementException {
-        $(By.cssSelector(SELECTOR)).click();
+        $(By.id(selectorService.get(Attribute.ID))).click();
         element.click();
         SelenideElement property = getInputOfElement(propertyName);
         logger.info("Get value of preperty {}", propertyName);

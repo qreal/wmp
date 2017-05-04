@@ -28,13 +28,12 @@ public class SceneProxy implements Scene {
     private final Scene scene;
     
     private SceneProxy(WebDriver driver, EditorPageFacade editorPageFacade, SelectorService selectorService) {
-        SelectorService sceneSelectorService = selectorService.create("scene");
-        sceneWindow = SceneWindowImpl.getSceneWindow(driver);
+        sceneWindow = SceneWindowImpl.getSceneWindow(driver, selectorService);
         blockProvider = BlockProvider
-                .getBlockProvider(sceneWindow, editorPageFacade, sceneSelectorService.create("poolOfElements"));
+                .getBlockProvider(sceneWindow, editorPageFacade, selectorService.create("poolOfElements"));
         linkProvider = LinkProvider
-                .getLinkProvider(driver, editorPageFacade, sceneSelectorService.create("poolOfElements"));
-        scene = new DefaultScene(driver, sceneWindow, blockProvider, linkProvider, sceneSelectorService);
+                .getLinkProvider(driver, editorPageFacade, selectorService.create("poolOfElements"));
+        scene = new DefaultScene(driver, sceneWindow, blockProvider, linkProvider, selectorService);
     }
     
     public BlockProvider getBlockProvider() {

@@ -28,9 +28,10 @@ export class SceneController {
     private lastCellScrollPosition: {x: number, y: number};
     private lastCellMouseDownSize: {width: number, height: number};
     private paperCommandFactory: SceneCommandFactory;
-    private contextMenuId = "scene-context-menu";
+    private contextMenuId;
+    private selectorService : any;
 
-    constructor(diagramEditorController: DiagramEditorController, paper: DiagramScene) {
+    constructor(diagramEditorController: DiagramEditorController, paper: DiagramScene, selectorService: any) {
         this.diagramEditorController = diagramEditorController;
         this.undoRedoController = diagramEditorController.getUndoRedoController();
         this.scene = paper;
@@ -41,6 +42,8 @@ export class SceneController {
         this.lastCellMouseDownPosition = { x: 0, y: 0 };
         this.lastCellMouseDownSize = { width: 0, height: 0 };
         this.lastCellScrollPosition = { x: 0, y: 0 };
+        this.contextMenuId = selectorService.contextMenu.id;
+        this.selectorService = selectorService;
 
         this.scene.on('cell:pointerdown', (cellView, event, x, y): void => {
             this.cellPointerdownListener(cellView, event, x, y);
@@ -169,6 +172,7 @@ export class SceneController {
 
         var contextMenu = new ContextMenu();
         var menuDiv = document.createElement("div");
+        menuDiv.id = this.selectorService.gestures.gesturesMenu.id;
         menuDiv.className = "gestures-menu";
         menuDiv.style.left = event.x + "px";
         menuDiv.style.top = event.y + "px";
@@ -421,7 +425,7 @@ export class SceneController {
     }
 
     private checkBorder(element: DiagramElement, cellView, event) : void {
-        var sceneWrapper: HTMLDivElement = <HTMLDivElement> $(".scene-wrapper")[0];
+        var sceneWrapper: HTMLDivElement = <HTMLDivElement> $('#' + this.selectorService.id)[0];
         var boundingBox: any = sceneWrapper.getBoundingClientRect();
 
         var node = this.scene.getNodeById(cellView.model.id);
@@ -475,7 +479,7 @@ export class SceneController {
     }
 
     private scrollRight(node: DiagramNode, event, cellView) : void {
-        var sceneWrapper : HTMLDivElement = (<HTMLDivElement> $(".scene-wrapper")[0]);
+        var sceneWrapper : HTMLDivElement = (<HTMLDivElement> $("#" + this.selectorService.id)[0]);
         sceneWrapper.scrollLeft += this.scene.getGridSize() * this.scene.getZoom();
         if (node.getX() + 3 * this.scene.getGridSize() <= DiagramScene.WIDTH) {
             this.updateLastCellScrollPosition(event);
@@ -488,7 +492,7 @@ export class SceneController {
     }
 
     private scrollLeft(node: DiagramNode, event, cellView) : void {
-        (<HTMLDivElement> $(".scene-wrapper")[0]).scrollLeft -= this.scene.getGridSize() * this.scene.getZoom();
+        (<HTMLDivElement> $("#" + this.selectorService.id)[0]).scrollLeft -= this.scene.getGridSize() * this.scene.getZoom();
         if (node.getX() >= this.scene.getGridSize()) {
             this.updateLastCellScrollPosition(event);
             node.setPosition(
@@ -500,7 +504,7 @@ export class SceneController {
     }
 
     private scrollBottom(node: DiagramNode, event, cellView) : void {
-        (<HTMLDivElement> $(".scene-wrapper")[0]).scrollTop += this.scene.getGridSize() * this.scene.getZoom();
+        (<HTMLDivElement> $("#" + this.selectorService.id)[0]).scrollTop += this.scene.getGridSize() * this.scene.getZoom();
         if (node.getY() + 3 * this.scene.getGridSize() <= DiagramScene.HEIGHT) {
             this.updateLastCellScrollPosition(event);
             node.setPosition(
@@ -512,7 +516,7 @@ export class SceneController {
     }
 
     private scrollTop(node: DiagramNode, event, cellView) : void {
-        (<HTMLDivElement> $(".scene-wrapper")[0]).scrollTop -= this.scene.getGridSize() * this.scene.getZoom();
+        (<HTMLDivElement> $("#" + this.selectorService.id)[0]).scrollTop -= this.scene.getGridSize() * this.scene.getZoom();
         if (node.getY() >= this.scene.getGridSize()) {
             this.updateLastCellScrollPosition(event);
             node.setPosition(

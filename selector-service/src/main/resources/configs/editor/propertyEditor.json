@@ -3,10 +3,10 @@
   "property" : {
     "selector" : "#property_table .property",
     "propertyName" : {
-      "selector" : "#property_table .property [data-name=\"propertyName\"]"
+      "selector" : "[data-name=\"propertyName\"]"
     },
     "propertyValue" : {
-      "selector" : "#property_table .property [data-name=\"propertyValue\"]"
+      "selector" : "[data-name=\"propertyValue\"]"
     }
   }
 }

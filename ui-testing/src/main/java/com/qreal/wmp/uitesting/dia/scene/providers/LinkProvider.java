@@ -16,7 +16,6 @@ import org.slf4j.LoggerFactory;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 
 /** Encapsulates links operations. */
@@ -56,8 +55,7 @@ public class LinkProvider {
     
     /** Add link between two blocks. */
     public Link addLink(final Block source, final Block target) {
-        final SelenideElement begin = $(By.cssSelector(source.getInnerSeleniumElement().attr("id") + " .outPorts"));
-        logger.info("Begin element {}, end element {} ", begin, target);
+        logger.info("Begin element {}, end element {} ", source, target);
         new Actions(webDriver)
                 .release()
                 .dragAndDrop(source.getPort().getInnerSeleniumElement(), target.getInnerSeleniumElement())
@@ -76,8 +74,8 @@ public class LinkProvider {
     
     /** Scans scene and updates set of links. */
     public void recalculateLinks() {
-        links = $$(By.cssSelector(selectorService.get(Attribute.SELECTOR))).stream()
-                .filter(x -> x.attr("class").contains(selectorService.get("link", Attribute.CLASS)))
+        links = $$(By.cssSelector(selectorService.get("link", Attribute.SELECTOR))).stream()
+              //  .filter(x -> x.attr("class").contains(selectorService.get("link", Attribute.CLASS)))
                 .map(x -> new Link(
                         x.attr("id"),
                         By.id(x.attr("id")),
@@ -98,12 +96,9 @@ public class LinkProvider {
     
     /** Returns new link if it was created. */
     public Optional<SelenideElement> updateLinks() {
-        final List<SelenideElement> allElements = $$(By.cssSelector(selectorService.get(Attribute.SELECTOR)));
-        return allElements.stream()
-                .filter(htmlElement ->
-                        htmlElement.attr("class").contains(selectorService.get("link", Attribute.CLASS)) &&
-                                links.stream().noneMatch(link -> htmlElement.attr("id")
-                                        .equals(link.getInnerSeleniumElement().attr("id")))
-                ).findFirst();
+        final Map<String, Link> linkMap = links.stream()
+                .collect(Collectors.toMap(Link::getName, link -> link));
+        return $$(By.cssSelector(selectorService.get("link", Attribute.SELECTOR))).stream()
+                .filter(el -> !linkMap.containsKey(el.attr("id"))).findFirst();
     }
 }

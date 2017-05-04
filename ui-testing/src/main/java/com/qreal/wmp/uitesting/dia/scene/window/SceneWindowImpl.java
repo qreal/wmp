@@ -5,6 +5,7 @@ import com.qreal.wmp.uitesting.dia.scene.Coordinate;
 import com.qreal.wmp.uitesting.dia.scene.elements.Block;
 import com.qreal.wmp.uitesting.dia.scene.elements.SceneElement;
 import com.qreal.wmp.uitesting.exceptions.ElementNotOnTheSceneException;
+import com.qreal.wmp.uitesting.services.SelectorService;
 import org.jetbrains.annotations.Contract;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -27,9 +28,12 @@ public class SceneWindowImpl implements SceneWindow {
     
     private final WebDriver driver;
     
+    private final SelectorService selectorService;
+    
     /** Constructor takes links to current scene and current driver. */
-    private SceneWindowImpl(final WebDriver driver) {
+    private SceneWindowImpl(final WebDriver driver, SelectorService selectorService) {
         this.driver = driver;
+        this.selectorService = selectorService;
     }
     
     /**
@@ -98,7 +102,7 @@ public class SceneWindowImpl implements SceneWindow {
         logger.info("Focus to " + coordinate.getXAbsolute() + " " + coordinate.getYAbsolute());
         if (driver instanceof JavascriptExecutor) {
             ((JavascriptExecutor) driver).executeScript("var canvas = " +
-                    "document.getElementsByClassName(\"scene-wrapper\")[0]; " +
+                    "document.getElementById(\"" + selectorService.get(SelectorService.Attribute.ID) + "\");" +
                     "var BB=canvas.getBoundingClientRect();" +
                     "canvas.scrollLeft = " + Math.max(0, (coordinate.getXAbsolute() - sizeHor / 2)) + "; " +
                     "canvas.scrollTop = " + Math.max(0, (coordinate.getYAbsolute() - sizeVer / 2)) + ";"
@@ -107,16 +111,16 @@ public class SceneWindowImpl implements SceneWindow {
         update();
     }
     
-    @Contract("_ -> !null")
-    public static SceneWindow getSceneWindow(WebDriver webDriver) {
-        return new SceneWindowImpl(webDriver);
+    @Contract("_, _ -> !null")
+    public static SceneWindow getSceneWindow(WebDriver webDriver, SelectorService selectorService) {
+        return new SceneWindowImpl(webDriver, selectorService);
     }
     
     @Override
     public void update() {
         if (driver instanceof JavascriptExecutor) {
             ((JavascriptExecutor) driver).executeScript("var canvas = " +
-                    "document.getElementsByClassName(\"scene-wrapper\")[0]; " +
+                    "document.getElementById(\"" + selectorService.get(SelectorService.Attribute.ID) + "\");" +
                     "var BB=canvas.getBoundingClientRect();" +
                     "$('#SceneWindowLeft').html(canvas.scrollLeft);" +
                     "$('#SceneWindowTop').html(canvas.scrollTop);" +

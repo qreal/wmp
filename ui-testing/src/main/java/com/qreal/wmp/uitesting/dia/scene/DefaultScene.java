@@ -63,7 +63,7 @@ public class DefaultScene implements Scene {
     
     @Override
     public Block dragAndDrop(final PaletteElement element) {
-        element.getInnerSeleniumElement().dragAndDropTo("." + selectorService.get(SelectorService.Attribute.CLASS));
+        element.getInnerSeleniumElement().dragAndDropTo("#" + selectorService.get(SelectorService.Attribute.ID));
         return blockProvider.getNewBlock();
     }
     

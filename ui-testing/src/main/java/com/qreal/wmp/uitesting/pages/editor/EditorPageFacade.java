@@ -95,8 +95,8 @@ public class EditorPageFacade {
     
     /** Called when new block created by any event in order to let scene known about it. */
     public Block addDrawnBlock(String name) {
-        if ($(By.className(selectorService.get("gestures.gesturesMenu", Attribute.CLASS))).is(Condition.visible)) {
-            $(By.className(selectorService.get("gestures.gesturesMenu", Attribute.CLASS)))
+        if ($(By.id(selectorService.get("gestures.gesturesMenu", Attribute.ID))).is(Condition.visible)) {
+            $(By.id(selectorService.get("gestures.gesturesMenu", Attribute.ID)))
                     .find(byText(name.toLowerCase()))
                     .click();
         }

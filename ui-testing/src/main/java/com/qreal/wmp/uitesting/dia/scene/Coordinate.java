@@ -12,9 +12,9 @@ import java.util.Optional;
  */
 public class Coordinate {
     
-    public static final String SELECTOR = "transform";
-    
     public static final int POINT_IN_CELL = 25;
+    
+    private static final String SELECTOR = "transform";
     
     private final int xAbsolute;
     

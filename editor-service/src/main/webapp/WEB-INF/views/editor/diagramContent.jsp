@@ -21,7 +21,7 @@
                 </div>
             </div>
             <div id="diagram-" class="col-md-9 content-col">
-                <div class="scene-wrapper">
+                <div id="<%=selectors.getJSONObject("scene").getString("id")%>"class="scene-wrapper">
                     <div id="diagram-scene">
                     </div>
                 </div>

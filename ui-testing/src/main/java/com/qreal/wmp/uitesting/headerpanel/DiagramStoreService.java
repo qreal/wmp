@@ -35,7 +35,7 @@ public class DiagramStoreService {
     
     public DiagramStoreService(EditorPageFacade facade, SelectorService selectorService) {
         this.selectorService = selectorService;
-        sceneSelector = By.className(facade.getEditorPageSelectors().get("scene", SelectorService.Attribute.CLASS));
+        sceneSelector = By.id(facade.getEditorPageSelectors().get("scene", SelectorService.Attribute.ID));
     }
     
     

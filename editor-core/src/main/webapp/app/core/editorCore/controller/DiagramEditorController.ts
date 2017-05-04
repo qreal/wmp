@@ -35,7 +35,7 @@ export class DiagramEditorController {
             return this.getNodeType(type);
         };
         this.diagramEditor = new DiagramEditor();
-        this.sceneController = new SceneController(this, this.diagramEditor.getScene());
+        this.sceneController = new SceneController(this, this.diagramEditor.getScene(), selectorService.scene);
         this.elementsTypeLoader = new ElementsTypeLoader();
 
         $scope.undo = () => {

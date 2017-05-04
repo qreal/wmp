@@ -1,23 +1,18 @@
 {
-  "class" : "scene-wrapper",
+  "id" : "scene-wrapper",
   "contextMenu" : {
     "id" : "scene-context-menu"
   },
   "poolOfElements" : {
     "selector" : "#v_7 > *",
-    "sceneElement" : {
-      "coordinates": {
-        "attr": "transform"
-      }
-    },
     "block" : {
-      "class" : "element devs ImageWithPorts",
+      "selector" : ".element.devs.ImageWithPorts",
       "port" : {
-        "class" : "port0"
+        "selector" : ".port0"
       }
     },
     "link" : {
-      "class" : "link",
+      "selector" : ".link",
       "arrow" : {
         "source" : {
           "selector" : ".marker-arrowheads :nth-child(1)"

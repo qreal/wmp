@@ -77,8 +77,8 @@ public class BlockProvider {
     
     /** Scans scene and updates set of blocks. */
     public void recalculateBlocks() {
-        blocks = $$(selectorService.get(Attribute.SELECTOR)).stream()
-                .filter(x -> x.attr("class").contains(selectorService.get("block", Attribute.CLASS)))
+        blocks = $$(selectorService.get("block", Attribute.SELECTOR)).stream()
+                //.filter(x -> x.attr("class").contains(selectorService.get("block", Attribute.CLASS)))
                 .map(x -> new Block(
                         x.attr("id"),
                         By.id(x.attr("id")),
@@ -98,13 +98,11 @@ public class BlockProvider {
     }
     
     /** Return new element of the scene. */
-    public Optional<SelenideElement> updateBlocks() {
-        final List<SelenideElement> allElements = $$(By.cssSelector(selectorService.get(Attribute.SELECTOR)));
-        return allElements.stream()
-                .filter(htmlElement ->
-                        htmlElement.attr("class").contains(selectorService.get("block", Attribute.CLASS)) &&
-                                blocks.stream().noneMatch(block -> block.getInnerSeleniumElement()
-                                        .attr("id").equals(htmlElement.attr("id")))
-                ).findFirst();
+    private Optional<SelenideElement> updateBlocks() {
+        final Map<String, Block> blockMap = blocks.stream()
+                .collect(Collectors.toMap(Block::getName, block -> block));
+     
+        return $$(By.cssSelector(selectorService.get("block", Attribute.SELECTOR))).stream()
+                .filter(el -> !blockMap.containsKey(el.attr("id"))).findFirst();
     }
 }
