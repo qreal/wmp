@@ -272,20 +272,20 @@
                 "rx": "5px",
                 "ry": "5px"
             },
-            "text": {
+            "innerText": {
                 "fill": "#000000",
                 "font-size": 14,
                 "ref-x": 0.5,
                 "ref-y": 0.5,
-                "text-anchor": "middle",
                 "y-alignment": "middle",
+                "text-anchor": "middle",
                 "font-family": "Arial, helvetica, sans-serif"
             },
             "properties": [
                 {
-                    "key": "Text",
+                    "key": "InnerText",
                     "name": "Text",
-                    "type": "text",
+                    "type": "innerText",
                     "value": ""
                 }
             ]
@@ -313,14 +313,13 @@
                 "isHidden": true,
                 "src": "images/bpmn/lane.svg"
             },
-            "text": {
+            "innerText": {
                 "fill": "#000000",
                 "font-size": 14,
-                "ref-x": 0.5,
+                "ref-x": "20px",
                 "ref-y": 0.5,
+                "transform": "rotate(270)",
                 "text-anchor": "middle",
-                "x-alignment": "start",
-                "y-alignment": "middle",
                 "font-family": "Arial, helvetica, sans-serif"
             },
             "border": {
@@ -329,9 +328,9 @@
             },
             "properties": [
                 {
-                    "key": "Text",
+                    "key": "InnerText",
                     "name": "Text",
-                    "type": "text",
+                    "type": "innerText",
                     "value": "Lane"
                 }
             ]
@@ -357,21 +356,20 @@
                 "stroke": "black",
                 "stroke-width": "5px"
             },
-            "text": {
+            "innerText": {
                 "fill": "#000000",
                 "font-size": 14,
-                "ref-x": 0.5,
+                "ref-x": "20px",
                 "ref-y": 0.5,
+                "transform": "rotate(270)",
                 "text-anchor": "middle",
-                "x-alignment": "start",
-                "y-alignment": "middle",
                 "font-family": "Arial, helvetica, sans-serif"
             },
             "properties": [
                 {
-                    "key": "Text",
+                    "key": "InnerText",
                     "name": "Text",
-                    "type": "text",
+                    "type": "innerText",
                     "value": "Pool"
                 }
             ]

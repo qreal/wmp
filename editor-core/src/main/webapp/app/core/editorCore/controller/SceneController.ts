@@ -106,21 +106,13 @@ export class SceneController {
 
     public createNode(type: string, x: number, y: number, subprogramId?: string, subprogramName?: string): void {
         var nodeType: NodeType = this.diagramEditorController.getNodeType(type);
-
-        var typeProperties: Map<String, Property> = nodeType.getPropertiesMap();
-        var nodeProperties: Map<String, Property> = new Map<String, Property>();
-        for (var property in typeProperties) {
-            nodeProperties[property] = new Property(typeProperties[property].name, typeProperties[property].type,
-                typeProperties[property].value);
-        }
-
         var node: DiagramNode;
         if (subprogramId) {
             node = new SubprogramNode(nodeType, x, y, DefaultSize.DEFAULT_NODE_WIDTH, DefaultSize.DEFAULT_NODE_HEIGHT,
-                nodeProperties, subprogramId);
+                nodeType.getPropertiesMap(), subprogramId);
         } else {
             node = this.diagramEditorController.getElementConstructor().createNode(nodeType, x, y, DefaultSize.DEFAULT_NODE_WIDTH,
-                DefaultSize.DEFAULT_NODE_HEIGHT, nodeProperties);
+                DefaultSize.DEFAULT_NODE_HEIGHT, nodeType.getPropertiesMap());
         }
 
         var command: MultiCommand = new MultiCommand([this.paperCommandFactory.makeCreateNodeCommand(node),
@@ -318,7 +310,7 @@ export class SceneController {
             cellView));
 
         var parent: DiagramContainer = <DiagramContainer> this.scene.getNodeById(node.getJointObject().get('parent'));
-        var oldParent: DiagramContainer = (node).getParentNode();
+        var oldParent: DiagramContainer = node.getParentNode();
         if (parent !== oldParent) {
             var embedCommand = new EmbedCommand(node, parent, oldParent);
             embedCommand.execute();

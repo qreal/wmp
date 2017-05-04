@@ -26,17 +26,10 @@ export class PropertyEditorController {
         var controller: PropertyEditorController = this;
 
         document.addEventListener('property-changed', function(e: any) {
-            if (e.detail.key === "Text") {
+            if (e.detail.key === "InnerText") {
                 var currentElement: DiagramElement = controller.sceneController.getCurrentElement();
                 currentElement.getJointObject().attr("text", {
-                    fill: '#000000',
-                    text: e.detail.value,
-                    'font-size': 14,
-                    'ref-x': .5,
-                    'ref-y': .5,
-                    'text-anchor': 'middle',
-                    'y-alignment': 'middle',
-                    'font-family': 'Arial, helvetica, sans-serif'
+                    text: e.detail.value
                 });
             } else $("." + e.detail.key + "-" + e.detail.nodeId).each(function(index) {
                 if ($(this).val() !== e.detail.value) {

@@ -12,7 +12,7 @@ export class PropertyViewFactory {
             case "string":
             case "combobox":
                 return new StringPropertyView(nodeId, propertyKey, property);
-            case "text":
+            case "innerText":
                 return new TextPropertyView(nodeId, propertyKey, property);
             case "checkbox":
                 return new CheckboxPropertyView(typeName, propertyKey, property);

@@ -101,10 +101,19 @@ export class DefaultDiagramNode implements DiagramNode {
         }
 
         this.jointObject = new ImageWithPorts(jointObjectAttributes);
-        this.changeableProperties = properties;
+
+        this.changeableProperties = new Map<String, Property>();
+        for (var property in properties) {
+            this.changeableProperties[property] = new Property(properties[property].name, properties[property].type,
+                properties[property].value);
+        }
         this.imagePath = nodeType.getImage();
         if (nodeType.getBorder())
             this.getJointObject().attr(".outer", nodeType.getBorder());
+        if (nodeType.getInnerText() && this.changeableProperties["InnerText"]) {
+            nodeType.getInnerText()["text"] = this.changeableProperties["InnerText"].value;
+            this.jointObject.attr("text", nodeType.getInnerText());
+        }
         this.parentNode = null;
     }
 
