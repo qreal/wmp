@@ -23,7 +23,7 @@ export class RobotsDiagramEditorController extends DiagramEditorController {
         this.menuController = new DiagramMenuController(this);
         this.gesturesController = new GesturesController(this.sceneController, this.diagramEditor.getScene());
         this.diagramInterpreter = new Interpreter();
-        this.elementConstructor = new ElementConstructor();
+        this.elementConstructor = new ElementConstructor(scene);
 
         document.addEventListener('mousedown', (event) => { this.gesturesController.onMouseDown(event) } );
         document.addEventListener('mouseup', (event) => { this.gesturesController.onMouseUp(event) } );

@@ -262,7 +262,6 @@
 
         "Task": {
             "name": "Task",
-            "container": true,
             "image": {
                 "isHidden": true,
                 "src": "images/bpmn/subprocess.svg"
@@ -273,11 +272,20 @@
                 "rx": "5px",
                 "ry": "5px"
             },
+            "text": {
+                "fill": "#000000",
+                "font-size": 14,
+                "ref-x": 0.5,
+                "ref-y": 0.5,
+                "text-anchor": "middle",
+                "y-alignment": "middle",
+                "font-family": "Arial, helvetica, sans-serif"
+            },
             "properties": [
                 {
                     "key": "Text",
                     "name": "Text",
-                    "type": "string",
+                    "type": "text",
                     "value": ""
                 }
             ]
@@ -305,10 +313,28 @@
                 "isHidden": true,
                 "src": "images/bpmn/lane.svg"
             },
+            "text": {
+                "fill": "#000000",
+                "font-size": 14,
+                "ref-x": 0.5,
+                "ref-y": 0.5,
+                "text-anchor": "middle",
+                "x-alignment": "start",
+                "y-alignment": "middle",
+                "font-family": "Arial, helvetica, sans-serif"
+            },
             "border": {
                 "stroke": "black",
                 "stroke-width": "5px"
-            }
+            },
+            "properties": [
+                {
+                    "key": "Text",
+                    "name": "Text",
+                    "type": "text",
+                    "value": "Lane"
+                }
+            ]
         },
 
         "Pool": {
@@ -331,11 +357,21 @@
                 "stroke": "black",
                 "stroke-width": "5px"
             },
+            "text": {
+                "fill": "#000000",
+                "font-size": 14,
+                "ref-x": 0.5,
+                "ref-y": 0.5,
+                "text-anchor": "middle",
+                "x-alignment": "start",
+                "y-alignment": "middle",
+                "font-family": "Arial, helvetica, sans-serif"
+            },
             "properties": [
                 {
                     "key": "Text",
                     "name": "Text",
-                    "type": "string",
+                    "type": "text",
                     "value": "Pool"
                 }
             ]

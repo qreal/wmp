@@ -4,18 +4,18 @@ import {Lane} from "./Lane";
 import {PropertiesPack} from "core/editorCore/model/PropertiesPack";
 import {Property} from "core/editorCore/model/Property";
 import {DefaultSize} from "../../../common/constants/DefaultSize";
+import {NodeType} from "core/editorCore/model/NodeType";
 import sortElements = joint.util.sortElements;
 export class Pool extends DiagramContainer {
 
     private minWidth: number;
     private minHeight: number;
 
-    constructor(name: string, type: string, x: number, y: number, width: number, height: number, properties: Map<String, Property>,
-                imagePath: string, border: any, id?: string, notDefaultConstProperties?: PropertiesPack) {
-        var minWidth = DefaultSize.DEFAULT_NODE_WIDTH * 2;
-        var minHeight = DefaultSize.DEFAULT_NODE_HEIGHT * 2;
-        super(name, type, x, y, Math.max(width, minWidth), Math.max(height, minHeight), properties, imagePath,
-            border, id, notDefaultConstProperties);
+    constructor(nodeType: NodeType, x: number, y: number, width: number, height: number,
+                      properties: Map<String, Property>, id?: string) {
+        var minWidth: number = DefaultSize.DEFAULT_NODE_WIDTH * 2;
+        var minHeight: number = DefaultSize.DEFAULT_NODE_HEIGHT * 2;
+        super(nodeType, x, y, Math.max(width, minWidth), Math.max(height, minHeight), properties, id);
         this.minWidth = minWidth;
         this.minHeight = minHeight;
     }

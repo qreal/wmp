@@ -14,7 +14,6 @@ import {DiagramElementListener} from "./DiagramElementListener";
 import {SceneCommandFactory} from "../model/commands/SceneCommandFactory";
 import {DiagramEditorController} from "./DiagramEditorController";
 import {UndoRedoController} from "./UndoRedoController";
-import {ContainerNodeType} from "../model/ContainerNodeType";
 import {DiagramContainer} from "../model/DiagramContainer";
 import {EmbedCommand} from "../model/commands/EmbedCommand";
 export class SceneController {
@@ -117,15 +116,21 @@ export class SceneController {
 
         var node: DiagramNode;
         if (subprogramId) {
-            node = new SubprogramNode(subprogramName, type, x, y, DefaultSize.DEFAULT_NODE_WIDTH,
-                DefaultSize.DEFAULT_NODE_HEIGHT, nodeProperties, nodeType.getImage(), subprogramId);
+            node = new SubprogramNode(nodeType, x, y, DefaultSize.DEFAULT_NODE_WIDTH, DefaultSize.DEFAULT_NODE_HEIGHT,
+                nodeProperties, subprogramId);
         } else {
             node = this.diagramEditorController.getElementConstructor().createNode(nodeType, x, y, DefaultSize.DEFAULT_NODE_WIDTH,
                 DefaultSize.DEFAULT_NODE_HEIGHT, nodeProperties);
         }
 
-        var command: Command = new MultiCommand([this.paperCommandFactory.makeCreateNodeCommand(node),
+        var command: MultiCommand = new MultiCommand([this.paperCommandFactory.makeCreateNodeCommand(node),
             this.paperCommandFactory.makeChangeCurrentElementCommand(node, this.currentElement)]);
+        var controller: SceneController = this;
+        var elementBelow = controller.getElementBelow(event, function(cell: joint.dia.Element) {
+            return !(cell instanceof joint.dia.Link) && controller.diagramEditorController.getNodesMap()[cell.id].isValidEmbedding(node);
+        });
+        if (elementBelow)
+            command.add(new EmbedCommand(node, this.diagramEditorController.getNodesMap()[elementBelow.id], null));
         this.undoRedoController.addCommand(command);
         command.execute();
     }
@@ -456,7 +461,7 @@ export class SceneController {
     private getElementBelow(event: any, checker?: (cell: joint.dia.Element) => boolean): joint.dia.Element {
         var diagramPaper: HTMLDivElement = <HTMLDivElement> document.getElementById(this.scene.getId());
         var chosenElement: joint.dia.Element = null;
-        var chosenWidth = -1;
+        var chosenZ: number = -1;
         var cells: joint.dia.Element[] = this.diagramEditorController.getGraph().get('cells');
         cells.forEach((cell: joint.dia.Element) => {
             if (checker && !checker(cell))
@@ -473,9 +478,9 @@ export class SceneController {
 
             if ((mXBegin <= leftElementPos) && (mXEnd >= leftElementPos)
                 && (mYBegin <= topElementPos) && (mYEnd >= topElementPos)
-                && (!chosenElement || mXEnd - mXBegin < chosenWidth)) {
+                && (!chosenElement || cell.get("z") > chosenZ)) {
                     chosenElement = cell;
-                    chosenWidth = cell.getBBox().width;
+                    chosenZ = cell.get("z");
             }
         });
         return chosenElement;

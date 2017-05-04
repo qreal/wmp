@@ -5,30 +5,34 @@ import {Link} from "./Link";
 import {Property} from "./Property";
 import {ContainerNodeType} from "./ContainerNodeType";
 import {NodeType} from "./NodeType";
+import {DiagramScene} from "./DiagramScene";
 export class ElementConstructor {
 
-    protected nodesMap: Map<String, DiagramNode>;
-    protected nodesTypesMap: Map<String, NodeType>
+    protected scene: DiagramScene;
+    protected nodesTypesMap: Map<String, NodeType>;
 
-    constructor(nodesMap?: Map<String, DiagramNode>, nodesTypesMap?: Map<String, NodeType>) {
-        this.nodesMap = nodesMap;
+    constructor(scene: DiagramScene, nodesTypesMap?: Map<String, NodeType>) {
+        this.scene = scene;
         this.nodesTypesMap = nodesTypesMap;
     }
 
     public createNode(nodeType: NodeType, x: number, y: number, width: number, height: number,
                       properties: Map<String, Property>, id?: string): DiagramNode {
-        var name: string = nodeType.getShownName();
-        var type: string = nodeType.getName();
-        var imagePath: string = nodeType.getImage();
         var node: DiagramNode;
         if (nodeType instanceof ContainerNodeType)
-            node = new DiagramContainer(name, type, x, y, width, height, properties, imagePath, nodeType.getBorder(), id);
+            node = new DiagramContainer(nodeType, x, y, width, height, properties, id);
         else
-            node = new DefaultDiagramNode(name, type, x, y, width, height, properties, imagePath, id);
-        var nodesMap: Map<String, DiagramNode> = this.nodesMap;
+            node = new DefaultDiagramNode(nodeType, x, y, width, height, properties, id);
+        var nodesMap: Map<String, DiagramNode> = this.scene.getNodesMap();
         node.getJointObject().on("change:parent", (laneModel: joint.shapes.basic.Generic, parentId: string) => {
             if (parent)
                 node.setParentNode(nodesMap[parentId]);
+        })
+        node.getJointObject().on("change:z", (laneModel: joint.shapes.basic.Generic, newZ: number) => {
+            var links: Link[] = this.scene.getConnectedLinkObjects(nodesMap[laneModel.id]);
+            links.forEach((link: Link) => {
+                link.getJointObject().set("z", Math.max(link.getJointObject().get("z"), newZ));
+            })
         })
         return node;
     }

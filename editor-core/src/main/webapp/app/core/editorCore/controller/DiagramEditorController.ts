@@ -32,11 +32,11 @@ export class DiagramEditorController {
         this.nodeTypesMap = new Map<String, NodeType>();
         this.linkPatternsMap = new Map<String, joint.dia.Link>();
         this.paletteController = new PaletteController();
-        this.elementConstructor = new ElementConstructor();
         DiagramElementListener.getNodeType = (type: string): NodeType => {
             return this.getNodeType(type);
         };
         this.diagramEditor = new DiagramEditor();
+        this.elementConstructor = new ElementConstructor(this.diagramEditor.getScene());
         this.sceneController = new SceneController(this, this.diagramEditor.getScene());
         this.elementsTypeLoader = new ElementsTypeLoader();
 

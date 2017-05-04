@@ -4,6 +4,7 @@ import {PropertyEditElement} from "./PropertyEditElement";
 import {UIDGenerator} from "../controller/UIDGenerator";
 import {DiagramNode} from "./DiagramNode";
 import {DiagramContainer} from "./DiagramContainer";
+import {NodeType} from "./NodeType";
 
 class ImageWithPorts extends joint.shapes.basic.Generic {
     constructor(portsModelInterface: joint.shapes.basic.PortsModelInterface) {
@@ -63,12 +64,11 @@ export class DefaultDiagramNode implements DiagramNode {
         height: 0,
     };
 
-    constructor(name: string, type: string, x: number, y: number, width: number, height: number,
-                properties: Map<String, Property>, imagePath: string, id?: string,
-                notDefaultConstProperties?: PropertiesPack) {
+    constructor(nodeType: NodeType, x: number, y: number, width: number, height: number,
+                properties: Map<String, Property>, id?: string, notDefaultConstProperties?: PropertiesPack) {
         this.logicalId = UIDGenerator.generate();
-        this.name = name;
-        this.type = type;
+        this.name = nodeType.getShownName();
+        this.type = nodeType.getName();
 
         this.boundingBox.width = width;
         this.boundingBox.height = height;
@@ -87,7 +87,7 @@ export class DefaultDiagramNode implements DiagramNode {
                 image: {
                     'width': width,
                     'height': height,
-                    'xlink:href': imagePath
+                    'xlink:href': nodeType.getImage()
                 },
                 rect: {
                     width: width,
@@ -102,7 +102,9 @@ export class DefaultDiagramNode implements DiagramNode {
 
         this.jointObject = new ImageWithPorts(jointObjectAttributes);
         this.changeableProperties = properties;
-        this.imagePath = imagePath;
+        this.imagePath = nodeType.getImage();
+        if (nodeType.getBorder())
+            this.getJointObject().attr(".outer", nodeType.getBorder());
         this.parentNode = null;
     }
 
@@ -111,7 +113,7 @@ export class DefaultDiagramNode implements DiagramNode {
         var bbox = cellView.getBBox();
         var newX = bbox.x + (<number> (bbox.width - 50) / 2);
         var newY = bbox.y + bbox.height - 50;
-        //this.propertyEditElement.setPosition(newX, newY);
+        this.propertyEditElement.setPosition(newX, newY);
 
         if (this.resizeParameters.isBottomResizing || this.resizeParameters.isRightResizing)
         {
@@ -137,13 +139,12 @@ export class DefaultDiagramNode implements DiagramNode {
     }
 
     public initPropertyEditElements(zoom: number): void {
-        return;
-        /*var parentPosition = this.getJointObjectPagePosition(zoom);
+        var parentPosition = this.getJointObjectPagePosition(zoom);
         this.propertyEditElement = new PropertyEditElement(this.logicalId, this.jointObject.id,
             this.changeableProperties);
         var propertyEditElementX = parentPosition.x + (<number> (this.boundingBox.width - 50) / 2);
         var propertyEditElementY = parentPosition.y + this.boundingBox.height - 50;
-        this.propertyEditElement.setPosition(propertyEditElementX, propertyEditElementY);*/
+        this.propertyEditElement.setPosition(propertyEditElementX, propertyEditElementY);
     }
 
     public getPropertyEditElement(): PropertyEditElement {
@@ -184,12 +185,12 @@ export class DefaultDiagramNode implements DiagramNode {
 
     public setPosition(x: number, y: number, zoom: number, cellView : joint.dia.CellView): void {
         this.jointObject.position(x, y);
-        // var position = this.getJointObjectPagePosition(zoom);
-        // this.propertyEditElement.setPosition(position.x, position.y);
+        var position = this.getJointObjectPagePosition(zoom);
+        this.propertyEditElement.setPosition(position.x, position.y);
         var bbox = cellView.getBBox();
         var newX = bbox.x + (<number> (bbox.width - 50)/2);
         var newY = bbox.y + bbox.height - 50;
-        //this.propertyEditElement.setPosition(newX, newY);
+        this.propertyEditElement.setPosition(newX, newY);
     }
 
     public setSize(width: number, height: number, cellView : joint.dia.CellView): void {
@@ -198,7 +199,7 @@ export class DefaultDiagramNode implements DiagramNode {
         var bbox = cellView.getBBox();
         var newX = bbox.x + (<number> (bbox.width - 50)/2);
         var newY = bbox.y + bbox.height - 50;
-        //this.propertyEditElement.setPosition(newX, newY);
+        this.propertyEditElement.setPosition(newX, newY);
     }
 
     public setParentNode(parent: DiagramContainer, embedding?: Boolean): void {

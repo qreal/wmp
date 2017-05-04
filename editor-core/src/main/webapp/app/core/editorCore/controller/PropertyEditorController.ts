@@ -18,12 +18,27 @@ export class PropertyEditorController {
         this.sceneController = sceneController;
         this.undoRedoController = undoRedoController;
         this.initInputStringListener();
+        this.initInputTextListener();
         this.initCheckboxListener();
         this.initDropdownListener();
         this.initSpinnerListener();
 
+        var controller: PropertyEditorController = this;
+
         document.addEventListener('property-changed', function(e: any) {
-            $("." + e.detail.key + "-" + e.detail.nodeId).each(function(index) {
+            if (e.detail.key === "Text") {
+                var currentElement: DiagramElement = controller.sceneController.getCurrentElement();
+                currentElement.getJointObject().attr("text", {
+                    fill: '#000000',
+                    text: e.detail.value,
+                    'font-size': 14,
+                    'ref-x': .5,
+                    'ref-y': .5,
+                    'text-anchor': 'middle',
+                    'y-alignment': 'middle',
+                    'font-family': 'Arial, helvetica, sans-serif'
+                });
+            } else $("." + e.detail.key + "-" + e.detail.nodeId).each(function(index) {
                 if ($(this).val() !== e.detail.value) {
                     $(this).val(e.detail.value);
                     $(this).trigger('autosize');
@@ -61,16 +76,6 @@ export class PropertyEditorController {
 
     public setProperty(key: string, value: string): void {
         var currentElement: DiagramElement = this.sceneController.getCurrentElement();
-        currentElement.getJointObject().attr("text", {
-            fill: '#000000',
-            text: value,
-            'font-size': 14,
-            'ref-x': .5,
-            'ref-y': .5,
-            'text-anchor': 'middle',
-            'y-alignment': 'middle',
-            'font-family': 'Arial, helvetica, sans-serif'
-        });
         var property: Property = currentElement.getChangeableProperties()[key];
         property.value = value;
         currentElement.setProperty(key, property);
@@ -133,6 +138,16 @@ export class PropertyEditorController {
                 controller, $(this).attr("id")));
             controller.changeCheckboxHtml($(this).attr("id"), newValue);
             controller.setProperty(key, newValue);
+        });
+    }
+
+    private initInputTextListener(): void {
+        var controller: PropertyEditorController = this;
+        $(document).on('input', '.property-edit-text', function () {
+            var key = $(this).data('type');
+            var value = $(this).val();
+            controller.addChangePropertyCommand(key, value, () => {});
+            controller.setProperty(key, value);
         });
     }
 

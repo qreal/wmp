@@ -4,6 +4,7 @@ import {CheckboxPropertyView} from "../view/CheckboxPropertyView";
 import {StringPropertyView} from "../view/StringPropertyView";
 import {HtmlView} from "../view/HtmlView";
 import {Property} from "../model/Property";
+import {TextPropertyView} from "../view/TextPropertyView";
 export class PropertyViewFactory {
 
     public createView(nodeId: string, typeName: string, propertyKey: string, property: Property): HtmlView {
@@ -11,6 +12,8 @@ export class PropertyViewFactory {
             case "string":
             case "combobox":
                 return new StringPropertyView(nodeId, propertyKey, property);
+            case "text":
+                return new TextPropertyView(nodeId, propertyKey, property);
             case "checkbox":
                 return new CheckboxPropertyView(typeName, propertyKey, property);
             case "dropdown":

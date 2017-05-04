@@ -11,6 +11,7 @@ export class TypesParser {
     private currentProperties: Map<String, Property>;
     private linkPatterns: Map<String, joint.dia.Link>;
     private currentImage: any;
+    private currentBorder: any;
 
     public parse(typesJson: any): ElementTypes {
         var diagramElementTypes: ElementTypes = new ElementTypes();
@@ -73,6 +74,8 @@ export class TypesParser {
         if (typeObject.image)
             this.currentImage.src = GeneralConstants.APP_ROOT_PATH + typeObject.image.src;
 
+        this.currentBorder = typeObject.border;
+
         if (typeObject.attrs)
             this.linkPatterns[typeName.toLowerCase()] = new joint.dia.Link({attrs: typeObject.attrs});
 
@@ -80,9 +83,9 @@ export class TypesParser {
         if (!categories) {
             var node: NodeType;
             if (typeObject.container)
-                node = new ContainerNodeType(name, this.currentProperties, this.currentImage, typeObject.border, [typeName]);
+                node = new ContainerNodeType(name, this.currentProperties, this.currentImage, this.currentBorder, [typeName]);
             else
-                node = new NodeType(name, this.currentProperties, this.currentImage, [typeName]);
+                node = new NodeType(name, this.currentProperties, this.currentImage, this.currentBorder, [typeName]);
             nodesTree = new PaletteTree();
             nodesTree.nodes.push(node);
         } else
@@ -97,7 +100,7 @@ export class TypesParser {
             for (var i in categories) {
                 var subtype: string = categories[i];
                 path.push(subtype.toLowerCase());
-                nodesTree.nodes.push(new NodeType(subtype, this.currentProperties, this.currentImage, path));
+                nodesTree.nodes.push(new NodeType(subtype, this.currentProperties, this.currentImage, this.currentBorder, path));
                 path.pop();
             }
         } else {

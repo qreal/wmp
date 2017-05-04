@@ -1,18 +1,19 @@
 import {PropertiesPack} from "./PropertiesPack";
 import {Property} from "./Property";
 import {DefaultDiagramNode} from "./DefaultDiagramNode";
+import {NodeType} from "./NodeType";
 export class SubprogramNode extends DefaultDiagramNode {
 
     private subprogramDiagramId: string;
     private textObject: joint.shapes.basic.Text;
 
-    constructor(name: string, type: string, x: number, y: number, width: number, height: number,
-                properties: Map<String, Property>, imagePath: string, subprogramDiagramId: string, id?: string,
-                notDefaultConstProperties?: PropertiesPack) {
-        super(name, type, x, y, width, height, properties, imagePath, id, notDefaultConstProperties);
+    constructor(nodeType: NodeType, x: number, y: number, width: number, height: number, properties: Map<String, Property>,
+                subprogramDiagramId: string, id?: string, notDefaultConstProperties?: PropertiesPack) {
+        super(nodeType, x, y, width, height, properties, id, notDefaultConstProperties);
         this.subprogramDiagramId = subprogramDiagramId;
 
         var fontSize: number = 16;
+        var name: string = nodeType.getShownName();
         var width: number = (0.5 * name.length) * fontSize;
         var height: number = (name.split('\n').length) * fontSize;
         this.textObject = new  joint.shapes.basic.Text({
