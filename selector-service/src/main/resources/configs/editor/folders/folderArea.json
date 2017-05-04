@@ -1,5 +1,5 @@
 {
-  "selector" : "#diagrams .modal-content",
+  "id" : "diagramArea",//"#diagrams .modal-content",
   "createItem" : {
     "id" : "creating-menu"
   },
@@ -7,28 +7,33 @@
     "id" : "level-up"
   },
   "folderPath" : {
-    "class" : "folder-path"
+    "id" : "folder-path"
   },
   "folderMenu" : {
-    "class" : "folder-menu",
-    "folderNameInputSelector" : "[type=\"text\"]",
+    "id" : "folder-menu",
+    "folderNameInput" : {
+      "id" : "folderNameInput"
+    },
     "confirmItem" : {
-      "id" : "creating"
+      "id" : "folderMenuCreating"
     }
   },
   "warningMessage" : {
-    "class" : "warningMessage"
-  },
-  "poolOfFolders" : {
-    "class" : "folders"
+    "id" : "warningMessage"
   },
   "contextMenu" : {
     "id" : "open-diagram-context-menu",
     "deleteItem" : {
-      "text" : "Delete"
+      "id" : "contextMenuDelete"
     }
   },
   "closeItem" : {
-    "class" : "close"
+    "id" : "foldersCloseItem"
+  },
+  "folders" : {
+    "selector" : "#diagramArea .folders"
+  },
+  "diagrams" : {
+    "selector" : "#diagramArea .diagrams"
   }
 }

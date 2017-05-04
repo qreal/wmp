@@ -68,20 +68,22 @@
     </div>
 </div>
 
+<% JSONObject folderAreaSelectors = selectors.getJSONObject("editorHeaderPanel").getJSONObject("folderArea"); %>
 <!-- File->Open window -->
 <div id="diagrams" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content">
+        <div id="<%=folderAreaSelectors.getString("id")%>" class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <button type="button" id="<%=folderAreaSelectors.getJSONObject("closeItem").getString("id")%>"
+                        class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title">
                     Diagrams
                 </h4>
             </div>
             <div class="modal-body-nopadding">
-                <div class="folder-menu">
+                <div id="<%=folderAreaSelectors.getJSONObject("folderMenu").getString("id")%>" class="folder-menu">
                 </div>
-                <div class="folder-path">
+                <div id="<%=folderAreaSelectors.getJSONObject("folderPath").getString("id")%>" class="folder-path">
                 </div>
                 <div class="folder-view">
                     <ul class="folder-table">

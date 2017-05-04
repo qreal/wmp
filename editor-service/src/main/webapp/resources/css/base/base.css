@@ -258,7 +258,7 @@ table[name="property_table"] {
     cursor: pointer;
 }
 
-#creating {
+.creating {
     color: forestgreen;
 }
 
@@ -266,7 +266,7 @@ table[name="property_table"] {
     color: #d43f3a;
 }
 
-#level-up, #creating-menu{
+.level-up, .creating-menu{
     color: grey;
 }
 

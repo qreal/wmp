@@ -3,6 +3,7 @@ package com.qreal.wmp.uitesting.headerpanel.folderwindow;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import com.google.common.base.Predicate;
+import com.qreal.wmp.uitesting.services.SelectorService;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -13,24 +14,26 @@ import java.util.function.Function;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.$$;
 
 /** {@inheritDoc} */
 public class FolderAreaImpl implements FolderArea {
     
-    public static final By selector = By.cssSelector("#diagrams .modal-content");
-    
     private final WebDriver driver;
     
-    public FolderAreaImpl(WebDriver driver) {
+    private final SelectorService selectorService;
+    
+    public FolderAreaImpl(WebDriver driver, SelectorService selectorService) {
         this.driver = driver;
+        this.selectorService = selectorService;
     }
     
     @Override
     public FolderArea createFolder(String folderName) {
-        $(selector).find(By.id("creating-menu")).click();
-        $(selector).find(By.className("folder-menu")).find(By.cssSelector("[type=\"text\"]")).setValue(folderName);
-        $(selector).find(By.className("folder-menu")).find(By.id("creating")).click();
-        if ($(selector).find(By.className("warning-message")).isDisplayed()) {
+        $(By.id(selectorService.get("createItem", SelectorService.Attribute.ID))).click();
+        $(By.id(selectorService.get("folderMenu.folderNameInput", SelectorService.Attribute.ID))).setValue(folderName);
+        $(By.id(selectorService.get("folderMenu.confirmItem", SelectorService.Attribute.ID))).click();
+        if ($(By.id(selectorService.get("warningMessage", SelectorService.Attribute.ID))).isDisplayed()) {
             throw new IllegalArgumentException("The folder with this name already exists");
         }
         return this;
@@ -38,7 +41,8 @@ public class FolderAreaImpl implements FolderArea {
     
     @Override
     public boolean isFolderExist(String name) {
-        return $(selector).findAll(By.className("folders")).stream().anyMatch(elem -> elem.has(text(name)));
+        return $$(By.cssSelector(selectorService.get("folders", SelectorService.Attribute.SELECTOR)))
+                .stream().anyMatch(elem -> elem.has(text(name)));
     }
     
     @Override
@@ -48,7 +52,7 @@ public class FolderAreaImpl implements FolderArea {
         }
         String oldPath = getCurrentPath();
         oldPath = "".equals(oldPath) ? name : oldPath + "/" + name;
-        $(selector).find(By.className("folders")).find(byText(name)).click();
+        $(By.cssSelector(selectorService.get("folders", SelectorService.Attribute.SELECTOR))).find(byText(name)).click();
         waitUntilEquals(oldPath, FolderArea::getCurrentPath);
         return this;
     }
@@ -56,7 +60,7 @@ public class FolderAreaImpl implements FolderArea {
     @Override
     public FolderArea moveBack() {
         String oldPath = getCurrentPath();
-        $(selector).find(By.id("level-up")).click();
+        $(By.id(selectorService.get("levelUpItem", SelectorService.Attribute.ID))).click();
         String[] steps = oldPath.split("/");
         String diff = String.join("/", Arrays.copyOf(steps, steps.length - 1));
         waitUntilEquals(diff, FolderArea::getCurrentPath);
@@ -65,7 +69,10 @@ public class FolderAreaImpl implements FolderArea {
     
     @Override
     public String getCurrentPath() {
-        String result = $(selector).find(By.className("folder-path")).find(By.tagName("p")).getText();
+        String result = $(By.id(selectorService.get("folderPath", SelectorService.Attribute.ID)))
+                .find(By.tagName("p"))
+                .getText();
+        
         return result.contains("/") ? result.substring(0, result.length() - 1) : result;
     }
     
@@ -89,18 +96,19 @@ public class FolderAreaImpl implements FolderArea {
         if (!isFolderExist(name)) {
             throw new IllegalArgumentException("Folder is not exist");
         }
-        $(selector).find(By.className("folders")).find(byText(name)).contextClick();
-        $(By.id("open-diagram-context-menu")).shouldBe(Condition.visible);
-        $(By.id("open-diagram-context-menu")).find(byText("Delete")).click();
+        $(By.cssSelector(selectorService.get("folders", SelectorService.Attribute.SELECTOR)))
+                .find(byText(name)).contextClick();
+        $(By.id(selectorService.get("contextMenu", SelectorService.Attribute.ID))).shouldBe(Condition.visible);
+        $(By.id(selectorService.get("contextMenu.deleteItem", SelectorService.Attribute.ID))).click();
         return this;
     }
     
     @Override
     public void close() {
-        SelenideElement closeButton = $(selector).find(By.className("close"));
-        if ($(selector).isDisplayed() && closeButton.isDisplayed()) {
-            $(selector).find(By.className("close")).click();
-            $(selector).shouldBe(Condition.disappear);
+        SelenideElement closeButton = $(By.id(selectorService.get("closeItem", SelectorService.Attribute.ID)));
+        if ($(By.id(selectorService.get(SelectorService.Attribute.ID))).isDisplayed() && closeButton.isDisplayed()) {
+            closeButton.click();
+            $(By.id(selectorService.get(SelectorService.Attribute.ID))).shouldBe(Condition.disappear);
         }
     }
     

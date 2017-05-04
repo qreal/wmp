@@ -6,7 +6,6 @@ import com.qreal.wmp.uitesting.services.SelectorService.Attribute;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-import static com.codeborne.selenide.Selectors.withText;
 import static com.codeborne.selenide.Selenide.$;
 
 /** Describes file item on the header menu. */
@@ -20,7 +19,7 @@ public class FileItem {
 
     public FileItem(WebDriver driver, SelectorService selectorService) {
         this.driver = driver;
-        folderArea = new FolderAreaImpl(driver);
+        folderArea = new FolderAreaImpl(driver, selectorService.create("folderArea"));
         this.selectorService = selectorService;
     }
 
@@ -35,14 +34,14 @@ public class FileItem {
     /** Returns folder window by clicking 'SaveAs'. */
     public FolderArea getSaveItem() {
         $(By.id(selectorService.get("fileItem.saveAsItem", Attribute.ID))).click();
-        $(FolderAreaImpl.selector).waitUntil(Condition.visible, 10000);
+        $(By.id(selectorService.get("folderArea", Attribute.ID))).waitUntil(Condition.visible, 10000);
         return folderArea;
     }
     
     /** Returns folder window by clicking 'Open'. */
     public FolderArea getOpenItem() {
         $(By.id(selectorService.get("fileItem.OpenItem", Attribute.ID))).click();
-        $(FolderAreaImpl.selector).waitUntil(Condition.visible, 10000);
+        $(By.id(selectorService.get("folderArea", Attribute.ID))).waitUntil(Condition.visible, 10000);
         return folderArea;
     }
     

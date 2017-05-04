@@ -1,5 +1,6 @@
 package com.qreal.wmp.uitesting.headerpanel;
 
+import com.codeborne.selenide.Condition;
 import com.qreal.wmp.uitesting.PageFactory;
 import com.qreal.wmp.uitesting.headerpanel.folderwindow.FileItem;
 import com.qreal.wmp.uitesting.headerpanel.folderwindow.FolderArea;
@@ -45,7 +46,7 @@ public class EditorHeaderPanelImpl implements EditorHeaderPanel {
 
     @Override
     public DashboardPage toDashboard() {
-        $(By.id(selectorService.get("dashboardButton", SelectorService.Attribute.ID))).click();
+        $(By.id(selectorService.get("dashboardItem", SelectorService.Attribute.ID))).click();
         logger.info("Open dashboard");
         return pageFactory.getDashboardPage();
     }
@@ -102,6 +103,7 @@ public class EditorHeaderPanelImpl implements EditorHeaderPanel {
     }
     
     private FileItem clickFile() {
+        $(By.id(selectorService.get("fileItem", SelectorService.Attribute.ID))).waitUntil(Condition.visible, 5000);
         $(By.id(selectorService.get("fileItem", SelectorService.Attribute.ID))).click();
         return fileItem;
     }

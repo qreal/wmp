@@ -2,7 +2,6 @@ package com.qreal.wmp.uitesting.headerpanel;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
-import com.qreal.wmp.uitesting.headerpanel.folderwindow.FolderAreaImpl;
 import com.qreal.wmp.uitesting.pages.editor.EditorPageFacade;
 import com.qreal.wmp.uitesting.services.SelectorService;
 import org.jsoup.Jsoup;
@@ -18,6 +17,7 @@ import java.util.stream.Collectors;
 
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.$$;
 
 /**
  * Keeps custom html representations of saved diagrams.
@@ -69,8 +69,7 @@ public class DiagramStoreService {
     /** Opens diagram. */
     public void openDiagram(String key) {
         String filename = getFilename(key);
-        $(FolderAreaImpl.selector)
-                .findAll(By.className("diagrams"))
+        $$(By.cssSelector(selectorService.get("folderArea.diagrams", SelectorService.Attribute.SELECTOR)))
                 .stream().filter(elem -> elem.has(text(filename)))
                 .findFirst().ifPresent(SelenideElement::click);
     }
@@ -81,8 +80,7 @@ public class DiagramStoreService {
     
     public boolean isDiagramExist(String key) {
         String filename = getFilename(key);
-        return $(FolderAreaImpl.selector)
-                .findAll(By.className("diagrams"))
+        return $$(By.cssSelector(selectorService.get("folderArea.diagrams", SelectorService.Attribute.SELECTOR)))
                 .stream().anyMatch(elem -> elem.has(text(filename)));
     }
     

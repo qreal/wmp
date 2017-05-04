@@ -6,7 +6,6 @@ import com.qreal.wmp.uitesting.services.SelectorService.Attribute;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-import static com.codeborne.selenide.Selectors.withText;
 import static com.codeborne.selenide.Selenide.$;
 
 /** Corresponds window, which appears in case we create new diagram. */
@@ -31,7 +30,7 @@ public class SaveDiagramConfirm {
     public FolderArea save() {
         $(By.id(selectorService.get("confirm", Attribute.ID))).click();
         $(By.id(selectorService.get(Attribute.ID))).shouldBe(Condition.disappear);
-        return new FolderAreaImpl(driver);
+        return new FolderAreaImpl(driver, selectorService);
     }
     
     public static SaveDiagramConfirm getSaveDiagramConfirm(WebDriver driver, SelectorService selectorService) {
