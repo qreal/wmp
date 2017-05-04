@@ -30,10 +30,10 @@ public class FolderAreaImpl implements FolderArea {
     
     @Override
     public FolderArea createFolder(String folderName) {
-        $(By.id(selectorService.get("createItem", SelectorService.Attribute.ID))).click();
-        $(By.id(selectorService.get("folderMenu.folderNameInput", SelectorService.Attribute.ID))).setValue(folderName);
-        $(By.id(selectorService.get("folderMenu.confirmItem", SelectorService.Attribute.ID))).click();
-        if ($(By.id(selectorService.get("warningMessage", SelectorService.Attribute.ID))).isDisplayed()) {
+        $(By.id(selectorService.getId("createItem"))).click();
+        $(By.id(selectorService.getId("folderMenu.folderNameInput"))).setValue(folderName);
+        $(By.id(selectorService.getId("folderMenu.confirmItem"))).click();
+        if ($(By.id(selectorService.getId("warningMessage"))).isDisplayed()) {
             throw new IllegalArgumentException("The folder with this name already exists");
         }
         return this;
@@ -41,7 +41,7 @@ public class FolderAreaImpl implements FolderArea {
     
     @Override
     public boolean isFolderExist(String name) {
-        return $$(By.cssSelector(selectorService.get("folders", SelectorService.Attribute.SELECTOR)))
+        return $$(By.cssSelector(selectorService.getSelector("folders")))
                 .stream().anyMatch(elem -> elem.has(text(name)));
     }
     
@@ -52,7 +52,7 @@ public class FolderAreaImpl implements FolderArea {
         }
         String oldPath = getCurrentPath();
         oldPath = "".equals(oldPath) ? name : oldPath + "/" + name;
-        $(By.cssSelector(selectorService.get("folders", SelectorService.Attribute.SELECTOR))).find(byText(name)).click();
+        $(By.cssSelector(selectorService.getSelector("folders"))).find(byText(name)).click();
         waitUntilEquals(oldPath, FolderArea::getCurrentPath);
         return this;
     }
@@ -60,7 +60,7 @@ public class FolderAreaImpl implements FolderArea {
     @Override
     public FolderArea moveBack() {
         String oldPath = getCurrentPath();
-        $(By.id(selectorService.get("levelUpItem", SelectorService.Attribute.ID))).click();
+        $(By.id(selectorService.getId("levelUpItem"))).click();
         String[] steps = oldPath.split("/");
         String diff = String.join("/", Arrays.copyOf(steps, steps.length - 1));
         waitUntilEquals(diff, FolderArea::getCurrentPath);
@@ -69,7 +69,7 @@ public class FolderAreaImpl implements FolderArea {
     
     @Override
     public String getCurrentPath() {
-        String result = $(By.id(selectorService.get("folderPath", SelectorService.Attribute.ID)))
+        String result = $(By.id(selectorService.getId("folderPath")))
                 .find(By.tagName("p"))
                 .getText();
         
@@ -96,19 +96,19 @@ public class FolderAreaImpl implements FolderArea {
         if (!isFolderExist(name)) {
             throw new IllegalArgumentException("Folder is not exist");
         }
-        $(By.cssSelector(selectorService.get("folders", SelectorService.Attribute.SELECTOR)))
+        $(By.cssSelector(selectorService.getSelector("folders")))
                 .find(byText(name)).contextClick();
-        $(By.id(selectorService.get("contextMenu", SelectorService.Attribute.ID))).shouldBe(Condition.visible);
-        $(By.id(selectorService.get("contextMenu.deleteItem", SelectorService.Attribute.ID))).click();
+        $(By.id(selectorService.getId("contextMenu"))).shouldBe(Condition.visible);
+        $(By.id(selectorService.getId("contextMenu.deleteItem"))).click();
         return this;
     }
     
     @Override
     public void close() {
-        SelenideElement closeButton = $(By.id(selectorService.get("closeItem", SelectorService.Attribute.ID)));
-        if ($(By.id(selectorService.get(SelectorService.Attribute.ID))).isDisplayed() && closeButton.isDisplayed()) {
+        SelenideElement closeButton = $(By.id(selectorService.getId("closeItem")));
+        if ($(By.id(selectorService.getId())).isDisplayed() && closeButton.isDisplayed()) {
             closeButton.click();
-            $(By.id(selectorService.get(SelectorService.Attribute.ID))).shouldBe(Condition.disappear);
+            $(By.id(selectorService.getId())).shouldBe(Condition.disappear);
         }
     }
     

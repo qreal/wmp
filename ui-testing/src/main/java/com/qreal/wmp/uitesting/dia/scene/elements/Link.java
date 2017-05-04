@@ -5,7 +5,6 @@ import com.qreal.wmp.uitesting.dia.scene.Coordinate;
 import com.qreal.wmp.uitesting.exceptions.ElementNotOnTheSceneException;
 import com.qreal.wmp.uitesting.pages.editor.EditorPageFacade;
 import com.qreal.wmp.uitesting.services.SelectorService;
-import com.qreal.wmp.uitesting.services.SelectorService.Attribute;
 import org.openqa.selenium.By;
 
 import static com.codeborne.selenide.Selenide.$;
@@ -30,9 +29,9 @@ public class Link extends SceneElementImpl {
         super(selector);
         this.selectorService = selectorService;
         this.name = name;
-        SelenideElement source = $(selector).find(selectorService.get("arrow.source", Attribute.SELECTOR));
+        SelenideElement source = $(selector).find(selectorService.getSelector("arrow.source"));
         this.source = new SceneElementImpl(By.id(source.attr("id")));
-        SelenideElement target = $(selector).find(selectorService.get("arrow.target", Attribute.SELECTOR));
+        SelenideElement target = $(selector).find(selectorService.getSelector("arrow.target"));
         this.target = new SceneElementImpl(By.id(target.attr("id")));
         this.editorPageFacade = editorPageFacade;
     }

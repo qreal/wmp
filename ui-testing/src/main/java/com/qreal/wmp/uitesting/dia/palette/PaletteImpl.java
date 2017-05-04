@@ -23,7 +23,7 @@ public class PaletteImpl implements Palette {
     
     public PaletteElement getElement(final String elementName) throws NoSuchElementException {
         final SelenideElement element =
-                $(By.id(selectorService.get(SelectorService.Attribute.ID))).find(withText(elementName));
+                $(By.id(selectorService.getId())).find(withText(elementName));
         logger.info("Get element {} from Palette", element);
         return new PaletteElement(element);
     }

@@ -102,7 +102,7 @@ public class SceneWindowImpl implements SceneWindow {
         logger.info("Focus to " + coordinate.getXAbsolute() + " " + coordinate.getYAbsolute());
         if (driver instanceof JavascriptExecutor) {
             ((JavascriptExecutor) driver).executeScript("var canvas = " +
-                    "document.getElementById(\"" + selectorService.get(SelectorService.Attribute.ID) + "\");" +
+                    "document.getElementById(\"" + selectorService.getId() + "\");" +
                     "var BB=canvas.getBoundingClientRect();" +
                     "canvas.scrollLeft = " + Math.max(0, (coordinate.getXAbsolute() - sizeHor / 2)) + "; " +
                     "canvas.scrollTop = " + Math.max(0, (coordinate.getYAbsolute() - sizeVer / 2)) + ";"
@@ -120,7 +120,7 @@ public class SceneWindowImpl implements SceneWindow {
     public void update() {
         if (driver instanceof JavascriptExecutor) {
             ((JavascriptExecutor) driver).executeScript("var canvas = " +
-                    "document.getElementById(\"" + selectorService.get(SelectorService.Attribute.ID) + "\");" +
+                    "document.getElementById(\"" + selectorService.getId() + "\");" +
                     "var BB=canvas.getBoundingClientRect();" +
                     "$('#SceneWindowLeft').html(canvas.scrollLeft);" +
                     "$('#SceneWindowTop').html(canvas.scrollTop);" +

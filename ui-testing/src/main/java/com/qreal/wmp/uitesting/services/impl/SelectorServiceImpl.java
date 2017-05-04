@@ -14,13 +14,23 @@ public class SelectorServiceImpl implements SelectorService {
     }
     
     @Override
-    public String get(String element, Attribute attr) {
-        return find(element).getAsJsonObject().get(attr.toString()).getAsString();
+    public String getId() {
+        return config.getAsJsonObject().get("id").getAsString();
     }
     
     @Override
-    public String get(Attribute attr) {
-        return config.getAsJsonObject().get(attr.toString()).getAsString();
+    public String getId(String element) {
+        return find(element).getAsJsonObject().get("id").getAsString();
+    }
+    
+    @Override
+    public String getSelector() {
+        return config.getAsJsonObject().get("selector").getAsString();
+    }
+    
+    @Override
+    public String getSelector(String element) {
+        return find(element).getAsJsonObject().get("selector").getAsString();
     }
     
     @Override

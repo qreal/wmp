@@ -2,7 +2,6 @@ package com.qreal.wmp.uitesting.headerpanel.folderwindow;
 
 import com.codeborne.selenide.Condition;
 import com.qreal.wmp.uitesting.services.SelectorService;
-import com.qreal.wmp.uitesting.services.SelectorService.Attribute;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
@@ -25,28 +24,28 @@ public class FileItem {
 
     /** Corresponds 'New' button. */
     public void newDiagram() {
-        $(By.id(selectorService.get("fileItem.newDiagramItem", Attribute.ID))).click();
-        $(By.id(selectorService.get("saveDiagramConfirmWindow", Attribute.ID)))
+        $(By.id(selectorService.getId("fileItem.newDiagramItem"))).click();
+        $(By.id(selectorService.getId("saveDiagramConfirmWindow")))
                 .waitUntil(Condition.visible, 10000);
         SaveDiagramConfirm.getSaveDiagramConfirm(driver, selectorService.create("saveDiagramConfirmWindow")).notSave();
     }
     
     /** Returns folder window by clicking 'SaveAs'. */
     public FolderArea getSaveItem() {
-        $(By.id(selectorService.get("fileItem.saveAsItem", Attribute.ID))).click();
-        $(By.id(selectorService.get("folderArea", Attribute.ID))).waitUntil(Condition.visible, 10000);
+        $(By.id(selectorService.getId("fileItem.saveAsItem"))).click();
+        $(By.id(selectorService.getId("folderArea"))).waitUntil(Condition.visible, 10000);
         return folderArea;
     }
     
     /** Returns folder window by clicking 'Open'. */
     public FolderArea getOpenItem() {
-        $(By.id(selectorService.get("fileItem.OpenItem", Attribute.ID))).click();
-        $(By.id(selectorService.get("folderArea", Attribute.ID))).waitUntil(Condition.visible, 10000);
+        $(By.id(selectorService.getId("fileItem.OpenItem"))).click();
+        $(By.id(selectorService.getId("folderArea"))).waitUntil(Condition.visible, 10000);
         return folderArea;
     }
     
     /** Corresponds 'Save' button. */
     public void saveDiagram() {
-        $(By.id(selectorService.get("fileItem.SaveItem", Attribute.ID))).click();
+        $(By.id(selectorService.getId("fileItem.SaveItem"))).click();
     }
 }

@@ -5,7 +5,6 @@ import com.qreal.wmp.uitesting.dia.scene.elements.Block;
 import com.qreal.wmp.uitesting.dia.scene.elements.Link;
 import com.qreal.wmp.uitesting.pages.editor.EditorPageFacade;
 import com.qreal.wmp.uitesting.services.SelectorService;
-import com.qreal.wmp.uitesting.services.SelectorService.Attribute;
 import org.jetbrains.annotations.Contract;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -74,8 +73,7 @@ public class LinkProvider {
     
     /** Scans scene and updates set of links. */
     public void recalculateLinks() {
-        links = $$(By.cssSelector(selectorService.get("link", Attribute.SELECTOR))).stream()
-              //  .filter(x -> x.attr("class").contains(selectorService.get("link", Attribute.CLASS)))
+        links = $$(By.cssSelector(selectorService.getSelector("link"))).stream()
                 .map(x -> new Link(
                         x.attr("id"),
                         By.id(x.attr("id")),
@@ -98,7 +96,7 @@ public class LinkProvider {
     public Optional<SelenideElement> updateLinks() {
         final Map<String, Link> linkMap = links.stream()
                 .collect(Collectors.toMap(Link::getName, link -> link));
-        return $$(By.cssSelector(selectorService.get("link", Attribute.SELECTOR))).stream()
+        return $$(By.cssSelector(selectorService.getSelector("link"))).stream()
                 .filter(el -> !linkMap.containsKey(el.attr("id"))).findFirst();
     }
 }

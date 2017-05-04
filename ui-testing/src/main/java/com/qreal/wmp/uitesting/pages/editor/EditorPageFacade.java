@@ -9,7 +9,6 @@ import com.qreal.wmp.uitesting.dia.scene.SceneProxy;
 import com.qreal.wmp.uitesting.dia.scene.elements.Block;
 import com.qreal.wmp.uitesting.dia.scene.elements.Link;
 import com.qreal.wmp.uitesting.services.SelectorService;
-import com.qreal.wmp.uitesting.services.SelectorService.Attribute;
 import org.openqa.selenium.By;
 
 import java.util.NoSuchElementException;
@@ -95,8 +94,8 @@ public class EditorPageFacade {
     
     /** Called when new block created by any event in order to let scene known about it. */
     public Block addDrawnBlock(String name) {
-        if ($(By.id(selectorService.get("gestures.gesturesMenu", Attribute.ID))).is(Condition.visible)) {
-            $(By.id(selectorService.get("gestures.gesturesMenu", Attribute.ID)))
+        if ($(By.id(selectorService.getId("gestures.gesturesMenu"))).is(Condition.visible)) {
+            $(By.id(selectorService.getId("gestures.gesturesMenu")))
                     .find(byText(name.toLowerCase()))
                     .click();
         }

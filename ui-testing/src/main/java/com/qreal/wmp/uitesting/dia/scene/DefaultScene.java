@@ -63,7 +63,7 @@ public class DefaultScene implements Scene {
     
     @Override
     public Block dragAndDrop(final PaletteElement element) {
-        element.getInnerSeleniumElement().dragAndDropTo("#" + selectorService.get(SelectorService.Attribute.ID));
+        element.getInnerSeleniumElement().dragAndDropTo("#" + selectorService.getId());
         return blockProvider.getNewBlock();
     }
     
@@ -158,7 +158,7 @@ public class DefaultScene implements Scene {
                 .contextClick(sceneElement.getInnerSeleniumElement())
                 .build()
                 .perform();
-        SelenideElement contextMenu = $(By.id(selectorService.get("contextMenu", SelectorService.Attribute.ID)));
+        SelenideElement contextMenu = $(By.id(selectorService.getId("contextMenu")));
         contextMenu.shouldBe(Condition.visible);
         contextMenu.click();
         (new WebDriverWait(webDriver, 5))

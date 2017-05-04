@@ -46,7 +46,7 @@ public class EditorHeaderPanelImpl implements EditorHeaderPanel {
 
     @Override
     public DashboardPage toDashboard() {
-        $(By.id(selectorService.get("dashboardItem", SelectorService.Attribute.ID))).click();
+        $(By.id(selectorService.getId("dashboardItem"))).click();
         logger.info("Open dashboard");
         return pageFactory.getDashboardPage();
     }
@@ -103,8 +103,8 @@ public class EditorHeaderPanelImpl implements EditorHeaderPanel {
     }
     
     private FileItem clickFile() {
-        $(By.id(selectorService.get("fileItem", SelectorService.Attribute.ID))).waitUntil(Condition.visible, 5000);
-        $(By.id(selectorService.get("fileItem", SelectorService.Attribute.ID))).click();
+        $(By.id(selectorService.getId("fileItem"))).waitUntil(Condition.visible, 5000);
+        $(By.id(selectorService.getId("fileItem"))).click();
         return fileItem;
     }
     

@@ -61,7 +61,7 @@ public class AuthTest {
     @Test
     public void authWrongTest() {
         opener.cleanOpen("auth");
-        assert !$(By.id(selectorService.get("authform.wrongAuthLabel", SelectorService.Attribute.ID)))
+        assert !$(By.id(selectorService.getId("authform.wrongAuthLabel")))
                 .isDisplayed();
         assert inAuthPage();
         try {
@@ -69,7 +69,7 @@ public class AuthTest {
         } catch (WrongAuthException e) {
             System.err.println(e.getMessage());
         }
-        $(By.id(selectorService.get("authform.wrongAuthLabel", SelectorService.Attribute.ID)))
+        $(By.id(selectorService.getId("authform.wrongAuthLabel")))
                 .waitUntil(Condition.visible, 5000);
     }
 
@@ -118,7 +118,7 @@ public class AuthTest {
      * @return true if it is
      */
     private boolean inAuthPage() {
-        return  $(By.id(selectorService.get("authform.usernameInput", SelectorService.Attribute.ID)))
+        return  $(By.id(selectorService.getId("authform.usernameInput")))
                 .isDisplayed();
     }
 }

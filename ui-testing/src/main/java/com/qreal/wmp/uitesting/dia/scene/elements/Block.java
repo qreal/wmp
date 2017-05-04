@@ -23,7 +23,7 @@ public class Block extends SceneElementImpl {
         super(selector);
         this.name = name;
         this.port = new SceneElementImpl(By.id($(selector)
-                .find(By.cssSelector(selectorService.get("port", SelectorService.Attribute.SELECTOR))).attr("id")));
+                .find(By.cssSelector(selectorService.getSelector("port"))).attr("id")));
         this.editorPageFacade = editorPageFacade;
     }
     

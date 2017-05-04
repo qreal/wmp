@@ -35,18 +35,18 @@ public class DiagramStoreService {
     
     public DiagramStoreService(EditorPageFacade facade, SelectorService selectorService) {
         this.selectorService = selectorService;
-        sceneSelector = By.id(facade.getEditorPageSelectors().get("scene", SelectorService.Attribute.ID));
+        sceneSelector = By.id(facade.getEditorPageSelectors().getId("scene"));
     }
     
     
     /** Saves diagram. */
     public void saveDiagram(String key) {
         SelenideElement element =
-                $(By.id(selectorService.get("savingMenu.savingInput", SelectorService.Attribute.ID)));
+                $(By.id(selectorService.getId("savingMenu.savingInput")));
         element.setValue(getFilename(key));
         diagrams.put(key, prepareElement(Jsoup.parseBodyFragment($(sceneSelector).innerHtml()).body()));
-        $(By.id(selectorService.get("savingMenu.savingItem", SelectorService.Attribute.ID))).click();
-        $(By.id(selectorService.get("savingMenu.savingItem", SelectorService.Attribute.ID)))
+        $(By.id(selectorService.getId("savingMenu.savingItem"))).click();
+        $(By.id(selectorService.getId("savingMenu.savingItem")))
                 .shouldBe(Condition.disappear);
         lastKnownKey = key;
     }
@@ -69,7 +69,7 @@ public class DiagramStoreService {
     /** Opens diagram. */
     public void openDiagram(String key) {
         String filename = getFilename(key);
-        $$(By.cssSelector(selectorService.get("folderArea.diagrams", SelectorService.Attribute.SELECTOR)))
+        $$(By.cssSelector(selectorService.getSelector("folderArea.diagrams")))
                 .stream().filter(elem -> elem.has(text(filename)))
                 .findFirst().ifPresent(SelenideElement::click);
     }
@@ -80,7 +80,7 @@ public class DiagramStoreService {
     
     public boolean isDiagramExist(String key) {
         String filename = getFilename(key);
-        return $$(By.cssSelector(selectorService.get("folderArea.diagrams", SelectorService.Attribute.SELECTOR)))
+        return $$(By.cssSelector(selectorService.getSelector("folderArea.diagrams")))
                 .stream().anyMatch(elem -> elem.has(text(filename)));
     }
     

@@ -7,7 +7,6 @@ import com.qreal.wmp.uitesting.dia.scene.window.SceneWindow;
 import com.qreal.wmp.uitesting.exceptions.ElementNotOnTheSceneException;
 import com.qreal.wmp.uitesting.pages.editor.EditorPageFacade;
 import com.qreal.wmp.uitesting.services.SelectorService;
-import com.qreal.wmp.uitesting.services.SelectorService.Attribute;
 import org.jetbrains.annotations.Contract;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NotFoundException;
@@ -77,8 +76,7 @@ public class BlockProvider {
     
     /** Scans scene and updates set of blocks. */
     public void recalculateBlocks() {
-        blocks = $$(selectorService.get("block", Attribute.SELECTOR)).stream()
-                //.filter(x -> x.attr("class").contains(selectorService.get("block", Attribute.CLASS)))
+        blocks = $$(selectorService.getSelector("block")).stream()
                 .map(x -> new Block(
                         x.attr("id"),
                         By.id(x.attr("id")),
@@ -102,7 +100,7 @@ public class BlockProvider {
         final Map<String, Block> blockMap = blocks.stream()
                 .collect(Collectors.toMap(Block::getName, block -> block));
      
-        return $$(By.cssSelector(selectorService.get("block", Attribute.SELECTOR))).stream()
+        return $$(By.cssSelector(selectorService.getSelector("block"))).stream()
                 .filter(el -> !blockMap.containsKey(el.attr("id"))).findFirst();
     }
 }

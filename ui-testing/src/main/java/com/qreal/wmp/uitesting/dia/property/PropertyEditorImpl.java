@@ -2,7 +2,6 @@ package com.qreal.wmp.uitesting.dia.property;
 
 import com.codeborne.selenide.SelenideElement;
 import com.qreal.wmp.uitesting.services.SelectorService;
-import com.qreal.wmp.uitesting.services.SelectorService.Attribute;
 import org.jetbrains.annotations.Contract;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
@@ -39,7 +38,7 @@ public class PropertyEditorImpl implements PropertyEditor {
     
     /** {@inheritDoc} */
     public String getProperty(final SelenideElement element, final String propertyName) throws NoSuchElementException {
-        $(By.id(selectorService.get(Attribute.ID))).click();
+        $(By.id(selectorService.getId())).click();
         element.click();
         SelenideElement property = getInputOfElement(propertyName);
         logger.info("Get value of preperty {}", propertyName);
@@ -57,11 +56,11 @@ public class PropertyEditorImpl implements PropertyEditor {
     
     /** To set/get property we need to take web element which describes needed field. */
     private SelenideElement getInputOfElement(final String propertyName) {
-          return $$(By.cssSelector(selectorService.get("property", Attribute.SELECTOR)))
+          return $$(By.cssSelector(selectorService.getSelector("property")))
                 .stream()
                 .filter(property ->
-                        property.find(selectorService.get("property.propertyName", Attribute.SELECTOR)).exists()
-                ).map(property -> property.find(selectorService.get("property.propertyValue", Attribute.SELECTOR)))
+                        property.find(selectorService.getSelector("property.propertyName")).exists()
+                ).map(property -> property.find(selectorService.getSelector("property.propertyValue")))
                 .findFirst()
                 .orElseThrow(() -> new NoSuchElementException("There is no property with name " + propertyName));
     }

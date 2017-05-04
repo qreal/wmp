@@ -2,7 +2,6 @@ package com.qreal.wmp.uitesting.headerpanel.folderwindow;
 
 import com.codeborne.selenide.Condition;
 import com.qreal.wmp.uitesting.services.SelectorService;
-import com.qreal.wmp.uitesting.services.SelectorService.Attribute;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
@@ -22,14 +21,14 @@ public class SaveDiagramConfirm {
     
     /** 'No' button. */
     public void notSave() {
-        $(By.id(selectorService.get("cancel", Attribute.ID))).click();
-        $(By.id(selectorService.get(Attribute.ID))).shouldBe(Condition.disappear);
+        $(By.id(selectorService.getId("cancel"))).click();
+        $(By.id(selectorService.getId())).shouldBe(Condition.disappear);
     }
     
     /** 'Yes' button. */
     public FolderArea save() {
-        $(By.id(selectorService.get("confirm", Attribute.ID))).click();
-        $(By.id(selectorService.get(Attribute.ID))).shouldBe(Condition.disappear);
+        $(By.id(selectorService.getId("confirm"))).click();
+        $(By.id(selectorService.getId())).shouldBe(Condition.disappear);
         return new FolderAreaImpl(driver, selectorService);
     }
     

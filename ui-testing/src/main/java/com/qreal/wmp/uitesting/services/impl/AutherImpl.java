@@ -3,7 +3,6 @@ package com.qreal.wmp.uitesting.services.impl;
 import com.qreal.wmp.uitesting.exceptions.WrongAuthException;
 import com.qreal.wmp.uitesting.services.Auther;
 import com.qreal.wmp.uitesting.services.SelectorService;
-import com.qreal.wmp.uitesting.services.SelectorService.Attribute;
 import org.openqa.selenium.By;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,10 +29,10 @@ public class AutherImpl implements Auther {
     /** {@inheritDoc} */
     public void auth(final String username, final String password) throws WrongAuthException {
         open(env.getProperty("auth"));
-        $(By.id(selectorService.get("usernameInput", Attribute.ID))).setValue(username);
-        $(By.id(selectorService.get("passwordInput", Attribute.ID))).setValue(password);
-        $(By.id(selectorService.get("submitButton", Attribute.ID))).click();
-        if ($(By.id(selectorService.get("wrongAuthLabel", Attribute.ID))).isDisplayed()) {
+        $(By.id(selectorService.getId("usernameInput"))).setValue(username);
+        $(By.id(selectorService.getId("passwordInput"))).setValue(password);
+        $(By.id(selectorService.getId("submitButton"))).click();
+        if ($(By.id(selectorService.getId("wrongAuthLabel"))).isDisplayed()) {
             throw new WrongAuthException(username, password);
         }
         logger.info("Authentication with login: {} and password: {}", username, password);
