@@ -3,6 +3,9 @@ package com.qreal.wmp.auth.controllers.roles.anonymous;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.stereotype.Controller;
@@ -21,10 +24,16 @@ import java.net.URLEncoder;
  * Controller of register page.
  * Pages: /log (GET) (login page), /logErr (GET) (login error page)
  */
+
+@Configuration
+@PropertySource("classpath:selectors.properties")
 @Controller
 public class LoginController {
 
     private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
+    
+    @Value("${selectors.url}")
+    private String selectorServiceUrl;
 
     /**
      * Used to retrieve inital request which could be intercepted by SpringSec.
@@ -62,6 +71,6 @@ public class LoginController {
     }
     
     private String getConfig() {
-        return new RestTemplate().getForObject("http://localhost:8081/selectors/authform", String.class);
+        return new RestTemplate().getForObject(selectorServiceUrl, String.class);
     }
 }

@@ -56,7 +56,7 @@ public class PropertyEditorImpl implements PropertyEditor {
     
     /** To set/get property we need to take web element which describes needed field. */
     private SelenideElement getInputOfElement(final String propertyName) {
-          return $$(By.cssSelector(selectorService.getSelector("property")))
+        return $$(By.cssSelector(selectorService.getSelector("property")))
                 .stream()
                 .filter(property ->
                         property.find(selectorService.getSelector("property.propertyName")).exists()

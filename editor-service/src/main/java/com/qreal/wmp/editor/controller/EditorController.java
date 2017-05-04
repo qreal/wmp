@@ -6,6 +6,8 @@ import com.qreal.wmp.editor.common.utils.AuthenticatedUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -20,6 +22,7 @@ import java.io.IOException;
  * Main controller of Editor service.
  * Pages: editor
  */
+@PropertySource("classpath:service.properties")
 @Controller
 public class EditorController {
 
@@ -27,6 +30,9 @@ public class EditorController {
 
     private final TypesLoader typesLoader;
 
+    @Value("${path.selector.service}")
+    private String selectorServiceUrl;
+    
     @Autowired
     public EditorController(TypesLoader typesLoader) {
         this.typesLoader = typesLoader;
@@ -55,7 +61,7 @@ public class EditorController {
         return typesLoader.getTypesJson(task);
     }
     
-    private static String getConfig(String page) {
-        return new RestTemplate().getForObject("http://localhost:8081/selectors" + page, String.class);
+    private String getConfig(String page) {
+        return new RestTemplate().getForObject(selectorServiceUrl + page, String.class);
     }
 }

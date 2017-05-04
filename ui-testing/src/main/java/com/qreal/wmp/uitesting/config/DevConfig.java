@@ -75,7 +75,7 @@ public class DevConfig {
     
     @Bean
     public SelectorService selectorService() {
-        String jsonString = new RestTemplate().getForObject("http://localhost:8081/selectors/all", String.class);
+        String jsonString = new RestTemplate().getForObject(environment.getProperty("selectors"), String.class);
         return SelectorServiceImpl.getFirstSelectorService(jsonString);
     }
 }

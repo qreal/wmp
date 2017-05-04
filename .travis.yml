@@ -67,6 +67,10 @@ script:
   - mvn tomcat7:run-war-only -P travis &
   - sleep 30
 
+  - cd ../selector-service
+  - mvn spring-boot:run &
+  - sleep 30
+
   - cd ../ui-testing
   - mvn test -P travis
 
