@@ -41,13 +41,11 @@ public class DiagramStoreService {
     
     /** Saves diagram. */
     public void saveDiagram(String key) {
-        SelenideElement element =
-                $(By.id(selectorService.getId("savingMenu.savingInput")));
+        SelenideElement element = $(By.id(selectorService.getId("savingMenu.savingInput")));
         element.setValue(getFilename(key));
         diagrams.put(key, prepareElement(Jsoup.parseBodyFragment($(sceneSelector).innerHtml()).body()));
         $(By.id(selectorService.getId("savingMenu.savingItem"))).click();
-        $(By.id(selectorService.getId("savingMenu.savingItem")))
-                .shouldBe(Condition.disappear);
+        $(By.id(selectorService.getId("savingMenu.savingItem"))).waitUntil(Condition.disappear, 5000);
         lastKnownKey = key;
     }
     

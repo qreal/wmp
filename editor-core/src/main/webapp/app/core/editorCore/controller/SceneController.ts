@@ -30,8 +30,9 @@ export class SceneController {
     private paperCommandFactory: SceneCommandFactory;
     private contextMenuId;
     private selectorService : any;
+    private gestures : any;
 
-    constructor(diagramEditorController: DiagramEditorController, paper: DiagramScene, selectorService: any) {
+    constructor(diagramEditorController: DiagramEditorController, paper: DiagramScene, selectorService: any, gestures: any) {
         this.diagramEditorController = diagramEditorController;
         this.undoRedoController = diagramEditorController.getUndoRedoController();
         this.scene = paper;
@@ -44,6 +45,7 @@ export class SceneController {
         this.lastCellScrollPosition = { x: 0, y: 0 };
         this.contextMenuId = selectorService.contextMenu.id;
         this.selectorService = selectorService;
+        this.gestures = gestures;
 
         this.scene.on('cell:pointerdown', (cellView, event, x, y): void => {
             this.cellPointerdownListener(cellView, event, x, y);
@@ -172,7 +174,7 @@ export class SceneController {
 
         var contextMenu = new ContextMenu();
         var menuDiv = document.createElement("div");
-        menuDiv.id = this.selectorService.gestures.gesturesMenu.id;
+        menuDiv.id = this.gestures.gesturesMenu.id;
         menuDiv.className = "gestures-menu";
         menuDiv.style.left = event.x + "px";
         menuDiv.style.top = event.y + "px";

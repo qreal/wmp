@@ -3,8 +3,6 @@ package com.qreal.wmp.selector;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
@@ -18,27 +16,20 @@ import java.util.Map;
 @PropertySource("classpath:application.properties")
 public class ConfigsMerger {
     
-    private static final Logger logger = LoggerFactory.getLogger(ConfigsMerger.class);
-    
     private final JsonParser parser = new JsonParser();
     
     @Value("${selectorConfig}")
     private String configFile;
     
     /** Generates one config file from all which are used. */
-    public JsonObject generateCommonConfig() {
+    public JsonObject generateCommonConfig() throws FileNotFoundException {
         String path = getClass().getClassLoader().getResource(configFile).getPath();
-        try {
-            JsonElement jsonElement = parser.parse(new FileReader(path));
-            JsonObject initialConfig = jsonElement.getAsJsonObject();
-            return merge(initialConfig, path);
-        } catch (FileNotFoundException e) {
-            logger.error(e.getMessage());
-            throw new RuntimeException("There are no files on path: " + path);
-        }
+        JsonElement jsonElement = parser.parse(new FileReader(path));
+        JsonObject initialConfig = jsonElement.getAsJsonObject();
+        return merge(initialConfig, path);
     }
     
-    private JsonObject merge(JsonObject parent, String path) {
+    private JsonObject merge(JsonObject parent, String path) throws FileNotFoundException {
         JsonObject result = new JsonObject();
         for (Map.Entry<String, JsonElement> childEntry: parent.entrySet()) {
             if (childEntry.getValue().isJsonPrimitive()) {
@@ -51,12 +42,7 @@ public class ConfigsMerger {
                             + stringValue.substring(pathLink.length(), stringValue.length());
                     
                     JsonObject parsedChild;
-                    try {
-                        parsedChild = parser.parse(new FileReader(newPath)).getAsJsonObject();
-                    } catch (FileNotFoundException e) {
-                        logger.error(e.getMessage());
-                        throw new RuntimeException("There are no files on path: " + path);
-                    }
+                    parsedChild = parser.parse(new FileReader(newPath)).getAsJsonObject();
                     result.add(childEntry.getKey(), merge(parsedChild, newPath));
                 } else {
                     result.add(childEntry.getKey(), childEntry.getValue());

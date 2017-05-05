@@ -6,6 +6,7 @@ import com.google.common.base.Predicate;
 import com.qreal.wmp.uitesting.services.SelectorService;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.Arrays;
@@ -30,9 +31,14 @@ public class FolderAreaImpl implements FolderArea {
     
     @Override
     public FolderArea createFolder(String folderName) {
-        $(By.id(selectorService.getId("createItem"))).click();
-        $(By.id(selectorService.getId("folderMenu.folderNameInput"))).setValue(folderName);
-        $(By.id(selectorService.getId("folderMenu.confirmItem"))).click();
+        ($(By.id(selectorService.getId("createItem")))).click();
+        (new WebDriverWait(driver, 10))
+                .until((Predicate<WebDriver>) webDriver ->
+                        $(By.id(selectorService.getId("folderMenu.folderNameInput"))).exists());
+        
+        new Actions(driver).sendKeys($(By.id(selectorService.getId("folderMenu.folderNameInput"))), folderName)
+                .click($(By.id(selectorService.getId("folderMenu.confirmItem")))).build().perform();
+        
         if ($(By.id(selectorService.getId("warningMessage"))).isDisplayed()) {
             throw new IllegalArgumentException("The folder with this name already exists");
         }
@@ -52,7 +58,9 @@ public class FolderAreaImpl implements FolderArea {
         }
         String oldPath = getCurrentPath();
         oldPath = "".equals(oldPath) ? name : oldPath + "/" + name;
-        $(By.cssSelector(selectorService.getSelector("folders"))).find(byText(name)).click();
+        new Actions(driver)
+                .click($(By.cssSelector(selectorService.getSelector("folders"))).find(byText(name)))
+                .perform();
         waitUntilEquals(oldPath, FolderArea::getCurrentPath);
         return this;
     }
@@ -69,6 +77,10 @@ public class FolderAreaImpl implements FolderArea {
     
     @Override
     public String getCurrentPath() {
+        (new WebDriverWait(driver, 10))
+                .until((Predicate<WebDriver>) webDriver ->
+                        $(By.id(selectorService.getId("folderPath"))).exists());
+    
         String result = $(By.id(selectorService.getId("folderPath")))
                 .find(By.tagName("p"))
                 .getText();
@@ -96,10 +108,13 @@ public class FolderAreaImpl implements FolderArea {
         if (!isFolderExist(name)) {
             throw new IllegalArgumentException("Folder is not exist");
         }
-        $(By.cssSelector(selectorService.getSelector("folders")))
-                .find(byText(name)).contextClick();
-        $(By.id(selectorService.getId("contextMenu"))).shouldBe(Condition.visible);
-        $(By.id(selectorService.getId("contextMenu.deleteItem"))).click();
+        new Actions(driver)
+                .contextClick($(By.cssSelector(selectorService.getSelector("folders"))).find(byText(name)))
+                .perform();
+        $(By.id(selectorService.getId("contextMenu"))).shouldBe(Condition.appear);
+        new Actions(driver)
+                .click($(By.id(selectorService.getId("contextMenu.deleteItem"))))
+                .perform();
         return this;
     }
     
@@ -107,7 +122,7 @@ public class FolderAreaImpl implements FolderArea {
     public void close() {
         SelenideElement closeButton = $(By.id(selectorService.getId("closeItem")));
         if ($(By.id(selectorService.getId())).isDisplayed() && closeButton.isDisplayed()) {
-            closeButton.click();
+            new Actions(driver).moveToElement(closeButton).click().perform();
             $(By.id(selectorService.getId())).shouldBe(Condition.disappear);
         }
     }

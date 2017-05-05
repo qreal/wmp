@@ -100,6 +100,11 @@ public class RobotCalibration {
     }
     
     private Point calibrate() {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            logger.error(e.getMessage());
+        }
         click(xPoint.begin, yPoint.begin);
         // find left border
         while (xPoint.begin < xPoint.end) {

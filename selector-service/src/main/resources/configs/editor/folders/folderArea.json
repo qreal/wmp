@@ -1,5 +1,5 @@
 {
-  "id" : "diagramArea",//"#diagrams .modal-content",
+  "id" : "diagramArea",
   "createItem" : {
     "id" : "creating-menu"
   },

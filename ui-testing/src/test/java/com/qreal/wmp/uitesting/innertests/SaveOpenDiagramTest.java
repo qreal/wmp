@@ -87,8 +87,6 @@ public class SaveOpenDiagramTest {
     
     @Test
     public void saveAfterChangesTest() {
-        scene.clean();
-        addElements();
         scene.moveToCell(elements.get(0), 10, 10);
         headerPanel.saveDiagram();
         assert headerPanel.equalsDiagrams(diagram);

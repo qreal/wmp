@@ -1,8 +1,9 @@
 <%JSONObject headerPanelSelector = selectors.getJSONObject("editorHeaderPanel"); %>
 
 <!-- Context menu in File->'Open diagram' window -->
-<ul id="<%=headerPanelSelector.getJSONObject("contextMenu").getString("id")%>" class='custom-menu'>
-    <li id="<%=headerPanelSelector.getJSONObject("contextMenu").getJSONObject("deleteItem").getString("id")%>"
+<%JSONObject contextMenuSelector = headerPanelSelector.getJSONObject("folderArea").getJSONObject("contextMenu"); %>
+<ul id="<%=contextMenuSelector.getString("id")%>" class='custom-menu'>
+    <li id="<%=contextMenuSelector.getJSONObject("deleteItem").getString("id")%>"
         data-action="delete">Delete</li>
     <li data-action="share" >Share</li>
 </ul>

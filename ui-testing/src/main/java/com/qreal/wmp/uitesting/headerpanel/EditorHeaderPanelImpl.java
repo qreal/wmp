@@ -1,6 +1,6 @@
 package com.qreal.wmp.uitesting.headerpanel;
 
-import com.codeborne.selenide.Condition;
+import com.google.common.base.Predicate;
 import com.qreal.wmp.uitesting.PageFactory;
 import com.qreal.wmp.uitesting.headerpanel.folderwindow.FileItem;
 import com.qreal.wmp.uitesting.headerpanel.folderwindow.FolderArea;
@@ -9,6 +9,8 @@ import com.qreal.wmp.uitesting.pages.editor.EditorPageFacade;
 import com.qreal.wmp.uitesting.services.SelectorService;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,6 +33,8 @@ public class EditorHeaderPanelImpl implements EditorHeaderPanel {
     
     private final SelectorService selectorService;
     
+    private final WebDriver webDriver;
+    
     private EditorHeaderPanelImpl(
             PageFactory pageFactory,
             WebDriver webDriver,
@@ -42,6 +46,7 @@ public class EditorHeaderPanelImpl implements EditorHeaderPanel {
         this.pageFactory = pageFactory;
         this.editorPageFacade = editorPageFacade;
         this.selectorService = selectorService;
+        this.webDriver = webDriver;
     }
 
     @Override
@@ -103,8 +108,15 @@ public class EditorHeaderPanelImpl implements EditorHeaderPanel {
     }
     
     private FileItem clickFile() {
-        $(By.id(selectorService.getId("fileItem"))).waitUntil(Condition.visible, 5000);
-        $(By.id(selectorService.getId("fileItem"))).click();
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            logger.error(e.getMessage());
+        }
+        new Actions(webDriver).click($(By.id(selectorService.getId("fileItem")))).perform();
+        (new WebDriverWait(webDriver, 10))
+                .until((Predicate<WebDriver>) webDriver ->
+                        $(By.id(selectorService.getId("fileItem"))).attr("class").contains("open"));
         return fileItem;
     }
     
