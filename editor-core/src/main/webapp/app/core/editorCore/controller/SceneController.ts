@@ -16,7 +16,6 @@ import {DiagramEditorController} from "./DiagramEditorController";
 import {UndoRedoController} from "./UndoRedoController";
 import {DiagramContainer} from "../model/DiagramContainer";
 import {EmbedCommand} from "../model/commands/EmbedCommand";
-import {ElementConstructor} from "../model/ElementConstructor";
 export class SceneController {
 
     private diagramEditorController: DiagramEditorController;
@@ -25,7 +24,6 @@ export class SceneController {
     private clickFlag : boolean;
     private rightClickFlag : boolean;
     private undoRedoController: UndoRedoController;
-    private elementConstructor: ElementConstructor;
     private lastCellMouseDownPosition: {x: number, y: number};
     private lastCellMouseDownSize: {width: number, height: number};
     private paperCommandFactory: SceneCommandFactory;
@@ -34,7 +32,6 @@ export class SceneController {
     constructor(diagramEditorController: DiagramEditorController, paper: DiagramScene) {
         this.diagramEditorController = diagramEditorController;
         this.undoRedoController = diagramEditorController.getUndoRedoController();
-        this.elementConstructor = diagramEditorController.getElementConstructor();
         this.scene = paper;
         this.paperCommandFactory = new SceneCommandFactory(this);
         this.clickFlag = false;
@@ -71,7 +68,7 @@ export class SceneController {
 
         DiagramElementListener.makeAndExecuteCreateLinkCommand = (jointObject: joint.dia.Link, name: string, type: string,
                                                                   properties: Map<String, Property>): void => {
-            var linkObject: Link = this.elementConstructor.createLink(jointObject, name, type, properties);
+            var linkObject: Link = this.diagramEditorController.getElementConstructor().createLink(jointObject, name, type, properties);
             this.makeAndExecuteCreateLinkCommand(linkObject);
         };
     }
@@ -104,8 +101,8 @@ export class SceneController {
                 typeProperties[property].type, typeProperties[property].value);
         }
 
-        var linkObject: Link = this.elementConstructor.createLink(link, nodeType.getShownName(),
-            nodeType.getName(), linkProperties);
+        var linkObject: Link = this.diagramEditorController.getElementConstructor().createLink(link,
+            nodeType.getShownName(), nodeType.getName(), linkProperties);
 
         this.makeAndExecuteCreateLinkCommand(linkObject);
     }
@@ -117,8 +114,8 @@ export class SceneController {
             node = new SubprogramNode(nodeType, x, y, DefaultSize.DEFAULT_NODE_WIDTH, DefaultSize.DEFAULT_NODE_HEIGHT,
                 nodeType.getPropertiesMap(), subprogramId);
         } else {
-            node = this.elementConstructor.createNode(nodeType, x, y, DefaultSize.DEFAULT_NODE_WIDTH,
-                DefaultSize.DEFAULT_NODE_HEIGHT, nodeType.getPropertiesMap());
+            node = this.diagramEditorController.getElementConstructor().createNode(nodeType, x, y,
+                DefaultSize.DEFAULT_NODE_WIDTH, DefaultSize.DEFAULT_NODE_HEIGHT, nodeType.getPropertiesMap());
         }
 
         var command: MultiCommand = new MultiCommand([this.paperCommandFactory.makeCreateNodeCommand(node),

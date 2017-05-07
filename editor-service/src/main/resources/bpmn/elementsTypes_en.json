@@ -214,7 +214,7 @@
         "None": {
             "name": "None",
             "image": {
-                "src": "images/bpmn/{0}.svg"
+                "src": "images/bpmn/{0}.png"
             },
             "subtypes": [
                 "Start",
@@ -264,7 +264,7 @@
             "name": "Task",
             "image": {
                 "isHidden": true,
-                "src": "images/bpmn/subprocess.svg"
+                "src": "images/bpmn/subprocess.png"
             },
             "border": {
                 "stroke": "black",
@@ -296,7 +296,7 @@
             "container": true,
             "image": {
                 "isHidden": true,
-                "src": "images/bpmn/subprocess.svg"
+                "src": "images/bpmn/subprocess.png"
             },
             "border": {
                 "stroke": "black",
@@ -311,7 +311,7 @@
             "container": true,
             "image": {
                 "isHidden": true,
-                "src": "images/bpmn/lane.svg"
+                "src": "images/bpmn/lane.png"
             },
             "innerText": {
                 "fill": "#000000",
@@ -341,7 +341,7 @@
             "container": true,
             "image": {
                 "isHidden": true,
-                "src": "images/bpmn/pool.svg"
+                "src": "images/bpmn/pool.png"
             }
         },
 
@@ -350,7 +350,7 @@
             "container": true,
             "image": {
                 "isHidden": true,
-                "src": "images/bpmn/lane.svg"
+                "src": "images/bpmn/lane.png"
             },
             "border": {
                 "stroke": "black",
@@ -378,35 +378,35 @@
         "Exclusive": {
             "name": "Exclusive",
             "image": {
-                "src": "images/bpmn/exclusive-gateway.svg"
+                "src": "images/bpmn/exclusive-gateway.png"
             }
         },
 
         "Event-Based": {
             "name": "Event-Based",
             "image": {
-                "src": "images/bpmn/event-based-gateway.svg"
+                "src": "images/bpmn/event-based-gateway.png"
             }
         },
 
         "Parallel": {
             "name": "Parallel",
             "image": {
-                "src": "images/bpmn/parallel-gateway.svg"
+                "src": "images/bpmn/parallel-gateway.png"
             }
         },
 
         "Inclusive": {
             "name": "Inclusive",
             "image": {
-                "src": "images/bpmn/inclusive-gateway.svg"
+                "src": "images/bpmn/inclusive-gateway.png"
             }
         },
 
         "Complex": {
             "name": "Complex",
             "image": {
-                "src": "images/bpmn/complex-gateway.svg"
+                "src": "images/bpmn/complex-gateway.png"
             }
         }
     }
