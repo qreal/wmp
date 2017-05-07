@@ -16,6 +16,10 @@ export class ElementConstructor {
         this.nodesTypesMap = nodesTypesMap;
     }
 
+    public createLink(jointObject: joint.dia.Link, name: string, type: string, properties: Map<String, Property>): Link {
+        return new Link(jointObject, name, type, properties);
+    }
+
     public createNode(nodeType: NodeType, x: number, y: number, width: number, height: number,
                       properties: Map<String, Property>, id?: string): DiagramNode {
         var node: DiagramNode;

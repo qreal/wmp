@@ -134,7 +134,7 @@ export class DiagramThriftParser extends DiagramJsonParser {
         });
 
         var nodeType: NodeType = nodeTypesMap[linkObject.type];
-        return new Link(jointObject, nodeType.getShownName(), nodeType.getName(), properties);
+        return this.elementConstructor.createLink(jointObject, nodeType.getShownName(), nodeType.getName(), properties);
     }
 
     protected setEmbedding(nodesMap: Map<String, DiagramNode>, nodeObjects: TDefaultDiagramNode[]) {

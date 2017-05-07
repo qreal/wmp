@@ -37,9 +37,7 @@ export class DiagramElementListener {
                 nodeProperties[property] = new Property(typeProperties[property].name,
                     typeProperties[property].type, typeProperties[property].value);
             }
-
-            var linkObject: Link = new Link(link, nodeType.getShownName(), nodeType.getName(), nodeProperties);
-            DiagramElementListener.makeAndExecuteCreateLinkCommand(linkObject);
+            DiagramElementListener.makeAndExecuteCreateLinkCommand(link, nodeType.getShownName(), nodeType.getName(), nodeProperties);
 
             this.paper.model.addCell(link);
 
@@ -60,7 +58,8 @@ export class DiagramElementListener {
         return null;
     };
 
-    static makeAndExecuteCreateLinkCommand: (linkObject: Link) => void = function(linkObject: Link): void {
+    static makeAndExecuteCreateLinkCommand: (jointObject: joint.dia.Link, name: string, type: string,
+                                             properties: Map<String, Property>) => void = function(): void {
         console.error("DiagramElementListener makeAndExecuteCreateLinkCommand method is empty")
     }
 }

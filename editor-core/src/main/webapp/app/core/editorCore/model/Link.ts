@@ -10,7 +10,6 @@ export class Link implements DiagramElement {
     private changeableProperties: Map<String, Property> = new Map<String, Property>();
     private name: string;
     private type: string;
-    private zIndex: number = 1e9;
 
     constructor(jointObject: joint.dia.Link, name: string, type: string, properties: Map<String, Property>) {
         this.logicalId = UIDGenerator.generate();

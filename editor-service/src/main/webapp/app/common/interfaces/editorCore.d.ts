@@ -184,7 +184,6 @@ declare module "core/editorCore/model/Link" {
         private changeableProperties;
         private name;
         private type;
-        private zIndex;
         constructor(jointObject: joint.dia.Link, name: string, type: string, properties: Map<String, Property>);
         getLogicalId(): string;
         getJointObject(): joint.dia.Link;
@@ -223,7 +222,8 @@ declare module "core/editorCore/model/NodeType" {
         private isVisible;
         private isImageHidden;
         private border;
-        constructor(name: string, propertiesMap: Map<String, Property>, image: any, border: any, path?: string[]);
+        private innerText;
+        constructor(name: string, propertiesMap: Map<String, Property>, image: any, border: any, innerText: any, path?: string[]);
         getName(): string;
         getShownName(): string;
         getPropertiesMap(): Map<String, Property>;
@@ -231,6 +231,7 @@ declare module "core/editorCore/model/NodeType" {
         getIcon(): string;
         getVisibility(): Boolean;
         getBorder(): any;
+        getInnerText(): any;
         setVisibility(isVisible: Boolean): void;
     }
 }
@@ -345,12 +346,12 @@ declare module "core/editorCore/model/SubprogramNode" {
     }
 }
 declare module "core/editorCore/controller/DiagramElementListener" {
-    import { Link } from "core/editorCore/model/Link";
     import { NodeType } from "core/editorCore/model/NodeType";
+    import { Property } from "core/editorCore/model/Property";
     export class DiagramElementListener {
         static pointerdown: (evt, x, y) => void;
         static getNodeType: (type: string) => NodeType;
-        static makeAndExecuteCreateLinkCommand: (linkObject: Link) => void;
+        static makeAndExecuteCreateLinkCommand: (jointObject: joint.dia.Link, name: string, type: string, properties: Map<String, Property>) => void;
     }
 }
 declare module "core/editorCore/model/DiagramScene" {
@@ -495,6 +496,27 @@ declare module "core/editorCore/model/commands/SceneCommandFactory" {
         makeEmbedCommand(child: DiagramNode, parent: DiagramContainer, oldParent: DiagramContainer): Command;
     }
 }
+declare module "core/editorCore/model/ContainerNodeType" {
+    import { NodeType } from "core/editorCore/model/NodeType";
+    import { Property } from "core/editorCore/model/Property";
+    export class ContainerNodeType extends NodeType {
+        constructor(name: string, propertiesMap: Map<String, Property>, image: string, border: any, innerText: any, path?: string[]);
+    }
+}
+declare module "core/editorCore/model/ElementConstructor" {
+    import { DiagramNode } from "core/editorCore/model/DiagramNode";
+    import { Link } from "core/editorCore/model/Link";
+    import { Property } from "core/editorCore/model/Property";
+    import { NodeType } from "core/editorCore/model/NodeType";
+    import { DiagramScene } from "core/editorCore/model/DiagramScene";
+    export class ElementConstructor {
+        protected scene: DiagramScene;
+        protected nodesTypesMap: Map<String, NodeType>;
+        constructor(scene: DiagramScene, nodesTypesMap?: Map<String, NodeType>);
+        createLink(jointObject: joint.dia.Link, name: string, type: string, properties: Map<String, Property>): Link;
+        createNode(nodeType: NodeType, x: number, y: number, width: number, height: number, properties: Map<String, Property>, id?: string): DiagramNode;
+    }
+}
 declare module "core/editorCore/controller/SceneController" {
     import { Link } from "core/editorCore/model/Link";
     import { DiagramNode } from "core/editorCore/model/DiagramNode";
@@ -508,6 +530,7 @@ declare module "core/editorCore/controller/SceneController" {
         private clickFlag;
         private rightClickFlag;
         private undoRedoController;
+        private elementConstructor;
         private lastCellMouseDownPosition;
         private lastCellMouseDownSize;
         private paperCommandFactory;
@@ -610,13 +633,6 @@ declare module "core/editorCore/model/DiagramParts" {
         constructor(nodesMap?: Map<String, DiagramNode>, linksMap?: Map<String, Link>, subprogramDiagramNodes?: SubprogramDiagramNode[]);
     }
 }
-declare module "core/editorCore/model/ContainerNodeType" {
-    import { NodeType } from "core/editorCore/model/NodeType";
-    import { Property } from "core/editorCore/model/Property";
-    export class ContainerNodeType extends NodeType {
-        constructor(name: string, propertiesMap: Map<String, Property>, image: string, border: any, path?: string[]);
-    }
-}
 declare module "core/editorCore/controller/parsers/TypesParser" {
     import { ElementTypes } from "core/editorCore/model/ElementTypes";
     export class TypesParser {
@@ -624,6 +640,7 @@ declare module "core/editorCore/controller/parsers/TypesParser" {
         private linkPatterns;
         private currentImage;
         private currentBorder;
+        private currentInnerText;
         parse(typesJson: any): ElementTypes;
         private parseGeneralTypes(elementsTypes, category);
         private parsePaletteTypes(paletteTypes);
@@ -712,18 +729,6 @@ declare module "core/editorCore/controller/PaletteController" {
         private appendFlowsPalette(paletteTypes);
         private appendPaletteContent(selector, content);
         private clearPaletteContent(selector);
-    }
-}
-declare module "core/editorCore/model/ElementConstructor" {
-    import { DiagramNode } from "core/editorCore/model/DiagramNode";
-    import { Property } from "core/editorCore/model/Property";
-    import { NodeType } from "core/editorCore/model/NodeType";
-    import { DiagramScene } from "core/editorCore/model/DiagramScene";
-    export class ElementConstructor {
-        protected scene: DiagramScene;
-        protected nodesTypesMap: Map<String, NodeType>;
-        constructor(scene: DiagramScene, nodesTypesMap?: Map<String, NodeType>);
-        createNode(nodeType: NodeType, x: number, y: number, width: number, height: number, properties: Map<String, Property>, id?: string): DiagramNode;
     }
 }
 declare module "core/editorCore/controller/DiagramEditorController" {
