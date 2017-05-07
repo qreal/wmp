@@ -1,3 +1,5 @@
+<%@ page import="org.codehaus.jettison.json.JSONObject" %>
+
 <!-- Main area -->
 <div id="main-editor-area" class="row unselectable">
     <div id="editor-and-property-editor-area" class="col-md-10 content-col">
@@ -5,7 +7,8 @@
             <div id="property-editor-area" class="col-md-3 content-col">
                 <div id="diagram-property-editor">
                     <legend style="padding: 10px">Property Editor</legend>
-                    <table class="table table-condensed" id="property_table">
+                    <table class="table table-condensed" name="property_table"
+                           id="<%=selectors.getJSONObject("propertyEditor").getString("id")%>">
                         <thead>
                         <tr>
                             <th>Property</th>
@@ -18,7 +21,7 @@
                 </div>
             </div>
             <div id="diagram-" class="col-md-9 content-col">
-                <div class="scene-wrapper">
+                <div id="<%=selectors.getJSONObject("scene").getString("id")%>"class="scene-wrapper">
                     <div id="diagram-scene">
                     </div>
                 </div>
@@ -65,26 +68,29 @@
     </div>
 </div>
 
+<% JSONObject folderAreaSelectors = selectors.getJSONObject("editorHeaderPanel").getJSONObject("folderArea"); %>
 <!-- File->Open window -->
 <div id="diagrams" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content">
+        <div id="<%=folderAreaSelectors.getString("id")%>" class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <button type="button" id="<%=folderAreaSelectors.getJSONObject("closeItem").getString("id")%>"
+                        class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title">
                     Diagrams
                 </h4>
             </div>
             <div class="modal-body-nopadding">
-                <div class="folder-menu">
+                <div id="<%=folderAreaSelectors.getJSONObject("folderMenu").getString("id")%>" class="folder-menu">
                 </div>
-                <div class="folder-path">
+                <div id="<%=folderAreaSelectors.getJSONObject("folderPath").getString("id")%>" class="folder-path">
                 </div>
                 <div class="folder-view">
                     <ul class="folder-table">
                     </ul>
                 </div>
-                <div class="saving-menu">
+                <div id="<%=selectors.getJSONObject("editorHeaderPanel").getJSONObject("savingMenu").getString("id")%>"
+                     class="saving-menu">
                 </div>
             </div>
             <div class="modal-footer">
@@ -95,8 +101,12 @@
 </div>
 
 <!-- Save confirmation window on creating new diagram -->
-<div id="confirm-save-diagram" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-     aria-hidden="true">
+<% JSONObject saveConfirmSelector = selectors
+        .getJSONObject("editorHeaderPanel")
+        .getJSONObject("saveDiagramConfirmWindow"); %>
+
+<div id="<%=saveConfirmSelector.getString("id")%>"
+     class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -107,8 +117,10 @@
                 <p>Do you want to save current diagram?</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" id="saveAfterCreate" data-dismiss="modal">Yes</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clearAll()">No</button>
+                <button id="<%=saveConfirmSelector.getJSONObject("confirm").getString("id")%>"
+                        type="button" class="btn btn-default" id="saveAfterCreate" data-dismiss="modal">Yes</button>
+                <button id="<%=saveConfirmSelector.getJSONObject("cancel").getString("id")%>"
+                        type="button" class="btn btn-default" data-dismiss="modal" ng-click="clearAll()">No</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
             </div>
         </div>

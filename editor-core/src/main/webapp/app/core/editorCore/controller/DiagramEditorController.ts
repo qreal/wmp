@@ -13,8 +13,8 @@ import {SceneController} from "./SceneController";
 import {DiagramEditor} from "../model/DiagramEditor";
 import {DiagramElementListener} from "./DiagramElementListener";
 import {PaletteController} from "./PaletteController";
-export class DiagramEditorController {
 
+export class DiagramEditorController {
     protected diagramEditor: DiagramEditor;
     protected sceneController: SceneController;
     protected propertyEditorController: PropertyEditorController;
@@ -24,8 +24,9 @@ export class DiagramEditorController {
     protected linkPatternsMap: Map<String, joint.dia.Link>;
     protected undoRedoController: UndoRedoController;
     protected elementTypes: ElementTypes;
+    protected selectorService: any;
 
-    constructor($scope, $attrs) {
+    constructor($scope, $attrs, selectorService) {
         this.undoRedoController = new UndoRedoController();
         this.nodeTypesMap = new Map<String, NodeType>();
         this.linkPatternsMap = new Map<String, joint.dia.Link>();
@@ -34,7 +35,12 @@ export class DiagramEditorController {
             return this.getNodeType(type);
         };
         this.diagramEditor = new DiagramEditor();
-        this.sceneController = new SceneController(this, this.diagramEditor.getScene());
+        this.sceneController = new SceneController(
+            this,
+            this.diagramEditor.getScene(),
+            selectorService.scene,
+            selectorService.gestures);
+
         this.elementsTypeLoader = new ElementsTypeLoader();
 
         $scope.undo = () => {
@@ -50,6 +56,7 @@ export class DiagramEditorController {
                 $(".custom-menu").hide(100);
             }
         });
+        this.selectorService = selectorService;
     }
 
     public getGraph(): joint.dia.Graph {
@@ -112,7 +119,11 @@ export class DiagramEditorController {
     }
 
     protected handleLoadedTypes(elementTypes: ElementTypes): void {
-        this.propertyEditorController = new PropertyEditorController(this.sceneController, this.undoRedoController);
+        this.propertyEditorController = new PropertyEditorController(
+            this.sceneController,
+            this.undoRedoController,
+            this.selectorService.propertyEditor
+        );
 
         this.elementTypes = elementTypes;
 

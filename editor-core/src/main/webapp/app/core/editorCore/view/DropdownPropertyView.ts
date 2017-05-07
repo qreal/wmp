@@ -7,9 +7,9 @@ export class DropdownPropertyView extends HtmlView {
 
     private template: string = '' +
         '<tr class="property">' +
-        '   <td class="vert-align">{0}</td>' +
+        '   <td class="vert-align" data-name="propertyName">{0}</td>' +
         '   <td class="vert-align">' +
-        '       <select id="{1}" class="mydropdown" data-type="{2}">' +
+        '       <select id="{1}" class="mydropdown" data-type="{2}" data-name="propertyValue">' +
         '           {3}' +
         '       </select>' +
         '   </td>' +

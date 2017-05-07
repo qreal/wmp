@@ -7,13 +7,18 @@ import {HtmlView} from "../view/HtmlView";
 import {PropertyViewFactory} from "./PropertyViewFactory";
 import {UndoRedoController} from "./UndoRedoController";
 import {SceneController} from "./SceneController";
+import {SelectorService} from "../service/SelectorService";
 export class PropertyEditorController {
 
     private propertyViewFactory: PropertyViewFactory;
     private sceneController: SceneController;
     private undoRedoController: UndoRedoController;
+    private propertySelectorService: any;
 
-    constructor(sceneController: SceneController, undoRedoController: UndoRedoController) {
+    constructor(sceneController: SceneController,
+                undoRedoController: UndoRedoController,
+                propertySelectorService: any) {
+
         this.propertyViewFactory = new PropertyViewFactory();
         this.sceneController = sceneController;
         this.undoRedoController = undoRedoController;
@@ -30,16 +35,17 @@ export class PropertyEditorController {
                 }
             })
         }, false);
+        this.propertySelectorService = propertySelectorService;
     }
 
     public setNodeProperties(element: DiagramElement): void {
-        $('#property_table tbody').empty();
+        $('#' + this.propertySelectorService.id + ' tbody').empty();
         var properties: Map<String, Property> = element.getChangeableProperties();
         for (var property in properties) {
             var propertyView: HtmlView = this.propertyViewFactory.createView(element.getLogicalId(), element.getType(),
                 property, properties[property]);
             var htmlElement = $(propertyView.getContent());
-            $('#property_table tbody').append(htmlElement);
+            $('#' + this.propertySelectorService.id + ' tbody').append(htmlElement);
 
             if (properties[property].type === "combobox") {
                 this.initCombobox(element.getType(), property, htmlElement);

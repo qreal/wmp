@@ -4,6 +4,9 @@ import {SubprogramNode} from "./SubprogramNode";
 import {DiagramElementListener} from "../controller/DiagramElementListener";
 export class DiagramScene extends joint.dia.Paper {
 
+    public static get WIDTH(): number {return 2000;}
+    public static get HEIGHT(): number {return 2000;}
+
     private htmlId: string;
     private graph: joint.dia.Graph;
     private currentLinkType: string;
@@ -20,8 +23,8 @@ export class DiagramScene extends joint.dia.Paper {
 
         super({
             el: $('#' + htmlId),
-            width: 2000,
-            height: 2000,
+            width: DiagramScene.WIDTH,
+            height: DiagramScene.HEIGHT,
             model: graph,
             gridSize: gridSize,
             defaultLink: new joint.dia.Link({

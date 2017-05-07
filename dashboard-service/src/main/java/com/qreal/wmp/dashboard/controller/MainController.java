@@ -54,7 +54,7 @@ public class MainController {
         model.setViewName("dashboard/index");
 
         logger.info("For user {} main page was created", AuthenticatedUser.getUserName());
-
+        
         return model;
     }
 

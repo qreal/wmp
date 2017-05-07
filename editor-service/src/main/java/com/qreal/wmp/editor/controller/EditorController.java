@@ -6,11 +6,14 @@ import com.qreal.wmp.editor.common.utils.AuthenticatedUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
@@ -19,6 +22,7 @@ import java.io.IOException;
  * Main controller of Editor service.
  * Pages: editor
  */
+@PropertySource("classpath:service.properties")
 @Controller
 public class EditorController {
 
@@ -26,6 +30,9 @@ public class EditorController {
 
     private final TypesLoader typesLoader;
 
+    @Value("${path.selector.service}")
+    private String selectorServiceUrl;
+    
     @Autowired
     public EditorController(TypesLoader typesLoader) {
         this.typesLoader = typesLoader;
@@ -34,13 +41,17 @@ public class EditorController {
     @RequestMapping(value = "/robots", method = RequestMethod.GET)
     public ModelAndView robotsIndex() {
         logger.info("User {} requested robots editor", AuthenticatedUser.getUserName());
-        return new ModelAndView("editor/robots/editor");
+        ModelAndView modelAndView = new ModelAndView("editor/robots/editor");
+        modelAndView.getModel().put("selectors", getConfig("/editor/robots"));
+        return modelAndView;
     }
 
     @RequestMapping(value = "/bpmn", method = RequestMethod.GET)
     public ModelAndView bpmnIndex() {
         logger.info("User {} requested bpmn editor", AuthenticatedUser.getUserName());
-        return new ModelAndView("editor/bpmn/editor");
+        ModelAndView modelAndView = new ModelAndView("editor/bpmn/editor");
+        modelAndView.getModel().put("selectors", getConfig("/editor/bpmn"));
+        return modelAndView;
     }
 
     @ResponseBody
@@ -48,5 +59,9 @@ public class EditorController {
     public JsonNode getTypes(@RequestParam(value = "kit") String kit,
                              @RequestParam(value = "task") String task) throws IOException {
         return typesLoader.getTypesJson(task);
+    }
+    
+    private String getConfig(String page) {
+        return new RestTemplate().getForObject(selectorServiceUrl + page, String.class);
     }
 }

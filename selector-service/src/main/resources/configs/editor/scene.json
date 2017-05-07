@@ -1,0 +1,26 @@
+{
+  "id" : "scene-wrapper",
+  "contextMenu" : {
+    "id" : "scene-context-menu"
+  },
+  "poolOfElements" : {
+    "selector" : "#v_7 > *",
+    "block" : {
+      "selector" : ".element.devs.ImageWithPorts",
+      "port" : {
+        "selector" : ".port0"
+      }
+    },
+    "link" : {
+      "selector" : ".link",
+      "arrow" : {
+        "source" : {
+          "selector" : ".marker-arrowheads :nth-child(1)"
+        },
+        "target" : {
+          "selector": ".marker-arrowheads :nth-child(2)"
+        }
+      }
+    }
+  }
+}

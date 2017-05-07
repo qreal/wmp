@@ -102,7 +102,7 @@ body{
     background: #ffffff url('/editor/images/bg/bg.png');
 }
 
-#property_table {
+table[name="property_table"] {
     width: 100%;
 }
 
@@ -258,7 +258,7 @@ body{
     cursor: pointer;
 }
 
-#creating {
+.creating {
     color: forestgreen;
 }
 
@@ -266,7 +266,7 @@ body{
     color: #d43f3a;
 }
 
-#level-up, #creating-menu{
+.level-up, .creating-menu{
     color: grey;
 }
 

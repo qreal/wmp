@@ -19,6 +19,8 @@ import java.util.stream.Collectors;
 @ToString(exclude = "parentFolders")
 public class Folder implements Serializable {
 
+    private static final String ROOT_FOLDER = "root";
+    
     @Id
     @Column(name = "folder_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,10 +37,10 @@ public class Folder implements Serializable {
     @Transient
     private Long folderParentId;
 
-    @ManyToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER, mappedBy = "childrenFolders")
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "childrenFolders")
     private Set<Folder> parentFolders = new HashSet<>();
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.EAGER)
     @JoinTable(name = "folders_folders", joinColumns = {@JoinColumn(name = "parent_id")},
             inverseJoinColumns = {@JoinColumn(name = "child_id")})
     private Set<Folder> childrenFolders = new HashSet<>();
@@ -95,7 +97,68 @@ public class Folder implements Serializable {
             diagrams = tFolder.getDiagrams().stream().map(Diagram::new).collect(Collectors.toSet());
         }
     }
-
+    
+    public Long getId() {
+        return id;
+    }
+    
+    public void setId(Long id) {
+        this.id = id;
+    }
+    
+    public void setFolderName(String folderName) {
+        this.folderName = folderName;
+    }
+    
+    public void remove() {
+        parentFolders.forEach(x -> x.removeChild(id));
+        parentFolders.clear();
+    }
+    
+    public Set<Folder> getChildrenFolders() {
+        return childrenFolders;
+    }
+    
+    public Set<String> getOwners() {
+        return owners;
+    }
+    
+    public void setOwners(Set<String> owners) {
+        this.owners = owners;
+    }
+    
+    public Long getFolderParentId() {
+        return folderParentId;
+    }
+    
+    public void setFolderParentId(Long folderParentId) {
+        this.folderParentId = folderParentId;
+    }
+    
+    public Set<Folder> getParentFolders() {
+        return parentFolders;
+    }
+    
+    public void setParentFolders(Set<Folder> parentFolders) {
+        this.parentFolders = parentFolders;
+    }
+    
+    public void setChildrenFolders(Set<Folder> childrenFolders) {
+        this.childrenFolders = childrenFolders;
+    }
+    
+    public Set<Diagram> getDiagrams() {
+        return diagrams;
+    }
+    
+    public void setDiagrams(Set<Diagram> diagrams) {
+        this.diagrams = diagrams;
+    }
+    
+    public String getFolderName() {
+        return folderName;
+    }
+    
     /** Converter from Folder to Thrift TFolder.*/
     public TFolder toTFolder(final String username) {
         TFolder tFolder = new TFolder();
@@ -133,6 +196,10 @@ public class Folder implements Serializable {
         if (!tFolder.isSetFolderParentId() && folderParentId != null) {
             tFolder.setFolderParentId(folderParentId);
         }
+    }
+    
+    private void removeChild(long childId) {
+        childrenFolders.stream().filter(x -> x.id == childId).findFirst().ifPresent(x -> childrenFolders.remove(x));
     }
 }
 

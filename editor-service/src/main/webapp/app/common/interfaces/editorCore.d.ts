@@ -125,6 +125,12 @@ declare module "core/editorCore/view/StringPropertyView" {
         constructor(nodeId: string, propertyKey: string, property: Property);
     }
 }
+declare module "core/editorCore/service/SelectorService" {
+    export class SelectorService {
+        getSelectors(): any;
+        constructor(selectos: string);
+    }
+}
 declare module "core/editorCore/controller/PropertyViewFactory" {
     import { HtmlView } from "core/editorCore/view/HtmlView";
     import { Property } from "core/editorCore/model/Property";
@@ -485,7 +491,7 @@ declare module "core/editorCore/controller/PropertyEditorController" {
         private propertyViewFactory;
         private sceneController;
         private undoRedoController;
-        constructor(sceneController: SceneController, undoRedoController: UndoRedoController);
+        constructor(sceneController: SceneController, undoRedoController: UndoRedoController, propertySelectorService);
         setNodeProperties(element: DiagramElement): void;
         addChangePropertyCommand(key: string, value: string, changeHtmlFunction: () => void): void;
         clearState(): void;
@@ -663,7 +669,7 @@ declare module "core/editorCore/controller/DiagramEditorController" {
         protected linkPatternsMap: Map<String, joint.dia.Link>;
         protected undoRedoController: UndoRedoController;
         protected elementTypes: ElementTypes;
-        constructor($scope: any, $attrs: any);
+        constructor($scope: any, $attrs: any, selectorService: any);
         getGraph(): joint.dia.Graph;
         getNodesMap(): Map<String, DiagramNode>;
         getLinksMap(): Map<String, Link>;

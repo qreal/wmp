@@ -3,7 +3,6 @@
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/3dparty/spring-security-oauth2-client" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/UI-testing" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/auth-service" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/dashboard-service" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/db-services/db-diagram-service" charset="UTF-8" />
@@ -12,5 +11,8 @@
     <file url="file://$PROJECT_DIR$/deployment/allintomcat" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/editor-core" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/editor-service" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/selector-service" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/selector-service" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ui-testing" charset="UTF-8" />
   </component>
 </project>

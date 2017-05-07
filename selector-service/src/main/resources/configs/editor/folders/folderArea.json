@@ -1,0 +1,39 @@
+{
+  "id" : "diagramArea",
+  "createItem" : {
+    "id" : "creating-menu"
+  },
+  "levelUpItem" : {
+    "id" : "level-up"
+  },
+  "folderPath" : {
+    "id" : "folder-path"
+  },
+  "folderMenu" : {
+    "id" : "folder-menu",
+    "folderNameInput" : {
+      "id" : "folderNameInput"
+    },
+    "confirmItem" : {
+      "id" : "folderMenuCreating"
+    }
+  },
+  "warningMessage" : {
+    "id" : "warningMessage"
+  },
+  "contextMenu" : {
+    "id" : "open-diagram-context-menu",
+    "deleteItem" : {
+      "id" : "contextMenuDelete"
+    }
+  },
+  "closeItem" : {
+    "id" : "foldersCloseItem"
+  },
+  "folders" : {
+    "selector" : "#diagramArea .folders"
+  },
+  "diagrams" : {
+    "selector" : "#diagramArea .diagrams"
+  }
+}

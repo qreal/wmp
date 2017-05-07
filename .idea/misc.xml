@@ -38,9 +38,6 @@
       <property name="caretWidth" class="java.lang.Integer" />
     </properties>
   </component>
-  <component name="EntryPointsManager">
-    <entry_points version="2.0" />
-  </component>
   <component name="FrameworkDetectionExcludesConfiguration">
     <file url="file://$PROJECT_DIR$/editor-service/overlays" />
     <file type="web" url="file://$PROJECT_DIR$/auth-service" />
@@ -54,6 +51,7 @@
     <file type="web" url="file://$PROJECT_DIR$/deployment/allintomcat" />
     <file type="web" url="file://$PROJECT_DIR$/editor-core" />
     <file type="web" url="file://$PROJECT_DIR$/editor-service" />
+    <file type="web" url="file://$PROJECT_DIR$/selector-service" />
   </component>
   <component name="JavaScriptSettings">
     <option name="languageLevel" value="ES6" />
@@ -90,7 +88,8 @@
         <option value="$PROJECT_DIR$/dependencies/auth/pom.xml" />
         <option value="$PROJECT_DIR$/dependencies/logging-deps/pom.xml" />
         <option value="$PROJECT_DIR$/deployment/allintomcat/pom.xml" />
-        <option value="$PROJECT_DIR$/UI-testing/pom.xml" />
+        <option value="$PROJECT_DIR$/ui-testing/pom.xml" />
+        <option value="$PROJECT_DIR$/selector-service/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">
