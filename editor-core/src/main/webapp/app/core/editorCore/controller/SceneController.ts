@@ -107,7 +107,7 @@ export class SceneController {
         this.makeAndExecuteCreateLinkCommand(linkObject);
     }
 
-    public createNode(type: string, x: number, y: number, subprogramId?: string, subprogramName?: string): void {
+    public createNode(type: string, x: number, y: number, event: any, subprogramId?: string, subprogramName?: string): void {
         var nodeType: NodeType = this.diagramEditorController.getNodeType(type);
         var node: DiagramNode;
         if (subprogramId) {
@@ -147,7 +147,7 @@ export class SceneController {
             return;
         }
         if (filteredNames.length === 1) {
-            this.createNode(filteredNames[0], offsetX, offsetY);
+            this.createNode(filteredNames[0], offsetX, offsetY, event);
             return;
         }
 
@@ -156,7 +156,7 @@ export class SceneController {
             items.push(
                 {
                     "name": filteredNames[i],
-                    "action": ((type, offsetX, offsetY) => { this.createNode(type, offsetX, offsetY);})
+                    "action": ((type, offsetX, offsetY) => { this.createNode(type, offsetX, offsetY, event);})
                         .bind(this, filteredNames[i], offsetX, offsetY)
                 });
         }
@@ -350,7 +350,7 @@ export class SceneController {
                         });
                     }
                 } else {
-                    controller.createNode(type, leftElementPos, topElementPos, $(ui.draggable.context).data("id"),
+                    controller.createNode(type, leftElementPos, topElementPos, event, $(ui.draggable.context).data("id"),
                         $(ui.draggable.context).data("name"));
                 }
             }
