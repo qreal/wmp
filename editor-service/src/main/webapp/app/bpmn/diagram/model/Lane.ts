@@ -1,7 +1,6 @@
 import {DiagramNode} from "core/editorCore/model/DiagramNode";
 import {Pool} from "./Pool";
 import {DiagramContainer} from "core/editorCore/model/DiagramContainer";
-import {PropertiesPack} from "core/editorCore/model/PropertiesPack";
 import {Property} from "core/editorCore/model/Property";
 import {DefaultSize} from "common/constants/DefaultSize";
 import {NodeType} from "core/editorCore/model/NodeType";

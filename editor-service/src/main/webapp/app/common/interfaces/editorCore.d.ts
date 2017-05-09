@@ -269,6 +269,8 @@ declare module "core/editorCore/model/DefaultDiagramNode" {
         getX(): number;
         getY(): number;
         getBBox(): any;
+        getHeight(): number;
+        getWidth(): number;
         getSize(): string;
         setPosition(x: number, y: number, zoom: number, cellView: joint.dia.CellView): void;
         setSize(width: number, height: number, cellView: joint.dia.CellView): void;
@@ -315,6 +317,9 @@ declare module "core/editorCore/model/DiagramNode" {
     export interface DiagramNode extends DiagramElement {
         getX(): number;
         getY(): number;
+        getBBox(): any;
+        getHeight(): number;
+        getWidth(): number;
         getImagePath(): string;
         getSize(): string;
         getParentNode(): DiagramContainer;
@@ -496,27 +501,6 @@ declare module "core/editorCore/model/commands/SceneCommandFactory" {
         makeEmbedCommand(child: DiagramNode, parent: DiagramContainer, oldParent: DiagramContainer): Command;
     }
 }
-declare module "core/editorCore/model/ContainerNodeType" {
-    import { NodeType } from "core/editorCore/model/NodeType";
-    import { Property } from "core/editorCore/model/Property";
-    export class ContainerNodeType extends NodeType {
-        constructor(name: string, propertiesMap: Map<String, Property>, image: string, border: any, innerText: any, path?: string[]);
-    }
-}
-declare module "core/editorCore/model/ElementConstructor" {
-    import { DiagramNode } from "core/editorCore/model/DiagramNode";
-    import { Link } from "core/editorCore/model/Link";
-    import { Property } from "core/editorCore/model/Property";
-    import { NodeType } from "core/editorCore/model/NodeType";
-    import { DiagramScene } from "core/editorCore/model/DiagramScene";
-    export class ElementConstructor {
-        protected scene: DiagramScene;
-        protected nodesTypesMap: Map<String, NodeType>;
-        constructor(scene: DiagramScene, nodesTypesMap?: Map<String, NodeType>);
-        createLink(jointObject: joint.dia.Link, name: string, type: string, properties: Map<String, Property>): Link;
-        createNode(nodeType: NodeType, x: number, y: number, width: number, height: number, properties: Map<String, Property>, id?: string): DiagramNode;
-    }
-}
 declare module "core/editorCore/controller/SceneController" {
     import { Link } from "core/editorCore/model/Link";
     import { DiagramNode } from "core/editorCore/model/DiagramNode";
@@ -530,7 +514,6 @@ declare module "core/editorCore/controller/SceneController" {
         private clickFlag;
         private rightClickFlag;
         private undoRedoController;
-        private elementConstructor;
         private lastCellMouseDownPosition;
         private lastCellMouseDownSize;
         private paperCommandFactory;
@@ -539,7 +522,7 @@ declare module "core/editorCore/controller/SceneController" {
         getCurrentElement(): DiagramElement;
         clearState(): void;
         createLink(sourceId: string, target: any): void;
-        createNode(type: string, x: number, y: number, subprogramId?: string, subprogramName?: string): void;
+        createNode(type: string, x: number, y: number, event: any, subprogramId?: string, subprogramName?: string): void;
         createNodeInEventPositionFromNames(names: string[], event: any): void;
         createLinkBetweenCurrentAndEventTargetElements(event: any): void;
         changeCurrentElement(element: DiagramElement): void;
@@ -631,6 +614,13 @@ declare module "core/editorCore/model/DiagramParts" {
         linksMap: Map<String, Link>;
         subprogramDiagramNodes: SubprogramDiagramNode[];
         constructor(nodesMap?: Map<String, DiagramNode>, linksMap?: Map<String, Link>, subprogramDiagramNodes?: SubprogramDiagramNode[]);
+    }
+}
+declare module "core/editorCore/model/ContainerNodeType" {
+    import { NodeType } from "core/editorCore/model/NodeType";
+    import { Property } from "core/editorCore/model/Property";
+    export class ContainerNodeType extends NodeType {
+        constructor(name: string, propertiesMap: Map<String, Property>, image: string, border: any, innerText: any, path?: string[]);
     }
 }
 declare module "core/editorCore/controller/parsers/TypesParser" {
@@ -729,6 +719,20 @@ declare module "core/editorCore/controller/PaletteController" {
         private appendFlowsPalette(paletteTypes);
         private appendPaletteContent(selector, content);
         private clearPaletteContent(selector);
+    }
+}
+declare module "core/editorCore/model/ElementConstructor" {
+    import { DiagramNode } from "core/editorCore/model/DiagramNode";
+    import { Link } from "core/editorCore/model/Link";
+    import { Property } from "core/editorCore/model/Property";
+    import { NodeType } from "core/editorCore/model/NodeType";
+    import { DiagramScene } from "core/editorCore/model/DiagramScene";
+    export class ElementConstructor {
+        protected scene: DiagramScene;
+        protected nodesTypesMap: Map<String, NodeType>;
+        constructor(scene: DiagramScene, nodesTypesMap?: Map<String, NodeType>);
+        createLink(jointObject: joint.dia.Link, name: string, type: string, properties: Map<String, Property>): Link;
+        createNode(nodeType: NodeType, x: number, y: number, width: number, height: number, properties: Map<String, Property>, id?: string): DiagramNode;
     }
 }
 declare module "core/editorCore/controller/DiagramEditorController" {

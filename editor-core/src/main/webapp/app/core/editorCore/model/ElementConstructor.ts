@@ -31,13 +31,13 @@ export class ElementConstructor {
         node.getJointObject().on("change:parent", (laneModel: joint.shapes.basic.Generic, parentId: string) => {
             if (parent)
                 node.setParentNode(nodesMap[parentId]);
-        })
+        });
         node.getJointObject().on("change:z", (laneModel: joint.shapes.basic.Generic, newZ: number) => {
             var links: Link[] = this.scene.getConnectedLinkObjects(nodesMap[laneModel.id]);
             links.forEach((link: Link) => {
                 link.getJointObject().set("z", Math.max(link.getJointObject().get("z"), newZ));
             })
-        })
+        });
         return node;
     }
 }

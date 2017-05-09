@@ -65,6 +65,12 @@ export class DiagramThriftExporter extends DiagramExporter {
             sizeProperty.type = "string";
             newNode.properties.push(sizeProperty);
 
+            var zProperty = new TProperty();
+            zProperty.name = "z";
+            zProperty.value = node.getJointObject().get("z").toString();
+            zProperty.type = "string";
+            newNode.properties.push(zProperty);
+
             nodes.push(newNode);
         }
 

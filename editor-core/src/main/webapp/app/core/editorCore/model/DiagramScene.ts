@@ -139,6 +139,8 @@ export class DiagramScene extends joint.dia.Paper {
     }
 
     public getConnectedLinkObjects(node: DiagramNode): Link[] {
+        if (!node)
+            return [];
         var links = this.graph.getConnectedLinks(node.getJointObject(), { inbound: true, outbound: true });
         var linkObjects: Link[] = [];
 

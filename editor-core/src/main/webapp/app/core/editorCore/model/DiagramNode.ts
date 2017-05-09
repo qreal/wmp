@@ -6,6 +6,9 @@ export interface DiagramNode extends DiagramElement {
 
     getX(): number;
     getY(): number;
+    getBBox(): any;
+    getHeight(): number;
+    getWidth(): number;
     getImagePath(): string;
     getSize(): string;
     getParentNode(): DiagramContainer;

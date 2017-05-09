@@ -44,6 +44,7 @@ export class DiagramThriftParser extends DiagramJsonParser {
 
         var x: number = 0;
         var y: number = 0;
+        var z: number = 0;
         var width: number = 0;
         var height: number = 0;
 
@@ -68,10 +69,15 @@ export class DiagramThriftParser extends DiagramJsonParser {
                 var bboxDimensions = this.parseSize(size);
                 width = bboxDimensions.width;
                 height = bboxDimensions.height;
+            } else if (propertyName == "z") {
+                z = parseInt(propertiesObject[j].value);
             }
         }
 
-        return this.elementConstructor.createNode(nodeTypesMap[type], x, y, width, height, changeableLogicalProperties, nodeObject.graphicalId);
+        var node: DiagramNode = this.elementConstructor.createNode(nodeTypesMap[type], x, y, width, height,
+            changeableLogicalProperties, nodeObject.graphicalId);
+        node.getJointObject().set("z", z);
+        return node;
     }
 
 

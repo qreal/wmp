@@ -188,6 +188,14 @@ export class DefaultDiagramNode implements DiagramNode {
         return this.jointObject.getBBox();
     }
 
+    public getHeight(): number {
+        return this.boundingBox.height;
+    }
+
+    public getWidth(): number {
+        return this.boundingBox.width;
+    }
+
     public getSize(): string {
         return String(this.boundingBox.width) + ", " + String(this.boundingBox.height);
     }
@@ -219,7 +227,7 @@ export class DefaultDiagramNode implements DiagramNode {
         }
         this.parentNode = parent;
         if (parent) {
-            parent.addChild(this);
+            this.parentNode.addChild(this);
             if (embedding)
                 parent.getJointObject().embed(this.getJointObject());
         }
