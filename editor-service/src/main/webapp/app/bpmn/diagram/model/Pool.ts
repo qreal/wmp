@@ -32,67 +32,90 @@ export class Pool extends DiagramContainer {
     }
 
     public update(width?: number) {
-        var children: DiagramContainer[] = [];
-        this.childrenNodes.forEach((child: DiagramContainer) => children.push(child));
-        children.sort((a: DiagramContainer, b: DiagramContainer) => {
-            return a.getY() + a.getHeight() - b.getY() - b.getHeight();
-        })
-        var sumHeight: number = 0;
-        var newWidth: number = 0;
-        for (var i in children) {
-            sumHeight += children[i].getHeight();
-            newWidth = Math.max(newWidth, children[i].getWidth());
+
+        if (this.isUpdating)
+            return;
+        this.isUpdating = true;
+
+        var currentPool: Pool = this;
+        var newWidth: number = width;
+        while (currentPool.getParentNode()) {
+            if (width)
+                newWidth += currentPool.getWidth() - DefaultSize.DEFAULT_NODE_WIDTH;
+            currentPool = currentPool.getParentNode();
         }
-        sumHeight = Math.max(sumHeight, this.minHeight);
-        newWidth = width ? width : newWidth;
-        this.resize(this.getBBox().width, sumHeight);
+        currentPool.updateHeight();
+        currentPool.updateWidth(newWidth);
 
-        var curHeight: number = this.getY();
-        var leftBorder: number = this.getX() + this.getBBox().width - DefaultSize.DEFAULT_NODE_WIDTH;
-        for (var i in children) {
-            var child: DiagramNode = children[i];
-
-            var diffX: number = leftBorder - child.getX();
-            var diffY: number = curHeight - child.getY();
-            if (diffX || diffY)
-                child.getJointObject().translate(diffX, diffY);
-            curHeight += child.getHeight();
-
-            if (child.getWidth() === newWidth)
-                continue;
-
-            if (child instanceof Lane) {
-                child.resize(newWidth, child.getHeight());
-            } else if (child instanceof Pool) {
-                (<Pool> child).update(newWidth - this.getBBox().width + DefaultSize.DEFAULT_NODE_WIDTH);
-            }
-        }
+        this.isUpdating = false;
     }
 
     public getParentNode(): Pool {
         return (<Pool> super.getParentNode());
     }
 
-    public updateWidth(width: number) {
-        if (this.isUpdating)
-            return;
-        this.isUpdating = true;
-        var currentPool: Pool = this;
-        var newWidth: number = width;
-        while (currentPool.getParentNode()) {
-            newWidth += currentPool.getBBox().width - DefaultSize.DEFAULT_NODE_WIDTH;
-            currentPool.update();
-            currentPool = currentPool.getParentNode();
-        }
-        currentPool.update(newWidth);
-        this.isUpdating = false;
-    }
-
-    public getWidth(): number {
-        return this.getBBox().width - DefaultSize.DEFAULT_NODE_WIDTH +
-            (this.childrenNodes.size ? this.childrenNodes.values().next().value.getWidth() : 0);
-    }
     public isValidEmbedding(child: DiagramNode) {
         return child instanceof Lane || child instanceof Pool;
+    }
+
+    private updateHeight() {
+        var sumHeight: number = 0;
+        var orderedChildren: DiagramContainer[] = this.rearrangeChildren();
+
+        this.childrenNodes.forEach((child: DiagramContainer) => {
+            if (child instanceof Pool)
+                child.updateHeight();
+            sumHeight += child.getHeight();
+        });
+        sumHeight = Math.max(sumHeight, this.minHeight);
+        this.resize(this.getWidth(), sumHeight);
+
+        var curHeight: number = this.getY();
+        var leftBorder: number = this.getX() + this.getWidth() - DefaultSize.DEFAULT_NODE_WIDTH;
+        for (var i in orderedChildren) {
+            var child: DiagramNode = orderedChildren[i];
+
+            var diffX: number = leftBorder - child.getX();
+            var diffY: number = curHeight - child.getY();
+            if (diffX || diffY)
+                child.getJointObject().translate(diffX, diffY);
+            curHeight += child.getHeight();
+        }
+    }
+
+
+    private rearrangeChildren(): DiagramContainer[] {
+        var children: DiagramContainer[] = [];
+        this.childrenNodes.forEach((child: DiagramContainer) => children.push(child));
+        children.sort((a: DiagramContainer, b: DiagramContainer) => {
+            return a.getY() + a.getHeight() - b.getY() - b.getHeight();
+        });
+
+        return children;
+    }
+
+    private updateWidth(width?: number) {
+        var lanes: Lane[] = this.getLanes();
+        var rightBorder: number = 0;
+        if (width)
+            rightBorder = width + this.getX() + this.getWidth() - DefaultSize.DEFAULT_NODE_WIDTH;
+        else {
+            lanes.forEach((lane: Lane) => rightBorder = Math.max(rightBorder, lane.getX() + lane.getWidth()));
+        }
+
+        lanes.forEach((lane: Lane) => lane.resize(rightBorder - lane.getX(), lane.getHeight()));
+    }
+
+    private getLanes(): Lane[] {
+        var lanes: Lane[] = [];
+
+        this.childrenNodes.forEach((child: DiagramContainer) => {
+            if (child instanceof Pool)
+                lanes = lanes.concat(child.getLanes());
+            if (child instanceof Lane)
+                lanes.push(child);
+        });
+
+        return lanes;
     }
 }

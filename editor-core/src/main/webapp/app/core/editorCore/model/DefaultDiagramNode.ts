@@ -5,6 +5,7 @@ import {UIDGenerator} from "../controller/UIDGenerator";
 import {DiagramNode} from "./DiagramNode";
 import {DiagramContainer} from "./DiagramContainer";
 import {NodeType} from "./NodeType";
+import {DefaultSize} from "../../../common/constants/DefaultSize";
 
 class ImageWithPorts extends joint.shapes.basic.Generic {
     constructor(portsModelInterface: joint.shapes.basic.PortsModelInterface) {
@@ -120,8 +121,8 @@ export class DefaultDiagramNode implements DiagramNode {
     public pointermove(cellView, evt, x, y): void {
         cellView.options.interactive = true;
         var bbox = cellView.getBBox();
-        var newX = bbox.x + (<number> (bbox.width - 50) / 2);
-        var newY = bbox.y + bbox.height - 50;
+        var newX = bbox.x + (<number> (bbox.width - DefaultSize.DEFAULT_NODE_WIDTH) / 2);
+        var newY = bbox.y + bbox.height - DefaultSize.DEFAULT_NODE_HEIGHT;
         this.propertyEditElement.setPosition(newX, newY);
 
         if (this.resizeParameters.isBottomResizing || this.resizeParameters.isRightResizing)
@@ -212,10 +213,10 @@ export class DefaultDiagramNode implements DiagramNode {
 
     public setSize(width: number, height: number, cellView : joint.dia.CellView): void {
         var model = <joint.dia.Element> cellView.model;
-        model.resize(width - 2, height);
+        model.resize(width, height);
         var bbox = cellView.getBBox();
-        var newX = bbox.x + (<number> (bbox.width - 50)/2);
-        var newY = bbox.y + bbox.height - 50;
+        var newX = bbox.x + (<number> (bbox.width - DefaultSize.DEFAULT_NODE_WIDTH) / 2);
+        var newY = bbox.y + bbox.height - DefaultSize.DEFAULT_NODE_HEIGHT;
         this.propertyEditElement.setPosition(newX, newY);
     }
 

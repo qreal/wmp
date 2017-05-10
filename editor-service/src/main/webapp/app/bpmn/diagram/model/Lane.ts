@@ -20,7 +20,7 @@ export class Lane extends DiagramContainer {
         this.getJointObject().on("change:size", (laneModel: joint.shapes.basic.Generic) => {
             var parent: Pool = this.getParentNode();
             if (parent)
-                parent.updateWidth(laneModel.getBBox().width);
+                parent.update(laneModel.getBBox().width);
         });
     }
 
