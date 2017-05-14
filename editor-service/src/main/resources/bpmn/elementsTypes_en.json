@@ -219,6 +219,14 @@
             "subtypes": [
                 "Start",
                 "End"
+            ],
+            "properties": [
+                {
+                    "key": "ChangeType",
+                    "name": "Type",
+                    "type": "changeType",
+                    "value": ""
+                }
             ]
         },
 
@@ -240,7 +248,15 @@
                 "End": [
                     "Regular"
                 ]
-            }
+            },
+            "properties": [
+                {
+                    "key": "ChangeType",
+                    "name": "Type",
+                    "type": "changeType",
+                    "value": ""
+                }
+            ]
         },
 
         "Timer": {
@@ -257,7 +273,15 @@
                     "Catch",
                     "Catch-non-interrupting"
                 ]
-            }
+            },
+            "properties": [
+                {
+                    "key": "ChangeType",
+                    "name": "Type",
+                    "type": "changeType",
+                    "value": ""
+                }
+            ]
         },
 
         "Task": {

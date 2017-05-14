@@ -12,12 +12,8 @@ export class NodeType {
     private border: any;
     private innerText: any;
 
-    constructor(name: string, propertiesMap: Map<String, Property>, image: any, border: any, innerText: any, path?: string[]) {
-        if (path) {
-            this.name = path.reverse().join('-');
-            path.reverse();
-        } else
-            this.name = name;
+    constructor(name: string, propertiesMap: Map<String, Property>, image: any, border: any, innerText: any, type?: string) {
+        this.name = type ? type : name;
         this.shownName = name;
         this.border = border;
         this.innerText = innerText;

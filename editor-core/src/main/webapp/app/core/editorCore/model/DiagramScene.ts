@@ -186,8 +186,12 @@ export class DiagramScene extends joint.dia.Paper {
         this.currentLinkType = linkType;
     }
 
-    public getCurrentLinkType(): joint.dia.Link {
-        return <joint.dia.Link> this.linkPatternsMap[this.currentLinkType].clone();
+    public getLinkPattern(type: string): joint.dia.Link {
+        return <joint.dia.Link> this.linkPatternsMap[type].clone();
+    }
+
+    public getCurrentLinkPattern(): joint.dia.Link {
+        return this.getLinkPattern(this.currentLinkType);
     }
 
     public getCurrentLinkTypeName(): string {

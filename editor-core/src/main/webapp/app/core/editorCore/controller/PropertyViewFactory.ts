@@ -16,6 +16,7 @@ export class PropertyViewFactory {
                 return new TextPropertyView(nodeId, propertyKey, property);
             case "checkbox":
                 return new CheckboxPropertyView(typeName, propertyKey, property);
+            case "changeType":
             case "dropdown":
                 return new DropdownPropertyView(typeName, propertyKey, property);
             case "spinner":

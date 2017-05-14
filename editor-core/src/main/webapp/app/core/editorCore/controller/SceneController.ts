@@ -16,6 +16,7 @@ import {DiagramEditorController} from "./DiagramEditorController";
 import {UndoRedoController} from "./UndoRedoController";
 import {DiagramContainer} from "../model/DiagramContainer";
 import {EmbedCommand} from "../model/commands/EmbedCommand";
+import ILocaleNumberPatternDescriptor = ng.ILocaleNumberPatternDescriptor;
 export class SceneController {
 
     private diagramEditorController: DiagramEditorController;
@@ -86,7 +87,7 @@ export class SceneController {
 
     public createLink(sourceId: string, target: any): void {
 
-        var link: joint.dia.Link = this.scene.getCurrentLinkType();
+        var link: joint.dia.Link = this.scene.getCurrentLinkPattern();
         link.set({
             source: { id: sourceId },
             target: target
@@ -124,8 +125,10 @@ export class SceneController {
         var elementBelow = controller.getElementBelow(event, function(cell: joint.dia.Element) {
             return !(cell instanceof joint.dia.Link) && controller.diagramEditorController.getNodesMap()[cell.id].isValidEmbedding(node);
         });
-        if (elementBelow)
-            command.add(new EmbedCommand(node, this.diagramEditorController.getNodesMap()[elementBelow.id], null));
+        if (elementBelow) {
+            command.add(this.paperCommandFactory.makeEmbedCommand(node,
+                this.diagramEditorController.getNodesMap()[elementBelow.id], null));
+        }
         this.undoRedoController.addCommand(command);
         command.execute();
     }
@@ -233,6 +236,13 @@ export class SceneController {
 
     public addLink(link: Link): void {
         this.scene.addLinkToPaper(link);
+    }
+
+    public changeElementType(element: DiagramElement, type: string) {
+        var nodeType: NodeType = this.diagramEditorController.getNodeType(type);
+        if (element instanceof DefaultDiagramNode) {
+            element.setNodeType(nodeType);
+        }
     }
 
     private blankPoinerdownListener(event, x, y): void {

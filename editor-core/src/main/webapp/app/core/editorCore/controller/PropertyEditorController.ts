@@ -7,6 +7,7 @@ import {HtmlView} from "../view/HtmlView";
 import {PropertyViewFactory} from "./PropertyViewFactory";
 import {UndoRedoController} from "./UndoRedoController";
 import {SceneController} from "./SceneController";
+import {DiagramNode} from "../model/DiagramNode";
 export class PropertyEditorController {
 
     private propertyViewFactory: PropertyViewFactory;
@@ -26,11 +27,13 @@ export class PropertyEditorController {
         var controller: PropertyEditorController = this;
 
         document.addEventListener('property-changed', function(e: any) {
+            var currentElement: DiagramElement = controller.sceneController.getCurrentElement();
             if (e.detail.key === "InnerText") {
-                var currentElement: DiagramElement = controller.sceneController.getCurrentElement();
                 currentElement.getJointObject().attr("text", {
                     text: e.detail.value
                 });
+            } else if (e.detail.key === "ChangeType") {
+                controller.sceneController.changeElementType(currentElement, e.detail.value);
             } else $("." + e.detail.key + "-" + e.detail.nodeId).each(function(index) {
                 if ($(this).val() !== e.detail.value) {
                     $(this).val(e.detail.value);
@@ -51,6 +54,8 @@ export class PropertyEditorController {
 
             if (properties[property].type === "combobox") {
                 this.initCombobox(element.getType(), property, htmlElement);
+            } else if (properties[property].type === "dropdown") {
+
             }
         }
     }

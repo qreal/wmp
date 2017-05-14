@@ -125,8 +125,7 @@ export class DefaultDiagramNode implements DiagramNode {
         var newY = bbox.y + bbox.height - DefaultSize.DEFAULT_NODE_HEIGHT;
         this.propertyEditElement.setPosition(newX, newY);
 
-        if (this.resizeParameters.isBottomResizing || this.resizeParameters.isRightResizing)
-        {
+        if (this.resizeParameters.isBottomResizing || this.resizeParameters.isRightResizing) {
             cellView.options.interactive = false;
             var model = <joint.dia.Element> cellView.model;
             var diffX = x - this.lastMousePosition.x;
@@ -232,6 +231,13 @@ export class DefaultDiagramNode implements DiagramNode {
             if (embedding)
                 parent.getJointObject().embed(this.getJointObject());
         }
+    }
+
+    public setNodeType(nodeType: NodeType) {
+        this.name = nodeType.getShownName();
+        this.type = nodeType.getName();
+        this.imagePath = nodeType.getImage();
+        this.jointObject.attr("image", {'xlink:href': nodeType.getImage()});
     }
 
     public getImagePath(): string {
