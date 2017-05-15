@@ -130,10 +130,10 @@ export class TypesParser {
     }
 
     private addChangeTypeProperty(tree: PaletteTree) {
-        var nodeTypes: Map<string, NodeType> = tree.convertToMap();
+        var nodeTypes: Map<string, NodeType> = tree.convertToFullNameMap("");
         var nodeTypesArrayNode = [];
-        for (var nodeType of nodeTypes.values()) {
-            nodeTypesArrayNode.push({"key": nodeType.getName(), "value": nodeType.getName()});
+        for (var [name, nodeType] of nodeTypes) {
+            nodeTypesArrayNode.push({"key": nodeType.getName(), "value": name});
         }
         for (var nodeType of nodeTypes.values()) {
             this.addVariantList(nodeType.getName(), "ChangeType", nodeTypesArrayNode);
