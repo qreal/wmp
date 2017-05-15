@@ -12,9 +12,9 @@ export class PaletteController {
     private flowsSelector: string = "#flows-navigation";
     private paper: DiagramScene;
     private elementTypes: ElementTypes;
-    private nodesTypesMap: Map<String, NodeType>;
+    private nodesTypesMap: Map<string, NodeType>;
 
-    public init(paper: DiagramScene, elementTypes: ElementTypes, nodesTypesMap: Map<String, NodeType>) {
+    public init(paper: DiagramScene, elementTypes: ElementTypes, nodesTypesMap: Map<string, NodeType>) {
         this.paper = paper;
         this.elementTypes = elementTypes;
         this.nodesTypesMap = nodesTypesMap;
@@ -35,14 +35,14 @@ export class PaletteController {
     public searchPaletteReload(event: Event) {
         var searchPatterns: string[] = (<any> event.target).value.split(" ").map((str) => str.toLowerCase());
 
-        for (var name in this.nodesTypesMap) {
-            var notFound: Boolean = false;
+        for (var [name, nodeType] of this.nodesTypesMap) {
+            var notFound: Boolean;
             for (var i in searchPatterns) {
                 notFound = name.indexOf(searchPatterns[i]) == -1;
                 if (notFound)
                     break;
             }
-            this.nodesTypesMap[name].setVisibility(!notFound);
+            nodeType.setVisibility(!notFound);
         }
         this.reload();
     }
@@ -74,10 +74,10 @@ export class PaletteController {
     }
 
     public appendSubprogramsPalette(subprogramDiagramNodes: SubprogramDiagramNode[],
-                                    nodeTypesMap: Map<String, NodeType>): void {
+                                    nodeTypesMap: Map<string, NodeType>): void {
         var typeName: string = "Subprogram";
         var paletteView: SubprogramPaletteView = new SubprogramPaletteView(subprogramDiagramNodes,
-            nodeTypesMap[typeName].getImage());
+            nodeTypesMap.get(typeName).getImage());
         this.appendPaletteContent(this.subprogramsSelector, paletteView.getContent());
     }
 

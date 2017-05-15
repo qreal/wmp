@@ -7,7 +7,7 @@ export class SubprogramNode extends DefaultDiagramNode {
     private subprogramDiagramId: string;
     private textObject: joint.shapes.basic.Text;
 
-    constructor(nodeType: NodeType, x: number, y: number, width: number, height: number, properties: Map<String, Property>,
+    constructor(nodeType: NodeType, x: number, y: number, width: number, height: number, properties: Map<string, Property>,
                 subprogramDiagramId: string, id?: string, notDefaultConstProperties?: PropertiesPack) {
         super(nodeType, x, y, width, height, properties, id, notDefaultConstProperties);
         this.subprogramDiagramId = subprogramDiagramId;

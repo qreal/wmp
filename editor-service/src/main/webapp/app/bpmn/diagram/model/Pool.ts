@@ -12,7 +12,7 @@ export class Pool extends DiagramContainer {
     private isUpdating: boolean;
 
     constructor(nodeType: NodeType, x: number, y: number, width: number, height: number,
-                      properties: Map<String, Property>, id?: string) {
+                      properties: Map<string, Property>, id?: string) {
         var minWidth: number = DefaultSize.DEFAULT_NODE_WIDTH * 2;
         var minHeight: number = DefaultSize.DEFAULT_NODE_HEIGHT * 2;
         super(nodeType, x, y, Math.max(width, minWidth), Math.max(height, minHeight), properties, id);

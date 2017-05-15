@@ -11,7 +11,7 @@ import {MathUtils} from "../../../../utils/MathUtils";
 import {DefaultSize} from "../../../../common/constants/DefaultSize";
 export class DiagramJsonParser {
 
-    public parse(diagramJson: any, nodeTypesMap: Map<String, NodeType>, linkPatterns: Map<String, joint.dia.Link>): DiagramParts {
+    public parse(diagramJson: any, nodeTypesMap: Map<string, NodeType>, linkPatterns: Map<string, joint.dia.Link>): DiagramParts {
         var minPos: {x: number; y: number} = this.findMinPosition(diagramJson, nodeTypesMap);
         var minOffset: number = 25;
         var offsetX = (minPos.x < 0) ? (-minPos.x + minOffset) : minOffset;
@@ -21,7 +21,7 @@ export class DiagramJsonParser {
         return diagramParts;
     }
 
-    protected findMinPosition(diagramJson: any, nodeTypesMap: Map<String, NodeType>): {x: number; y: number} {
+    protected findMinPosition(diagramJson: any, nodeTypesMap: Map<string, NodeType>): {x: number; y: number} {
         var minX = Infinity;
         var minY = Infinity;
 
@@ -29,7 +29,7 @@ export class DiagramJsonParser {
             var nodeObject = diagramJson.nodes[i];
             var type = nodeObject.type;
 
-            if (nodeTypesMap[type]) {
+            if (nodeTypesMap.has(type)) {
                 var graphicalPropertiesObject = nodeObject.graphicalProperties;
 
                 var x: number = 0;
@@ -51,7 +51,7 @@ export class DiagramJsonParser {
         return {x: minX, y: minY};
     }
 
-    protected parseNodes(diagramJson: any, nodeTypesMap: Map<String, NodeType>, offsetX: number, offsetY: number): DiagramParts {
+    protected parseNodes(diagramJson: any, nodeTypesMap: Map<string, NodeType>, offsetX: number, offsetY: number): DiagramParts {
         var diagramParts: DiagramParts = new DiagramParts();
 
         for (var i = 0; i < diagramJson.nodes.length; i++) {
@@ -61,9 +61,9 @@ export class DiagramJsonParser {
             if (type === "SubprogramDiagram") {
                 diagramParts.subprogramDiagramNodes.push(this.parseSubprogramDiagram(nodeObject));
             } else {
-                if (nodeTypesMap[type]) {
-                    diagramParts.nodesMap[nodeObject.graphicalId] = this.parseDiagramNodeObject(nodeObject,
-                        nodeTypesMap, offsetX, offsetY);
+                if (nodeTypesMap.has(type)) {
+                    diagramParts.nodesMap.set(nodeObject.graphicalId, this.parseDiagramNodeObject(nodeObject,
+                        nodeTypesMap, offsetX, offsetY));
                 }
             }
         }
@@ -84,17 +84,17 @@ export class DiagramJsonParser {
         return new SubprogramDiagramNode(nodeObject.logicalId, name);
     }
 
-    protected parseDiagramNodeObject(nodeObject: any, nodeTypesMap: Map<String, NodeType>,
+    protected parseDiagramNodeObject(nodeObject: any, nodeTypesMap: Map<string, NodeType>,
                                      offsetX: number, offsetY: number): DiagramNode {
-        var changeableLogicalProperties: Map<String, Property> = new Map<String, Property>();
-        var constLogicalProperties: Map<String, Property> = new Map<String, Property>();
+        var changeableLogicalProperties: Map<string, Property> = new Map<string, Property>();
+        var constLogicalProperties: Map<string, Property> = new Map<string, Property>();
         var subprogramDiagramId: string = "";
         var name = "";
         var type = nodeObject.type;
 
         var logicalPropertiesObject = nodeObject.logicalProperties;
 
-        var typeProperties = nodeTypesMap[nodeObject.type].getPropertiesMap();
+        var typeProperties = nodeTypesMap.get(nodeObject.type).getPropertiesMap();
 
         logicalPropertiesObject.sort(function (a:any, b:any) {
             if (a.name < b.name) return -1;
@@ -115,18 +115,19 @@ export class DiagramJsonParser {
                 }
             }
 
-            if (typeProperties.hasOwnProperty(propertyName)) {
-                var property: Property = new Property(typeProperties[propertyName].name,
-                    typeProperties[propertyName].type, logicalPropertiesObject[j].value);
-                changeableLogicalProperties[propertyName] = property;
+            if (typeProperties.has(propertyName)) {
+                var typeProperty: Property = typeProperties.get(propertyName);
+                var property: Property = new Property(typeProperty.name,
+                    typeProperty.type, logicalPropertiesObject[j].value);
+                changeableLogicalProperties.set(propertyName, property);
             } else {
                 var property: Property = new Property(logicalPropertiesObject[j].name,
                     logicalPropertiesObject[j].type, logicalPropertiesObject[j].value);
-                constLogicalProperties[propertyName] = property;
+                constLogicalProperties.set(propertyName, property);
             }
         }
 
-        var constGraphicalProperties: Map<String, Property> = new Map<String, Property>();
+        var constGraphicalProperties: Map<string, Property> = new Map<string, Property>();
         var graphicalPropertiesObject = nodeObject.graphicalProperties;
 
         var x: number = 0;
@@ -141,17 +142,17 @@ export class DiagramJsonParser {
             } else {
                 var property: Property = new Property(graphicalPropertiesObject[j].name,
                     graphicalPropertiesObject[j].type, graphicalPropertiesObject[j].value);
-                constGraphicalProperties[propertyName] = property;
+                constGraphicalProperties.set(propertyName, property);
             }
         }
 
         var node: DiagramNode;
         if (subprogramDiagramId) {
-            node = new SubprogramNode(nodeTypesMap[nodeObject.type], x, y, DefaultSize.DEFAULT_NODE_WIDTH,
+            node = new SubprogramNode(nodeTypesMap.get(nodeObject.type), x, y, DefaultSize.DEFAULT_NODE_WIDTH,
                 DefaultSize.DEFAULT_NODE_HEIGHT, changeableLogicalProperties, subprogramDiagramId, nodeObject.graphicalId,
                 new PropertiesPack(constLogicalProperties, constGraphicalProperties));
         } else {
-            node = new DefaultDiagramNode(nodeTypesMap[nodeObject.type], x, y, DefaultSize.DEFAULT_NODE_WIDTH,
+            node = new DefaultDiagramNode(nodeTypesMap.get(nodeObject.type), x, y, DefaultSize.DEFAULT_NODE_WIDTH,
                 DefaultSize.DEFAULT_NODE_HEIGHT, changeableLogicalProperties, null,
                 new PropertiesPack(constLogicalProperties, constGraphicalProperties));
         }
@@ -159,31 +160,31 @@ export class DiagramJsonParser {
         return node;
     }
 
-    protected parseLinks(diagramJson: any, nodeTypesMap: Map<String, NodeType>, linkPatterns: Map<String, joint.dia.Link>,
-                         offsetX: number, offsetY: number): Map<String, Link> {
-        var linksMap: Map<String, Link> = new Map<String, Link>();
+    protected parseLinks(diagramJson: any, nodeTypesMap: Map<string, NodeType>, linkPatterns: Map<string, joint.dia.Link>,
+                         offsetX: number, offsetY: number): Map<string, Link> {
+        var linksMap: Map<string, Link> = new Map<string, Link>();
 
         for (var i = 0; i < diagramJson.links.length; i++) {
-            linksMap[diagramJson.links[i].graphicalId] = this.parseLinkObject(diagramJson.links[i], nodeTypesMap,
-                linkPatterns, offsetX, offsetY);
+            linksMap.set(diagramJson.links[i].graphicalId, this.parseLinkObject(diagramJson.links[i], nodeTypesMap,
+                linkPatterns, offsetX, offsetY));
         }
 
         return linksMap;
     }
 
-    protected parseLinkObject(linkObject: any, nodeTypesMap: Map<String, NodeType>, linkPatterns: Map<String, joint.dia.Link>,
+    protected parseLinkObject(linkObject: any, nodeTypesMap: Map<string, NodeType>, linkPatterns: Map<string, joint.dia.Link>,
                               offsetX: number, offsetY: number): Link {
         var sourceId: string = "";
         var targetId: string = "";
 
-        var properties: Map<String, Property> = new Map<String, Property>();
+        var properties: Map<string, Property> = new Map<string, Property>();
         var logicalPropertiesObject = linkObject.logicalProperties;
 
         for (var j = 0; j < logicalPropertiesObject.length; j++) {
             switch (logicalPropertiesObject[j].name) {
                 case "Guard":
                     var property: Property = new Property("Guard", "combobox", logicalPropertiesObject[j].value);
-                    properties["Guard"] = property;
+                    properties.set("Guard", property);
                     break;
             }
         }
@@ -240,7 +241,7 @@ export class DiagramJsonParser {
             targetObject = targetPosition;
         }
 
-        var jointObject: joint.dia.Link = <joint.dia.Link> linkPatterns[linkObject.type].clone();
+        var jointObject: joint.dia.Link = <joint.dia.Link> linkPatterns.get(linkObject.type).clone();
         jointObject.set({
             id: jointObjectId,
             source: sourceObject,
@@ -248,7 +249,7 @@ export class DiagramJsonParser {
             vertices: vertices
         });
 
-        var nodeType: NodeType = nodeTypesMap[linkObject.type];
+        var nodeType: NodeType = nodeTypesMap.get(linkObject.type);
         return new Link(jointObject, nodeType.getShownName(), nodeType.getName(), properties);
     }
 

@@ -30,12 +30,11 @@ export class DiagramElementListener {
             }
 
             var nodeType: NodeType = DiagramElementListener.getNodeType(this.paper.getCurrentLinkTypeName());
-            var typeProperties: Map<String, Property> = nodeType.getPropertiesMap();
+            var typeProperties: Map<string, Property> = nodeType.getPropertiesMap();
 
-            var nodeProperties: Map<String, Property> = new Map<String, Property>();
-            for (var property in typeProperties) {
-                nodeProperties[property] = new Property(typeProperties[property].name,
-                    typeProperties[property].type, typeProperties[property].value);
+            var nodeProperties: Map<string, Property> = new Map<string, Property>();
+            for (var [propertyName, property] of typeProperties) {
+                nodeProperties.set(propertyName, new Property(property.name, property.type, property.value));
             }
             DiagramElementListener.makeAndExecuteCreateLinkCommand(link, nodeType.getShownName(), nodeType.getName(), nodeProperties);
 
@@ -59,7 +58,7 @@ export class DiagramElementListener {
     };
 
     static makeAndExecuteCreateLinkCommand: (jointObject: joint.dia.Link, name: string, type: string,
-                                             properties: Map<String, Property>) => void = function(): void {
+                                             properties: Map<string, Property>) => void = function(): void {
         console.error("DiagramElementListener makeAndExecuteCreateLinkCommand method is empty")
     }
 }

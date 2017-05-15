@@ -6,6 +6,7 @@ import {DiagramNode} from "./DiagramNode";
 import {DiagramContainer} from "./DiagramContainer";
 import {NodeType} from "./NodeType";
 import {DefaultSize} from "../../../common/constants/DefaultSize";
+import {MapUtils} from "../../../utils/MapUtils";
 
 class ImageWithPorts extends joint.shapes.basic.Generic {
     constructor(portsModelInterface: joint.shapes.basic.PortsModelInterface) {
@@ -43,7 +44,7 @@ export class DefaultDiagramNode implements DiagramNode {
     private name: string;
     private type: string;
     private constPropertiesPack: PropertiesPack;
-    private changeableProperties: Map<String, Property>;
+    private changeableProperties: Map<string, Property>;
     private imagePath: string;
     private propertyEditElement: PropertyEditElement;
     private parentNode: DiagramContainer;
@@ -66,7 +67,7 @@ export class DefaultDiagramNode implements DiagramNode {
     };
 
     constructor(nodeType: NodeType, x: number, y: number, width: number, height: number,
-                properties: Map<String, Property>, id?: string, notDefaultConstProperties?: PropertiesPack) {
+                properties: Map<string, Property>, id?: string, notDefaultConstProperties?: PropertiesPack) {
         this.logicalId = UIDGenerator.generate();
         this.name = nodeType.getShownName();
         this.type = nodeType.getName();
@@ -76,8 +77,8 @@ export class DefaultDiagramNode implements DiagramNode {
 
         this.constPropertiesPack = DefaultDiagramNode.getDefaultConstPropertiesPack(name);
         if (notDefaultConstProperties) {
-            $.extend(this.constPropertiesPack.logical, notDefaultConstProperties.logical);
-            $.extend(this.constPropertiesPack.graphical, notDefaultConstProperties.graphical);
+            MapUtils.extend(this.constPropertiesPack.logical, notDefaultConstProperties.logical);
+            MapUtils.extend(this.constPropertiesPack.graphical, notDefaultConstProperties.graphical);
         }
 
         var jointObjectAttributes = {
@@ -103,16 +104,15 @@ export class DefaultDiagramNode implements DiagramNode {
 
         this.jointObject = new ImageWithPorts(jointObjectAttributes);
 
-        this.changeableProperties = new Map<String, Property>();
-        for (var property in properties) {
-            this.changeableProperties[property] = new Property(properties[property].name, properties[property].type,
-                properties[property].value);
+        this.changeableProperties = new Map<string, Property>();
+        for (var [propertyName, property] of properties) {
+            this.changeableProperties.set(propertyName, new Property(property.name, property.type, property.value));
         }
         this.imagePath = nodeType.getImage();
         if (nodeType.getBorder())
             this.getJointObject().attr(".outer", nodeType.getBorder());
-        if (nodeType.getInnerText() && this.changeableProperties["InnerText"]) {
-            nodeType.getInnerText()["text"] = this.changeableProperties["InnerText"].value;
+        if (nodeType.getInnerText() && this.changeableProperties.has("InnerText")) {
+            nodeType.getInnerText()["text"] = this.changeableProperties.get("InnerText").value;
             this.jointObject.attr("text", nodeType.getInnerText());
         }
         this.parentNode = null;
@@ -253,7 +253,7 @@ export class DefaultDiagramNode implements DiagramNode {
     }
 
     public setProperty(key: string, property: Property): void {
-        this.changeableProperties[key] = property;
+        this.changeableProperties.set(key, property);
         var propertyChangedEvent = new CustomEvent('property-changed', {
             detail: {
                 nodeId: this.getLogicalId(),
@@ -264,7 +264,7 @@ export class DefaultDiagramNode implements DiagramNode {
         document.dispatchEvent(propertyChangedEvent);
     }
 
-    public getChangeableProperties(): Map<String, Property> {
+    public getChangeableProperties(): Map<string, Property> {
         return this.changeableProperties;
     }
 
@@ -303,29 +303,29 @@ export class DefaultDiagramNode implements DiagramNode {
     }
 
     private static getDefaultConstPropertiesPack(name: string): PropertiesPack {
-        var logical: Map<String, Property> = this.initConstLogicalProperties(name);
-        var graphical: Map<String, Property> = this.initConstGraphicalProperties(name);
+        var logical: Map<string, Property> = this.initConstLogicalProperties(name);
+        var graphical: Map<string, Property> = this.initConstGraphicalProperties(name);
         return new PropertiesPack(logical, graphical);
     }
 
-    private static initConstLogicalProperties(name: string): Map<String, Property> {
-        var logical: Map<String, Property> = new Map<String, Property>();
-        logical["name"] = new Property("name", "QString", name);
-        logical["from"] = new Property("from", "qReal::Id", "qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID");
-        logical["linkShape"] = new Property("linkShape", "int", "0");
-        logical["outgoingExplosion"] = new Property("outgoingExplosion", "qReal::Id", "qrm:/");
-        logical["to"] = new Property("to", "qReal::Id", "qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID");
+    private static initConstLogicalProperties(name: string): Map<string, Property> {
+        var logical: Map<string, Property> = new Map<string, Property>();
+        logical.set("name", new Property("name", "QString", name));
+        logical.set("from", new Property("from", "qReal::Id", "qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"));
+        logical.set("linkShape", new Property("linkShape", "int", "0"));
+        logical.set("outgoingExplosion", new Property("outgoingExplosion", "qReal::Id", "qrm:/"));
+        logical.set("to", new Property("to", "qReal::Id", "qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"));
         return logical;
     }
 
-    private static initConstGraphicalProperties(name: string): Map<String, Property> {
-        var graphical: Map<String, Property> = new Map<String, Property>();
-        graphical["name"] = new Property("name", "QString", name);
-        graphical["to"] = new Property("to", "qreal::Id", "qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID");
-        graphical["configuration"] = new Property("configuration", "QPolygon", "0, 0 : 50, 0 : 50, 50 : 0, 50 : ");
-        graphical["fromPort"] = new Property("fromPort", "double", "0");
-        graphical["toPort"] = new Property("toPort", "double", "0");
-        graphical["from"] = new Property("from", "qReal::Id", "qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID");
+    private static initConstGraphicalProperties(name: string): Map<string, Property> {
+        var graphical: Map<string, Property> = new Map<string, Property>();
+        graphical.set("name", new Property("name", "QString", name));
+        graphical.set("to", new Property("to", "qreal::Id", "qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"));
+        graphical.set("configuration", new Property("configuration", "QPolygon", "0, 0 : 50, 0 : 50, 50 : 0, 50 : "));
+        graphical.set("fromPort", new Property("fromPort", "double", "0"));
+        graphical.set("toPort", new Property("toPort", "double", "0"));
+        graphical.set("from", new Property("from", "qReal::Id", "qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"));
         return graphical;
     }
 

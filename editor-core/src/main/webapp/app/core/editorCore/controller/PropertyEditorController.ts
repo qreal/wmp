@@ -45,24 +45,22 @@ export class PropertyEditorController {
 
     public setNodeProperties(element: DiagramElement): void {
         $('#property_table tbody').empty();
-        var properties: Map<String, Property> = element.getChangeableProperties();
-        for (var property in properties) {
+        var properties: Map<string, Property> = element.getChangeableProperties();
+        for (var [propertyName, property] of properties) {
             var propertyView: HtmlView = this.propertyViewFactory.createView(element.getLogicalId(), element.getType(),
-                property, properties[property]);
+                propertyName, property);
             var htmlElement = $(propertyView.getContent());
             $('#property_table tbody').append(htmlElement);
 
-            if (properties[property].type === "combobox") {
-                this.initCombobox(element.getType(), property, htmlElement);
-            } else if (properties[property].type === "dropdown") {
-
+            if (property.type === "combobox") {
+                this.initCombobox(element.getType(), propertyName, htmlElement);
             }
         }
     }
 
     public addChangePropertyCommand(key: string, value: string, changeHtmlFunction: () => void): void {
         var currentElement: DiagramElement = this.sceneController.getCurrentElement();
-        var property: Property = currentElement.getChangeableProperties()[key];
+        var property: Property = currentElement.getChangeableProperties().get(key);
         var changePropertyCommand: Command = new ChangePropertyCommand(key, value, property.value,
             this.setProperty.bind(this), changeHtmlFunction);
         this.undoRedoController.addCommand(changePropertyCommand);
@@ -74,7 +72,7 @@ export class PropertyEditorController {
 
     public setProperty(key: string, value: string): void {
         var currentElement: DiagramElement = this.sceneController.getCurrentElement();
-        var property: Property = currentElement.getChangeableProperties()[key];
+        var property: Property = currentElement.getChangeableProperties().get(key);
         property.value = value;
         currentElement.setProperty(key, property);
     }
@@ -129,7 +127,7 @@ export class PropertyEditorController {
         $(document).on('change', '.checkbox', function () {
             var currentElement: DiagramElement = controller.sceneController.getCurrentElement();
             var key = $(this).data('type');
-            var property: Property = currentElement.getChangeableProperties()[key];
+            var property: Property = currentElement.getChangeableProperties().get(key);
             var currentValue = property.value;
             var newValue = controller.changeCheckboxValue(currentValue);
             controller.addChangePropertyCommand(key, newValue, controller.changeCheckboxHtml.bind(

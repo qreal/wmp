@@ -18,8 +18,8 @@ export class VariableInitBlock extends AbstractBlock {
         this.checkExpectedNumberOfOutboundLinks(this.EXPECTED_NUMBER_OF_OUTBOUND_LINKS);
 
         var properties = this.node.getChangeableProperties();
-        var variableName = properties["variable"].value;
-        var variableValue = properties["value"].value;
+        var variableName = properties.get("variable").value;
+        var variableValue = properties.get("value").value;
 
         var parser: Parser = new Parser();
         this.interpreter.addOrChangeUserVariable(variableName, parser.parseExpression(variableValue, this.interpreter));

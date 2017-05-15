@@ -15,11 +15,10 @@ export class PropertyEditElement {
 
     private htmlElement;
 
-    constructor(logicalId: string, jointObjectId: string, properties: Map<String, Property>) {
+    constructor(logicalId: string, jointObjectId: string, properties: Map<string, Property>) {
         var propertiesHtml: string = "";
 
-        for (var propertyKey in properties) {
-            var property: Property = properties[propertyKey];
+        for (var [propertyKey, property] of properties) {
             if (property.type === "string") {
                 propertiesHtml += StringUtils.format(PropertyEditElement.propertyTemplate,
                     propertyKey + "-" + logicalId, jointObjectId, propertyKey, property.name, property.value);

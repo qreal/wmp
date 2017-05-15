@@ -22,10 +22,10 @@ export class TrikDrawEllipseBlock extends AbstractBlock {
 
         var properties = this.node.getChangeableProperties();
         var parser = new Parser();
-        var width = parser.parseExpression(properties["WidthEllipse"].value, this.interpreter);
-        var height = parser.parseExpression(properties["HeightEllipse"].value, this.interpreter);
-        var x = parser.parseExpression(properties["XCoordinateEllipse"].value, this.interpreter);
-        var y = parser.parseExpression(properties["YCoordinateEllipse"].value, this.interpreter);
+        var width = parser.parseExpression(properties.get("WidthEllipse").value, this.interpreter);
+        var height = parser.parseExpression(properties.get("HeightEllipse").value, this.interpreter);
+        var x = parser.parseExpression(properties.get("XCoordinateEllipse").value, this.interpreter);
+        var y = parser.parseExpression(properties.get("YCoordinateEllipse").value, this.interpreter);
 
         for (var modelId = 0; modelId < this.robotModels.length; modelId++) {
             var model = this.robotModels[modelId];

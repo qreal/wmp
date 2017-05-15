@@ -22,10 +22,10 @@ export class TrikDrawLineBlock extends AbstractBlock {
 
         var properties = this.node.getChangeableProperties();
         var parser = new Parser();
-        var x1 = parser.parseExpression(properties["X1CoordinateLine"].value, this.interpreter);
-        var x2 = parser.parseExpression(properties["X2CoordinateLine"].value, this.interpreter);
-        var y1 = parser.parseExpression(properties["Y1CoordinateLine"].value, this.interpreter);
-        var y2 = parser.parseExpression(properties["Y2CoordinateLine"].value, this.interpreter);
+        var x1 = parser.parseExpression(properties.get("X1CoordinateLine").value, this.interpreter);
+        var x2 = parser.parseExpression(properties.get("X2CoordinateLine").value, this.interpreter);
+        var y1 = parser.parseExpression(properties.get("Y1CoordinateLine").value, this.interpreter);
+        var y2 = parser.parseExpression(properties.get("Y2CoordinateLine").value, this.interpreter);
 
         for (var modelId = 0; modelId < this.robotModels.length; modelId++) {
             var model = this.robotModels[modelId];

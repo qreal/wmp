@@ -20,8 +20,7 @@ export class DiagramExporter {
     protected exportNodes(graph: joint.dia.Graph, diagramParts: DiagramParts) {
         var nodes = [];
 
-        for (var id in diagramParts.nodesMap) {
-            var node: DiagramNode = diagramParts.nodesMap[id];
+        for (var node of diagramParts.nodesMap.values()) {
             var nodeJSON = {
                 'logicalId': node.getLogicalId(),
                 'graphicalId': node.getJointObject().id,
@@ -36,11 +35,11 @@ export class DiagramExporter {
                 'incomingExplosions': []
             };
 
-            var constLogicalProperties: Map<String, Property> = node.getConstPropertiesPack().logical;
+            var constLogicalProperties: Map<string, Property> = node.getConstPropertiesPack().logical;
             if (node.getType() === "Subprogram") {
-                constLogicalProperties["outgoingExplosion"] = new Property("outgoingExplosion", "qReal::Id",
+                constLogicalProperties.set("outgoingExplosion", new Property("outgoingExplosion", "qReal::Id",
                     "qrm:/RobotsMetamodel/RobotsDiagram/SubprogramDiagram/{" +
-                    (<SubprogramNode> node).getSubprogramDiagramId() + "}");
+                    (<SubprogramNode> node).getSubprogramDiagramId() + "}"));
             }
 
             var changeableLogicalPropertiesArray = this.exportProperties(node.getChangeableProperties());
@@ -61,7 +60,7 @@ export class DiagramExporter {
 
             graphicalLinks.forEach(function (link) {
                 nodeJSON.graphicalLinksIds.push({'id': link.id});
-                nodeJSON.logicalLinksIds.push({'id': diagramParts.linksMap[link.id].getLogicalId()});
+                nodeJSON.logicalLinksIds.push({'id': diagramParts.linksMap.get(link.id).getLogicalId()});
             });
 
             nodes.push(nodeJSON);
@@ -73,8 +72,7 @@ export class DiagramExporter {
     protected exportLinks(diagramParts: DiagramParts) {
         var links = [];
 
-        for (var id in diagramParts.linksMap) {
-            var link: Link = diagramParts.linksMap[id];
+        for (var link of diagramParts.linksMap.values()) {
             var jointObject = link.getJointObject();
             if (jointObject.get('vertices')) {
                 var vertices = this.exportVertices(jointObject);
@@ -98,8 +96,8 @@ export class DiagramExporter {
 
             linkJSON.graphicalProperties = this.exportProperties(link.getConstPropertiesPack().graphical);
 
-            var sourceObject = diagramParts.nodesMap[jointObject.get('source').id];
-            var targetObject = diagramParts.nodesMap[jointObject.get('target').id];
+            var sourceObject = diagramParts.nodesMap.get(jointObject.get('source').id);
+            var targetObject = diagramParts.nodesMap.get(jointObject.get('target').id);
 
             var logicalSourceValue: string =  (sourceObject) ? sourceObject.getType() +
                 "/{" + sourceObject.getLogicalId() + "}" :
@@ -153,15 +151,15 @@ export class DiagramExporter {
         return links;
     }
 
-    protected exportProperties(properties: Map<String, Property>) {
+    protected exportProperties(properties: Map<string, Property>) {
         var propertiesJSON = [];
-        for (var propertyName in properties) {
-            var type: string = properties[propertyName].type;
+        for (var [propertyName, property] of properties) {
+            var type: string = property.type;
             type = (type === "string" || type === "combobox" || type == "checkbox" || type == "dropdown") ?
                 "QString" : type;
             var property = {
                 'name': propertyName,
-                'value': properties[propertyName].value,
+                'value': properties.get(propertyName).value,
                 'type': type
             };
             propertiesJSON.push(property);

@@ -22,10 +22,10 @@ export class PrintTextBlock extends AbstractBlock {
 
         var properties = this.node.getChangeableProperties();
         var parser = new Parser();
-        var x = parser.parseExpression(properties["XCoordinateText"].value, this.interpreter);
-        var y = parser.parseExpression(properties["YCoordinateText"].value, this.interpreter);
+        var x = parser.parseExpression(properties.get("XCoordinateText").value, this.interpreter);
+        var y = parser.parseExpression(properties.get("YCoordinateText").value, this.interpreter);
         
-        var text = properties["PrintText"].value;
+        var text = properties.get("PrintText").value;
 
         for (var modelId = 0; modelId < this.robotModels.length; modelId++) {
             var model = this.robotModels[modelId];

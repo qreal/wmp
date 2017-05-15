@@ -68,7 +68,7 @@ export class SceneController {
         this.initPropertyEditorListener();
 
         DiagramElementListener.makeAndExecuteCreateLinkCommand = (jointObject: joint.dia.Link, name: string, type: string,
-                                                                  properties: Map<String, Property>): void => {
+                                                                  properties: Map<string, Property>): void => {
             var linkObject: Link = this.diagramEditorController.getElementConstructor().createLink(jointObject, name, type, properties);
             this.makeAndExecuteCreateLinkCommand(linkObject);
         };
@@ -94,12 +94,11 @@ export class SceneController {
         });
 
         var nodeType: NodeType = this.diagramEditorController.getNodeType(this.scene.getCurrentLinkTypeName());
-        var typeProperties: Map<String, Property> = nodeType.getPropertiesMap();
+        var typeProperties: Map<string, Property> = nodeType.getPropertiesMap();
 
-        var linkProperties: Map<String, Property> = new Map<String, Property>();
-        for (var property in typeProperties) {
-            linkProperties[property] = new Property(typeProperties[property].name,
-                typeProperties[property].type, typeProperties[property].value);
+        var linkProperties: Map<string, Property> = new Map<string, Property>();
+        for (var [propertyName, property] of typeProperties) {
+            linkProperties.set(propertyName, new Property(property.name, property.type, property.value));
         }
 
         var linkObject: Link = this.diagramEditorController.getElementConstructor().createLink(link,
@@ -123,11 +122,12 @@ export class SceneController {
             this.paperCommandFactory.makeChangeCurrentElementCommand(node, this.currentElement)]);
         var controller: SceneController = this;
         var elementBelow = controller.getElementBelow(event, function(cell: joint.dia.Element) {
-            return !(cell instanceof joint.dia.Link) && controller.diagramEditorController.getNodesMap()[cell.id].isValidEmbedding(node);
+            return !(cell instanceof joint.dia.Link) &&
+                controller.diagramEditorController.getNodesMap().get(cell.id).isValidEmbedding(node);
         });
         if (elementBelow) {
             command.add(this.paperCommandFactory.makeEmbedCommand(node,
-                this.diagramEditorController.getNodesMap()[elementBelow.id], null));
+                <DiagramContainer> this.diagramEditorController.getNodesMap().get(elementBelow.id), null));
         }
         this.undoRedoController.addCommand(command);
         command.execute();

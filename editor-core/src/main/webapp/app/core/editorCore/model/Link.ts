@@ -7,20 +7,20 @@ export class Link implements DiagramElement {
     private logicalId: string;
     private jointObject: joint.dia.Link;
     private constPropertiesPack: PropertiesPack;
-    private changeableProperties: Map<String, Property> = new Map<String, Property>();
+    private changeableProperties: Map<string, Property> = new Map<string, Property>();
     private name: string;
     private type: string;
 
-    constructor(jointObject: joint.dia.Link, name: string, type: string, properties: Map<String, Property>) {
+    constructor(jointObject: joint.dia.Link, name: string, type: string, properties: Map<string, Property>) {
         this.logicalId = UIDGenerator.generate();
         this.constPropertiesPack = this.getDefaultConstPropertiesPack();
         this.name = name;
         this.type = type;
 
         this.jointObject = jointObject;
-        var properties: Map<String, Property> = properties;
+        var properties: Map<string, Property> = properties;
         this.changeableProperties = properties;
-        this.changeLabel(properties["Guard"].value);
+        this.changeLabel(properties.get("Guard").value);
         this.updateHighlight();
 
         jointObject.on('change:source', () => {
@@ -54,12 +54,12 @@ export class Link implements DiagramElement {
         return this.constPropertiesPack;
     }
 
-    getChangeableProperties(): Map<String, Property> {
+    getChangeableProperties(): Map<string, Property> {
         return this.changeableProperties;
     }
 
     setProperty(key: string, property: Property): void {
-        this.changeableProperties[key] = property;
+        this.changeableProperties.set(key, property);
         if (key === "Guard") {
             this.changeLabel(property.value);
         }
@@ -85,26 +85,26 @@ export class Link implements DiagramElement {
     }
 
     private getDefaultConstPropertiesPack(): PropertiesPack {
-        var logical: Map<String, Property> = this.initConstLogicalProperties();
-        var graphical: Map<String, Property> = this.initConstGraphicalProperties();
+        var logical: Map<string, Property> = this.initConstLogicalProperties();
+        var graphical: Map<string, Property> = this.initConstGraphicalProperties();
         return new PropertiesPack(logical, graphical);
     }
 
-    private initConstLogicalProperties(): Map<String, Property> {
-        var logical: Map<String, Property> = new Map<String, Property>();
-        logical["name"] = new Property("name", "QString", this.name);
-        logical["linkShape"] = new Property("linkShape", "int", "-1");
-        logical["outgoingExplosion"] = new Property("outgoingExplosion", "qReal::Id", "qrm:/");
+    private initConstLogicalProperties(): Map<string, Property> {
+        var logical: Map<string, Property> = new Map<string, Property>();
+        logical.set("name", new Property("name", "QString", this.name));
+        logical.set("linkShape", new Property("linkShape", "int", "-1"));
+        logical.set("outgoingExplosion", new Property("outgoingExplosion", "qReal::Id", "qrm:/"));
         return logical;
     }
 
-    private initConstGraphicalProperties(): Map<String, Property> {
-        var graphical: Map<String, Property> = new Map<String, Property>();
-        graphical["name"] = new Property("name", "QString", this.name);
-        graphical["configuration"] = new Property("configuration", "QPolygon", "0, 0 : 0, 0 : ");
-        graphical["fromPort"] = new Property("fromPort", "double", "0");
-        graphical["toPort"] = new Property("toPort", "double", "0");
-        graphical["position"] = new Property("position", "QPointF", "0, 0");
+    private initConstGraphicalProperties(): Map<string, Property> {
+        var graphical: Map<string, Property> = new Map<string, Property>();
+        graphical.set("name", new Property("name", "QString", this.name));
+        graphical.set("configuration", new Property("configuration", "QPolygon", "0, 0 : 0, 0 : "));
+        graphical.set("fromPort", new Property("fromPort", "double", "0"));
+        graphical.set("toPort", new Property("toPort", "double", "0"));
+        graphical.set("position", new Property("position", "QPointF", "0, 0"));
         return graphical;
     }
 

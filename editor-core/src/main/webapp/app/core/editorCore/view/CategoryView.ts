@@ -15,8 +15,8 @@ export class CategoryView extends HtmlView {
     constructor(categoryName: string, category: PaletteTree, elementClass: string) {
         super();
         var elementsContent: string = '';
-        for (var subcategory in category.categories) {
-            var subcategoryView: CategoryView = new CategoryView(subcategory, category.categories[subcategory], elementClass);
+        for (var [subcategoryName, subcategory] of category.categories) {
+            var subcategoryView: CategoryView = new CategoryView(subcategoryName, subcategory, elementClass);
             elementsContent += subcategoryView.getContent();
         }
         for (var i in category.nodes) {

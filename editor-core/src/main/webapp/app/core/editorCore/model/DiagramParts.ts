@@ -3,14 +3,14 @@ import {Link} from "./Link";
 import {DiagramNode} from "./DiagramNode";
 export class DiagramParts {
 
-    nodesMap: Map<String, DiagramNode>;
-    linksMap: Map<String, Link>;
+    nodesMap: Map<string, DiagramNode>;
+    linksMap: Map<string, Link>;
     subprogramDiagramNodes: SubprogramDiagramNode[] = [];
 
-    constructor(nodesMap?: Map<String, DiagramNode>, linksMap?: Map<String, Link>,
+    constructor(nodesMap?: Map<string, DiagramNode>, linksMap?: Map<string, Link>,
                 subprogramDiagramNodes?: SubprogramDiagramNode[]) {
-        this.nodesMap = nodesMap || new Map<String, DiagramNode>();
-        this.linksMap = linksMap || new Map<String, Link>();
+        this.nodesMap = nodesMap || new Map<string, DiagramNode>();
+        this.linksMap = linksMap || new Map<string, Link>();
         this.subprogramDiagramNodes = subprogramDiagramNodes || [];
     }
 }

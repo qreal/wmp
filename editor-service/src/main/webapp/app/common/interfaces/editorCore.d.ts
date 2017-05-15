@@ -25,9 +25,9 @@ declare module "core/editorCore/model/Property" {
 declare module "core/editorCore/model/PropertiesPack" {
     import { Property } from "core/editorCore/model/Property";
     export class PropertiesPack {
-        logical: Map<String, Property>;
-        graphical: Map<String, Property>;
-        constructor(logical: Map<String, Property>, graphical: Map<String, Property>);
+        logical: Map<string, Property>;
+        graphical: Map<string, Property>;
+        constructor(logical: Map<string, Property>, graphical: Map<string, Property>);
     }
 }
 declare module "core/editorCore/model/DiagramElement" {
@@ -39,7 +39,7 @@ declare module "core/editorCore/model/DiagramElement" {
         getName(): string;
         getType(): string;
         getConstPropertiesPack(): PropertiesPack;
-        getChangeableProperties(): Map<String, Property>;
+        getChangeableProperties(): Map<string, Property>;
         setProperty(name: string, property: Property): void;
     }
 }
@@ -184,13 +184,13 @@ declare module "core/editorCore/model/Link" {
         private changeableProperties;
         private name;
         private type;
-        constructor(jointObject: joint.dia.Link, name: string, type: string, properties: Map<String, Property>);
+        constructor(jointObject: joint.dia.Link, name: string, type: string, properties: Map<string, Property>);
         getLogicalId(): string;
         getJointObject(): joint.dia.Link;
         getName(): string;
         getType(): string;
         getConstPropertiesPack(): PropertiesPack;
-        getChangeableProperties(): Map<String, Property>;
+        getChangeableProperties(): Map<string, Property>;
         setProperty(key: string, property: Property): void;
         private changeLabel(value);
         private getDefaultConstPropertiesPack();
@@ -205,7 +205,7 @@ declare module "core/editorCore/model/PropertyEditElement" {
         private static propertyTemplate;
         private static template;
         private htmlElement;
-        constructor(logicalId: string, jointObjectId: string, properties: Map<String, Property>);
+        constructor(logicalId: string, jointObjectId: string, properties: Map<string, Property>);
         getHtmlElement(): any;
         setPosition(x: number, y: number): void;
         private initInputSize();
@@ -223,16 +223,21 @@ declare module "core/editorCore/model/NodeType" {
         private isImageHidden;
         private border;
         private innerText;
-        constructor(name: string, propertiesMap: Map<String, Property>, image: any, border: any, innerText: any, path?: string[]);
+        constructor(name: string, propertiesMap: Map<string, Property>, image: any, border: any, innerText: any, type?: string);
         getName(): string;
         getShownName(): string;
-        getPropertiesMap(): Map<String, Property>;
+        getPropertiesMap(): Map<string, Property>;
         getImage(): string;
         getIcon(): string;
         getVisibility(): Boolean;
         getBorder(): any;
         getInnerText(): any;
         setVisibility(isVisible: Boolean): void;
+    }
+}
+declare module "utils/MapUtils" {
+    export class MapUtils {
+        static extend<K, T>(extendedMap: Map<K, T>, ...extensions: Map<K, T>[]): void;
     }
 }
 declare module "core/editorCore/model/DefaultDiagramNode" {
@@ -258,7 +263,7 @@ declare module "core/editorCore/model/DefaultDiagramNode" {
             width: number;
             height: number;
         };
-        constructor(nodeType: NodeType, x: number, y: number, width: number, height: number, properties: Map<String, Property>, id?: string, notDefaultConstProperties?: PropertiesPack);
+        constructor(nodeType: NodeType, x: number, y: number, width: number, height: number, properties: Map<string, Property>, id?: string, notDefaultConstProperties?: PropertiesPack);
         pointermove(cellView: any, evt: any, x: any, y: any): void;
         initPropertyEditElements(zoom: number): void;
         getPropertyEditElement(): PropertyEditElement;
@@ -275,11 +280,12 @@ declare module "core/editorCore/model/DefaultDiagramNode" {
         setPosition(x: number, y: number, zoom: number, cellView: joint.dia.CellView): void;
         setSize(width: number, height: number, cellView: joint.dia.CellView): void;
         setParentNode(parent: DiagramContainer, embedding?: Boolean): void;
+        setNodeType(nodeType: NodeType): void;
         getImagePath(): string;
         getJointObject(): joint.shapes.basic.Generic;
         getConstPropertiesPack(): PropertiesPack;
         setProperty(key: string, property: Property): void;
-        getChangeableProperties(): Map<String, Property>;
+        getChangeableProperties(): Map<string, Property>;
         initResize(bbox: any, x: number, y: number, paddingPercent: any): void;
         completeResize(): void;
         resize(width: number, height: number): void;
@@ -303,7 +309,7 @@ declare module "core/editorCore/model/DiagramContainer" {
     import { NodeType } from "core/editorCore/model/NodeType";
     export class DiagramContainer extends DefaultDiagramNode {
         protected childrenNodes: Set<DiagramNode>;
-        constructor(nodeType: NodeType, x: number, y: number, width: number, height: number, properties: Map<String, Property>, id?: string, notDefaultConstProperties?: PropertiesPack);
+        constructor(nodeType: NodeType, x: number, y: number, width: number, height: number, properties: Map<string, Property>, id?: string, notDefaultConstProperties?: PropertiesPack);
         getChildrenNodes(): Set<DiagramNode>;
         addChild(node: DiagramNode): void;
         removeChild(node: DiagramNode): void;
@@ -314,6 +320,7 @@ declare module "core/editorCore/model/DiagramNode" {
     import { PropertyEditElement } from "core/editorCore/model/PropertyEditElement";
     import { DiagramElement } from "core/editorCore/model/DiagramElement";
     import { DiagramContainer } from "core/editorCore/model/DiagramContainer";
+    import { NodeType } from "core/editorCore/model/NodeType";
     export interface DiagramNode extends DiagramElement {
         getX(): number;
         getY(): number;
@@ -326,6 +333,7 @@ declare module "core/editorCore/model/DiagramNode" {
         setPosition(x: number, y: number, zoom: number, cellView: joint.dia.CellView): void;
         setSize(width: number, height: number, cellView: joint.dia.CellView): void;
         setParentNode(parent: DiagramContainer, embedding?: Boolean): void;
+        setNodeType(nodeType: NodeType): void;
         getPropertyEditElement(): PropertyEditElement;
         initPropertyEditElements(zoom: number): void;
         initResize(bbox: any, x: number, y: number, paddingPercent: any): void;
@@ -344,7 +352,7 @@ declare module "core/editorCore/model/SubprogramNode" {
     export class SubprogramNode extends DefaultDiagramNode {
         private subprogramDiagramId;
         private textObject;
-        constructor(nodeType: NodeType, x: number, y: number, width: number, height: number, properties: Map<String, Property>, subprogramDiagramId: string, id?: string, notDefaultConstProperties?: PropertiesPack);
+        constructor(nodeType: NodeType, x: number, y: number, width: number, height: number, properties: Map<string, Property>, subprogramDiagramId: string, id?: string, notDefaultConstProperties?: PropertiesPack);
         getSubprogramDiagramId(): string;
         getTextObject(): joint.shapes.basic.Text;
         setPosition(x: number, y: number, zoom: number, cellView: joint.dia.CellView): void;
@@ -356,7 +364,7 @@ declare module "core/editorCore/controller/DiagramElementListener" {
     export class DiagramElementListener {
         static pointerdown: (evt, x, y) => void;
         static getNodeType: (type: string) => NodeType;
-        static makeAndExecuteCreateLinkCommand: (jointObject: joint.dia.Link, name: string, type: string, properties: Map<String, Property>) => void;
+        static makeAndExecuteCreateLinkCommand: (jointObject: joint.dia.Link, name: string, type: string, properties: Map<string, Property>) => void;
     }
 }
 declare module "core/editorCore/model/DiagramScene" {
@@ -376,12 +384,12 @@ declare module "core/editorCore/model/DiagramScene" {
         getId(): string;
         getGridSize(): number;
         getZoom(): number;
-        getNodesMap(): Map<String, DiagramNode>;
-        getLinksMap(): Map<String, Link>;
+        getNodesMap(): Map<string, DiagramNode>;
+        getLinksMap(): Map<string, Link>;
         getNodeById(id: string): DiagramNode;
         getLinkById(id: string): Link;
-        addNodesFromMap(nodesMap: Map<String, DiagramNode>): void;
-        addLinksFromMap(linksMap: Map<String, Link>): void;
+        addNodesFromMap(nodesMap: Map<string, DiagramNode>): void;
+        addLinksFromMap(linksMap: Map<string, Link>): void;
         addLinkToMap(link: Link): void;
         addLinkToPaper(link: Link): void;
         removeNode(nodeId: string): void;
@@ -391,9 +399,10 @@ declare module "core/editorCore/model/DiagramScene" {
         addSubprogramNode(node: SubprogramNode): void;
         addNode(node: DiagramNode): void;
         setCurrentLinkType(linkType: string): void;
-        getCurrentLinkType(): joint.dia.Link;
+        getLinkPattern(type: string): joint.dia.Link;
+        getCurrentLinkPattern(): joint.dia.Link;
         getCurrentLinkTypeName(): string;
-        setLinkPatterns(linkPatterns: Map<String, joint.dia.Link>): void;
+        setLinkPatterns(linkPatterns: Map<string, joint.dia.Link>): void;
         private addLink(link);
     }
 }
@@ -531,6 +540,7 @@ declare module "core/editorCore/controller/SceneController" {
         addNode(node: DiagramNode): void;
         removeElement(element: DiagramElement): void;
         addLink(link: Link): void;
+        changeElementType(element: DiagramElement, type: string): void;
         private blankPoinerdownListener(event, x, y);
         private cellPointerdownListener(cellView, event, x, y);
         private cellPointerupListener(cellView, event, x, y);
@@ -574,10 +584,10 @@ declare module "core/editorCore/controller/PropertyEditorController" {
 declare module "core/editorCore/model/PaletteTree" {
     import { NodeType } from "core/editorCore/model/NodeType";
     export class PaletteTree {
-        categories: Map<String, PaletteTree>;
+        categories: Map<string, PaletteTree>;
         nodes: NodeType[];
         constructor();
-        convertToMap(): Map<String, NodeType>;
+        convertToMap(): Map<string, NodeType>;
     }
 }
 declare module "core/editorCore/model/ElementTypes" {
@@ -586,7 +596,7 @@ declare module "core/editorCore/model/ElementTypes" {
         blockTypes: PaletteTree;
         flowTypes: PaletteTree;
         containerTypes: PaletteTree;
-        linkPatterns: Map<String, joint.dia.Link>;
+        linkPatterns: Map<string, joint.dia.Link>;
         constructor();
     }
 }
@@ -601,7 +611,7 @@ declare module "core/editorCore/model/SubprogramDiagramNode" {
         getLogicalId(): string;
         getType(): string;
         getName(): string;
-        getProperties(): Map<String, Property>;
+        getProperties(): Map<string, Property>;
         private initProperties(name);
     }
 }
@@ -610,17 +620,17 @@ declare module "core/editorCore/model/DiagramParts" {
     import { Link } from "core/editorCore/model/Link";
     import { DiagramNode } from "core/editorCore/model/DiagramNode";
     export class DiagramParts {
-        nodesMap: Map<String, DiagramNode>;
-        linksMap: Map<String, Link>;
+        nodesMap: Map<string, DiagramNode>;
+        linksMap: Map<string, Link>;
         subprogramDiagramNodes: SubprogramDiagramNode[];
-        constructor(nodesMap?: Map<String, DiagramNode>, linksMap?: Map<String, Link>, subprogramDiagramNodes?: SubprogramDiagramNode[]);
+        constructor(nodesMap?: Map<string, DiagramNode>, linksMap?: Map<string, Link>, subprogramDiagramNodes?: SubprogramDiagramNode[]);
     }
 }
 declare module "core/editorCore/model/ContainerNodeType" {
     import { NodeType } from "core/editorCore/model/NodeType";
     import { Property } from "core/editorCore/model/Property";
     export class ContainerNodeType extends NodeType {
-        constructor(name: string, propertiesMap: Map<String, Property>, image: string, border: any, innerText: any, path?: string[]);
+        constructor(name: string, propertiesMap: Map<string, Property>, image: string, border: any, innerText: any, path?: string);
     }
 }
 declare module "core/editorCore/controller/parsers/TypesParser" {
@@ -632,10 +642,11 @@ declare module "core/editorCore/controller/parsers/TypesParser" {
         private currentBorder;
         private currentInnerText;
         parse(typesJson: any): ElementTypes;
-        private parseGeneralTypes(elementsTypes, category);
+        private parseFlowTypes(elementsTypes);
         private parsePaletteTypes(paletteTypes);
         private createNodeTypes(typeObject);
         private parseSubtypes(categories, path);
+        private addChangeTypeProperty(tree);
         private parseTypeProperties(typeName, propertiesArrayNode);
         private addVariantList(typeName, propertyKey, variantsArrayNode);
     }
@@ -709,12 +720,12 @@ declare module "core/editorCore/controller/PaletteController" {
         private paper;
         private elementTypes;
         private nodesTypesMap;
-        init(paper: DiagramScene, elementTypes: ElementTypes, nodesTypesMap: Map<String, NodeType>): void;
+        init(paper: DiagramScene, elementTypes: ElementTypes, nodesTypesMap: Map<string, NodeType>): void;
         reload(): void;
         searchPaletteReload(event: Event): void;
         private initDraggable();
         private initClick();
-        appendSubprogramsPalette(subprogramDiagramNodes: SubprogramDiagramNode[], nodeTypesMap: Map<String, NodeType>): void;
+        appendSubprogramsPalette(subprogramDiagramNodes: SubprogramDiagramNode[], nodeTypesMap: Map<string, NodeType>): void;
         private appendBlocksPalette(paletteTypes);
         private appendFlowsPalette(paletteTypes);
         private appendPaletteContent(selector, content);
@@ -729,10 +740,10 @@ declare module "core/editorCore/model/ElementConstructor" {
     import { DiagramScene } from "core/editorCore/model/DiagramScene";
     export class ElementConstructor {
         protected scene: DiagramScene;
-        protected nodesTypesMap: Map<String, NodeType>;
-        constructor(scene: DiagramScene, nodesTypesMap?: Map<String, NodeType>);
-        createLink(jointObject: joint.dia.Link, name: string, type: string, properties: Map<String, Property>): Link;
-        createNode(nodeType: NodeType, x: number, y: number, width: number, height: number, properties: Map<String, Property>, id?: string): DiagramNode;
+        protected nodesTypesMap: Map<string, NodeType>;
+        constructor(scene: DiagramScene, nodesTypesMap?: Map<string, NodeType>);
+        createLink(jointObject: joint.dia.Link, name: string, type: string, properties: Map<string, Property>): Link;
+        createNode(nodeType: NodeType, x: number, y: number, width: number, height: number, properties: Map<string, Property>, id?: string): DiagramNode;
     }
 }
 declare module "core/editorCore/controller/DiagramEditorController" {
@@ -756,25 +767,25 @@ declare module "core/editorCore/controller/DiagramEditorController" {
         protected propertyEditorController: PropertyEditorController;
         protected elementsTypeLoader: ElementsTypeLoader;
         protected paletteController: PaletteController;
-        protected nodeTypesMap: Map<String, NodeType>;
-        protected linkPatternsMap: Map<String, joint.dia.Link>;
+        protected nodeTypesMap: Map<string, NodeType>;
+        protected linkPatternsMap: Map<string, joint.dia.Link>;
         protected undoRedoController: UndoRedoController;
         protected elementTypes: ElementTypes;
         protected elementConstructor: ElementConstructor;
         constructor($scope: any, $attrs: any);
         getGraph(): joint.dia.Graph;
-        getNodesMap(): Map<String, DiagramNode>;
-        getLinksMap(): Map<String, Link>;
+        getNodesMap(): Map<string, DiagramNode>;
+        getLinksMap(): Map<string, Link>;
         setNodeProperties(element: DiagramElement): void;
         clearNodeProperties(): void;
         getNodeType(type: string): NodeType;
-        getNodeProperties(type: string): Map<String, Property>;
+        getNodeProperties(type: string): Map<string, Property>;
         getElementConstructor(): ElementConstructor;
         getUndoRedoController(): UndoRedoController;
         clearState(): void;
         getDiagramParts(): DiagramParts;
-        getNodeTypes(): Map<String, NodeType>;
-        getLinkPatterns(): Map<String, joint.dia.Link>;
+        getNodeTypes(): Map<string, NodeType>;
+        getLinkPatterns(): Map<string, joint.dia.Link>;
         addFromMap(diagramParts: DiagramParts): void;
         protected handleLoadedTypes(elementTypes: ElementTypes): void;
     }
@@ -789,7 +800,7 @@ declare module "core/editorCore/controller/exporters/DiagramExporter" {
         };
         protected exportNodes(graph: joint.dia.Graph, diagramParts: DiagramParts): any[];
         protected exportLinks(diagramParts: DiagramParts): any[];
-        protected exportProperties(properties: Map<String, Property>): any[];
+        protected exportProperties(properties: Map<string, Property>): any[];
         protected exportVertices(jointObject: any): string;
     }
 }
@@ -815,16 +826,16 @@ declare module "core/editorCore/controller/parsers/DiagramJsonParser" {
     import { SubprogramDiagramNode } from "core/editorCore/model/SubprogramDiagramNode";
     import { DiagramParts } from "core/editorCore/model/DiagramParts";
     export class DiagramJsonParser {
-        parse(diagramJson: any, nodeTypesMap: Map<String, NodeType>, linkPatterns: Map<String, joint.dia.Link>): DiagramParts;
-        protected findMinPosition(diagramJson: any, nodeTypesMap: Map<String, NodeType>): {
+        parse(diagramJson: any, nodeTypesMap: Map<string, NodeType>, linkPatterns: Map<string, joint.dia.Link>): DiagramParts;
+        protected findMinPosition(diagramJson: any, nodeTypesMap: Map<string, NodeType>): {
             x: number;
             y: number;
         };
-        protected parseNodes(diagramJson: any, nodeTypesMap: Map<String, NodeType>, offsetX: number, offsetY: number): DiagramParts;
+        protected parseNodes(diagramJson: any, nodeTypesMap: Map<string, NodeType>, offsetX: number, offsetY: number): DiagramParts;
         protected parseSubprogramDiagram(nodeObject: any): SubprogramDiagramNode;
-        protected parseDiagramNodeObject(nodeObject: any, nodeTypesMap: Map<String, NodeType>, offsetX: number, offsetY: number): DiagramNode;
-        protected parseLinks(diagramJson: any, nodeTypesMap: Map<String, NodeType>, linkPatterns: Map<String, joint.dia.Link>, offsetX: number, offsetY: number): Map<String, Link>;
-        protected parseLinkObject(linkObject: any, nodeTypesMap: Map<String, NodeType>, linkPatterns: Map<String, joint.dia.Link>, offsetX: number, offsetY: number): Link;
+        protected parseDiagramNodeObject(nodeObject: any, nodeTypesMap: Map<string, NodeType>, offsetX: number, offsetY: number): DiagramNode;
+        protected parseLinks(diagramJson: any, nodeTypesMap: Map<string, NodeType>, linkPatterns: Map<string, joint.dia.Link>, offsetX: number, offsetY: number): Map<string, Link>;
+        protected parseLinkObject(linkObject: any, nodeTypesMap: Map<string, NodeType>, linkPatterns: Map<string, joint.dia.Link>, offsetX: number, offsetY: number): Link;
         protected parseVertices(configuration: string): any[];
         protected getSourcePosition(configuration: string): {
             x: number;

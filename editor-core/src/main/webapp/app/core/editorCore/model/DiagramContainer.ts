@@ -8,7 +8,7 @@ export class DiagramContainer extends DefaultDiagramNode {
     protected childrenNodes: Set<DiagramNode>;
 
     constructor(nodeType: NodeType, x: number, y: number, width: number, height: number,
-                properties: Map<String, Property>, id?: string, notDefaultConstProperties?: PropertiesPack) {
+                properties: Map<string, Property>, id?: string, notDefaultConstProperties?: PropertiesPack) {
         super(nodeType, x, y, width, height, properties, id, notDefaultConstProperties);
         this.childrenNodes = new Set<DiagramNode>();
     }

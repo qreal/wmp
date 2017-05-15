@@ -1,20 +1,21 @@
 import {NodeType} from "./NodeType";
+import {MapUtils} from "../../../utils/MapUtils";
 export class PaletteTree {
 
-    categories: Map<String, PaletteTree>;
+    categories: Map<string, PaletteTree>;
     nodes: NodeType[];
 
     constructor() {
-        this.categories = new Map<String, PaletteTree>();
+        this.categories = new Map<string, PaletteTree>();
         this.nodes = [];
     }
 
-    convertToMap(): Map<String, NodeType> {
-        var nodesMap: Map<String, NodeType> = new Map<String, NodeType>();
-        for (var category in this.categories)
-            $.extend(nodesMap, this.categories[category].convertToMap());
+    convertToMap(): Map<string, NodeType> {
+        var nodesMap: Map<string, NodeType> = new Map<string, NodeType>();
+        for (var category of this.categories.values())
+            MapUtils.extend(nodesMap, category.convertToMap());
         for (var i in this.nodes)
-            nodesMap[this.nodes[i].getName()] = this.nodes[i];
+            nodesMap.set(this.nodes[i].getName(), this.nodes[i]);
         return nodesMap;
     }
 }

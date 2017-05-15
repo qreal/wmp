@@ -2,7 +2,7 @@ import {Property} from "./Property";
 export class SubprogramDiagramNode {
 
     private logicalId: string;
-    private properties: Map<String, Property>;
+    private properties: Map<string, Property>;
     private type: string = "SubprogramDiagram";
     private name: string;
 
@@ -24,16 +24,16 @@ export class SubprogramDiagramNode {
         return this.name;
     }
 
-    getProperties(): Map<String, Property> {
+    getProperties(): Map<string, Property> {
         return this.properties;
     }
 
     private initProperties(name: string): void {
-        this.properties = new Map<String, Property>();
-        this.properties["name"] = new Property("name", "QString", name);
-        this.properties["from"] = new Property("from", "qReal::Id", "qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID");
-        this.properties["linkShape"] = new Property("linkShape", "int", "0");
-        this.properties["outgoingExplosion"] = new Property("outgoingExplosion", "qReal::Id", "qrm:/");
-        this.properties["to"] = new Property("to", "qReal::Id", "qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID");
+        this.properties = new Map<string, Property>();
+        this.properties.set("name", new Property("name", "QString", name));
+        this.properties.set("from", new Property("from", "qReal::Id", "qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"));
+        this.properties.set("linkShape", new Property("linkShape", "int", "0"));
+        this.properties.set("outgoingExplosion", new Property("outgoingExplosion", "qReal::Id", "qrm:/"));
+        this.properties.set("to", new Property("to", "qReal::Id", "qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"));
     }
 }

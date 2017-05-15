@@ -22,10 +22,10 @@ export class TrikDrawRectBlock extends AbstractBlock {
 
         var properties = this.node.getChangeableProperties();
         var parser = new Parser();
-        var x = parser.parseExpression(properties["XCoordinateRect"].value, this.interpreter);
-        var y = parser.parseExpression(properties["YCoordinateRect"].value, this.interpreter);
-        var width = parser.parseExpression(properties["WidthRect"].value, this.interpreter);
-        var height = parser.parseExpression(properties["HeightRect"].value, this.interpreter);
+        var x = parser.parseExpression(properties.get("XCoordinateRect").value, this.interpreter);
+        var y = parser.parseExpression(properties.get("YCoordinateRect").value, this.interpreter);
+        var width = parser.parseExpression(properties.get("WidthRect").value, this.interpreter);
+        var height = parser.parseExpression(properties.get("HeightRect").value, this.interpreter);
 
         for (var modelId = 0; modelId < this.robotModels.length; modelId++) {
             var model = this.robotModels[modelId];

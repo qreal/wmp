@@ -5,14 +5,14 @@ export class NodeType {
 
     private name: string;
     private shownName: string;
-    private propertiesMap: Map<String, Property>;
+    private propertiesMap: Map<string, Property>;
     private image: string;
     private isVisible: Boolean;
     private isImageHidden: Boolean;
     private border: any;
     private innerText: any;
 
-    constructor(name: string, propertiesMap: Map<String, Property>, image: any, border: any, innerText: any, type?: string) {
+    constructor(name: string, propertiesMap: Map<string, Property>, image: any, border: any, innerText: any, type?: string) {
         this.name = type ? type : name;
         this.shownName = name;
         this.border = border;
@@ -31,7 +31,7 @@ export class NodeType {
         return this.shownName;
     }
 
-    public getPropertiesMap(): Map<String, Property> {
+    public getPropertiesMap(): Map<string, Property> {
         return this.propertiesMap;
     }
 

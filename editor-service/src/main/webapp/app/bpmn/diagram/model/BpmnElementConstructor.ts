@@ -8,17 +8,17 @@ import {Pool} from "./Pool";
 import {DefaultSize} from "../../../common/constants/DefaultSize";
 export class BpmnElementConstructor extends ElementConstructor {
     public createNode(nodeType: NodeType, x: number, y: number, width: number, height: number,
-                      properties: Map<String, Property>, id?: string): DiagramNode {
+                      properties: Map<string, Property>, id?: string): DiagramNode {
         if (nodeType.getName() === "lane") {
             let lane: Lane = new Lane(nodeType, x, y, width, height, properties, id);
             this.setupEvents(lane);
             return lane;
         } else if (nodeType.getName() === 'pool') {
-            var poolNodeType: ContainerNodeType = <ContainerNodeType> this.nodesTypesMap["pooltext"];
+            var poolNodeType: ContainerNodeType = <ContainerNodeType> this.nodesTypesMap.get("pooltext");
             let pool: Pool = new Pool(poolNodeType, x, y, width, height, poolNodeType.getPropertiesMap(), id);
             this.setupEvents(pool);
 
-            let laneNodeType: ContainerNodeType = <ContainerNodeType> this.nodesTypesMap["lane"];
+            let laneNodeType: ContainerNodeType = <ContainerNodeType> this.nodesTypesMap.get("lane");
             let lane: Lane = new Lane(laneNodeType, x + pool.getBBox().width - DefaultSize.DEFAULT_NODE_WIDTH, y,
                 width, height, laneNodeType.getPropertiesMap(), id);
             this.setupEvents(lane);
@@ -42,7 +42,7 @@ export class BpmnElementConstructor extends ElementConstructor {
 
     private onParentChange(model: joint.shapes.basic.Generic, parentId: string) {
         let node: DiagramNode = this.scene.getNodeById(model.id);
-        let parent: Pool = this.scene.getNodesMap()[parentId];
+        let parent: Pool = <Pool> this.scene.getNodesMap().get(parentId);
         if (parent)
             parent.addBPMNChild(node);
     }
