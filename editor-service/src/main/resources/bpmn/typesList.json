@@ -12,7 +12,9 @@
         "Events": [
             "None",
             "Message",
-            "Timer"
+            "Timer",
+            "Escalation",
+            "Cancel"
         ],
 
         "Gateways": [

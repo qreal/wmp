@@ -28,6 +28,10 @@ export class CategoryView extends HtmlView {
                 nodeType.getShownName(), nodeType.getIcon(), elementClass, scale);
             elementsContent += paletteElementView.getContent();
         }
+        /*var nodeType: NodeType = MapUtils.getFirstValue(category.convertToMap());
+         var scale: number = nodeType instanceof ContainerNodeType ? 1.5 : 1;
+         elementsContent += new PaletteElementView(nodeType.getName(), nodeType.getShownName(), nodeType.getIcon(),
+         elementClass, scale).getContent();*/
         if (elementsContent)
             this.content = StringUtils.format(this.template, categoryName, elementsContent);
     }

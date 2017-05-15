@@ -284,6 +284,58 @@
             ]
         },
 
+        "Escalation": {
+            "name": "Escalation",
+            "image": {
+                "src": "images/bpmn/{0}.png"
+            },
+            "subtypes": {
+                "Start" : [
+                    "Regular",
+                    "Non-interrupting"
+                ],
+                "Intermediate": [
+                    "Catch",
+                    "Catch-non-interrupting",
+                    "Throw"
+                ],
+                "End": [
+                    "Regular"
+                ]
+            },
+            "properties": [
+                {
+                    "key": "ChangeType",
+                    "name": "Type",
+                    "type": "changeType",
+                    "value": ""
+                }
+            ]
+        },
+
+        "Cancel": {
+            "name": "Cancel",
+            "image": {
+                "src": "images/bpmn/{0}.png"
+            },
+            "subtypes": {
+                "Intermediate": [
+                    "Catch"
+                ],
+                "End": [
+                    "Regular"
+                ]
+            },
+            "properties": [
+                {
+                    "key": "ChangeType",
+                    "name": "Type",
+                    "type": "changeType",
+                    "value": ""
+                }
+            ]
+        },
+
         "Task": {
             "name": "Task",
             "image": {

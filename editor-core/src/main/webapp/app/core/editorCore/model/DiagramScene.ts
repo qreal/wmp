@@ -198,7 +198,7 @@ export class DiagramScene extends joint.dia.Paper {
 
     public setLinkPatterns(linkPatterns: Map<string, joint.dia.Link>): void {
         this.linkPatternsMap = linkPatterns;
-        this.currentLinkType = this.linkPatternsMap.keys().next().value;
+        this.currentLinkType = MapUtils.getFirstKey(linkPatterns);
     }
 
     private addLink(link: Link): void {
