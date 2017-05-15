@@ -125,8 +125,7 @@ export class DiagramEditorController {
         this.elementTypes = elementTypes;
 
         MapUtils.extend(this.linkPatternsMap, this.elementTypes.linkPatterns);
-        MapUtils.extend(this.nodeTypesMap, elementTypes.blockTypes.convertToMap(), elementTypes.flowTypes.convertToMap(),
-            this.elementTypes.containerTypes.convertToMap());
+        MapUtils.extend(this.nodeTypesMap, elementTypes.blockTypes.convertToMap(), elementTypes.flowTypes.convertToMap());
 
         this.diagramEditor.getScene().setLinkPatterns(this.linkPatternsMap);
         this.paletteController.init(this.diagramEditor.getScene(), elementTypes, this.nodeTypesMap);

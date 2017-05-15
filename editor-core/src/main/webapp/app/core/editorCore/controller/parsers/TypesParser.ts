@@ -37,7 +37,7 @@ export class TypesParser {
     private parseFlowTypes(elementsTypes: any): PaletteTree {
         var elementsTree: PaletteTree = new PaletteTree();
         var elements: PaletteTree = new PaletteTree();
-        elementsTree.categories.set("flows", elements);
+        elementsTree.categories.set("Flows", elements);
 
         for (var i in elementsTypes) {
             var typeObject = elementsTypes[i];

@@ -26,7 +26,6 @@ export class PaletteController {
         this.clearPaletteContent(this.flowsSelector);
 
         this.appendBlocksPalette(this.elementTypes.blockTypes);
-        this.appendBlocksPalette(this.elementTypes.containerTypes);
         this.appendFlowsPalette(this.elementTypes.flowTypes);
         this.initClick();
         this.initDraggable();
