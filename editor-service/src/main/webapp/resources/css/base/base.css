@@ -125,9 +125,9 @@ body{
 }
 
 #elements-tree {
-    height: calc(100% - 70px);
-    height: -webkit-calc(100% - 70px); /* google, safari */
-    height: -moz-calc(100% - 70px); /* firefox */
+    height: calc(100% - 100px);
+    height: -webkit-calc(100% - 100px); /* google, safari */
+    height: -moz-calc(100% - 100px); /* firefox */
     overflow: auto;
 }
 

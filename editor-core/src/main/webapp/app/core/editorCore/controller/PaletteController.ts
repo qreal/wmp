@@ -42,7 +42,7 @@ export class PaletteController {
                 if (notFound)
                     break;
             }
-            nodeType.setVisibility(!notFound);
+            nodeType.setSearchVisibility(!notFound);
         }
         this.reload();
     }

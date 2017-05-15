@@ -8,11 +8,13 @@ export class NodeType {
     private propertiesMap: Map<string, Property>;
     private image: string;
     private isVisible: Boolean;
+    private isSearchable: Boolean;
     private isImageHidden: Boolean;
     private border: any;
     private innerText: any;
 
-    constructor(name: string, propertiesMap: Map<string, Property>, image: any, border: any, innerText: any, type?: string) {
+    constructor(name: string, propertiesMap: Map<string, Property>, image: any, border: any, innerText: any,
+                isVisible: boolean, type?: string) {
         this.name = type ? type : name;
         this.shownName = name;
         this.border = border;
@@ -20,7 +22,8 @@ export class NodeType {
         this.propertiesMap = propertiesMap;
         this.image = (image.src) ? StringUtils.format(image.src, this.name) : null;
         this.isImageHidden = (image.isHidden) ? image.isHidden : false;
-        this.isVisible = true;
+        this.isVisible = isVisible;
+        this.isSearchable = true;
     }
 
     public getName(): string {
@@ -44,7 +47,7 @@ export class NodeType {
     }
 
     public getVisibility(): Boolean {
-        return this.isVisible;
+        return this.isVisible && this.isSearchable;
     }
 
     public getBorder(): any {
@@ -55,8 +58,8 @@ export class NodeType {
         return this.innerText;
     }
 
-    public setVisibility(isVisible: Boolean) {
-        this.isVisible = isVisible;
+    public setSearchVisibility(isSearchable: Boolean) {
+        this.isSearchable = isSearchable;
     }
 
 }
