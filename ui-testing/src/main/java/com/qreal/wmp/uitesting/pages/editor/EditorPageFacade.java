@@ -5,6 +5,7 @@ import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 import com.qreal.wmp.uitesting.dia.palette.Palette;
 import com.qreal.wmp.uitesting.dia.property.PropertyEditor;
+import com.qreal.wmp.uitesting.dia.scene.Coordinate;
 import com.qreal.wmp.uitesting.dia.scene.SceneProxy;
 import com.qreal.wmp.uitesting.dia.scene.elements.Block;
 import com.qreal.wmp.uitesting.dia.scene.elements.Link;
@@ -65,7 +66,7 @@ public class EditorPageFacade {
     }
     
     /** Called when new link created by any event in order to let scene known about it. */
-    public Link addDrawnLink() {
+    public Link addDrawnLink() throws NoSuchElementException {
         Optional<SelenideElement> newLink = scene.getLinkProvider().updateLinks();
         if (!newLink.isPresent()) {
             throw new NoSuchElementException("Link was not created");
@@ -75,9 +76,17 @@ public class EditorPageFacade {
     }
     
     /** Called when new block created by any event in order to let scene known about it. */
-    public Block addDrawnBlock(String name) {
+    public Block addDrawnBlock(String name) throws NoSuchElementException {
         if ($(By.className("gestures-menu")).is(Condition.visible)) {
             $(By.className("gestures-menu")).find(byText(name.toLowerCase())).click();
+        }
+        return scene.getBlockProvider().getNewBlock();
+    }
+    
+    /** Called when new block created by any event in order to let scene known about it. */
+    public Block addDrawnBlock() throws NoSuchElementException {
+        if ($(By.className("gestures-menu")).is(Condition.visible)) {
+            $(By.className("gestures-menu")).find(By.tagName("span")).click();
         }
         return scene.getBlockProvider().getNewBlock();
     }
@@ -85,5 +94,10 @@ public class EditorPageFacade {
     /** Reload Editor page. */
     public void reload() {
         Selenide.open(url);
+    }
+    
+    /** Focus to coordinate. */
+    public void focus(Coordinate coordinate) {
+        scene.getSceneWindow().focus(coordinate);
     }
 }
