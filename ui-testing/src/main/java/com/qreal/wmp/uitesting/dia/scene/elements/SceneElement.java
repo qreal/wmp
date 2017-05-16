@@ -1,0 +1,15 @@
+package com.qreal.wmp.uitesting.dia.scene.elements;
+
+import com.codeborne.selenide.SelenideElement;
+import com.qreal.wmp.uitesting.dia.scene.Coordinate;
+import com.qreal.wmp.uitesting.exceptions.ElementNotOnTheSceneException;
+import org.openqa.selenium.By;
+
+/** Describes any element on the Scene. */
+public interface SceneElement {
+    SelenideElement getInnerSeleniumElement();
+    
+    By getBy();
+    
+    Coordinate getCoordinateOnScene() throws ElementNotOnTheSceneException;
+}

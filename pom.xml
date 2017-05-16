@@ -39,6 +39,8 @@
                 <port.auth>8080</port.auth>
                 <port.dashboard>8082</port.dashboard>
                 <path.editor>/editor</path.editor>
+                <path.editor.robots>/editor/robots</path.editor.robots>
+                <path.editor.bpmn>/editor/bpmn</path.editor.bpmn>
                 <path.auth>/auth</path.auth>
                 <path.dashboard>/dashboard</path.dashboard>
                 <path.editor.service>/editorRest</path.editor.service>
@@ -53,6 +55,8 @@
                 <port.auth>8080</port.auth>
                 <port.dashboard>8080</port.dashboard>
                 <path.editor>/editor</path.editor>
+                <path.editor.robots>/editor/robots</path.editor.robots>
+                <path.editor.bpmn>/editor/bpmn</path.editor.bpmn>
                 <path.auth>/auth</path.auth>
                 <path.dashboard>/dashboard</path.dashboard>
                 <path.editor.service>/editorRest</path.editor.service>
@@ -70,6 +74,8 @@
                 <port.auth>8080</port.auth>
                 <port.dashboard>8082</port.dashboard>
                 <path.editor>/editor</path.editor>
+                <path.editor.robots>/editor/robots</path.editor.robots>
+                <path.editor.bpmn>/editor/bpmn</path.editor.bpmn>
                 <path.auth>/auth</path.auth>
                 <path.dashboard>/dashboard</path.dashboard>
                 <path.editor.service>/editorRest</path.editor.service>
