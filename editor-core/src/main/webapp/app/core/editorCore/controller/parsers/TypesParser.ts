@@ -69,7 +69,7 @@ export class TypesParser {
     private createNodeTypes(typeObject: any): PaletteTree {
         var nodesTree: PaletteTree;
         var name: string = typeObject.name;
-        var typeName: string = typeObject.type.toLowerCase();
+        var typeName: string = typeObject.name.toLowerCase().replace(" ", "-");
 
         this.currentProperties = typeObject.properties;
 
@@ -83,7 +83,7 @@ export class TypesParser {
         this.isStatic = typeObject.static;
 
         if (typeObject.attrs)
-            this.linkPatterns.set(typeName.toLowerCase(), new joint.dia.Link({attrs: typeObject.attrs}));
+            this.linkPatterns.set(typeName, new joint.dia.Link({attrs: typeObject.attrs}));
 
         var categories: any = typeObject.subtypes;
         if (!categories) {

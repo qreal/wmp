@@ -14,7 +14,15 @@
             "Message",
             "Timer",
             "Escalation",
-            "Cancel"
+            "Condition",
+            "Link",
+            "Error",
+            "Cancel",
+            "Compensation",
+            "Signal",
+            "Multiple",
+            "ParallelMultiple",
+            "Terminate"
         ],
 
         "Gateways": [

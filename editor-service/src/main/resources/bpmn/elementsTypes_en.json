@@ -313,6 +313,75 @@
             ]
         },
 
+        "Condition": {
+            "name": "Condition",
+            "image": {
+                "src": "images/bpmn/{0}.png"
+            },
+            "subtypes": {
+                "Start" : [
+                    "Regular",
+                    "Non-interrupting"
+                ],
+                "Intermediate": [
+                    "Catch",
+                    "Catch-non-interrupting"
+                ]
+            },
+            "properties": [
+                {
+                    "key": "ChangeType",
+                    "name": "Type",
+                    "type": "changeType",
+                    "value": ""
+                }
+            ]
+        },
+
+        "Link": {
+            "name": "Link",
+            "image": {
+                "src": "images/bpmn/{0}.png"
+            },
+            "subtypes": {
+                "Intermediate": [
+                    "Catch",
+                    "Throw"
+                ],
+                "End": [
+                    "Regular"
+                ]
+            },
+            "properties": [
+                {
+                    "key": "ChangeType",
+                    "name": "Type",
+                    "type": "changeType",
+                    "value": ""
+                }
+            ]
+        },
+
+        "Error": {
+            "name": "Error",
+            "image": {
+                "src": "images/bpmn/{0}.png"
+            },
+            "subtypes": [
+                "Start",
+                "Catch-intermediate",
+                "End"
+            ],
+            "properties": [
+                {
+                    "key": "ChangeType",
+                    "name": "Type",
+                    "type": "changeType",
+                    "value": ""
+                }
+            ]
+        },
+
         "Cancel": {
             "name": "Cancel",
             "image": {
@@ -333,6 +402,126 @@
                     "type": "changeType",
                     "value": ""
                 }
+            ]
+        },
+
+        "Compensation": {
+            "name": "Compensation",
+            "image": {
+                "src": "images/bpmn/{0}.png"
+            },
+            "subtypes": {
+                "Start" : [
+                    "Regular"
+                ],
+                "Intermediate": [
+                    "Catch",
+                    "Throw"
+                ],
+                "End": [
+                    "Regular"
+                ]
+            },
+            "properties": [
+                {
+                    "key": "ChangeType",
+                    "name": "Type",
+                    "type": "changeType",
+                    "value": ""
+                }
+            ]
+        },
+
+        "Signal": {
+            "name": "Signal",
+            "image": {
+                "src": "images/bpmn/{0}.png"
+            },
+            "subtypes": {
+                "Start" : [
+                    "Regular",
+                    "Non-interrupting"
+                ],
+                "Intermediate": [
+                    "Catch",
+                    "Catch-non-interrupting",
+                    "Throw"
+                ],
+                "End": [
+                    "Regular"
+                ]
+            },
+            "properties": [
+                {
+                    "key": "ChangeType",
+                    "name": "Type",
+                    "type": "changeType",
+                    "value": ""
+                }
+            ]
+        },
+
+        "Multiple": {
+            "name": "Multiple",
+            "image": {
+                "src": "images/bpmn/{0}.png"
+            },
+            "subtypes": {
+                "Start" : [
+                    "Regular",
+                    "Non-interrupting"
+                ],
+                "Intermediate": [
+                    "Catch",
+                    "Catch-non-interrupting",
+                    "Throw"
+                ],
+                "End": [
+                    "Regular"
+                ]
+            },
+            "properties": [
+                {
+                    "key": "ChangeType",
+                    "name": "Type",
+                    "type": "changeType",
+                    "value": ""
+                }
+            ]
+        },
+
+        "ParallelMultiple": {
+            "name": "Parallel Multiple",
+            "image": {
+                "src": "images/bpmn/{0}.png"
+            },
+            "subtypes": {
+                "Start" : [
+                    "Regular",
+                    "Non-interrupting"
+                ],
+                "Intermediate": [
+                    "Catch",
+                    "Catch-non-interrupting"
+                ]
+            },
+            "properties": [
+                {
+                    "key": "ChangeType",
+                    "name": "Type",
+                    "type": "changeType",
+                    "value": ""
+                }
+            ]
+        },
+
+        "Terminate": {
+            "name": "Terminate",
+            "image": {
+                "src": "images/bpmn/{0}.png"
+            },
+            "subtypes": [
+                "End"
             ]
         },
 
