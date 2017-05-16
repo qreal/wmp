@@ -220,24 +220,29 @@ declare module "core/editorCore/model/NodeType" {
         private propertiesMap;
         private image;
         private isVisible;
+        private isSearchable;
         private isImageHidden;
+        private static;
         private border;
         private innerText;
-        constructor(name: string, propertiesMap: Map<string, Property>, image: any, border: any, innerText: any, type?: string);
+        constructor(name: string, propertiesMap: Map<string, Property>, image: any, border: any, innerText: any, isVisible: boolean, isStatic: boolean, type?: string);
         getName(): string;
         getShownName(): string;
         getPropertiesMap(): Map<string, Property>;
         getImage(): string;
         getIcon(): string;
         getVisibility(): boolean;
+        isStatic(): boolean;
         getBorder(): any;
         getInnerText(): any;
-        setVisibility(isVisible: boolean): void;
+        setSearchVisibility(isSearchable: boolean): void;
     }
 }
 declare module "utils/MapUtils" {
     export class MapUtils {
         static extend<K, T>(extendedMap: Map<K, T>, ...extensions: Map<K, T>[]): void;
+        static getFirstKey<K, T>(map: Map<K, T>): K;
+        static getFirstValue<K, T>(map: Map<K, T>): T;
     }
 }
 declare module "core/editorCore/model/DefaultDiagramNode" {
@@ -257,6 +262,7 @@ declare module "core/editorCore/model/DefaultDiagramNode" {
         private imagePath;
         private propertyEditElement;
         private parentNode;
+        private isStatic;
         private resizeParameters;
         private lastMousePosition;
         protected boundingBox: {
@@ -588,6 +594,7 @@ declare module "core/editorCore/model/PaletteTree" {
         nodes: NodeType[];
         constructor();
         convertToMap(): Map<string, NodeType>;
+        convertToFullNameMap(suffix: string): Map<string, NodeType>;
     }
 }
 declare module "core/editorCore/model/ElementTypes" {
@@ -595,7 +602,6 @@ declare module "core/editorCore/model/ElementTypes" {
     export class ElementTypes {
         blockTypes: PaletteTree;
         flowTypes: PaletteTree;
-        containerTypes: PaletteTree;
         linkPatterns: Map<string, joint.dia.Link>;
         constructor();
     }
@@ -630,7 +636,7 @@ declare module "core/editorCore/model/ContainerNodeType" {
     import { NodeType } from "core/editorCore/model/NodeType";
     import { Property } from "core/editorCore/model/Property";
     export class ContainerNodeType extends NodeType {
-        constructor(name: string, propertiesMap: Map<string, Property>, image: string, border: any, innerText: any, path?: string);
+        constructor(name: string, propertiesMap: Map<string, Property>, image: string, border: any, innerText: any, isVisible: boolean, isStatic: boolean, path?: string);
     }
 }
 declare module "core/editorCore/controller/parsers/TypesParser" {
@@ -641,6 +647,8 @@ declare module "core/editorCore/controller/parsers/TypesParser" {
         private currentImage;
         private currentBorder;
         private currentInnerText;
+        private isVisible;
+        private isStatic;
         parse(typesJson: any): ElementTypes;
         private parseFlowTypes(elementsTypes);
         private parsePaletteTypes(paletteTypes);
