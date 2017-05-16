@@ -280,7 +280,7 @@ export class SceneController {
                 top: event.pageY - $(document).scrollTop() + "px"
 
             });
-        } else if (event.button == MouseButton.left){
+        } else if (event.button == MouseButton.left) {
             var node: DiagramNode = this.scene.getNodeById(cellView.model.id);
             if (node) {
                 if (node.isResizing()) {

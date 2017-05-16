@@ -48,6 +48,7 @@ export class DefaultDiagramNode implements DiagramNode {
     private imagePath: string;
     private propertyEditElement: PropertyEditElement;
     private parentNode: DiagramContainer;
+    private isStatic: boolean;
 
     private resizeParameters = {
         isTopResizing: false,
@@ -109,6 +110,7 @@ export class DefaultDiagramNode implements DiagramNode {
             this.changeableProperties.set(propertyName, new Property(property.name, property.type, property.value));
         }
         this.imagePath = nodeType.getImage();
+        this.isStatic = nodeType.isStatic();
         if (nodeType.getBorder())
             this.getJointObject().attr(".outer", nodeType.getBorder());
         if (nodeType.getInnerText() && this.changeableProperties.has("InnerText")) {
@@ -219,7 +221,7 @@ export class DefaultDiagramNode implements DiagramNode {
         this.propertyEditElement.setPosition(newX, newY);
     }
 
-    public setParentNode(parent: DiagramContainer, embedding?: Boolean): void {
+    public setParentNode(parent: DiagramContainer, embedding?: boolean): void {
         if (this.parentNode) {
             this.parentNode.removeChild(this);
             if (embedding)
@@ -269,6 +271,8 @@ export class DefaultDiagramNode implements DiagramNode {
     }
 
     public initResize(bbox, x: number, y: number, paddingPercent): void {
+        if (this.isStatic)
+            return;
         this.resizeParameters = {
             isTopResizing: DefaultDiagramNode.isTopBorderClicked(bbox, x, y, paddingPercent),
             isBottomResizing: DefaultDiagramNode.isBottomBorderClicked(bbox, x, y, paddingPercent),

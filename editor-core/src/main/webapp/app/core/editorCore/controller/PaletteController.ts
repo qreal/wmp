@@ -35,7 +35,7 @@ export class PaletteController {
         var searchPatterns: string[] = (<any> event.target).value.split(" ").map((str) => str.toLowerCase());
 
         for (var [name, nodeType] of this.nodesTypesMap) {
-            var notFound: Boolean;
+            var notFound: boolean;
             for (var i in searchPatterns) {
                 notFound = name.indexOf(searchPatterns[i]) == -1;
                 if (notFound)

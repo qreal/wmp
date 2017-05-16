@@ -229,10 +229,10 @@ declare module "core/editorCore/model/NodeType" {
         getPropertiesMap(): Map<string, Property>;
         getImage(): string;
         getIcon(): string;
-        getVisibility(): Boolean;
+        getVisibility(): boolean;
         getBorder(): any;
         getInnerText(): any;
-        setVisibility(isVisible: Boolean): void;
+        setVisibility(isVisible: boolean): void;
     }
 }
 declare module "utils/MapUtils" {
@@ -279,7 +279,7 @@ declare module "core/editorCore/model/DefaultDiagramNode" {
         getSize(): string;
         setPosition(x: number, y: number, zoom: number, cellView: joint.dia.CellView): void;
         setSize(width: number, height: number, cellView: joint.dia.CellView): void;
-        setParentNode(parent: DiagramContainer, embedding?: Boolean): void;
+        setParentNode(parent: DiagramContainer, embedding?: boolean): void;
         setNodeType(nodeType: NodeType): void;
         getImagePath(): string;
         getJointObject(): joint.shapes.basic.Generic;
@@ -332,7 +332,7 @@ declare module "core/editorCore/model/DiagramNode" {
         getParentNode(): DiagramContainer;
         setPosition(x: number, y: number, zoom: number, cellView: joint.dia.CellView): void;
         setSize(width: number, height: number, cellView: joint.dia.CellView): void;
-        setParentNode(parent: DiagramContainer, embedding?: Boolean): void;
+        setParentNode(parent: DiagramContainer, embedding?: boolean): void;
         setNodeType(nodeType: NodeType): void;
         getPropertyEditElement(): PropertyEditElement;
         initPropertyEditElements(zoom: number): void;

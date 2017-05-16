@@ -13,7 +13,8 @@ export class TypesParser {
     private currentImage: any;
     private currentBorder: any;
     private currentInnerText: any;
-    private currentVisibility: any;
+    private isVisible: boolean;
+    private isStatic: boolean;
 
     public parse(typesJson: any): ElementTypes {
         var diagramElementTypes: ElementTypes = new ElementTypes();
@@ -78,7 +79,8 @@ export class TypesParser {
 
         this.currentBorder = typeObject.border;
         this.currentInnerText = typeObject.innerText;
-        this.currentVisibility = !(<boolean> typeObject.invisible);
+        this.isVisible = !(<boolean> typeObject.invisible);
+        this.isStatic = typeObject.static;
 
         if (typeObject.attrs)
             this.linkPatterns.set(typeName.toLowerCase(), new joint.dia.Link({attrs: typeObject.attrs}));
@@ -88,10 +90,10 @@ export class TypesParser {
             var node: NodeType;
             if (typeObject.container)
                 node = new ContainerNodeType(name, this.parseTypeProperties(typeName, this.currentProperties),
-                    this.currentImage, this.currentBorder, this.currentInnerText, this.currentVisibility, typeName);
+                    this.currentImage, this.currentBorder, this.currentInnerText, this.isVisible, this.isStatic, typeName);
             else
                 node = new NodeType(name, this.parseTypeProperties(typeName, typeObject.properties),
-                    this.currentImage, this.currentBorder, this.currentInnerText, this.currentVisibility, typeName);
+                    this.currentImage, this.currentBorder, this.currentInnerText, this.isVisible, this.isStatic, typeName);
             nodesTree = new PaletteTree();
             nodesTree.nodes.push(node);
         } else {
@@ -114,7 +116,7 @@ export class TypesParser {
                 path.push(subtype.toLowerCase());
                 var typeName: string = path.reverse().join('-');
                 nodesTree.nodes.push(new NodeType(subtype, this.parseTypeProperties(typeName, this.currentProperties),
-                    this.currentImage, this.currentBorder, this.currentInnerText, this.currentVisibility, typeName));
+                    this.currentImage, this.currentBorder, this.currentInnerText, this.isVisible, this.isStatic, typeName));
                 path.reverse();
                 path.pop();
             }

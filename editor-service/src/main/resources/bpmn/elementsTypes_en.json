@@ -425,6 +425,7 @@
             "name": "PoolText",
             "container": true,
             "invisible": true,
+            "static": true,
             "image": {
                 "isHidden": true,
                 "src": "images/bpmn/lane.png"
