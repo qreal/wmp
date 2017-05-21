@@ -30,42 +30,33 @@ public class TypesLoader {
         JsonNode allTypes = mapper.readTree(
                 new File(classLoader.getResource(notation + "/elementsTypes_en.json").getFile()));
 
-        resultTypes.set("elements", getElementsTypes(typesList, allTypes));
+        resultTypes.set("flows", getFlowsTypes(typesList, allTypes));
         resultTypes.set("blocks", getBlocksTypes(typesList, allTypes));
 
         return resultTypes;
     }
 
-    private ArrayNode getElementsTypes(JsonNode typesList, JsonNode allTypes) {
-        JsonNode listElements = typesList.path("elements");
-        JsonNode allElements = allTypes.path("elements");
+    private ArrayNode getFlowsTypes(JsonNode typesList, JsonNode allTypes) {
+        JsonNode listElements = typesList.path("flows");
+        JsonNode allElements = allTypes.path("flows");
         return getObjectsWithTypes(listElements, allElements);
     }
 
     private ObjectNode getBlocksTypes(JsonNode typesList, JsonNode allTypes) {
-        ObjectNode resultBlocksNode = mapper.createObjectNode();
         JsonNode listElements = typesList.path("blocks");
         JsonNode allBlocks = allTypes.path("blocks");
         JsonNode categoriesNames = allTypes.path("categoriesNames");
-        resultBlocksNode.set("general", getGeneralTypes(listElements, allBlocks));
-        resultBlocksNode.set("palette", getPaletteTypes(listElements, allBlocks, categoriesNames));
-        return resultBlocksNode;
-    }
-
-    private ArrayNode getGeneralTypes(JsonNode listBlocksTypes, JsonNode allBlocksTypes) {
-        JsonNode listGeneralTypes = listBlocksTypes.path("general");
-        return getObjectsWithTypes(listGeneralTypes, allBlocksTypes);
+        return getPaletteTypes(listElements, allBlocks, categoriesNames);
     }
 
     private ObjectNode getPaletteTypes(JsonNode listBlocksTypes, JsonNode allBlocksTypes, JsonNode categoriesNames) {
         ObjectNode resultPaletteNode = mapper.createObjectNode();
-        JsonNode listPaletteTypes = listBlocksTypes.path("palette");
-        Iterator<Map.Entry<String, JsonNode>> categoriesIterator = listPaletteTypes.fields();
+        Iterator<Map.Entry<String, JsonNode>> categoriesIterator = listBlocksTypes.fields();
 
         while (categoriesIterator.hasNext()) {
             Map.Entry<String, JsonNode> entry = categoriesIterator.next();
             String category = entry.getKey();
-            JsonNode taskCategoryNode = listPaletteTypes.path(category);
+            JsonNode taskCategoryNode = listBlocksTypes.path(category);
             ArrayNode categoryArray = getObjectsWithTypes(taskCategoryNode, allBlocksTypes);
             resultPaletteNode.set(categoriesNames.get(category).textValue(), categoryArray);
         }

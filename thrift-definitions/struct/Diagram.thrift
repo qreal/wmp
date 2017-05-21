@@ -5,18 +5,21 @@ struct TProperty {
     2 : string name,
     3 : string value,
     4 : string type,
-    5 : i32 position
+    5 : i32 position,
+    6 : double x,
+    7 : double y,
 }
 
 struct TDefaultDiagramNode {
     1 : string id,
     2 : string logicalId,
     3 : string graphicalId,
-    4 : string jointObject,
-    5 : string type,
-    6 : double x,
-    7 : double y,
-    8 : set<TProperty> properties
+    4 : string parentId,
+    5 : string jointObject,
+    6 : string type,
+    7 : double x,
+    8 : double y,
+    9 : set<TProperty> properties
 }
 
 struct TLink {

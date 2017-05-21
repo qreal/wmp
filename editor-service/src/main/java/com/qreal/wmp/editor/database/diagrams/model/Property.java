@@ -16,6 +16,10 @@ public class Property implements Serializable {
 
     private String type;
 
+    private Double xPosition;
+
+    private Double yPosition;
+
     public Property() { }
 
     /** Constructor-converter from Thrift TProperty to Property.*/
@@ -34,6 +38,14 @@ public class Property implements Serializable {
 
         if (tProperty.isSetType()) {
             type = tProperty.getType();
+        }
+
+        if (tProperty.isSetX()) {
+            xPosition = tProperty.getX();
+        }
+
+        if (tProperty.isSetY()) {
+            yPosition = tProperty.getY();
         }
     }
 
@@ -55,6 +67,15 @@ public class Property implements Serializable {
         if (propertyId != null) {
             tProperty.setPropertyId(propertyId);
         }
+
+        if (xPosition != null) {
+            tProperty.setX(xPosition);
+        }
+
+        if (yPosition != null) {
+            tProperty.setY(yPosition);
+        }
+
         return tProperty;
     }
 }

@@ -27,6 +27,12 @@ public class Property implements Serializable {
     @Column(name = "type")
     private String type;
 
+    @Column(name = "x")
+    private Double xPosition;
+
+    @Column(name = "y")
+    private Double yPosition;
+
     public Property() {
     }
 
@@ -47,6 +53,15 @@ public class Property implements Serializable {
         if (tProperty.isSetType()) {
             type = tProperty.getType();
         }
+
+        if (tProperty.isSetX()) {
+            xPosition = tProperty.getX();
+        }
+
+        if (tProperty.isSetY()) {
+            yPosition = tProperty.getY();
+        }
+
     }
 
     /** Converter from Property to Thrift TProperty.*/
@@ -67,6 +82,15 @@ public class Property implements Serializable {
         if (propertyId != null) {
             tProperty.setPropertyId(propertyId);
         }
+
+        if (xPosition != null) {
+            tProperty.setX(xPosition);
+        }
+
+        if (yPosition != null) {
+            tProperty.setY(yPosition);
+        }
+
         return tProperty;
     }
 }

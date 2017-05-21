@@ -43,6 +43,8 @@ export class DiagramThriftExporter extends DiagramExporter {
             newNode.logicalId = node.getLogicalId();
             newNode.graphicalId = node.getJointObject().id;
             newNode.type = node.getType();
+            if (node.getParentNode())
+                newNode.parentId = node.getParentNode().getJointObject().id;
             newNode.properties = this.exportProperties(node.getChangeableProperties());
 
             var nameProperty = new TProperty();
@@ -124,15 +126,24 @@ export class DiagramThriftExporter extends DiagramExporter {
     }
 
     protected exportProperties(properties: Map<String, Property>) {
-        var newProperties = [];
-        for (var propertyName in properties) {
-            var type: string = properties[propertyName].type;
-            var newProperty = new TProperty();
+        let newProperties = [];
+        for (let propertyName in properties) {
+            let property: Property = properties[propertyName];
+
+            let type: string = property.type;
+            let newProperty = new TProperty();
+
+            if (type === "string") {
+                newProperty.x = property.coordinates.x;
+                newProperty.y = property.coordinates.y;
+            }
+
             type = (type === "string" || type === "combobox" || type == "checkbox" || type == "dropdown") ?
                 "QString" : type;
             newProperty.name = propertyName;
-            newProperty.value = properties[propertyName].value;
+            newProperty.value = property.value;
             newProperty.type = type;
+
             newProperties.push(newProperty);
         }
         return newProperties;

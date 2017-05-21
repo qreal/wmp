@@ -1,5 +1,5 @@
 {
-    "elements": [
+    "flows": [
         "ControlFlow",
         "ConditionalFlow",
         "DefaultFlow",
@@ -9,19 +9,13 @@
     ],
 
     "blocks": {
-
-        "general": [
-            "Subprogram"
+        "Events": [
+            "Message",
+            "Timer"
         ],
 
-        "palette": {
-
-            "Events": [
-                "Message",
-                "Timer"
-            ]
-        }
-
+        "Containers": [
+            "Subprocess"
+        ]
     }
-
 }

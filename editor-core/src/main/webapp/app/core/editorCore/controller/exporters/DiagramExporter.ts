@@ -25,6 +25,7 @@ export class DiagramExporter {
             var nodeJSON = {
                 'logicalId': node.getLogicalId(),
                 'graphicalId': node.getJointObject().id,
+                'parent': node.getJointObject().get('parent'),
                 'type': node.getType(),
                 'logicalChildren': [],
                 'graphicalChildren': [],

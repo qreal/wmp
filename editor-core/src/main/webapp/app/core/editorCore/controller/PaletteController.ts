@@ -10,8 +10,44 @@ export class PaletteController {
     private subprogramsSelector: string = "#subprograms-navigation";
     private blocksSelector: string = "#blocks-navigation";
     private flowsSelector: string = "#flows-navigation";
+    private paper: DiagramScene;
+    private elementTypes: ElementTypes;
+    private nodesTypesMap: Map<String, NodeType>;
 
-    public initDraggable(): void {
+    public init(paper: DiagramScene, elementTypes: ElementTypes, nodesTypesMap: Map<String, NodeType>) {
+        this.paper = paper;
+        this.elementTypes = elementTypes;
+        this.nodesTypesMap = nodesTypesMap;
+        this.reload();
+    }
+
+    public reload() {
+        this.clearPaletteContent(this.blocksSelector);
+        this.clearPaletteContent(this.flowsSelector);
+
+        this.appendBlocksPalette(this.elementTypes.blockTypes);
+        this.appendBlocksPalette(this.elementTypes.containerTypes);
+        this.appendFlowsPalette(this.elementTypes.flowTypes);
+        this.initClick();
+        this.initDraggable();
+    }
+
+    public searchPaletteReload(event: Event) {
+        var searchPatterns: string[] = (<any> event.target).value.split(" ").map((str) => str.toLowerCase());
+
+        for (var name in this.nodesTypesMap) {
+            var notFound: Boolean = false;
+            for (var i in searchPatterns) {
+                notFound = name.indexOf(searchPatterns[i]) == -1;
+                if (notFound)
+                    break;
+            }
+            this.nodesTypesMap[name].setVisibility(!notFound);
+        }
+        this.reload();
+    }
+
+    private initDraggable(): void {
         $(".tree-element").draggable({
             helper: function () {
                 var clone =  $(this).find('.element-img').clone();
@@ -27,8 +63,9 @@ export class PaletteController {
         });
     }
 
-    public initClick(paper: DiagramScene): void {
-        $("[data-type='" + paper.getCurrentLinkTypeName() + "']").css("border", "2px solid #00ff00");
+    private initClick(): void {
+        $("[data-type='" + this.paper.getCurrentLinkTypeName() + "']").css("border", "2px solid #00ff00");
+        var paper: DiagramScene = this.paper;
         $(".flow-element").mousedown(function () {
             paper.setCurrentLinkType($(this).attr("data-type"));
             $(".flow-element").css("border", "");
@@ -44,33 +81,14 @@ export class PaletteController {
         this.appendPaletteContent(this.subprogramsSelector, paletteView.getContent());
     }
 
-    public appendBlocksPalette(paletteTypes: PaletteTree): void {
+    private appendBlocksPalette(paletteTypes: PaletteTree): void {
         var paletteView: BlocksPaletteView = new BlocksPaletteView(paletteTypes, "tree-element");
         this.appendPaletteContent(this.blocksSelector, paletteView.getContent());
     }
 
-    public appendFlowsPalette(paletteTypes: PaletteTree): void {
+    private appendFlowsPalette(paletteTypes: PaletteTree): void {
         var paletteView: BlocksPaletteView = new BlocksPaletteView(paletteTypes, "tree-element flow-element");
         this.appendPaletteContent(this.flowsSelector, paletteView.getContent());
-    }
-
-    public searchPaletteReload(event: Event, elementTypes: ElementTypes, nodesTypesMap: Map<String, NodeType>) {
-        var searchPatterns: string[] = (<any> event.target).value.split(" ").map((str) => str.toLowerCase());
-
-        for (var name in nodesTypesMap) {
-            var notFound: Boolean = false;
-            for (var i in searchPatterns) {
-                notFound = name.indexOf(searchPatterns[i]) == -1;
-                if (notFound)
-                    break;
-            }
-            nodesTypesMap[name].setVisibility(!notFound);
-        }
-        this.clearPaletteContent(this.blocksSelector);
-        this.clearPaletteContent(this.flowsSelector);
-
-        this.appendBlocksPalette(elementTypes.blockTypes);
-        this.appendFlowsPalette(elementTypes.flowTypes);
     }
 
     private appendPaletteContent(selector: string, content: string): void {
@@ -84,5 +102,4 @@ export class PaletteController {
     private clearPaletteContent(selector: string): void {
         $(selector).empty();
     }
-
 }
