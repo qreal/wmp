@@ -207,18 +207,19 @@ export class DefaultDiagramNode implements DiagramNode {
         var position = this.getJointObjectPagePosition(zoom);
         this.propertyEditElement.setPosition(position.x, position.y);
         var bbox = cellView.getBBox();
-        var newX = bbox.x + (<number> (bbox.width - 50)/2);
+        var newX = bbox.x + (<number> (bbox.width - 50) / 2);
         var newY = bbox.y + bbox.height - 50;
         this.propertyEditElement.setPosition(newX, newY);
     }
 
-    public setSize(width: number, height: number, cellView : joint.dia.CellView): void {
-        var model = <joint.dia.Element> cellView.model;
-        model.resize(width, height);
-        var bbox = cellView.getBBox();
-        var newX = bbox.x + (<number> (bbox.width - DefaultSize.DEFAULT_NODE_WIDTH) / 2);
-        var newY = bbox.y + bbox.height - DefaultSize.DEFAULT_NODE_HEIGHT;
+    public setSize(width: number, height: number): void {
+        var bbox = this.jointObject.getBBox();
+        var newX: number = bbox.x + (<number> (bbox.width - DefaultSize.DEFAULT_NODE_WIDTH) / 2);
+        var newY: number = bbox.y + bbox.height - DefaultSize.DEFAULT_NODE_HEIGHT;
         this.propertyEditElement.setPosition(newX, newY);
+        this.boundingBox.width = width;
+        this.boundingBox.height = height;
+        this.jointObject.resize(width, height);
     }
 
     public setParentNode(parent: DiagramContainer, embedding?: boolean): void {
@@ -290,12 +291,6 @@ export class DefaultDiagramNode implements DiagramNode {
             isRightResizing: false,
             isLeftResizing: false,
         };
-    }
-
-    public resize(width: number, height: number) {
-        this.boundingBox.width = width;
-        this.boundingBox.height = height;
-        this.jointObject.resize(width, height);
     }
 
     public isResizing() : boolean {

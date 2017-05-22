@@ -14,7 +14,7 @@ export interface DiagramNode extends DiagramElement {
     getSize(): string;
     getParentNode(): DiagramContainer;
     setPosition(x: number, y: number, zoom: number, cellView : joint.dia.CellView): void;
-    setSize(width: number, height: number, cellView : joint.dia.CellView): void;
+    setSize(width: number, height: number): void;
     setParentNode(parent: DiagramContainer, embedding?: boolean): void;
     setNodeType(nodeType: NodeType): void;
     getPropertyEditElement(): PropertyEditElement;
@@ -22,7 +22,6 @@ export interface DiagramNode extends DiagramElement {
     initResize(bbox, x: number, y: number, paddingPercent): void;
     completeResize(): void;
     isResizing(): boolean;
-    resize(width: number, height: number): void;
     isValidEmbedding(child: DiagramNode): boolean;
     pointermove(cellView, evt, x, y): void;
 

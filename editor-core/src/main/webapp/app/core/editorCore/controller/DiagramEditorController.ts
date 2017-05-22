@@ -15,6 +15,7 @@ import {DiagramElementListener} from "./DiagramElementListener";
 import {PaletteController} from "./PaletteController";
 import {ElementConstructor} from "../model/ElementConstructor"
 import {MapUtils} from "../../../utils/MapUtils";
+import {DiagramScene} from "../model/DiagramScene";
 export class DiagramEditorController {
 
     protected diagramEditor: DiagramEditor;
@@ -37,7 +38,7 @@ export class DiagramEditorController {
             return this.getNodeType(type);
         };
         this.diagramEditor = new DiagramEditor();
-        this.elementConstructor = new ElementConstructor(this.diagramEditor.getScene());
+        this.elementConstructor = new ElementConstructor(this);
         this.sceneController = new SceneController(this, this.diagramEditor.getScene());
         this.elementsTypeLoader = new ElementsTypeLoader();
 
@@ -117,6 +118,10 @@ export class DiagramEditorController {
         var scene = this.diagramEditor.getScene();
         scene.addNodesFromMap(diagramParts.nodesMap);
         scene.addLinksFromMap(diagramParts.linksMap);
+    }
+
+    public getScene(): DiagramScene {
+        return this.diagramEditor.getScene();
     }
 
     protected handleLoadedTypes(elementTypes: ElementTypes): void {

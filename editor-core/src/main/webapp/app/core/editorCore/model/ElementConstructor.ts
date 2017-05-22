@@ -6,14 +6,18 @@ import {Property} from "./Property";
 import {ContainerNodeType} from "./ContainerNodeType";
 import {NodeType} from "./NodeType";
 import {DiagramScene} from "./DiagramScene";
+import {DiagramEditorController} from "../controller/DiagramEditorController";
+import {UndoRedoController} from "../controller/UndoRedoController";
 export class ElementConstructor {
 
     protected scene: DiagramScene;
     protected nodesTypesMap: Map<string, NodeType>;
+    protected undoRedoController: UndoRedoController;
 
-    constructor(scene: DiagramScene, nodesTypesMap?: Map<string, NodeType>) {
-        this.scene = scene;
-        this.nodesTypesMap = nodesTypesMap;
+    constructor(diagramEditorController: DiagramEditorController) {
+        this.scene = diagramEditorController.getScene();
+        this.nodesTypesMap = diagramEditorController.getNodeTypes();
+        this.undoRedoController = diagramEditorController.getUndoRedoController();
     }
 
     public createLink(jointObject: joint.dia.Link, name: string, type: string, properties: Map<string, Property>): Link {

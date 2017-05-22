@@ -68,7 +68,7 @@ export class Pool extends DiagramContainer {
             sumHeight += child.getHeight();
         });
         sumHeight = Math.max(sumHeight, this.minHeight);
-        this.resize(this.getWidth(), sumHeight);
+        this.setSize(this.getWidth(), sumHeight);
 
         var curHeight: number = this.getY();
         var leftBorder: number = this.getX() + this.getWidth() - DefaultSize.DEFAULT_NODE_WIDTH;
@@ -103,7 +103,7 @@ export class Pool extends DiagramContainer {
             lanes.forEach((lane: Lane) => rightBorder = Math.max(rightBorder, lane.getX() + lane.getWidth()));
         }
 
-        lanes.forEach((lane: Lane) => lane.resize(rightBorder - lane.getX(), lane.getHeight()));
+        lanes.forEach((lane: Lane) => lane.setSize(rightBorder - lane.getX(), lane.getHeight()));
     }
 
     private getLanes(): Lane[] {

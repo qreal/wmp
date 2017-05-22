@@ -21,7 +21,7 @@ export class BpmnDiagramEditorController extends DiagramEditorController {
         var scene: DiagramScene = this.diagramEditor.getScene();
         this.gesturesController = new GesturesController(this.sceneController, this.diagramEditor.getScene());
         this.diagramInterpreter = new Interpreter();
-        this.elementConstructor = new BpmnElementConstructor(scene, this.getNodeTypes());
+        this.elementConstructor = new BpmnElementConstructor(this);
         this.menuController = new DiagramMenuController(this);
 
         document.addEventListener('mousedown', (event) => { this.gesturesController.onMouseDown(event) } );

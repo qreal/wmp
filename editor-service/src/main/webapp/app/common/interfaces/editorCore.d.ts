@@ -284,7 +284,7 @@ declare module "core/editorCore/model/DefaultDiagramNode" {
         getWidth(): number;
         getSize(): string;
         setPosition(x: number, y: number, zoom: number, cellView: joint.dia.CellView): void;
-        setSize(width: number, height: number, cellView: joint.dia.CellView): void;
+        setSize(width: number, height: number): void;
         setParentNode(parent: DiagramContainer, embedding?: boolean): void;
         setNodeType(nodeType: NodeType): void;
         getImagePath(): string;
@@ -294,7 +294,6 @@ declare module "core/editorCore/model/DefaultDiagramNode" {
         getChangeableProperties(): Map<string, Property>;
         initResize(bbox: any, x: number, y: number, paddingPercent: any): void;
         completeResize(): void;
-        resize(width: number, height: number): void;
         isResizing(): boolean;
         isValidEmbedding(child: DiagramNode): boolean;
         private static getDefaultConstPropertiesPack(name);
@@ -337,7 +336,7 @@ declare module "core/editorCore/model/DiagramNode" {
         getSize(): string;
         getParentNode(): DiagramContainer;
         setPosition(x: number, y: number, zoom: number, cellView: joint.dia.CellView): void;
-        setSize(width: number, height: number, cellView: joint.dia.CellView): void;
+        setSize(width: number, height: number): void;
         setParentNode(parent: DiagramContainer, embedding?: boolean): void;
         setNodeType(nodeType: NodeType): void;
         getPropertyEditElement(): PropertyEditElement;
@@ -345,7 +344,6 @@ declare module "core/editorCore/model/DiagramNode" {
         initResize(bbox: any, x: number, y: number, paddingPercent: any): void;
         completeResize(): void;
         isResizing(): boolean;
-        resize(width: number, height: number): void;
         isValidEmbedding(child: DiagramNode): boolean;
         pointermove(cellView: any, evt: any, x: any, y: any): void;
     }
@@ -435,9 +433,8 @@ declare module "core/editorCore/model/commands/ResizeCommand" {
         private oldHeight;
         private newWidth;
         private newHeight;
-        private cellView;
         private executionFunction;
-        constructor(oldWidth: number, oldHeight: number, newWidth: number, newHeight: number, cellView: joint.dia.CellView, executionFunction: (x: number, y: number, cellView: joint.dia.CellView) => void);
+        constructor(oldWidth: number, oldHeight: number, newWidth: number, newHeight: number, executionFunction: (x: number, y: number) => void);
         execute(): void;
         revert(): void;
         isRevertible(): boolean;
@@ -514,6 +511,7 @@ declare module "core/editorCore/model/commands/SceneCommandFactory" {
         makeMoveCommand(node: DiagramNode, oldX: number, oldY: number, newX: number, newY: number, zoom: number, cellView: joint.dia.CellView): Command;
         makeResizeCommand(node: DiagramNode, oldWidth: number, oldHeight: number, newWidth: number, newHeight: number, cellView: joint.dia.CellView): Command;
         makeEmbedCommand(child: DiagramNode, parent: DiagramContainer, oldParent: DiagramContainer): Command;
+        s: any;
     }
 }
 declare module "core/editorCore/controller/SceneController" {
@@ -746,10 +744,13 @@ declare module "core/editorCore/model/ElementConstructor" {
     import { Property } from "core/editorCore/model/Property";
     import { NodeType } from "core/editorCore/model/NodeType";
     import { DiagramScene } from "core/editorCore/model/DiagramScene";
+    import { DiagramEditorController } from "core/editorCore/controller/DiagramEditorController";
+    import { UndoRedoController } from "core/editorCore/controller/UndoRedoController";
     export class ElementConstructor {
         protected scene: DiagramScene;
         protected nodesTypesMap: Map<string, NodeType>;
-        constructor(scene: DiagramScene, nodesTypesMap?: Map<string, NodeType>);
+        protected undoRedoController: UndoRedoController;
+        constructor(diagramEditorController: DiagramEditorController);
         createLink(jointObject: joint.dia.Link, name: string, type: string, properties: Map<string, Property>): Link;
         createNode(nodeType: NodeType, x: number, y: number, width: number, height: number, properties: Map<string, Property>, id?: string): DiagramNode;
     }
@@ -769,6 +770,7 @@ declare module "core/editorCore/controller/DiagramEditorController" {
     import { DiagramEditor } from "core/editorCore/model/DiagramEditor";
     import { PaletteController } from "core/editorCore/controller/PaletteController";
     import { ElementConstructor } from "core/editorCore/model/ElementConstructor";
+    import { DiagramScene } from "core/editorCore/model/DiagramScene";
     export class DiagramEditorController {
         protected diagramEditor: DiagramEditor;
         protected sceneController: SceneController;
@@ -795,6 +797,7 @@ declare module "core/editorCore/controller/DiagramEditorController" {
         getNodeTypes(): Map<string, NodeType>;
         getLinkPatterns(): Map<string, joint.dia.Link>;
         addFromMap(diagramParts: DiagramParts): void;
+        getScene(): DiagramScene;
         protected handleLoadedTypes(elementTypes: ElementTypes): void;
     }
 }
