@@ -41,6 +41,8 @@ declare module "core/editorCore/model/DiagramElement" {
         getConstPropertiesPack(): PropertiesPack;
         getChangeableProperties(): Map<string, Property>;
         setProperty(name: string, property: Property): void;
+        onAddition(): void;
+        onDeletion(): void;
     }
 }
 declare module "core/editorCore/model/Variant" {
@@ -192,6 +194,8 @@ declare module "core/editorCore/model/Link" {
         getConstPropertiesPack(): PropertiesPack;
         getChangeableProperties(): Map<string, Property>;
         setProperty(key: string, property: Property): void;
+        onAddition(): void;
+        onDeletion(): void;
         private changeLabel(value);
         private getDefaultConstPropertiesPack();
         private initConstLogicalProperties();
@@ -286,6 +290,7 @@ declare module "core/editorCore/model/DefaultDiagramNode" {
         setPosition(x: number, y: number, zoom: number, cellView: joint.dia.CellView): void;
         setSize(width: number, height: number): void;
         setParentNode(parent: DiagramContainer, embedding?: boolean): void;
+        setPreliminaryParent(parent: DiagramContainer): void;
         setNodeType(nodeType: NodeType): void;
         getImagePath(): string;
         getJointObject(): joint.shapes.basic.Generic;
@@ -296,6 +301,8 @@ declare module "core/editorCore/model/DefaultDiagramNode" {
         completeResize(): void;
         isResizing(): boolean;
         isValidEmbedding(child: DiagramNode): boolean;
+        onAddition(): void;
+        onDeletion(): void;
         private static getDefaultConstPropertiesPack(name);
         private static initConstLogicalProperties(name);
         private static initConstGraphicalProperties(name);
@@ -338,6 +345,7 @@ declare module "core/editorCore/model/DiagramNode" {
         setPosition(x: number, y: number, zoom: number, cellView: joint.dia.CellView): void;
         setSize(width: number, height: number): void;
         setParentNode(parent: DiagramContainer, embedding?: boolean): void;
+        setPreliminaryParent(parent: DiagramContainer): void;
         setNodeType(nodeType: NodeType): void;
         getPropertyEditElement(): PropertyEditElement;
         initPropertyEditElements(zoom: number): void;

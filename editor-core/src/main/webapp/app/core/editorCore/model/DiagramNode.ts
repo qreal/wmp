@@ -16,6 +16,7 @@ export interface DiagramNode extends DiagramElement {
     setPosition(x: number, y: number, zoom: number, cellView : joint.dia.CellView): void;
     setSize(width: number, height: number): void;
     setParentNode(parent: DiagramContainer, embedding?: boolean): void;
+    setPreliminaryParent(parent: DiagramContainer): void;
     setNodeType(nodeType: NodeType): void;
     getPropertyEditElement(): PropertyEditElement;
     initPropertyEditElements(zoom: number): void;

@@ -213,27 +213,37 @@ export class DefaultDiagramNode implements DiagramNode {
     }
 
     public setSize(width: number, height: number): void {
-        var bbox = this.jointObject.getBBox();
-        var newX: number = bbox.x + (<number> (bbox.width - DefaultSize.DEFAULT_NODE_WIDTH) / 2);
-        var newY: number = bbox.y + bbox.height - DefaultSize.DEFAULT_NODE_HEIGHT;
-        this.propertyEditElement.setPosition(newX, newY);
+        if (this.propertyEditElement) {
+            var bbox = this.jointObject.getBBox();
+            var newX: number = bbox.x + (<number> (bbox.width - DefaultSize.DEFAULT_NODE_WIDTH) / 2);
+            var newY: number = bbox.y + bbox.height - DefaultSize.DEFAULT_NODE_HEIGHT;
+            this.propertyEditElement.setPosition(newX, newY);
+        }
         this.boundingBox.width = width;
         this.boundingBox.height = height;
         this.jointObject.resize(width, height);
     }
 
     public setParentNode(parent: DiagramContainer, embedding?: boolean): void {
-        if (this.parentNode) {
-            this.parentNode.removeChild(this);
+        var parentNode: DiagramContainer = this.parentNode;
+        if (parentNode === parent && !embedding)
+            return;
+        if (parentNode) {
+            this.parentNode = null;
+            parentNode.removeChild(this);
             if (embedding)
-                this.parentNode.getJointObject().unembed(this.getJointObject());
+                parentNode.getJointObject().unembed(this.getJointObject());
         }
         this.parentNode = parent;
         if (parent) {
-            this.parentNode.addChild(this);
+            parent.addChild(this);
             if (embedding)
                 parent.getJointObject().embed(this.getJointObject());
         }
+    }
+
+    public setPreliminaryParent(parent: DiagramContainer) {
+        this.parentNode = parent;
     }
 
     public setNodeType(nodeType: NodeType) {
@@ -299,6 +309,16 @@ export class DefaultDiagramNode implements DiagramNode {
 
     public isValidEmbedding(child: DiagramNode): boolean {
         return false;
+    }
+
+    public onAddition(): void {
+        if (this.parentNode)
+            this.parentNode.addChild(this);
+    }
+
+    public onDeletion(): void {
+        if (this.parentNode)
+            this.parentNode.removeChild(this);
     }
 
     private static getDefaultConstPropertiesPack(name: string): PropertiesPack {

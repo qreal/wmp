@@ -18,11 +18,17 @@ export class DiagramContainer extends DefaultDiagramNode {
     }
 
     public addChild(node: DiagramNode) {
+        if (this.childrenNodes.has(node))
+            return;
         this.childrenNodes.add(node);
+        node.setParentNode(this);
     }
 
     public removeChild(node: DiagramNode) {
+        if (!this.childrenNodes.has(node))
+            return;
         this.childrenNodes.delete(node);
+        node.setParentNode(null);
     }
 
     public isValidEmbedding(child: DiagramNode): boolean {

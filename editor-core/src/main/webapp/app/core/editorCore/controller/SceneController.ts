@@ -290,8 +290,7 @@ export class SceneController {
                         this.lastCellMouseDownSize.width,
                         this.lastCellMouseDownSize.height,
                         bbox.width,
-                        bbox.height,
-                        cellView);
+                        bbox.height);
                     this.undoRedoController.addCommand(command);
                 } else {
                     this.moveNode(cellView, node);
@@ -313,6 +312,14 @@ export class SceneController {
     private moveNode(cellView, node: DiagramNode): void {
         let command: MultiCommand = new MultiCommand([]);
 
+        var parent: DiagramContainer = <DiagramContainer> this.scene.getNodeById(node.getJointObject().get('parent'));
+        var oldParent: DiagramContainer = node.getParentNode();
+        if (parent !== oldParent) {
+            var embedCommand = new EmbedCommand(node, parent, oldParent);
+            embedCommand.execute();
+            command.add(embedCommand);
+        }
+
         command.add(this.paperCommandFactory.makeMoveCommand(
             node,
             this.lastCellMouseDownPosition.x,
@@ -322,13 +329,6 @@ export class SceneController {
             this.scene.getZoom(),
             cellView));
 
-        var parent: DiagramContainer = <DiagramContainer> this.scene.getNodeById(node.getJointObject().get('parent'));
-        var oldParent: DiagramContainer = node.getParentNode();
-        if (parent !== oldParent) {
-            var embedCommand = new EmbedCommand(node, parent, oldParent);
-            embedCommand.execute();
-            command.add(embedCommand);
-        }
         this.undoRedoController.addCommand(command);
     }
 

@@ -21,13 +21,13 @@ export class Pool extends DiagramContainer {
         this.isUpdating = false;
     }
 
-    public addBPMNChild(node: DiagramNode) {
-        node.setParentNode(this);
+    public addChild(node: DiagramNode) {
+        super.addChild(node);
         this.update();
     }
 
-    public removeBPMNChild(node: DiagramNode) {
-        node.setParentNode(null);
+    public removeChild(node: DiagramNode) {
+        super.removeChild(node);
         this.update();
     }
 

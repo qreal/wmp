@@ -44,12 +44,15 @@ export class BpmnElementConstructor extends ElementConstructor {
         let node: DiagramNode = this.scene.getNodeById(model.id);
         let parent: Pool = <Pool> this.scene.getNodesMap().get(parentId);
         if (parent)
-            parent.addBPMNChild(node);
+            parent.addChild(node);
     }
 
     private onMove(model: joint.shapes.basic.Generic) {
         let node: DiagramNode = this.scene.getNodeById(model.id);
-        if (node.getParentNode() && !node.getJointObject().get("parent"))
-            (<Pool> node.getParentNode()).removeBPMNChild(node);
+        let parentNode: Pool = <Pool> node.getParentNode();
+        if (parentNode && !node.getJointObject().get("parent")) {
+            parentNode.removeChild(node);
+            node.setPreliminaryParent(parentNode);
+        }
     }
 }

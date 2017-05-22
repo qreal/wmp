@@ -122,6 +122,7 @@ export class DiagramScene extends joint.dia.Paper {
 
     public removeNode(nodeId: string): void {
         var node: DiagramNode = this.nodesMap.get(nodeId);
+        node.onDeletion();
 
         var links = this.graph.getConnectedLinks(node.getJointObject(), { inbound: true, outbound: true });
 

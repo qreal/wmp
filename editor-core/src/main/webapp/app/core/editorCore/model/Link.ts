@@ -73,6 +73,10 @@ export class Link implements DiagramElement {
         document.dispatchEvent(propertyChangedEvent);
     }
 
+    public onAddition() {}
+
+    public onDeletion() {}
+
     private changeLabel(value: string): void {
         this.jointObject.label(0, {
             position: 0.5,

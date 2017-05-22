@@ -149,7 +149,7 @@ export class DiagramThriftParser extends DiagramJsonParser {
                 continue;
             var child: DiagramNode = nodesMap.get(nodeObjects[i].graphicalId);
             var parent: DiagramContainer = <DiagramContainer> nodesMap.get(nodeObjects[i].parentId);
-            child.setParentNode(parent);
+            child.setPreliminaryParent(parent);
         }
     }
 }
