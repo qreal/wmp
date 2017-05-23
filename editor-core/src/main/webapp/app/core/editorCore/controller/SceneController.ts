@@ -118,8 +118,13 @@ export class SceneController {
                 DefaultSize.DEFAULT_NODE_WIDTH, DefaultSize.DEFAULT_NODE_HEIGHT, nodeType.getPropertiesMap());
         }
 
-        var command: MultiCommand = new MultiCommand([this.paperCommandFactory.makeCreateNodeCommand(node),
-            this.paperCommandFactory.makeChangeCurrentElementCommand(node, this.currentElement)]);
+        var command: MultiCommand = new MultiCommand([this.paperCommandFactory.makeCreateNodeCommand(node)]);
+
+        if (node instanceof DiagramContainer)
+            this.createContainerCommands(node).forEach((containerCommand: Command) => command.add(containerCommand));
+
+        command.add(this.paperCommandFactory.makeChangeCurrentElementCommand(node, this.currentElement));
+
         var controller: SceneController = this;
         var elementBelow = controller.getElementBelow(event, function(cell: joint.dia.Element) {
             return !(cell instanceof joint.dia.Link) &&
@@ -310,16 +315,17 @@ export class SceneController {
     }
 
     private moveNode(cellView, node: DiagramNode): void {
+
+        if (this.lastCellMouseDownPosition.x === node.getX() && this.lastCellMouseDownPosition.y === node.getY())
+            return;
+
         let command: MultiCommand = new MultiCommand([]);
 
         var parent: DiagramContainer = <DiagramContainer> this.scene.getNodeById(node.getJointObject().get('parent'));
         var oldParent: DiagramContainer = node.getParentNode();
-        if (parent !== oldParent) {
-            var embedCommand = new EmbedCommand(node, parent, oldParent);
-            embedCommand.execute();
-            command.add(embedCommand);
-        }
-
+        var embedCommand = this.paperCommandFactory.makeEmbedCommand(node, parent, oldParent);
+        embedCommand.execute();
+        command.add(embedCommand);
         command.add(this.paperCommandFactory.makeMoveCommand(
             node,
             this.lastCellMouseDownPosition.x,
@@ -328,6 +334,8 @@ export class SceneController {
             node.getY(),
             this.scene.getZoom(),
             cellView));
+        //FIXME: double embedCommand adding for correct undo-redo work.
+        command.add(embedCommand);
 
         this.undoRedoController.addCommand(command);
     }
@@ -370,6 +378,8 @@ export class SceneController {
     private selectElement(jointObject): void {
         jointObject.toFront({deep: true});
         var jQueryEl = this.scene.findViewByModel(jointObject).$el;
+        if (!jQueryEl)
+            return;
         var oldClasses = jQueryEl.attr('class');
         jQueryEl.attr('class', oldClasses + ' selected');
     }
@@ -377,6 +387,8 @@ export class SceneController {
     private unselectElement(jointObject): void {
         $('input:text').blur();
         var jQueryEl = this.scene.findViewByModel(jointObject).$el;
+        if (!jQueryEl)
+            return;
         var removedClass = jQueryEl.attr('class').replace(new RegExp('(\\s|^)selected(\\s|$)', 'g'), '$2');
         jQueryEl.attr('class', removedClass);
     }
@@ -489,5 +501,16 @@ export class SceneController {
             }
         });
         return chosenElement;
+    }
+
+    private createContainerCommands(node: DiagramContainer): Command[] {
+        var commands: Command[] = [];
+        node.getChildrenNodes().forEach((child: DiagramNode) => {
+            commands.push(this.paperCommandFactory.makeCreateNodeCommand(child));
+            commands.push(this.paperCommandFactory.makeEmbedCommand(child, node, null));
+            if (child instanceof DiagramContainer)
+                commands.push(...this.createContainerCommands(child));
+        });
+        return commands;
     }
 }

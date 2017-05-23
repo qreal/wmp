@@ -11,48 +11,21 @@ export class BpmnElementConstructor extends ElementConstructor {
                       properties: Map<string, Property>, id?: string): DiagramNode {
         if (nodeType.getName() === "lane") {
             let lane: Lane = new Lane(nodeType, x, y, width, height, properties, id);
-            this.setupEvents(lane);
             return lane;
         } else if (nodeType.getName() === 'pool') {
             var poolNodeType: ContainerNodeType = <ContainerNodeType> this.nodesTypesMap.get("pooltext");
             let pool: Pool = new Pool(poolNodeType, x, y, width, height, poolNodeType.getPropertiesMap(), id);
-            this.setupEvents(pool);
 
             let laneNodeType: ContainerNodeType = <ContainerNodeType> this.nodesTypesMap.get("lane");
             let lane: Lane = new Lane(laneNodeType, x + pool.getBBox().width - DefaultSize.DEFAULT_NODE_WIDTH, y,
                 width, height, laneNodeType.getPropertiesMap(), id);
-            this.setupEvents(lane);
             lane.setParentNode(pool, true);
 
             return pool;
         } else if (nodeType.getName() === 'pooltext') {
             let pool: Pool = new Pool(nodeType, x, y, width, height, properties, id);
-            this.setupEvents(pool);
             return pool;
         } else
             return super.createNode(nodeType, x, y, width, height, properties, id);
-    }
-
-    private setupEvents(node: DiagramNode) {
-        node.getJointObject().on("change:parent", (laneModel: joint.shapes.basic.Generic, parentId: string) =>
-            this.onParentChange(laneModel, parentId));
-        node.getJointObject().on("change:position", (laneModel: joint.shapes.basic.Generic) =>
-            this.onMove(laneModel));
-    }
-
-    private onParentChange(model: joint.shapes.basic.Generic, parentId: string) {
-        let node: DiagramNode = this.scene.getNodeById(model.id);
-        let parent: Pool = <Pool> this.scene.getNodesMap().get(parentId);
-        if (parent)
-            parent.addChild(node);
-    }
-
-    private onMove(model: joint.shapes.basic.Generic) {
-        let node: DiagramNode = this.scene.getNodeById(model.id);
-        let parentNode: Pool = <Pool> node.getParentNode();
-        if (parentNode && !node.getJointObject().get("parent")) {
-            parentNode.removeChild(node);
-            node.setPreliminaryParent(parentNode);
-        }
     }
 }

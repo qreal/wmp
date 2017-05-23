@@ -32,10 +32,6 @@ export class ElementConstructor {
         else
             node = new DefaultDiagramNode(nodeType, x, y, width, height, properties, id);
         var nodesMap: Map<string, DiagramNode> = this.scene.getNodesMap();
-        node.getJointObject().on("change:parent", (laneModel: joint.shapes.basic.Generic, parentId: string) => {
-            if (parent)
-                node.setParentNode(<DiagramContainer> nodesMap.get(parentId));
-        });
         node.getJointObject().on("change:z", (laneModel: joint.shapes.basic.Generic, newZ: number) => {
             var links: Link[] = this.scene.getConnectedLinkObjects(nodesMap.get(laneModel.id));
             links.forEach((link: Link) => {

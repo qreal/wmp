@@ -551,7 +551,7 @@
                     "key": "InnerText",
                     "name": "Text",
                     "type": "innerText",
-                    "value": ""
+                    "value": "Task"
                 }
             ]
         },

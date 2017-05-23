@@ -44,8 +44,11 @@ export class Pool extends DiagramContainer {
                 newWidth += currentPool.getWidth() - DefaultSize.DEFAULT_NODE_WIDTH;
             currentPool = currentPool.getParentNode();
         }
-        currentPool.updateHeight();
-        currentPool.updateWidth(newWidth);
+        if (currentPool === this) {
+            currentPool.updateHeight();
+            currentPool.updateWidth(newWidth);
+        } else
+            currentPool.update(newWidth);
 
         this.isUpdating = false;
     }
