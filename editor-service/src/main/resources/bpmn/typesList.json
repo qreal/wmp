@@ -1,5 +1,5 @@
 {
-    "elements": [
+    "flows": [
         "ControlFlow",
         "ConditionalFlow",
         "DefaultFlow",
@@ -9,19 +9,39 @@
     ],
 
     "blocks": {
-
-        "general": [
-            "Subprogram"
+        "Events": [
+            "None",
+            "Message",
+            "Timer",
+            "Escalation",
+            "Condition",
+            "Link",
+            "Error",
+            "Cancel",
+            "Compensation",
+            "Signal",
+            "Multiple",
+            "ParallelMultiple",
+            "Terminate"
         ],
 
-        "palette": {
+        "Gateways": [
+            "Exclusive",
+            "Event-Based",
+            "Parallel",
+            "Inclusive",
+            "Complex"
+        ],
 
-            "Events": [
-                "Message",
-                "Timer"
-            ]
-        }
+        "Activities": [
+            "Task"
+        ],
 
+        "Containers": [
+            "Subprocess",
+            "Lane",
+            "Pool",
+            "PoolText"
+        ]
     }
-
 }

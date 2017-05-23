@@ -26,10 +26,8 @@ body{
 }
 
 .selected rect {
-    opacity: 0.9;
-    fill: #00ff00;
-    stroke: #00ff00;
-    stroke-width: 2px;
+    stroke: #F39C12;
+    stroke-width: 5px;
 }
 
 .selected {
@@ -127,9 +125,9 @@ body{
 }
 
 #elements-tree {
-    height: calc(100% - 70px);
-    height: -webkit-calc(100% - 70px); /* google, safari */
-    height: -moz-calc(100% - 70px); /* firefox */
+    height: calc(100% - 100px);
+    height: -webkit-calc(100% - 100px); /* google, safari */
+    height: -moz-calc(100% - 100px); /* firefox */
     overflow: auto;
 }
 
@@ -143,8 +141,6 @@ body{
 
 .element-img {
     margin-right: 5px;
-    width: 30px;
-    height: 30px;
 }
 
 .mydropdown {

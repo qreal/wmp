@@ -7,6 +7,7 @@ import {HtmlView} from "../view/HtmlView";
 import {PropertyViewFactory} from "./PropertyViewFactory";
 import {UndoRedoController} from "./UndoRedoController";
 import {SceneController} from "./SceneController";
+import {DiagramNode} from "../model/DiagramNode";
 export class PropertyEditorController {
 
     private propertyViewFactory: PropertyViewFactory;
@@ -18,12 +19,22 @@ export class PropertyEditorController {
         this.sceneController = sceneController;
         this.undoRedoController = undoRedoController;
         this.initInputStringListener();
+        this.initInputTextListener();
         this.initCheckboxListener();
         this.initDropdownListener();
         this.initSpinnerListener();
 
+        var controller: PropertyEditorController = this;
+
         document.addEventListener('property-changed', function(e: any) {
-            $("." + e.detail.key + "-" + e.detail.nodeId).each(function(index) {
+            var currentElement: DiagramElement = controller.sceneController.getCurrentElement();
+            if (e.detail.key === "InnerText") {
+                currentElement.getJointObject().attr("text", {
+                    text: e.detail.value
+                });
+            } else if (e.detail.key === "ChangeType") {
+                controller.sceneController.changeElementType(currentElement, e.detail.value);
+            } else $("." + e.detail.key + "-" + e.detail.nodeId).each(function(index) {
                 if ($(this).val() !== e.detail.value) {
                     $(this).val(e.detail.value);
                     $(this).trigger('autosize');
@@ -34,22 +45,22 @@ export class PropertyEditorController {
 
     public setNodeProperties(element: DiagramElement): void {
         $('#property_table tbody').empty();
-        var properties: Map<String, Property> = element.getChangeableProperties();
-        for (var property in properties) {
+        var properties: Map<string, Property> = element.getChangeableProperties();
+        for (var [propertyName, property] of properties) {
             var propertyView: HtmlView = this.propertyViewFactory.createView(element.getLogicalId(), element.getType(),
-                property, properties[property]);
+                propertyName, property);
             var htmlElement = $(propertyView.getContent());
             $('#property_table tbody').append(htmlElement);
 
-            if (properties[property].type === "combobox") {
-                this.initCombobox(element.getType(), property, htmlElement);
+            if (property.type === "combobox") {
+                this.initCombobox(element.getType(), propertyName, htmlElement);
             }
         }
     }
 
     public addChangePropertyCommand(key: string, value: string, changeHtmlFunction: () => void): void {
         var currentElement: DiagramElement = this.sceneController.getCurrentElement();
-        var property: Property = currentElement.getChangeableProperties()[key];
+        var property: Property = currentElement.getChangeableProperties().get(key);
         var changePropertyCommand: Command = new ChangePropertyCommand(key, value, property.value,
             this.setProperty.bind(this), changeHtmlFunction);
         this.undoRedoController.addCommand(changePropertyCommand);
@@ -61,7 +72,7 @@ export class PropertyEditorController {
 
     public setProperty(key: string, value: string): void {
         var currentElement: DiagramElement = this.sceneController.getCurrentElement();
-        var property: Property = currentElement.getChangeableProperties()[key];
+        var property: Property = currentElement.getChangeableProperties().get(key);
         property.value = value;
         currentElement.setProperty(key, property);
     }
@@ -116,13 +127,23 @@ export class PropertyEditorController {
         $(document).on('change', '.checkbox', function () {
             var currentElement: DiagramElement = controller.sceneController.getCurrentElement();
             var key = $(this).data('type');
-            var property: Property = currentElement.getChangeableProperties()[key];
+            var property: Property = currentElement.getChangeableProperties().get(key);
             var currentValue = property.value;
             var newValue = controller.changeCheckboxValue(currentValue);
             controller.addChangePropertyCommand(key, newValue, controller.changeCheckboxHtml.bind(
                 controller, $(this).attr("id")));
             controller.changeCheckboxHtml($(this).attr("id"), newValue);
             controller.setProperty(key, newValue);
+        });
+    }
+
+    private initInputTextListener(): void {
+        var controller: PropertyEditorController = this;
+        $(document).on('input', '.property-edit-text', function () {
+            var key = $(this).data('type');
+            var value = $(this).val();
+            controller.addChangePropertyCommand(key, value, () => {});
+            controller.setProperty(key, value);
         });
     }
 

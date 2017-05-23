@@ -44,7 +44,7 @@ export class IfBlock extends ConditionBlock {
     }
 
     protected getCondition(node: DiagramNode): string {
-        return node.getChangeableProperties()["Condition"].value;
+        return node.getChangeableProperties().get("Condition").value;
     }
     
 }

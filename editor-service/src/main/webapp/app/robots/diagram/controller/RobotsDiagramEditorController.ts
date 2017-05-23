@@ -6,6 +6,7 @@ import {Interpreter} from "../../interpreter/Interpreter";
 import {ElementTypes} from "core/editorCore/model/ElementTypes";
 import {DiagramScene} from "core/editorCore/model/DiagramScene";
 import {DiagramEditorController} from "core/editorCore/controller/DiagramEditorController";
+import {ElementConstructor} from "core/editorCore/model/ElementConstructor";
 export class RobotsDiagramEditorController extends DiagramEditorController {
 
     private menuController: DiagramMenuController;
@@ -22,14 +23,13 @@ export class RobotsDiagramEditorController extends DiagramEditorController {
         this.menuController = new DiagramMenuController(this);
         this.gesturesController = new GesturesController(this.sceneController, this.diagramEditor.getScene());
         this.diagramInterpreter = new Interpreter();
+        this.elementConstructor = new ElementConstructor(this);
 
         document.addEventListener('mousedown', (event) => { this.gesturesController.onMouseDown(event) } );
         document.addEventListener('mouseup', (event) => { this.gesturesController.onMouseUp(event) } );
         $("#" + scene.getId()).mousemove((event) => { this.gesturesController.onMouseMove(event) } );
         $("#elements-search").on('input', (event) => {
-            this.paletteController.searchPaletteReload(event, this.elementTypes, this.nodeTypesMap);
-            this.paletteController.initClick(this.diagramEditor.getScene());
-            this.paletteController.initDraggable();
+            this.paletteController.searchPaletteReload(event);
         } );
 
         (scene as any).on('cell:pointerdown', (cellView, event, x, y): void => {

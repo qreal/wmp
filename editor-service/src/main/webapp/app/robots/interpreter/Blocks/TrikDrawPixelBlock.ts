@@ -22,8 +22,8 @@ export class TrikDrawPixelBlock extends AbstractBlock {
 
         var properties = this.node.getChangeableProperties();
         var parser = new Parser();
-        var x = parser.parseExpression(properties["XCoordinatePix"].value, this.interpreter);
-        var y = parser.parseExpression(properties["YCoordinatePix"].value, this.interpreter);
+        var x = parser.parseExpression(properties.get("XCoordinatePix").value, this.interpreter);
+        var y = parser.parseExpression(properties.get("YCoordinatePix").value, this.interpreter);
 
         for (var modelId = 0; modelId < this.robotModels.length; modelId++) {
             var model = this.robotModels[modelId];

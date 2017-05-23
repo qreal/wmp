@@ -19,7 +19,7 @@ export class TrikSetPainterWidthBlock extends AbstractBlock {
         
         var properties = this.node.getChangeableProperties();
         var parser = new Parser();
-        var width = parser.parseExpression(properties["Width"].value, this.interpreter);
+        var width = parser.parseExpression(properties.get("Width").value, this.interpreter);
         this.interpreter.addOrChangeEnvironmentVariable("painterWidth", width);
         
         console.log(output);

@@ -13,10 +13,10 @@ export class PaletteElementView extends HtmlView {
         '   </div>' +
         '</li>';
 
-    constructor(typeName: string, name: string, imageSrc: string, elementClass: string) {
+    constructor(typeName: string, name: string, imageSrc: string, elementClass: string, scale: number) {
         super();
         this.content = StringUtils.format(this.template, elementClass, typeName, imageSrc,
-            this.imageWidth.toString(), this.imageHeight.toString(), name);
+            (this.imageWidth * scale).toString(), this.imageHeight.toString(), name);
     }
 
 }

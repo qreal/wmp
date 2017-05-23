@@ -5,53 +5,46 @@ import {NodeType} from "../../model/NodeType";
 import {PaletteTree} from "../../model/PaletteTree";
 import {GeneralConstants} from "../../../../common/constants/GeneralConstants";
 import {ElementTypes} from "../../model/ElementTypes";
+import {ContainerNodeType} from "../../model/ContainerNodeType";
 export class TypesParser {
 
-    private currentProperties: Map<String, Property>;
-    private linkPatterns: Map<String, joint.dia.Link>;
-    private currentImage: string;
+    private currentProperties: any;
+    private linkPatterns: Map<string, joint.dia.Link>;
+    private currentImage: any;
+    private currentBorder: any;
+    private currentInnerText: any;
+    private isVisible: boolean;
+    private isStatic: boolean;
 
     public parse(typesJson: any): ElementTypes {
         var diagramElementTypes: ElementTypes = new ElementTypes();
-        this.linkPatterns = new Map<String, joint.dia.Link>();
-        diagramElementTypes.uncategorisedTypes = this.parseGeneralTypes(typesJson.blocks.general);;
-        diagramElementTypes.blockTypes = this.parsePaletteTypes(typesJson.blocks.palette);
-        diagramElementTypes.flowTypes = this.parseElementsTypes(typesJson.elements);
-        var flowsMap: Map<String, NodeType> = diagramElementTypes.flowTypes.convertToMap();
-        for (var flow in flowsMap) {
-            if (!this.linkPatterns[flow])
-                this.linkPatterns[flow] = new joint.dia.Link({
+        this.linkPatterns = new Map<string, joint.dia.Link>();
+        diagramElementTypes.blockTypes = this.parsePaletteTypes(typesJson.blocks);
+        diagramElementTypes.flowTypes = this.parseFlowTypes(typesJson.flows);
+        var flowsMap: Map<string, NodeType> = diagramElementTypes.flowTypes.convertToMap();
+        for (var flow of flowsMap.keys()) {
+            if (!this.linkPatterns.has(flow))
+                this.linkPatterns.set(flow, new joint.dia.Link({
                     attrs: {
                         '.connection': { stroke: 'black' },
                         '.marker-target': { fill: 'black', d: 'M 10 0 L 0 5 L 10 10 z' }
                     }
-                });
+                }));
         }
         diagramElementTypes.linkPatterns = this.linkPatterns;
         return diagramElementTypes;
     }
 
-    private parseElementsTypes(elementsTypes: any): PaletteTree {
+    private parseFlowTypes(elementsTypes: any): PaletteTree {
         var elementsTree: PaletteTree = new PaletteTree();
         var elements: PaletteTree = new PaletteTree();
-        elementsTree.categories["Elements"] = elements;
+        elementsTree.categories.set("Flows", elements);
 
         for (var i in elementsTypes) {
             var typeObject = elementsTypes[i];
             elements.nodes = elements.nodes.concat(this.createNodeTypes(typeObject).nodes);
         }
         return elementsTree;
-    }
-
-    private parseGeneralTypes(generalTypes: any): Map<String, NodeType> {
-        var generalTypesMap: Map<String, NodeType> = new Map<String, NodeType>();
-
-        for (var i in generalTypes) {
-            var typeObject = generalTypes[i];
-            $.extend(generalTypesMap, this.createNodeTypes(typeObject).convertToMap());
-        }
-
-        return generalTypesMap;
     }
 
     private parsePaletteTypes(paletteTypes: any): PaletteTree {
@@ -65,9 +58,9 @@ export class TypesParser {
                 if (!typeObject.subtypes)
                     categoryTree.nodes = categoryTree.nodes.concat(typeTree.nodes);
                 else
-                    categoryTree.categories[typeObject.type] = typeTree;
+                    categoryTree.categories.set(typeObject.type, typeTree);
             }
-            paletteTypesObject.categories[category] = categoryTree;
+            paletteTypesObject.categories.set(category, categoryTree);
         }
 
         return paletteTypesObject;
@@ -76,24 +69,41 @@ export class TypesParser {
     private createNodeTypes(typeObject: any): PaletteTree {
         var nodesTree: PaletteTree;
         var name: string = typeObject.name;
-        var typeName: string = typeObject.type.toLowerCase();
+        var typeName: string = typeObject.name.toLowerCase().replace(" ", "-");
 
-        this.currentProperties = this.parseTypeProperties(typeName, typeObject.properties);
+        this.currentProperties = typeObject.properties;
 
-        this.currentImage = "";
+        this.currentImage = typeObject.image;
         if (typeObject.image)
-            this.currentImage = GeneralConstants.APP_ROOT_PATH + typeObject.image.src;
+            this.currentImage.src = GeneralConstants.APP_ROOT_PATH + typeObject.image.src;
+
+        this.currentBorder = typeObject.border;
+        this.currentInnerText = typeObject.innerText;
+        this.isVisible = !(<boolean> typeObject.invisible);
+        this.isStatic = typeObject.static;
 
         if (typeObject.attrs)
-            this.linkPatterns[typeName.toLowerCase()] = new joint.dia.Link({attrs: typeObject.attrs});
+            this.linkPatterns.set(typeName, new joint.dia.Link({attrs: typeObject.attrs}));
 
         var categories: any = typeObject.subtypes;
         if (!categories) {
-            var node: NodeType = new NodeType(name, this.currentProperties, this.currentImage, [typeName]);
+            var node: NodeType;
+            if (typeObject.container)
+                node = new ContainerNodeType(name, this.parseTypeProperties(typeName, this.currentProperties),
+                    this.currentImage, this.currentBorder, this.currentInnerText, this.isVisible, this.isStatic, typeName);
+            else
+                node = new NodeType(name, this.parseTypeProperties(typeName, typeObject.properties),
+                    this.currentImage, this.currentBorder, this.currentInnerText, this.isVisible, this.isStatic, typeName);
             nodesTree = new PaletteTree();
             nodesTree.nodes.push(node);
-        } else
+        } else {
             nodesTree = this.parseSubtypes(categories, [typeName]);
+        }
+
+        for (var i in typeObject.properties) {
+            if (typeObject.properties[i].type === "changeType")
+                this.addChangeTypeProperty(nodesTree);
+        }
 
         return nodesTree;
     }
@@ -104,13 +114,16 @@ export class TypesParser {
             for (var i in categories) {
                 var subtype: string = categories[i];
                 path.push(subtype.toLowerCase());
-                nodesTree.nodes.push(new NodeType(subtype, this.currentProperties, this.currentImage, path));
+                var typeName: string = path.reverse().join('-');
+                nodesTree.nodes.push(new NodeType(subtype, this.parseTypeProperties(typeName, this.currentProperties),
+                    this.currentImage, this.currentBorder, this.currentInnerText, this.isVisible, this.isStatic, typeName));
+                path.reverse();
                 path.pop();
             }
         } else {
             for (var category in categories) {
                 path.push(category.toLowerCase());
-                nodesTree.categories[category] = this.parseSubtypes(categories[category], path);
+                nodesTree.categories.set(category, this.parseSubtypes(categories[category], path));
                 path.pop();
             }
         }
@@ -118,8 +131,19 @@ export class TypesParser {
         return nodesTree;
     }
 
-    private parseTypeProperties(typeName: string, propertiesArrayNode: any): Map<String, Property> {
-        var properties: Map<String, Property> = new Map<String, Property>()
+    private addChangeTypeProperty(tree: PaletteTree) {
+        var nodeTypes: Map<string, NodeType> = tree.convertToFullNameMap("");
+        var nodeTypesArrayNode = [];
+        for (var [name, nodeType] of nodeTypes) {
+            nodeTypesArrayNode.push({"key": nodeType.getName(), "value": name});
+        }
+        for (var nodeType of nodeTypes.values()) {
+            this.addVariantList(nodeType.getName(), "ChangeType", nodeTypesArrayNode);
+        }
+    }
+
+    private parseTypeProperties(typeName: string, propertiesArrayNode: any): Map<string, Property> {
+        var properties: Map<string, Property> = new Map<string, Property>()
         for (var i in propertiesArrayNode) {
             var propertyObject = propertiesArrayNode[i];
             var propertyKey: string = propertyObject.key;
@@ -135,10 +159,12 @@ export class TypesParser {
                 propertyValue = propertyObject.value;
             } else if (propertyObject.selected) {
                 propertyValue = propertyObject.selected.key;
+            } else if (propertyType === "changeType") {
+                propertyValue = typeName;
             }
 
             var property: Property = new Property(propertyName, propertyType, propertyValue);
-            properties[propertyKey] = property;
+            properties.set(propertyKey, property);
         }
         return properties;
     }

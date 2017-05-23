@@ -5,29 +5,38 @@
 import {Property} from "core/editorCore/model/Property";
 import {Link} from "core/editorCore/model/Link";
 import {NodeType} from "core/editorCore/model/NodeType";
-import {DefaultDiagramNode} from "core/editorCore/model/DefaultDiagramNode";
+import {DiagramContainer} from "core/editorCore/model/DiagramContainer";
 import {DiagramNode} from "core/editorCore/model/DiagramNode";
 import {DiagramParts} from "core/editorCore/model/DiagramParts";
 import {DiagramJsonParser} from "core/editorCore/controller/parsers/DiagramJsonParser";
+import {ElementConstructor} from "core/editorCore/model/ElementConstructor";
 export class DiagramThriftParser extends DiagramJsonParser {
 
-    public parse(diagram: TDiagram, nodeTypesMap: Map<String, NodeType>, linkPatterns: Map<String, joint.dia.Link>): DiagramParts {
+    private elementConstructor: ElementConstructor;
+
+    constructor(elementConstructor: ElementConstructor) {
+        super();
+        this.elementConstructor = elementConstructor;
+    }
+
+    public parse(diagram: TDiagram, nodeTypesMap: Map<string, NodeType>, linkPatterns: Map<string, joint.dia.Link>): DiagramParts {
         var diagramParts: DiagramParts = this.parseNodes(diagram, nodeTypesMap, 0, 0);
         diagramParts.linksMap = this.parseLinks(diagram, nodeTypesMap, linkPatterns, 0, 0);
+        this.setEmbedding(diagramParts.nodesMap, diagram.nodes);
         return diagramParts;
     }
 
-    protected parseDiagramNodeObject(nodeObject: TDefaultDiagramNode, nodeTypesMap: Map<String, NodeType>,
+    protected parseDiagramNodeObject(nodeObject: TDefaultDiagramNode, nodeTypesMap: Map<string, NodeType>,
                                      offsetX: number, offsetY: number): DiagramNode {
-        var changeableLogicalProperties: Map<String, Property> = new Map<String, Property>();
+        var changeableLogicalProperties: Map<string, Property> = new Map<string, Property>();
         var name = "";
         var type = nodeObject.type;
 
         var propertiesObject = nodeObject.properties;
 
-        var typeProperties = nodeTypesMap[nodeObject.type].getPropertiesMap();
+        var typeProperties = nodeTypesMap.get(type).getPropertiesMap();
 
-        propertiesObject.sort(function (a:any, b:any) {
+        propertiesObject.sort(function (a: any, b: any) {
             if (a.name < b.name) return -1;
             if (a.name > b.name) return 1;
             return 0;
@@ -35,6 +44,7 @@ export class DiagramThriftParser extends DiagramJsonParser {
 
         var x: number = 0;
         var y: number = 0;
+        var z: number = 0;
         var width: number = 0;
         var height: number = 0;
 
@@ -45,37 +55,38 @@ export class DiagramThriftParser extends DiagramJsonParser {
                 name = propertiesObject[j].value;
             }
 
-            if (typeProperties.hasOwnProperty(propertyName)) {
-                var property:Property = new Property(typeProperties[propertyName].name,
-                    typeProperties[propertyName].type, propertiesObject[j].value);
-                changeableLogicalProperties[propertyName] = property;
+            if (typeProperties.has(propertyName)) {
+                var typeProperty: Property = typeProperties.get(propertyName);
+                var property: Property = new Property(typeProperty.name, typeProperty.type, propertiesObject[j].value);
+                changeableLogicalProperties.set(propertyName, property);
             } else if (propertyName === "position") {
                 var position: string = propertiesObject[j].value;
                 var positionNums = this.parsePosition(position);
                 x = positionNums.x + offsetX;
                 y = positionNums.y + offsetY;
             } else if (propertyName === "size") {
-                var size:string = propertiesObject[j].value;
+                var size: string = propertiesObject[j].value;
                 var bboxDimensions = this.parseSize(size);
                 width = bboxDimensions.width;
                 height = bboxDimensions.height;
+            } else if (propertyName == "z") {
+                z = parseInt(propertiesObject[j].value);
             }
         }
 
-        var node: DiagramNode = new DefaultDiagramNode(name, type, x, y, width, height,
-            changeableLogicalProperties,
-            nodeTypesMap[nodeObject.type].getImage(), nodeObject.graphicalId);
-
+        var node: DiagramNode = this.elementConstructor.createNode(nodeTypesMap.get(type), x, y, width, height,
+            changeableLogicalProperties, nodeObject.graphicalId);
+        node.getJointObject().set("z", z);
         return node;
     }
 
 
-    protected parseLinkObject(linkObject: TLink, nodeTypesMap: Map<String, NodeType>,
-                              linkPatterns: Map<String, joint.dia.Link>, offsetX: number, offsetY: number): Link {
+    protected parseLinkObject(linkObject: TLink, nodeTypesMap: Map<string, NodeType>,
+                              linkPatterns: Map<string, joint.dia.Link>, offsetX: number, offsetY: number): Link {
         var sourceId: string = "";
         var targetId: string = "";
 
-        var properties: Map<String, Property> = new Map<String, Property>();
+        var properties: Map<string, Property> = new Map<string, Property>();
         var propertiesObject = linkObject.properties;
 
         var vertices = [];
@@ -86,7 +97,7 @@ export class DiagramThriftParser extends DiagramJsonParser {
             switch (propertiesObject[j].name) {
                 case "Guard":
                     var property: Property = new Property("Guard", "combobox", propertiesObject[j].value);
-                    properties["Guard"] = property;
+                    properties.set("Guard", property);
                     break;
                 case "from":
                     sourceId = this.parseId(propertiesObject[j].value);
@@ -117,10 +128,10 @@ export class DiagramThriftParser extends DiagramJsonParser {
         if (targetId !== "ROOT_ID") {
             targetObject = {id: targetId};
         } else {
-            targetObject = this.getTargetPosition(configuration);;
+            targetObject = this.getTargetPosition(configuration);
         }
 
-        var jointObject: joint.dia.Link = <joint.dia.Link> linkPatterns[linkObject.type].clone();
+        var jointObject: joint.dia.Link = <joint.dia.Link> linkPatterns.get(linkObject.type).clone();
         jointObject.set({
             id: jointObjectId,
             source: sourceObject,
@@ -128,8 +139,17 @@ export class DiagramThriftParser extends DiagramJsonParser {
             vertices: vertices
         });
 
-        var nodeType: NodeType = nodeTypesMap[linkObject.type];
-        return new Link(jointObject, nodeType.getShownName(), nodeType.getName(), properties);
+        var nodeType: NodeType = nodeTypesMap.get(linkObject.type);
+        return this.elementConstructor.createLink(jointObject, nodeType.getShownName(), nodeType.getName(), properties);
     }
 
+    protected setEmbedding(nodesMap: Map<string, DiagramNode>, nodeObjects: TDefaultDiagramNode[]) {
+        for (var i = 0; i < nodeObjects.length; i++) {
+            if (!nodeObjects[i].parentId)
+                continue;
+            var child: DiagramNode = nodesMap.get(nodeObjects[i].graphicalId);
+            var parent: DiagramContainer = <DiagramContainer> nodesMap.get(nodeObjects[i].parentId);
+            child.setPreliminaryParent(parent);
+        }
+    }
 }

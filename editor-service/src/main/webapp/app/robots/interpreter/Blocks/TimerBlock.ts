@@ -19,7 +19,7 @@ export class TimerBlock extends AbstractBlock {
 
         var properties = this.node.getChangeableProperties();
         var parser = new Parser();
-        var delay: number = parser.parseExpression(properties["Delay"].value, this.interpreter);
+        var delay: number = parser.parseExpression(properties.get("Delay").value, this.interpreter);
         if (delay < 0) {
             throw new Error("Error: incorrect delay value in " + this.node.getName());
         } 

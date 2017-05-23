@@ -37,12 +37,13 @@ export class DiagramThriftExporter extends DiagramExporter {
     protected exportNodes(graph: joint.dia.Graph, diagramParts: DiagramParts) {
         var nodes = [];
 
-        for (var id in diagramParts.nodesMap) {
-            var node: DiagramNode = diagramParts.nodesMap[id];
+        for (var node of diagramParts.nodesMap.values()) {
             var newNode = new TDefaultDiagramNode();
             newNode.logicalId = node.getLogicalId();
             newNode.graphicalId = node.getJointObject().id;
             newNode.type = node.getType();
+            if (node.getParentNode())
+                newNode.parentId = node.getParentNode().getJointObject().id;
             newNode.properties = this.exportProperties(node.getChangeableProperties());
 
             var nameProperty = new TProperty();
@@ -63,6 +64,12 @@ export class DiagramThriftExporter extends DiagramExporter {
             sizeProperty.type = "string";
             newNode.properties.push(sizeProperty);
 
+            var zProperty = new TProperty();
+            zProperty.name = "z";
+            zProperty.value = node.getJointObject().get("z").toString();
+            zProperty.type = "string";
+            newNode.properties.push(zProperty);
+
             nodes.push(newNode);
         }
 
@@ -72,8 +79,7 @@ export class DiagramThriftExporter extends DiagramExporter {
     protected exportLinks(diagramParts: DiagramParts) {
         var links = [];
 
-        for (var id in diagramParts.linksMap) {
-            var link: Link = diagramParts.linksMap[id];
+        for (var link of diagramParts.linksMap.values()) {
             var jointObject = link.getJointObject();
             var newLink = new TLink();
             newLink.logicalId = link.getLogicalId();
@@ -87,8 +93,8 @@ export class DiagramThriftExporter extends DiagramExporter {
             nameProperty.type = "string";
             newLink.properties.push(nameProperty);
 
-            var sourceObject = diagramParts.nodesMap[jointObject.get('source').id];
-            var targetObject = diagramParts.nodesMap[jointObject.get('target').id];
+            var sourceObject = diagramParts.nodesMap.get(jointObject.get('source').id);
+            var targetObject = diagramParts.nodesMap.get(jointObject.get('target').id);
 
             var graphicalSourceValue: string = (sourceObject) ? sourceObject.getType() +
             "/{" + jointObject.get('source').id + "}" :
@@ -123,15 +129,15 @@ export class DiagramThriftExporter extends DiagramExporter {
         return links;
     }
 
-    protected exportProperties(properties: Map<String, Property>) {
+    protected exportProperties(properties: Map<string, Property>) {
         var newProperties = [];
-        for (var propertyName in properties) {
-            var type: string = properties[propertyName].type;
+        for (var [propertyName, property] of properties) {
+            var type: string = property.type;
             var newProperty = new TProperty();
             type = (type === "string" || type === "combobox" || type == "checkbox" || type == "dropdown") ?
                 "QString" : type;
             newProperty.name = propertyName;
-            newProperty.value = properties[propertyName].value;
+            newProperty.value = properties.get(propertyName).value;
             newProperty.type = type;
             newProperties.push(newProperty);
         }

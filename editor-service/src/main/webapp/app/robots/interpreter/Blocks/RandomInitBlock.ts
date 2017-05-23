@@ -18,9 +18,9 @@ export class RandomInitBlock extends AbstractBlock {
         this.checkExpectedNumberOfOutboundLinks(this.EXPECTED_NUMBER_OF_OUTBOUND_LINKS);
         
         var properties = this.node.getChangeableProperties();
-        var variableName = properties["Variable"].value;
-        var minValue: any = properties["LowerBound"].value;
-        var maxValue: any = properties["UpperBound"].value;
+        var variableName = properties.get("Variable").value;
+        var minValue: any = properties.get("LowerBound").value;
+        var maxValue: any = properties.get("UpperBound").value;
 
         var parser: Parser = new Parser();
         minValue = parser.parseExpression(minValue, this.interpreter);

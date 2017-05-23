@@ -17,7 +17,7 @@ export class FunctionBlock extends AbstractBlock {
         var output = this.node.getName(); + " \n";
         this.checkExpectedNumberOfOutboundLinks(this.EXPECTED_NUMBER_OF_OUTBOUND_LINKS);
         var properties = this.node.getChangeableProperties();
-        var body = properties["Body"].value;
+        var body = properties.get("Body").value;
         output += body + "\n";
 
         var parser = new Parser();

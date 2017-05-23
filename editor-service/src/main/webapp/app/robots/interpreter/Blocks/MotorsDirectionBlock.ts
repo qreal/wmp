@@ -16,7 +16,7 @@ export abstract class MotorsDirectionBlock extends MotorsBlock {
     protected getPowerProperty(): number {
         var properties = this.node.getChangeableProperties();
         var parser = new Parser();
-        var power = parser.parseExpression(properties["Power"].value, this.interpreter);
+        var power = parser.parseExpression(properties.get("Power").value, this.interpreter);
         if (power < -100 || power > 100) {
             throw new Error("Error: incorrect power value in " + this.node.getName() +
                 " (must be between -100 and 100)");

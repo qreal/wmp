@@ -1,6 +1,5 @@
 {
-
-    "elements": {
+    "flows": {
 
         "ControlFlow": {
             "name": "Control flow",
@@ -205,10 +204,31 @@
 
     "categoriesNames": {
         "Events": "Events",
-        "Gateways": "Gateways"
+        "Gateways": "Gateways",
+        "Activities": "Activities",
+        "Containers": "Containers"
     },
 
     "blocks": {
+
+        "None": {
+            "name": "None",
+            "image": {
+                "src": "images/bpmn/{0}.png"
+            },
+            "subtypes": [
+                "Start",
+                "End"
+            ],
+            "properties": [
+                {
+                    "key": "ChangeType",
+                    "name": "Type",
+                    "type": "changeType",
+                    "value": ""
+                }
+            ]
+        },
 
         "Message": {
             "name": "Message",
@@ -228,7 +248,15 @@
                 "End": [
                     "Regular"
                 ]
-            }
+            },
+            "properties": [
+                {
+                    "key": "ChangeType",
+                    "name": "Type",
+                    "type": "changeType",
+                    "value": ""
+                }
+            ]
         },
 
         "Timer": {
@@ -245,15 +273,408 @@
                     "Catch",
                     "Catch-non-interrupting"
                 ]
+            },
+            "properties": [
+                {
+                    "key": "ChangeType",
+                    "name": "Type",
+                    "type": "changeType",
+                    "value": ""
+                }
+            ]
+        },
+
+        "Escalation": {
+            "name": "Escalation",
+            "image": {
+                "src": "images/bpmn/{0}.png"
+            },
+            "subtypes": {
+                "Start" : [
+                    "Regular",
+                    "Non-interrupting"
+                ],
+                "Intermediate": [
+                    "Catch",
+                    "Catch-non-interrupting",
+                    "Throw"
+                ],
+                "End": [
+                    "Regular"
+                ]
+            },
+            "properties": [
+                {
+                    "key": "ChangeType",
+                    "name": "Type",
+                    "type": "changeType",
+                    "value": ""
+                }
+            ]
+        },
+
+        "Condition": {
+            "name": "Condition",
+            "image": {
+                "src": "images/bpmn/{0}.png"
+            },
+            "subtypes": {
+                "Start" : [
+                    "Regular",
+                    "Non-interrupting"
+                ],
+                "Intermediate": [
+                    "Catch",
+                    "Catch-non-interrupting"
+                ]
+            },
+            "properties": [
+                {
+                    "key": "ChangeType",
+                    "name": "Type",
+                    "type": "changeType",
+                    "value": ""
+                }
+            ]
+        },
+
+        "Link": {
+            "name": "Link",
+            "image": {
+                "src": "images/bpmn/{0}.png"
+            },
+            "subtypes": {
+                "Intermediate": [
+                    "Catch",
+                    "Throw"
+                ],
+                "End": [
+                    "Regular"
+                ]
+            },
+            "properties": [
+                {
+                    "key": "ChangeType",
+                    "name": "Type",
+                    "type": "changeType",
+                    "value": ""
+                }
+            ]
+        },
+
+        "Error": {
+            "name": "Error",
+            "image": {
+                "src": "images/bpmn/{0}.png"
+            },
+            "subtypes": [
+                "Start",
+                "Catch-intermediate",
+                "End"
+            ],
+            "properties": [
+                {
+                    "key": "ChangeType",
+                    "name": "Type",
+                    "type": "changeType",
+                    "value": ""
+                }
+            ]
+        },
+
+        "Cancel": {
+            "name": "Cancel",
+            "image": {
+                "src": "images/bpmn/{0}.png"
+            },
+            "subtypes": {
+                "Intermediate": [
+                    "Catch"
+                ],
+                "End": [
+                    "Regular"
+                ]
+            },
+            "properties": [
+                {
+                    "key": "ChangeType",
+                    "name": "Type",
+                    "type": "changeType",
+                    "value": ""
+                }
+            ]
+        },
+
+        "Compensation": {
+            "name": "Compensation",
+            "image": {
+                "src": "images/bpmn/{0}.png"
+            },
+            "subtypes": {
+                "Start" : [
+                    "Regular"
+                ],
+                "Intermediate": [
+                    "Catch",
+                    "Throw"
+                ],
+                "End": [
+                    "Regular"
+                ]
+            },
+            "properties": [
+                {
+                    "key": "ChangeType",
+                    "name": "Type",
+                    "type": "changeType",
+                    "value": ""
+                }
+            ]
+        },
+
+        "Signal": {
+            "name": "Signal",
+            "image": {
+                "src": "images/bpmn/{0}.png"
+            },
+            "subtypes": {
+                "Start" : [
+                    "Regular",
+                    "Non-interrupting"
+                ],
+                "Intermediate": [
+                    "Catch",
+                    "Catch-non-interrupting",
+                    "Throw"
+                ],
+                "End": [
+                    "Regular"
+                ]
+            },
+            "properties": [
+                {
+                    "key": "ChangeType",
+                    "name": "Type",
+                    "type": "changeType",
+                    "value": ""
+                }
+            ]
+        },
+
+        "Multiple": {
+            "name": "Multiple",
+            "image": {
+                "src": "images/bpmn/{0}.png"
+            },
+            "subtypes": {
+                "Start" : [
+                    "Regular",
+                    "Non-interrupting"
+                ],
+                "Intermediate": [
+                    "Catch",
+                    "Catch-non-interrupting",
+                    "Throw"
+                ],
+                "End": [
+                    "Regular"
+                ]
+            },
+            "properties": [
+                {
+                    "key": "ChangeType",
+                    "name": "Type",
+                    "type": "changeType",
+                    "value": ""
+                }
+            ]
+        },
+
+        "ParallelMultiple": {
+            "name": "Parallel Multiple",
+            "image": {
+                "src": "images/bpmn/{0}.png"
+            },
+            "subtypes": {
+                "Start" : [
+                    "Regular",
+                    "Non-interrupting"
+                ],
+                "Intermediate": [
+                    "Catch",
+                    "Catch-non-interrupting"
+                ]
+            },
+            "properties": [
+                {
+                    "key": "ChangeType",
+                    "name": "Type",
+                    "type": "changeType",
+                    "value": ""
+                }
+            ]
+        },
+
+        "Terminate": {
+            "name": "Terminate",
+            "image": {
+                "src": "images/bpmn/{0}.png"
+            },
+            "subtypes": [
+                "End"
+            ]
+        },
+
+        "Task": {
+            "name": "Task",
+            "image": {
+                "isHidden": true,
+                "src": "images/bpmn/subprocess.png"
+            },
+            "border": {
+                "stroke": "black",
+                "stroke-width": "5px",
+                "rx": "5px",
+                "ry": "5px"
+            },
+            "innerText": {
+                "fill": "#000000",
+                "font-size": 14,
+                "ref-x": 0.5,
+                "ref-y": 0.5,
+                "y-alignment": "middle",
+                "text-anchor": "middle",
+                "font-family": "Arial, helvetica, sans-serif"
+            },
+            "properties": [
+                {
+                    "key": "InnerText",
+                    "name": "Text",
+                    "type": "innerText",
+                    "value": "Task"
+                }
+            ]
+        },
+
+        "Subprocess": {
+            "name": "Subprocess",
+            "container": true,
+            "image": {
+                "isHidden": true,
+                "src": "images/bpmn/subprocess.png"
+            },
+            "border": {
+                "stroke": "black",
+                "stroke-width": "5px",
+                "rx": "5px",
+                "ry": "5px"
             }
         },
 
-        "Subprogram": {
-            "name": "Subprogram",
+        "Lane": {
+            "name": "Lane",
+            "container": true,
             "image": {
-                "src": "images/subprogramRobotsBlock.png"
+                "isHidden": true,
+                "src": "images/bpmn/lane.png"
+            },
+            "innerText": {
+                "fill": "#000000",
+                "font-size": 14,
+                "ref-x": "20px",
+                "ref-y": 0.5,
+                "transform": "rotate(270)",
+                "text-anchor": "middle",
+                "font-family": "Arial, helvetica, sans-serif"
+            },
+            "border": {
+                "stroke": "black",
+                "stroke-width": "5px"
+            },
+            "properties": [
+                {
+                    "key": "InnerText",
+                    "name": "Text",
+                    "type": "innerText",
+                    "value": "Lane"
+                }
+            ]
+        },
+
+        "Pool": {
+            "name": "Pool",
+            "container": true,
+            "image": {
+                "isHidden": true,
+                "src": "images/bpmn/pool.png"
+            }
+        },
+
+        "PoolText": {
+            "name": "PoolText",
+            "container": true,
+            "invisible": true,
+            "static": true,
+            "image": {
+                "isHidden": true,
+                "src": "images/bpmn/lane.png"
+            },
+            "border": {
+                "stroke": "black",
+                "stroke-width": "5px"
+            },
+            "innerText": {
+                "fill": "#000000",
+                "font-size": 14,
+                "ref-x": "20px",
+                "ref-y": 0.5,
+                "transform": "rotate(270)",
+                "text-anchor": "middle",
+                "font-family": "Arial, helvetica, sans-serif"
+            },
+            "properties": [
+                {
+                    "key": "InnerText",
+                    "name": "Text",
+                    "type": "innerText",
+                    "value": "Pool"
+                }
+            ]
+        },
+
+        "Exclusive": {
+            "name": "Exclusive",
+            "image": {
+                "src": "images/bpmn/exclusive-gateway.png"
+            }
+        },
+
+        "Event-Based": {
+            "name": "Event-Based",
+            "image": {
+                "src": "images/bpmn/event-based-gateway.png"
+            }
+        },
+
+        "Parallel": {
+            "name": "Parallel",
+            "image": {
+                "src": "images/bpmn/parallel-gateway.png"
+            }
+        },
+
+        "Inclusive": {
+            "name": "Inclusive",
+            "image": {
+                "src": "images/bpmn/inclusive-gateway.png"
+            }
+        },
+
+        "Complex": {
+            "name": "Complex",
+            "image": {
+                "src": "images/bpmn/complex-gateway.png"
             }
         }
     }
-
 }

@@ -14,6 +14,9 @@ import {DiagramElementListener} from "./DiagramElementListener";
 import {SceneCommandFactory} from "../model/commands/SceneCommandFactory";
 import {DiagramEditorController} from "./DiagramEditorController";
 import {UndoRedoController} from "./UndoRedoController";
+import {DiagramContainer} from "../model/DiagramContainer";
+import {EmbedCommand} from "../model/commands/EmbedCommand";
+import ILocaleNumberPatternDescriptor = ng.ILocaleNumberPatternDescriptor;
 export class SceneController {
 
     private diagramEditorController: DiagramEditorController;
@@ -64,7 +67,9 @@ export class SceneController {
         this.initCustomContextMenu();
         this.initPropertyEditorListener();
 
-        DiagramElementListener.makeAndExecuteCreateLinkCommand = (linkObject: Link): void => {
+        DiagramElementListener.makeAndExecuteCreateLinkCommand = (jointObject: joint.dia.Link, name: string, type: string,
+                                                                  properties: Map<string, Property>): void => {
+            var linkObject: Link = this.diagramEditorController.getElementConstructor().createLink(jointObject, name, type, properties);
             this.makeAndExecuteCreateLinkCommand(linkObject);
         };
     }
@@ -82,49 +87,53 @@ export class SceneController {
 
     public createLink(sourceId: string, target: any): void {
 
-        var link: joint.dia.Link = this.scene.getCurrentLinkType();
+        var link: joint.dia.Link = this.scene.getCurrentLinkPattern();
         link.set({
             source: { id: sourceId },
             target: target
         });
 
         var nodeType: NodeType = this.diagramEditorController.getNodeType(this.scene.getCurrentLinkTypeName());
-        var typeProperties: Map<String, Property> = nodeType.getPropertiesMap();
+        var typeProperties: Map<string, Property> = nodeType.getPropertiesMap();
 
-        var linkProperties: Map<String, Property> = new Map<String, Property>();
-        for (var property in typeProperties) {
-            linkProperties[property] = new Property(typeProperties[property].name,
-                typeProperties[property].type, typeProperties[property].value);
+        var linkProperties: Map<string, Property> = new Map<string, Property>();
+        for (var [propertyName, property] of typeProperties) {
+            linkProperties.set(propertyName, new Property(property.name, property.type, property.value));
         }
 
-        var linkObject: Link = new Link(link, nodeType.getShownName(), nodeType.getName(), linkProperties);
+        var linkObject: Link = this.diagramEditorController.getElementConstructor().createLink(link,
+            nodeType.getShownName(), nodeType.getName(), linkProperties);
 
         this.makeAndExecuteCreateLinkCommand(linkObject);
     }
 
-    public createNode(type: string, x: number, y: number, subprogramId?: string, subprogramName?: string): void {
-        var image: string = this.diagramEditorController.getNodeType(type).getImage();
-        var name: string = this.diagramEditorController.getNodeType(type).getName();
-
-        var typeProperties: Map<String, Property> = this.diagramEditorController.getNodeType(type).getPropertiesMap();
-
-        var nodeProperties: Map<String, Property> = new Map<String, Property>();
-        for (var property in typeProperties) {
-            nodeProperties[property] = new Property(typeProperties[property].name, typeProperties[property].type,
-                typeProperties[property].value);
-        }
-
+    public createNode(type: string, x: number, y: number, event: any, subprogramId?: string, subprogramName?: string): void {
+        var nodeType: NodeType = this.diagramEditorController.getNodeType(type);
         var node: DiagramNode;
         if (subprogramId) {
-            node = new SubprogramNode(subprogramName, type, x, y, DefaultSize.DEFAULT_NODE_WIDTH,
-                DefaultSize.DEFAULT_NODE_HEIGHT, nodeProperties, image, subprogramId);
+            node = new SubprogramNode(nodeType, x, y, DefaultSize.DEFAULT_NODE_WIDTH, DefaultSize.DEFAULT_NODE_HEIGHT,
+                nodeType.getPropertiesMap(), subprogramId);
         } else {
-            node = new DefaultDiagramNode(name, type, x, y, DefaultSize.DEFAULT_NODE_WIDTH,
-                DefaultSize.DEFAULT_NODE_HEIGHT, nodeProperties, image);
+            node = this.diagramEditorController.getElementConstructor().createNode(nodeType, x, y,
+                DefaultSize.DEFAULT_NODE_WIDTH, DefaultSize.DEFAULT_NODE_HEIGHT, nodeType.getPropertiesMap());
         }
 
-        var command: Command = new MultiCommand([this.paperCommandFactory.makeCreateNodeCommand(node),
-            this.paperCommandFactory.makeChangeCurrentElementCommand(node, this.currentElement)]);
+        var command: MultiCommand = new MultiCommand([this.paperCommandFactory.makeCreateNodeCommand(node)]);
+
+        if (node instanceof DiagramContainer)
+            this.createContainerCommands(node).forEach((containerCommand: Command) => command.add(containerCommand));
+
+        command.add(this.paperCommandFactory.makeChangeCurrentElementCommand(node, this.currentElement));
+
+        var controller: SceneController = this;
+        var elementBelow = controller.getElementBelow(event, function(cell: joint.dia.Element) {
+            return !(cell instanceof joint.dia.Link) &&
+                controller.diagramEditorController.getNodesMap().get(cell.id).isValidEmbedding(node);
+        });
+        if (elementBelow) {
+            command.add(this.paperCommandFactory.makeEmbedCommand(node,
+                <DiagramContainer> this.diagramEditorController.getNodesMap().get(elementBelow.id), null));
+        }
         this.undoRedoController.addCommand(command);
         command.execute();
     }
@@ -146,7 +155,7 @@ export class SceneController {
             return;
         }
         if (filteredNames.length === 1) {
-            this.createNode(filteredNames[0], offsetX, offsetY);
+            this.createNode(filteredNames[0], offsetX, offsetY, event);
             return;
         }
 
@@ -155,7 +164,7 @@ export class SceneController {
             items.push(
                 {
                     "name": filteredNames[i],
-                    "action": ((type, offsetX, offsetY) => { this.createNode(type, offsetX, offsetY);})
+                    "action": ((type, offsetX, offsetY) => { this.createNode(type, offsetX, offsetY, event);})
                         .bind(this, filteredNames[i], offsetX, offsetY)
                 });
         }
@@ -171,7 +180,7 @@ export class SceneController {
 
     public createLinkBetweenCurrentAndEventTargetElements(event): void {
         var controller = this;
-        var elementBelow = this.getElementBelow(event, function(cell) {
+        var elementBelow = this.getElementBelow(event, function(cell: joint.dia.Element) {
             return !(cell instanceof joint.dia.Link || cell.id === controller.currentElement.getJointObject().id) && controller.rightClickFlag;
         });
         if (elementBelow) {
@@ -234,6 +243,13 @@ export class SceneController {
         this.scene.addLinkToPaper(link);
     }
 
+    public changeElementType(element: DiagramElement, type: string) {
+        var nodeType: NodeType = this.diagramEditorController.getNodeType(type);
+        if (element instanceof DefaultDiagramNode) {
+            element.setNodeType(nodeType);
+        }
+    }
+
     private blankPoinerdownListener(event, x, y): void {
         this.changeCurrentElement(null);
     }
@@ -247,7 +263,7 @@ export class SceneController {
         this.changeCurrentElement(element);
 
         if (this.scene.getNodeById(cellView.model.id) && event.button == MouseButton.left) {
-            var node:DiagramNode = this.scene.getNodeById(cellView.model.id);
+            var node: DiagramNode = this.scene.getNodeById(cellView.model.id);
             this.lastCellMouseDownPosition.x = node.getX();
             this.lastCellMouseDownPosition.y = node.getY();
             var bbox = cellView.getBBox();
@@ -269,29 +285,20 @@ export class SceneController {
                 top: event.pageY - $(document).scrollTop() + "px"
 
             });
-        } else if (event.button == MouseButton.left){
+        } else if (event.button == MouseButton.left) {
             var node: DiagramNode = this.scene.getNodeById(cellView.model.id);
             if (node) {
                 if (node.isResizing()) {
                     var bbox = cellView.getBBox();
-                    var command : Command = this.paperCommandFactory.makeResizeCommand(
+                    let command: Command = this.paperCommandFactory.makeResizeCommand(
                         node,
                         this.lastCellMouseDownSize.width,
                         this.lastCellMouseDownSize.height,
                         bbox.width,
-                        bbox.height,
-                        cellView);
+                        bbox.height);
                     this.undoRedoController.addCommand(command);
                 } else {
-                    var command: Command = this.paperCommandFactory.makeMoveCommand(
-                        node,
-                        this.lastCellMouseDownPosition.x,
-                        this.lastCellMouseDownPosition.y,
-                        node.getX(),
-                        node.getY(),
-                        this.scene.getZoom(),
-                        cellView);
-                    this.undoRedoController.addCommand(command);
+                    this.moveNode(cellView, node);
                 }
                 node.completeResize();
                 cellView.unhighlight(cellView.model.id);
@@ -305,6 +312,32 @@ export class SceneController {
         if (node) {
             node.pointermove(cellView, event, x, y);
         }
+    }
+
+    private moveNode(cellView, node: DiagramNode): void {
+
+        if (this.lastCellMouseDownPosition.x === node.getX() && this.lastCellMouseDownPosition.y === node.getY())
+            return;
+
+        let command: MultiCommand = new MultiCommand([]);
+
+        var parent: DiagramContainer = <DiagramContainer> this.scene.getNodeById(node.getJointObject().get('parent'));
+        var oldParent: DiagramContainer = node.getParentNode();
+        var embedCommand = this.paperCommandFactory.makeEmbedCommand(node, parent, oldParent);
+        embedCommand.execute();
+        command.add(embedCommand);
+        command.add(this.paperCommandFactory.makeMoveCommand(
+            node,
+            this.lastCellMouseDownPosition.x,
+            this.lastCellMouseDownPosition.y,
+            node.getX(),
+            node.getY(),
+            this.scene.getZoom(),
+            cellView));
+        //FIXME: double embedCommand adding for correct undo-redo work.
+        command.add(embedCommand);
+
+        this.undoRedoController.addCommand(command);
     }
 
     private initDropPaletteElementListener(): void {
@@ -324,7 +357,7 @@ export class SceneController {
                 var type = $(ui.draggable.context).data("type");
 
                 if (paper.getCurrentLinkTypeName() == type) {
-                    var elementBelow = controller.getElementBelow(event, function(cell) {
+                    var elementBelow = controller.getElementBelow(event, function(cell: joint.dia.Element) {
                         return !(cell instanceof joint.dia.Link);
                     });
                     if (elementBelow) {
@@ -335,7 +368,7 @@ export class SceneController {
                         });
                     }
                 } else {
-                    controller.createNode(type, leftElementPos, topElementPos, $(ui.draggable.context).data("id"),
+                    controller.createNode(type, leftElementPos, topElementPos, event, $(ui.draggable.context).data("id"),
                         $(ui.draggable.context).data("name"));
                 }
             }
@@ -343,7 +376,10 @@ export class SceneController {
     }
 
     private selectElement(jointObject): void {
+        jointObject.toFront({deep: true});
         var jQueryEl = this.scene.findViewByModel(jointObject).$el;
+        if (!jQueryEl)
+            return;
         var oldClasses = jQueryEl.attr('class');
         jQueryEl.attr('class', oldClasses + ' selected');
     }
@@ -351,6 +387,8 @@ export class SceneController {
     private unselectElement(jointObject): void {
         $('input:text').blur();
         var jQueryEl = this.scene.findViewByModel(jointObject).$el;
+        if (!jQueryEl)
+            return;
         var removedClass = jQueryEl.attr('class').replace(new RegExp('(\\s|^)selected(\\s|$)', 'g'), '$2');
         jQueryEl.attr('class', removedClass);
     }
@@ -384,20 +422,50 @@ export class SceneController {
     }
 
     private removeCurrentElement(): void {
-        var removeCommands: Command[] = [];
-        removeCommands.push(this.paperCommandFactory.makeChangeCurrentElementCommand(null, this.currentElement));
-        if (this.currentElement instanceof DefaultDiagramNode) {
-            var node: DiagramNode = <DiagramNode> this.currentElement;
-            var connectedLinks: Link[] = this.scene.getConnectedLinkObjects(node);
-            connectedLinks.forEach((link: Link) => removeCommands.push(
-                this.paperCommandFactory.makeRemoveLinkCommand(link)));
-            removeCommands.push(this.paperCommandFactory.makeRemoveNodeCommand(node));
-        } else if (this.currentElement instanceof Link) {
-            removeCommands.push(this.paperCommandFactory.makeRemoveLinkCommand(<Link> this.currentElement));
+        var removedNodes: Set<DiagramNode> = new Set<DiagramNode>();
+        var removedLinks: Set<Link> = new Set<Link>();
+        var multiCommand: MultiCommand = new MultiCommand([this.paperCommandFactory.makeChangeCurrentElementCommand(null,
+            this.currentElement)]);
+
+        if (this.currentElement instanceof Link) {
+            removedLinks.add(<Link> this.currentElement);
+        } else {
+            this.getDependentNodes(<DiagramNode> this.currentElement).forEach((node: DiagramNode) => {
+                removedNodes.add(node);
+            })
         }
-        var multiCommand : Command = new MultiCommand(removeCommands);
+
+        removedNodes.forEach((node: DiagramNode) => {
+            this.scene.getConnectedLinkObjects(node).forEach((link: Link) => {
+                removedLinks.add(link);
+            });
+        });
+
+        removedLinks.forEach((link: Link) => {
+            multiCommand.add(this.paperCommandFactory.makeRemoveLinkCommand(link));
+        });
+
+        removedNodes.forEach((node: DiagramNode) => {
+            multiCommand.add(this.paperCommandFactory.makeEmbedCommand(node, null, node.getParentNode()));
+            multiCommand.add(this.paperCommandFactory.makeRemoveNodeCommand(node));
+        });
+
         this.undoRedoController.addCommand(multiCommand);
         multiCommand.execute();
+    }
+
+    private getDependentNodes(node: DiagramNode): DiagramNode[] {
+        var elements: DiagramNode[] = [];
+        if (node instanceof DiagramContainer) {
+            var embeddedCells: joint.dia.Cell[] = node.getJointObject().getEmbeddedCells();
+            for (var i = 0; i < embeddedCells.length; i++) {
+                var diagramNode: DiagramNode = this.scene.getNodeById(embeddedCells[i].id);
+                if (diagramNode)
+                    elements.push(...this.getDependentNodes(diagramNode));
+            }
+        }
+        elements.push(node);
+        return elements;
     }
 
     private initPropertyEditorListener(): void {
@@ -407,23 +475,42 @@ export class SceneController {
         });
     }
 
-    private getElementBelow(event: any, checker?: (cell: any) => boolean) {
+    private getElementBelow(event: any, checker?: (cell: joint.dia.Element) => boolean): joint.dia.Element {
         var diagramPaper: HTMLDivElement = <HTMLDivElement> document.getElementById(this.scene.getId());
-        return this.diagramEditorController.getGraph().get('cells').find((cell) => {
+        var chosenElement: joint.dia.Element = null;
+        var chosenZ: number = -1;
+        var cells: joint.dia.Element[] = this.diagramEditorController.getGraph().get('cells');
+        cells.forEach((cell: joint.dia.Element) => {
             if (checker && !checker(cell))
-                return false;
-            var mXBegin = cell.getBBox().origin().x;
-            var mYBegin = cell.getBBox().origin().y;
-            var mXEnd = cell.getBBox().corner().x;
-            var mYEnd = cell.getBBox().corner().y;
+                return;
 
-            var leftElementPos:number = (event.pageX - $(diagramPaper).offset().left + $(diagramPaper).scrollLeft()) /
+            var mXBegin = cell.getBBox().x;
+            var mYBegin = cell.getBBox().y;
+            var mXEnd = cell.getBBox().x + cell.getBBox().width;
+            var mYEnd = cell.getBBox().y + cell.getBBox().height;
+            var leftElementPos: number = (event.pageX - $(diagramPaper).offset().left + $(diagramPaper).scrollLeft()) /
                 this.scene.getZoom();
-            var topElementPos:number = (event.pageY - $(diagramPaper).offset().top + $(diagramPaper).scrollTop()) /
+            var topElementPos: number = (event.pageY - $(diagramPaper).offset().top + $(diagramPaper).scrollTop()) /
                 this.scene.getZoom();
 
-            return ((mXBegin <= leftElementPos) && (mXEnd >= leftElementPos)
-            && (mYBegin <= topElementPos) && (mYEnd >= topElementPos));
+            if ((mXBegin <= leftElementPos) && (mXEnd >= leftElementPos)
+                && (mYBegin <= topElementPos) && (mYEnd >= topElementPos)
+                && (!chosenElement || cell.get("z") > chosenZ)) {
+                    chosenElement = cell;
+                    chosenZ = cell.get("z");
+            }
         });
+        return chosenElement;
+    }
+
+    private createContainerCommands(node: DiagramContainer): Command[] {
+        var commands: Command[] = [];
+        node.getChildrenNodes().forEach((child: DiagramNode) => {
+            commands.push(this.paperCommandFactory.makeCreateNodeCommand(child));
+            commands.push(this.paperCommandFactory.makeEmbedCommand(child, node, null));
+            if (child instanceof DiagramContainer)
+                commands.push(...this.createContainerCommands(child));
+        });
+        return commands;
     }
 }

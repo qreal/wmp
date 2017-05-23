@@ -16,7 +16,7 @@ export class TrikSetPainterColorBlock extends AbstractBlock {
         var output = this.node.getName(); + "\n";
         this.checkExpectedNumberOfOutboundLinks(this.EXPECTED_NUMBER_OF_OUTBOUND_LINKS);
         
-        var color: string = this.node.getChangeableProperties()["Color"].value;
+        var color: string = this.node.getChangeableProperties().get("Color").value;
         this.interpreter.addOrChangeEnvironmentVariable("painterColor", color);
         
         console.log(output);

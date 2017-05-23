@@ -17,7 +17,7 @@ export abstract class MotorsBlock extends AbstractBlock {
         var output = this.node.getName(); + "\n";
         this.checkExpectedNumberOfOutboundLinks(this.EXPECTED_NUMBER_OF_OUTBOUND_LINKS);
         var properties = this.node.getChangeableProperties();
-        var ports = properties["Ports"].value.replace(/ /g,'').split(",");
+        var ports = properties.get("Ports").value.replace(/ /g,'').split(",");
         
         var power: number = this.getPower();
         output += "Ports: " + ports + "\n" + "Power: " + power + "\n";

@@ -6,6 +6,8 @@ export interface DiagramElement {
     getName(): string;
     getType(): string;
     getConstPropertiesPack(): PropertiesPack;
-    getChangeableProperties(): Map<String, Property>;
+    getChangeableProperties(): Map<string, Property>;
     setProperty(name: string, property: Property): void;
+    onAddition(): void;
+    onDeletion(): void;
 }

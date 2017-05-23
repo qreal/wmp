@@ -3,9 +3,10 @@ import {DiagramMenuController} from "../../../common/menu/controller/DiagramMenu
 import {GesturesController} from "../../../common/gestures/GesturesController";
 import {ElementTypes} from "core/editorCore/model/ElementTypes";
 import {DiagramScene} from "core/editorCore/model/DiagramScene";
-import {DiagramEditorController} from "core/editorCore/controller/DiagramEditorController";
+import {DiagramEditorController} from "core/editorCore/controller/DiagramEditorController"
 import app = require("../../../require/app");
 import {Interpreter} from "../../../robots/interpreter/Interpreter";
+import {BpmnElementConstructor} from "../model/BpmnElementConstructor";
 export class BpmnDiagramEditorController extends DiagramEditorController {
 
     private menuController: DiagramMenuController;
@@ -18,17 +19,16 @@ export class BpmnDiagramEditorController extends DiagramEditorController {
         super($scope, $attrs);
 
         var scene: DiagramScene = this.diagramEditor.getScene();
-        this.menuController = new DiagramMenuController(this);
         this.gesturesController = new GesturesController(this.sceneController, this.diagramEditor.getScene());
         this.diagramInterpreter = new Interpreter();
+        this.elementConstructor = new BpmnElementConstructor(this);
+        this.menuController = new DiagramMenuController(this);
 
         document.addEventListener('mousedown', (event) => { this.gesturesController.onMouseDown(event) } );
         document.addEventListener('mouseup', (event) => { this.gesturesController.onMouseUp(event) } );
         $("#" + scene.getId()).mousemove((event) => { this.gesturesController.onMouseMove(event) } );
         $("#elements-search").on('input', (event) => {
-            this.paletteController.searchPaletteReload(event, this.elementTypes, this.nodeTypesMap);
-            this.paletteController.initClick(this.diagramEditor.getScene());
-            this.paletteController.initDraggable();
+            this.paletteController.searchPaletteReload(event);
         } );
 
         (scene as any).on('cell:pointerdown', (cellView, event, x, y): void => {
