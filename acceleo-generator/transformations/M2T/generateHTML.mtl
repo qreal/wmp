@@ -1,0 +1,19 @@
+[comment encoding = UTF-8 /]
+[module generateHTML('http://ualberta.ssrg.publication')]
+[template public generateHTML(aDatabase : Database)]
+[comment @main/]
+[file ('index.html', false, 'UTF-8')]
+<h2> Publication Database </h2>
+<table border="" style="with:50%">
+[for (p : Publication | publications)]
+	<tr>
+		<td>
+			<p><h4>[p.title/]</h4></p>
+			<p>[p.prologue/]</p>
+			<p>Total Pages: [p.nbPages/]</p>
+		</td>
+	</tr>
+[/for]
+</table>
+[/file]
+[/template]

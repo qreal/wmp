@@ -4,6 +4,7 @@ import com.qreal.wmp.editor.common.utils.AuthenticatedUser;
 import com.qreal.wmp.editor.database.exceptions.AbortedException;
 import com.qreal.wmp.editor.database.exceptions.ErrorConnectionException;
 import com.qreal.wmp.editor.database.exceptions.NotFoundException;
+import com.qreal.wmp.editor.database.palettes.client.AcceleoService;
 import com.qreal.wmp.editor.database.palettes.client.PaletteService;
 import com.qreal.wmp.editor.database.palettes.model.Palette;
 import com.qreal.wmp.editor.database.palettes.model.PaletteView;
@@ -103,5 +104,25 @@ public class PaletteServletHandler implements PaletteServiceThrift.Iface {
             logger.error("TException was not translated", e);
         }
         return result;
+    }
+
+    @Override
+    public void createMetamodel(TPalette palette) {
+        AcceleoService acceleoGeneratorService = (AcceleoService)
+                context.getBean("acceleoGeneratorService");
+        Palette newPalette = new Palette(palette);
+        try {
+            acceleoGeneratorService.createMetamodel(newPalette);
+        } catch (AbortedException e) {
+            //TODO Here we should not return 0, but send exception to client side.
+            logger.error("createPalette method encountered exception Aborted. Instead of paletteId will be returned 0.",
+                    e);
+        } catch (ErrorConnectionException e) {
+            //TODO Here we should not return 0, but send exception to client side.
+            logger.error("createPalette method encountered exception ErrorConnection. Instead of paletteId will be " +
+                    "returned 0.", e);
+        } catch (TException e) {
+            logger.error("TException was not translated", e);
+        }
     }
 }

@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/acceleo-generator/acceleo-generator.iml" filepath="$PROJECT_DIR$/acceleo-generator/acceleo-generator.iml" />
       <module fileurl="file://$PROJECT_DIR$/deployment/allintomcat/allintomcat-deployment.iml" filepath="$PROJECT_DIR$/deployment/allintomcat/allintomcat-deployment.iml" />
       <module fileurl="file://$PROJECT_DIR$/dependencies/auth-deps/auth-deps.iml" filepath="$PROJECT_DIR$/dependencies/auth-deps/auth-deps.iml" />
       <module fileurl="file://$PROJECT_DIR$/auth-service/auth-service.iml" filepath="$PROJECT_DIR$/auth-service/auth-service.iml" />

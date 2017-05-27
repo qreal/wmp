@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:atl="http://www.eclipse.org/gmt/2005/ATL" xmlns:ocl="http://www.eclipse.org/gmt/2005/OCL">
+  <atl:Module location="5:1-34:2" name="Book2Publication">
+    <commentsBefore>-- @path Book=/Book2Publication/metamodels/Book.ecore</commentsBefore>
+    <commentsBefore>-- @path Publication=/Book2Publication/metamodels/Publication.ecore</commentsBefore>
+    <commentsBefore>-- @atlcompiler emftvm</commentsBefore>
+    <inModels location="6:31-6:40" name="IN" metamodel="/2"/>
+    <outModels location="6:8-6:25" name="OUT" metamodel="/1"/>
+    <elements xsi:type="atl:MatchedRule" location="10:1-17:2" name="Main">
+      <commentsBefore>-- Main matched rule.</commentsBefore>
+      <commentsAfter>-- Transforms a book into an anonymus publication entry</commentsAfter>
+      <outPattern location="13:4-16:7">
+        <elements xsi:type="atl:SimpleOutPatternElement" location="14:6-16:7" varName="db">
+          <type xsi:type="ocl:OclModelElement" location="14:10-14:30" name="Database" model="/1"/>
+          <bindings location="15:7-15:30" propertyName="publications">
+            <value xsi:type="ocl:NavigationOrAttributeCallExp" location="15:23-15:30" name="books">
+              <source xsi:type="ocl:VariableExp" location="15:23-15:24" referredVariable="/0/@elements.0/@inPattern/@elements.0"/>
+            </value>
+          </bindings>
+        </elements>
+      </outPattern>
+      <inPattern location="11:4-12:18">
+        <elements xsi:type="atl:SimpleInPatternElement" location="12:3-12:18" varName="l" variableExp="/0/@elements.0/@outPattern/@elements.0/@bindings.0/@value/@source">
+          <type xsi:type="ocl:OclModelElement" location="12:6-12:18" name="Library" model="/2"/>
+        </elements>
+      </inPattern>
+    </elements>
+    <elements xsi:type="atl:MatchedRule" location="20:1-29:2" name="BookElem2PublicationElem">
+      <commentsBefore>-- Transforms a book into an anonymus publication entry</commentsBefore>
+      <commentsAfter>-- Computes the sum of all pages given a Book</commentsAfter>
+      <outPattern location="23:3-28:5">
+        <elements xsi:type="atl:SimpleOutPatternElement" location="24:5-28:5" varName="p">
+          <type xsi:type="ocl:OclModelElement" location="24:9-24:32" name="Publication" model="/1"/>
+          <bindings location="25:7-25:23" propertyName="title">
+            <value xsi:type="ocl:NavigationOrAttributeCallExp" location="25:16-25:23" name="title">
+              <source xsi:type="ocl:VariableExp" location="25:16-25:17" referredVariable="/0/@elements.1/@inPattern/@elements.0"/>
+            </value>
+          </bindings>
+          <bindings location="26:7-26:52" propertyName="prologue">
+            <value xsi:type="ocl:NavigationOrAttributeCallExp" location="26:19-26:52" name="content">
+              <source xsi:type="ocl:NavigationOrAttributeCallExp" location="26:19-26:44" name="digest">
+                <source xsi:type="ocl:OperationCallExp" location="26:19-26:37" operationName="first">
+                  <source xsi:type="ocl:NavigationOrAttributeCallExp" location="26:19-26:29" name="chapters">
+                    <source xsi:type="ocl:VariableExp" location="26:19-26:20" referredVariable="/0/@elements.1/@inPattern/@elements.0"/>
+                  </source>
+                </source>
+              </source>
+            </value>
+          </bindings>
+          <bindings location="27:7-27:33" propertyName="nbPages">
+            <value xsi:type="ocl:OperationCallExp" location="27:18-27:33" operationName="getSumPages">
+              <source xsi:type="ocl:VariableExp" location="27:18-27:19" referredVariable="/0/@elements.1/@inPattern/@elements.0"/>
+            </value>
+          </bindings>
+        </elements>
+      </outPattern>
+      <inPattern location="21:3-22:18">
+        <elements xsi:type="atl:SimpleInPatternElement" location="22:5-22:18" varName="b" variableExp="/0/@elements.1/@outPattern/@elements.0/@bindings.0/@value/@source /0/@elements.1/@outPattern/@elements.0/@bindings.1/@value/@source/@source/@source/@source /0/@elements.1/@outPattern/@elements.0/@bindings.2/@value/@source">
+          <type xsi:type="ocl:OclModelElement" location="22:9-22:18" name="Book" model="/2"/>
+        </elements>
+      </inPattern>
+    </elements>
+    <elements xsi:type="atl:Helper" location="32:1-34:2">
+      <commentsBefore>-- Computes the sum of all pages given a Book</commentsBefore>
+      <definition location="32:8-33:48">
+        <feature xsi:type="ocl:Operation" location="32:32-33:48" name="getSumPages">
+          <returnType xsi:type="ocl:IntegerType" location="32:48-32:55"/>
+          <body xsi:type="ocl:OperationCallExp" location="33:7-33:48" operationName="sum">
+            <source xsi:type="ocl:IteratorExp" location="33:7-33:42" name="collect">
+              <source xsi:type="ocl:NavigationOrAttributeCallExp" location="33:7-33:20" name="chapters">
+                <source xsi:type="ocl:VariableExp" location="33:7-33:11" referredVariable="/3"/>
+              </source>
+              <body xsi:type="ocl:NavigationOrAttributeCallExp" location="33:32-33:41" name="nbPages">
+                <source xsi:type="ocl:VariableExp" location="33:32-33:33" referredVariable="/0/@elements.2/@definition/@feature/@body/@source/@iterators.0"/>
+              </body>
+              <iterators location="33:30-33:31" varName="f" variableExp="/0/@elements.2/@definition/@feature/@body/@source/@body/@source"/>
+            </source>
+          </body>
+        </feature>
+        <context_ location="32:8-32:25">
+          <context_ xsi:type="ocl:OclModelElement" location="32:16-32:25" name="Book" model="/2"/>
+        </context_>
+      </definition>
+    </elements>
+  </atl:Module>
+  <ocl:OclModel location="6:14-6:25" name="Publication" elements="/0/@elements.0/@outPattern/@elements.0/@type /0/@elements.1/@outPattern/@elements.0/@type" model="/0/@outModels.0"/>
+  <ocl:OclModel location="6:36-6:40" name="Book" elements="/0/@elements.0/@inPattern/@elements.0/@type /0/@elements.1/@inPattern/@elements.0/@type /0/@elements.2/@definition/@context_/@context_" model="/0/@inModels.0"/>
+  <ocl:VariableDeclaration location="33:7-33:11" varName="self" variableExp="/0/@elements.2/@definition/@feature/@body/@source/@source/@source"/>
+</xmi:XMI>

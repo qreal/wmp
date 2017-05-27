@@ -7,20 +7,10 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="allintomcat-deployment" />
-        <module name="auth-service" />
-        <module name="dashboard-service" />
-        <module name="db-diagram-service" />
-        <module name="db-palette-service" />
-        <module name="db-robot-store-service" />
-        <module name="db-user-service" />
-        <module name="editor-core" />
-        <module name="editor-service" />
-        <module name="spring-security-oauth2-client" />
-        <module name="ui-testing" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="acceleo-generator" target="1.8" />
       <module name="allintomcat-deployment" target="1.8" />
       <module name="auth-deps" target="1.5" />
       <module name="auth-service" target="1.8" />

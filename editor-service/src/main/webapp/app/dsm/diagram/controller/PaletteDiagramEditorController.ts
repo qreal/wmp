@@ -16,6 +16,8 @@ export class PaletteDiagramEditorController extends DiagramEditorController {
     private parser: PaletteParser;
     private palettes: PaletteView[] = [];
     private availableCreate: boolean = true;
+    private availableGenerate: boolean = false;
+
     //Hack for firefox
     static $$ngIsClass: boolean;
 
@@ -58,11 +60,13 @@ export class PaletteDiagramEditorController extends DiagramEditorController {
                 var palette = this.exporter.exportPalette(controller.getNodesMap(), controller.getLinksMap(), name);
                 try {
                     var id = controller.getClient().createPalette(palette);
+                    controller.getClient().createMetamodel(palette);
                     controller.clearState();
                     controller.paletteController.clearBlocksPalette();
                     controller.handleLoadedTypes(controller.parser.parse(palette));
                     controller.palettes.push(new PaletteView(id, name));
                     this.availableCreate = false;
+                    this.availableGenerate = true;
                 }
                 catch (e) {
                     console.log("Error: can't create palette", e);
