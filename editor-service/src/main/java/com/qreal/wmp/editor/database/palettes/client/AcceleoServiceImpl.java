@@ -3,6 +3,7 @@ package com.qreal.wmp.editor.database.palettes.client;
 import com.qreal.wmp.editor.common.utils.AuthenticatedUser;
 import com.qreal.wmp.editor.database.exceptions.AbortedException;
 import com.qreal.wmp.editor.database.exceptions.ErrorConnectionException;
+import com.qreal.wmp.editor.database.palettes.model.Model;
 import com.qreal.wmp.editor.database.palettes.model.Palette;
 import org.apache.thrift.TException;
 import org.apache.thrift.protocol.TBinaryProtocol;
@@ -17,6 +18,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 import com.qreal.wmp.thrift.gen.AcceleoServiceThrift;
 import com.qreal.wmp.thrift.gen.TPalette;
+import com.qreal.wmp.thrift.gen.TModel;
 
 import javax.annotation.PostConstruct;
 
@@ -61,5 +63,21 @@ public class AcceleoServiceImpl implements AcceleoService {
             transport.close();
         }
         logger.trace("createMetamodel() successfully created palette {}", palette.getName());
+    }
+
+    @Override
+    public void createModel(@NotNull Model model) throws AbortedException, ErrorConnectionException, TException
+    {
+        logger.trace("createModel() was called with parameters: name = {}.", model.getName());
+        transport.open();
+        String user = AuthenticatedUser.getUserName();
+        model.setUserName(user);
+        try {
+            TModel newModel = model.toTModel();
+            client.createModel(newModel);
+        } finally {
+            transport.close();
+        }
+        logger.trace("createModel() successfully created palette {}", model.getName());
     }
 }
