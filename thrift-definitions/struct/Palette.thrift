@@ -29,5 +29,6 @@ struct TPaletteView {
 struct TModel {
     1 : string name,
     2 : string user,
-    3 : set<TNode> nodes
+    3 : set<TNode> nodes,
+    4 : string metamodelName
 }

@@ -271,5 +271,11 @@
       </exclusions>
     </dependency>
 
+    <dependency>
+      <groupId>MTC</groupId>
+      <artifactId>launcher</artifactId>
+      <version>1.0</version>
+    </dependency>
+
   </dependencies>
 </project>

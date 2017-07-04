@@ -7,9 +7,11 @@ import {Link} from "core/editorCore/model/Link";
 import {DiagramNode} from "core/editorCore/model/DiagramNode";
 
 export class ModelExporter {
-    public exportModel(nodesMap: Map<String, DiagramNode>, linksMap: Map<String, Link>, name: string) {
+    public exportModel(nodesMap: Map<String, DiagramNode>, linksMap: Map<String, Link>, name: string,
+                       metamodelName: string) {
         var newModel = new TModel();
         newModel.name = name;
+        newModel.metamodelName = metamodelName;
         newModel.nodes = this.exportNodes(nodesMap, linksMap);
 
         return newModel;
@@ -36,19 +38,30 @@ export class ModelExporter {
             }
         }
 
-        var node: DiagramNode = nodesMap[initial];
-        var newNode = new TNode();
-        newNode.name = node.getName();
-        newNode.properties = this.exportProperties(node.getChangeableProperties());
-        for (var id in linksMap) {
-            var link = linksMap[id];
-            var jointObject = link.getJointObject();
-            if (nodesMap[jointObject.get('source').id] === node) {
-                initial = jointObject.get('target').id;
+        console.log(initial);
+        var existNext: boolean = true;
+        while(existNext) {
+            var node: DiagramNode = nodesMap[initial];
+            var newNode = new TNode();
+            newNode.name = node.getName();
+            newNode.properties = this.exportProperties(node.getChangeableProperties());
+            for (var id in linksMap) {
+                var link = linksMap[id];
+                var jointObject = link.getJointObject();
+                if (nodesMap[jointObject.get('source').id] === node) {
+                    console.log(initial);
+                    initial = jointObject.get('target').id;
+                    console.log(initial);
+                }
+                else {
+                    existNext = false;
+                }
             }
+            console.log(newNode);
+            nodes.push(newNode);
         }
-        nodes.push(newNode);
 
+        console.log(nodes);
         return nodes;
     }
 

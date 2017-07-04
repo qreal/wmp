@@ -19,6 +19,7 @@ export class PaletteDiagramEditorController extends DiagramEditorController {
     private availableCreate: boolean = true;
     private availableGenerate: boolean = false;
     private modelExporter: ModelExporter;
+    private nameOfCurrentMetamodel: string = "";
 
     //Hack for firefox
     static $$ngIsClass: boolean;
@@ -44,11 +45,10 @@ export class PaletteDiagramEditorController extends DiagramEditorController {
             this.paletteController.initClick(this.diagramEditor.getScene());
         } );
 
-        var controller = this;
         try {
-            var tPalettes: TPaletteView[] = controller.getClient().getPaletteViews();
+            var tPalettes: TPaletteView[] = this.getClient().getPaletteViews();
             for (var i = 0; i < tPalettes.length; i++) {
-                controller.palettes.push(PaletteView.createFromDAO(tPalettes[i]));
+                this.palettes.push(PaletteView.createFromDAO(tPalettes[i]));
             }
         }
         catch (e) {
@@ -60,14 +60,14 @@ export class PaletteDiagramEditorController extends DiagramEditorController {
         if (this.availableCreate) {
             var name: string = prompt("input palette name");
             if (name !== null && name !== "") {
-                var controller = this;
+                this.nameOfCurrentMetamodel = name;
                 var palette = this.exporter.exportPalette(this.getNodesMap(), this.getLinksMap(), name);
                 try {
                     var id = this.getClient().createPalette(palette);
                     this.getClient().createMetamodel(palette);
                     this.clearState();
                     this.paletteController.clearBlocksPalette();
-                    this.handleLoadedTypes(controller.parser.parse(palette));
+                    this.handleLoadedTypes(this.parser.parse(palette));
                     this.palettes.push(new PaletteView(id, name));
                     this.availableCreate = false;
                     this.availableGenerate = true;
@@ -105,13 +105,13 @@ export class PaletteDiagramEditorController extends DiagramEditorController {
     }
 
     public loadPalette(paletteName: string) {
-        var controller = this;
+        this.nameOfCurrentMetamodel = paletteName;
         try {
-            var palette = controller.getClient().loadPalette(controller.getPaletteIdByName(paletteName));
-            controller.clearState();
-            controller.paletteController.clearBlocksPalette();
-            controller.handleLoadedTypes(controller.parser.parse(palette));
-            controller.availableCreate = false;
+            var palette = this.getClient().loadPalette(this.getPaletteIdByName(paletteName));
+            this.clearState();
+            this.paletteController.clearBlocksPalette();
+            this.handleLoadedTypes(this.parser.parse(palette));
+            this.availableCreate = false;
         }
         catch (e) {
             console.log("Error: can't load palette", e);
@@ -119,6 +119,7 @@ export class PaletteDiagramEditorController extends DiagramEditorController {
     }
 
     public loadMetaEditor() {
+        this.nameOfCurrentMetamodel = "";
         this.availableCreate = true;
         this.availableGenerate = false;
         this.clearState();
@@ -131,9 +132,10 @@ export class PaletteDiagramEditorController extends DiagramEditorController {
     public generate() {
         if (this.availableGenerate) {
             var name: string = prompt("input model name");
-            var model = this.modelExporter.exportModel(this.getNodesMap(), this.getLinksMap(), name);
+            var model = this.modelExporter.exportModel(this.getNodesMap(), this.getLinksMap(), name,
+                this.nameOfCurrentMetamodel);
             try {
-                this.getClient().createModel(model);
+                this.getClient().generate(model);
             }
             catch (ouch) {
                 console.log("Error: can't save diagram");

@@ -8,5 +8,5 @@ service PaletteServiceThrift {
     Palette.TPalette loadPalette(1: i64 paletteId),
     set<Palette.TPaletteView> getPaletteViews(),
     void createMetamodel(1: Palette.TPalette palette),
-    void createModel(1: Palette.TModel model)
+    void generate(1: Palette.TModel model)
 }

@@ -15,6 +15,8 @@ public class Model {
 
     private Set<Node> nodes = new HashSet<>();
 
+    private String metamodelName;
+
     public Model() {
     }
 
@@ -30,6 +32,10 @@ public class Model {
 
         if (tModel.isSetNodes()) {
             nodes = tModel.getNodes().stream().map(Node::new).collect(Collectors.toSet());
+        }
+
+        if (tModel.isSetMetamodelName()) {
+            metamodelName = tModel.getMetamodelName();
         }
     }
 
@@ -48,6 +54,10 @@ public class Model {
         if (nodes != null && !nodes.isEmpty()) {
             tModel.setNodes(nodes.stream().map(Node::toTNode).
                     collect(Collectors.toSet()));
+        }
+
+        if (metamodelName != null) {
+            tModel.setMetamodelName(metamodelName);
         }
 
         return tModel;

@@ -16,9 +16,9 @@ public interface AcceleoService {
     void createMetamodel(@NotNull Palette palette) throws AbortedException, ErrorConnectionException, TException;
 
     /**
-     * Creates Model.
+     * Creates Model and generate code.
      *
      * @param model  diagram to be created
      */
-    void createModel(@NotNull Model model) throws AbortedException, ErrorConnectionException, TException;
+    void generate(@NotNull Model model) throws AbortedException, ErrorConnectionException, TException;
 }

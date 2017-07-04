@@ -66,18 +66,18 @@ public class AcceleoServiceImpl implements AcceleoService {
     }
 
     @Override
-    public void createModel(@NotNull Model model) throws AbortedException, ErrorConnectionException, TException
+    public void generate(@NotNull Model model) throws AbortedException, ErrorConnectionException, TException
     {
-        logger.trace("createModel() was called with parameters: name = {}.", model.getName());
+        logger.trace("generate() was called with parameters: name = {}.", model.getName());
         transport.open();
         String user = AuthenticatedUser.getUserName();
         model.setUserName(user);
         try {
             TModel newModel = model.toTModel();
-            client.createModel(newModel);
+            client.generate(newModel);
         } finally {
             transport.close();
         }
-        logger.trace("createModel() successfully created palette {}", model.getName());
+        logger.trace("generate() successfully created palette {}", model.getName());
     }
 }

@@ -129,19 +129,19 @@ public class PaletteServletHandler implements PaletteServiceThrift.Iface {
     }
 
     @Override
-    public void createModel(TModel model) {
+    public void generate(TModel model) {
         AcceleoService acceleoGeneratorService = (AcceleoService)
                 context.getBean("acceleoGeneratorService");
         Model newModel = new Model(model);
         try {
-            acceleoGeneratorService.createModel(newModel);
+            acceleoGeneratorService.generate(newModel);
         } catch (AbortedException e) {
             //TODO Here we should not return 0, but send exception to client side.
-            logger.error("createModel method encountered exception Aborted. Instead of paletteId will be returned 0.",
+            logger.error("generate method encountered exception Aborted. Instead of paletteId will be returned 0.",
                     e);
         } catch (ErrorConnectionException e) {
             //TODO Here we should not return 0, but send exception to client side.
-            logger.error("createModel method encountered exception ErrorConnection. Instead of paletteId will be " +
+            logger.error("generate method encountered exception ErrorConnection. Instead of paletteId will be " +
                     "returned 0.", e);
         } catch (TException e) {
             logger.error("TException was not translated", e);
