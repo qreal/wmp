@@ -73,9 +73,9 @@ public class AcceleoServiceHandler implements AcceleoServiceThrift.Iface {
             if (!meta.exists()) {
                 meta.createNewFile();
             }
-            out.print("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+            out.print("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n" +
                     "<wmp.dsm:Model xmi:version=\"2.0\" xmlns:xmi=\"http://www.omg.org/XMI\" " +
-                    "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:wmp.dsm=\"http://wmp.dsm\">\n");
+                    "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:wmp.dsm=\"http://wmp.dsm\">\r\n");
             int ind = 1;
             for (Node node : model.getNodes()) {
                 out.print("\t<nodes xsi:type=\"wmp.dsm:" + node.getName() + "\" name=\"" + node.getName() + "\" ");
@@ -83,7 +83,7 @@ public class AcceleoServiceHandler implements AcceleoServiceThrift.Iface {
                     out.print(property.getName() + "=\"" + property.getValue() + "\"");
                 }
                 if (ind < model.getNodes().size()) {
-                    out.print("to=\"//@nodes." + ind + "\"></nodes>\n");
+                    out.print("to=\"//@nodes." + ind + "\"></nodes>\r\n");
                 }
                 ind++;
             }
