@@ -30,6 +30,7 @@
                         <li><a href="" role="menuitem" tabindex="-1" ng-click="openPalettesMenu()">Palettes menu</a></li>
                     </ul>
                 </li>
+                <li><a href="" ng-click="generate()">Generate</a></li>
                 <li id="file-menu" class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">File<b class="caret"></b></a>
                     <ul class="dropdown-menu">

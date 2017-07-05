@@ -4,12 +4,15 @@ import com.qreal.wmp.editor.common.utils.AuthenticatedUser;
 import com.qreal.wmp.editor.database.exceptions.AbortedException;
 import com.qreal.wmp.editor.database.exceptions.ErrorConnectionException;
 import com.qreal.wmp.editor.database.exceptions.NotFoundException;
+import com.qreal.wmp.editor.database.palettes.client.AcceleoService;
 import com.qreal.wmp.editor.database.palettes.client.PaletteService;
+import com.qreal.wmp.editor.database.palettes.model.Model;
 import com.qreal.wmp.editor.database.palettes.model.Palette;
 import com.qreal.wmp.editor.database.palettes.model.PaletteView;
 import com.qreal.wmp.thrift.gen.PaletteServiceThrift;
 import com.qreal.wmp.thrift.gen.TPalette;
 import com.qreal.wmp.thrift.gen.TPaletteView;
+import com.qreal.wmp.thrift.gen.TModel;
 import org.apache.thrift.TException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -103,5 +106,45 @@ public class PaletteServletHandler implements PaletteServiceThrift.Iface {
             logger.error("TException was not translated", e);
         }
         return result;
+    }
+
+    @Override
+    public void createMetamodel(TPalette palette) {
+        AcceleoService acceleoGeneratorService = (AcceleoService)
+                context.getBean("acceleoGeneratorService");
+        Palette newPalette = new Palette(palette);
+        try {
+            acceleoGeneratorService.createMetamodel(newPalette);
+        } catch (AbortedException e) {
+            //TODO Here we should not return 0, but send exception to client side.
+            logger.error("createMetamodel method encountered exception Aborted. Instead of paletteId will " +
+                            "be returned 0.", e);
+        } catch (ErrorConnectionException e) {
+            //TODO Here we should not return 0, but send exception to client side.
+            logger.error("createMetamodel method encountered exception ErrorConnection. Instead of paletteId will be " +
+                    "returned 0.", e);
+        } catch (TException e) {
+            logger.error("TException was not translated", e);
+        }
+    }
+
+    @Override
+    public void generate(TModel model) {
+        AcceleoService acceleoGeneratorService = (AcceleoService)
+                context.getBean("acceleoGeneratorService");
+        Model newModel = new Model(model);
+        try {
+            acceleoGeneratorService.generate(newModel);
+        } catch (AbortedException e) {
+            //TODO Here we should not return 0, but send exception to client side.
+            logger.error("generate method encountered exception Aborted. Instead of paletteId will be returned 0.",
+                    e);
+        } catch (ErrorConnectionException e) {
+            //TODO Here we should not return 0, but send exception to client side.
+            logger.error("generate method encountered exception ErrorConnection. Instead of paletteId will be " +
+                    "returned 0.", e);
+        } catch (TException e) {
+            logger.error("TException was not translated", e);
+        }
     }
 }

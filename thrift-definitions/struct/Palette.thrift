@@ -25,3 +25,10 @@ struct TPaletteView {
     1 : i64 id,
     2 : string name
 }
+
+struct TModel {
+    1 : string name,
+    2 : string user,
+    3 : set<TNode> nodes,
+    4 : string metamodelName
+}
