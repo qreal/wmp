@@ -26,7 +26,7 @@ public class AcceleoServer implements ApplicationContextAware {
 
     /** Function running TServer with a chosen processor. */
     private static void runTServer(AcceleoServiceThrift.Processor processor, int port) {
-        logger.info("Starting Palette DB TServer on localhost on port {}", port);
+        logger.info("Starting Acceleo TServer on localhost on port {}", port);
         try {
             TServerTransport serverTransport = new TServerSocket(port);
             TThreadPoolServer server = new TThreadPoolServer(

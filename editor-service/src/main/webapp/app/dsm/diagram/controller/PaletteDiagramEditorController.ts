@@ -105,6 +105,7 @@ export class PaletteDiagramEditorController extends DiagramEditorController {
     }
 
     public loadPalette(paletteName: string) {
+        this.availableGenerate = true;
         this.nameOfCurrentMetamodel = paletteName;
         try {
             var palette = this.getClient().loadPalette(this.getPaletteIdByName(paletteName));

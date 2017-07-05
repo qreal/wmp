@@ -38,7 +38,6 @@ export class ModelExporter {
             }
         }
 
-        console.log(initial);
         var existNext: boolean = true;
         while(existNext) {
             var node: DiagramNode = nodesMap[initial];
@@ -49,19 +48,15 @@ export class ModelExporter {
                 var link = linksMap[id];
                 var jointObject = link.getJointObject();
                 if (nodesMap[jointObject.get('source').id] === node) {
-                    console.log(initial);
                     initial = jointObject.get('target').id;
-                    console.log(initial);
                 }
                 else {
                     existNext = false;
                 }
             }
-            console.log(newNode);
             nodes.push(newNode);
         }
 
-        console.log(nodes);
         return nodes;
     }
 
