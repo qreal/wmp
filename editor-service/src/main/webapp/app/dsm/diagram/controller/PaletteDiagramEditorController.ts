@@ -139,7 +139,7 @@ export class PaletteDiagramEditorController extends DiagramEditorController {
                 this.getClient().generate(model);
             }
             catch (ouch) {
-                console.log("Error: can't save diagram");
+                console.log("Error: can't save model");
             }
         }
     }

@@ -32,26 +32,26 @@ public class AcceleoServiceHandler implements AcceleoServiceThrift.Iface {
                     "\"http://www.w3.org/2001/XMLSchema-instance\"");
             out.println("xmlns:ecore=\"http://www.eclipse.org/emf/2002/Ecore\" name=\"" +  palette.getName() +
                     "\" nsURI=\"http://wmp.dsm\" nsPrefix=\"wmp.dsm\">");
-            out.println("<eClassifiers xsi:type=\"ecore:EClass\" name=\"Node\">");
-            out.println("\t<eStructuralFeatures xsi:type=\"ecore:EReference\" name=\"to\" eType=\"#//Node\"/>");
-            out.println("\t<eStructuralFeatures xsi:type=\"ecore:EAttribute\" name=\"name\" eType=\"ecore:EDataType " +
-                    "http://www.eclipse.org/emf/2002/Ecore#//EString\"/>");
-            out.println("  </eClassifiers>");
+            out.println("<\teClassifiers xsi:type=\"ecore:EClass\" name=\"Node\">");
+            out.println("\t\t<eStructuralFeatures xsi:type=\"ecore:EReference\" name=\"to\" eType=\"#//Node\"/>");
+            out.println("\t\t<eStructuralFeatures xsi:type=\"ecore:EAttribute\" name=\"name\" eType=\"ecore:EDataType "
+                    + "http://www.eclipse.org/emf/2002/Ecore#//EString\"/>");
+            out.println("\t</eClassifiers>");
             for (Node node: palette.getNodes()) {
-                out.println("<eClassifiers xsi:type=\"ecore:EClass\" name=\"" + node.getName() +
+                out.println("\t<eClassifiers xsi:type=\"ecore:EClass\" name=\"" + node.getName() +
                         "\" eSuperTypes=\"#//Node\">");
                 for (NodeProperty property: node.getProperties()) {
-                    out.println("\t<eStructuralFeatures xsi:type=\"ecore:EAttribute\" name=\"" + property.getName() +
+                    out.println("\t\t<eStructuralFeatures xsi:type=\"ecore:EAttribute\" name=\"" + property.getName() +
                             "\" eType=\"ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//E" + property.getType()
                             + "\"");
-                    out.println("defaultValueLiteral=\"" + property.getValue() + "\"/>");
+                    out.println("\t\t\tdefaultValueLiteral=\"" + property.getValue() + "\"/>");
                 }
-                out.println("</eClassifiers>");
+                out.println("\t</eClassifiers>");
             }
-            out.println("<eClassifiers xsi:type=\"ecore:EClass\" name=\"Model\">");
-            out.println("\t<eStructuralFeatures xsi:type=\"ecore:EReference\" name=\"nodes\" upperBound=\"-1\"");
-            out.println("\t\teType=\"#//Node\"/>");
-            out.println("</eClassifiers>");
+            out.println("\t<eClassifiers xsi:type=\"ecore:EClass\" name=\"Model\">");
+            out.println("\t\t<eStructuralFeatures xsi:type=\"ecore:EReference\" name=\"nodes\" upperBound=\"-1\"");
+            out.println("\t\t\teType=\"#//Node\"/>");
+            out.println("\t</eClassifiers>");
             out.println("</ecore:EPackage> ");
         } catch (IOException e) {
             e.printStackTrace();

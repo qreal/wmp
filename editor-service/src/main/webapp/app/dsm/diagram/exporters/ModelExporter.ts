@@ -40,6 +40,7 @@ export class ModelExporter {
 
         var existNext: boolean = true;
         while(existNext) {
+            existNext = false;
             var node: DiagramNode = nodesMap[initial];
             var newNode = new TNode();
             newNode.name = node.getName();
@@ -49,9 +50,7 @@ export class ModelExporter {
                 var jointObject = link.getJointObject();
                 if (nodesMap[jointObject.get('source').id] === node) {
                     initial = jointObject.get('target').id;
-                }
-                else {
-                    existNext = false;
+                    existNext = true;
                 }
             }
             nodes.push(newNode);
