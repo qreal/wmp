@@ -20,13 +20,7 @@ public class AcceleoServiceHandler implements AcceleoServiceThrift.Iface {
         
         Palette palette = new Palette(tPalette);
         File meta = new File("metamodels/" + palette.getName() + ".ecore");
-        PrintWriter out = null;
-        try {
-            meta.createNewFile();
-            out = new PrintWriter(meta.getAbsoluteFile());
-            if (!meta.exists()) {
-                meta.createNewFile();
-            }
+        try (PrintWriter out = new PrintWriter(meta.getAbsoluteFile())) {
             out.println("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
             out.println("<ecore:EPackage xmi:version=\"2.0\" xmlns:xmi=\"http://www.omg.org/XMI\" xmlns:xsi=" +
                     "\"http://www.w3.org/2001/XMLSchema-instance\"");
@@ -55,10 +49,6 @@ public class AcceleoServiceHandler implements AcceleoServiceThrift.Iface {
             out.println("</ecore:EPackage> ");
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            if (out != null) {
-                out.close();
-            }
         }
     }
 

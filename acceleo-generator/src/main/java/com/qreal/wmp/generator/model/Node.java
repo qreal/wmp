@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-/** Palette's node.*/
+/** Element of new language.*/
 @Data
 public class Node implements Serializable {
     private String id;

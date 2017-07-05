@@ -1,7 +1,6 @@
 package com.qreal.wmp.db.palette.server;
 
 import com.qreal.wmp.db.palette.dao.PaletteDao;
-import com.qreal.wmp.db.palette.exceptions.AbortedException;
 import com.qreal.wmp.db.palette.exceptions.NotFoundException;
 import com.qreal.wmp.db.palette.model.Palette;
 import com.qreal.wmp.db.palette.model.PaletteView;
@@ -23,16 +22,12 @@ public class PaletteDbServiceHandler implements PaletteDbService.Iface {
     }
 
     @Override
-    public long createPalette(TPalette palette) throws TAborted, TIdAlreadyDefined {
+    public long createPalette(TPalette palette) throws TIdAlreadyDefined {
         long paletteId = 0;
         if (palette.isSetId()) {
             throw new TIdAlreadyDefined("Palette Id not null. To save a palette you should not assign Id to it.");
         }
-        try {
-            paletteId = paletteDao.createPalette(new Palette(palette));
-        } catch (AbortedException e) {
-            throw new TAborted(e.getTextCause(), e.getMessage(), e.getFullClassName());
-        }
+        paletteId = paletteDao.createPalette(new Palette(palette));
         return paletteId;
     }
 

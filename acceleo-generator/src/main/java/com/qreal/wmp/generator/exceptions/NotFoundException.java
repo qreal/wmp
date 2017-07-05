@@ -10,6 +10,6 @@ public class NotFoundException extends Exception {
     }
 
     public String getId() {
-        return  id;
+        return id;
     }
 }

@@ -1,6 +1,5 @@
 package com.qreal.wmp.db.palette.dao;
 
-import com.qreal.wmp.db.palette.exceptions.AbortedException;
 import com.qreal.wmp.db.palette.exceptions.NotFoundException;
 import com.qreal.wmp.db.palette.model.Palette;
 import com.qreal.wmp.db.palette.model.PaletteView;
@@ -26,7 +25,7 @@ public class PaletteDaoImpl implements PaletteDao {
     }
 
     @Override
-    public Long createPalette(@NotNull Palette palette) throws AbortedException {
+    public Long createPalette(@NotNull Palette palette) {
         logger.trace("createPalette() was called with parameters: name = {}.", palette.getPaletteName());
         Session session = sessionFactory.getCurrentSession();
         session.save(palette);

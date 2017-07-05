@@ -9,7 +9,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 
-/** Palette. */
+/** Keeps information about new language. */
 @Data
 public class Palette implements Serializable {
     private Long id;

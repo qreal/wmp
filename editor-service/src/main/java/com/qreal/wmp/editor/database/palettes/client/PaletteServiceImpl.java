@@ -1,7 +1,6 @@
 package com.qreal.wmp.editor.database.palettes.client;
 
 import com.qreal.wmp.editor.common.utils.AuthenticatedUser;
-import com.qreal.wmp.editor.database.exceptions.AbortedException;
 import com.qreal.wmp.editor.database.exceptions.ErrorConnectionException;
 import com.qreal.wmp.editor.database.exceptions.NotFoundException;
 import com.qreal.wmp.editor.database.palettes.model.Palette;
@@ -53,7 +52,7 @@ public class PaletteServiceImpl implements PaletteService {
     }
 
     @Override
-    public @NotNull Long createPalette(@NotNull Palette palette) throws AbortedException, ErrorConnectionException,
+    public @NotNull Long createPalette(@NotNull Palette palette) throws ErrorConnectionException,
             TException {
         logger.trace("createPalette() was called with parameters: name = {}.", palette.getName());
         transport.open();

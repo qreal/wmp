@@ -39,7 +39,7 @@ export class ModelExporter {
         }
 
         var existNext: boolean = true;
-        while(existNext) {
+        while (existNext) {
             existNext = false;
             var node: DiagramNode = nodesMap[initial];
             var newNode = new TNode();

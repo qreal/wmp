@@ -1,6 +1,5 @@
 package com.qreal.wmp.db.palette.dao;
 
-import com.qreal.wmp.db.palette.exceptions.AbortedException;
 import com.qreal.wmp.db.palette.exceptions.NotFoundException;
 import com.qreal.wmp.db.palette.model.Palette;
 import com.qreal.wmp.db.palette.model.PaletteView;
@@ -15,7 +14,7 @@ public interface PaletteDao {
      * @param palette  palette to save (Id must not be set)
      * @return id of a palette
      */
-    Long createPalette(@NotNull Palette palette) throws AbortedException;
+    Long createPalette(@NotNull Palette palette);
 
     /** Returns a palette.
      *  @param paletteId id of a palette

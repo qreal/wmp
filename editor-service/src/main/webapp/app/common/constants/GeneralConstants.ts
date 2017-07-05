@@ -8,6 +8,6 @@ export class GeneralConstants {
     static EDITOR_REST_SERVLET: string = "http://localhost:" + ServerProperties.portEditor +
         ServerProperties.pathEditor + ServerProperties.pathEditorService;
     static PALETTE_REST_SERVLET: string = "http://localhost:" + ServerProperties.portEditor +
-    ServerProperties.pathEditor + ServerProperties.pathPaletteService;
+        ServerProperties.pathEditor + ServerProperties.pathPaletteService;
     
 }

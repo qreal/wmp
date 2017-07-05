@@ -22,7 +22,7 @@ public class AbortedException extends Exception {
     }
 
     public String getTextCause() {
-        return  textCause;
+        return textCause;
     }
 
     public String getFullClassName() {

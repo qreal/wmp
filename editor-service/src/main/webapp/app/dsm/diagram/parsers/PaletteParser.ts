@@ -4,6 +4,7 @@ import {PaletteTree} from "core/editorCore/model/PaletteTree";
 import {Property} from "core/editorCore/model/Property";
 import {NodeType} from "core/editorCore/model/NodeType";
 export class PaletteParser {
+
     private controller: PaletteDiagramEditorController;
 
     constructor(controller: PaletteDiagramEditorController) {
