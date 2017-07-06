@@ -23,6 +23,8 @@
   <build>
     <finalName>acceleo-generator</finalName>
 
+    <outputDirectory>bin</outputDirectory>
+
     <resources>
       <!-- Used to export maven variables to property file -->
       <resource>

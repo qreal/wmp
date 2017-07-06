@@ -45,10 +45,11 @@ public class GeneratorTest {
                 "transformations/M2T/generateRobots.mtl", "gen/");
         try (BufferedReader br =
                      new BufferedReader(new FileReader("gen/robots.java"))) {
-            Set<String> gen = new HashSet<>();
-            String s;
-            while ((s = br.readLine()) != null) {
-                gen.add(s);
+            Set<String> generated = new HashSet<>();
+            String strInGenerated = br.readLine();
+            while ((strInGenerated) != null) {
+                generated.add(strInGenerated);
+                strInGenerated = br.readLine();
             }
 
             Set<String> expected = new HashSet<>();
@@ -57,7 +58,7 @@ public class GeneratorTest {
             expected.add("MotorsForward");
             expected.add("invalid");
 
-            assertThat(gen).isEqualTo(expected);
+            assertThat(generated).isEqualTo(expected);
         }
 
     }
