@@ -351,7 +351,7 @@ export class DiagramMenuController {
                     break;
                 case "share":
                     if (controller.selectedElement.getType() === 'folders') {
-                        console.log("Shared clicked")
+                        console.log("Shared clicked");
                         controller.shareFolder(controller.selectedElement.getName());
                     }
                     break;

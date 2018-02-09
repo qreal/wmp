@@ -635,6 +635,7 @@ declare module "core/editorCore/controller/PaletteController" {
         appendBlocksPalette(paletteTypes: PaletteTree): void;
         appendFlowsPalette(paletteTypes: PaletteTree): void;
         searchPaletteReload(event: Event, elementTypes: ElementTypes, nodesTypesMap: Map<String, NodeType>): void;
+        clearBlocksPalette(): void;
         private appendPaletteContent(selector, content);
         private clearPaletteContent(selector);
     }

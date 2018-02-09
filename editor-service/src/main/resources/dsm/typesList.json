@@ -1,0 +1,14 @@
+{
+    "elements": [
+        "ControlFlow"
+    ],
+
+    "blocks": {
+        "palette": {
+            "Elements": [
+                "Entity",
+                "Property"
+            ]
+        }
+    }
+}

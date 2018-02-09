@@ -26,8 +26,9 @@
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Editor<b class="caret"></b></a>
                     <ul class="dropdown-menu">
-                        <li><a href="<c:url value="${editorService}/robots"/>">Robots editor</a></li>
+                        <li><a href="<c:url value="${editorService}/robots"/>">Robots Editor</a></li>
                         <li><a href="<c:url value="${editorService}/bpmn"/>">BPMN editor</a></li>
+                        <li><a href="<c:url value="${editorService}/dsm"/>">Meta Editor</a></li>
                     </ul>
                 </li>
             </ul>

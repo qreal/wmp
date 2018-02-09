@@ -22,10 +22,15 @@
         <path.db.diagram>localhost</path.db.diagram>
         <path.db.robot>localhost</path.db.robot>
         <path.db.user>localhost</path.db.user>
+        <path.db.palette>localhost</path.db.palette>
 
         <port.db.diagram>9090</port.db.diagram>
         <port.db.robot>9091</port.db.robot>
         <port.db.user>9092</port.db.user>
+        <port.db.palette>9093</port.db.palette>
+
+        <path.generator>localhost</path.generator>
+        <port.generator>9094</port.generator>
     </properties>
 
     <!-- You can use default ports and paths stating right profile, or add your own -->
@@ -43,6 +48,7 @@
                 <path.dashboard>/dashboard</path.dashboard>
                 <path.editor.service>/editorRest</path.editor.service>
                 <path.dashboard.service>/dashboardRest</path.dashboard.service>
+                <path.editor.palette.service>/paletteRest</path.editor.palette.service>
             </properties>
         </profile>
         <profile>
@@ -57,6 +63,7 @@
                 <path.dashboard>/dashboard</path.dashboard>
                 <path.editor.service>/editorRest</path.editor.service>
                 <path.dashboard.service>/dashboardRest</path.dashboard.service>
+                <path.editor.palette.service>/paletteRest</path.editor.palette.service>
             </properties>
             <activation>
                 <activeByDefault>true</activeByDefault>
@@ -74,6 +81,7 @@
                 <path.dashboard>/dashboard</path.dashboard>
                 <path.editor.service>/editorRest</path.editor.service>
                 <path.dashboard.service>/dashboardRest</path.dashboard.service>
+                <path.editor.palette.service>/paletteRest</path.editor.palette.service>
             </properties>
         </profile>
     </profiles>
@@ -86,6 +94,8 @@
         <module>db-services/db-diagram-service</module>
         <module>db-services/db-robot-store-service</module>
         <module>db-services/db-user-service</module>
+        <module>db-services/db-palette-service</module>
+        <module>acceleo-generator</module>
         <module>dependencies/auth-deps</module>
         <module>dependencies/logging-deps</module>
         <module>deployment/allintomcat</module>

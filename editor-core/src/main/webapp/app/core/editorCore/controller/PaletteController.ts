@@ -54,6 +54,10 @@ export class PaletteController {
         this.appendPaletteContent(this.flowsSelector, paletteView.getContent());
     }
 
+    public clearBlocksPalette(): void {
+        $("#blocks-navigation").empty();
+    }
+
     public searchPaletteReload(event: Event, elementTypes: ElementTypes, nodesTypesMap: Map<String, NodeType>) {
         var searchPatterns: string[] = (<any> event.target).value.split(" ").map((str) => str.toLowerCase());
 

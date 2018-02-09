@@ -246,4 +246,5 @@ public class EditorServletHandler implements EditorServiceThrift.Iface {
             logger.error("TException was not translated", e);
         }
     }
+
 }

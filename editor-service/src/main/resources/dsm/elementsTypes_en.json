@@ -1,0 +1,385 @@
+{
+    "elements": {
+        "ControlFlow": {
+            "name": "Link",
+            "properties": [
+                {
+                    "key": "Guard",
+                    "name": "Guard",
+                    "type": "combobox",
+                    "value": "",
+                    "variants": [
+                        {
+                            "key": "false",
+                            "value": "false"
+                        },
+                        {
+                            "key": "iteration",
+                            "value": "iteration"
+                        },
+                        {
+                            "key": "true",
+                            "value": "true"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    "categoriesNames": {
+        "Elements": "Elements"
+    },
+    "blocks": {
+        "Entity": {
+            "name": "Entity",
+            "image": {
+                "src": "images/entityBlock.svg"
+            },
+            "properties": [
+                {
+                    "key": "name",
+                    "name": "name",
+                    "type": "string",
+                    "value": "entity"
+                },
+                {
+                    "key": "image",
+                    "name": "image",
+                    "type": "dropdown",
+                    "selected": {
+                        "key": "",
+                        "value": ""
+                    },
+                    "variants": [
+                        {
+                            "key": "angularServoBlock",
+                            "value": "angularServoBlock"
+                        },
+                        {
+                            "key": "balanceBlock",
+                            "value": "balanceBlock"
+                        },
+                        {
+                            "key": "balanceInitBlock",
+                            "value": "balanceInitBlock"
+                        },
+                        {
+                            "key": "balanceBlock",
+                            "value": "balanceBlock"
+                        },
+                        {
+                            "key": "beepBlock",
+                            "value": "beepBlock"
+                        },
+                        {
+                            "key": "brushColorBlock",
+                            "value": "brushColorBlock"
+                        },
+                        {
+                            "key": "brushWidthBlock",
+                            "value": "brushWidthBlock"
+                        },
+                        {
+                            "key": "cameraOnBlock",
+                            "value": "cameraOnBlock"
+                        },
+                        {
+                            "key": "clearScreenBlock",
+                            "value": "clearScreenBlock"
+                        },
+                        {
+                            "key": "detectBlock",
+                            "value": "detectBlock"
+                        },
+                        {
+                            "key": "detectorIntoVariableBlock",
+                            "value": "detectorIntoVariableBlock"
+                        },
+                        {
+                            "key": "drawArcBlock",
+                            "value": "drawArcBlock"
+                        },
+                        {
+                            "key": "drawCircleBlock",
+                            "value": "drawCircleBlock"
+                        },
+                        {
+                            "key": "drawLineBlock",
+                            "value": "drawLineBlock"
+                        },
+                        {
+                            "key": "drawPixelBlock",
+                            "value": "drawPixelBlock"
+                        },
+                        {
+                            "key": "drawRectBlock",
+                            "value": "drawRectBlock"
+                        },
+                        {
+                            "key": "endIfBlock",
+                            "value": "endIfBlock"
+                        },
+                        {
+                            "key": "endLoopBlock",
+                            "value": "endLoopBlock"
+                        },
+                        {
+                            "key": "enginesBackwardBlock",
+                            "value": "enginesBackwardBlock"
+                        },
+                        {
+                            "key": "enginesForwardBlock",
+                            "value": "enginesForwardBlock"
+                        },
+                        {
+                            "key": "enginesStopBlock",
+                            "value": "enginesStopBlock"
+                        },
+                        {
+                            "key": "entityBlock",
+                            "value": "entityBlock"
+                        },
+                        {
+                            "key": "finalBlock",
+                            "value": "finalBlock"
+                        },
+                        {
+                            "key": "forkBlock",
+                            "value": "forkBlock"
+                        },
+                        {
+                            "key": "functionBlock",
+                            "value": "functionBlock"
+                        },
+                        {
+                            "key": "getButtonCodeBlock",
+                            "value": "getButtonCodeBlock"
+                        },
+                        {
+                            "key": "ifBlock",
+                            "value": "ifBlock"
+                        },
+                        {
+                            "key": "initCameraBlock",
+                            "value": "initCameraBlock"
+                        },
+                        {
+                            "key": "initialBlock",
+                            "value": "initialBlock"
+                        },
+                        {
+                            "key": "joinBlock",
+                            "value": "joinBlock"
+                        },
+                        {
+                            "key": "killThreadBlock",
+                            "value": "killThreadBlock"
+                        },
+                        {
+                            "key": "ledBlock",
+                            "value": "ledBlock"
+                        },
+                        {
+                            "key": "lineDetectorIntoVariableBlock",
+                            "value": "lineDetectorIntoVariableBlock"
+                        },
+                        {
+                            "key": "loopBlock",
+                            "value": "loopBlock"
+                        },
+                        {
+                            "key": "markerDownBlock",
+                            "value": "markerDownBlock"
+                        },
+                        {
+                            "key": "markerUpBlock",
+                            "value": "markerUpBlock"
+                        },
+                        {
+                            "key": "nullificationEncoderBlock",
+                            "value": "nullificationEncoderBlock"
+                        },
+                        {
+                            "key": "playToneBlock",
+                            "value": "playToneBlock"
+                        },
+                        {
+                            "key": "printTextBlock",
+                            "value": "printTextBlock"
+                        },
+                        {
+                            "key": "propertyBlock",
+                            "value": "propertyBlock"
+                        },
+                        {
+                            "key": "randomizerBlock",
+                            "value": "randomizerBlock"
+                        },
+                        {
+                            "key": "receiveMessageThreadsBlock",
+                            "value": "receiveMessageThreadsBlock"
+                        },
+                        {
+                            "key": "removeFileBlock",
+                            "value": "removeFileBlock"
+                        },
+                        {
+                            "key": "sadSmileBlock",
+                            "value": "sadSmileBlock"
+                        },
+                        {
+                            "key": "sayBlock",
+                            "value": "sayBlock"
+                        },
+                        {
+                            "key": "sendMessageBlock",
+                            "value": "sendMessageBlock"
+                        },
+                        {
+                            "key": "sendMessageThreadsBlock",
+                            "value": "sendMessageThreadsBlock"
+                        },
+                        {
+                            "key": "setBackgroundBlock",
+                            "value": "setBackgroundBlock"
+                        },
+                        {
+                            "key": "smileBlock",
+                            "value": "smileBlock"
+                        },
+                        {
+                            "key": "soundRecordBlock",
+                            "value": "soundRecordBlock"
+                        },
+                        {
+                            "key": "startLoopBlock",
+                            "value": "startLoopBlock"
+                        },
+                        {
+                            "key": "stopSoundRecordBlock",
+                            "value": "stopSoundRecordBlock"
+                        },
+                        {
+                            "key": "subprogamRobotsBlock",
+                            "value": "subprogramRobotsBlock"
+                        },
+                        {
+                            "key": "switchBlock",
+                            "value": "switchBlock"
+                        },
+                        {
+                            "key": "systemBlock",
+                            "value": "systemBlock"
+                        },
+                        {
+                            "key": "timerBlock",
+                            "value": "timerBlock"
+                        },
+                        {
+                            "key": "trikWaitGamepadButtonBlock",
+                            "value": "trikWaitGamepadButtonBlock"
+                        },
+                        {
+                            "key": "trikWaitGamepadConnectBlock",
+                            "value": "trikWaitGamepadConnectBlock"
+                        },
+                        {
+                            "key": "trikWaitGamepadDisconnectBlock",
+                            "value": "trikWaitGamepadDisconnectBlock"
+                        },
+                        {
+                            "key": "trikWaitGamepadWheelBlock",
+                            "value": "trikWaitGamepadWheelBlock"
+                        },
+                        {
+                            "key": "trikWaitPadPressBlock",
+                            "value": "trikWaitPadPressBlock"
+                        },
+                        {
+                            "key": "variableInitBlock",
+                            "value": "variableInitBlock"
+                        },
+                        {
+                            "key": "waitForAccelerometerBlock",
+                            "value": "waitForAccelerometerBlock"
+                        },
+                        {
+                            "key": "waitForButtonBlock",
+                            "value": "waitForButtonBlock"
+                        },
+                        {
+                            "key": "waitForColorBlock",
+                            "value": "waitForColorBlock"
+                        },
+                        {
+                            "key": "waitForColorIntensityBlock",
+                            "value": "waitForColorIntensityBlock"
+                        },
+                        {
+                            "key": "waitForEncoderBlock",
+                            "value": "waitForEncoderBlock"
+                        },
+                        {
+                            "key": "waitForGyroscopeBlock",
+                            "value": "waitForGyroscopeBlock"
+                        },
+                        {
+                            "key": "waitForLightBlock",
+                            "value": "waitForLightBlock"
+                        },
+                        {
+                            "key": "waitForMessageBlock",
+                            "value": "waitForMessageBlock"
+                        },
+                        {
+                            "key": "waitForMotionBlock",
+                            "value": "waitForMotionBlock"
+                        },
+                        {
+                            "key": "waitForSonarDistanceBlock",
+                            "value": "waitForSonarDistanceBlock"
+                        },
+                        {
+                            "key": "waitForSoundSensorBlock",
+                            "value": "waitForSoundSensorBlock"
+                        },
+                        {
+                            "key": "waitForTouchSensorBlock",
+                            "value": "waitForTouchSensorBlock"
+                        },
+                        {
+                            "key": "writeToFileBlock",
+                            "value": "writeToFileBlock"
+                        }
+                    ]
+                }
+            ]
+        },
+        "Property": {
+            "name": "Property",
+            "image": {
+                "src": "images/propertyBlock.svg"
+            },
+            "properties": [
+                {
+                    "key": "name",
+                    "name": "name",
+                    "type": "string",
+                    "value": "property"
+                },
+                {
+                    "key": "type",
+                    "name": "type",
+                    "type": "string",
+                    "value": "string"
+                },
+                {
+                    "key": "value",
+                    "name": "value",
+                    "type": "string",
+                    "value": ""
+                }
+            ]
+        }
+    }
+}

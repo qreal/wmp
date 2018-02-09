@@ -291,3 +291,48 @@ body{
     width: 70%;
     margin-left: 10px;
 }
+
+.palette-view {
+    width: 100%;
+    height: 300px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+}
+
+.palette-view .glyphicon {
+    margin-top: 5px;
+    margin-bottom: 10px;
+    font-size: 50px;
+}
+
+.palette-view .glyphicon-class {
+    display: block;
+    text-align: center;
+    word-wrap: break-word;
+    font-size: large;
+    color: #101010;
+}
+
+.palette-table {
+    padding-left: 0;
+    list-style: none;
+}
+
+.palette-table li {
+    float: left;
+    width: 20%;
+    height: 115px;
+    padding: 10px;
+    font-size: 10px;
+    line-height: 1.4;
+    text-align: center;
+    border: 1px solid #fff;
+    color: grey;
+    cursor: pointer;
+}
+
+.palette-table li:hover {
+    background-color: lavender;
+    border-radius: 10px;
+}

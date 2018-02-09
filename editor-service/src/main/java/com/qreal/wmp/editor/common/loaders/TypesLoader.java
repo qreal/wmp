@@ -25,6 +25,7 @@ public class TypesLoader {
         ObjectNode resultTypes = mapper.createObjectNode();
 
         ClassLoader classLoader = getClass().getClassLoader();
+
         JsonNode typesList = mapper.readTree(
                 new File(classLoader.getResource(notation + "/typesList.json").getFile()));
         JsonNode allTypes = mapper.readTree(

@@ -153,6 +153,30 @@
                         </configuration>
                     </execution>
                     <execution>
+                        <id>java-generation-palette-db</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                        <configuration>
+                            <generator>java</generator>
+                            <thriftSourceRoot>${thrift.src.base}/palette-database</thriftSourceRoot>
+                            <outputDirectory>${thrift.output.dir}/palette-database</outputDirectory>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>java-generation-acceleo</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                        <configuration>
+                            <generator>java</generator>
+                            <thriftSourceRoot>${thrift.src.base}/acceleo-generator</thriftSourceRoot>
+                            <outputDirectory>${thrift.output.dir}/acceleo-generator</outputDirectory>
+                        </configuration>
+                    </execution>
+                    <execution>
                         <id>java-generation-struct</id>
                         <phase>generate-sources</phase>
                         <goals>
@@ -226,7 +250,9 @@
                                 <source>${thrift.output.dir}/struct</source>
                                 <source>${thrift.output.dir}/editor</source>
                                 <source>${thrift.output.dir}/diagram-database</source>
+                                <source>${thrift.output.dir}/palette-database</source>
                                 <source>${thrift.output.dir}/user-database</source>
+                                <source>${thrift.output.dir}/acceleo-generator</source>
                             </sources>
                         </configuration>
                     </execution>

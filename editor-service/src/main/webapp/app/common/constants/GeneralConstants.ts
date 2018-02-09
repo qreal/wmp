@@ -7,5 +7,7 @@ export class GeneralConstants {
         ServerProperties.pathDashboard + ServerProperties.pathDashboardService;
     static EDITOR_REST_SERVLET: string = "http://localhost:" + ServerProperties.portEditor +
         ServerProperties.pathEditor + ServerProperties.pathEditorService;
+    static PALETTE_REST_SERVLET: string = "http://localhost:" + ServerProperties.portEditor +
+        ServerProperties.pathEditor + ServerProperties.pathPaletteService;
     
 }

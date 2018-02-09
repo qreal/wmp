@@ -70,6 +70,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.authorizeRequests().
                 antMatchers(PropertyLoader.load("service.properties", "path.editor.service") + "/**").permitAll().
+                antMatchers(PropertyLoader.load("service.properties",
+                        "path.editor.palette.service") + "/**").permitAll().
                 antMatchers("/resources/**").permitAll().
                 antMatchers("/register").permitAll().
                 antMatchers("/oauth/**").permitAll().
